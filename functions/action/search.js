@@ -31,7 +31,7 @@ module.exports = {
       data = response.data
     }
 
-    console.log("SEARCH", (new Date()).getTime() - headers.timestamp, search.collection, data)
+    // console.log("SEARCH", (new Date()).getTime() - headers.timestamp, search.collection, data)
 
     // await params
     require("./toAwait").toAwait({ _window, lookupActions, stack, id, e, address, req, res, _: data, __ })

@@ -20,15 +20,16 @@ const { note } = require("./note")
 const { isParam } = require("./isParam")
 const { toAwait } = require("./toAwait")
 const { lengthConverter } = require("./resize")
-const actions = require("./actions.json")
-const events = require("./events.json")
 const { qr } = require("./qr")
 const { replaceNbsps } = require("./replaceNbsps")
 const { addresser } = require("./addresser")
 const { vcard } = require("./vcard")
 const { lineInterpreter } = require("./lineInterpreter")
+const { colorize } = require("./colorize")
+const actions = require("./actions.json")
+const events = require("./events.json")
 
-const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value, key, params = {}, object, __, e, req, res, mount, condition, toView, _object }) => {
+const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: path, value, key, params = {}, object, __, e, req, res, mount, condition, toView, _object }) => {
 
     const { remove } = require("./remove")
     const { toValue, calcSubs, calcDivision, calcModulo } = require("./toValue")
@@ -36,11 +37,13 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
     const { insert } = require("./insert")
     const { toAction } = require("./toAction")
 
+    if (stack.terminated) return
+
     var views = _window ? _window.views : window.views
     var view = views[id], breakRequest, mainId = id
     var global = _window ? _window.global : window.global
 
-    if ((global.__returnAdds__[0] || {}).returned) return
+    if ((stack.returns && stack.returns[0] || {}).returned) return
 
     // path is a string
     if (typeof path === "string") path = path.split(".")
@@ -80,9 +83,9 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
     // [actions?conditions?elseActions]():[params]:[waits]
     if (path0.length === 8 && path0.slice(-2) === "()" && path0.charAt(0) === "@") {
 
-        var { address, __: my__ } = addresser({ _window, stack, args, requesterID: id, action: "[...]()", __, lookupActions, id, _object, object, headAddress: true })
+        var { address, __: my__ } = addresser({ _window, stack, args, requesterID: id, action: "[...]()", __, lookupActions, id, _object, object })
         
-        var { data } = lineInterpreter({ _window, lookupActions, stack, address, headAddressID: address.id, id, data: path0.slice(0, -2), key, object, __: my__, e, dblExecute: true, req, res, mount, condition, toView })
+        var { data } = lineInterpreter({ _window, lookupActions, stack, address, id, data: path0.slice(0, -2), key, object, __: my__, e, dblExecute: true, req, res, mount, condition, toView })
 
         _object = data
         path0 = (path[1] || "").split(":")[0]
@@ -184,7 +187,7 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             args = path[0].split(":")
 
         } else {
-
+            
             if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[2], id, __, req, res, object, toView })
             if (path[1]) _object = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
             else return toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
@@ -310,14 +313,15 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             if (path0 === "undefined") return undefined
             else if (path0 === "false") return false
             else if (path0 === "true") return true
-            else if (path0 === "desktop()") return global.device.device.type === "desktop"
-            else if (path0 === "tablet()") return global.device.device.type === "tablet"
-            else if (path0 === "mobile()") return global.device.device.type === "phone"
+            else if (path0 === "desktop()") return global.manifest.device.device.type === "desktop"
+            else if (path0 === "tablet()") return global.manifest.device.device.type === "tablet"
+            else if (path0 === "mobile()") return global.manifest.device.device.type === "phone"
             else if (path0 === "clicked()") _object = global.clicked
             else if (path0 === "log()") {
 
                 var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, data: arg || "here", params, __, e, object }))
-                console.log(..._log)
+                console.log("LOG", ..._log)
+                stack.logs.push("LOG " + _log.join(" "))
                 path = path.slice(1)
                 path0 = (path[1] || "").split(":")[0]
             }
@@ -437,7 +441,9 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
 
             var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: tolog ? [tolog, ...__] : __, data: arg, object: k0[0] !== "_" ? o : object }))
 
-            console.log(..._log)
+            console.log("LOG", ..._log)
+            stack.logs.push("LOG " + _log.join(" "))
+
             return o
         }
 
@@ -1510,7 +1516,7 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
 
             } else _o = o.__view__ ? o : views[id]
 
-            if (typeof _o === "string" && views[_o]) views[_o].element.q()
+            if (typeof _o === "string" && views[_o]) views[_o].element.click()
             else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
             else if (typeof _o === "object" && _o.element) _o.element.click()
 
@@ -1746,26 +1752,26 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
 
         } else if (k0 === "device()") {
 
-            answer = global.device.type
+            answer = global.manifest.device.type
 
         } else if (k0 === "mobile()" || k0 === "phone()") {
 
-            answer = global.device.type === "phone"
+            answer = global.manifest.device.type === "phone"
 
         } else if (k0 === "desktop()") {
 
-            answer = global.device.type === "desktop"
+            answer = global.manifest.device.type === "desktop"
 
         } else if (k0 === "tablet()") {
 
-            answer = global.device.type === "tablet"
+            answer = global.manifest.device.type === "tablet"
 
         } else if (k0 === "installApp()") {
 
             const installApp = async () => {
 
-                global["installApp"].prompt();
-                const { outcome } = await global["installApp"].userChoice;
+                global.__installApp__.prompt();
+                const { outcome } = await global.__installApp__.userChoice;
                 console.log(`User response to the install prompt: ${outcome}`);
             }
 
@@ -1849,10 +1855,14 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             var _timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })) : 0
             var _repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object })) : false
             var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object, toView }) }
+            
             if (typeof _repeats === "boolean") {
+
                 if (_repeats === true) answer = setInterval(myFn, _timer)
                 else if (_repeats === false) answer = setTimeout(myFn, _timer)
+
             } else if (typeof _repeats === "number") {
+                
                 answer = []
                 answer.push(setTimeout(myFn, _timer))
                 if (_repeats > 1) {
@@ -2059,8 +2069,8 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
 
         } else if (k0 === "return()") {
 
-            global.__returnAdds__[0].data = answer = toValue({ _window, data: args[1], e, id, object, __, stack, lookupActions })
-            global.__returnAdds__[0].returned = true
+            stack.returns[0].data = answer = toValue({ _window, data: args[1], e, id, object, __, stack, lookupActions })
+            stack.returns[0].returned = true
 
         } else if (k0 === "reload()") {
 
@@ -2097,9 +2107,11 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             else if (typeof o === "string" && views[o]) _first = views[o].element
 
             if (!_first || !_next) return
-            if (_first.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
+            if (_first.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE) {
                 answer = _first.contains(_next)
-
+                if (!answer) answer = _first.id === _next.id
+            }
+                
         } else if (k0 === "in()" || k0 === "inside()") {
 
             var _next = toValue({ req, res, _window, lookupActions, stack, id: mainId, data: args[1], __, e })
@@ -2657,13 +2669,13 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             // if no index pull the last element
             var _last = 1, _text
             var _first
-            if (!isParam({ _window, id, string: args[1] })) _first = args[1] !== undefined ? toValue({ _window, id, data: args[1], __, e, object }) : 0
-            if (args[2]) _last = toValue({ _window, id, data: args[2], __, e, object })
+            if (!isParam({ _window, id, string: args[1] })) _first = args[1] !== undefined ? toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack }) : 0
+            if (args[2]) _last = toValue({ _window, id, data: args[2], __, e, object, lookupActions, stack })
 
             if (typeof _first !== "number") {
 
-                var _items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __ }))
-                console.log(o, _items.length);
+                var _items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __, lookupActions, stack }))
+                
                 _items.filter(data => data !== undefined && data !== null).map(_item => {
                     var _index = o.findIndex(item => isEqual(item, _item))
                     if (_index !== -1) o.splice(_index, 1)
@@ -2737,52 +2749,27 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             o.splice(parseInt(_index), 0, _value)
             answer = o
 
-        } else if (k0 === "remove()" || k0 === "rem()") { // remove child with data
+        } else if (k0 === "remove()" || k0 === "rem()") {
 
-            clearTimeout(global["tooltip-timer"])
-            delete global["tooltip-timer"]
             views.tooltip.element.style.opacity = "0"
 
             if (args[1] && !isParam({ _window, string: args[1] })) {
 
                 var _id = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-                if (!views[_id]) return console.log("Element doesnot exist!")
                 return remove({ id: _id })
 
             } else if (args[1] && isParam({ _window, string: args[1] })) {
 
-                var params = toParam({ req, res, _window, lookupActions, stack, e, id, data: args[1], __, params })
-                return remove({ id: params.id || o.id, remove: { onlyChild: params.data === false ? false : true }, __ })
+                var params = toParam({ req, res, _window, lookupActions, stack, e, id, data: args[1], __ })
+                return remove({ id: params.id || o.id, data: params, __ })
             }
 
             var _id = typeof o === "string" ? o : o.id
-            if (!views[_id]) return console.log("Element doesnot exist!")
-
-            var _parent = views[views[o.id].parent]
-            _parent.length = (_parent.element.children.length - 1) || 0
 
             remove({ id: o.id, __ })
             return true
 
-        } else if (k0 === "removeChild()" || k0 === "remChild()" || k0 === "removeView()" || k0 === "remView()") { // remove only view without removing data
-
-            if (args[1]) {
-                var _id = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-                if (!views[_id]) return console.log("Element doesnot exist!")
-                return remove({ id: _id, remove: { onlyChild: true } })
-            }
-
-            var _id = typeof o === "string" ? o : o.id
-            if (!views[_id]) return console.log("Element doesnot exist!")
-            remove({ id: o.id, remove: { onlyChild: true } })
-
-        } /*else if (k0 === "charAt()") {
-
-            var args = k.split(":")
-            var _index = toValue({ req, res, _window, lookupActions, stack, e, id, data: args[1], __, params })
-            answer = o.charAt(0)
-
-        } */else if (k0 === "scrollTo()") {
+        } else if (k0 === "scrollTo()") {
 
             var _x = toValue({ req, res, _window, lookupActions, stack, e, id, data: args[1], __, params })
             var _y = toValue({ req, res, _window, lookupActions, stack, e, id, data: args[2], __, params })
@@ -3815,14 +3802,15 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             var address = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "import()", object, toView, _object, lookupActions, __, id })
             var { address, data } = address
 
-            if (data.type === "json") importJson({ req, res, _window, address, lookupActions, stack, id, e, __, asyncer: true })
-            else require(toValue({ req, res, _window, lookupActions, stack, address, id, e, __, data: args[1], params }))
+            if (data.type === "json") importJson({ req, res, _window, address, lookupActions, stack, id, e, __ })
+            else require(toValue({ req, res, _window, lookupActions, stack, address, id, e, __, data: args[1] }))
 
             return true
 
         } else if (k0 === "export()") {
 
             var data = toParam({ req, res, _window, id, e, __, data: args[1] })
+            if (data.json) data.type = "json"
             if (data.type === "json") exportJson(data)
 
         } else if (k0 === "flat()") {
@@ -3878,22 +3866,11 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
 
         } else if (k0 === "sort()") {
 
-            var _array, _params = {}
-            if (Array.isArray(o)) _array = o
-            if (isParam({ _window, string: args[1] })) {
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            if (!data.data) data.data = o
 
-                _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _params.data = _params.data || _params.map || _params.array || _params.object || _params.list || _array
-
-            } else if (args[1]) {
-
-                _params.data = _array
-                _params.path = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            }
-
-            if (!_params.data && _array) _params.data = _array
             // else return o
-            _params.data = answer = require("./sort").sort({ _window, lookupActions, stack, sort: _params, id, e })
+            data.data = answer = require("./sort").sort({ _window, lookupActions, stack, __, sort: data, id, e })
 
             return answer
 
@@ -4380,6 +4357,11 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
 
             answer = o.filter(o => o !== undefined && !Number.isNaN(o) && o !== "")
 
+        } else if (k0 === "colorize()") {
+
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1] || "", __ })
+            answer = colorize({ _window, string: o, ...data })
+
         } else if (k0 === "route()") {
 
             if (isParam({ _window, string: args[1] })) {
@@ -4509,7 +4491,7 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
                 event: `loaded?${pathJoined}`
             })
             
-            var { address } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "update()", object, toView, _object, lookupActions, __, id })
+            var { address } = addresser({ _window, stack, args, asynchronous: true, interpreting: true, requesterID: o.id, action: "update()", object, toView, _object, lookupActions, __, id })
             require("./update").update({ _window, lookupActions, stack, req, res, id: o.id, mainId: id, address, __ })
             
             return true
@@ -4540,7 +4522,7 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             if (!o.__view__) return o
 
             // wait address
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "insert()", toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, interpreting: true, requesterID: o.id, action: "insert()", toView, _object, lookupActions, __, id })
 
             insert({ id: o.id, insert: data, lookupActions, stack, address, __ })
             return true
@@ -4614,26 +4596,35 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
 
             var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "search()", mount, object, toView, _object, lookupActions, __, id })
             
+            // print collection with action name
+            address.action += " " + data.collection
+
             require("./search").search({ _window, lookupActions, stack, address, id, e, __, req, res, search: data })
             return true
 
         } else if (k0 === "erase()") {
 
             var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "erase()", mount, object, toView, _object, lookupActions, __, id })
-            
+                        
+            // print collection with action name
+            address.action += " " + data.collection
+
             require("./erase").erase({ _window, lookupActions, stack, address, id, e, __, req, res, erase: data })
             return true
 
         } else if (k0 === "save()") {
 
             var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "save()", mount, object, toView, _object, lookupActions, __, id })
-            
+                        
+            // print collection with action name
+            address.action += " " + data.collection
+
             require("./save").save({ _window, lookupActions, stack, address, id, e, __, req, res, save: data })
             return true
 
         } else if (k0 === "fetch()") {
 
-
+            
 
         } else if (k0 === "send()") {
             
@@ -4657,9 +4648,15 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             }
 
             // clear stack
-            stack.terminated = true
+            //stack.terminated = true
+            //stack.addresses = []
             
-            console.log("SEND", executionDuration, respond)
+            var log = "SEND " + executionDuration
+            stack.logs.push(log)
+
+            console.log(log, respond)
+            respond.logs = stack.logs
+
             res.send(respond)
 
         } else if (k0 === "sent()") {
@@ -4824,14 +4821,13 @@ const getDeepChildren = ({ _window, id }) => {
     var all = [view]
     if (!view) return []
 
-    if ([...view.element.children].length > 0)
-        ([...view.element.children]).map(el => {
+    if (view.__childrenID__ && view.__childrenID__.length > 0)
+        view.__childrenID__.map(id => {
 
-            var _view = views[el.id]
-            if (!_view) return
-
-            if ([..._view.element.children].length > 0)
-                all.push(...getDeepChildren({ id: el.id }))
+            var _view = views[id]
+            
+            if (_view.__childrenID__ && _view.__childrenID__.length > 0)
+                all.push(...getDeepChildren({ _window, id }))
 
             else all.push(_view)
         })
@@ -4846,16 +4842,15 @@ const getDeepChildrenId = ({ _window, id }) => {
     var all = [id]
     if (!view) return []
 
-    if ([...view.element.children].length > 0)
-        ([...view.element.children]).map(el => {
+    if (view.__childrenID__ && view.__childrenID__.length > 0)
+        view.__childrenID__.map(id => {
 
-            var _view = views[el.id]
-            if (!_view) return
+            var _view = views[id]
 
-            if ([..._view.element.children].length > 0)
-                all.push(...getDeepChildrenId({ id: el.id }))
+            if (_view.__childrenID__ && _view.__childrenID__.length > 0)
+                all.push(...getDeepChildrenId({ _window, id }))
 
-            else all.push(el.id)
+            else all.push(id)
         })
 
     return all

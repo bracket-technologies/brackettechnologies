@@ -6,6 +6,6 @@
     }, {
         "event": "mouseenter?clearTimer():[().droplistLeaved];clearTimer():[__droplistTimer__:()]"
     }, {
-        "event": "click:body?mouseleave()?!contains():[clicked:()]"
+        "event": "click:body?mouseleave()?!():[__droplistPositioner__:()].preventDefault;!contains():[clicked:()]"
     }]
 }

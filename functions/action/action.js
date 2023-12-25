@@ -17,7 +17,7 @@ const action = async ({ _window, lookupActions, stack, address, id = "root", req
     }
   })
 
-  console.log("SERVER", (new Date()).getTime() - headers.timestamp, action.name + "()", data)
+  // console.log("SERVER", (new Date()).getTime() - headers.timestamp, action.name + "()", data)
   
   // await
   require("./toAwait").toAwait({ _window, lookupActions, address, stack, id, e, req, res, _: data, __, ...params })

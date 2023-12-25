@@ -10,7 +10,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, lookupActions, stack, data: value, params = {}, __, id, e, req, res, object, _object, mount, toView, executer, condition }) => {
+const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params = {}, __, id, e, req, res, object, _object, mount, toView, condition }) => {
 
   const { toAction } = require("./toAction")
   const { toParam } = require("./toParam")
@@ -18,7 +18,7 @@ const toValue = ({ _window, lookupActions, stack, data: value, params = {}, __, 
   var view = _window ? _window.views[id] : window.views[id]
   var global = _window ? _window.global : window.global
 
-  if ((global.__returnAdds__[0] || {}).returned) return
+  // if ((stack.returns && stack.returns[0] || {}).returned) return
   
   if (!value) return value
 
@@ -43,7 +43,7 @@ const toValue = ({ _window, lookupActions, stack, data: value, params = {}, __, 
   else if (value === ":[]") return ([{}])
   else if (value === " ") return value
   else if (value === ":" || value === "_list") return ([])
-  else if (value.charAt(0) === ":") return value.split(":").slice(1).map(item =>  toValue({ req, res, _window, id, __, e, data: item })) // :item1:item2
+  else if (value.charAt(0) === ":") return value.split(":").slice(1).map(item =>  toValue({ req, res, _window, id, stack, lookupActions, __, e, data: item })) // :item1:item2
 
   // show loader
   if (value === "loader.show") {
@@ -152,8 +152,8 @@ const toValue = ({ _window, lookupActions, stack, data: value, params = {}, __, 
 
   // action
   if (path0.slice(-2) === "()") {
-    var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, path: [path[0]], path0, condition, mount, toView, executer, object })
-    if (action !== "__CONTINUE__") {
+    var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, path: [path[0]], path0, condition, mount, toView, object })
+    if (action !== "__continue__") {
       if (path.length > 1) {
         path.splice(0, 1)
         return reducer({ _window, lookupActions, stack, id, object, data: path, value, __, e, req, res, mount, toView, _object: action })

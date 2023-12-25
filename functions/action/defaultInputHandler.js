@@ -15,12 +15,15 @@ const defaultInputHandler = ({ id }) => {
 
   if (view.preventDefault) return
 
+  // resize input height on loaded
+  if (view.__name__ === "Input" && (view.input || view).type === "text") resize({ id })
+
   // checkbox input
   if ((view.input || view).type === "checkbox") {
 
     if (view.data === true) view.element.checked = true
 
-    var myFn = (e) => {
+    var changeEventHandler = (e) => {
 
       // view doesnot exist
       if (!window.views[id]) return e.target.removeEventListener("change", myFn)
@@ -35,7 +38,7 @@ const defaultInputHandler = ({ id }) => {
       }
     }
 
-    return view.element.addEventListener("change", myFn)
+    return view.element.addEventListener("change", changeEventHandler)
   }
 
   if ((view.input || view).type === "number")
@@ -51,7 +54,7 @@ const defaultInputHandler = ({ id }) => {
   if (view.__name__ === "Input") view.prevValue = view.element.value
   else if (view.editable) view.prevValue = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
   
-  var myFn = async (e) => {
+  var inputEventHandler = async (e) => {
     
     e.preventDefault()
     var value 
@@ -108,7 +111,7 @@ const defaultInputHandler = ({ id }) => {
     view.prevValue = value
   }
 
-  var myFn1 = (e) => {
+  var blurEventHandler = (e) => {
 
     var value
     if (view.__name__ === "Input") value = view.element.value
@@ -146,7 +149,7 @@ const defaultInputHandler = ({ id }) => {
     }
   }
 
-  const myFn2 = (e) => {
+  var focusEventHandler = (e) => {
     
     var value = ""
     if (view.__name__ === "Input") value = view.element.value
@@ -155,12 +158,12 @@ const defaultInputHandler = ({ id }) => {
     view.prevContent = value
   }
 
-  view.element.addEventListener("input", myFn)
-  view.element.addEventListener("blur", myFn1)
-  view.element.addEventListener("focus", myFn2)
+  view.element.addEventListener("input", inputEventHandler)
+  view.element.addEventListener("blur", blurEventHandler)
+  view.element.addEventListener("focus", focusEventHandler)
 }
 
-function getCaretIndex(element) {
+const getCaretIndex = (element) => {
 
   let position = 0;
   const isSupported = typeof window.getSelection !== "undefined";

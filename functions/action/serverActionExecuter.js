@@ -1,19 +1,20 @@
-const { generate } = require("./generate")
 const { clone } = require("./clone")
 const { lineInterpreter } = require("./lineInterpreter")
-const { stacker } = require("./stack")
 const { addresser } = require("./addresser")
 
-const serverActionExecuter = async ({ _window, req, res, id = generate(), __, getRequest }) => {
+const serverActionExecuter = async ({ _window, stack, req, res, id, __ }) => {
   
   var global = _window.global
+  var path = global.manifest.path
 
   // action request as get request
-  if (getRequest) req.body.action = { name: path[2] }
+  if (req.method === "GET") req.body.action = { name: path[2], __ }
 
-  var path = global.__path__
+  // action
   var action = req.body.action
-  var stack = stacker({ _window, id, event: "action", name: action.name })
+
+  // modify stack
+  stack.action = action
 
   // cookies
   if (Object.keys(req.cookies).length === 0 && req.body.cookies) req.cookies = req.body.cookies || {}
@@ -24,7 +25,7 @@ const serverActionExecuter = async ({ _window, req, res, id = generate(), __, ge
   if (stack.addresses.length === 0) return res.send(data)
 
   // request timeout
-  setTimeout(() => { if (!res.headersSent) return res.send({ success: false, message: `Action request timeout!`, executionDuration: 40000 }) }, 40000)
+  setTimeout(() => { if (!res.headersSent) return res.send({ success: false, message: `Action request timeout!`, executionDuration: 40000, logs: stack.logs }) }, 40000)
 }
 
 const executeServerAction = ({ _window, lookupActions = [], stack, action, id, req, res, __ }) => {
@@ -34,7 +35,7 @@ const executeServerAction = ({ _window, lookupActions = [], stack, action, id, r
   var { name, actions } = action
 
   // action does not exist
-  if (!project.functions[name] && !actions) actions = `send():[${name}()]`
+  if (!project.functions[name] && !actions) return ({ success: false, message: "No action found to execute!" })
 
   // mount action
   var string = actions || clone(project.functions[name])
@@ -45,10 +46,10 @@ const executeServerAction = ({ _window, lookupActions = [], stack, action, id, r
     lookupActions.unshift({ view: "_project_", fn: [name] })
   }
 
-  addresser({ _window, stack, action: name, __, id, lookupActions })
-  
+  var { address } = addresser({ _window, stack, action: name + "()", __, id, lookupActions })
+
   // interpret line
-  return lineInterpreter({ _window, lookupActions, stack, id, data: string, req, res, __, mount: true })
+  return lineInterpreter({ _window, lookupActions, stack, address, id, data: string, req, res, __, mount: true })
 }
 
 module.exports = { serverActionExecuter, executeServerAction }

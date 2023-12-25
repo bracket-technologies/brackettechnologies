@@ -7,6 +7,7 @@ const { replaceNbsps } = require("./replaceNbsps")
 const { isCondition } = require("./isCondition")
 const { lineInterpreter } = require("./lineInterpreter")
 const { isEvent } = require("./isEvent")
+const { override } = require("./merge")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -16,7 +17,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toParam = ({ _window, lookupActions, stack, data: string, e, id = "root", req, res, mount, object, __, toView, params = {}, executer, condition }) => {
+const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "root", req, res, mount, object, __, toView, params = {}, executer, condition }) => {
 
   const { toAction } = require("./toAction")
   const { toApproval } = require("./toApproval")
@@ -26,7 +27,7 @@ const toParam = ({ _window, lookupActions, stack, data: string, e, id = "root", 
   var global = _window ? _window.global : window.global
   
   // returned
-  if ((global.__returnAdds__[0] || {}).returned) return
+  if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated) return
 
   if (typeof string !== "string" || !string) return string || {}
   params = object || params
@@ -50,7 +51,7 @@ const toParam = ({ _window, lookupActions, stack, data: string, e, id = "root", 
   string.split(";").map(param => {
 
     // no param || returned || comment
-    if (!param || (global.__returnAdds__[0] || {}).returned || param.charAt(0) === "#") return
+    if (!param || (stack.returns && stack.returns[0] || {}).returned || param.charAt(0) === "#" || stack.terminated) return
     
     var key, value
     var view = views[id]
@@ -143,7 +144,7 @@ const toParam = ({ _window, lookupActions, stack, data: string, e, id = "root", 
     // show loader
     if (!_window && param === "loader.show") {
       document.getElementById("loader-container").style.display = "flex"
-      return sleep(20)
+      return sleep(30)
     }
     
     // hide loader
@@ -171,9 +172,11 @@ const toParam = ({ _window, lookupActions, stack, data: string, e, id = "root", 
 
     // action()
     if (path0.slice(-2) === "()") {
-
-      var isAction = toAction({ _window, lookupActions, stack, id, req, res, __, e, path, path0, condition, mount, toView, executer, object })
-      if (isAction !== "__CONTINUE__") return isAction
+      var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, path, path0, condition, mount, toView, executer, object })
+      if (action !== "__continue__") {
+        if (typeof action === "object") override(params, action)
+        return action
+      }
     }
     
     // interpret key
@@ -236,7 +239,7 @@ const toParam = ({ _window, lookupActions, stack, data: string, e, id = "root", 
         
         // push path to derivations
         view.derivations.push(...myPath)
-        view.data = reducer({ _window, id, data: view.derivations, _object: global[view.doc], value: view.data, key: true })
+        view.data = reducer({ _window, id, stack, lookupActions, data: view.derivations, _object: global[view.doc], value: view.data, key: true })
       }
     }
   })

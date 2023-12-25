@@ -1,4 +1,5 @@
 const { decode } = require("./decode")
+const { toArray } = require("./toArray")
 
 const _colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#bf9202", "#6b6b6e", "#e649c6"]
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
@@ -6,8 +7,8 @@ const english = /[a-zA-Z]/
 
 const colorize = ({ _window, string, start = "[", end = "]", index = 0, colors = _colors }) => {
 
-  if (typeof colors === 'string') colors = [colors]
-
+  colors = toArray(colors)
+  
   if (index === 8) index = 1
   if (typeof string !== "string") return string
 

@@ -2,7 +2,6 @@ const { clone } = require("./clone")
 const { toView } = require("./toView")
 const { starter } = require("./starter")
 const { generate } = require("./generate")
-const { setElement } = require("./setElement")
 const { toCode } = require("./toCode")
 
 module.exports = {
@@ -83,9 +82,8 @@ module.exports = {
     if (index >= view.element.children.length) view.element.appendChild(el)
     else view.element.insertBefore(el, view.element.children[index])
 
-    var __IDList__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-    __IDList__.map(id => setElement({ id, lookupActions }))
-    __IDList__.map(id => starter({ id, lookupActions }))
+    // get ids
+    innerHTML.split("id='").slice(1).map(id => id.split("'")[0]).map(id => starter({ id }))
 
     // display after insert
     views[el.id].style.transition = views[el.id].element.style.transition = null

@@ -1,6 +1,5 @@
 const { generate } = require("./generate")
 const { starter } = require("./starter")
-const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
 const { toView } = require("./toView")
 const { clone } = require("./clone")
@@ -24,8 +23,8 @@ const update = async ({ id, _window, lookupActions, stack, req, res, update = {}
   removeChildren({ id })
 
   // reset children for root
-  if (id === "root") views.root.children = children = [{ ...clone(global.data.page[route.currentPage]), id: route.currentPage, __mapViewsPath__: [route.currentPage] }]
-  
+  if (id === "root") views.root.children = children = [clone(global.data.view[route.currentPage])]
+
   var innerHTML = await Promise.all(children.map(async (child, index) => {
 
     var id = child.id || generate()
@@ -34,22 +33,21 @@ const update = async ({ id, _window, lookupActions, stack, req, res, update = {}
     views[id].index = index
     views[id].parent = view.id
     views[id].style = views[id].style || {}
-    views[id]["__mapViewsPath__"] = views[id]["__mapViewsPath__"] || [...view.__mapViewsPath__]
+    views[id].__viewsPath__ = [...view.__viewsPath__]
     
     return await toView({ _window, lookupActions, stack, req, res, id, __: view.__ })
   }))
   
-  if (id === "root" && route.currentPage && route.currentPage !== global.__currentPage__) return
+  if (id === "root" && route.currentPage && route.currentPage !== global.manifest.currentPage) return
   
   innerHTML = innerHTML.join("")
   
   view.element.innerHTML = ""
   view.element.innerHTML = innerHTML
   
-  var __IDList__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
+  var __ids__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
   
-  __IDList__.map(id => setElement({ _window, lookupActions, stack, req, res, id }))
-  __IDList__.map(id => starter({ _window, lookupActions, stack, req, res, id }))
+  __ids__.map(id => starter({ _window, lookupActions, stack, req, res, id }))
   
   var data = { view: views[id], message: "View updated successfully!", success: true }
 
@@ -57,8 +55,8 @@ const update = async ({ id, _window, lookupActions, stack, req, res, update = {}
   if (id === "root") {
 
     document.body.scrollTop = document.documentElement.scrollTop = 0
-    var title = route.title || views[global.__currentPage__].title
-    var path = route.path || views[global.__currentPage__].path
+    var title = route.title || views[global.manifest.currentPage].title
+    var path = route.path || views[global.manifest.currentPage].path
     
     history.pushState(null, title, path)
     document.title = title
@@ -79,16 +77,13 @@ const removeChildren = ({ id }) => {
   var view = views[id]
 
   if (!view.element) return
-  var children = [...view.element.children]
   
-  children.map((child) => {
-
-    var id = child.id
+  toArray(view.__childrenID__).map(id => {
+    
     var view = views[id]
     if (!views[id]) return
     
     (view.__timers__ || []).map(timerID => clearTimeout(timerID))
-    Object.values(view.__stacks__ || {}).map(event => view.element.removeEventListener(event.event, event.function))
 
     removeChildren({ id })
     Object.keys(view).map(key => delete view[key])

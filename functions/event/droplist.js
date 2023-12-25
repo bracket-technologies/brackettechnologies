@@ -11,7 +11,7 @@ module.exports = () => {
   }, { // search droplist
     event: `input:input()?__droplistSearchTxt__:()=input().txt();droplist()?input();droplist.searchable`
   }, { // open droplist on enter
-    event: `[keyup:input()??e().key=Enter]?():droplist.children().[__keyupIndex__:()].click()?!droplist.preventDefault`
+    event: `keyup:input()?():droplist.children().[__keyupIndex__:()].click()?!droplist.preventDefault;e().key=Enter`
   }, { // move up/down
     event: `keyup:input()?():droplist.children().[__keyupIndex__:()||0].mouseleave();__keyupIndex__:()=if():[e().keyCode=40]:[__keyupIndex__:()+1]:[__keyupIndex__:()-1];():droplist.children().[__keyupIndex__:()].mouseenter()?!droplist.preventDefault;e().keyCode=40||e().keyCode=38;__droplistPositioner__:();if():[e().keyCode=38]:[__keyupIndex__:()>0].elif():[e().keyCode=40]:[__keyupIndex__:()<():droplist.children.lastIndex()]`
   }]

@@ -46,7 +46,7 @@ const createHtml = ({ _window, lookupActions, stack, id, req, res, import: _impo
 
     if (id === "html") return resolve("")
 
-    var tag = _import ? "" : toHTML({ _window, lookupActions, stack, id, innerHTML }) || ""
+    var tag = _import ? "" : toHTML({ _window, lookupActions, stack, __, id, innerHTML }) || ""
 
     if (_import) {
 
@@ -55,8 +55,7 @@ const createHtml = ({ _window, lookupActions, stack, id, req, res, import: _impo
       delete view.type
       delete view.view
       delete view.parent
-      delete view.__mapViewsPath__
-      delete view.viewType
+      delete view.__viewsPath__
 
       if (type === "link" || type === "meta") {
 
@@ -97,7 +96,7 @@ const createHtml = ({ _window, lookupActions, stack, id, req, res, import: _impo
     // linkable
     if (view.link) {
 
-      var linkID = generate(), style = '', _view, link = typeof view.link === "string" && view.link.includes("http") ? view.link : (view.link.url || view.link.path || global.host)
+      var linkID = generate(), style = '', _view, link = typeof view.link === "string" && view.link.includes("http") ? view.link : (view.link.url || view.link.path || global.manifest.host)
 
       _view = { id: linkID, parent: view.id, controls: [{ "event": `click?route():${view.link.path}?${view.link.path};${view.link.preventDafault ? false : true}` }] }
       views[linkID] = _view

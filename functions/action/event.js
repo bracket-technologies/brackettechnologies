@@ -1,7 +1,7 @@
-const { toValue } = require("./toValue")
 const { toCode } = require("./toCode")
 const { stacker } = require("./stack")
 const { lineInterpreter } = require("./lineInterpreter")
+const { watch } = require("./watch")
 
 const addEventListener = ({ controls, id }) => {
 
@@ -12,7 +12,7 @@ const addEventListener = ({ controls, id }) => {
   var __ = controls.__ || view.__
 
   if (!view || !controls.event) return
-  
+
   var mainString = toCode({ id, string: toCode({ id, string: controls.event, start: "'" }) })
 
   mainString.split("?")[0].split(";").map(substring => {
@@ -23,17 +23,20 @@ const addEventListener = ({ controls, id }) => {
     var { substring, string } = modifyEvent({ id, event: substring, string: mainString })
 
     // event:id
-    var eventID = toValue({ lookupActions, id, data: substring.split("?")[0].split(":")[1] || "" }) || id
+    var { data: eventID } = lineInterpreter({ id, data: substring.split("?")[0].split(":")[1] || id })
     if (typeof eventID === "object" && eventID.__view__) eventID = eventID.id
 
     var event = substring.split("?")[0].split(":")[0]
 
+    // watch
+    if (event === "watch") return watch({ lookupActions, __, string, id })
+    
     // view doesnot exist
     if (!event || !views[eventID]) return
 
     // loaded event
-    if (event === "loaded") return setTimeout(eventAction({ string, event, eventID, controls, id, lookupActions, id, __ }), 0)
-
+    if (event === "loaded") return setTimeout(eventExecuter({ string, event, eventID, controls, id, lookupActions, __ }), 0)
+    
     // body event
     if (id === "body") {
 
@@ -43,7 +46,7 @@ const addEventListener = ({ controls, id }) => {
       return
     }
 
-    const myFn = (e) => {
+    const eventHandler = (e) => {
 
       // view doesnot exist
       if (!views[id] || !views[eventID]) return
@@ -54,15 +57,15 @@ const addEventListener = ({ controls, id }) => {
       // unlunch unrelated popups
       if (id !== "popup" && eventID === "popup" && (!global.__popupPositioner__ || !global.__popupConfirmed__ || !views[global.__popupPositioner__].element.contains(views[id].element))) return
 
-      if (eventID === "droplist" || eventID === "popup") setTimeout(eventAction({ string, event, eventID, controls, id, lookupActions, id, __, e }), 100)
-      else eventAction({ string, event, eventID, controls, id, lookupActions, id, __, e })
+      if (eventID === "droplist" || eventID === "popup") setTimeout(eventExecuter({ string, event, eventID, controls, id, lookupActions, id, __, e }), 100)
+      else eventExecuter({ string, event, eventID, controls, id, lookupActions, id, __, e })
     }
 
-    views[eventID].element.addEventListener(event, myFn)
+    views[eventID].element.addEventListener(event, eventHandler)
   })
 }
 
-const eventAction = ({ event, eventID, controls, id, lookupActions, e, string, __ }) => {
+const eventExecuter = ({ event, eventID, controls, id, lookupActions, e, string, __ }) => {
 
   const { execute } = require("./execute")
 
@@ -74,9 +77,9 @@ const eventAction = ({ event, eventID, controls, id, lookupActions, e, string, _
     if (!event || !views[id] || !views[eventID]) return
     
     var stack = stacker({ event, id, eventID, string })
-
+    
     // main params
-    var data = lineInterpreter({ lookupActions, stack, id, e, data: string, index: 1, __, mount: true })
+    var data = lineInterpreter({ lookupActions, stack, id, e, data: string, index: 1, __, mount: true, action: "toParam" })
 
     // conditions not applied
     if (data.conditionsNotApplied) return data
@@ -156,4 +159,4 @@ const modifyEvent = ({ string, event }) => {
   return { string: `${event}?${string[0]}?${conditions}?${string[2] || ""}`, substring: event }
 }
 
-module.exports = { addEventListener, defaultEventHandler, eventAction }
+module.exports = { addEventListener, defaultEventHandler, eventExecuter }

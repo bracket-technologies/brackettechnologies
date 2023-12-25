@@ -32,7 +32,7 @@ module.exports = {
       data = response.data
     }
 
-    console.log("SAVE", (new Date()).getTime() - headers.timestamp, save.collection, data)
+    // console.log("SAVE", (new Date()).getTime() - headers.timestamp, save.collection, data)
     
     // await
     require("./toAwait").toAwait({ _window, lookupActions, stack, id, address, e, req, res, _: data, __ })

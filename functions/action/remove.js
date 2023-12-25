@@ -1,27 +1,33 @@
 const { removeChildren } = require("./update")
 const { clone } = require("./clone")
-const { reducer } = require("./reducer")
 const { closePublicViews } = require("./closePublicViews")
+const { lineInterpreter } = require("./lineInterpreter")
 
-const remove = ({ remove: _remove, id, __ }) => {
+const remove = ({ data = {}, id, __ }) => {
 
   var views = window.views
   var view = window.views[id]
 
-  _remove = _remove || {}
-  var path = _remove.path, derivations = []
+  var path = data.path, derivations = []
 
   if (path) derivations = path
   else derivations = clone(view.derivations) || []
   
-  if (derivations.length > 0) {
+  if (derivations.length > 0 && !data.preventDefault) {
 
-    derivations.unshift(`${view.doc}:()`)
-    var parentData = reducer({ id, data: derivations.slice(0, -1), __ })
+    var string = `${view.doc}:().` + derivations.join(".").slice(0, -1)
+    var parentData = lineInterpreter({ id, data: string })
+
+    // remove data
     if (Array.isArray(parentData) && parentData.length === 0) {
-      reducer({ id, data: derivations.slice(0, -1), value: [], key: true, __ })
+
+      var string = `${view.doc}:().` + derivations.join(".").slice(0, -1) + "=:"
+      lineInterpreter({ id, data: string })
+
     } else {
-      reducer({ id, data: [...derivations, "del()"], __ })
+
+      var string = `${view.doc}:().` + derivations.join(".") + ".del()"
+      lineInterpreter({ id, data: string })
     }
   }
 
@@ -30,7 +36,6 @@ const remove = ({ remove: _remove, id, __ }) => {
 
   removeChildren({ id })
 
-  // NEWWWWWWWWWWWWWWWWWW
   // pull id from parent childrenID
   var childrenID = views[view.parent].__childrenID__
   var index = childrenID.findIndex(childID => childID === view.id)

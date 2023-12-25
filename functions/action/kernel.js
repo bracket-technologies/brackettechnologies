@@ -600,8 +600,8 @@ const kernel = ({ _window, lookupActions, stack = {}, id = "root", path, value, 
 
           const installApp = async () => {
 
-            global["installApp"].prompt();
-            const { outcome } = await global["installApp"].userChoice;
+            global.__installApp__.prompt();
+            const { outcome } = await global.__installApp__.userChoice;
             console.log(`User response to the install prompt: ${outcome}`);
           }
 
@@ -2695,8 +2695,8 @@ const kernel = ({ _window, lookupActions, stack = {}, id = "root", path, value, 
 
         } else if (k0 === "return()") {
 
-            global.__returnAdds__[0].value = toValue({ _window, value: args[1], e, id, object: object || o, __, stack, lookupActions })
-            global.__returnAdds__[0].returned = true
+            stack.returns[0].value = toValue({ _window, value: args[1], e, id, object: object || o, __, stack, lookupActions })
+            stack.returns[0].returned = true
 
         } else if (k0.length === 13 && k0.slice(-2) === "()" && k0.slice(0, 6) === 'coded@') { // [actions?conditions?elseActions]():[params]:[stack]
             

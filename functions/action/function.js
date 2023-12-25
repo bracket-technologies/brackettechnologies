@@ -19,13 +19,11 @@ const {wait} = require("./wait")
 const {toView} = require("./toView")
 const {addEventListener} = require("./event")
 const {execute} = require("./execute")
-const {controls} = require("./controls")
 const {setContent} = require("./setContent")
 const {starter} = require("./starter")
 const {setState} = require("./state")
 const {setPosition} = require("./setPosition")
 const {droplist} = require("./droplist")
-const {createView} = require("./createView")
 const {filter} = require("./filter")
 const {remove} = require("./remove")
 const {focus} = require("./focus")
@@ -49,7 +47,6 @@ const {toCode} = require("./toCode")
 const {isPath} = require("./isPath")
 const {toNumber} = require("./toNumber")
 const {capitalize} = require("./capitalize")
-const {setElement} = require("./setElement")
 const {toOperator} = require("./toOperator")
 const {popup} = require("./popup")
 const {keys} = require("./keys")
@@ -95,7 +92,6 @@ module.exports = {
   reload,
   toCSV,
   compare,
-  setElement,
   clearValues,
   clone,
   getJsonFiles,
@@ -118,7 +114,6 @@ module.exports = {
   toArray,
   generate,
   toView,
-  controls,
   setStyle,
   resetStyles,
   toggleStyles,
@@ -133,7 +128,6 @@ module.exports = {
   setPosition,
   droplist,
   filter,
-  createView,
   createActions,
   blur,
   toAwait,

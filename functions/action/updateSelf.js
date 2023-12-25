@@ -1,6 +1,5 @@
 const { generate } = require("./generate")
 const { starter } = require("./starter")
-const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
 const { toView } = require("./toView")
 const { clone } = require("./clone")
@@ -44,7 +43,7 @@ const updateSelf = async ({ _window, lookupActions, stack, id, update = {}, rout
     views[id].index = index
     views[id].parent = parent.id
     views[id].style = views[id].style || {}
-    views[id]["__mapViewsPath__"] = [...view.__mapViewsPath__]
+    views[id].__viewsPath__ = [...view.__viewsPath__]
     //views[id].style.opacity = "0"
     //if (timer) views[id].style.transition = `opacity ${timer}ms`
     
@@ -70,10 +69,9 @@ const updateSelf = async ({ _window, lookupActions, stack, id, update = {}, rout
   var node = lDiv.children[0]
   
   parent.element.insertBefore(node, [...parent.element.children][index])
-  var __IDList__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
+  var __ids__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
   
-  __IDList__.map(id => setElement({ id }))
-  idList.map(id => starter({ id }))
+  __ids__.map(id => starter({ id }))
   
   /*var _children = [...parent.element.children]
   _children.map(childNode => {

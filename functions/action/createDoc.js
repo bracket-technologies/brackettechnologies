@@ -6,7 +6,7 @@ const createDoc = ({ _window }) => {
     var { global, views, res } = _window
 
     // update manifest
-    var string = "manifest:().favicon=.favicon||'';manifest:().language=.language||.lang||en;manifest:().direction=.direction||.dir||[rtl?manifest:().language=ar;manifest:().language=fa?ltr];manifest:().title=.title||Bracket App Title;manifest:().meta:()=[.meta||[]];__views__:().filter():[__server__]._():[_.view.del();_.children.del();_.__actions__.keys().():[__.__.actions__.[_]=true]]"
+    var string = "manifest:().favicon=.favicon||'';manifest:().language=.language||.lang||en;manifest:().direction=.direction||.dir||[rtl?manifest:().language=ar;manifest:().language=fa?ltr];manifest:().title=.title||Bracket App Title;manifest:().meta:()=[.meta||[]];__views__:().filter():[__server__]._():[_.view.del();_.children.del();_.__serverActions__.keys().():[__.__.actions__.[_]=true]]"
     toParam({ _window, id: global.manifest.page, data: toCode({ _window, id, string }) })
     
     console.log("Document is ready!");

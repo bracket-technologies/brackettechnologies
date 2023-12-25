@@ -4,14 +4,14 @@ const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
 const { isEqual } = require("./isEqual")
 const { toCode } = require("./toCode")
-const { generate } = require("qrcode-terminal")
+const { generate } = require("./generate")
 
-const watch = ({ _window, lookupActions, stack, controls, id, __ }) => {
+const watch = ({ lookupActions, __, string, id }) => {
 
     var view = window.views[id]
     if (!view) return
 
-    var watch = toCode({ _window, id, string: toCode({ _window, id, string: controls.watch, start: "'" }) })
+    var watch = toCode({ _window, id, string: toCode({ _window, id, string, start: "'" }) })
 
     var approved = toApproval({ id, lookupActions, stack, data: watch.split('?')[2] })
     if (!approved || !watch) return

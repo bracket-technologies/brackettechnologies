@@ -13,8 +13,8 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
   if (path.length === 1 && path0.slice(-2) === "()" && path0 !== "()" && path0 !== "_()" && !actions.includes(path0) && path0.charAt(0) !== "@") {
     
     var newLookupActions
-    var parentViews = (view || {})["__mapViewsPath__"] || []
-    
+    var parentViews = (view || {}).__viewsPath__ || []
+
     // lookup through parent map actions
     toArray(lookupActions).map((lookupActions, indexx) => {
 
@@ -25,7 +25,7 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 
           if (!actionFound) {
             
-            var actions = clone(lookupActions.view === "_project_" ? global.data.project.functions : global.data[lookupActions.viewType][lookupActions.view].functions) || {}
+            var actions = clone(lookupActions.view === "_project_" ? global.data.project.functions : global.data.view[lookupActions.view].functions) || {}
             actionFound = Object.keys(clone(fn).slice(0, fn.length - i).reduce((o, k) => o[k] || {}, actions)).find(fn => fn === path0.slice(0, -2))
 
             if (actionFound) {
@@ -34,7 +34,7 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
               if (typeof actionFound === "object" && actionFound._) {
 
                 actionFound = actionFound._ || ""
-                newLookupActions = { view: lookupActions.view, fn: [...fn, path0.slice(0, -2)], viewType: lookupActions.viewType || "view" }
+                newLookupActions = { view: lookupActions.view, fn: [...fn, path0.slice(0, -2)] }
                 if (toArray(lookupActions).length > 1) newLookupActions = [newLookupActions, ...toArray(lookupActions).slice(indexx)]
 
               } else if (toArray(lookupActions).length > 1) toArray(lookupActions).slice(indexx)
@@ -51,8 +51,8 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 
         if (!actionFound) {
           
-          if (myview !== "_project_" && !global.data[i === parentViews.length - 1 ? "page" : (view.viewType || "view")][myview]) return
-          var actions = myview === "_project_" ? (_window ? global.data.project.functions : global.__actions__) : (global.data[i === parentViews.length - 1 ? "page" : (view.viewType || "view")][myview].functions) || {}
+          if (myview !== "_project_" && !global.data.view[myview]) return
+          var actions = myview === "_project_" ? global.__serverActions__ : (global.data.view[myview].functions) || {}
           actionFound = (Array.isArray(actions) ? actions : Object.keys(actions)).find(fn => fn === path0.slice(0, -2))
           
           if (actionFound) {
@@ -65,10 +65,10 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 
             } else {
 
-              if (!isView && typeof actions[actionFound] === "object") {
+              if (typeof actions[actionFound] === "object") {
 
                 actionFound = actions[actionFound]._ || ""
-                newLookupActions = { view: myview, fn: [path0.slice(0, -2)], viewType: i === parentViews.length - 1 ? "page" : view.viewType }
+                newLookupActions = { view: myview, fn: [path0.slice(0, -2)] }
 
               } else actionFound = actions[actionFound]
             }
@@ -79,8 +79,7 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 
     if (actionFound) {
       
-      var args = path[0].split(":")
-      var address = addresser({ _window, req, res, stack, args, e, asynchronous: callServerAction && true, requesterID: id, action: path0, __, id, object, mount, toView, condition, lookupActions })
+      var address = addresser({ _window, req, res, stack, args: path[0].split(":"), asynchronous: callServerAction && true, e, hold: true, requesterID: id, action: path0, __, id, object, mount, toView, condition, lookupActions })
       var { address, data } = address
 
       var my__ = [...(data !== undefined ? [data] : []), ...__]
@@ -93,15 +92,15 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
         var action = { name: actionFound, __: my__, lookupActions: [], stack: [], condition, object }
         return require("./action").action({ _window, req, res, id, e, action, __, stack, lookupActions, address })
       }
-
+      
       // interpret
-      var { data } = lineInterpreter({ _window, lookupActions: newLookupActions, stack, address, headAddressID: address.id, id, e, data: actionFound, req, res, mount, __: my__, condition, object, toView })
+      var { data } = lineInterpreter({ _window, lookupActions: newLookupActions, stack, address, id, e, data: actionFound, req, res, mount, __: my__, condition, object, toView })
 
       return data
     }
   }
 
-  return "__CONTINUE__"
+  return "__continue__"
 }
 
 module.exports = { toAction }

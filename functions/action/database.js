@@ -1,15 +1,15 @@
-const { toParam } = require("./toParam")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { toCode } = require("./toCode")
 const { toArray } = require("./toArray")
+const { lineInterpreter } = require("./lineInterpreter")
 
-var getdb = async ({ _window, req, res }) => {
+var getdb = async ({ _window, req, res, id }) => {
 
-  var string = decodeURI(req.headers.search), params = {}
+  var string = decodeURI(req.headers.search), data = {}
   string = toCode({ _window, string })
 
-  if (string) params = toParam({ _window, data: string, id: "" })
-  var search = params.search || {}
+  if (string) data = lineInterpreter({ _window, data: string, id }).data
+  var search = data.search || {}
   var { data, success, message } = await getData({ _window, req, res, search })
 
   return res.send({ data, success, message })
@@ -23,13 +23,13 @@ var postdb = async ({ _window, req, res }) => {
   return res.send({ data, success, message })
 }
 
-var deletedb = async ({ _window, req, res }) => {
+var deletedb = async ({ _window, req, res, id }) => {
 
-  var string = decodeURI(req.headers.erase), params = {}
+  var string = decodeURI(req.headers.erase), data = {}
   string = toCode({ _window, string })
 
-  if (string) params = toParam({ _window, data: string, id: "" })
-  var erase = params.erase || {}
+  if (string) data = lineInterpreter({ _window, data: string, id }).data
+  var erase = data.erase || {}
 
   var { success, message } = await deleteData({ _window, req, res, erase })
 
@@ -49,7 +49,7 @@ const getData = async ({ _window, req, res, search }) => {
     limit = search.limit || 1000,
     data = {}, success, message,
     ref = collection && db.collection(collection),
-    promises = [], project
+    promises = []
 
   if (search.url) {
 
@@ -128,7 +128,6 @@ const getData = async ({ _window, req, res, search }) => {
   }
 
   if (!doc && !field) {
-
 
     if (search.orderBy || search.skip) ref = ref.orderBy(...toArray(search.orderBy || "id"))
     if (search.skip) ref = ref.offset(search.skip)

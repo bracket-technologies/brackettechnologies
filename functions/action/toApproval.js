@@ -17,7 +17,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root
   var global = _window ? _window.global : window.global
   var view = views[id], approval = true
   
-  if ((global.__returnAdds__[0] || {}).returned) return
+  if ((stack.returns && stack.returns[0] || {}).returned) return
 
   // coded
   if (string.charAt(0) === "@" && string.length == 6) string = global.__refs__[string].data
@@ -96,7 +96,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root
     // action
     if (path0.slice(-2) === "()") {
       var isAction = toAction({ _window, lookupActions, stack, id, req, res, __, e, path, path0, condition: true });
-      if (isAction !== "__CONTINUE__") return approval = notEqual ? !isAction : isAction
+      if (isAction !== "__continue__") return approval = notEqual ? !isAction : isAction
     }
 
     // get key

@@ -1,57 +1,12 @@
 const { toView } = require("./toView");
 const { clone } = require("./clone");
 const { getJsonFiles } = require("./jsonFiles");
-const { stacker } = require("./stack");
 
 require("dotenv").config();
 
-const initializer = ({ window, __ }) => {
-  
-    // Create a cookies object
-    var { req, res } = window, host = req.headers.host || req.headers.referer
-    if (!host && req.headers.host && req.headers.host.includes("localhost")) host = req.headers.host
-    if (!host) return res.send("Project cannot be found!")
+const initializer = ({ _window }) => {
 
-    // current page
-    var currentPage = window.global.__path__[1] || "main"
-    
-    // get assets & views
-    window.global = {
-        __html__: "",
-        __waitAdds__: [],
-        __returnAdds__: [],
-        __firstLoad__: true,
-        __tags__: {
-            body: "",
-            head: ""
-        },
-        host,
-        __prevPage__: ["main"],
-        __currentPage__: currentPage,
-        __prevPath__: ["/"],
-        path: req.url,
-        os: req.headers["sec-ch-ua-platform"],
-        browser: req.headers["sec-ch-ua"],
-        country: req.headers["x-country-code"],
-        headers: req.headers,
-        cookies: req.cookies,
-        promises: {},
-        breaktoView: {},
-        actions: [],
-        ...window.global,
-        data: {
-          account: {},  
-          view: {},
-          page: {},
-          public: {},
-          editor: {},
-          project: {},
-          collection: {},
-          ...window.global.data,
-      }
-    };
-
-    window.views = {
+    _window.views = {
         html: {
             id: "html",
             __childrenID__: []
@@ -60,7 +15,6 @@ const initializer = ({ window, __ }) => {
             id: "body",
             view: "View",
             parent: "html",
-            __childrenID__: []
         },
         root: {
             id: "root",
@@ -76,128 +30,86 @@ const initializer = ({ window, __ }) => {
     }
 }
 
-const getProject = ({ window }) => {
-    
-    return new Promise (async resolve => {
+const getProject = async ({ _window, req }) => {
 
-        var { req, res, global } = window, db = req.db, promises = [], project = global.data.project, host = global.host
-        if (!host) return res.send("Project not found!")
-        
-        // get shared public views
-        Object.entries(getJsonFiles({ search: { collection: "public" } })).map(([doc, data]) => {
-            global.data.view[doc] = { ...data, id: doc, __mapViewsPath__: [doc] }
-        })
+    var global = _window.global, promises = [], timer = (new Date()).getTime()
 
-        var timer = (new Date()).getTime()
-        
-        promises.push(db
-            .collection(`page-${project.id}`)
-            .get()
-            .then(q => {
-                q.forEach(doc => {
-                    global.data.page[doc.id] = { ...doc.data(), id: doc.id }
-                })
-                console.log("PAGE", new Date().getTime() - timer)
-                
-                // page doesnot exist
-                if (!global.data.page[global.__currentPage__]) return res.send("Page not found!")
-            }))
-
-        promises.push(db
-            .collection(`view-${project.id}`)
-            .get()
-            .then(q => {
-                q.forEach(doc => {
-                    global.data.view[doc.id] = { ...doc.data() }
-                })
-                console.log("VIEW", new Date().getTime() - timer)
-            }))
-
-        promises.push(db
-            .collection(`public-${project.id}`)
-            .get()
-            .then(q => {
-                q.forEach(doc => {
-                    global.data.view[doc.id] = { ...doc.data(), __mapViewsPath__: [doc.id], id: doc.id }
-                })
-                console.log("PUBLIC", new Date().getTime() - timer)
-            }))
-
-        promises.push(db
-            .collection(`collection-${project.id}`)
-            .get()
-            .then(q => {
-                q.forEach(doc => {
-                    global.data.collection[doc.id] = { ...doc.data(), __mapViewsPath__: [doc.id], id: doc.id }
-                })
-                console.log("COLLECTION", new Date().getTime() - timer)
-            }))
-        
-        await Promise.all(promises)
-        resolve()
+    // get shared public views
+    Object.entries(getJsonFiles({ search: { collection: "public" } })).map(([doc, data]) => {
+        global.data.view[doc] = { ...data, id: doc }
     })
+
+    // views
+    promises.push(req.db
+        .collection(`view-${global.data.project.id}`)
+        .get()
+        .then(q => {
+            q.forEach(doc => {
+                global.data.view[doc.id] = { ...doc.data(), id: doc.id }
+            })
+            console.log("VIEW", new Date().getTime() - timer)
+        }))
+
+    // collections
+    promises.push(req.db
+        .collection(`collection-${global.data.project.id}`)
+        .get()
+        .then(q => {
+            q.forEach(doc => {
+                global.data.collection[doc.id] = { ...doc.data(), id: doc.id }
+            })
+            console.log("COLLECTION", new Date().getTime() - timer)
+        }))
+
+    return await Promise.all(promises)
 }
 
-const interpreter = ({ window: _window, __ }) => {
+const interpreter = async ({ _window, req, res, stack, __ }) => {
 
-    return new Promise(async resolve => {
-      
-        var { req, res, global, views } = _window
-        if (res.headersSent) return
+    var { global, views } = _window, currentPage = global.manifest.currentPage, timer = (new Date()).getTime()
 
-        var currentPage = global.__currentPage__
-        if (!global.data.page[currentPage]) return res.send("Page not found!")
+    if (!global.data.view[currentPage]) return res.send("Page not found!")
 
-        // views
-        views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage, __mapViewsPath__: [currentPage] }])
-        views.public.children = Object.values(global.data.view).filter(view => view.__public__)
-        views.body.children = [views.public, views.root]
-        
-        // tags
-        global.data.project.browser = global.data.project.browser || {}
-        global.data.project.browser.children = global.data.project.browser.children || []
-        global.data.project.browser.view = global.data.project.browser.view || global.data.project.browser.type || "html"
-        
-        views.html = { ...views.html, ...global.data.project.browser }
+    // views
+    views.root.children = [{ view: currentPage }]
+    views.public.children = Object.values(global.data.view).filter(view => view.__public__).map(publicView => ({ view: publicView.id }))
+    views.body.children = [views.public, views.root]
 
-        // stack
-        var stack = stacker({ _window, event: "render", id: "body" })
-        var timer = (new Date()).getTime()
-        
-        // tags
-        await toView({ _window, id: "html", req, res, __, stack })
-        
-        // views
-        var innerHTML = await toView({ _window, id: "body", req, res, __, stack })
+    // tags
+    global.data.project.browser = global.data.project.browser || {}
+    global.data.project.browser.children = global.data.project.browser.children || []
+    global.data.project.browser.view = global.data.project.browser.view || global.data.project.browser.type || "html"
 
-        console.log("RENDER", (new Date()).getTime() - timer)
-        
-        // html was updated by update or route
-        if (!global.__html__) global.__html__ = innerHTML
-        
-        // get IDs
-        global.__IDList__ = global.__html__.split("id='").slice(1).map((id) => id.split("'")[0])
-        
-        resolve()
-    })
+    views.html = { ...views.html, ...global.data.project.browser }
+
+    // tags
+    await toView({ _window, id: "html", req, res, stack, __ })
+
+    // views
+    var innerHTML = await toView({ _window, id: "body", req, res, stack, __ })
+
+    console.log("RENDER", (new Date()).getTime() - timer)
+
+    // html was updated by update or route
+    if (!global.__html__) global.__html__ = innerHTML
+
+    return innerHTML
 }
 
-const documenter = ({ window }) => {
+const documenter = async ({ _window: { global, views }, res, stack }) => {
 
-    var { global, views, res } = window
-    
-    var currentPage = global.__currentPage__
-    var view = views[global.__currentPage__] || {}
-    
+    var currentPage = global.manifest.currentPage
+    var view = views[global.manifest.currentPage] || {}
+
     global.promises = {}
-    
+
     // head tags
     var favicon = global.data.project.favicon
     var faviconType = global.data.project.faviconType
     var language = global.language = view.language || view.lang || "en"
     var direction = view.direction || view.dir || (language === "ar" || language === "fa" ? "rtl" : "ltr")
     var title = view.title || "Bracket App Title"
-  
+
     // meta
     view.meta = view.meta || {}
     var metaHTTPEquiv = view.meta["http-equiv"] || view.meta["httpEquiv"] || {}
@@ -207,12 +119,17 @@ const documenter = ({ window }) => {
     var metaDescription = view.meta.description || ""
     var metaTitle = view.meta.title || view.title || ""
     var metaViewport = view.meta.viewport || ""
-    
+
+    // id list
+    global.__ids__ = global.__html__.split("id='").slice(1).map((id) => id.split("'")[0])
+
     delete global.data.project
-    delete global.__firstLoad__
-    
+
+    // logs
+    global.__logs__ = stack.logs
+
     res.send(
-    `<!DOCTYPE html>
+        `<!DOCTYPE html>
         <html lang="${language}" dir="${direction}" class="html">
             <head>
                 <!-- css -->
@@ -239,7 +156,7 @@ const documenter = ({ window }) => {
                 ${metaTitle ? `<meta name="title" content="${metaTitle}">` : ""}
                 
                 <!-- favicon -->
-                ${favicon ? `<link rel="icon" type="image/${faviconType || "x-icon"}" href="${favicon}"/>` : ""}
+                ${favicon ? `<link rel="icon" type="image/${faviconType || "x-icon"}" href="${favicon}"/>` : `<link rel="icon" href="data:,">`}
                 
                 <!-- views & global -->
                 <script id="views" type="application/json">${JSON.stringify(views)}</script>
@@ -275,21 +192,18 @@ const documenter = ({ window }) => {
     )
 }
 
-const projector = async ({ _window: window, req, res, __ }) => {
-    
-    window.req = req
-    window.res = res
-    
+const projector = async ({ _window, req, res, stack, __ }) => {
+
     var timer = (new Date()).getTime()
 
-    initializer({ window, __ })
+    initializer({ _window })
     if (res.headersSent) return
-    await getProject({ window, __ })
+    await getProject({ _window, req, res, stack, __ })
     if (res.headersSent) return
-    await interpreter({ window, __ })
+    await interpreter({ _window, req, res, stack, __ })
     if (res.headersSent) return
-    documenter({ window, __ })
-    
+    await documenter({ _window, req, res, stack, __ })
+
     console.log("DOCUMENTATION", (new Date()).getTime() - timer);
 }
 

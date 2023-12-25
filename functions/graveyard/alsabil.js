@@ -13,11 +13,11 @@
 
 // views
 //var projectData = getJsonFiles({ search: { collection: "test", doc: "test" } })
-/*var __IDList__ = Object.keys(projectData)
+/*var __ids__ = Object.keys(projectData)
 var data = Object.values(projectData)*/
 
 
-//__IDList__.map((doc, i) => {
+//__ids__.map((doc, i) => {
   //db.collection("view-brackettechnologies").doc("sidebar").set(views).then(() => {console.log("sidebar" + " view done!");})
 //})
 
@@ -36,10 +36,10 @@ var data = Object.values(projectData)*/
 test()*/
 // pages
 /*var views = getJsonFiles({ search: { collection: "page-brackettechnologies" } })
-var __IDList__ = Object.keys(views)
+var __ids__ = Object.keys(views)
 var data = Object.values(views)
 
-__IDList__.map((doc, i) => {
+__ids__.map((doc, i) => {
   db.collection("page-brackettechnologies").doc(doc.toString()).set(data[i]).then(() => {console.log(doc + " page done!");})
 })*/
 

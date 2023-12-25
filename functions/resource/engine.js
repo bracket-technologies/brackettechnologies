@@ -18,14 +18,14 @@ const action = async ({ _window, lookupActions, stack, address, id = "root", req
     }
   })
 
-  console.log("SERVER", (new Date()).getTime() - headers.timestamp, action.name + "()", data)
+  // console.log("SERVER", (new Date()).getTime() - headers.timestamp, action.name + "()", data)
   
   // await
   require("./toAwait").toAwait({ _window, lookupActions, address, stack, id, e, req, res, _: data, __, ...params })
 }
 
 module.exports = { action }
-},{"./toAwait":89,"axios":121}],2:[function(require,module,exports){
+},{"./toAwait":86,"axios":118}],2:[function(require,module,exports){
 module.exports=[
   "data()", "Data()", "doc()", "mail()", "function()", "exec()", "notification()", "notify()", "alert()", "tag()", "view()"
  , "style()", "className()", "getChildrenByClassName()", "erase()", "insert()", "setChild()", "same()", "checker()"
@@ -48,33 +48,59 @@ module.exports=[
  , "upload()", "timestamp()", "confirmEmail()", "files()", "share()", "return()", "html2pdf()", "dblclick()"
  , "exportExcel()", "2nd()", "2ndPrev()", "3rdPrev()", "2ndParent()", "3rdParent()", "installApp()", "sent()"
  , "replaceItem()", "replaceItems()", "findAndReplaceItem()", "grandParent()", "grandChild()", "grandChildren()", "2ndNext()", "isNaN()"
- , "send()", "removeDuplicates()", "stopWatchers()", "getGeoLocation()", "display()", "hide()", "scrollTo()"
+ , "send()", "removeDuplicates()", "stopWatchers()", "getGeoLocation()", "display()", "hide()", "scrollTo()", "colorize()"
 ]
 },{}],3:[function(require,module,exports){
 const { encoded } = require("./encoded");
 const { generate } = require("./generate");
 const { lineInterpreter } = require("./lineInterpreter");
 
-const addresser = ({ _window, stack, args = [], req, res, e, asynchronous, requesterID, action, DOMRendering, renderingID, __, id, _object, object, mount, toView, lookupActions, condition }) => {
+const addresser = ({ _window, stack = [], args = [], req, res, e, asynchronous = false, interpreting = false, requesterID, action, DOMRendering, renderingID, __, id, _object, object, mount, toView, lookupActions, condition }) => {
 
     var global = _window ? _window.global : window.global
-    var await = args[2], address = { id: generate(), requesterID, action, executionStartTime: (new Date()).getTime() }
+    var await = args[2], address = { id: generate(), requesterID, index: stack.addresses.length, action, asynchronous, interpreting, executionStartTime: (new Date()).getTime(), hold: true, await: "", DOMRendering, renderingID }
+    var headAddress = {}
+
+    // lock the head address
+    if (stack.addresses.length > 0) {
+
+        var headAddressIndex = 0
+        
+        // get the head address by knowing who is being interpreted
+        while (!stack.addresses[headAddressIndex].interpreting) { headAddressIndex += 1 }
+        address.headAddressID = stack.addresses[headAddressIndex].id
+
+        // set all head addresses asynchronous
+        if (asynchronous) {
+
+            var headAddressID = address.headAddressID
+            while (headAddressID) {
+                
+                var headAddress = stack.addresses.find(waitingAddress => waitingAddress.id === headAddressID)
+                headAddress.asynchronous = true
+                headAddressID = headAddress.headAddressID
+            }
+        }
+
+        // get head address
+        headAddress = stack.addresses.find(waitingAddress => waitingAddress.id === address.headAddressID)
+    }
 
     // data params
     var { data, executionDuration } = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: args[1], _object, object })
     address.dataExecutionDuration = executionDuration
 
+    if (action === "search()") action += " " + data.collection
+    
+    var log = ["ACTION start", address.id, address.index, action, headAddress.id || "", headAddress.index || "", headAddress.action || ""].join(" ")
+    stack.logs.push(log)
+    console.log(log);
+
     // waits
     if (await) {
 
         if (encoded(await)) await = global.__refs__[await].data
-        address = { ...address, await, asynchronous, status: "Start", DOMRendering, renderingID, params: { __, id, _object, object, mount, toView, lookupActions, condition, data } }
-        
-        // lock the head address
-        if (global.__waitAdds__.length > 0) {
-            address.headAddressID = global.__waitAdds__[0]
-            stack.addresses.find(add => add.id === address.headAddressID).asynchronous = true
-        }
+        address = { ...address, await, status: "Start", params: { __, id, _object, object, mount, toView, lookupActions, condition, data } }
     }
 
     // push to stack
@@ -84,7 +110,7 @@ const addresser = ({ _window, stack, args = [], req, res, e, asynchronous, reque
 }
 
 module.exports = { addresser }
-},{"./encoded":26,"./generate":37,"./lineInterpreter":55}],4:[function(require,module,exports){
+},{"./encoded":24,"./generate":35,"./lineInterpreter":53}],4:[function(require,module,exports){
 const { toAwait } = require("./toAwait")
 
 const axios = async ({ id, lookupActions, stack, ...params }) => {
@@ -128,7 +154,7 @@ const axios = async ({ id, lookupActions, stack, ...params }) => {
 }
 
 module.exports = { axios }
-},{"./toAwait":89,"axios":121}],5:[function(require,module,exports){
+},{"./toAwait":86,"axios":118}],5:[function(require,module,exports){
 const blur = ({ id }) => {
 
   var local = window.views[id]
@@ -241,8 +267,7 @@ const clone = (obj) => {
 module.exports = {clone}
 
 },{}],9:[function(require,module,exports){
-const { toParam } = require("./toParam")
-const { toCode } = require("./toCode")
+const { lineInterpreter } = require("./lineInterpreter")
 
 const closePublicViews = ({ id }) => {
 
@@ -250,22 +275,20 @@ const closePublicViews = ({ id }) => {
     var global = window.global
     
     // close droplist
-    if (id !== "droplist" && global.__droplistPositioner__ && !global.clicked.element.contains(views[global.__droplistPositioner__].element)) {
-        var closeDroplist = toCode({ id, string: "__keyupIndex__:()=0;clearTimer():[__droplistTimer__:()];__droplistMouseenterer__:().del();():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];clearTimer():[__droplistTimer__:()];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform='scale(0.5)';pointerEvents=none]];__droplistPositioner__:().del()" })
-        toParam({ data: closeDroplist, id: "droplist", __: [] })
-    }
+    if (id !== "droplist" && global.__droplistPositioner__ && !global.clicked.element.contains(views[global.__droplistPositioner__].element))
+        lineInterpreter({ id: "droplist", data: "__keyupIndex__:()=0;clearTimer():[__droplistTimer__:()];__droplistMouseenterer__:().del();():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];clearTimer():[__droplistTimer__:()];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform='scale(0.5)';pointerEvents=none]];__droplistPositioner__:().del()" })
 
     // close tooltip
-    var closeTooltip = toCode({ id, string: "clearTimer():[tooltip-timer:()];tooltip-timer:().del();():tooltip.style().opacity=0" })
-    toParam({ data: closeTooltip, id: "tooltip", __: [] })
+    lineInterpreter({ id: "tooltip", data: "clearTimer():[tooltip-timer:()];tooltip-timer:().del();():tooltip.style().opacity=0" })
 
     // close mininote
-    toParam({ id: "root", data: toCode({ id, string: "():mininote.style():[opacity=0;transform=scale(0)]" }) })
+    lineInterpreter({ id: "root", data: "():mininote.style():[opacity=0;transform=scale(0)]" })
 }
 
 module.exports = { closePublicViews }
-},{"./toCode":92,"./toParam":101}],10:[function(require,module,exports){
+},{"./lineInterpreter":53}],10:[function(require,module,exports){
 const { decode } = require("./decode")
+const { toArray } = require("./toArray")
 
 const _colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#bf9202", "#6b6b6e", "#e649c6"]
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
@@ -273,8 +296,8 @@ const english = /[a-zA-Z]/
 
 const colorize = ({ _window, string, start = "[", end = "]", index = 0, colors = _colors }) => {
 
-  if (typeof colors === 'string') colors = [colors]
-
+  colors = toArray(colors)
+  
   if (index === 8) index = 1
   if (typeof string !== "string") return string
 
@@ -370,7 +393,7 @@ const colorizeCoded = ({ _window, index, string, colors }) => {
 }
 
 module.exports = { colorize }
-},{"./decode":23}],11:[function(require,module,exports){
+},{"./decode":21,"./toArray":85}],11:[function(require,module,exports){
 module.exports = {
     compare: (value1, operator, value2) => {
         if (operator === "==") return value1 === value2
@@ -428,29 +451,6 @@ module.exports = {
     }
 }
 },{}],13:[function(require,module,exports){
-const { toArray } = require("./toArray")
-
-const controls = ({ _window, lookupActions, stack, controls, id, req, res }) => {
-
-  const { addEventListener } = require("./event")
-  const { watch } = require("./watch")
-
-  var view = _window ? _window.views[id] : window.views[id]
-
-  controls = controls || view.controls
-  
-  toArray(controls).map(controls => {
-    
-    // watch
-    if (controls.watch) watch({ _window, lookupActions, stack, controls, id, req, res })
-    // event
-    else if (controls.event) addEventListener({ _window, lookupActions, stack, controls, id, req, res })
-  })
-}
-
-module.exports = { controls }
-
-},{"./event":28,"./toArray":88,"./watch":113}],14:[function(require,module,exports){
 const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
 
   var cookie = document.cookie || ""
@@ -486,7 +486,7 @@ const eraseCookie = ({ _window, name }) => {
 }
 
 module.exports = {setCookie, getCookie, eraseCookie}
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 module.exports = {
   counter: ({ length = 0, counter = 0, end, reset = "daily", timer = 0 }) => {
 
@@ -523,7 +523,7 @@ module.exports = {
     return { counter: _counter, length, reset, timer: timestamp }
   }
 }
-},{}],16:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 const control = require("../event/event")
 
 const createActions = ({ params, id }) => {
@@ -538,7 +538,7 @@ const createActions = ({ params, id }) => {
 
 module.exports = {createActions}
 
-},{"../event/event":116,"./execute":31}],17:[function(require,module,exports){
+},{"../event/event":113,"./execute":29}],16:[function(require,module,exports){
 const { clone } = require("./clone")
 const { colorize } = require("./colorize")
 const { generate } = require("./generate")
@@ -587,7 +587,7 @@ const createHtml = ({ _window, lookupActions, stack, id, req, res, import: _impo
 
     if (id === "html") return resolve("")
 
-    var tag = _import ? "" : toHTML({ _window, lookupActions, stack, id, innerHTML }) || ""
+    var tag = _import ? "" : toHTML({ _window, lookupActions, stack, __, id, innerHTML }) || ""
 
     if (_import) {
 
@@ -596,8 +596,7 @@ const createHtml = ({ _window, lookupActions, stack, id, req, res, import: _impo
       delete view.type
       delete view.view
       delete view.parent
-      delete view.__mapViewsPath__
-      delete view.viewType
+      delete view.__viewsPath__
 
       if (type === "link" || type === "meta") {
 
@@ -638,7 +637,7 @@ const createHtml = ({ _window, lookupActions, stack, id, req, res, import: _impo
     // linkable
     if (view.link) {
 
-      var linkID = generate(), style = '', _view, link = typeof view.link === "string" && view.link.includes("http") ? view.link : (view.link.url || view.link.path || global.host)
+      var linkID = generate(), style = '', _view, link = typeof view.link === "string" && view.link.includes("http") ? view.link : (view.link.url || view.link.path || global.manifest.host)
 
       _view = { id: linkID, parent: view.id, controls: [{ "event": `click?route():${view.link.path}?${view.link.path};${view.link.preventDafault ? false : true}` }] }
       views[linkID] = _view
@@ -654,25 +653,7 @@ const createHtml = ({ _window, lookupActions, stack, id, req, res, import: _impo
 }
 
 module.exports = { createHtml }
-},{"./clone":8,"./colorize":10,"./cssStyleKeyNames":19,"./generate":37,"./toArray":88,"./toCode":92,"./toHTML":97,"./toStyle":104,"./toView":106}],18:[function(require,module,exports){
-const {update} = require("./update")
-const {toArray} = require("./toArray")
-const {clone} = require("./clone")
-const { generate } = require("./generate")
-
-const createView = ({ view, id = generate(), lookupActions }) => {
-
-  var view = window.views[id] || {}
-  var global = window.global
-  
-  view.children = toArray(clone(global.data[view.viewType][view]))
-
-  // update
-  update({ id, lookupActions })
-}
-
-module.exports = {createView}
-},{"./clone":8,"./generate":37,"./toArray":88,"./update":108}],19:[function(require,module,exports){
+},{"./clone":8,"./colorize":10,"./cssStyleKeyNames":17,"./generate":35,"./toArray":85,"./toCode":89,"./toHTML":94,"./toStyle":101,"./toView":103}],17:[function(require,module,exports){
 module.exports = {
   "userSelect": "user-select",
   "inlineSize": "inline-size",
@@ -736,7 +717,7 @@ module.exports = {
   "gridAutoRows": "grid-auto-columns",
   "writingMode": "writing-mode"
 }
-},{}],20:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 const { toParam } = require("./toParam");
 
 module.exports = {
@@ -787,7 +768,7 @@ module.exports = {
         reader.readAsBinaryString(file || e.target.files[0]);
     }
 }
-},{"./toParam":101}],21:[function(require,module,exports){
+},{"./toParam":98}],19:[function(require,module,exports){
 (function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -825,19 +806,19 @@ const clearData = ({ id, e, clear = {}, __ }) => {
 module.exports = { createData, setData, clearData }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":8,"./reducer":66,"./setContent":75,"./setData":76}],22:[function(require,module,exports){
-const { toParam } = require("./toParam")
+},{"./clone":8,"./reducer":64,"./setContent":73,"./setData":74}],20:[function(require,module,exports){
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { toCode } = require("./toCode")
 const { toArray } = require("./toArray")
+const { lineInterpreter } = require("./lineInterpreter")
 
-var getdb = async ({ _window, req, res }) => {
+var getdb = async ({ _window, req, res, id }) => {
 
-  var string = decodeURI(req.headers.search), params = {}
+  var string = decodeURI(req.headers.search), data = {}
   string = toCode({ _window, string })
 
-  if (string) params = toParam({ _window, data: string, id: "" })
-  var search = params.search || {}
+  if (string) data = lineInterpreter({ _window, data: string, id }).data
+  var search = data.search || {}
   var { data, success, message } = await getData({ _window, req, res, search })
 
   return res.send({ data, success, message })
@@ -851,13 +832,13 @@ var postdb = async ({ _window, req, res }) => {
   return res.send({ data, success, message })
 }
 
-var deletedb = async ({ _window, req, res }) => {
+var deletedb = async ({ _window, req, res, id }) => {
 
-  var string = decodeURI(req.headers.erase), params = {}
+  var string = decodeURI(req.headers.erase), data = {}
   string = toCode({ _window, string })
 
-  if (string) params = toParam({ _window, data: string, id: "" })
-  var erase = params.erase || {}
+  if (string) data = lineInterpreter({ _window, data: string, id }).data
+  var erase = data.erase || {}
 
   var { success, message } = await deleteData({ _window, req, res, erase })
 
@@ -877,7 +858,7 @@ const getData = async ({ _window, req, res, search }) => {
     limit = search.limit || 1000,
     data = {}, success, message,
     ref = collection && db.collection(collection),
-    promises = [], project
+    promises = []
 
   if (search.url) {
 
@@ -956,7 +937,6 @@ const getData = async ({ _window, req, res, search }) => {
   }
 
   if (!doc && !field) {
-
 
     if (search.orderBy || search.skip) ref = ref.orderBy(...toArray(search.orderBy || "id"))
     if (search.skip) ref = ref.offset(search.skip)
@@ -1161,7 +1141,7 @@ module.exports = {
   deletedb,
   deleteData
 }
-},{"./toArray":88,"./toCode":92,"./toFirebaseOperator":96,"./toParam":101,"axios":121}],23:[function(require,module,exports){
+},{"./lineInterpreter":53,"./toArray":85,"./toCode":89,"./toFirebaseOperator":93,"axios":118}],21:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   var global = _window ? _window.global : window.global
@@ -1193,7 +1173,7 @@ const decode = ({ _window, string }) => {
 
 module.exports = { decode }
 
-},{}],24:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
@@ -1211,12 +1191,15 @@ const defaultInputHandler = ({ id }) => {
 
   if (view.preventDefault) return
 
+  // resize input height on loaded
+  if (view.__name__ === "Input" && (view.input || view).type === "text") resize({ id })
+
   // checkbox input
   if ((view.input || view).type === "checkbox") {
 
     if (view.data === true) view.element.checked = true
 
-    var myFn = (e) => {
+    var changeEventHandler = (e) => {
 
       // view doesnot exist
       if (!window.views[id]) return e.target.removeEventListener("change", myFn)
@@ -1231,7 +1214,7 @@ const defaultInputHandler = ({ id }) => {
       }
     }
 
-    return view.element.addEventListener("change", myFn)
+    return view.element.addEventListener("change", changeEventHandler)
   }
 
   if ((view.input || view).type === "number")
@@ -1247,7 +1230,7 @@ const defaultInputHandler = ({ id }) => {
   if (view.__name__ === "Input") view.prevValue = view.element.value
   else if (view.editable) view.prevValue = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
   
-  var myFn = async (e) => {
+  var inputEventHandler = async (e) => {
     
     e.preventDefault()
     var value 
@@ -1304,7 +1287,7 @@ const defaultInputHandler = ({ id }) => {
     view.prevValue = value
   }
 
-  var myFn1 = (e) => {
+  var blurEventHandler = (e) => {
 
     var value
     if (view.__name__ === "Input") value = view.element.value
@@ -1342,7 +1325,7 @@ const defaultInputHandler = ({ id }) => {
     }
   }
 
-  const myFn2 = (e) => {
+  var focusEventHandler = (e) => {
     
     var value = ""
     if (view.__name__ === "Input") value = view.element.value
@@ -1351,12 +1334,12 @@ const defaultInputHandler = ({ id }) => {
     view.prevContent = value
   }
 
-  view.element.addEventListener("input", myFn)
-  view.element.addEventListener("blur", myFn1)
-  view.element.addEventListener("focus", myFn2)
+  view.element.addEventListener("input", inputEventHandler)
+  view.element.addEventListener("blur", blurEventHandler)
+  view.element.addEventListener("focus", focusEventHandler)
 }
 
-function getCaretIndex(element) {
+const getCaretIndex = (element) => {
 
   let position = 0;
   const isSupported = typeof window.getSelection !== "undefined";
@@ -1418,13 +1401,12 @@ module.exports = { defaultInputHandler }
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
 }*/
-},{"./colorize":10,"./data":21,"./isArabic":45,"./replaceNbsps":70,"./resize":71,"./toCode":92}],25:[function(require,module,exports){
+},{"./colorize":10,"./data":19,"./isArabic":43,"./replaceNbsps":68,"./resize":69,"./toCode":89}],23:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
-const { toValue } = require("./toValue")
 const { jsonToBracket } = require("./jsonToBracket")
 const { reducer } = require("./reducer")
-const { toCode } = require("./toCode")
+const { lineInterpreter } = require("./lineInterpreter")
 
 const droplist = ({ id, e, __, stack, lookupActions }) => {
   
@@ -1446,11 +1428,11 @@ const droplist = ({ id, e, __, stack, lookupActions }) => {
   clearTimeout(global.__droplistTimer__)
 
   // input id
-  var inputID = toValue({ id, data: "input().id||.id" })
+  var { data: inputID } = lineInterpreter({ id, data: "input().id||.id" })
   var text = views[inputID].element.value || views[inputID].element.innerHTML
   
   // items
-  if (typeof items === "string") items = clone(toValue({ id, e, data: toCode({ id, string: toCode({ id, string: items, start: "'" }) }), __ }))
+  if (typeof items === "string") items = lineInterpreter({ id, data: items, lookupActions, __: view.__ }).data
 
   // filterable
   if (!view.droplist.preventDefault) {
@@ -1611,14 +1593,14 @@ const droplist = ({ id, e, __, stack, lookupActions }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":8,"./jsonToBracket":52,"./reducer":66,"./toCode":92,"./toValue":105,"./update":108}],26:[function(require,module,exports){
+},{"./clone":8,"./jsonToBracket":50,"./lineInterpreter":53,"./reducer":64,"./update":105}],24:[function(require,module,exports){
 const encoded = (string) => {
     if (typeof string !== "string") return false
     return (string.charAt(0) === "@" && string.length === 6)
 }
 
 module.exports = { encoded }
-},{}],27:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 const axios = require("axios")
 const { deleteData } = require("./database")
 const { jsonToBracket } = require("./jsonToBracket")
@@ -1653,18 +1635,18 @@ const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase
     data = response.data
   }
 
-  console.log("ERASE", (new Date()).getTime() - headers.timestamp, erase.collection, data)
+  // console.log("ERASE", (new Date()).getTime() - headers.timestamp, erase.collection, data)
 
   // stack
   require("./toAwait").toAwait({ _window, lookupActions, stack, id, e, ...params, req, res, _: data, __ })
 }
 
 module.exports = { erase }
-},{"./database":22,"./jsonToBracket":52,"./toAwait":89,"axios":121}],28:[function(require,module,exports){
-const { toValue } = require("./toValue")
+},{"./database":20,"./jsonToBracket":50,"./toAwait":86,"axios":118}],26:[function(require,module,exports){
 const { toCode } = require("./toCode")
 const { stacker } = require("./stack")
 const { lineInterpreter } = require("./lineInterpreter")
+const { watch } = require("./watch")
 
 const addEventListener = ({ controls, id }) => {
 
@@ -1675,7 +1657,7 @@ const addEventListener = ({ controls, id }) => {
   var __ = controls.__ || view.__
 
   if (!view || !controls.event) return
-  
+
   var mainString = toCode({ id, string: toCode({ id, string: controls.event, start: "'" }) })
 
   mainString.split("?")[0].split(";").map(substring => {
@@ -1686,17 +1668,20 @@ const addEventListener = ({ controls, id }) => {
     var { substring, string } = modifyEvent({ id, event: substring, string: mainString })
 
     // event:id
-    var eventID = toValue({ lookupActions, id, data: substring.split("?")[0].split(":")[1] || "" }) || id
+    var { data: eventID } = lineInterpreter({ id, data: substring.split("?")[0].split(":")[1] || id })
     if (typeof eventID === "object" && eventID.__view__) eventID = eventID.id
 
     var event = substring.split("?")[0].split(":")[0]
 
+    // watch
+    if (event === "watch") return watch({ lookupActions, __, string, id })
+    
     // view doesnot exist
     if (!event || !views[eventID]) return
 
     // loaded event
-    if (event === "loaded") return setTimeout(eventAction({ string, event, eventID, controls, id, lookupActions, id, __ }), 0)
-
+    if (event === "loaded") return setTimeout(eventExecuter({ string, event, eventID, controls, id, lookupActions, __ }), 0)
+    
     // body event
     if (id === "body") {
 
@@ -1706,7 +1691,7 @@ const addEventListener = ({ controls, id }) => {
       return
     }
 
-    const myFn = (e) => {
+    const eventHandler = (e) => {
 
       // view doesnot exist
       if (!views[id] || !views[eventID]) return
@@ -1717,15 +1702,15 @@ const addEventListener = ({ controls, id }) => {
       // unlunch unrelated popups
       if (id !== "popup" && eventID === "popup" && (!global.__popupPositioner__ || !global.__popupConfirmed__ || !views[global.__popupPositioner__].element.contains(views[id].element))) return
 
-      if (eventID === "droplist" || eventID === "popup") setTimeout(eventAction({ string, event, eventID, controls, id, lookupActions, id, __, e }), 100)
-      else eventAction({ string, event, eventID, controls, id, lookupActions, id, __, e })
+      if (eventID === "droplist" || eventID === "popup") setTimeout(eventExecuter({ string, event, eventID, controls, id, lookupActions, id, __, e }), 100)
+      else eventExecuter({ string, event, eventID, controls, id, lookupActions, id, __, e })
     }
 
-    views[eventID].element.addEventListener(event, myFn)
+    views[eventID].element.addEventListener(event, eventHandler)
   })
 }
 
-const eventAction = ({ event, eventID, controls, id, lookupActions, e, string, __ }) => {
+const eventExecuter = ({ event, eventID, controls, id, lookupActions, e, string, __ }) => {
 
   const { execute } = require("./execute")
 
@@ -1737,9 +1722,9 @@ const eventAction = ({ event, eventID, controls, id, lookupActions, e, string, _
     if (!event || !views[id] || !views[eventID]) return
     
     var stack = stacker({ event, id, eventID, string })
-
+    
     // main params
-    var data = lineInterpreter({ lookupActions, stack, id, e, data: string, index: 1, __, mount: true })
+    var data = lineInterpreter({ lookupActions, stack, id, e, data: string, index: 1, __, mount: true, action: "toParam" })
 
     // conditions not applied
     if (data.conditionsNotApplied) return data
@@ -1819,9 +1804,9 @@ const modifyEvent = ({ string, event }) => {
   return { string: `${event}?${string[0]}?${conditions}?${string[2] || ""}`, substring: event }
 }
 
-module.exports = { addEventListener, defaultEventHandler, eventAction }
+module.exports = { addEventListener, defaultEventHandler, eventExecuter }
 
-},{"./execute":31,"./lineInterpreter":55,"./stack":80,"./toCode":92,"./toValue":105}],29:[function(require,module,exports){
+},{"./execute":29,"./lineInterpreter":53,"./stack":77,"./toCode":89,"./watch":110}],27:[function(require,module,exports){
 module.exports=[
   "mouseenter", "mouseleave",  "mouseover", "mousemove", "mousedown", "mouseup", "touchstart", 
   "touchend", "touchmove", "touchcancel", "click", "change", "focus", "blur", "keypress", "keyup", 
@@ -1830,7 +1815,7 @@ module.exports=[
   "resize", "redo", "popstate", "online", "offline", "message", "load", "languagechange",
   "error", "afterprint", "beforeprint", "beforeunload", "paste"
 ]
-},{}],30:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 const {isParam} = require("./isParam")
 
 module.exports = {
@@ -1838,7 +1823,7 @@ module.exports = {
         return typeof string === "string" && (isParam({ _window, string }) || string.includes("()") || string.charAt(0) === "@" || string.includes("_"))
     }
 }
-},{"./isParam":49}],31:[function(require,module,exports){
+},{"./isParam":47}],29:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { toArray } = require("./toArray")
 const { toParam } = require("./toParam")
@@ -1991,7 +1976,7 @@ const execute = ({ _window, lookupActions, stack, controls, actions, e, id, para
 
 module.exports = { execute }
 
-},{"./function":36,"./isParam":49,"./toApproval":87,"./toArray":88,"./toAwait":89,"./toCode":92,"./toParam":101,"./toValue":105}],32:[function(require,module,exports){
+},{"./function":34,"./isParam":47,"./toApproval":84,"./toArray":85,"./toAwait":86,"./toCode":89,"./toParam":98,"./toValue":102}],30:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, name }) => {
         
@@ -2007,7 +1992,7 @@ module.exports = {
         // linkElement.delete()
     }
 }
-},{}],33:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 const { toValue } = require("./action")
 
 module.exports = {
@@ -2018,7 +2003,7 @@ module.exports = {
         reader.readAsDataURL(file)
     }
 }
-},{"./action":1}],34:[function(require,module,exports){
+},{"./action":1}],32:[function(require,module,exports){
 (function (global){(function (){
 const { isEqual } = require("./isEqual")
 const { toArray } = require("./toArray")
@@ -2081,7 +2066,7 @@ const filter = ({ filter = {}, id, e, ...params }) => {
 module.exports = {filter}
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":8,"./compare":11,"./isEqual":47,"./toArray":88,"./toOperator":100}],35:[function(require,module,exports){
+},{"./clone":8,"./compare":11,"./isEqual":45,"./toArray":85,"./toOperator":97}],33:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var view = window.views[id]
@@ -2117,7 +2102,7 @@ const focus = ({ id }) => {
 
 module.exports = {focus}
 
-},{}],36:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 const {clearValues} = require("./clearValues")
 const {clone} = require("./clone")
 const {getParam} = require("./getParam")
@@ -2139,13 +2124,11 @@ const {wait} = require("./wait")
 const {toView} = require("./toView")
 const {addEventListener} = require("./event")
 const {execute} = require("./execute")
-const {controls} = require("./controls")
 const {setContent} = require("./setContent")
 const {starter} = require("./starter")
 const {setState} = require("./state")
 const {setPosition} = require("./setPosition")
 const {droplist} = require("./droplist")
-const {createView} = require("./createView")
 const {filter} = require("./filter")
 const {remove} = require("./remove")
 const {focus} = require("./focus")
@@ -2169,7 +2152,6 @@ const {toCode} = require("./toCode")
 const {isPath} = require("./isPath")
 const {toNumber} = require("./toNumber")
 const {capitalize} = require("./capitalize")
-const {setElement} = require("./setElement")
 const {toOperator} = require("./toOperator")
 const {popup} = require("./popup")
 const {keys} = require("./keys")
@@ -2215,7 +2197,6 @@ module.exports = {
   reload,
   toCSV,
   compare,
-  setElement,
   clearValues,
   clone,
   getJsonFiles,
@@ -2238,7 +2219,6 @@ module.exports = {
   toArray,
   generate,
   toView,
-  controls,
   setStyle,
   resetStyles,
   toggleStyles,
@@ -2253,7 +2233,6 @@ module.exports = {
   setPosition,
   droplist,
   filter,
-  createView,
   createActions,
   blur,
   toAwait,
@@ -2285,7 +2264,7 @@ module.exports = {
   insert,
   axios
 }
-},{"./axios":4,"./blur":5,"./capitalize":6,"./clearValues":7,"./clone":8,"./compare":11,"./contentful":12,"./controls":13,"./cookie":14,"./createActions":16,"./createHtml":17,"./createView":18,"./data":21,"./decode":23,"./defaultInputHandler":24,"./droplist":25,"./erase":27,"./event":28,"./execute":31,"./exportJson":32,"./fileReader":33,"./filter":34,"./focus":35,"./generate":37,"./getDateTime":39,"./getDaysInMonth":40,"./getParam":41,"./importJson":43,"./insert":44,"./isArabic":45,"./isEqual":47,"./isPath":50,"./jsonFiles":51,"./jsonToBracket":52,"./keys":53,"./merge":57,"./note":58,"./overflow":59,"./popup":60,"./position":61,"./preventDefault":62,"./reducer":66,"./refresh":67,"./reload":68,"./remove":69,"./resize":71,"./route":72,"./save":73,"./search":74,"./setContent":75,"./setData":76,"./setElement":77,"./setPosition":78,"./sort":79,"./starter":81,"./state":82,"./style":84,"./switchMode":85,"./toApproval":87,"./toArray":88,"./toAwait":89,"./toCSV":90,"./toCode":92,"./toControls":94,"./toId":98,"./toNumber":99,"./toOperator":100,"./toParam":101,"./toStyle":104,"./toValue":105,"./toView":106,"./toggleView":107,"./update":108,"./upload":110,"./wait":112}],37:[function(require,module,exports){
+},{"./axios":4,"./blur":5,"./capitalize":6,"./clearValues":7,"./clone":8,"./compare":11,"./contentful":12,"./cookie":13,"./createActions":15,"./createHtml":16,"./data":19,"./decode":21,"./defaultInputHandler":22,"./droplist":23,"./erase":25,"./event":26,"./execute":29,"./exportJson":30,"./fileReader":31,"./filter":32,"./focus":33,"./generate":35,"./getDateTime":37,"./getDaysInMonth":38,"./getParam":39,"./importJson":41,"./insert":42,"./isArabic":43,"./isEqual":45,"./isPath":48,"./jsonFiles":49,"./jsonToBracket":50,"./keys":51,"./merge":55,"./note":56,"./overflow":57,"./popup":58,"./position":59,"./preventDefault":60,"./reducer":64,"./refresh":65,"./reload":66,"./remove":67,"./resize":69,"./route":70,"./save":71,"./search":72,"./setContent":73,"./setData":74,"./setPosition":75,"./sort":76,"./starter":78,"./state":79,"./style":81,"./switchMode":82,"./toApproval":84,"./toArray":85,"./toAwait":86,"./toCSV":87,"./toCode":89,"./toControls":91,"./toId":95,"./toNumber":96,"./toOperator":97,"./toParam":98,"./toStyle":101,"./toValue":102,"./toView":103,"./toggleView":104,"./update":105,"./upload":107,"./wait":109}],35:[function(require,module,exports){
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 const numbers = "1234567890"
 
@@ -2304,7 +2283,7 @@ const generate = (params = {}) => {
 
 module.exports = {generate}
 
-},{}],38:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 module.exports = ({ el, id }) => {
   var view = window.views[id]
   el = el || view.element
@@ -2330,7 +2309,7 @@ module.exports = ({ el, id }) => {
 
   return { top: Math.round(top), left: Math.round(left), right: Math.round(right), bottom: Math.round(bottom), height: Math.round(height), width: Math.round(width) };
 }
-},{}],39:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 module.exports = {
     getDateTime: (time) => {
         
@@ -2351,13 +2330,13 @@ module.exports = {
         return `${year}-${month}-${day}T${hrs}:${min}:${sec}`
     }
 }
-},{}],40:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 module.exports = {
     getDaysInMonth: (stampTime) => {
         return new Date(stampTime.getFullYear(), stampTime.getMonth() + 1, 0).getDate()
     }
 }
-},{}],41:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 const { toParam } = require("./toParam")
 
 const getParam = ({ string, param, defValue }) => {
@@ -2381,7 +2360,7 @@ const getParam = ({ string, param, defValue }) => {
 
 module.exports = {getParam}
 
-},{"./toParam":101}],42:[function(require,module,exports){
+},{"./toParam":98}],40:[function(require,module,exports){
 const getType = (value) => {
   const { emptySpaces } = require("./toValue")
 
@@ -2402,8 +2381,8 @@ const getType = (value) => {
   if (typeof value === "string") return "string"
 }
 module.exports = { getType }
-},{"./toValue":105}],43:[function(require,module,exports){
-const { toAwait } = require("./toAwait")
+},{"./toValue":102}],41:[function(require,module,exports){
+const { clone } = require("./clone")
 
 const getJson = (url) => {
 
@@ -2431,12 +2410,9 @@ const importJson = ({ _window, id, e, __, ...params }) => {
             var reader = new FileReader()
             reader.onload = (e) => {
                 
-                global.import.data = JSON.parse(e.target.result)
-                toAwait({ _window, id, e, ...params, __: [global.import, ...__] })
+                var data = { data: JSON.parse(e.target.result), success: true, message: "Data imported successfully!" }
+                require("./toAwait").toAwait({ _window, id, e, ...params, __, _: data })
             }
-
-            global.import.files = [...event.target.files]
-            global.import.file = global.import.files[0]
             
             reader.readAsText(event.target.files[0])
         })
@@ -2446,12 +2422,11 @@ const importJson = ({ _window, id, e, __, ...params }) => {
 }
 
 module.exports = {importJson, getJson}
-},{"./toAwait":89}],44:[function(require,module,exports){
+},{"./clone":8,"./toAwait":86}],42:[function(require,module,exports){
 const { clone } = require("./clone")
 const { toView } = require("./toView")
 const { starter } = require("./starter")
 const { generate } = require("./generate")
-const { setElement } = require("./setElement")
 const { toCode } = require("./toCode")
 
 module.exports = {
@@ -2532,9 +2507,8 @@ module.exports = {
     if (index >= view.element.children.length) view.element.appendChild(el)
     else view.element.insertBefore(el, view.element.children[index])
 
-    var __IDList__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-    __IDList__.map(id => setElement({ id, lookupActions }))
-    __IDList__.map(id => starter({ id, lookupActions }))
+    // get ids
+    innerHTML.split("id='").slice(1).map(id => id.split("'")[0]).map(id => starter({ id }))
 
     // display after insert
     views[el.id].style.transition = views[el.id].element.style.transition = null
@@ -2552,7 +2526,7 @@ module.exports = {
     require("./toAwait").toAwait({ id, lookupActions, stack, __, _: data, ...params })
   }
 }
-},{"./clone":8,"./generate":37,"./setElement":77,"./starter":81,"./toAwait":89,"./toCode":92,"./toView":106}],45:[function(require,module,exports){
+},{"./clone":8,"./generate":35,"./starter":78,"./toAwait":86,"./toCode":89,"./toView":103}],43:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -2586,7 +2560,7 @@ const isArabic = ({ id, value, text }) => {
 
 module.exports = { isArabic }
 
-},{}],46:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 module.exports = {
     isCondition: ({ _window, string }) => {
         
@@ -2602,7 +2576,7 @@ module.exports = {
         return false
     }
 }
-},{}],47:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 const isEqual = function(value, other) {
   // if (value === undefined || other === undefined) return false
 
@@ -2713,7 +2687,7 @@ const isEqual = function(value, other) {
 
 module.exports = {isEqual}
 
-},{}],48:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 const isEvent = ({ string }) => {
     if (string.split("?").length > 1) {
 
@@ -2726,7 +2700,7 @@ const isEvent = ({ string }) => {
 }
 
 module.exports = { isEvent }
-},{"./events.json":29}],49:[function(require,module,exports){
+},{"./events.json":27}],47:[function(require,module,exports){
 module.exports = {
   isParam: ({ _window, string }) => {
       
@@ -2742,7 +2716,7 @@ module.exports = {
     return false
   }
 }
-},{}],50:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 module.exports = {
   isPath: ({ path }) => {
     path = path.split(".")
@@ -2759,7 +2733,7 @@ module.exports = {
   },
 };
 
-},{}],51:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 const fs = require("fs")
 const { toArray } = require("./toArray")
 const { toOperator } = require("./toOperator")
@@ -2933,7 +2907,7 @@ const uploadJsonFile = ({ upload = {} }) => {
 }
 
 module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }
-},{"./toArray":88,"./toOperator":100,"fs":151}],52:[function(require,module,exports){
+},{"./toArray":85,"./toOperator":97,"fs":148}],50:[function(require,module,exports){
 const jsonToBracket = (object, field) => {
 
   if (!object) return ""
@@ -2968,13 +2942,13 @@ const jsonToBracket = (object, field) => {
 
 module.exports = {jsonToBracket}
 
-},{}],53:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 module.exports = {
     keys: (object) => {
         return Object.keys(object)
     }
 }
-},{}],54:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toStyle } = require("./toStyle")
 
@@ -3007,46 +2981,63 @@ module.exports = {
     return `<div ${containerAtts} ${container.draggable !== undefined ? `draggable='${container.draggable}'` : ''} spellcheck='false' ${container.editable && !container.readonly ? 'contenteditable' : ''} class='${container.class}' id='${containerId}' style='${containerStyle}' index='${container.index || 0}'>${labelTag}${tag}</div>`
   }
 }
-},{"./generate":37,"./toStyle":104}],55:[function(require,module,exports){
+},{"./generate":35,"./toStyle":101}],53:[function(require,module,exports){
 const { toCode } = require("./toCode")
 const { generate } = require("./generate")
 const { isCondition } = require("./isCondition")
 const { executable } = require("./executable")
+const { stacker } = require("./stack")
 
-const lineInterpreter = ({ _window, lookupActions, stack, headAddressID, address, id, e, data: string, req, res, __, mount, condition, dblExecute, toView, isView, object, _object, index = 0, splitter = "?" }) => {
+const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, action, event, data: string, req, res, __, mount, condition, dblExecute, toView, object, _object, index = 0, splitter = "?" }) => {
 
     require("./toParam")
     require("./toValue")
     require("./toApproval")
 
+    var global = _window ? _window.global : window.global
+    var view = _window ? _window.views[id] : window.views[id]
+
+    // missing stack or __
+    if (!stack) stack = stacker({ _window, event, id, string })
+    if (!__) __ = view.__
+
+    var startTime = (new Date()).getTime(), success = true, data, returnForWaitActionExists = false
+
     // splitter is for ? or :
     // index is for using name?params?conditions?elseparams
 
-    if (!string) return ({ success: false, message: `No action to execute!`, executionDuration: 0 })
-
-    var global = _window ? _window.global : window.global
-    var startTime = (new Date()).getTime(), success = true, data, returnForWaitActionExists = false
-
-    // push address for waits
-    if (headAddressID) global.__waitAdds__.unshift(headAddressID)
-
-    string = toCode({ _window, id, string: toCode({ _window, id, string, start: "'" }) })
-
-    if (string.charAt(0) === "@" && string.length === 6) string = global.__refs__[string].data
-
-    var terminator = ({ data }) => {
+    var terminator = ({ data, order }) => {
 
         // remove address of waiter
-        if (headAddressID) global.__waitAdds__.splice(0, 1)
+        if (address.id) address.interpreting = false
 
-        if (!address) return data
+        if (!address.id) return data
         
         // execute waits
         if (stack.addresses.findIndex(await => await.id === address.id) === 0)
             require("./toAwait").toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: returnForWaitActionExists ? data.data : undefined })
-    
+        
         // return data
         return data
+    }
+
+    if (stack.terminated) return terminator({ data: { success: false, message: `Action terminated!`, executionDuration: 0 }, order: 0 })
+    if (!string) return terminator({ data: { success: true, message: `No action to execute!`, executionDuration: 0 }, order: 1 })
+
+    // push address for waits
+    if (address.id) address.interpreting = true
+    
+    // encode
+    string = toCode({ _window, id, string: toCode({ _window, id, string, start: "'" }) })
+
+    // decode
+    if (string.charAt(0) === "@" && string.length === 6) {
+
+        // data is text
+        if (global.__refs__[string].type === "text") 
+            return terminator({ data: { data: global.__refs__[string].data, success: true, message: `No action to execute!`, executionDuration: 0 }, order: 2 })
+        
+        string = global.__refs__[string].data
     }
 
     // subparams
@@ -3054,7 +3045,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, headAddressID, address
 
         // list
         var substring = string.split(splitter)[0]
-        if (!substring) return terminator({ data: { success: false, message: `Missing name!`, executionDuration: 0 } })
+        if (!substring) return terminator({ data: { success: false, message: `Missing name!`, executionDuration: 0 }, order: 3 })
 
         // decode
         if (substring.charAt(0) === "@" && substring.length === 6) substring = global.__refs__[substring].data
@@ -3062,8 +3053,8 @@ const lineInterpreter = ({ _window, lookupActions, stack, headAddressID, address
         // name has subparams => interpret
         if (substring.includes("?")) {
 
-            var data = lineInterpreter({ lookupActions, stack, id, e, data: substring, index: 1, req, res, __, mount, condition, toView, isView, object, _object })
-            if (data.conditionsNotApplied) return terminator({ data })
+            var data = lineInterpreter({ lookupActions, stack, id, e, data: substring, index: 1, req, res, __, mount, condition, toView, object, _object })
+            if (data.conditionsNotApplied) return terminator({ data, order: 4 })
         }
     }
 
@@ -3075,27 +3066,29 @@ const lineInterpreter = ({ _window, lookupActions, stack, headAddressID, address
     var execute = ({ success, message, string, conditionsNotApplied }) => {
 
         var actionReturnID = generate(), data
-        global.__returnAdds__.unshift({ id: actionReturnID })
+        stack.returns.unshift({ id: actionReturnID })
 
         // no params
         if (!string) message = "No actions to execute!"
 
-        var action = "toValue"
-        if (!dblExecute && (condition || isCondition({ _window, string: data }))) action = "toApproval"
-        else if (!dblExecute && mount) action = "toParam"
-
+        if (!action) {
+            action = "toValue"
+            if (!dblExecute && (condition || isCondition({ _window, string: data }))) action = "toApproval"
+            else if (!dblExecute && mount) action = "toParam"
+        }
+        
         data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object, _object, toView })
 
         if (dblExecute && executable({ _window, string: data }))
-            data = lineInterpreter({ lookupActions, stack, id, e, data, req, res, __, mount, condition, toView, isView, object, _object }).data
+            data = lineInterpreter({ lookupActions, stack, id, e, data, req, res, __, mount, condition, toView, object, _object }).data
 
-        if (global.__returnAdds__[0].returned) {
+        if (stack.returns && stack.returns[0].returned) {
             returnForWaitActionExists = true
-            data = global.__returnAdds__[0].data
+            data = stack.returns[0].data
         }
 
         // remove return address
-        global.__returnAdds__.splice(global.__returnAdds__.findIndex(ret => ret.id === actionReturnID), 1)
+        stack.returns.splice(stack.returns.findIndex(ret => ret.id === actionReturnID), 1)
 
         return ({ success, message, data, conditionsNotApplied, executionDuration: (new Date()).getTime() - startTime })
     }
@@ -3106,11 +3099,11 @@ const lineInterpreter = ({ _window, lookupActions, stack, headAddressID, address
     else if (!approved) data = ({ success, message: `Conditions not applied!`, conditionsNotApplied: true, executionDuration: (new Date()).getTime() - startTime })
     else data = execute({ success, string, message: `Action executed successfully!` })
 
-    return terminator({ data })
+    return terminator({ data, order: 5 })
 }
 
 module.exports = { lineInterpreter }
-},{"./executable":30,"./generate":37,"./isCondition":46,"./toApproval":87,"./toAwait":89,"./toCode":92,"./toParam":101,"./toValue":105}],56:[function(require,module,exports){
+},{"./executable":28,"./generate":35,"./isCondition":44,"./stack":77,"./toApproval":84,"./toAwait":86,"./toCode":89,"./toParam":98,"./toValue":102}],54:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const readFile = require("./readFile");
 
@@ -3168,7 +3161,7 @@ module.exports = {
         if (params.asyncer) require("./toAwait").toAwait({ _window, id, ...params, req, res, __: [global.mail, ...__] })
     }
 }
-},{"./readFile":65,"./toArray":88,"./toAwait":89}],57:[function(require,module,exports){
+},{"./readFile":63,"./toArray":85,"./toAwait":86}],55:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
@@ -3239,7 +3232,7 @@ const override = (obj1, obj2) => {
 
 module.exports = { merge, override }
 
-},{"./clone":8,"./toArray":88}],58:[function(require,module,exports){
+},{"./clone":8,"./toArray":85}],56:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const note = ({ note: _note }) => {
@@ -3275,7 +3268,7 @@ const note = ({ note: _note }) => {
 
 module.exports = { note }
 
-},{"./isArabic":45}],59:[function(require,module,exports){
+},{"./isArabic":43}],57:[function(require,module,exports){
 const overflow = ({ id }) => {
 
   var view = window.views[id]
@@ -3332,14 +3325,14 @@ const overflow = ({ id }) => {
 
 module.exports = {overflow}
 
-},{}],60:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 const popup = ({ id }) => {
   
 }
 
 module.exports = {popup}
 
-},{}],61:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 const { lengthConverter } = require("./resize")
 
 const getPadding = (el) => {
@@ -3386,14 +3379,14 @@ module.exports = {
     position,
     getPadding
 }
-},{"./resize":71}],62:[function(require,module,exports){
+},{"./resize":69}],60:[function(require,module,exports){
 const preventDefault = ({e}) => {
   e.preventDefault();
 };
 
 module.exports = {preventDefault};
 
-},{}],63:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 const { toParam } = require("./toParam")
 
 module.exports = {
@@ -3415,7 +3408,7 @@ module.exports = {
         window.print()
     }
 }   
-},{"./toAwait":89,"./toParam":101}],64:[function(require,module,exports){
+},{"./toAwait":86,"./toParam":98}],62:[function(require,module,exports){
 const qr = async ({ _window, id, req, res, data, __, e, stack, lookupActions, address }) => {
 
     if (res && !res.headersSent) return qrServer({ _window, id, req, res, data, __, e, stack, lookupActions, address })
@@ -3451,7 +3444,7 @@ const wifiQrText = ({ data }) => {
 }
 
 module.exports = { qr }
-},{"./toAwait":89,"easyqrcodejs":154,"qrcode":170}],65:[function(require,module,exports){
+},{"./toAwait":86,"easyqrcodejs":151,"qrcode":156}],63:[function(require,module,exports){
 module.exports = (file) => new Promise(res => {
 
     var myFile = file.file || file.url
@@ -3463,7 +3456,7 @@ module.exports = (file) => new Promise(res => {
         myReader.readAsDataURL(file)
     }
 })
-},{}],66:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { isEqual } = require("./isEqual")
@@ -3486,15 +3479,16 @@ const { note } = require("./note")
 const { isParam } = require("./isParam")
 const { toAwait } = require("./toAwait")
 const { lengthConverter } = require("./resize")
-const actions = require("./actions.json")
-const events = require("./events.json")
 const { qr } = require("./qr")
 const { replaceNbsps } = require("./replaceNbsps")
 const { addresser } = require("./addresser")
 const { vcard } = require("./vcard")
 const { lineInterpreter } = require("./lineInterpreter")
+const { colorize } = require("./colorize")
+const actions = require("./actions.json")
+const events = require("./events.json")
 
-const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value, key, params = {}, object, __, e, req, res, mount, condition, toView, _object }) => {
+const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: path, value, key, params = {}, object, __, e, req, res, mount, condition, toView, _object }) => {
 
     const { remove } = require("./remove")
     const { toValue, calcSubs, calcDivision, calcModulo } = require("./toValue")
@@ -3502,11 +3496,13 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
     const { insert } = require("./insert")
     const { toAction } = require("./toAction")
 
+    if (stack.terminated) return
+
     var views = _window ? _window.views : window.views
     var view = views[id], breakRequest, mainId = id
     var global = _window ? _window.global : window.global
 
-    if ((global.__returnAdds__[0] || {}).returned) return
+    if ((stack.returns && stack.returns[0] || {}).returned) return
 
     // path is a string
     if (typeof path === "string") path = path.split(".")
@@ -3546,9 +3542,9 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
     // [actions?conditions?elseActions]():[params]:[waits]
     if (path0.length === 8 && path0.slice(-2) === "()" && path0.charAt(0) === "@") {
 
-        var { address, __: my__ } = addresser({ _window, stack, args, requesterID: id, action: "[...]()", __, lookupActions, id, _object, object, headAddress: true })
+        var { address, __: my__ } = addresser({ _window, stack, args, requesterID: id, action: "[...]()", __, lookupActions, id, _object, object })
         
-        var { data } = lineInterpreter({ _window, lookupActions, stack, address, headAddressID: address.id, id, data: path0.slice(0, -2), key, object, __: my__, e, dblExecute: true, req, res, mount, condition, toView })
+        var { data } = lineInterpreter({ _window, lookupActions, stack, address, id, data: path0.slice(0, -2), key, object, __: my__, e, dblExecute: true, req, res, mount, condition, toView })
 
         _object = data
         path0 = (path[1] || "").split(":")[0]
@@ -3650,7 +3646,7 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             args = path[0].split(":")
 
         } else {
-
+            
             if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[2], id, __, req, res, object, toView })
             if (path[1]) _object = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
             else return toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
@@ -3776,14 +3772,15 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             if (path0 === "undefined") return undefined
             else if (path0 === "false") return false
             else if (path0 === "true") return true
-            else if (path0 === "desktop()") return global.device.device.type === "desktop"
-            else if (path0 === "tablet()") return global.device.device.type === "tablet"
-            else if (path0 === "mobile()") return global.device.device.type === "phone"
+            else if (path0 === "desktop()") return global.manifest.device.device.type === "desktop"
+            else if (path0 === "tablet()") return global.manifest.device.device.type === "tablet"
+            else if (path0 === "mobile()") return global.manifest.device.device.type === "phone"
             else if (path0 === "clicked()") _object = global.clicked
             else if (path0 === "log()") {
 
                 var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, data: arg || "here", params, __, e, object }))
-                console.log(..._log)
+                console.log("LOG", ..._log)
+                stack.logs.push("LOG " + _log.join(" "))
                 path = path.slice(1)
                 path0 = (path[1] || "").split(":")[0]
             }
@@ -3903,7 +3900,9 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
 
             var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: tolog ? [tolog, ...__] : __, data: arg, object: k0[0] !== "_" ? o : object }))
 
-            console.log(..._log)
+            console.log("LOG", ..._log)
+            stack.logs.push("LOG " + _log.join(" "))
+
             return o
         }
 
@@ -4976,7 +4975,7 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
 
             } else _o = o.__view__ ? o : views[id]
 
-            if (typeof _o === "string" && views[_o]) views[_o].element.q()
+            if (typeof _o === "string" && views[_o]) views[_o].element.click()
             else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
             else if (typeof _o === "object" && _o.element) _o.element.click()
 
@@ -5212,26 +5211,26 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
 
         } else if (k0 === "device()") {
 
-            answer = global.device.type
+            answer = global.manifest.device.type
 
         } else if (k0 === "mobile()" || k0 === "phone()") {
 
-            answer = global.device.type === "phone"
+            answer = global.manifest.device.type === "phone"
 
         } else if (k0 === "desktop()") {
 
-            answer = global.device.type === "desktop"
+            answer = global.manifest.device.type === "desktop"
 
         } else if (k0 === "tablet()") {
 
-            answer = global.device.type === "tablet"
+            answer = global.manifest.device.type === "tablet"
 
         } else if (k0 === "installApp()") {
 
             const installApp = async () => {
 
-                global["installApp"].prompt();
-                const { outcome } = await global["installApp"].userChoice;
+                global.__installApp__.prompt();
+                const { outcome } = await global.__installApp__.userChoice;
                 console.log(`User response to the install prompt: ${outcome}`);
             }
 
@@ -5315,10 +5314,14 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             var _timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })) : 0
             var _repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object })) : false
             var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object, toView }) }
+            
             if (typeof _repeats === "boolean") {
+
                 if (_repeats === true) answer = setInterval(myFn, _timer)
                 else if (_repeats === false) answer = setTimeout(myFn, _timer)
+
             } else if (typeof _repeats === "number") {
+                
                 answer = []
                 answer.push(setTimeout(myFn, _timer))
                 if (_repeats > 1) {
@@ -5525,8 +5528,8 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
 
         } else if (k0 === "return()") {
 
-            global.__returnAdds__[0].data = answer = toValue({ _window, data: args[1], e, id, object, __, stack, lookupActions })
-            global.__returnAdds__[0].returned = true
+            stack.returns[0].data = answer = toValue({ _window, data: args[1], e, id, object, __, stack, lookupActions })
+            stack.returns[0].returned = true
 
         } else if (k0 === "reload()") {
 
@@ -5563,9 +5566,11 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             else if (typeof o === "string" && views[o]) _first = views[o].element
 
             if (!_first || !_next) return
-            if (_first.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
+            if (_first.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE) {
                 answer = _first.contains(_next)
-
+                if (!answer) answer = _first.id === _next.id
+            }
+                
         } else if (k0 === "in()" || k0 === "inside()") {
 
             var _next = toValue({ req, res, _window, lookupActions, stack, id: mainId, data: args[1], __, e })
@@ -6123,13 +6128,13 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             // if no index pull the last element
             var _last = 1, _text
             var _first
-            if (!isParam({ _window, id, string: args[1] })) _first = args[1] !== undefined ? toValue({ _window, id, data: args[1], __, e, object }) : 0
-            if (args[2]) _last = toValue({ _window, id, data: args[2], __, e, object })
+            if (!isParam({ _window, id, string: args[1] })) _first = args[1] !== undefined ? toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack }) : 0
+            if (args[2]) _last = toValue({ _window, id, data: args[2], __, e, object, lookupActions, stack })
 
             if (typeof _first !== "number") {
 
-                var _items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __ }))
-                console.log(o, _items.length);
+                var _items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __, lookupActions, stack }))
+                
                 _items.filter(data => data !== undefined && data !== null).map(_item => {
                     var _index = o.findIndex(item => isEqual(item, _item))
                     if (_index !== -1) o.splice(_index, 1)
@@ -6203,52 +6208,27 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             o.splice(parseInt(_index), 0, _value)
             answer = o
 
-        } else if (k0 === "remove()" || k0 === "rem()") { // remove child with data
+        } else if (k0 === "remove()" || k0 === "rem()") {
 
-            clearTimeout(global["tooltip-timer"])
-            delete global["tooltip-timer"]
             views.tooltip.element.style.opacity = "0"
 
             if (args[1] && !isParam({ _window, string: args[1] })) {
 
                 var _id = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-                if (!views[_id]) return console.log("Element doesnot exist!")
                 return remove({ id: _id })
 
             } else if (args[1] && isParam({ _window, string: args[1] })) {
 
-                var params = toParam({ req, res, _window, lookupActions, stack, e, id, data: args[1], __, params })
-                return remove({ id: params.id || o.id, remove: { onlyChild: params.data === false ? false : true }, __ })
+                var params = toParam({ req, res, _window, lookupActions, stack, e, id, data: args[1], __ })
+                return remove({ id: params.id || o.id, data: params, __ })
             }
 
             var _id = typeof o === "string" ? o : o.id
-            if (!views[_id]) return console.log("Element doesnot exist!")
-
-            var _parent = views[views[o.id].parent]
-            _parent.length = (_parent.element.children.length - 1) || 0
 
             remove({ id: o.id, __ })
             return true
 
-        } else if (k0 === "removeChild()" || k0 === "remChild()" || k0 === "removeView()" || k0 === "remView()") { // remove only view without removing data
-
-            if (args[1]) {
-                var _id = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-                if (!views[_id]) return console.log("Element doesnot exist!")
-                return remove({ id: _id, remove: { onlyChild: true } })
-            }
-
-            var _id = typeof o === "string" ? o : o.id
-            if (!views[_id]) return console.log("Element doesnot exist!")
-            remove({ id: o.id, remove: { onlyChild: true } })
-
-        } /*else if (k0 === "charAt()") {
-
-            var args = k.split(":")
-            var _index = toValue({ req, res, _window, lookupActions, stack, e, id, data: args[1], __, params })
-            answer = o.charAt(0)
-
-        } */else if (k0 === "scrollTo()") {
+        } else if (k0 === "scrollTo()") {
 
             var _x = toValue({ req, res, _window, lookupActions, stack, e, id, data: args[1], __, params })
             var _y = toValue({ req, res, _window, lookupActions, stack, e, id, data: args[2], __, params })
@@ -7281,14 +7261,15 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             var address = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "import()", object, toView, _object, lookupActions, __, id })
             var { address, data } = address
 
-            if (data.type === "json") importJson({ req, res, _window, address, lookupActions, stack, id, e, __, asyncer: true })
-            else require(toValue({ req, res, _window, lookupActions, stack, address, id, e, __, data: args[1], params }))
+            if (data.type === "json") importJson({ req, res, _window, address, lookupActions, stack, id, e, __ })
+            else require(toValue({ req, res, _window, lookupActions, stack, address, id, e, __, data: args[1] }))
 
             return true
 
         } else if (k0 === "export()") {
 
             var data = toParam({ req, res, _window, id, e, __, data: args[1] })
+            if (data.json) data.type = "json"
             if (data.type === "json") exportJson(data)
 
         } else if (k0 === "flat()") {
@@ -7344,22 +7325,11 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
 
         } else if (k0 === "sort()") {
 
-            var _array, _params = {}
-            if (Array.isArray(o)) _array = o
-            if (isParam({ _window, string: args[1] })) {
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            if (!data.data) data.data = o
 
-                _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _params.data = _params.data || _params.map || _params.array || _params.object || _params.list || _array
-
-            } else if (args[1]) {
-
-                _params.data = _array
-                _params.path = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            }
-
-            if (!_params.data && _array) _params.data = _array
             // else return o
-            _params.data = answer = require("./sort").sort({ _window, lookupActions, stack, sort: _params, id, e })
+            data.data = answer = require("./sort").sort({ _window, lookupActions, stack, __, sort: data, id, e })
 
             return answer
 
@@ -7846,6 +7816,11 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
 
             answer = o.filter(o => o !== undefined && !Number.isNaN(o) && o !== "")
 
+        } else if (k0 === "colorize()") {
+
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1] || "", __ })
+            answer = colorize({ _window, string: o, ...data })
+
         } else if (k0 === "route()") {
 
             if (isParam({ _window, string: args[1] })) {
@@ -7975,7 +7950,7 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
                 event: `loaded?${pathJoined}`
             })
             
-            var { address } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "update()", object, toView, _object, lookupActions, __, id })
+            var { address } = addresser({ _window, stack, args, asynchronous: true, interpreting: true, requesterID: o.id, action: "update()", object, toView, _object, lookupActions, __, id })
             require("./update").update({ _window, lookupActions, stack, req, res, id: o.id, mainId: id, address, __ })
             
             return true
@@ -8006,7 +7981,7 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             if (!o.__view__) return o
 
             // wait address
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "insert()", toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, interpreting: true, requesterID: o.id, action: "insert()", toView, _object, lookupActions, __, id })
 
             insert({ id: o.id, insert: data, lookupActions, stack, address, __ })
             return true
@@ -8080,26 +8055,35 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
 
             var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "search()", mount, object, toView, _object, lookupActions, __, id })
             
+            // print collection with action name
+            address.action += " " + data.collection
+
             require("./search").search({ _window, lookupActions, stack, address, id, e, __, req, res, search: data })
             return true
 
         } else if (k0 === "erase()") {
 
             var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "erase()", mount, object, toView, _object, lookupActions, __, id })
-            
+                        
+            // print collection with action name
+            address.action += " " + data.collection
+
             require("./erase").erase({ _window, lookupActions, stack, address, id, e, __, req, res, erase: data })
             return true
 
         } else if (k0 === "save()") {
 
             var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "save()", mount, object, toView, _object, lookupActions, __, id })
-            
+                        
+            // print collection with action name
+            address.action += " " + data.collection
+
             require("./save").save({ _window, lookupActions, stack, address, id, e, __, req, res, save: data })
             return true
 
         } else if (k0 === "fetch()") {
 
-
+            
 
         } else if (k0 === "send()") {
             
@@ -8123,9 +8107,15 @@ const reducer = ({ _window, lookupActions, stack, id = "root", data: path, value
             }
 
             // clear stack
-            stack.terminated = true
+            //stack.terminated = true
+            //stack.addresses = []
             
-            console.log("SEND", executionDuration, respond)
+            var log = "SEND " + executionDuration
+            stack.logs.push(log)
+
+            console.log(log, respond)
+            respond.logs = stack.logs
+
             res.send(respond)
 
         } else if (k0 === "sent()") {
@@ -8290,14 +8280,13 @@ const getDeepChildren = ({ _window, id }) => {
     var all = [view]
     if (!view) return []
 
-    if ([...view.element.children].length > 0)
-        ([...view.element.children]).map(el => {
+    if (view.__childrenID__ && view.__childrenID__.length > 0)
+        view.__childrenID__.map(id => {
 
-            var _view = views[el.id]
-            if (!_view) return
-
-            if ([..._view.element.children].length > 0)
-                all.push(...getDeepChildren({ id: el.id }))
+            var _view = views[id]
+            
+            if (_view.__childrenID__ && _view.__childrenID__.length > 0)
+                all.push(...getDeepChildren({ _window, id }))
 
             else all.push(_view)
         })
@@ -8312,16 +8301,15 @@ const getDeepChildrenId = ({ _window, id }) => {
     var all = [id]
     if (!view) return []
 
-    if ([...view.element.children].length > 0)
-        ([...view.element.children]).map(el => {
+    if (view.__childrenID__ && view.__childrenID__.length > 0)
+        view.__childrenID__.map(id => {
 
-            var _view = views[el.id]
-            if (!_view) return
+            var _view = views[id]
 
-            if ([..._view.element.children].length > 0)
-                all.push(...getDeepChildrenId({ id: el.id }))
+            if (_view.__childrenID__ && _view.__childrenID__.length > 0)
+                all.push(...getDeepChildrenId({ _window, id }))
 
-            else all.push(el.id)
+            else all.push(id)
         })
 
     return all
@@ -8400,10 +8388,9 @@ var formatter = new Intl.NumberFormat('en-US', {
 });
 
 module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./actions.json":2,"./addresser":3,"./axios":4,"./capitalize":6,"./clone":8,"./cookie":14,"./counter":15,"./csvToJson":20,"./droplist":25,"./erase":27,"./events.json":29,"./exportJson":32,"./focus":35,"./generate":37,"./getCoords":38,"./getDateTime":39,"./getDaysInMonth":40,"./getType":42,"./importJson":43,"./insert":44,"./isEqual":47,"./isParam":49,"./jsonToBracket":52,"./lineInterpreter":55,"./mail":56,"./note":58,"./print":63,"./qr":64,"./remove":69,"./replaceNbsps":70,"./resize":71,"./route":72,"./save":73,"./search":74,"./setPosition":78,"./sort":79,"./toAction":86,"./toApproval":87,"./toArray":88,"./toAwait":89,"./toCSV":90,"./toClock":91,"./toCode":92,"./toExcel":95,"./toHTML":97,"./toId":98,"./toNumber":99,"./toParam":101,"./toPdf":102,"./toSimplifiedDate":103,"./toValue":105,"./toggleView":107,"./update":108,"./updateSelf":109,"./upload":110,"./vcard":111}],67:[function(require,module,exports){
+},{"./actions.json":2,"./addresser":3,"./axios":4,"./capitalize":6,"./clone":8,"./colorize":10,"./cookie":13,"./counter":14,"./csvToJson":18,"./droplist":23,"./erase":25,"./events.json":27,"./exportJson":30,"./focus":33,"./generate":35,"./getCoords":36,"./getDateTime":37,"./getDaysInMonth":38,"./getType":40,"./importJson":41,"./insert":42,"./isEqual":45,"./isParam":47,"./jsonToBracket":50,"./lineInterpreter":53,"./mail":54,"./note":56,"./print":61,"./qr":62,"./remove":67,"./replaceNbsps":68,"./resize":69,"./route":70,"./save":71,"./search":72,"./setPosition":75,"./sort":76,"./toAction":83,"./toApproval":84,"./toArray":85,"./toAwait":86,"./toCSV":87,"./toClock":88,"./toCode":89,"./toExcel":92,"./toHTML":94,"./toId":95,"./toNumber":96,"./toParam":98,"./toPdf":99,"./toSimplifiedDate":100,"./toValue":102,"./toggleView":104,"./update":105,"./updateSelf":106,"./upload":107,"./vcard":108}],65:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
-const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
 const { toView } = require("./toView")
 const { clone } = require("./clone")
@@ -8441,7 +8428,7 @@ const refresh = async ({ id, update = {}, lookupActions, __ }) => {
     views[id].index = index
     views[id].parent = parent.id
     views[id].style = views[id].style || {}
-    views[id]["__mapViewsPath__"] = [...view.__mapViewsPath__]
+    views[id].__viewsPath__ = [...view.__viewsPath__]
     views[id].style.opacity = "0"
     if (timer) views[id].style.transition = `opacity ${timer}ms`
     
@@ -8467,10 +8454,8 @@ const refresh = async ({ id, update = {}, lookupActions, __ }) => {
   var node = lDiv.children[0]
 
   parent.element.insertBefore(node, parent.element.children[index])
-  var __IDList__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-  
-  __IDList__.map(id => setElement({ id }))
-  __IDList__.map(id => starter({ id }))
+  var __ids__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
+  __ids__.map(id => starter({ id }))
   
   var _children = [...parent.element.children]
   _children.map(childNode => {
@@ -8489,37 +8474,43 @@ const refresh = async ({ id, update = {}, lookupActions, __ }) => {
 }
 
 module.exports = {refresh}
-},{"./clone":8,"./generate":37,"./setElement":77,"./starter":81,"./toArray":88,"./toView":106,"./update":108}],68:[function(require,module,exports){
+},{"./clone":8,"./generate":35,"./starter":78,"./toArray":85,"./toView":103,"./update":105}],66:[function(require,module,exports){
 module.exports = {
     reload: () => {
         document.location.reload(true)
     }
 }
-},{}],69:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 const { removeChildren } = require("./update")
 const { clone } = require("./clone")
-const { reducer } = require("./reducer")
 const { closePublicViews } = require("./closePublicViews")
+const { lineInterpreter } = require("./lineInterpreter")
 
-const remove = ({ remove: _remove, id, __ }) => {
+const remove = ({ data = {}, id, __ }) => {
 
   var views = window.views
   var view = window.views[id]
 
-  _remove = _remove || {}
-  var path = _remove.path, derivations = []
+  var path = data.path, derivations = []
 
   if (path) derivations = path
   else derivations = clone(view.derivations) || []
   
-  if (derivations.length > 0) {
+  if (derivations.length > 0 && !data.preventDefault) {
 
-    derivations.unshift(`${view.doc}:()`)
-    var parentData = reducer({ id, data: derivations.slice(0, -1), __ })
+    var string = `${view.doc}:().` + derivations.join(".").slice(0, -1)
+    var parentData = lineInterpreter({ id, data: string })
+
+    // remove data
     if (Array.isArray(parentData) && parentData.length === 0) {
-      reducer({ id, data: derivations.slice(0, -1), value: [], key: true, __ })
+
+      var string = `${view.doc}:().` + derivations.join(".").slice(0, -1) + "=:"
+      lineInterpreter({ id, data: string })
+
     } else {
-      reducer({ id, data: [...derivations, "del()"], __ })
+
+      var string = `${view.doc}:().` + derivations.join(".") + ".del()"
+      lineInterpreter({ id, data: string })
     }
   }
 
@@ -8528,7 +8519,6 @@ const remove = ({ remove: _remove, id, __ }) => {
 
   removeChildren({ id })
 
-  // NEWWWWWWWWWWWWWWWWWW
   // pull id from parent childrenID
   var childrenID = views[view.parent].__childrenID__
   var index = childrenID.findIndex(childID => childID === view.id)
@@ -8579,14 +8569,14 @@ const resetDerivations = ({ id, index }) => {
 
 module.exports = { remove }
 
-},{"./clone":8,"./closePublicViews":9,"./reducer":66,"./update":108}],70:[function(require,module,exports){
+},{"./clone":8,"./closePublicViews":9,"./lineInterpreter":53,"./update":105}],68:[function(require,module,exports){
 const replaceNbsps = (str) => {
     var re = new RegExp(String.fromCharCode(160), "g");
     return str.toString().replace(re, " ");
   }
 
   module.exports = { replaceNbsps }
-},{}],71:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -8689,7 +8679,7 @@ var lengthConverter = (length) => {
 
 module.exports = {resize, dimensions, lengthConverter}
 
-},{}],72:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 const { clone } = require("./clone")
 const { update } = require("./update")
 const { toView } = require("./toView")
@@ -8702,7 +8692,7 @@ module.exports = {
       var global = _window ? _window.global : window.global
 
       // path
-      var path = route.path || (route.page.includes("/") ? route.page : global.__path__.join("/"))
+      var path = route.path || (route.page.includes("/") ? route.page : global.manifest.path.join("/"))
       
       // page
       var currentPage = route.page && (route.page.includes("/") ? (!route.page.split("/")[0] ? route.page.split("/")[1] : route.page.split("/")[0]): route.page ) || path.split("/")[1] || "main"
@@ -8711,17 +8701,17 @@ module.exports = {
       path = route.path ? path : currentPage === "main" ? "/" : `/${currentPage}`
 
       // prevs
-      global.__prevPath__.push(global.__path__.join("/"))
-      global.__prevPage__.push(global.__currentPage__)
+      global.__prevPath__.push(global.manifest.path.join("/"))
+      global.__prevPage__.push(global.manifest.currentPage)
 
       // update globals
-      global.__currentPage__ = currentPage
-      global.__path__ = path.split("/")
+      global.manifest.currentPage = currentPage
+      global.manifest.path = path.split("/")
       
       if (_window) {
         
         global.__updateLocation__ = true
-        views.root.children = [{ ...clone(global.data.page[currentPage]), id: currentPage, ["__mapViewsPath__"]: [currentPage] }]
+        views.root.children = [clone(global.data.view[currentPage])]
         
         if (id !== "root") {
 
@@ -8749,7 +8739,7 @@ module.exports = {
       }
     }
 }
-},{"./clone":8,"./toArray":88,"./toView":106,"./update":108}],73:[function(require,module,exports){
+},{"./clone":8,"./toArray":85,"./toView":103,"./update":105}],71:[function(require,module,exports){
 const axios = require('axios')
 const { postData } = require('./database')
 
@@ -8784,13 +8774,13 @@ module.exports = {
       data = response.data
     }
 
-    console.log("SAVE", (new Date()).getTime() - headers.timestamp, save.collection, data)
+    // console.log("SAVE", (new Date()).getTime() - headers.timestamp, save.collection, data)
     
     // await
     require("./toAwait").toAwait({ _window, lookupActions, stack, id, address, e, req, res, _: data, __ })
   }
 }
-},{"./database":22,"./toAwait":89,"axios":121}],74:[function(require,module,exports){
+},{"./database":20,"./toAwait":86,"axios":118}],72:[function(require,module,exports){
 const axios = require('axios')
 const { jsonToBracket } = require('./jsonToBracket')
 const { getData } = require('./database')
@@ -8824,13 +8814,13 @@ module.exports = {
       data = response.data
     }
 
-    console.log("SEARCH", (new Date()).getTime() - headers.timestamp, search.collection, data)
+    // console.log("SEARCH", (new Date()).getTime() - headers.timestamp, search.collection, data)
 
     // await params
     require("./toAwait").toAwait({ _window, lookupActions, stack, id, e, address, req, res, _: data, __ })
   }
 }
-},{"./database":22,"./jsonToBracket":52,"./toAwait":89,"axios":121}],75:[function(require,module,exports){
+},{"./database":20,"./jsonToBracket":50,"./toAwait":86,"axios":118}],73:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -8852,7 +8842,7 @@ const setContent = ({ id, content = {} }) => {
 
 module.exports = {setContent}
 
-},{"./isArabic":45}],76:[function(require,module,exports){
+},{"./isArabic":43}],74:[function(require,module,exports){
 const {clone} = require("./clone")
 const {reducer} = require("./reducer")
 
@@ -8896,46 +8886,7 @@ const setData = ({ id, data, __ }) => {
 
 module.exports = { setData }
 
-},{"./clone":8,"./reducer":66}],77:[function(require,module,exports){
-const { toParam } = require("./toParam")
-const { toApproval } = require("./toApproval")
-const { toArray } = require("./toArray")
-const { toCode } = require("./toCode")
-const { defaultInputHandler } = require("./defaultInputHandler")
-const { resize } = require("./resize")
-
-const setElement = ({ _window, id }) => {
-
-    var view = window.views[id]
-    if (!view) return console.log("No Element", id)
-    
-    // loading controls
-    if (view.controls) {
-      
-      toArray(view.controls).map((controls = {}) => {
-        var event = toCode({ _window, id, string: controls.event || "" })
-        if (event.split("?")[0].split(";").find(event => event.slice(0, 7) === "loading") && toApproval({ id, data: controls.event.split('?')[2] })) 
-          toParam({ id, data: controls.event.split("?")[1] })
-      })
-    }
-
-    // status
-    view.status = "Mounting Element"
-    
-    view.element = document.getElementById(id)
-    if (!view.element) return delete window.views[id]
-  
-    // input handlers
-    defaultInputHandler({ id })
-  
-    if (view.__name__ === "Input") resize({ id })
-
-    // status
-    view.status = "Element Loaded"
-}
-    
-module.exports = { setElement }
-},{"./defaultInputHandler":24,"./resize":71,"./toApproval":87,"./toArray":88,"./toCode":92,"./toParam":101}],78:[function(require,module,exports){
+},{"./clone":8,"./reducer":64}],75:[function(require,module,exports){
 const setPosition = ({ position = {}, id, e }) => {
 
   var views = window.views
@@ -9117,13 +9068,13 @@ const setPosition = ({ position = {}, id, e }) => {
 
 module.exports = {setPosition}
 
-},{}],79:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 (function (global){(function (){
 const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
 
-const sort = ({ _window, sort = {}, id, e }) => {
+const sort = ({ _window, sort = {}, id, e, lookupActions, __, stack }) => {
 
   var view = _window ? _window.views[id] : window.views[id]
   if (!view) return
@@ -9149,35 +9100,13 @@ const sort = ({ _window, sort = {}, id, e }) => {
 
   data.sort((a, b) => {
     
-    a = reducer({ _window, id, data: path, object: a, e }) || "!"
+    a = reducer({ _window, id, data: path, object: a, e, lookupActions, __, stack }) || "!"
     
-    if (a !== undefined) {
-      a = a.toString()
+    if (a !== undefined) a = a.toString()
 
-      // date
-      /*if (a.split("-")[2] && !isNaN(a.split("-")[2].split("T")[0])) {
-        var year = parseInt(a.split("-")[2].split("T")[0])
-        var month = parseInt(a.split("-")[1])
-        var day = parseInt(a.split("-")[0])
-        a = {year, month, day}
-        isDate = true
-      }*/
-    }
+    b = reducer({ _window, id, data: path, object: b, e, lookupActions, __, stack }) || "!"
 
-    b = reducer({ _window, id, data: path, object: b, e }) || "!"
-
-    if (b !== undefined) {
-      b = b.toString()
-
-      // date
-      /*if (b.split("-")[2] && !isNaN(b.split("-")[2].split("T")[0])) {
-        var year = parseInt(b.split("-")[2].split("T")[0])
-        var month = parseInt(b.split("-")[1])
-        var day = parseInt(b.split("-")[0])
-        b = {year, month, day}
-        isDate = true
-      }*/
-    }
+    if (b !== undefined) b = b.toString()
 
     if ((!isNaN(a) && b === "!") || (!isNaN(b) && a === "!")) {
       if (a === "!") a = 0
@@ -9242,74 +9171,78 @@ const sort = ({ _window, sort = {}, id, e }) => {
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./reducer":66,"./toArray":88,"./toCode":92}],80:[function(require,module,exports){
+},{"./reducer":64,"./toArray":85,"./toCode":89}],77:[function(require,module,exports){
 const { decode } = require("./decode")
 const { generate } = require("./generate")
 
-const stacker = ({ _window, event, id, eventID, name, string = "" }) => {
+const stacker = ({ _window, id: viewID, string = "", ...data }) => {
 
-    // init stack
-    string = decode({ _window, string })
-    var stack = { id: generate(), string, initializer: true, viewID: id, targetID: eventID, event, name: name || event, executionStartTime: (new Date()).getTime(), addresses: [] }
-    var views = _window ? _window.views : window.views
-    var view = views[id]
-
-    view.__stacks__ = view.__stacks__ || {}
-    view.__stacks__[stack.id] = stack
-
-    return stack
+  return {
+    ...data,
+    id: generate(),
+    viewID,
+    string: string ? decode({ _window, string }) : "",
+    executionStartTime: (new Date()).getTime(), 
+    addresses: [], 
+    logs: [], 
+    returns: []
+  }
 }
 
-const clearStack = ({ _window, stack }) => {
-  
-  var views = _window ? _window.views : window.views
-  var view = views[stack.viewID]
+const clearStack = ({ stack }) => {
 
   console.log("STACK", (new Date()).getTime() - stack.executionStartTime, stack.event)
-
-  // remove stack
-  if (view) delete view.__stacks__[stack.id]
 
   stack.terminated = true
   stack.addresses = []
 }
 
 module.exports = { stacker, clearStack }
-},{"./decode":23,"./generate":37}],81:[function(require,module,exports){
+},{"./decode":21,"./generate":35}],78:[function(require,module,exports){
+const { defaultInputHandler } = require("./defaultInputHandler")
+const { defaultEventHandler, addEventListener } = require("./event")
+const { toArray } = require("./toArray")
+
 const starter = ({ id }) => {
   
-  const { defaultEventHandler } = require("./event")
-  const { controls } = require("./controls")
-
   var view = window.views[id]
   if (!view) return
   
   // status
-  view.status = "Mounting Actions"
+  view.status = "Mounting Element"
+    
+  view.element = document.getElementById(id)
+  if (!view.element) return delete window.views[id]
+
+  // default input handlers
+  defaultInputHandler({ id })
+  
+  // status
+  view.status = "Mounting Events"
   
   // lunch auto controls
-  Object.entries(require("../event/event")).map(([type, events]) => {
+  Object.entries(require("../event/event")).map(([eventName, events]) => {
     
-    if (view[type]) view.controls.push(...events({ id, controls: view[type] }))
+    if (view[eventName]) view.controls.push(...events({ id, controls: view[eventName] }))
   })
 
-  // mouseenter, click, mouseover...
+  // deafault event handlers
   defaultEventHandler({ id })
   
-  // execute controls
-  if (view.controls) controls({ id })
+  // events
+  toArray(view.controls).map(controls => addEventListener({ controls, id }))
 
   view.status = "Mounted"
 }
 
 module.exports = { starter }
 
-},{"../event/event":116,"./controls":13,"./event":28}],82:[function(require,module,exports){
+},{"../event/event":113,"./defaultInputHandler":22,"./event":26,"./toArray":85}],79:[function(require,module,exports){
 const setState = ({}) => {}
 
 module.exports = {setState};
 
-},{}],83:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 (function (Buffer){(function (){
 const fs = require("fs")
 const { generate } = require("./generate")
@@ -9419,7 +9352,7 @@ const deleteFile = async ({ req, res }) => {
 
 module.exports = { getFile, postFile, storeFile, deleteFile }
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./generate":37,"./toArray":88,"buffer":152,"fs":151}],84:[function(require,module,exports){
+},{"./generate":35,"./toArray":85,"buffer":149,"fs":148}],81:[function(require,module,exports){
 const { resize } = require("./resize")
 const { toArray } = require("./toArray")
 
@@ -9538,7 +9471,7 @@ const mountAfterStyles = ({ id }) => {
 
 module.exports = { setStyle, resetStyles, toggleStyles, mountAfterStyles }
 
-},{"./resize":71,"./toArray":88}],85:[function(require,module,exports){
+},{"./resize":69,"./toArray":85}],82:[function(require,module,exports){
 const { setStyle } = require("./style")
 const { capitalize } = require("./capitalize")
 const { clone } = require("./clone")
@@ -9602,14 +9535,14 @@ const switchMode = ({ mode, _id = "body" }) => {
 }
 
 module.exports = {switchMode}
-},{"./capitalize":6,"./clone":8,"./style":84}],86:[function(require,module,exports){
+},{"./capitalize":6,"./clone":8,"./style":81}],83:[function(require,module,exports){
 const { clone } = require("./clone")
 const { toArray } = require("./toArray")
 const { addresser } = require("./addresser")
 const actions = require("./actions.json")
 const { lineInterpreter } = require("./lineInterpreter")
 
-const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount, toView, object, lookupActions = {}, stack, isView = false }) => {
+const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount, toView, object, lookupActions = {}, stack }) => {
 
   var global = _window ? _window.global : window.global
   var views = _window ? _window.views : window.views
@@ -9618,8 +9551,8 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
   if (path.length === 1 && path0.slice(-2) === "()" && path0 !== "()" && path0 !== "_()" && !actions.includes(path0) && path0.charAt(0) !== "@") {
     
     var newLookupActions
-    var parentViews = (view || {})["__mapViewsPath__"] || []
-    
+    var parentViews = (view || {}).__viewsPath__ || []
+
     // lookup through parent map actions
     toArray(lookupActions).map((lookupActions, indexx) => {
 
@@ -9630,7 +9563,7 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 
           if (!actionFound) {
             
-            var actions = clone(lookupActions.view === "_project_" ? global.data.project.functions : global.data[lookupActions.viewType][lookupActions.view].functions) || {}
+            var actions = clone(lookupActions.view === "_project_" ? global.data.project.functions : global.data.view[lookupActions.view].functions) || {}
             actionFound = Object.keys(clone(fn).slice(0, fn.length - i).reduce((o, k) => o[k] || {}, actions)).find(fn => fn === path0.slice(0, -2))
 
             if (actionFound) {
@@ -9639,7 +9572,7 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
               if (typeof actionFound === "object" && actionFound._) {
 
                 actionFound = actionFound._ || ""
-                newLookupActions = { view: lookupActions.view, fn: [...fn, path0.slice(0, -2)], viewType: lookupActions.viewType || "view" }
+                newLookupActions = { view: lookupActions.view, fn: [...fn, path0.slice(0, -2)] }
                 if (toArray(lookupActions).length > 1) newLookupActions = [newLookupActions, ...toArray(lookupActions).slice(indexx)]
 
               } else if (toArray(lookupActions).length > 1) toArray(lookupActions).slice(indexx)
@@ -9656,8 +9589,8 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 
         if (!actionFound) {
           
-          if (myview !== "_project_" && !global.data[i === parentViews.length - 1 ? "page" : (view.viewType || "view")][myview]) return
-          var actions = myview === "_project_" ? (_window ? global.data.project.functions : global.__actions__) : (global.data[i === parentViews.length - 1 ? "page" : (view.viewType || "view")][myview].functions) || {}
+          if (myview !== "_project_" && !global.data.view[myview]) return
+          var actions = myview === "_project_" ? global.__serverActions__ : (global.data.view[myview].functions) || {}
           actionFound = (Array.isArray(actions) ? actions : Object.keys(actions)).find(fn => fn === path0.slice(0, -2))
           
           if (actionFound) {
@@ -9670,10 +9603,10 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 
             } else {
 
-              if (!isView && typeof actions[actionFound] === "object") {
+              if (typeof actions[actionFound] === "object") {
 
                 actionFound = actions[actionFound]._ || ""
-                newLookupActions = { view: myview, fn: [path0.slice(0, -2)], viewType: i === parentViews.length - 1 ? "page" : view.viewType }
+                newLookupActions = { view: myview, fn: [path0.slice(0, -2)] }
 
               } else actionFound = actions[actionFound]
             }
@@ -9684,8 +9617,7 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 
     if (actionFound) {
       
-      var args = path[0].split(":")
-      var address = addresser({ _window, req, res, stack, args, e, asynchronous: callServerAction && true, requesterID: id, action: path0, __, id, object, mount, toView, condition, lookupActions })
+      var address = addresser({ _window, req, res, stack, args: path[0].split(":"), asynchronous: callServerAction && true, e, hold: true, requesterID: id, action: path0, __, id, object, mount, toView, condition, lookupActions })
       var { address, data } = address
 
       var my__ = [...(data !== undefined ? [data] : []), ...__]
@@ -9698,28 +9630,19 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
         var action = { name: actionFound, __: my__, lookupActions: [], stack: [], condition, object }
         return require("./action").action({ _window, req, res, id, e, action, __, stack, lookupActions, address })
       }
-
-      /*if (isView) {
-
-        // action structure is view children structure
-        if (typeof actionFound === "object") views[id] = { ...views[id], ...actionFound }
-
-        // action stucture is view line
-        else view.view = actionFound
-      }*/
-
+      
       // interpret
-      var { data } = lineInterpreter({ _window, lookupActions: newLookupActions, stack, address, headAddressID: address.id, id, e, data: actionFound, req, res, mount, __: my__, condition, isView, object, toView })
+      var { data } = lineInterpreter({ _window, lookupActions: newLookupActions, stack, address, id, e, data: actionFound, req, res, mount, __: my__, condition, object, toView })
 
       return data
     }
   }
 
-  return "__CONTINUE__"
+  return "__continue__"
 }
 
 module.exports = { toAction }
-},{"./action":1,"./actions.json":2,"./addresser":3,"./clone":8,"./lineInterpreter":55,"./toArray":88}],87:[function(require,module,exports){
+},{"./action":1,"./actions.json":2,"./addresser":3,"./clone":8,"./lineInterpreter":53,"./toArray":85}],84:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 
 const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root", __, req, res, object, elser }) => {
@@ -9739,7 +9662,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root
   var global = _window ? _window.global : window.global
   var view = views[id], approval = true
   
-  if ((global.__returnAdds__[0] || {}).returned) return
+  if ((stack.returns && stack.returns[0] || {}).returned) return
 
   // coded
   if (string.charAt(0) === "@" && string.length == 6) string = global.__refs__[string].data
@@ -9818,7 +9741,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root
     // action
     if (path0.slice(-2) === "()") {
       var isAction = toAction({ _window, lookupActions, stack, id, req, res, __, e, path, path0, condition: true });
-      if (isAction !== "__CONTINUE__") return approval = notEqual ? !isAction : isAction
+      if (isAction !== "__continue__") return approval = notEqual ? !isAction : isAction
     }
 
     // get key
@@ -9840,19 +9763,21 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root
 
 module.exports = { toApproval }
 
-},{"./isEqual":47,"./toAction":86,"./toValue":105}],88:[function(require,module,exports){
+},{"./isEqual":45,"./toAction":83,"./toValue":102}],85:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? data : [data]) : [];
 }
 
 module.exports = {toArray}
 
-},{}],89:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 const { lineInterpreter } = require("./lineInterpreter")
 
-const toAwait = ({ _window, lookupActions, stack, address, id, e, req, res, __, _, awaiter }) => {
-
+const toAwait = ({ _window, lookupActions, stack = {}, address, id, e, req, res, __, _, awaiter }) => {
+  
   const { execute } = require("./execute")
+
+  if (stack.terminated) return
   
   var keepGoing = true
 
@@ -9861,8 +9786,10 @@ const toAwait = ({ _window, lookupActions, stack, address, id, e, req, res, __, 
   // get params
   while (!stack.terminated && stack.addresses.length > 0 && keepGoing) {
 
+    if (stack.terminated) return keepGoing = false
+
     var address = stack.addresses[0]
-    if (keepGoing) keepGoing = !address.asynchronous
+    if (keepGoing) keepGoing = !address.hold
     if (keepGoing) awaitHandler({ _window, req, res, address, lookupActions, stack, id, e, __, keepGoing })
   }
 
@@ -9872,32 +9799,41 @@ const toAwait = ({ _window, lookupActions, stack, address, id, e, req, res, __, 
 
 const awaitHandler = ({ _window, req, res, address, lookupActions, stack, id, e, _, __, keepGoing }) => {
 
-  if (address.await) {
+  // passed params
+  address.params = address.params || {}
 
-    // modify underscores
-    var my__ = _ !== undefined ? [_, ...(address.params.__ || __)] : (address.params.__ || __)
+  // modify underscores
+  var my__ = _ !== undefined ? [_, ...(address.params.__ || __)] : (address.params.__ || __)
 
-    // interpret
-    var { success, message, data } = lineInterpreter({ _window, lookupActions, stack, headAddressID: address.headAddressID, id, e, req, res, ...(address.params || {}), data: address.await, __: my__ })
-    
-    console.log("ACTION", (new Date()).getTime() - address.executionStartTime, address.action, { success, message, data })
+  // address
+  var headAddress = stack.addresses.find(waitingAddress => waitingAddress.id === address.headAddressID) || {}
 
-  } else console.log("ACTION", (new Date()).getTime() - address.executionStartTime, address.action)
+  var log = ["ACTION end", (new Date()).getTime() - address.executionStartTime, address.id, address.index, address.action, headAddress.id || "", headAddress.index || "", headAddress.action || ""].join(" ")
+  stack.logs.push(log)
+  console.log(log, _ === undefined ? "" : _)
 
   // get await index for splicing
-  var index = stack.addresses.findIndex(await => await.id === address.id)
+  var index = stack.addresses.findIndex(waitingAddress => waitingAddress.id === address.id)
   if (index !== -1) stack.addresses.splice(index, 1)
   if (index !== 0) keepGoing = false
-  
+
+  // consider that waits are part of the head action => reset interpreting to true for head action
+  if (headAddress.id) headAddress.interpreting = true
+
+  // interpret
+  lineInterpreter({ _window, lookupActions, stack, id, e, req, res, ...(address.params || {}), data: address.await, __: my__ })
+
+  if (stack.terminated) return
+
   // unlock head address
-  if (address.headAddressID) {
-    var otherWaiting = stack.addresses.findIndex(await => await.headAddressID === address.headAddressID)
-    if (otherWaiting === -1) stack.addresses.find(await => await.id === address.headAddressID).asynchronous = false
+  if (address.headAddressID && address.asynchronous) {
+    var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.headAddressID === address.headAddressID)
+    if (otherWaiting === -1) stack.addresses.find(waitingAddress => waitingAddress.id === address.headAddressID).hold = false
   }
 }
 
 module.exports = { toAwait }
-},{"./execute":31,"./lineInterpreter":55}],90:[function(require,module,exports){
+},{"./execute":29,"./lineInterpreter":53}],87:[function(require,module,exports){
 module.exports = {
     toCSV: (file = {}) => {
 
@@ -9972,7 +9908,7 @@ module.exports = {
         }
     }
 }
-},{}],91:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 module.exports = {
     toClock: ({ timestamp, day, hr, min, sec }) => {
 
@@ -9993,7 +9929,7 @@ module.exports = {
         return (day ? days_ + ":" : "") + (hr ? hrs_ + ":" : "") + (min ? mins_ : "") + (sec ? ":" + secs_ : "")
     }
 }
-},{}],92:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) => {
@@ -10057,7 +9993,7 @@ const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) =
 }
 
 module.exports = { toCode }
-},{"./generate":37}],93:[function(require,module,exports){
+},{"./generate":35}],90:[function(require,module,exports){
 const {generate} = require("./generate")
 const {toArray} = require("./toArray")
 
@@ -10089,12 +10025,12 @@ const toComponent = (obj) => {
 
 module.exports = {toComponent}
 
-},{"./generate":37,"./toArray":88}],94:[function(require,module,exports){
+},{"./generate":35,"./toArray":85}],91:[function(require,module,exports){
 const toControls = ({ id }) => {}
 
 module.exports = {toControls}
 
-},{}],95:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 // const XLSX = require("xlsx")
 
 module.exports = {
@@ -10119,7 +10055,7 @@ module.exports = {
         XLSX.writeFile(myWorkBook, myFile)
     }
 }
-},{}],96:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 module.exports = {
     toFirebaseOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -10135,7 +10071,7 @@ module.exports = {
         else return string
     }
 }
-},{}],97:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 const { labelHandler } = require("./labelHandler")
@@ -10143,12 +10079,12 @@ const { replaceNbsps } = require("./replaceNbsps")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 
-const toHTML = ({ _window, id, innerHTML }) => {
+const toHTML = ({ _window, id, innerHTML, stack, __ }) => {
 
   var views = _window ? _window.views : window.views
   var view = views[id], name = view.__name__, tag = ""
   
-  toParam({ _window, id, data: toCode({ _window, id, string: "parent().__childrenID__.replace():[.id]" }) })
+  toParam({ _window, id, data: toCode({ _window, id, string: "parent().__childrenID__.replace():[.id]" }), stack, __ })
   
   // text
   var text = (typeof view.text === "boolean" || typeof view.text === "number" || typeof view.text === "string") ? view.text
@@ -10222,7 +10158,7 @@ const toHTML = ({ _window, id, innerHTML }) => {
 }
 
 module.exports = {toHTML}
-},{"./labelHandler":54,"./replaceNbsps":70,"./toArray":88,"./toCode":92,"./toParam":101,"./toStyle":104}],98:[function(require,module,exports){
+},{"./labelHandler":52,"./replaceNbsps":68,"./toArray":85,"./toCode":89,"./toParam":98,"./toStyle":101}],95:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toId = ({ string, checklist = [] }) => {
@@ -10251,7 +10187,7 @@ const toId = ({ string, checklist = [] }) => {
 
 module.exports = {toId}
 
-},{"./generate":37}],99:[function(require,module,exports){
+},{"./generate":35}],96:[function(require,module,exports){
 module.exports = {
   toNumber: (string) => {
     
@@ -10273,7 +10209,7 @@ module.exports = {
   },
 };
 
-},{}],100:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 module.exports = {
     toOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -10289,7 +10225,7 @@ module.exports = {
         else return string
     }
 } 
-},{}],101:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
@@ -10299,6 +10235,7 @@ const { replaceNbsps } = require("./replaceNbsps")
 const { isCondition } = require("./isCondition")
 const { lineInterpreter } = require("./lineInterpreter")
 const { isEvent } = require("./isEvent")
+const { override } = require("./merge")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -10308,7 +10245,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toParam = ({ _window, lookupActions, stack, data: string, e, id = "root", req, res, mount, object, __, toView, params = {}, executer, condition }) => {
+const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "root", req, res, mount, object, __, toView, params = {}, executer, condition }) => {
 
   const { toAction } = require("./toAction")
   const { toApproval } = require("./toApproval")
@@ -10318,7 +10255,7 @@ const toParam = ({ _window, lookupActions, stack, data: string, e, id = "root", 
   var global = _window ? _window.global : window.global
   
   // returned
-  if ((global.__returnAdds__[0] || {}).returned) return
+  if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated) return
 
   if (typeof string !== "string" || !string) return string || {}
   params = object || params
@@ -10342,7 +10279,7 @@ const toParam = ({ _window, lookupActions, stack, data: string, e, id = "root", 
   string.split(";").map(param => {
 
     // no param || returned || comment
-    if (!param || (global.__returnAdds__[0] || {}).returned || param.charAt(0) === "#") return
+    if (!param || (stack.returns && stack.returns[0] || {}).returned || param.charAt(0) === "#" || stack.terminated) return
     
     var key, value
     var view = views[id]
@@ -10435,7 +10372,7 @@ const toParam = ({ _window, lookupActions, stack, data: string, e, id = "root", 
     // show loader
     if (!_window && param === "loader.show") {
       document.getElementById("loader-container").style.display = "flex"
-      return sleep(20)
+      return sleep(30)
     }
     
     // hide loader
@@ -10463,9 +10400,11 @@ const toParam = ({ _window, lookupActions, stack, data: string, e, id = "root", 
 
     // action()
     if (path0.slice(-2) === "()") {
-
-      var isAction = toAction({ _window, lookupActions, stack, id, req, res, __, e, path, path0, condition, mount, toView, executer, object })
-      if (isAction !== "__CONTINUE__") return isAction
+      var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, path, path0, condition, mount, toView, executer, object })
+      if (action !== "__continue__") {
+        if (typeof action === "object") override(params, action)
+        return action
+      }
     }
     
     // interpret key
@@ -10528,7 +10467,7 @@ const toParam = ({ _window, lookupActions, stack, data: string, e, id = "root", 
         
         // push path to derivations
         view.derivations.push(...myPath)
-        view.data = reducer({ _window, id, data: view.derivations, _object: global[view.doc], value: view.data, key: true })
+        view.data = reducer({ _window, id, stack, lookupActions, data: view.derivations, _object: global[view.doc], value: view.data, key: true })
       }
     }
   })
@@ -10537,7 +10476,7 @@ const toParam = ({ _window, lookupActions, stack, data: string, e, id = "root", 
 }
 
 module.exports = { toParam }
-},{"./clone":8,"./generate":37,"./isCondition":46,"./isEvent":48,"./lineInterpreter":55,"./reducer":66,"./replaceNbsps":70,"./toAction":86,"./toApproval":87,"./toCode":92,"./toValue":105}],102:[function(require,module,exports){
+},{"./clone":8,"./generate":35,"./isCondition":44,"./isEvent":46,"./lineInterpreter":53,"./merge":55,"./reducer":64,"./replaceNbsps":68,"./toAction":83,"./toApproval":84,"./toCode":89,"./toValue":102}],99:[function(require,module,exports){
 module.exports = {
     toPdf: async ({ id, options }) => {
 
@@ -10566,7 +10505,7 @@ module.exports = {
         }
     }
 }
-},{}],103:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -10614,7 +10553,7 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],104:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 const cssStyleKeyNames = require("./cssStyleKeyNames")
 
 module.exports = {
@@ -10636,7 +10575,7 @@ module.exports = {
   }
 }
 
-},{"./cssStyleKeyNames":19}],105:[function(require,module,exports){
+},{"./cssStyleKeyNames":17}],102:[function(require,module,exports){
 const { generate } = require("./generate")
 const { isParam } = require("./isParam")
 const { reducer } = require("./reducer");
@@ -10649,7 +10588,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, lookupActions, stack, data: value, params = {}, __, id, e, req, res, object, _object, mount, toView, executer, condition }) => {
+const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params = {}, __, id, e, req, res, object, _object, mount, toView, condition }) => {
 
   const { toAction } = require("./toAction")
   const { toParam } = require("./toParam")
@@ -10657,7 +10596,7 @@ const toValue = ({ _window, lookupActions, stack, data: value, params = {}, __, 
   var view = _window ? _window.views[id] : window.views[id]
   var global = _window ? _window.global : window.global
 
-  if ((global.__returnAdds__[0] || {}).returned) return
+  // if ((stack.returns && stack.returns[0] || {}).returned) return
   
   if (!value) return value
 
@@ -10682,7 +10621,7 @@ const toValue = ({ _window, lookupActions, stack, data: value, params = {}, __, 
   else if (value === ":[]") return ([{}])
   else if (value === " ") return value
   else if (value === ":" || value === "_list") return ([])
-  else if (value.charAt(0) === ":") return value.split(":").slice(1).map(item =>  toValue({ req, res, _window, id, __, e, data: item })) // :item1:item2
+  else if (value.charAt(0) === ":") return value.split(":").slice(1).map(item =>  toValue({ req, res, _window, id, stack, lookupActions, __, e, data: item })) // :item1:item2
 
   // show loader
   if (value === "loader.show") {
@@ -10791,8 +10730,8 @@ const toValue = ({ _window, lookupActions, stack, data: value, params = {}, __, 
 
   // action
   if (path0.slice(-2) === "()") {
-    var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, path: [path[0]], path0, condition, mount, toView, executer, object })
-    if (action !== "__CONTINUE__") {
+    var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, path: [path[0]], path0, condition, mount, toView, object })
+    if (action !== "__continue__") {
       if (path.length > 1) {
         path.splice(0, 1)
         return reducer({ _window, lookupActions, stack, id, object, data: path, value, __, e, req, res, mount, toView, _object: action })
@@ -11150,7 +11089,7 @@ const calcModulo = ({ _window, lookupActions, stack, value, params, __, id, e, r
 
 module.exports = { toValue, calcSubs, calcDivision, calcModulo, emptySpaces }
 
-},{"./generate":37,"./isParam":49,"./reducer":66,"./toAction":86,"./toParam":101}],106:[function(require,module,exports){
+},{"./generate":35,"./isParam":47,"./reducer":64,"./toAction":83,"./toParam":98}],103:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
@@ -11165,7 +11104,7 @@ const { toAction } = require("./toAction")
 const { lineInterpreter } = require("./lineInterpreter")
 const builtInViews = require("../view/views")
 
-const toView = async ({ _window, lookupActions, stack, id, req, res, import: _import, params: inheritedParams = {}, __, viewer = "view" }) => {
+const toView = async ({ _window, lookupActions, stack, id, req, res, import: _import, params: inheritedParams = {}, __ }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -11180,10 +11119,7 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
   if (!view.type) return ""
 
   // set map view path
-  if (!view.__mapViewsPath__) view.__mapViewsPath__ = [...(parent.__mapViewsPath__ || [])]
-
-  // view type (page|view)
-  view.viewType = viewer = view.viewType || parent.viewType || viewer || "view"
+  if (!view.__viewsPath__) view.__viewsPath__ = [...toArray(parent.__viewsPath__)]
 
   // encode
   view.type = toCode({ _window, id, string: toCode({ _window, id, string: view.type, start: "'" }) })
@@ -11194,8 +11130,8 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
 
   // action
   if (view.type.split(".")[0].split(":")[0].slice(-2) === "()") {
-    var action = toAction({ _window, lookupActions, stack, id, req, res, __, path: view.type.split("."), path0: view.type.split(".")[0].split(":")[0], isView: true })
-    if (action !== "__CONTINUE__") return action
+    var action = toAction({ _window, lookupActions, stack, id, req, res, __, path: view.type.split("."), path0: view.type.split(".")[0].split(":")[0] })
+    if (action !== "__continue__") return action
   }
 
   // 
@@ -11218,13 +11154,13 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
   _import = view.id === "html" || (parent.id === "html" && (["link", "meta", "title", "script", "style"]).includes(type.toLowerCase()))
   
   // view name
-  view.__name__ = type = toValue({ req, res, _window, id, data: type, __ })
+  view.__name__ = type = toValue({ req, res, _window, id, data: type, __, stack })
 
   // sub params
   if (subParams) {
 
-    var { success, data = {} } = lineInterpreter({ _window, lookupActions, stack, id, data: subParams, req, res, __ })
-    if (!success) {
+    var { data = {}, conditionsNotApplied } = lineInterpreter({ _window, lookupActions, stack, id, data: subParams, req, res, __ })
+    if (conditionsNotApplied) {
       delete views[id]
       return ""
     } else subParams = data
@@ -11233,7 +11169,8 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
   // [View]
   if (loop) {
 
-    var data = subParams || {}
+    var data = subParams || {}, timer = (new Date()).getTime(), id = generate()
+    console.log("LOOP start", id, clone(data));
 
     // mount
     if (!data.preventDefault && (data.doc || data.path)) data.mount = true
@@ -11256,14 +11193,15 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
       data.doc = data.doc || view.doc || generate()
       global[data.doc] = global[data.doc] || {}
     }
-
+    
     var { doc, data = {}, derivations = [], mount, path, keys, preventDefault, ...myparams } = data
     
     // data
     data = reducer({ _window, lookupActions, stack, id, data: derivations, object: global[doc], req, res, __ })
 
-    var loopData = Object.keys(keys ? data : toArray(data)), values = keys ? data : toArray(data)
-    if (keys) loopData = sortAndArrange({ data: loopData, sort: myparams.sort, arrange: myparams.arrange })
+    var loopData = Object.keys(keys ? data : toArray(data))
+    var values = keys ? data : toArray(data)
+    if (keys && !Array.isArray(data)) loopData = sortAndArrange({ data: loopData, sort: myparams.sort, arrange: myparams.arrange })
 
     // view
     var tags = await Promise.all(loopData.map(async index => {
@@ -11285,8 +11223,10 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
       }
 
       views[_id_] = _view_
-      return await toView({ _window, lookupActions, stack, id: _id_, req, res, __: [values[index], ...__], viewer })
+      return await toView({ _window, lookupActions, stack, id: _id_, req, res, __: [values[index], ...__] })
     }))
+
+    console.log("LOOP end", (new Date()).getTime() - timer, id);
 
     delete views[view.id]
     return tags.join("")
@@ -11314,7 +11254,6 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
     view.status = "Loading"
     view.__childrenID__ = []
     view.__timers__ = []
-    view.__stacks__ = {}
     view.__ = __
     views[id] = view
   }
@@ -11335,12 +11274,11 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
   // params
   if (params) {
 
-    params = toValue({ _window, lookupActions, stack, data: params, id, req, res, mount: true, toView: true, __ })
-    if (typeof params !== "object") params = { [params]: generate() }
+    params = lineInterpreter({ _window, lookupActions, stack, data: params, action: "toParam", id, req, res, mount: true, toView: true, __ }).data
 
     if (params.id && params.id !== id) {
-
-      if (views[params.id] && typeof views[params.id] === "object") params.id += generate()
+      
+      if (views[params.id]) params.id += generate()
       delete Object.assign(views, { [params.id]: views[id] })[id]
       id = params.id
       view = views[id]
@@ -11355,18 +11293,21 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
   if (_import) return await createHtml({ _window, lookupActions, stack, id, req, res, import: _import, __ })
 
   // custom View
-  if (global.data[viewer][view.__name__]) {
+  if (global.data.view[view.__name__]) {
 
-    var newView = clone(global.data[viewer][view.__name__])
+    var newView = clone(global.data.view[view.__name__])
 
-    view.__mapViewsPath__.push(view.__name__)
-
-    // id exists
-    if (newView.id && views[newView.id]) newView.id += generate()
-
+    view.__viewsPath__.push(view.__name__)
+    
+    // id handler
+    if (newView.id && views[newView.id] && newView.id !== id) {
+      newView.id += generate()
+    } else if (!newView.id) newView.id = id
+    
+    id = newView.id
     views[id] = { ...view, ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)] }
 
-    return await toView({ _window, lookupActions, stack, id, req, res, __: [...(Object.keys(params).length > 0 ? [params] : []), ...__], viewer })
+    return await toView({ _window, lookupActions, stack, id, req, res, __: [...(Object.keys(params).length > 0 ? [params] : []), ...__] })
   }
 
   // data
@@ -11394,7 +11335,7 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
     componentModifier({ _window, id })
   }
 
-  return await createHtml({ _window, lookupActions, stack, id, req, res, __, viewer })
+  return await createHtml({ _window, lookupActions, stack, id, req, res, __ })
 }
 
 
@@ -11494,10 +11435,9 @@ const componentModifier = ({ _window, id }) => {
 }
 
 module.exports = { toView }
-},{"../view/views":205,"./clone":8,"./createHtml":17,"./generate":37,"./lineInterpreter":55,"./merge":57,"./reducer":66,"./toAction":86,"./toApproval":87,"./toArray":88,"./toCode":92,"./toParam":101,"./toValue":105}],107:[function(require,module,exports){
+},{"../view/views":191,"./clone":8,"./createHtml":16,"./generate":35,"./lineInterpreter":53,"./merge":55,"./reducer":64,"./toAction":83,"./toApproval":84,"./toArray":85,"./toCode":89,"./toParam":98,"./toValue":102}],104:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
-const { setElement } = require("./setElement")
 const { toView } = require("./toView")
 const { clone } = require("./clone")
 const { removeChildren } = require("./update")
@@ -11530,21 +11470,21 @@ const toggleView = async ({ _window, toggle = {}, id, res, __, stack, lookupActi
   document.getElementById("loader-container").style.display = "flex"
 
   // children
-  var children = clone([global.data[views[toggleId].viewType][viewId] || { view: "View" }])
+  var child = clone(global.data.view[viewId] || { view: "View" })
   if (togglePage) {
 
-    global.__prevPage__.push(global.__currentPage__)
+    global.__prevPage__.push(global.manifest.currentPage)
     if (global.__prevPage__.length > 5) global.__prevPage__.shift()
-    var currentPage = global.__currentPage__ = togglePage.split("/")[0]
+    var currentPage = global.manifest.currentPage = togglePage.split("/")[0]
 
     viewId = currentPage
 
   } else {
     view = views[parentId]
 
-    if (id === "root" && global.data.page[viewId]) {
+    if (id === "root" && global.data.view[viewId]) {
 
-      var page = global.data.page[viewId]
+      var page = global.data.view[viewId]
       var _params = toParam({ data: page.type.split("?")[1] || "" })
       global.__prevPath__.push(global.path)
       if (global.__prevPath__.length > 5) global.__prevPath__.shift()
@@ -11554,34 +11494,30 @@ const toggleView = async ({ _window, toggle = {}, id, res, __, stack, lookupActi
     }
   }
 
-
-  if (children.length === 0) return
   if (!view || !view.element) return
 
   // close publics
   closePublicViews({ id })
 
-  if (res) return views.root.children = clone([{ ...global.data.page[currentPage], id: currentPage }])
+  if (res) return views.root.children = clone([global.data.view[currentPage]])
 
   // fadeout
   var timer = toggle.timer || toggle.fadeout.timer || 0
 
-  var innerHTML = await Promise.all(children.map(async (child, index) => {
+  var ID = child.id || generate()
+  views[ID] = clone(child)
+  views[ID].id = ID
+  // views[ID].index = index
+  views[ID].parent = view.id
+  views[ID].style = {}
+  views[ID].__viewsPath__ = viewId ? [...view.__viewsPath__, viewId] : [...view.__viewsPath__]
+  views[ID].style.transition = toggle.fadein.before.transition || null
+  views[ID].style.opacity = toggle.fadein.before.opacity || "0"
+  views[ID].style.transform = toggle.fadein.before.transform || null
 
-    var id = child.id || generate()
-    views[id] = clone(child)
-    views[id].id = id
-    views[id].index = index
-    views[id].parent = view.id
-    views[id].style = {}
-    views[id]["__mapViewsPath__"] = viewId ? [...view.__mapViewsPath__, viewId] : view.__mapViewsPath__
-    views[id].style.transition = toggle.fadein.before.transition || null
-    views[id].style.opacity = toggle.fadein.before.opacity || "0"
-    views[id].style.transform = toggle.fadein.before.transform || null
+  var innerHTML = await toView({ id: ID, __: view.__, stack, lookupActions })
 
-    return await toView({ id, __, stack, lookupActions })
-  }))
-
+  // remve prev view
   if (toggleId && views[toggleId] && views[toggleId].element) {
 
     views[toggleId].element.style.transition = toggle.fadeout.after.transition || `${timer}ms ease-out`
@@ -11592,16 +11528,13 @@ const toggleView = async ({ _window, toggle = {}, id, res, __, stack, lookupActi
     delete views[toggleId]
   }
 
-  innerHTML = innerHTML.join("")
-
   // timer
   var timer = toggle.timer || toggle.fadein.timer || 0
   view.element.innerHTML = ""
   view.element.innerHTML = innerHTML
 
-  var __IDList__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-  __IDList__.map(id => setElement({ id }))
-  __IDList__.map(id => starter({ id }))
+  var __ids__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
+  __ids__.map(id => starter({ id }))
 
   // set visible
   setTimeout(async () => {
@@ -11621,10 +11554,9 @@ const toggleView = async ({ _window, toggle = {}, id, res, __, stack, lookupActi
 }
 
 module.exports = { toggleView }
-},{"./clone":8,"./closePublicViews":9,"./generate":37,"./setElement":77,"./starter":81,"./toParam":101,"./toView":106,"./update":108}],108:[function(require,module,exports){
+},{"./clone":8,"./closePublicViews":9,"./generate":35,"./starter":78,"./toParam":98,"./toView":103,"./update":105}],105:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
-const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
 const { toView } = require("./toView")
 const { clone } = require("./clone")
@@ -11648,8 +11580,8 @@ const update = async ({ id, _window, lookupActions, stack, req, res, update = {}
   removeChildren({ id })
 
   // reset children for root
-  if (id === "root") views.root.children = children = [{ ...clone(global.data.page[route.currentPage]), id: route.currentPage, __mapViewsPath__: [route.currentPage] }]
-  
+  if (id === "root") views.root.children = children = [clone(global.data.view[route.currentPage])]
+
   var innerHTML = await Promise.all(children.map(async (child, index) => {
 
     var id = child.id || generate()
@@ -11658,22 +11590,21 @@ const update = async ({ id, _window, lookupActions, stack, req, res, update = {}
     views[id].index = index
     views[id].parent = view.id
     views[id].style = views[id].style || {}
-    views[id]["__mapViewsPath__"] = views[id]["__mapViewsPath__"] || [...view.__mapViewsPath__]
+    views[id].__viewsPath__ = [...view.__viewsPath__]
     
     return await toView({ _window, lookupActions, stack, req, res, id, __: view.__ })
   }))
   
-  if (id === "root" && route.currentPage && route.currentPage !== global.__currentPage__) return
+  if (id === "root" && route.currentPage && route.currentPage !== global.manifest.currentPage) return
   
   innerHTML = innerHTML.join("")
   
   view.element.innerHTML = ""
   view.element.innerHTML = innerHTML
   
-  var __IDList__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
+  var __ids__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
   
-  __IDList__.map(id => setElement({ _window, lookupActions, stack, req, res, id }))
-  __IDList__.map(id => starter({ _window, lookupActions, stack, req, res, id }))
+  __ids__.map(id => starter({ _window, lookupActions, stack, req, res, id }))
   
   var data = { view: views[id], message: "View updated successfully!", success: true }
 
@@ -11681,8 +11612,8 @@ const update = async ({ id, _window, lookupActions, stack, req, res, update = {}
   if (id === "root") {
 
     document.body.scrollTop = document.documentElement.scrollTop = 0
-    var title = route.title || views[global.__currentPage__].title
-    var path = route.path || views[global.__currentPage__].path
+    var title = route.title || views[global.manifest.currentPage].title
+    var path = route.path || views[global.manifest.currentPage].path
     
     history.pushState(null, title, path)
     document.title = title
@@ -11703,16 +11634,13 @@ const removeChildren = ({ id }) => {
   var view = views[id]
 
   if (!view.element) return
-  var children = [...view.element.children]
   
-  children.map((child) => {
-
-    var id = child.id
+  toArray(view.__childrenID__).map(id => {
+    
     var view = views[id]
     if (!views[id]) return
     
     (view.__timers__ || []).map(timerID => clearTimeout(timerID))
-    Object.values(view.__stacks__ || {}).map(event => view.element.removeEventListener(event.event, event.function))
 
     removeChildren({ id })
     Object.keys(view).map(key => delete view[key])
@@ -11723,10 +11651,9 @@ const removeChildren = ({ id }) => {
 }
 
 module.exports = {update, removeChildren}
-},{"./clone":8,"./closePublicViews":9,"./generate":37,"./setElement":77,"./starter":81,"./toArray":88,"./toAwait":89,"./toView":106}],109:[function(require,module,exports){
+},{"./clone":8,"./closePublicViews":9,"./generate":35,"./starter":78,"./toArray":85,"./toAwait":86,"./toView":103}],106:[function(require,module,exports){
 const { generate } = require("./generate")
 const { starter } = require("./starter")
-const { setElement } = require("./setElement")
 const { toArray } = require("./toArray")
 const { toView } = require("./toView")
 const { clone } = require("./clone")
@@ -11770,7 +11697,7 @@ const updateSelf = async ({ _window, lookupActions, stack, id, update = {}, rout
     views[id].index = index
     views[id].parent = parent.id
     views[id].style = views[id].style || {}
-    views[id]["__mapViewsPath__"] = [...view.__mapViewsPath__]
+    views[id].__viewsPath__ = [...view.__viewsPath__]
     //views[id].style.opacity = "0"
     //if (timer) views[id].style.transition = `opacity ${timer}ms`
     
@@ -11796,10 +11723,9 @@ const updateSelf = async ({ _window, lookupActions, stack, id, update = {}, rout
   var node = lDiv.children[0]
   
   parent.element.insertBefore(node, [...parent.element.children][index])
-  var __IDList__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
+  var __ids__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
   
-  __IDList__.map(id => setElement({ id }))
-  idList.map(id => starter({ id }))
+  __ids__.map(id => starter({ id }))
   
   /*var _children = [...parent.element.children]
   _children.map(childNode => {
@@ -11831,7 +11757,7 @@ const updateSelf = async ({ _window, lookupActions, stack, id, update = {}, rout
 }
 
 module.exports = {updateSelf}
-},{"./clone":8,"./closePublicViews":9,"./generate":37,"./setElement":77,"./starter":81,"./toArray":88,"./toView":106,"./update":108}],110:[function(require,module,exports){
+},{"./clone":8,"./closePublicViews":9,"./generate":35,"./starter":78,"./toArray":85,"./toView":103,"./update":105}],107:[function(require,module,exports){
 const axios = require("axios")
 const { clone } = require("./clone")
 const { generate } = require("./generate")
@@ -11901,7 +11827,7 @@ module.exports = async ({ _window, lookupActions, stack, address, id, req, res, 
   // await
   require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __, _: uploads.length === 1 ? uploads[0] : uploads, ...params })
 }
-},{"./clone":8,"./generate":37,"./readFile":65,"./storage":83,"./toArray":88,"./toAwait":89,"axios":121}],111:[function(require,module,exports){
+},{"./clone":8,"./generate":35,"./readFile":63,"./storage":80,"./toArray":85,"./toAwait":86,"axios":118}],108:[function(require,module,exports){
 'use strict';
 
 const downloadToFile = (content, filename, contentType) => {
@@ -11974,7 +11900,7 @@ const vcardServer = ({ res, data }) => {
 }
 
 module.exports = { vcard }
-},{"vcards-js":197}],112:[function(require,module,exports){
+},{"vcards-js":183}],109:[function(require,module,exports){
 const wait = async ({ id, e, lookupActions, stack, ...params }) => {
 
   // await params
@@ -11982,21 +11908,21 @@ const wait = async ({ id, e, lookupActions, stack, ...params }) => {
 }
 
 module.exports = { wait }
-},{"./toAwait":89}],113:[function(require,module,exports){
+},{"./toAwait":86}],110:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
 const { toValue } = require("./toValue")
 const { isEqual } = require("./isEqual")
 const { toCode } = require("./toCode")
-const { generate } = require("qrcode-terminal")
+const { generate } = require("./generate")
 
-const watch = ({ _window, lookupActions, stack, controls, id, __ }) => {
+const watch = ({ lookupActions, __, string, id }) => {
 
     var view = window.views[id]
     if (!view) return
 
-    var watch = toCode({ _window, id, string: toCode({ _window, id, string: controls.watch, start: "'" }) })
+    var watch = toCode({ _window, id, string: toCode({ _window, id, string, start: "'" }) })
 
     var approved = toApproval({ id, lookupActions, stack, data: watch.split('?')[2] })
     if (!approved || !watch) return
@@ -12030,7 +11956,7 @@ const watch = ({ _window, lookupActions, stack, controls, id, __ }) => {
 }
 
 module.exports = { watch }
-},{"./clone":8,"./isEqual":47,"./toApproval":87,"./toCode":92,"./toParam":101,"./toValue":105,"qrcode-terminal":159}],114:[function(require,module,exports){
+},{"./clone":8,"./generate":35,"./isEqual":45,"./toApproval":84,"./toCode":89,"./toParam":98,"./toValue":102}],111:[function(require,module,exports){
 const { generate } = require("../action/generate");
 
 module.exports = ({ controls, id }) => {
@@ -12063,7 +11989,7 @@ module.exports = ({ controls, id }) => {
     }
   ]
 }
-},{"../action/generate":37}],115:[function(require,module,exports){
+},{"../action/generate":35}],112:[function(require,module,exports){
 module.exports = () => {
   
   return [{ // close droplist
@@ -12077,12 +12003,12 @@ module.exports = () => {
   }, { // search droplist
     event: `input:input()?__droplistSearchTxt__:()=input().txt();droplist()?input();droplist.searchable`
   }, { // open droplist on enter
-    event: `[keyup:input()??e().key=Enter]?():droplist.children().[__keyupIndex__:()].click()?!droplist.preventDefault`
+    event: `keyup:input()?():droplist.children().[__keyupIndex__:()].click()?!droplist.preventDefault;e().key=Enter`
   }, { // move up/down
     event: `keyup:input()?():droplist.children().[__keyupIndex__:()||0].mouseleave();__keyupIndex__:()=if():[e().keyCode=40]:[__keyupIndex__:()+1]:[__keyupIndex__:()-1];():droplist.children().[__keyupIndex__:()].mouseenter()?!droplist.preventDefault;e().keyCode=40||e().keyCode=38;__droplistPositioner__:();if():[e().keyCode=38]:[__keyupIndex__:()>0].elif():[e().keyCode=40]:[__keyupIndex__:()<():droplist.children.lastIndex()]`
   }]
 }
-},{}],116:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 module.exports = {
   popup: require("./popup"),
   droplist: require("./droplist"),
@@ -12091,7 +12017,7 @@ module.exports = {
   hover: require("./hover"),
   clicked: require("./clicked"),
 }
-},{"./clicked":114,"./droplist":115,"./hover":117,"./mininote":118,"./popup":119,"./tooltip":120}],117:[function(require,module,exports){
+},{"./clicked":111,"./droplist":112,"./hover":114,"./mininote":115,"./popup":116,"./tooltip":117}],114:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
 
     var view = window.views[id]
@@ -12112,14 +12038,14 @@ module.exports = ({ controls, id }) => {
         "event": `mouseleave:${_id}?hover.default.style.keys()._():[style().[_]=.hover.default.style.[_]]?!clicked.disable;!clicked.mount;!hover.disable`
     }]
 }
-},{}],118:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 module.exports = () => {
   
   return [{
     event: `click?():mininote-text.txt()=[.mininote.text||.mininote.note||''];clearTimeout():[mininote-timer:()];():mininote.style():[opacity=1;transform='scale(1)'];mininote-timer:()=():root.timer():[():mininote.style():[opacity=0;transform=scale(0)]]:[.mininote.timer||3000]`
   }]
 }
-},{}],119:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 module.exports = ({ controls, id }) => {
   
   var view = window.views[id]
@@ -12134,7 +12060,7 @@ module.exports = ({ controls, id }) => {
     event: `click?clearTimer():[popup-timer:()];if():[__popupPositioner__:()=${id}]:[timer():[().popup.style.keys()._():[():popup.style().[_]=():popup.style._||null];():popup.():[if():[():${id}.popup.model=model1]:[child().style().transform='scale(0.5)'];style():[opacity=0;pointerEvents=none]];__popupPositioner__:().del()]:0].elif():[__popupPositioner__:()!=${id}]:[__popupPositioner__:()=${id};update():popup;timer():[if():[():${id}.popup.model=model1]:[():popup.position():[positioner=${controls.positioner || id};placement=${controls.placement || "left"};distance=${controls.distance};align=${controls.align}]];():popup.():[if():[():${id}.popup.model=model1]:[child().style().transform='scale(1)'];style():[opacity=1;pointerEvents=auto]];().popup.style():[().popup.style]]:50]`
   }]
 }
-},{}],120:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[a-zA-Z]/
 
@@ -12149,9 +12075,9 @@ module.exports = ({ controls, id }) => {
     event: "mouseleave?clearTimer():[tooltip-timer:()];tooltip-timer:().del();():tooltip.style().opacity=0"
   }]
 }
-},{}],121:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":123}],122:[function(require,module,exports){
+},{"./lib/axios":120}],119:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12342,7 +12268,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":129,"../core/createError":130,"./../core/settle":134,"./../helpers/buildURL":138,"./../helpers/cookies":140,"./../helpers/isURLSameOrigin":143,"./../helpers/parseHeaders":145,"./../utils":148}],123:[function(require,module,exports){
+},{"../core/buildFullPath":126,"../core/createError":127,"./../core/settle":131,"./../helpers/buildURL":135,"./../helpers/cookies":137,"./../helpers/isURLSameOrigin":140,"./../helpers/parseHeaders":142,"./../utils":145}],120:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -12400,7 +12326,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":124,"./cancel/CancelToken":125,"./cancel/isCancel":126,"./core/Axios":127,"./core/mergeConfig":133,"./defaults":136,"./helpers/bind":137,"./helpers/isAxiosError":142,"./helpers/spread":146,"./utils":148}],124:[function(require,module,exports){
+},{"./cancel/Cancel":121,"./cancel/CancelToken":122,"./cancel/isCancel":123,"./core/Axios":124,"./core/mergeConfig":130,"./defaults":133,"./helpers/bind":134,"./helpers/isAxiosError":139,"./helpers/spread":143,"./utils":145}],121:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12421,7 +12347,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],125:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -12480,14 +12406,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":124}],126:[function(require,module,exports){
+},{"./Cancel":121}],123:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],127:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12637,7 +12563,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":138,"../helpers/validator":147,"./../utils":148,"./InterceptorManager":128,"./dispatchRequest":131,"./mergeConfig":133}],128:[function(require,module,exports){
+},{"../helpers/buildURL":135,"../helpers/validator":144,"./../utils":145,"./InterceptorManager":125,"./dispatchRequest":128,"./mergeConfig":130}],125:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12693,7 +12619,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":148}],129:[function(require,module,exports){
+},{"./../utils":145}],126:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -12715,7 +12641,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":139,"../helpers/isAbsoluteURL":141}],130:[function(require,module,exports){
+},{"../helpers/combineURLs":136,"../helpers/isAbsoluteURL":138}],127:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -12735,7 +12661,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":132}],131:[function(require,module,exports){
+},{"./enhanceError":129}],128:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12819,7 +12745,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":126,"../defaults":136,"./../utils":148,"./transformData":135}],132:[function(require,module,exports){
+},{"../cancel/isCancel":123,"../defaults":133,"./../utils":145,"./transformData":132}],129:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12863,7 +12789,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],133:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -12952,7 +12878,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":148}],134:[function(require,module,exports){
+},{"../utils":145}],131:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -12979,7 +12905,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":130}],135:[function(require,module,exports){
+},{"./createError":127}],132:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13003,7 +12929,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":136,"./../utils":148}],136:[function(require,module,exports){
+},{"./../defaults":133,"./../utils":145}],133:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -13141,7 +13067,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":122,"./adapters/xhr":122,"./core/enhanceError":132,"./helpers/normalizeHeaderName":144,"./utils":148,"_process":158}],137:[function(require,module,exports){
+},{"./adapters/http":119,"./adapters/xhr":119,"./core/enhanceError":129,"./helpers/normalizeHeaderName":141,"./utils":145,"_process":155}],134:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -13154,7 +13080,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],138:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13226,7 +13152,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":148}],139:[function(require,module,exports){
+},{"./../utils":145}],136:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13242,7 +13168,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],140:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13297,7 +13223,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":148}],141:[function(require,module,exports){
+},{"./../utils":145}],138:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13313,7 +13239,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],142:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13326,7 +13252,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],143:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13396,7 +13322,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":148}],144:[function(require,module,exports){
+},{"./../utils":145}],141:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -13410,7 +13336,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":148}],145:[function(require,module,exports){
+},{"../utils":145}],142:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13465,7 +13391,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":148}],146:[function(require,module,exports){
+},{"./../utils":145}],143:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13494,7 +13420,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],147:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -13601,7 +13527,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":149}],148:[function(require,module,exports){
+},{"./../../package.json":146}],145:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -13952,7 +13878,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":137}],149:[function(require,module,exports){
+},{"./helpers/bind":134}],146:[function(require,module,exports){
 module.exports={
   "name": "axios",
   "version": "0.21.4",
@@ -14038,7 +13964,7 @@ module.exports={
   ]
 }
 
-},{}],150:[function(require,module,exports){
+},{}],147:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -14190,9 +14116,9 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],151:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 
-},{}],152:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 (function (Buffer){(function (){
 /*!
  * The buffer module from node.js, for the browser.
@@ -15973,7 +15899,7 @@ function numberIsNaN (obj) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"base64-js":150,"buffer":152,"ieee754":156}],153:[function(require,module,exports){
+},{"base64-js":147,"buffer":149,"ieee754":153}],150:[function(require,module,exports){
 'use strict';
 
 /******************************************************************************
@@ -16140,7 +16066,7 @@ if (typeof module !== 'undefined') {
   module.exports = dijkstra;
 }
 
-},{}],154:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 (function (global){(function (){
 /**
  * EasyQRCodeJS
@@ -16164,7 +16090,7 @@ if (typeof module !== 'undefined') {
 !function(){"use strict";function a(a,b){var c,d=Object.keys(b);for(c=0;c<d.length;c++)a=a.replace(new RegExp("\\{"+d[c]+"\\}","gi"),b[d[c]]);return a}function b(a){var b,c,d;if(!a)throw new Error("cannot create a random attribute name for an undefined object");b="ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz",c="";do{for(c="",d=0;d<12;d++)c+=b[Math.floor(Math.random()*b.length)]}while(a[c]);return c}function c(a){var b={left:"start",right:"end",center:"middle",start:"start",end:"end"};return b[a]||b.start}function d(a){var b={alphabetic:"alphabetic",hanging:"hanging",top:"text-before-edge",bottom:"text-after-edge",middle:"central"};return b[a]||b.alphabetic}var e,f,g,h,i;i=function(a,b){var c,d,e,f={};for(a=a.split(","),b=b||10,c=0;c<a.length;c+=2)d="&"+a[c+1]+";",e=parseInt(a[c],b),f[d]="&#"+e+";";return f["\\xa0"]="&#160;",f}("50,nbsp,51,iexcl,52,cent,53,pound,54,curren,55,yen,56,brvbar,57,sect,58,uml,59,copy,5a,ordf,5b,laquo,5c,not,5d,shy,5e,reg,5f,macr,5g,deg,5h,plusmn,5i,sup2,5j,sup3,5k,acute,5l,micro,5m,para,5n,middot,5o,cedil,5p,sup1,5q,ordm,5r,raquo,5s,frac14,5t,frac12,5u,frac34,5v,iquest,60,Agrave,61,Aacute,62,Acirc,63,Atilde,64,Auml,65,Aring,66,AElig,67,Ccedil,68,Egrave,69,Eacute,6a,Ecirc,6b,Euml,6c,Igrave,6d,Iacute,6e,Icirc,6f,Iuml,6g,ETH,6h,Ntilde,6i,Ograve,6j,Oacute,6k,Ocirc,6l,Otilde,6m,Ouml,6n,times,6o,Oslash,6p,Ugrave,6q,Uacute,6r,Ucirc,6s,Uuml,6t,Yacute,6u,THORN,6v,szlig,70,agrave,71,aacute,72,acirc,73,atilde,74,auml,75,aring,76,aelig,77,ccedil,78,egrave,79,eacute,7a,ecirc,7b,euml,7c,igrave,7d,iacute,7e,icirc,7f,iuml,7g,eth,7h,ntilde,7i,ograve,7j,oacute,7k,ocirc,7l,otilde,7m,ouml,7n,divide,7o,oslash,7p,ugrave,7q,uacute,7r,ucirc,7s,uuml,7t,yacute,7u,thorn,7v,yuml,ci,fnof,sh,Alpha,si,Beta,sj,Gamma,sk,Delta,sl,Epsilon,sm,Zeta,sn,Eta,so,Theta,sp,Iota,sq,Kappa,sr,Lambda,ss,Mu,st,Nu,su,Xi,sv,Omicron,t0,Pi,t1,Rho,t3,Sigma,t4,Tau,t5,Upsilon,t6,Phi,t7,Chi,t8,Psi,t9,Omega,th,alpha,ti,beta,tj,gamma,tk,delta,tl,epsilon,tm,zeta,tn,eta,to,theta,tp,iota,tq,kappa,tr,lambda,ts,mu,tt,nu,tu,xi,tv,omicron,u0,pi,u1,rho,u2,sigmaf,u3,sigma,u4,tau,u5,upsilon,u6,phi,u7,chi,u8,psi,u9,omega,uh,thetasym,ui,upsih,um,piv,812,bull,816,hellip,81i,prime,81j,Prime,81u,oline,824,frasl,88o,weierp,88h,image,88s,real,892,trade,89l,alefsym,8cg,larr,8ch,uarr,8ci,rarr,8cj,darr,8ck,harr,8dl,crarr,8eg,lArr,8eh,uArr,8ei,rArr,8ej,dArr,8ek,hArr,8g0,forall,8g2,part,8g3,exist,8g5,empty,8g7,nabla,8g8,isin,8g9,notin,8gb,ni,8gf,prod,8gh,sum,8gi,minus,8gn,lowast,8gq,radic,8gt,prop,8gu,infin,8h0,ang,8h7,and,8h8,or,8h9,cap,8ha,cup,8hb,int,8hk,there4,8hs,sim,8i5,cong,8i8,asymp,8j0,ne,8j1,equiv,8j4,le,8j5,ge,8k2,sub,8k3,sup,8k4,nsub,8k6,sube,8k7,supe,8kl,oplus,8kn,otimes,8l5,perp,8m5,sdot,8o8,lceil,8o9,rceil,8oa,lfloor,8ob,rfloor,8p9,lang,8pa,rang,9ea,loz,9j0,spades,9j3,clubs,9j5,hearts,9j6,diams,ai,OElig,aj,oelig,b0,Scaron,b1,scaron,bo,Yuml,m6,circ,ms,tilde,802,ensp,803,emsp,809,thinsp,80c,zwnj,80d,zwj,80e,lrm,80f,rlm,80j,ndash,80k,mdash,80o,lsquo,80p,rsquo,80q,sbquo,80s,ldquo,80t,rdquo,80u,bdquo,810,dagger,811,Dagger,81g,permil,81p,lsaquo,81q,rsaquo,85c,euro",32),e={strokeStyle:{svgAttr:"stroke",canvas:"#000000",svg:"none",apply:"stroke"},fillStyle:{svgAttr:"fill",canvas:"#000000",svg:null,apply:"fill"},lineCap:{svgAttr:"stroke-linecap",canvas:"butt",svg:"butt",apply:"stroke"},lineJoin:{svgAttr:"stroke-linejoin",canvas:"miter",svg:"miter",apply:"stroke"},miterLimit:{svgAttr:"stroke-miterlimit",canvas:10,svg:4,apply:"stroke"},lineWidth:{svgAttr:"stroke-width",canvas:1,svg:1,apply:"stroke"},globalAlpha:{svgAttr:"opacity",canvas:1,svg:1,apply:"fill stroke"},font:{canvas:"10px sans-serif"},shadowColor:{canvas:"#000000"},shadowOffsetX:{canvas:0},shadowOffsetY:{canvas:0},shadowBlur:{canvas:0},textAlign:{canvas:"start"},textBaseline:{canvas:"alphabetic"},lineDash:{svgAttr:"stroke-dasharray",canvas:[],svg:null,apply:"stroke"}},g=function(a,b){this.__root=a,this.__ctx=b},g.prototype.addColorStop=function(b,c){var d,e,f=this.__ctx.__createElement("stop");f.setAttribute("offset",b),-1!==c.indexOf("rgba")?(d=/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d?\.?\d*)\s*\)/gi,e=d.exec(c),f.setAttribute("stop-color",a("rgb({r},{g},{b})",{r:e[1],g:e[2],b:e[3]})),f.setAttribute("stop-opacity",e[4])):f.setAttribute("stop-color",c),this.__root.appendChild(f)},h=function(a,b){this.__root=a,this.__ctx=b},f=function(a){var b,c={width:500,height:500,enableMirroring:!1};if(arguments.length>1?(b=c,b.width=arguments[0],b.height=arguments[1]):b=a||c,!(this instanceof f))return new f(b);this.width=b.width||c.width,this.height=b.height||c.height,this.enableMirroring=void 0!==b.enableMirroring?b.enableMirroring:c.enableMirroring,this.canvas=this,this.__document=b.document||document,b.ctx?this.__ctx=b.ctx:(this.__canvas=this.__document.createElement("canvas"),this.__ctx=this.__canvas.getContext("2d")),this.__setDefaultStyles(),this.__stack=[this.__getStyleState()],this.__groupStack=[],this.__root=this.__document.createElementNS("http://www.w3.org/2000/svg","svg"),this.__root.setAttribute("version",1.1),this.__root.setAttribute("xmlns","http://www.w3.org/2000/svg"),this.__root.setAttributeNS("http://www.w3.org/2000/xmlns/","xmlns:xlink","http://www.w3.org/1999/xlink"),this.__root.setAttribute("width",this.width),this.__root.setAttribute("height",this.height),this.__ids={},this.__defs=this.__document.createElementNS("http://www.w3.org/2000/svg","defs"),this.__root.appendChild(this.__defs),this.__currentElement=this.__document.createElementNS("http://www.w3.org/2000/svg","g"),this.__root.appendChild(this.__currentElement)},f.prototype.__createElement=function(a,b,c){void 0===b&&(b={});var d,e,f=this.__document.createElementNS("http://www.w3.org/2000/svg",a),g=Object.keys(b);for(c&&(f.setAttribute("fill","none"),f.setAttribute("stroke","none")),d=0;d<g.length;d++)e=g[d],f.setAttribute(e,b[e]);return f},f.prototype.__setDefaultStyles=function(){var a,b,c=Object.keys(e);for(a=0;a<c.length;a++)b=c[a],this[b]=e[b].canvas},f.prototype.__applyStyleState=function(a){var b,c,d=Object.keys(a);for(b=0;b<d.length;b++)c=d[b],this[c]=a[c]},f.prototype.__getStyleState=function(){var a,b,c={},d=Object.keys(e);for(a=0;a<d.length;a++)b=d[a],c[b]=this[b];return c},f.prototype.__applyStyleToCurrentElement=function(b){var c=this.__currentElement,d=this.__currentElementsToStyle;d&&(c.setAttribute(b,""),c=d.element,d.children.forEach(function(a){a.setAttribute(b,"")}));var f,i,j,k,l,m,n=Object.keys(e);for(f=0;f<n.length;f++)if(i=e[n[f]],j=this[n[f]],i.apply)if(j instanceof h){if(j.__ctx)for(;j.__ctx.__defs.childNodes.length;)k=j.__ctx.__defs.childNodes[0].getAttribute("id"),this.__ids[k]=k,this.__defs.appendChild(j.__ctx.__defs.childNodes[0]);c.setAttribute(i.apply,a("url(#{id})",{id:j.__root.getAttribute("id")}))}else if(j instanceof g)c.setAttribute(i.apply,a("url(#{id})",{id:j.__root.getAttribute("id")}));else if(-1!==i.apply.indexOf(b)&&i.svg!==j)if("stroke"!==i.svgAttr&&"fill"!==i.svgAttr||-1===j.indexOf("rgba")){var o=i.svgAttr;if("globalAlpha"===n[f]&&(o=b+"-"+i.svgAttr,c.getAttribute(o)))continue;c.setAttribute(o,j)}else{l=/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d?\.?\d*)\s*\)/gi,m=l.exec(j),c.setAttribute(i.svgAttr,a("rgb({r},{g},{b})",{r:m[1],g:m[2],b:m[3]}));var p=m[4],q=this.globalAlpha;null!=q&&(p*=q),c.setAttribute(i.svgAttr+"-opacity",p)}},f.prototype.__closestGroupOrSvg=function(a){return a=a||this.__currentElement,"g"===a.nodeName||"svg"===a.nodeName?a:this.__closestGroupOrSvg(a.parentNode)},f.prototype.getSerializedSvg=function(a){var b,c,d,e,f,g,h=(new XMLSerializer).serializeToString(this.__root);if(g=/xmlns="http:\/\/www\.w3\.org\/2000\/svg".+xmlns="http:\/\/www\.w3\.org\/2000\/svg/gi,g.test(h)&&(h=h.replace('xmlns="http://www.w3.org/2000/svg','xmlns:xlink="http://www.w3.org/1999/xlink')),a)for(b=Object.keys(i),c=0;c<b.length;c++)d=b[c],e=i[d],f=new RegExp(d,"gi"),f.test(h)&&(h=h.replace(f,e));return h},f.prototype.getSvg=function(){return this.__root},f.prototype.save=function(){var a=this.__createElement("g"),b=this.__closestGroupOrSvg();this.__groupStack.push(b),b.appendChild(a),this.__currentElement=a,this.__stack.push(this.__getStyleState())},f.prototype.restore=function(){this.__currentElement=this.__groupStack.pop(),this.__currentElementsToStyle=null,this.__currentElement||(this.__currentElement=this.__root.childNodes[1]);var a=this.__stack.pop();this.__applyStyleState(a)},f.prototype.__addTransform=function(a){var b=this.__closestGroupOrSvg();if(b.childNodes.length>0){"path"===this.__currentElement.nodeName&&(this.__currentElementsToStyle||(this.__currentElementsToStyle={element:b,children:[]}),this.__currentElementsToStyle.children.push(this.__currentElement),this.__applyCurrentDefaultPath());var c=this.__createElement("g");b.appendChild(c),this.__currentElement=c}var d=this.__currentElement.getAttribute("transform");d?d+=" ":d="",d+=a,this.__currentElement.setAttribute("transform",d)},f.prototype.scale=function(b,c){void 0===c&&(c=b),this.__addTransform(a("scale({x},{y})",{x:b,y:c}))},f.prototype.rotate=function(b){var c=180*b/Math.PI;this.__addTransform(a("rotate({angle},{cx},{cy})",{angle:c,cx:0,cy:0}))},f.prototype.translate=function(b,c){this.__addTransform(a("translate({x},{y})",{x:b,y:c}))},f.prototype.transform=function(b,c,d,e,f,g){this.__addTransform(a("matrix({a},{b},{c},{d},{e},{f})",{a:b,b:c,c:d,d:e,e:f,f:g}))},f.prototype.beginPath=function(){var a,b;this.__currentDefaultPath="",this.__currentPosition={},a=this.__createElement("path",{},!0),b=this.__closestGroupOrSvg(),b.appendChild(a),this.__currentElement=a},f.prototype.__applyCurrentDefaultPath=function(){var a=this.__currentElement;"path"===a.nodeName?a.setAttribute("d",this.__currentDefaultPath):console.error("Attempted to apply path command to node",a.nodeName)},f.prototype.__addPathCommand=function(a){this.__currentDefaultPath+=" ",this.__currentDefaultPath+=a},f.prototype.moveTo=function(b,c){"path"!==this.__currentElement.nodeName&&this.beginPath(),this.__currentPosition={x:b,y:c},this.__addPathCommand(a("M {x} {y}",{x:b,y:c}))},f.prototype.closePath=function(){this.__currentDefaultPath&&this.__addPathCommand("Z")},f.prototype.lineTo=function(b,c){this.__currentPosition={x:b,y:c},this.__currentDefaultPath.indexOf("M")>-1?this.__addPathCommand(a("L {x} {y}",{x:b,y:c})):this.__addPathCommand(a("M {x} {y}",{x:b,y:c}))},f.prototype.bezierCurveTo=function(b,c,d,e,f,g){this.__currentPosition={x:f,y:g},this.__addPathCommand(a("C {cp1x} {cp1y} {cp2x} {cp2y} {x} {y}",{cp1x:b,cp1y:c,cp2x:d,cp2y:e,x:f,y:g}))},f.prototype.quadraticCurveTo=function(b,c,d,e){this.__currentPosition={x:d,y:e},this.__addPathCommand(a("Q {cpx} {cpy} {x} {y}",{cpx:b,cpy:c,x:d,y:e}))};var j=function(a){var b=Math.sqrt(a[0]*a[0]+a[1]*a[1]);return[a[0]/b,a[1]/b]};f.prototype.arcTo=function(a,b,c,d,e){var f=this.__currentPosition&&this.__currentPosition.x,g=this.__currentPosition&&this.__currentPosition.y;if(void 0!==f&&void 0!==g){if(e<0)throw new Error("IndexSizeError: The radius provided ("+e+") is negative.");if(f===a&&g===b||a===c&&b===d||0===e)return void this.lineTo(a,b);var h=j([f-a,g-b]),i=j([c-a,d-b]);if(h[0]*i[1]==h[1]*i[0])return void this.lineTo(a,b);var k=h[0]*i[0]+h[1]*i[1],l=Math.acos(Math.abs(k)),m=j([h[0]+i[0],h[1]+i[1]]),n=e/Math.sin(l/2),o=a+n*m[0],p=b+n*m[1],q=[-h[1],h[0]],r=[i[1],-i[0]],s=function(a){var b=a[0];return a[1]>=0?Math.acos(b):-Math.acos(b)},t=s(q),u=s(r);this.lineTo(o+q[0]*e,p+q[1]*e),this.arc(o,p,e,t,u)}},f.prototype.stroke=function(){"path"===this.__currentElement.nodeName&&this.__currentElement.setAttribute("paint-order","fill stroke markers"),this.__applyCurrentDefaultPath(),this.__applyStyleToCurrentElement("stroke")},f.prototype.fill=function(){"path"===this.__currentElement.nodeName&&this.__currentElement.setAttribute("paint-order","stroke fill markers"),this.__applyCurrentDefaultPath(),this.__applyStyleToCurrentElement("fill")},f.prototype.rect=function(a,b,c,d){"path"!==this.__currentElement.nodeName&&this.beginPath(),this.moveTo(a,b),this.lineTo(a+c,b),this.lineTo(a+c,b+d),this.lineTo(a,b+d),this.lineTo(a,b),this.closePath()},f.prototype.fillRect=function(a,b,c,d){var e,f;e=this.__createElement("rect",{x:a,y:b,width:c,height:d,"shape-rendering":"crispEdges"},!0),f=this.__closestGroupOrSvg(),f.appendChild(e),this.__currentElement=e,this.__applyStyleToCurrentElement("fill")},f.prototype.strokeRect=function(a,b,c,d){var e,f;e=this.__createElement("rect",{x:a,y:b,width:c,height:d},!0),f=this.__closestGroupOrSvg(),f.appendChild(e),this.__currentElement=e,this.__applyStyleToCurrentElement("stroke")},f.prototype.__clearCanvas=function(){for(var a=this.__closestGroupOrSvg(),b=a.getAttribute("transform"),c=this.__root.childNodes[1],d=c.childNodes,e=d.length-1;e>=0;e--)d[e]&&c.removeChild(d[e]);this.__currentElement=c,this.__groupStack=[],b&&this.__addTransform(b)},f.prototype.clearRect=function(a,b,c,d){if(0===a&&0===b&&c===this.width&&d===this.height)return void this.__clearCanvas();var e,f=this.__closestGroupOrSvg();e=this.__createElement("rect",{x:a,y:b,width:c,height:d,fill:"#FFFFFF"},!0),f.appendChild(e)},f.prototype.createLinearGradient=function(a,c,d,e){var f=this.__createElement("linearGradient",{id:b(this.__ids),x1:a+"px",x2:d+"px",y1:c+"px",y2:e+"px",gradientUnits:"userSpaceOnUse"},!1);return this.__defs.appendChild(f),new g(f,this)},f.prototype.createRadialGradient=function(a,c,d,e,f,h){var i=this.__createElement("radialGradient",{id:b(this.__ids),cx:e+"px",cy:f+"px",r:h+"px",fx:a+"px",fy:c+"px",gradientUnits:"userSpaceOnUse"},!1);return this.__defs.appendChild(i),new g(i,this)},f.prototype.__parseFont=function(){var a=/^\s*(?=(?:(?:[-a-z]+\s*){0,2}(italic|oblique))?)(?=(?:(?:[-a-z]+\s*){0,2}(small-caps))?)(?=(?:(?:[-a-z]+\s*){0,2}(bold(?:er)?|lighter|[1-9]00))?)(?:(?:normal|\1|\2|\3)\s*){0,3}((?:xx?-)?(?:small|large)|medium|smaller|larger|[.\d]+(?:\%|in|[cem]m|ex|p[ctx]))(?:\s*\/\s*(normal|[.\d]+(?:\%|in|[cem]m|ex|p[ctx])))?\s*([-,\'\"\sa-z0-9]+?)\s*$/i,b=a.exec(this.font),c={style:b[1]||"normal",size:b[4]||"10px",family:b[6]||"sans-serif",weight:b[3]||"normal",decoration:b[2]||"normal",href:null};return"underline"===this.__fontUnderline&&(c.decoration="underline"),this.__fontHref&&(c.href=this.__fontHref),c},f.prototype.__wrapTextLink=function(a,b){if(a.href){var c=this.__createElement("a");return c.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href",a.href),c.appendChild(b),c}return b},f.prototype.__applyText=function(a,b,e,f){var g=this.__parseFont(),h=this.__closestGroupOrSvg(),i=this.__createElement("text",{"font-family":g.family,"font-size":g.size,"font-style":g.style,"font-weight":g.weight,"text-decoration":g.decoration,x:b,y:e,"text-anchor":c(this.textAlign),"dominant-baseline":d(this.textBaseline)},!0);i.appendChild(this.__document.createTextNode(a)),this.__currentElement=i,this.__applyStyleToCurrentElement(f),h.appendChild(this.__wrapTextLink(g,i))},f.prototype.fillText=function(a,b,c){this.__applyText(a,b,c,"fill")},f.prototype.strokeText=function(a,b,c){this.__applyText(a,b,c,"stroke")},f.prototype.measureText=function(a){return this.__ctx.font=this.font,this.__ctx.measureText(a)},f.prototype.arc=function(b,c,d,e,f,g){if(e!==f){e%=2*Math.PI,f%=2*Math.PI,e===f&&(f=(f+2*Math.PI-.001*(g?-1:1))%(2*Math.PI));var h=b+d*Math.cos(f),i=c+d*Math.sin(f),j=b+d*Math.cos(e),k=c+d*Math.sin(e),l=g?0:1,m=0,n=f-e;n<0&&(n+=2*Math.PI),m=g?n>Math.PI?0:1:n>Math.PI?1:0,this.lineTo(j,k),this.__addPathCommand(a("A {rx} {ry} {xAxisRotation} {largeArcFlag} {sweepFlag} {endX} {endY}",{rx:d,ry:d,xAxisRotation:0,largeArcFlag:m,sweepFlag:l,endX:h,endY:i})),this.__currentPosition={x:h,y:i}}},f.prototype.clip=function(){var c=this.__closestGroupOrSvg(),d=this.__createElement("clipPath"),e=b(this.__ids),f=this.__createElement("g");this.__applyCurrentDefaultPath(),c.removeChild(this.__currentElement),d.setAttribute("id",e),d.appendChild(this.__currentElement),this.__defs.appendChild(d),c.setAttribute("clip-path",a("url(#{id})",{id:e})),c.appendChild(f),this.__currentElement=f},f.prototype.drawImage=function(){var a,b,c,d,e,g,h,i,j,k,l,m,n,o,p=Array.prototype.slice.call(arguments),q=p[0],r=0,s=0;if(3===p.length)a=p[1],b=p[2],e=q.width,g=q.height,c=e,d=g;else if(5===p.length)a=p[1],b=p[2],c=p[3],d=p[4],e=q.width,g=q.height;else{if(9!==p.length)throw new Error("Invalid number of arguments passed to drawImage: "+arguments.length);r=p[1],s=p[2],e=p[3],g=p[4],a=p[5],b=p[6],c=p[7],d=p[8]}h=this.__closestGroupOrSvg(),this.__currentElement;var t="translate("+a+", "+b+")";if(q instanceof f){if(i=q.getSvg().cloneNode(!0),i.childNodes&&i.childNodes.length>1){for(j=i.childNodes[0];j.childNodes.length;)o=j.childNodes[0].getAttribute("id"),this.__ids[o]=o,this.__defs.appendChild(j.childNodes[0]);if(k=i.childNodes[1]){var u,v=k.getAttribute("transform");u=v?v+" "+t:t,k.setAttribute("transform",u),h.appendChild(k)}}}else"CANVAS"!==q.nodeName&&"IMG"!==q.nodeName||(l=this.__createElement("image"),l.setAttribute("width",c),l.setAttribute("height",d),l.setAttribute("preserveAspectRatio","none"),l.setAttribute("opacity",this.globalAlpha),(r||s||e!==q.width||g!==q.height)&&(m=this.__document.createElement("canvas"),m.width=c,m.height=d,n=m.getContext("2d"),n.drawImage(q,r,s,e,g,0,0,c,d),q=m),l.setAttribute("transform",t),l.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href","CANVAS"===q.nodeName?q.toDataURL():q.originalSrc),h.appendChild(l))},f.prototype.createPattern=function(a,c){var d,e=this.__document.createElementNS("http://www.w3.org/2000/svg","pattern"),g=b(this.__ids);return e.setAttribute("id",g),e.setAttribute("width",a.width),e.setAttribute("height",a.height),"CANVAS"===a.nodeName||"IMG"===a.nodeName?(d=this.__document.createElementNS("http://www.w3.org/2000/svg","image"),d.setAttribute("width",a.width),d.setAttribute("height",a.height),d.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href","CANVAS"===a.nodeName?a.toDataURL():a.getAttribute("src")),e.appendChild(d),this.__defs.appendChild(e)):a instanceof f&&(e.appendChild(a.__root.childNodes[1]),this.__defs.appendChild(e)),new h(e,this)},f.prototype.setLineDash=function(a){a&&a.length>0?this.lineDash=a.join(","):this.lineDash=null},f.prototype.drawFocusRing=function(){},f.prototype.createImageData=function(){},f.prototype.getImageData=function(){},f.prototype.putImageData=function(){},f.prototype.globalCompositeOperation=function(){},f.prototype.setTransform=function(){},"object"==typeof window&&(window.C2S=f),"object"==typeof module&&"object"==typeof module.exports&&(module.exports=f)}(),function(){"use strict";function a(a,b,c){if(this.mode=q.MODE_8BIT_BYTE,this.data=a,this.parsedData=[],b){for(var d=0,e=this.data.length;d<e;d++){var f=[],g=this.data.charCodeAt(d);f[0]=g,this.parsedData.push(f)}this.parsedData=Array.prototype.concat.apply([],this.parsedData)}else this.parsedData=function(a){for(var b=[],c=0;c<a.length;c++){var d=a.charCodeAt(c);d<128?b.push(d):d<2048?b.push(192|d>>6,128|63&d):d<55296||d>=57344?b.push(224|d>>12,128|d>>6&63,128|63&d):(c++,d=65536+((1023&d)<<10|1023&a.charCodeAt(c)),b.push(240|d>>18,128|d>>12&63,128|d>>6&63,128|63&d))}return b}(a);this.parsedData=Array.prototype.concat.apply([],this.parsedData),c||this.parsedData.length==this.data.length||(this.parsedData.unshift(191),this.parsedData.unshift(187),this.parsedData.unshift(239))}function b(a,b){this.typeNumber=a,this.errorCorrectLevel=b,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[]}function c(a,b){if(a.length==i)throw new Error(a.length+"/"+b);for(var c=0;c<a.length&&0==a[c];)c++;this.num=new Array(a.length-c+b);for(var d=0;d<a.length-c;d++)this.num[d]=a[d+c]}function d(a,b){this.totalCount=a,this.dataCount=b}function e(){this.buffer=[],this.length=0}function f(){var a=!1,b=navigator.userAgent;if(/android/i.test(b)){a=!0;var c=b.toString().match(/android ([0-9]\.[0-9])/i);c&&c[1]&&(a=parseFloat(c[1]))}return a}function g(a,b){for(var c=b.correctLevel,d=1,e=h(a),f=0,g=w.length;f<g;f++){var i=0;switch(c){case r.L:i=w[f][0];break;case r.M:i=w[f][1];break;case r.Q:i=w[f][2];break;case r.H:i=w[f][3]}if(e<=i)break;d++}if(d>w.length)throw new Error("Too long data. the CorrectLevel."+["M","L","H","Q"][c]+" limit length is "+i);return 0!=b.version&&(d<=b.version?(d=b.version,b.runVersion=d):(console.warn("QR Code version "+b.version+" too small, run version use "+d),b.runVersion=d)),d}function h(a){return encodeURI(a).toString().replace(/\%[0-9a-fA-F]{2}/g,"a").length}var i,j,k="object"==typeof global&&global&&global.Object===Object&&global,l="object"==typeof self&&self&&self.Object===Object&&self,m=k||l||Function("return this")(),n="object"==typeof exports&&exports&&!exports.nodeType&&exports,o=n&&"object"==typeof module&&module&&!module.nodeType&&module,p=m.QRCode;a.prototype={getLength:function(a){return this.parsedData.length},write:function(a){for(var b=0,c=this.parsedData.length;b<c;b++)a.put(this.parsedData[b],8)}},b.prototype={addData:function(b,c,d){var e=new a(b,c,d);this.dataList.push(e),this.dataCache=null},isDark:function(a,b){if(a<0||this.moduleCount<=a||b<0||this.moduleCount<=b)throw new Error(a+","+b);return this.modules[a][b][0]},getEye:function(a,b){if(a<0||this.moduleCount<=a||b<0||this.moduleCount<=b)throw new Error(a+","+b);var c=this.modules[a][b];if(c[1]){var d="P"+c[1]+"_"+c[2];return"A"==c[2]&&(d="A"+c[1]),{isDark:c[0],type:d}}return null},getModuleCount:function(){return this.moduleCount},make:function(){this.makeImpl(!1,this.getBestMaskPattern())},makeImpl:function(a,c){this.moduleCount=4*this.typeNumber+17,this.modules=new Array(this.moduleCount);for(var d=0;d<this.moduleCount;d++){this.modules[d]=new Array(this.moduleCount);for(var e=0;e<this.moduleCount;e++)this.modules[d][e]=[]}this.setupPositionProbePattern(0,0,"TL"),this.setupPositionProbePattern(this.moduleCount-7,0,"BL"),this.setupPositionProbePattern(0,this.moduleCount-7,"TR"),this.setupPositionAdjustPattern("A"),this.setupTimingPattern(),this.setupTypeInfo(a,c),this.typeNumber>=7&&this.setupTypeNumber(a),null==this.dataCache&&(this.dataCache=b.createData(this.typeNumber,this.errorCorrectLevel,this.dataList)),this.mapData(this.dataCache,c)},setupPositionProbePattern:function(a,b,c){for(var d=-1;d<=7;d++)if(!(a+d<=-1||this.moduleCount<=a+d))for(var e=-1;e<=7;e++)b+e<=-1||this.moduleCount<=b+e||(0<=d&&d<=6&&(0==e||6==e)||0<=e&&e<=6&&(0==d||6==d)||2<=d&&d<=4&&2<=e&&e<=4?(this.modules[a+d][b+e][0]=!0,this.modules[a+d][b+e][2]=c,this.modules[a+d][b+e][1]=-0==d||-0==e||6==d||6==e?"O":"I"):this.modules[a+d][b+e][0]=!1)},getBestMaskPattern:function(){for(var a=0,b=0,c=0;c<8;c++){this.makeImpl(!0,c);var d=t.getLostPoint(this);(0==c||a>d)&&(a=d,b=c)}return b},createMovieClip:function(a,b,c){var d=a.createEmptyMovieClip(b,c);this.make();for(var e=0;e<this.modules.length;e++)for(var f=1*e,g=0;g<this.modules[e].length;g++){var h=1*g,i=this.modules[e][g][0];i&&(d.beginFill(0,100),d.moveTo(h,f),d.lineTo(h+1,f),d.lineTo(h+1,f+1),d.lineTo(h,f+1),d.endFill())}return d},setupTimingPattern:function(){for(var a=8;a<this.moduleCount-8;a++)null==this.modules[a][6][0]&&(this.modules[a][6][0]=a%2==0);for(var b=8;b<this.moduleCount-8;b++)null==this.modules[6][b][0]&&(this.modules[6][b][0]=b%2==0)},setupPositionAdjustPattern:function(a){for(var b=t.getPatternPosition(this.typeNumber),c=0;c<b.length;c++)for(var d=0;d<b.length;d++){var e=b[c],f=b[d];if(null==this.modules[e][f][0])for(var g=-2;g<=2;g++)for(var h=-2;h<=2;h++)-2==g||2==g||-2==h||2==h||0==g&&0==h?(this.modules[e+g][f+h][0]=!0,this.modules[e+g][f+h][2]=a,this.modules[e+g][f+h][1]=-2==g||-2==h||2==g||2==h?"O":"I"):this.modules[e+g][f+h][0]=!1}},setupTypeNumber:function(a){for(var b=t.getBCHTypeNumber(this.typeNumber),c=0;c<18;c++){var d=!a&&1==(b>>c&1);this.modules[Math.floor(c/3)][c%3+this.moduleCount-8-3][0]=d}for(var c=0;c<18;c++){var d=!a&&1==(b>>c&1);this.modules[c%3+this.moduleCount-8-3][Math.floor(c/3)][0]=d}},setupTypeInfo:function(a,b){for(var c=this.errorCorrectLevel<<3|b,d=t.getBCHTypeInfo(c),e=0;e<15;e++){var f=!a&&1==(d>>e&1);e<6?this.modules[e][8][0]=f:e<8?this.modules[e+1][8][0]=f:this.modules[this.moduleCount-15+e][8][0]=f}for(var e=0;e<15;e++){var f=!a&&1==(d>>e&1);e<8?this.modules[8][this.moduleCount-e-1][0]=f:e<9?this.modules[8][15-e-1+1][0]=f:this.modules[8][15-e-1][0]=f}this.modules[this.moduleCount-8][8][0]=!a},mapData:function(a,b){for(var c=-1,d=this.moduleCount-1,e=7,f=0,g=this.moduleCount-1;g>0;g-=2)for(6==g&&g--;;){for(var h=0;h<2;h++)if(null==this.modules[d][g-h][0]){var i=!1;f<a.length&&(i=1==(a[f]>>>e&1));var j=t.getMask(b,d,g-h);j&&(i=!i),this.modules[d][g-h][0]=i,e--,-1==e&&(f++,e=7)}if((d+=c)<0||this.moduleCount<=d){d-=c,c=-c;break}}}},b.PAD0=236,b.PAD1=17,b.createData=function(a,c,f){for(var g=d.getRSBlocks(a,c),h=new e,i=0;i<f.length;i++){var j=f[i];h.put(j.mode,4),h.put(j.getLength(),t.getLengthInBits(j.mode,a)),j.write(h)}for(var k=0,i=0;i<g.length;i++)k+=g[i].dataCount;if(h.getLengthInBits()>8*k)throw new Error("code length overflow. ("+h.getLengthInBits()+">"+8*k+")");for(h.getLengthInBits()+4<=8*k&&h.put(0,4);h.getLengthInBits()%8!=0;)h.putBit(!1);for(;;){if(h.getLengthInBits()>=8*k)break;if(h.put(b.PAD0,8),h.getLengthInBits()>=8*k)break;h.put(b.PAD1,8)}return b.createBytes(h,g)},b.createBytes=function(a,b){for(var d=0,e=0,f=0,g=new Array(b.length),h=new Array(b.length),i=0;i<b.length;i++){var j=b[i].dataCount,k=b[i].totalCount-j;e=Math.max(e,j),f=Math.max(f,k),g[i]=new Array(j);for(var l=0;l<g[i].length;l++)g[i][l]=255&a.buffer[l+d];d+=j;var m=t.getErrorCorrectPolynomial(k),n=new c(g[i],m.getLength()-1),o=n.mod(m);h[i]=new Array(m.getLength()-1);for(var l=0;l<h[i].length;l++){var p=l+o.getLength()-h[i].length;h[i][l]=p>=0?o.get(p):0}}for(var q=0,l=0;l<b.length;l++)q+=b[l].totalCount;for(var r=new Array(q),s=0,l=0;l<e;l++)for(var i=0;i<b.length;i++)l<g[i].length&&(r[s++]=g[i][l]);for(var l=0;l<f;l++)for(var i=0;i<b.length;i++)l<h[i].length&&(r[s++]=h[i][l]);return r};for(var q={MODE_NUMBER:1,MODE_ALPHA_NUM:2,MODE_8BIT_BYTE:4,MODE_KANJI:8},r={L:1,M:0,Q:3,H:2},s={PATTERN000:0,PATTERN001:1,PATTERN010:2,PATTERN011:3,PATTERN100:4,PATTERN101:5,PATTERN110:6,PATTERN111:7},t={PATTERN_POSITION_TABLE:[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],G15:1335,G18:7973,G15_MASK:21522,getBCHTypeInfo:function(a){for(var b=a<<10;t.getBCHDigit(b)-t.getBCHDigit(t.G15)>=0;)b^=t.G15<<t.getBCHDigit(b)-t.getBCHDigit(t.G15);return(a<<10|b)^t.G15_MASK},getBCHTypeNumber:function(a){for(var b=a<<12;t.getBCHDigit(b)-t.getBCHDigit(t.G18)>=0;)b^=t.G18<<t.getBCHDigit(b)-t.getBCHDigit(t.G18);return a<<12|b},getBCHDigit:function(a){for(var b=0;0!=a;)b++,a>>>=1;return b},getPatternPosition:function(a){return t.PATTERN_POSITION_TABLE[a-1]},getMask:function(a,b,c){switch(a){case s.PATTERN000:return(b+c)%2==0;case s.PATTERN001:return b%2==0;case s.PATTERN010:return c%3==0;case s.PATTERN011:return(b+c)%3==0;case s.PATTERN100:return(Math.floor(b/2)+Math.floor(c/3))%2==0;case s.PATTERN101:return b*c%2+b*c%3==0;case s.PATTERN110:return(b*c%2+b*c%3)%2==0;case s.PATTERN111:return(b*c%3+(b+c)%2)%2==0;default:throw new Error("bad maskPattern:"+a)}},getErrorCorrectPolynomial:function(a){for(var b=new c([1],0),d=0;d<a;d++)b=b.multiply(new c([1,u.gexp(d)],0));return b},getLengthInBits:function(a,b){if(1<=b&&b<10)switch(a){case q.MODE_NUMBER:return 10;case q.MODE_ALPHA_NUM:return 9;case q.MODE_8BIT_BYTE:case q.MODE_KANJI:return 8;default:throw new Error("mode:"+a)}else if(b<27)switch(a){case q.MODE_NUMBER:return 12;case q.MODE_ALPHA_NUM:return 11;case q.MODE_8BIT_BYTE:return 16;case q.MODE_KANJI:return 10;default:throw new Error("mode:"+a)}else{if(!(b<41))throw new Error("type:"+b);switch(a){case q.MODE_NUMBER:return 14;case q.MODE_ALPHA_NUM:return 13;case q.MODE_8BIT_BYTE:return 16;case q.MODE_KANJI:return 12;default:throw new Error("mode:"+a)}}},getLostPoint:function(a){for(var b=a.getModuleCount(),c=0,d=0;d<b;d++)for(var e=0;e<b;e++){for(var f=0,g=a.isDark(d,e),h=-1;h<=1;h++)if(!(d+h<0||b<=d+h))for(var i=-1;i<=1;i++)e+i<0||b<=e+i||0==h&&0==i||g==a.isDark(d+h,e+i)&&f++;f>5&&(c+=3+f-5)}for(var d=0;d<b-1;d++)for(var e=0;e<b-1;e++){var j=0;a.isDark(d,e)&&j++,a.isDark(d+1,e)&&j++,a.isDark(d,e+1)&&j++,a.isDark(d+1,e+1)&&j++,0!=j&&4!=j||(c+=3)}for(var d=0;d<b;d++)for(var e=0;e<b-6;e++)a.isDark(d,e)&&!a.isDark(d,e+1)&&a.isDark(d,e+2)&&a.isDark(d,e+3)&&a.isDark(d,e+4)&&!a.isDark(d,e+5)&&a.isDark(d,e+6)&&(c+=40);for(var e=0;e<b;e++)for(var d=0;d<b-6;d++)a.isDark(d,e)&&!a.isDark(d+1,e)&&a.isDark(d+2,e)&&a.isDark(d+3,e)&&a.isDark(d+4,e)&&!a.isDark(d+5,e)&&a.isDark(d+6,e)&&(c+=40);for(var k=0,e=0;e<b;e++)for(var d=0;d<b;d++)a.isDark(d,e)&&k++;return c+=Math.abs(100*k/b/b-50)/5*10}},u={glog:function(a){if(a<1)throw new Error("glog("+a+")");return u.LOG_TABLE[a]},gexp:function(a){for(;a<0;)a+=255;for(;a>=256;)a-=255;return u.EXP_TABLE[a]},EXP_TABLE:new Array(256),LOG_TABLE:new Array(256)},v=0;v<8;v++)u.EXP_TABLE[v]=1<<v;for(var v=8;v<256;v++)u.EXP_TABLE[v]=u.EXP_TABLE[v-4]^u.EXP_TABLE[v-5]^u.EXP_TABLE[v-6]^u.EXP_TABLE[v-8];for(var v=0;v<255;v++)u.LOG_TABLE[u.EXP_TABLE[v]]=v;c.prototype={get:function(a){return this.num[a]},getLength:function(){return this.num.length},multiply:function(a){for(var b=new Array(this.getLength()+a.getLength()-1),d=0;d<this.getLength();d++)for(var e=0;e<a.getLength();e++)b[d+e]^=u.gexp(u.glog(this.get(d))+u.glog(a.get(e)));return new c(b,0)},mod:function(a){if(this.getLength()-a.getLength()<0)return this;for(var b=u.glog(this.get(0))-u.glog(a.get(0)),d=new Array(this.getLength()),e=0;e<this.getLength();e++)d[e]=this.get(e);for(var e=0;e<a.getLength();e++)d[e]^=u.gexp(u.glog(a.get(e))+b);return new c(d,0).mod(a)}},
 d.RS_BLOCK_TABLE=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12,7,37,13],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],d.getRSBlocks=function(a,b){var c=d.getRsBlockTable(a,b);if(c==i)throw new Error("bad rs block @ typeNumber:"+a+"/errorCorrectLevel:"+b);for(var e=c.length/3,f=[],g=0;g<e;g++)for(var h=c[3*g+0],j=c[3*g+1],k=c[3*g+2],l=0;l<h;l++)f.push(new d(j,k));return f},d.getRsBlockTable=function(a,b){switch(b){case r.L:return d.RS_BLOCK_TABLE[4*(a-1)+0];case r.M:return d.RS_BLOCK_TABLE[4*(a-1)+1];case r.Q:return d.RS_BLOCK_TABLE[4*(a-1)+2];case r.H:return d.RS_BLOCK_TABLE[4*(a-1)+3];default:return i}},e.prototype={get:function(a){var b=Math.floor(a/8);return 1==(this.buffer[b]>>>7-a%8&1)},put:function(a,b){for(var c=0;c<b;c++)this.putBit(1==(a>>>b-c-1&1))},getLengthInBits:function(){return this.length},putBit:function(a){var b=Math.floor(this.length/8);this.buffer.length<=b&&this.buffer.push(0),a&&(this.buffer[b]|=128>>>this.length%8),this.length++}};var w=[[17,14,11,7],[32,26,20,14],[53,42,32,24],[78,62,46,34],[106,84,60,44],[134,106,74,58],[154,122,86,64],[192,152,108,84],[230,180,130,98],[271,213,151,119],[321,251,177,137],[367,287,203,155],[425,331,241,177],[458,362,258,194],[520,412,292,220],[586,450,322,250],[644,504,364,280],[718,560,394,310],[792,624,442,338],[858,666,482,382],[929,711,509,403],[1003,779,565,439],[1091,857,611,461],[1171,911,661,511],[1273,997,715,535],[1367,1059,751,593],[1465,1125,805,625],[1528,1190,868,658],[1628,1264,908,698],[1732,1370,982,742],[1840,1452,1030,790],[1952,1538,1112,842],[2068,1628,1168,898],[2188,1722,1228,958],[2303,1809,1283,983],[2431,1911,1351,1051],[2563,1989,1423,1093],[2699,2099,1499,1139],[2809,2213,1579,1219],[2953,2331,1663,1273]],x=function(){return"undefined"!=typeof CanvasRenderingContext2D}()?function(){function a(){if("svg"==this._htOption.drawer){var a=this._oContext.getSerializedSvg(!0);this.dataURL=a,this._el.innerHTML=a}else try{var b=this._elCanvas.toDataURL("image/png");this.dataURL=b}catch(a){console.error(a)}this._htOption.onRenderingEnd&&(this.dataURL||console.error("Can not get base64 data, please check: 1. Published the page and image to the server 2. The image request support CORS 3. Configured `crossOrigin:'anonymous'` option"),this._htOption.onRenderingEnd(this._htOption,this.dataURL))}function b(a,b){var c=this;if(c._fFail=b,c._fSuccess=a,null===c._bSupportDataURI){var d=document.createElement("img"),e=function(){c._bSupportDataURI=!1,c._fFail&&c._fFail.call(c)},f=function(){c._bSupportDataURI=!0,c._fSuccess&&c._fSuccess.call(c)};d.onabort=e,d.onerror=e,d.onload=f,d.src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="}else!0===c._bSupportDataURI&&c._fSuccess?c._fSuccess.call(c):!1===c._bSupportDataURI&&c._fFail&&c._fFail.call(c)}if(m._android&&m._android<=2.1){var c=1/window.devicePixelRatio,d=CanvasRenderingContext2D.prototype.drawImage;CanvasRenderingContext2D.prototype.drawImage=function(a,b,e,f,g,h,i,j,k){if("nodeName"in a&&/img/i.test(a.nodeName))for(var l=arguments.length-1;l>=1;l--)arguments[l]=arguments[l]*c;else void 0===j&&(arguments[1]*=c,arguments[2]*=c,arguments[3]*=c,arguments[4]*=c);d.apply(this,arguments)}}var e=function(a,b){this._bIsPainted=!1,this._android=f(),this._el=a,this._htOption=b,"svg"==this._htOption.drawer?(this._oContext={},this._elCanvas={}):(this._elCanvas=document.createElement("canvas"),this._el.appendChild(this._elCanvas),this._oContext=this._elCanvas.getContext("2d")),this._bSupportDataURI=null,this.dataURL=null};return e.prototype.draw=function(a){function b(){d.quietZone>0&&d.quietZoneColor&&(j.lineWidth=0,j.fillStyle=d.quietZoneColor,j.fillRect(0,0,k._elCanvas.width,d.quietZone),j.fillRect(0,d.quietZone,d.quietZone,k._elCanvas.height-2*d.quietZone),j.fillRect(k._elCanvas.width-d.quietZone,d.quietZone,d.quietZone,k._elCanvas.height-2*d.quietZone),j.fillRect(0,k._elCanvas.height-d.quietZone,k._elCanvas.width,d.quietZone))}function c(a){function c(a){var c=Math.round(d.width/3.5),e=Math.round(d.height/3.5);c!==e&&(c=e),d.logoMaxWidth?c=Math.round(d.logoMaxWidth):d.logoWidth&&(c=Math.round(d.logoWidth)),d.logoMaxHeight?e=Math.round(d.logoMaxHeight):d.logoHeight&&(e=Math.round(d.logoHeight));var f,g;void 0===a.naturalWidth?(f=a.width,g=a.height):(f=a.naturalWidth,g=a.naturalHeight),(d.logoMaxWidth||d.logoMaxHeight)&&(d.logoMaxWidth&&f<=c&&(c=f),d.logoMaxHeight&&g<=e&&(e=g),f<=c&&g<=e&&(c=f,e=g));var h=(d.realWidth-c)/2,i=(d.realHeight-e)/2,k=Math.min(c/f,e/g),l=f*k,m=g*k;(d.logoMaxWidth||d.logoMaxHeight)&&(c=l,e=m,h=(d.realWidth-c)/2,i=(d.realHeight-e)/2),d.logoBackgroundTransparent||(j.fillStyle=d.logoBackgroundColor,j.fillRect(h,i,c,e));var n=j.imageSmoothingQuality,o=j.imageSmoothingEnabled;j.imageSmoothingEnabled=!0,j.imageSmoothingQuality="high",j.drawImage(a,h+(c-l)/2,i+(e-m)/2,l,m),j.imageSmoothingEnabled=o,j.imageSmoothingQuality=n,b(),s._bIsPainted=!0,s.makeImage()}d.onRenderingStart&&d.onRenderingStart(d);for(var h=0;h<e;h++)for(var i=0;i<e;i++){var k=i*f+d.quietZone,l=h*g+d.quietZone,m=a.isDark(h,i),n=a.getEye(h,i),o=d.dotScale;j.lineWidth=0;var p,q;n?(p=d[n.type]||d[n.type.substring(0,2)]||d.colorDark,q=d.colorLight):d.backgroundImage?(q="rgba(0,0,0,0)",6==h?d.autoColor?(p=d.timing_H||d.timing||d.autoColorDark,q=d.autoColorLight):p=d.timing_H||d.timing||d.colorDark:6==i?d.autoColor?(p=d.timing_V||d.timing||d.autoColorDark,q=d.autoColorLight):p=d.timing_V||d.timing||d.colorDark:d.autoColor?(p=d.autoColorDark,q=d.autoColorLight):p=d.colorDark):(p=6==h?d.timing_H||d.timing||d.colorDark:6==i?d.timing_V||d.timing||d.colorDark:d.colorDark,q=d.colorLight),j.strokeStyle=m?p:q,j.fillStyle=m?p:q,n?(o="AO"==n.type?d.dotScaleAO:"AI"==n.type?d.dotScaleAI:1,d.backgroundImage&&d.autoColor?(p=("AO"==n.type?d.AI:d.AO)||d.autoColorDark,q=d.autoColorLight):p=("AO"==n.type?d.AI:d.AO)||p,m=n.isDark,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))):6==h?(o=d.dotScaleTiming_H,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))):6==i?(o=d.dotScaleTiming_V,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))):(d.backgroundImage,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))),1==d.dotScale||n||(j.strokeStyle=d.colorLight)}if(d.title&&(j.fillStyle=d.titleBackgroundColor,j.fillRect(d.quietZone,d.quietZone,d.width,d.titleHeight),j.font=d.titleFont,j.fillStyle=d.titleColor,j.textAlign="center",j.fillText(d.title,this._elCanvas.width/2,+d.quietZone+d.titleTop)),d.subTitle&&(j.font=d.subTitleFont,j.fillStyle=d.subTitleColor,j.fillText(d.subTitle,this._elCanvas.width/2,+d.quietZone+d.subTitleTop)),d.logo){var r=new Image,s=this;r.onload=function(){c(r)},r.onerror=function(a){console.error(a)},null!=d.crossOrigin&&(r.crossOrigin=d.crossOrigin),r.originalSrc=d.logo,r.src=d.logo}else b(),this._bIsPainted=!0,this.makeImage()}var d=this._htOption,e=a.getModuleCount(),f=d.width/e,g=d.height/e;f<=1&&(f=1),g<=1&&(g=1);var h=f*e,i=g*e;d.heightWithTitle=i+d.titleHeight,d.realHeight=d.heightWithTitle+2*d.quietZone,d.realWidth=h+2*d.quietZone,this._elCanvas.width=d.realWidth,this._elCanvas.height=d.realHeight,"canvas"!=d.drawer&&(this._oContext=new C2S(this._elCanvas.width,this._elCanvas.height)),this.clear();var j=this._oContext;j.lineWidth=0,j.fillStyle=d.colorLight,j.fillRect(0,0,this._elCanvas.width,this._elCanvas.height),j.clearRect(d.quietZone,d.quietZone,d.width,d.titleHeight);var k=this;if(d.backgroundImage){var l=new Image;l.onload=function(){j.globalAlpha=1,j.globalAlpha=d.backgroundImageAlpha;var b=j.imageSmoothingQuality,e=j.imageSmoothingEnabled;j.imageSmoothingEnabled=!0,j.imageSmoothingQuality="high",(d.title||d.subTitle)&&d.titleHeight?j.drawImage(l,d.quietZone,d.quietZone+d.titleHeight,d.width,d.height):j.drawImage(l,0,0,d.realWidth,d.realHeight),j.imageSmoothingEnabled=e,j.imageSmoothingQuality=b,j.globalAlpha=1,c.call(k,a)},null!=d.crossOrigin&&(l.crossOrigin=d.crossOrigin),l.originalSrc=d.backgroundImage,l.src=d.backgroundImage}else c.call(k,a)},e.prototype.makeImage=function(){this._bIsPainted&&b.call(this,a)},e.prototype.isPainted=function(){return this._bIsPainted},e.prototype.clear=function(){this._oContext.clearRect(0,0,this._elCanvas.width,this._elCanvas.height),this._bIsPainted=!1},e.prototype.remove=function(){this._oContext.clearRect(0,0,this._elCanvas.width,this._elCanvas.height),this._bIsPainted=!1,this._el.innerHTML=""},e.prototype.round=function(a){return a?Math.floor(1e3*a)/1e3:a},e}():function(){var a=function(a,b){this._el=a,this._htOption=b};return a.prototype.draw=function(a){var b=this._htOption,c=this._el,d=a.getModuleCount(),e=b.width/d,f=b.height/d;e<=1&&(e=1),f<=1&&(f=1);var g=e*d,h=f*d;b.heightWithTitle=h+b.titleHeight,b.realHeight=b.heightWithTitle+2*b.quietZone,b.realWidth=g+2*b.quietZone;var i=[],j="",k=Math.round(e*b.dotScale),l=Math.round(f*b.dotScale);k<4&&(k=4,l=4);var m=b.colorDark,n=b.colorLight;if(b.backgroundImage){b.autoColor?(b.colorDark="rgba(0, 0, 0, .6);filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#99000000', EndColorStr='#99000000');",b.colorLight="rgba(255, 255, 255, .7);filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#B2FFFFFF', EndColorStr='#B2FFFFFF');"):b.colorLight="rgba(0,0,0,0)";var o='<div style="display:inline-block; z-index:-10;position:absolute;"><img src="'+b.backgroundImage+'" width="'+(b.width+2*b.quietZone)+'" height="'+b.realHeight+'" style="opacity:'+b.backgroundImageAlpha+";filter:alpha(opacity="+100*b.backgroundImageAlpha+'); "/></div>';i.push(o)}if(b.quietZone&&(j="display:inline-block; width:"+(b.width+2*b.quietZone)+"px; height:"+(b.width+2*b.quietZone)+"px;background:"+b.quietZoneColor+"; text-align:center;"),i.push('<div style="font-size:0;'+j+'">'),i.push('<table  style="font-size:0;border:0;border-collapse:collapse; margin-top:'+b.quietZone+'px;" border="0" cellspacing="0" cellspadding="0" align="center" valign="middle">'),i.push('<tr height="'+b.titleHeight+'" align="center"><td style="border:0;border-collapse:collapse;margin:0;padding:0" colspan="'+d+'">'),b.title){var p=b.titleColor,q=b.titleFont;i.push('<div style="width:100%;margin-top:'+b.titleTop+"px;color:"+p+";font:"+q+";background:"+b.titleBackgroundColor+'">'+b.title+"</div>")}b.subTitle&&i.push('<div style="width:100%;margin-top:'+(b.subTitleTop-b.titleTop)+"px;color:"+b.subTitleColor+"; font:"+b.subTitleFont+'">'+b.subTitle+"</div>"),i.push("</td></tr>");for(var r=0;r<d;r++){i.push('<tr style="border:0; padding:0; margin:0;" height="7">');for(var s=0;s<d;s++){var t=a.isDark(r,s),u=a.getEye(r,s);if(u){t=u.isDark;var v=u.type,w=b[v]||b[v.substring(0,2)]||m;i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+'px;"><span style="width:'+e+"px;height:"+f+"px;background-color:"+(t?w:n)+';display:inline-block"></span></td>')}else{var x=b.colorDark;6==r?(x=b.timing_H||b.timing||m,i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+"px;background-color:"+(t?x:n)+';"></td>')):6==s?(x=b.timing_V||b.timing||m,i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+"px;background-color:"+(t?x:n)+';"></td>')):i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+'px;"><div style="display:inline-block;width:'+k+"px;height:"+l+"px;background-color:"+(t?x:b.colorLight)+';"></div></td>')}}i.push("</tr>")}if(i.push("</table>"),i.push("</div>"),b.logo){var y=new Image;null!=b.crossOrigin&&(y.crossOrigin=b.crossOrigin),y.src=b.logo;var z=b.width/3.5,A=b.height/3.5;z!=A&&(z=A),b.logoWidth&&(z=b.logoWidth),b.logoHeight&&(A=b.logoHeight);var B="position:relative; z-index:1;display:table-cell;top:-"+(b.height/2+A/2+b.quietZone)+"px;text-align:center; width:"+z+"px; height:"+A+"px;line-height:"+z+"px; vertical-align: middle;";b.logoBackgroundTransparent||(B+="background:"+b.logoBackgroundColor),i.push('<div style="'+B+'"><img  src="'+b.logo+'"  style="max-width: '+z+"px; max-height: "+A+'px;" /> <div style=" display: none; width:1px;margin-left: -1px;"></div></div>')}b.onRenderingStart&&b.onRenderingStart(b),c.innerHTML=i.join("");var C=c.childNodes[0],D=(b.width-C.offsetWidth)/2,E=(b.heightWithTitle-C.offsetHeight)/2;D>0&&E>0&&(C.style.margin=E+"px "+D+"px"),this._htOption.onRenderingEnd&&this._htOption.onRenderingEnd(this._htOption,null)},a.prototype.clear=function(){this._el.innerHTML=""},a}();j=function(a,b){if(this._htOption={width:256,height:256,typeNumber:4,colorDark:"#000000",colorLight:"#ffffff",correctLevel:r.H,dotScale:1,dotScaleTiming:1,dotScaleTiming_H:i,dotScaleTiming_V:i,dotScaleA:1,dotScaleAO:i,dotScaleAI:i,quietZone:0,quietZoneColor:"rgba(0,0,0,0)",title:"",titleFont:"normal normal bold 16px Arial",titleColor:"#000000",titleBackgroundColor:"#ffffff",titleHeight:0,titleTop:30,subTitle:"",subTitleFont:"normal normal normal 14px Arial",subTitleColor:"#4F4F4F",subTitleTop:60,logo:i,logoWidth:i,logoHeight:i,logoMaxWidth:i,logoMaxHeight:i,logoBackgroundColor:"#ffffff",logoBackgroundTransparent:!1,PO:i,PI:i,PO_TL:i,PI_TL:i,PO_TR:i,PI_TR:i,PO_BL:i,PI_BL:i,AO:i,AI:i,timing:i,timing_H:i,timing_V:i,backgroundImage:i,backgroundImageAlpha:1,autoColor:!1,autoColorDark:"rgba(0, 0, 0, .6)",autoColorLight:"rgba(255, 255, 255, .7)",onRenderingStart:i,onRenderingEnd:i,version:0,tooltip:!1,binary:!1,drawer:"canvas",crossOrigin:null,utf8WithoutBOM:!0},"string"==typeof b&&(b={text:b}),b)for(var c in b)this._htOption[c]=b[c];this._htOption.title||this._htOption.subTitle||(this._htOption.titleHeight=0),(this._htOption.version<0||this._htOption.version>40)&&(console.warn("QR Code version '"+this._htOption.version+"' is invalidate, reset to 0"),this._htOption.version=0),(this._htOption.dotScale<0||this._htOption.dotScale>1)&&(console.warn(this._htOption.dotScale+" , is invalidate, dotScale must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScale=1),(this._htOption.dotScaleTiming<0||this._htOption.dotScaleTiming>1)&&(console.warn(this._htOption.dotScaleTiming+" , is invalidate, dotScaleTiming must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleTiming=1),this._htOption.dotScaleTiming_H?(this._htOption.dotScaleTiming_H<0||this._htOption.dotScaleTiming_H>1)&&(console.warn(this._htOption.dotScaleTiming_H+" , is invalidate, dotScaleTiming_H must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleTiming_H=1):this._htOption.dotScaleTiming_H=this._htOption.dotScaleTiming,this._htOption.dotScaleTiming_V?(this._htOption.dotScaleTiming_V<0||this._htOption.dotScaleTiming_V>1)&&(console.warn(this._htOption.dotScaleTiming_V+" , is invalidate, dotScaleTiming_V must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleTiming_V=1):this._htOption.dotScaleTiming_V=this._htOption.dotScaleTiming,(this._htOption.dotScaleA<0||this._htOption.dotScaleA>1)&&(console.warn(this._htOption.dotScaleA+" , is invalidate, dotScaleA must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleA=1),this._htOption.dotScaleAO?(this._htOption.dotScaleAO<0||this._htOption.dotScaleAO>1)&&(console.warn(this._htOption.dotScaleAO+" , is invalidate, dotScaleAO must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleAO=1):this._htOption.dotScaleAO=this._htOption.dotScaleA,this._htOption.dotScaleAI?(this._htOption.dotScaleAI<0||this._htOption.dotScaleAI>1)&&(console.warn(this._htOption.dotScaleAI+" , is invalidate, dotScaleAI must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleAI=1):this._htOption.dotScaleAI=this._htOption.dotScaleA,(this._htOption.backgroundImageAlpha<0||this._htOption.backgroundImageAlpha>1)&&(console.warn(this._htOption.backgroundImageAlpha+" , is invalidate, backgroundImageAlpha must between 0 and 1, now reset to 1. "),this._htOption.backgroundImageAlpha=1),this._htOption.quietZone||(this._htOption.quietZone=0),this._htOption.titleHeight||(this._htOption.titleHeight=0),this._htOption.width=Math.round(this._htOption.width),this._htOption.height=Math.round(this._htOption.height),this._htOption.quietZone=Math.round(this._htOption.quietZone),this._htOption.titleHeight=Math.round(this._htOption.titleHeight),"string"==typeof a&&(a=document.getElementById(a)),(!this._htOption.drawer||"svg"!=this._htOption.drawer&&"canvas"!=this._htOption.drawer)&&(this._htOption.drawer="canvas"),this._android=f(),this._el=a,this._oQRCode=null,this._htOption._element=a;var d={};for(var c in this._htOption)d[c]=this._htOption[c];this._oDrawing=new x(this._el,d),this._htOption.text&&this.makeCode(this._htOption.text)},j.prototype.makeCode=function(a){this._oQRCode=new b(g(a,this._htOption),this._htOption.correctLevel),this._oQRCode.addData(a,this._htOption.binary,this._htOption.utf8WithoutBOM),this._oQRCode.make(),this._htOption.tooltip&&(this._el.title=a),this._oDrawing.draw(this._oQRCode)},j.prototype.makeImage=function(){"function"==typeof this._oDrawing.makeImage&&(!this._android||this._android>=3)&&this._oDrawing.makeImage()},j.prototype.clear=function(){this._oDrawing.remove()},j.prototype.resize=function(a,b){this._oDrawing._htOption.width=a,this._oDrawing._htOption.height=b,this._oDrawing.draw(this._oQRCode)},j.prototype.download=function(a){var b=this._oDrawing.dataURL,c=document.createElement("a");if("svg"==this._htOption.drawer){a+=".svg";var d=new Blob([b],{type:"text/plain"});if(navigator.msSaveBlob)navigator.msSaveBlob(d,a);else{c.download=a;var e=new FileReader;e.onload=function(){c.href=e.result,c.click()},e.readAsDataURL(d)}}else if(a+=".png",navigator.msSaveBlob){var f=function(a){var b=atob(a.split(",")[1]),c=a.split(",")[0].split(":")[1].split(";")[0],d=new ArrayBuffer(b.length),e=new Uint8Array(d);for(v=0;v<b.length;v++)e[v]=b.charCodeAt(v);return new Blob([d],{type:c})}(b);navigator.msSaveBlob(f,a)}else c.download=a,c.href=b,c.click()},j.prototype.noConflict=function(){return m.QRCode===this&&(m.QRCode=p),j},j.CorrectLevel=r,"function"==typeof define&&(define.amd||define.cmd)?define([],function(){return j}):o?((o.exports=j).QRCode=j,n.QRCode=j):m.QRCode=j}.call(this);
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],155:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 'use strict'
 
 module.exports = function encodeUtf8 (input) {
@@ -16221,7 +16147,7 @@ module.exports = function encodeUtf8 (input) {
   return new Uint8Array(result).buffer
 }
 
-},{}],156:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
@@ -16308,7 +16234,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],157:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 (function (process){(function (){
 // 'path' module extracted from Node.js v8.11.1 (only the posix part)
 // transplited with Babel
@@ -16841,7 +16767,7 @@ posix.posix = posix;
 module.exports = posix;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":158}],158:[function(require,module,exports){
+},{"_process":155}],155:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -17027,1354 +16953,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],159:[function(require,module,exports){
-var QRCode = require('./../vendor/QRCode'),
-    QRErrorCorrectLevel = require('./../vendor/QRCode/QRErrorCorrectLevel'),
-    black = "\033[40m  \033[0m",
-    white = "\033[47m  \033[0m",
-    toCell = function (isBlack) {
-        return isBlack ? black : white;
-    },
-    repeat = function (color) {
-        return {
-            times: function (count) {
-                return new Array(count).join(color);
-            }
-        };
-    },
-    fill = function(length, value) {
-        var arr = new Array(length);
-        for (var i = 0; i < length; i++) {
-            arr[i] = value;
-        }
-        return arr;
-    };
-
-module.exports = {
-
-    error: QRErrorCorrectLevel.L,
-
-    generate: function (input, opts, cb) {
-        if (typeof opts === 'function') {
-            cb = opts;
-            opts = {};
-        }
-
-        var qrcode = new QRCode(-1, this.error);
-        qrcode.addData(input);
-        qrcode.make();
-
-        var output = '';
-        if (opts && opts.small) {
-            var BLACK = true, WHITE = false;
-            var moduleCount = qrcode.getModuleCount();
-            var moduleData = qrcode.modules.slice();
-
-            var oddRow = moduleCount % 2 === 1;
-            if (oddRow) {
-                moduleData.push(fill(moduleCount, WHITE));
-            }
-
-            var platte= {
-                WHITE_ALL: '\u2588',
-                WHITE_BLACK: '\u2580',
-                BLACK_WHITE: '\u2584',
-                BLACK_ALL: ' ',
-            };
-
-            var borderTop = repeat(platte.BLACK_WHITE).times(moduleCount + 3);
-            var borderBottom = repeat(platte.WHITE_BLACK).times(moduleCount + 3);
-            output += borderTop + '\n';
-
-            for (var row = 0; row < moduleCount; row += 2) {
-                output += platte.WHITE_ALL;
-
-                for (var col = 0; col < moduleCount; col++) {
-                    if (moduleData[row][col] === WHITE && moduleData[row + 1][col] === WHITE) {
-                        output += platte.WHITE_ALL;
-                    } else if (moduleData[row][col] === WHITE && moduleData[row + 1][col] === BLACK) {
-                        output += platte.WHITE_BLACK;
-                    } else if (moduleData[row][col] === BLACK && moduleData[row + 1][col] === WHITE) {
-                        output += platte.BLACK_WHITE;
-                    } else {
-                        output += platte.BLACK_ALL;
-                    }
-                }
-
-                output += platte.WHITE_ALL + '\n';
-            }
-
-            if (!oddRow) {
-                output += borderBottom;
-            }
-        } else {
-            var border = repeat(white).times(qrcode.getModuleCount() + 3);
-
-            output += border + '\n';
-            qrcode.modules.forEach(function (row) {
-                output += white;
-                output += row.map(toCell).join(''); 
-                output += white + '\n';
-            });
-            output += border;
-        }
-
-        if (cb) cb(output);
-        else console.log(output);
-    },
-
-    setErrorLevel: function (error) {
-        this.error = QRErrorCorrectLevel[error] || this.error;
-    }
-
-};
-
-},{"./../vendor/QRCode":169,"./../vendor/QRCode/QRErrorCorrectLevel":162}],160:[function(require,module,exports){
-var QRMode = require('./QRMode');
-
-function QR8bitByte(data) {
-	this.mode = QRMode.MODE_8BIT_BYTE;
-	this.data = data;
-}
-
-QR8bitByte.prototype = {
-
-	getLength : function() {
-		return this.data.length;
-	},
-	
-	write : function(buffer) {
-		for (var i = 0; i < this.data.length; i++) {
-			// not JIS ...
-			buffer.put(this.data.charCodeAt(i), 8);
-		}
-	}
-};
-
-module.exports = QR8bitByte;
-
-},{"./QRMode":165}],161:[function(require,module,exports){
-function QRBitBuffer() {
-	this.buffer = [];
-	this.length = 0;
-}
-
-QRBitBuffer.prototype = {
-
-	get : function(index) {
-		var bufIndex = Math.floor(index / 8);
-		return ( (this.buffer[bufIndex] >>> (7 - index % 8) ) & 1) == 1;
-	},
-	
-	put : function(num, length) {
-		for (var i = 0; i < length; i++) {
-			this.putBit( ( (num >>> (length - i - 1) ) & 1) == 1);
-		}
-	},
-	
-	getLengthInBits : function() {
-		return this.length;
-	},
-	
-	putBit : function(bit) {
-	
-		var bufIndex = Math.floor(this.length / 8);
-		if (this.buffer.length <= bufIndex) {
-			this.buffer.push(0);
-		}
-	
-		if (bit) {
-			this.buffer[bufIndex] |= (0x80 >>> (this.length % 8) );
-		}
-	
-		this.length++;
-	}
-};
-
-module.exports = QRBitBuffer;
-
-},{}],162:[function(require,module,exports){
-module.exports = {
-	L : 1,
-	M : 0,
-	Q : 3,
-	H : 2
-};
-
-
-},{}],163:[function(require,module,exports){
-module.exports = {
-	PATTERN000 : 0,
-	PATTERN001 : 1,
-	PATTERN010 : 2,
-	PATTERN011 : 3,
-	PATTERN100 : 4,
-	PATTERN101 : 5,
-	PATTERN110 : 6,
-	PATTERN111 : 7
-};
-
-},{}],164:[function(require,module,exports){
-var QRMath = {
-
-	glog : function(n) {
-	
-		if (n < 1) {
-			throw new Error("glog(" + n + ")");
-		}
-		
-		return QRMath.LOG_TABLE[n];
-	},
-	
-	gexp : function(n) {
-	
-		while (n < 0) {
-			n += 255;
-		}
-	
-		while (n >= 256) {
-			n -= 255;
-		}
-	
-		return QRMath.EXP_TABLE[n];
-	},
-	
-	EXP_TABLE : new Array(256),
-	
-	LOG_TABLE : new Array(256)
-
-};
-	
-for (var i = 0; i < 8; i++) {
-	QRMath.EXP_TABLE[i] = 1 << i;
-}
-for (var i = 8; i < 256; i++) {
-	QRMath.EXP_TABLE[i] = QRMath.EXP_TABLE[i - 4]
-		^ QRMath.EXP_TABLE[i - 5]
-		^ QRMath.EXP_TABLE[i - 6]
-		^ QRMath.EXP_TABLE[i - 8];
-}
-for (var i = 0; i < 255; i++) {
-	QRMath.LOG_TABLE[QRMath.EXP_TABLE[i] ] = i;
-}
-
-module.exports = QRMath;
-
-},{}],165:[function(require,module,exports){
-module.exports = {
-    MODE_NUMBER :       1 << 0,
-    MODE_ALPHA_NUM :    1 << 1,
-    MODE_8BIT_BYTE :    1 << 2,
-    MODE_KANJI :        1 << 3
-};
-
-},{}],166:[function(require,module,exports){
-var QRMath = require('./QRMath');
-
-function QRPolynomial(num, shift) {
-	if (num.length === undefined) {
-		throw new Error(num.length + "/" + shift);
-	}
-
-	var offset = 0;
-
-	while (offset < num.length && num[offset] === 0) {
-		offset++;
-	}
-
-	this.num = new Array(num.length - offset + shift);
-	for (var i = 0; i < num.length - offset; i++) {
-		this.num[i] = num[i + offset];
-	}
-}
-
-QRPolynomial.prototype = {
-
-	get : function(index) {
-		return this.num[index];
-	},
-	
-	getLength : function() {
-		return this.num.length;
-	},
-	
-	multiply : function(e) {
-	
-		var num = new Array(this.getLength() + e.getLength() - 1);
-	
-		for (var i = 0; i < this.getLength(); i++) {
-			for (var j = 0; j < e.getLength(); j++) {
-				num[i + j] ^= QRMath.gexp(QRMath.glog(this.get(i) ) + QRMath.glog(e.get(j) ) );
-			}
-		}
-	
-		return new QRPolynomial(num, 0);
-	},
-	
-	mod : function(e) {
-	
-		if (this.getLength() - e.getLength() < 0) {
-			return this;
-		}
-	
-		var ratio = QRMath.glog(this.get(0) ) - QRMath.glog(e.get(0) );
-	
-		var num = new Array(this.getLength() );
-		
-		for (var i = 0; i < this.getLength(); i++) {
-			num[i] = this.get(i);
-		}
-		
-		for (var x = 0; x < e.getLength(); x++) {
-			num[x] ^= QRMath.gexp(QRMath.glog(e.get(x) ) + ratio);
-		}
-	
-		// recursive call
-		return new QRPolynomial(num, 0).mod(e);
-	}
-};
-
-module.exports = QRPolynomial;
-
-},{"./QRMath":164}],167:[function(require,module,exports){
-var QRErrorCorrectLevel = require('./QRErrorCorrectLevel');
-
-function QRRSBlock(totalCount, dataCount) {
-	this.totalCount = totalCount;
-	this.dataCount  = dataCount;
-}
-
-QRRSBlock.RS_BLOCK_TABLE = [
-
-	// L
-	// M
-	// Q
-	// H
-
-	// 1
-	[1, 26, 19],
-	[1, 26, 16],
-	[1, 26, 13],
-	[1, 26, 9],
-	
-	// 2
-	[1, 44, 34],
-	[1, 44, 28],
-	[1, 44, 22],
-	[1, 44, 16],
-
-	// 3
-	[1, 70, 55],
-	[1, 70, 44],
-	[2, 35, 17],
-	[2, 35, 13],
-
-	// 4		
-	[1, 100, 80],
-	[2, 50, 32],
-	[2, 50, 24],
-	[4, 25, 9],
-	
-	// 5
-	[1, 134, 108],
-	[2, 67, 43],
-	[2, 33, 15, 2, 34, 16],
-	[2, 33, 11, 2, 34, 12],
-	
-	// 6
-	[2, 86, 68],
-	[4, 43, 27],
-	[4, 43, 19],
-	[4, 43, 15],
-	
-	// 7		
-	[2, 98, 78],
-	[4, 49, 31],
-	[2, 32, 14, 4, 33, 15],
-	[4, 39, 13, 1, 40, 14],
-	
-	// 8
-	[2, 121, 97],
-	[2, 60, 38, 2, 61, 39],
-	[4, 40, 18, 2, 41, 19],
-	[4, 40, 14, 2, 41, 15],
-	
-	// 9
-	[2, 146, 116],
-	[3, 58, 36, 2, 59, 37],
-	[4, 36, 16, 4, 37, 17],
-	[4, 36, 12, 4, 37, 13],
-	
-	// 10		
-	[2, 86, 68, 2, 87, 69],
-	[4, 69, 43, 1, 70, 44],
-	[6, 43, 19, 2, 44, 20],
-	[6, 43, 15, 2, 44, 16],
-
-	// 11
-	[4, 101, 81],
-	[1, 80, 50, 4, 81, 51],
-	[4, 50, 22, 4, 51, 23],
-	[3, 36, 12, 8, 37, 13],
-
-	// 12
-	[2, 116, 92, 2, 117, 93],
-	[6, 58, 36, 2, 59, 37],
-	[4, 46, 20, 6, 47, 21],
-	[7, 42, 14, 4, 43, 15],
-
-	// 13
-	[4, 133, 107],
-	[8, 59, 37, 1, 60, 38],
-	[8, 44, 20, 4, 45, 21],
-	[12, 33, 11, 4, 34, 12],
-
-	// 14
-	[3, 145, 115, 1, 146, 116],
-	[4, 64, 40, 5, 65, 41],
-	[11, 36, 16, 5, 37, 17],
-	[11, 36, 12, 5, 37, 13],
-
-	// 15
-	[5, 109, 87, 1, 110, 88],
-	[5, 65, 41, 5, 66, 42],
-	[5, 54, 24, 7, 55, 25],
-	[11, 36, 12],
-
-	// 16
-	[5, 122, 98, 1, 123, 99],
-	[7, 73, 45, 3, 74, 46],
-	[15, 43, 19, 2, 44, 20],
-	[3, 45, 15, 13, 46, 16],
-
-	// 17
-	[1, 135, 107, 5, 136, 108],
-	[10, 74, 46, 1, 75, 47],
-	[1, 50, 22, 15, 51, 23],
-	[2, 42, 14, 17, 43, 15],
-
-	// 18
-	[5, 150, 120, 1, 151, 121],
-	[9, 69, 43, 4, 70, 44],
-	[17, 50, 22, 1, 51, 23],
-	[2, 42, 14, 19, 43, 15],
-
-	// 19
-	[3, 141, 113, 4, 142, 114],
-	[3, 70, 44, 11, 71, 45],
-	[17, 47, 21, 4, 48, 22],
-	[9, 39, 13, 16, 40, 14],
-
-	// 20
-	[3, 135, 107, 5, 136, 108],
-	[3, 67, 41, 13, 68, 42],
-	[15, 54, 24, 5, 55, 25],
-	[15, 43, 15, 10, 44, 16],
-
-	// 21
-	[4, 144, 116, 4, 145, 117],
-	[17, 68, 42],
-	[17, 50, 22, 6, 51, 23],
-	[19, 46, 16, 6, 47, 17],
-
-	// 22
-	[2, 139, 111, 7, 140, 112],
-	[17, 74, 46],
-	[7, 54, 24, 16, 55, 25],
-	[34, 37, 13],
-
-	// 23
-	[4, 151, 121, 5, 152, 122],
-	[4, 75, 47, 14, 76, 48],
-	[11, 54, 24, 14, 55, 25],
-	[16, 45, 15, 14, 46, 16],
-
-	// 24
-	[6, 147, 117, 4, 148, 118],
-	[6, 73, 45, 14, 74, 46],
-	[11, 54, 24, 16, 55, 25],
-	[30, 46, 16, 2, 47, 17],
-
-	// 25
-	[8, 132, 106, 4, 133, 107],
-	[8, 75, 47, 13, 76, 48],
-	[7, 54, 24, 22, 55, 25],
-	[22, 45, 15, 13, 46, 16],
-
-	// 26
-	[10, 142, 114, 2, 143, 115],
-	[19, 74, 46, 4, 75, 47],
-	[28, 50, 22, 6, 51, 23],
-	[33, 46, 16, 4, 47, 17],
-
-	// 27
-	[8, 152, 122, 4, 153, 123],
-	[22, 73, 45, 3, 74, 46],
-	[8, 53, 23, 26, 54, 24],
-	[12, 45, 15, 28, 46, 16],
-
-	// 28
-	[3, 147, 117, 10, 148, 118],
-	[3, 73, 45, 23, 74, 46],
-	[4, 54, 24, 31, 55, 25],
-	[11, 45, 15, 31, 46, 16],
-
-	// 29
-	[7, 146, 116, 7, 147, 117],
-	[21, 73, 45, 7, 74, 46],
-	[1, 53, 23, 37, 54, 24],
-	[19, 45, 15, 26, 46, 16],
-
-	// 30
-	[5, 145, 115, 10, 146, 116],
-	[19, 75, 47, 10, 76, 48],
-	[15, 54, 24, 25, 55, 25],
-	[23, 45, 15, 25, 46, 16],
-
-	// 31
-	[13, 145, 115, 3, 146, 116],
-	[2, 74, 46, 29, 75, 47],
-	[42, 54, 24, 1, 55, 25],
-	[23, 45, 15, 28, 46, 16],
-
-	// 32
-	[17, 145, 115],
-	[10, 74, 46, 23, 75, 47],
-	[10, 54, 24, 35, 55, 25],
-	[19, 45, 15, 35, 46, 16],
-
-	// 33
-	[17, 145, 115, 1, 146, 116],
-	[14, 74, 46, 21, 75, 47],
-	[29, 54, 24, 19, 55, 25],
-	[11, 45, 15, 46, 46, 16],
-
-	// 34
-	[13, 145, 115, 6, 146, 116],
-	[14, 74, 46, 23, 75, 47],
-	[44, 54, 24, 7, 55, 25],
-	[59, 46, 16, 1, 47, 17],
-
-	// 35
-	[12, 151, 121, 7, 152, 122],
-	[12, 75, 47, 26, 76, 48],
-	[39, 54, 24, 14, 55, 25],
-	[22, 45, 15, 41, 46, 16],
-
-	// 36
-	[6, 151, 121, 14, 152, 122],
-	[6, 75, 47, 34, 76, 48],
-	[46, 54, 24, 10, 55, 25],
-	[2, 45, 15, 64, 46, 16],
-
-	// 37
-	[17, 152, 122, 4, 153, 123],
-	[29, 74, 46, 14, 75, 47],
-	[49, 54, 24, 10, 55, 25],
-	[24, 45, 15, 46, 46, 16],
-
-	// 38
-	[4, 152, 122, 18, 153, 123],
-	[13, 74, 46, 32, 75, 47],
-	[48, 54, 24, 14, 55, 25],
-	[42, 45, 15, 32, 46, 16],
-
-	// 39
-	[20, 147, 117, 4, 148, 118],
-	[40, 75, 47, 7, 76, 48],
-	[43, 54, 24, 22, 55, 25],
-	[10, 45, 15, 67, 46, 16],
-
-	// 40
-	[19, 148, 118, 6, 149, 119],
-	[18, 75, 47, 31, 76, 48],
-	[34, 54, 24, 34, 55, 25],
-	[20, 45, 15, 61, 46, 16]
-];
-
-QRRSBlock.getRSBlocks = function(typeNumber, errorCorrectLevel) {
-	
-	var rsBlock = QRRSBlock.getRsBlockTable(typeNumber, errorCorrectLevel);
-	
-	if (rsBlock === undefined) {
-		throw new Error("bad rs block @ typeNumber:" + typeNumber + "/errorCorrectLevel:" + errorCorrectLevel);
-	}
-
-	var length = rsBlock.length / 3;
-	
-	var list = [];
-	
-	for (var i = 0; i < length; i++) {
-
-		var count = rsBlock[i * 3 + 0];
-		var totalCount = rsBlock[i * 3 + 1];
-		var dataCount  = rsBlock[i * 3 + 2];
-
-		for (var j = 0; j < count; j++) {
-			list.push(new QRRSBlock(totalCount, dataCount) );	
-		}
-	}
-	
-	return list;
-};
-
-QRRSBlock.getRsBlockTable = function(typeNumber, errorCorrectLevel) {
-
-	switch(errorCorrectLevel) {
-	case QRErrorCorrectLevel.L :
-		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 0];
-	case QRErrorCorrectLevel.M :
-		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 1];
-	case QRErrorCorrectLevel.Q :
-		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 2];
-	case QRErrorCorrectLevel.H :
-		return QRRSBlock.RS_BLOCK_TABLE[(typeNumber - 1) * 4 + 3];
-	default :
-		return undefined;
-	}
-};
-
-module.exports = QRRSBlock;
-
-},{"./QRErrorCorrectLevel":162}],168:[function(require,module,exports){
-var QRMode = require('./QRMode');
-var QRPolynomial = require('./QRPolynomial');
-var QRMath = require('./QRMath');
-var QRMaskPattern = require('./QRMaskPattern');
-
-var QRUtil = {
-
-    PATTERN_POSITION_TABLE : [
-        [],
-        [6, 18],
-        [6, 22],
-        [6, 26],
-        [6, 30],
-        [6, 34],
-        [6, 22, 38],
-        [6, 24, 42],
-        [6, 26, 46],
-        [6, 28, 50],
-        [6, 30, 54],        
-        [6, 32, 58],
-        [6, 34, 62],
-        [6, 26, 46, 66],
-        [6, 26, 48, 70],
-        [6, 26, 50, 74],
-        [6, 30, 54, 78],
-        [6, 30, 56, 82],
-        [6, 30, 58, 86],
-        [6, 34, 62, 90],
-        [6, 28, 50, 72, 94],
-        [6, 26, 50, 74, 98],
-        [6, 30, 54, 78, 102],
-        [6, 28, 54, 80, 106],
-        [6, 32, 58, 84, 110],
-        [6, 30, 58, 86, 114],
-        [6, 34, 62, 90, 118],
-        [6, 26, 50, 74, 98, 122],
-        [6, 30, 54, 78, 102, 126],
-        [6, 26, 52, 78, 104, 130],
-        [6, 30, 56, 82, 108, 134],
-        [6, 34, 60, 86, 112, 138],
-        [6, 30, 58, 86, 114, 142],
-        [6, 34, 62, 90, 118, 146],
-        [6, 30, 54, 78, 102, 126, 150],
-        [6, 24, 50, 76, 102, 128, 154],
-        [6, 28, 54, 80, 106, 132, 158],
-        [6, 32, 58, 84, 110, 136, 162],
-        [6, 26, 54, 82, 110, 138, 166],
-        [6, 30, 58, 86, 114, 142, 170]
-    ],
-
-    G15 : (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0),
-    G18 : (1 << 12) | (1 << 11) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 5) | (1 << 2) | (1 << 0),
-    G15_MASK : (1 << 14) | (1 << 12) | (1 << 10)    | (1 << 4) | (1 << 1),
-
-    getBCHTypeInfo : function(data) {
-        var d = data << 10;
-        while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) >= 0) {
-            d ^= (QRUtil.G15 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G15) ) );    
-        }
-        return ( (data << 10) | d) ^ QRUtil.G15_MASK;
-    },
-
-    getBCHTypeNumber : function(data) {
-        var d = data << 12;
-        while (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) >= 0) {
-            d ^= (QRUtil.G18 << (QRUtil.getBCHDigit(d) - QRUtil.getBCHDigit(QRUtil.G18) ) );    
-        }
-        return (data << 12) | d;
-    },
-
-    getBCHDigit : function(data) {
-
-        var digit = 0;
-
-        while (data !== 0) {
-            digit++;
-            data >>>= 1;
-        }
-
-        return digit;
-    },
-
-    getPatternPosition : function(typeNumber) {
-        return QRUtil.PATTERN_POSITION_TABLE[typeNumber - 1];
-    },
-
-    getMask : function(maskPattern, i, j) {
-        
-        switch (maskPattern) {
-            
-        case QRMaskPattern.PATTERN000 : return (i + j) % 2 === 0;
-        case QRMaskPattern.PATTERN001 : return i % 2 === 0;
-        case QRMaskPattern.PATTERN010 : return j % 3 === 0;
-        case QRMaskPattern.PATTERN011 : return (i + j) % 3 === 0;
-        case QRMaskPattern.PATTERN100 : return (Math.floor(i / 2) + Math.floor(j / 3) ) % 2 === 0;
-        case QRMaskPattern.PATTERN101 : return (i * j) % 2 + (i * j) % 3 === 0;
-        case QRMaskPattern.PATTERN110 : return ( (i * j) % 2 + (i * j) % 3) % 2 === 0;
-        case QRMaskPattern.PATTERN111 : return ( (i * j) % 3 + (i + j) % 2) % 2 === 0;
-
-        default :
-            throw new Error("bad maskPattern:" + maskPattern);
-        }
-    },
-
-    getErrorCorrectPolynomial : function(errorCorrectLength) {
-
-        var a = new QRPolynomial([1], 0);
-
-        for (var i = 0; i < errorCorrectLength; i++) {
-            a = a.multiply(new QRPolynomial([1, QRMath.gexp(i)], 0) );
-        }
-
-        return a;
-    },
-
-    getLengthInBits : function(mode, type) {
-
-        if (1 <= type && type < 10) {
-
-            // 1 - 9
-
-            switch(mode) {
-            case QRMode.MODE_NUMBER     : return 10;
-            case QRMode.MODE_ALPHA_NUM  : return 9;
-            case QRMode.MODE_8BIT_BYTE  : return 8;
-            case QRMode.MODE_KANJI      : return 8;
-            default :
-                throw new Error("mode:" + mode);
-            }
-
-        } else if (type < 27) {
-
-            // 10 - 26
-
-            switch(mode) {
-            case QRMode.MODE_NUMBER     : return 12;
-            case QRMode.MODE_ALPHA_NUM  : return 11;
-            case QRMode.MODE_8BIT_BYTE  : return 16;
-            case QRMode.MODE_KANJI      : return 10;
-            default :
-                throw new Error("mode:" + mode);
-            }
-
-        } else if (type < 41) {
-
-            // 27 - 40
-
-            switch(mode) {
-            case QRMode.MODE_NUMBER     : return 14;
-            case QRMode.MODE_ALPHA_NUM  : return 13;
-            case QRMode.MODE_8BIT_BYTE  : return 16;
-            case QRMode.MODE_KANJI      : return 12;
-            default :
-                throw new Error("mode:" + mode);
-            }
-
-        } else {
-            throw new Error("type:" + type);
-        }
-    },
-
-    getLostPoint : function(qrCode) {
-        
-        var moduleCount = qrCode.getModuleCount();
-        var lostPoint = 0;
-        var row = 0; 
-        var col = 0;
-
-        
-        // LEVEL1
-        
-        for (row = 0; row < moduleCount; row++) {
-
-            for (col = 0; col < moduleCount; col++) {
-
-                var sameCount = 0;
-                var dark = qrCode.isDark(row, col);
-
-                for (var r = -1; r <= 1; r++) {
-
-                    if (row + r < 0 || moduleCount <= row + r) {
-                        continue;
-                    }
-
-                    for (var c = -1; c <= 1; c++) {
-
-                        if (col + c < 0 || moduleCount <= col + c) {
-                            continue;
-                        }
-
-                        if (r === 0 && c === 0) {
-                            continue;
-                        }
-
-                        if (dark === qrCode.isDark(row + r, col + c) ) {
-                            sameCount++;
-                        }
-                    }
-                }
-
-                if (sameCount > 5) {
-                    lostPoint += (3 + sameCount - 5);
-                }
-            }
-        }
-
-        // LEVEL2
-
-        for (row = 0; row < moduleCount - 1; row++) {
-            for (col = 0; col < moduleCount - 1; col++) {
-                var count = 0;
-                if (qrCode.isDark(row,     col    ) ) count++;
-                if (qrCode.isDark(row + 1, col    ) ) count++;
-                if (qrCode.isDark(row,     col + 1) ) count++;
-                if (qrCode.isDark(row + 1, col + 1) ) count++;
-                if (count === 0 || count === 4) {
-                    lostPoint += 3;
-                }
-            }
-        }
-
-        // LEVEL3
-
-        for (row = 0; row < moduleCount; row++) {
-            for (col = 0; col < moduleCount - 6; col++) {
-                if (qrCode.isDark(row, col) && 
-                        !qrCode.isDark(row, col + 1) && 
-                         qrCode.isDark(row, col + 2) && 
-                         qrCode.isDark(row, col + 3) && 
-                         qrCode.isDark(row, col + 4) && 
-                        !qrCode.isDark(row, col + 5) && 
-                         qrCode.isDark(row, col + 6) ) {
-                    lostPoint += 40;
-                }
-            }
-        }
-
-        for (col = 0; col < moduleCount; col++) {
-            for (row = 0; row < moduleCount - 6; row++) {
-                if (qrCode.isDark(row, col) &&
-                        !qrCode.isDark(row + 1, col) &&
-                         qrCode.isDark(row + 2, col) &&
-                         qrCode.isDark(row + 3, col) &&
-                         qrCode.isDark(row + 4, col) &&
-                        !qrCode.isDark(row + 5, col) &&
-                         qrCode.isDark(row + 6, col) ) {
-                    lostPoint += 40;
-                }
-            }
-        }
-
-        // LEVEL4
-        
-        var darkCount = 0;
-
-        for (col = 0; col < moduleCount; col++) {
-            for (row = 0; row < moduleCount; row++) {
-                if (qrCode.isDark(row, col) ) {
-                    darkCount++;
-                }
-            }
-        }
-        
-        var ratio = Math.abs(100 * darkCount / moduleCount / moduleCount - 50) / 5;
-        lostPoint += ratio * 10;
-
-        return lostPoint;       
-    }
-
-};
-
-module.exports = QRUtil;
-
-},{"./QRMaskPattern":163,"./QRMath":164,"./QRMode":165,"./QRPolynomial":166}],169:[function(require,module,exports){
-//---------------------------------------------------------------------
-// QRCode for JavaScript
-//
-// Copyright (c) 2009 Kazuhiko Arase
-//
-// URL: http://www.d-project.com/
-//
-// Licensed under the MIT license:
-//   http://www.opensource.org/licenses/mit-license.php
-//
-// The word "QR Code" is registered trademark of 
-// DENSO WAVE INCORPORATED
-//   http://www.denso-wave.com/qrcode/faqpatent-e.html
-//
-//---------------------------------------------------------------------
-// Modified to work in node for this project (and some refactoring)
-//---------------------------------------------------------------------
-
-var QR8bitByte = require('./QR8bitByte');
-var QRUtil = require('./QRUtil');
-var QRPolynomial = require('./QRPolynomial');
-var QRRSBlock = require('./QRRSBlock');
-var QRBitBuffer = require('./QRBitBuffer');
-
-function QRCode(typeNumber, errorCorrectLevel) {
-	this.typeNumber = typeNumber;
-	this.errorCorrectLevel = errorCorrectLevel;
-	this.modules = null;
-	this.moduleCount = 0;
-	this.dataCache = null;
-	this.dataList = [];
-}
-
-QRCode.prototype = {
-	
-	addData : function(data) {
-		var newData = new QR8bitByte(data);
-		this.dataList.push(newData);
-		this.dataCache = null;
-	},
-	
-	isDark : function(row, col) {
-		if (row < 0 || this.moduleCount <= row || col < 0 || this.moduleCount <= col) {
-			throw new Error(row + "," + col);
-		}
-		return this.modules[row][col];
-	},
-
-	getModuleCount : function() {
-		return this.moduleCount;
-	},
-	
-	make : function() {
-		// Calculate automatically typeNumber if provided is < 1
-		if (this.typeNumber < 1 ){
-			var typeNumber = 1;
-			for (typeNumber = 1; typeNumber < 40; typeNumber++) {
-				var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, this.errorCorrectLevel);
-
-				var buffer = new QRBitBuffer();
-				var totalDataCount = 0;
-				for (var i = 0; i < rsBlocks.length; i++) {
-					totalDataCount += rsBlocks[i].dataCount;
-				}
-
-				for (var x = 0; x < this.dataList.length; x++) {
-					var data = this.dataList[x];
-					buffer.put(data.mode, 4);
-					buffer.put(data.getLength(), QRUtil.getLengthInBits(data.mode, typeNumber) );
-					data.write(buffer);
-				}
-				if (buffer.getLengthInBits() <= totalDataCount * 8)
-					break;
-			}
-			this.typeNumber = typeNumber;
-		}
-		this.makeImpl(false, this.getBestMaskPattern() );
-	},
-	
-	makeImpl : function(test, maskPattern) {
-		
-		this.moduleCount = this.typeNumber * 4 + 17;
-		this.modules = new Array(this.moduleCount);
-		
-		for (var row = 0; row < this.moduleCount; row++) {
-			
-			this.modules[row] = new Array(this.moduleCount);
-			
-			for (var col = 0; col < this.moduleCount; col++) {
-				this.modules[row][col] = null;//(col + row) % 3;
-			}
-		}
-	
-		this.setupPositionProbePattern(0, 0);
-		this.setupPositionProbePattern(this.moduleCount - 7, 0);
-		this.setupPositionProbePattern(0, this.moduleCount - 7);
-		this.setupPositionAdjustPattern();
-		this.setupTimingPattern();
-		this.setupTypeInfo(test, maskPattern);
-		
-		if (this.typeNumber >= 7) {
-			this.setupTypeNumber(test);
-		}
-	
-		if (this.dataCache === null) {
-			this.dataCache = QRCode.createData(this.typeNumber, this.errorCorrectLevel, this.dataList);
-		}
-	
-		this.mapData(this.dataCache, maskPattern);
-	},
-
-	setupPositionProbePattern : function(row, col)  {
-		
-		for (var r = -1; r <= 7; r++) {
-			
-			if (row + r <= -1 || this.moduleCount <= row + r) continue;
-			
-			for (var c = -1; c <= 7; c++) {
-				
-				if (col + c <= -1 || this.moduleCount <= col + c) continue;
-				
-				if ( (0 <= r && r <= 6 && (c === 0 || c === 6) ) || 
-                     (0 <= c && c <= 6 && (r === 0 || r === 6) ) || 
-                     (2 <= r && r <= 4 && 2 <= c && c <= 4) ) {
-					this.modules[row + r][col + c] = true;
-				} else {
-					this.modules[row + r][col + c] = false;
-				}
-			}		
-		}		
-	},
-	
-	getBestMaskPattern : function() {
-	
-		var minLostPoint = 0;
-		var pattern = 0;
-	
-		for (var i = 0; i < 8; i++) {
-			
-			this.makeImpl(true, i);
-	
-			var lostPoint = QRUtil.getLostPoint(this);
-	
-			if (i === 0 || minLostPoint >  lostPoint) {
-				minLostPoint = lostPoint;
-				pattern = i;
-			}
-		}
-	
-		return pattern;
-	},
-	
-	createMovieClip : function(target_mc, instance_name, depth) {
-	
-		var qr_mc = target_mc.createEmptyMovieClip(instance_name, depth);
-		var cs = 1;
-	
-		this.make();
-
-		for (var row = 0; row < this.modules.length; row++) {
-			
-			var y = row * cs;
-			
-			for (var col = 0; col < this.modules[row].length; col++) {
-	
-				var x = col * cs;
-				var dark = this.modules[row][col];
-			
-				if (dark) {
-					qr_mc.beginFill(0, 100);
-					qr_mc.moveTo(x, y);
-					qr_mc.lineTo(x + cs, y);
-					qr_mc.lineTo(x + cs, y + cs);
-					qr_mc.lineTo(x, y + cs);
-					qr_mc.endFill();
-				}
-			}
-		}
-		
-		return qr_mc;
-	},
-
-	setupTimingPattern : function() {
-		
-		for (var r = 8; r < this.moduleCount - 8; r++) {
-			if (this.modules[r][6] !== null) {
-				continue;
-			}
-			this.modules[r][6] = (r % 2 === 0);
-		}
-	
-		for (var c = 8; c < this.moduleCount - 8; c++) {
-			if (this.modules[6][c] !== null) {
-				continue;
-			}
-			this.modules[6][c] = (c % 2 === 0);
-		}
-	},
-	
-	setupPositionAdjustPattern : function() {
-	
-		var pos = QRUtil.getPatternPosition(this.typeNumber);
-		
-		for (var i = 0; i < pos.length; i++) {
-		
-			for (var j = 0; j < pos.length; j++) {
-			
-				var row = pos[i];
-				var col = pos[j];
-				
-				if (this.modules[row][col] !== null) {
-					continue;
-				}
-				
-				for (var r = -2; r <= 2; r++) {
-				
-					for (var c = -2; c <= 2; c++) {
-					
-						if (Math.abs(r) === 2 || 
-                            Math.abs(c) === 2 ||
-                            (r === 0 && c === 0) ) {
-							this.modules[row + r][col + c] = true;
-						} else {
-							this.modules[row + r][col + c] = false;
-						}
-					}
-				}
-			}
-		}
-	},
-	
-	setupTypeNumber : function(test) {
-	
-		var bits = QRUtil.getBCHTypeNumber(this.typeNumber);
-        var mod;
-	
-		for (var i = 0; i < 18; i++) {
-			mod = (!test && ( (bits >> i) & 1) === 1);
-			this.modules[Math.floor(i / 3)][i % 3 + this.moduleCount - 8 - 3] = mod;
-		}
-	
-		for (var x = 0; x < 18; x++) {
-			mod = (!test && ( (bits >> x) & 1) === 1);
-			this.modules[x % 3 + this.moduleCount - 8 - 3][Math.floor(x / 3)] = mod;
-		}
-	},
-	
-	setupTypeInfo : function(test, maskPattern) {
-	
-		var data = (this.errorCorrectLevel << 3) | maskPattern;
-		var bits = QRUtil.getBCHTypeInfo(data);
-        var mod;
-	
-		// vertical		
-		for (var v = 0; v < 15; v++) {
-	
-			mod = (!test && ( (bits >> v) & 1) === 1);
-	
-			if (v < 6) {
-				this.modules[v][8] = mod;
-			} else if (v < 8) {
-				this.modules[v + 1][8] = mod;
-			} else {
-				this.modules[this.moduleCount - 15 + v][8] = mod;
-			}
-		}
-	
-		// horizontal
-		for (var h = 0; h < 15; h++) {
-	
-			mod = (!test && ( (bits >> h) & 1) === 1);
-			
-			if (h < 8) {
-				this.modules[8][this.moduleCount - h - 1] = mod;
-			} else if (h < 9) {
-				this.modules[8][15 - h - 1 + 1] = mod;
-			} else {
-				this.modules[8][15 - h - 1] = mod;
-			}
-		}
-	
-		// fixed module
-		this.modules[this.moduleCount - 8][8] = (!test);
-	
-	},
-	
-	mapData : function(data, maskPattern) {
-		
-		var inc = -1;
-		var row = this.moduleCount - 1;
-		var bitIndex = 7;
-		var byteIndex = 0;
-		
-		for (var col = this.moduleCount - 1; col > 0; col -= 2) {
-	
-			if (col === 6) col--;
-	
-			while (true) {
-	
-				for (var c = 0; c < 2; c++) {
-					
-					if (this.modules[row][col - c] === null) {
-						
-						var dark = false;
-	
-						if (byteIndex < data.length) {
-							dark = ( ( (data[byteIndex] >>> bitIndex) & 1) === 1);
-						}
-	
-						var mask = QRUtil.getMask(maskPattern, row, col - c);
-	
-						if (mask) {
-							dark = !dark;
-						}
-						
-						this.modules[row][col - c] = dark;
-						bitIndex--;
-	
-						if (bitIndex === -1) {
-							byteIndex++;
-							bitIndex = 7;
-						}
-					}
-				}
-								
-				row += inc;
-	
-				if (row < 0 || this.moduleCount <= row) {
-					row -= inc;
-					inc = -inc;
-					break;
-				}
-			}
-		}
-		
-	}
-
-};
-
-QRCode.PAD0 = 0xEC;
-QRCode.PAD1 = 0x11;
-
-QRCode.createData = function(typeNumber, errorCorrectLevel, dataList) {
-	
-	var rsBlocks = QRRSBlock.getRSBlocks(typeNumber, errorCorrectLevel);
-	
-	var buffer = new QRBitBuffer();
-	
-	for (var i = 0; i < dataList.length; i++) {
-		var data = dataList[i];
-		buffer.put(data.mode, 4);
-		buffer.put(data.getLength(), QRUtil.getLengthInBits(data.mode, typeNumber) );
-		data.write(buffer);
-	}
-
-	// calc num max data.
-	var totalDataCount = 0;
-	for (var x = 0; x < rsBlocks.length; x++) {
-		totalDataCount += rsBlocks[x].dataCount;
-	}
-
-	if (buffer.getLengthInBits() > totalDataCount * 8) {
-		throw new Error("code length overflow. (" + 
-            buffer.getLengthInBits() + 
-            ">" +  
-            totalDataCount * 8 + 
-            ")");
-	}
-
-	// end code
-	if (buffer.getLengthInBits() + 4 <= totalDataCount * 8) {
-		buffer.put(0, 4);
-	}
-
-	// padding
-	while (buffer.getLengthInBits() % 8 !== 0) {
-		buffer.putBit(false);
-	}
-
-	// padding
-	while (true) {
-		
-		if (buffer.getLengthInBits() >= totalDataCount * 8) {
-			break;
-		}
-		buffer.put(QRCode.PAD0, 8);
-		
-		if (buffer.getLengthInBits() >= totalDataCount * 8) {
-			break;
-		}
-		buffer.put(QRCode.PAD1, 8);
-	}
-
-	return QRCode.createBytes(buffer, rsBlocks);
-};
-
-QRCode.createBytes = function(buffer, rsBlocks) {
-
-	var offset = 0;
-	
-	var maxDcCount = 0;
-	var maxEcCount = 0;
-	
-	var dcdata = new Array(rsBlocks.length);
-	var ecdata = new Array(rsBlocks.length);
-	
-	for (var r = 0; r < rsBlocks.length; r++) {
-
-		var dcCount = rsBlocks[r].dataCount;
-		var ecCount = rsBlocks[r].totalCount - dcCount;
-
-		maxDcCount = Math.max(maxDcCount, dcCount);
-		maxEcCount = Math.max(maxEcCount, ecCount);
-		
-		dcdata[r] = new Array(dcCount);
-		
-		for (var i = 0; i < dcdata[r].length; i++) {
-			dcdata[r][i] = 0xff & buffer.buffer[i + offset];
-		}
-		offset += dcCount;
-		
-		var rsPoly = QRUtil.getErrorCorrectPolynomial(ecCount);
-		var rawPoly = new QRPolynomial(dcdata[r], rsPoly.getLength() - 1);
-
-		var modPoly = rawPoly.mod(rsPoly);
-		ecdata[r] = new Array(rsPoly.getLength() - 1);
-		for (var x = 0; x < ecdata[r].length; x++) {
-            var modIndex = x + modPoly.getLength() - ecdata[r].length;
-			ecdata[r][x] = (modIndex >= 0)? modPoly.get(modIndex) : 0;
-		}
-
-	}
-	
-	var totalCodeCount = 0;
-	for (var y = 0; y < rsBlocks.length; y++) {
-		totalCodeCount += rsBlocks[y].totalCount;
-	}
-
-	var data = new Array(totalCodeCount);
-	var index = 0;
-
-	for (var z = 0; z < maxDcCount; z++) {
-		for (var s = 0; s < rsBlocks.length; s++) {
-			if (z < dcdata[s].length) {
-				data[index++] = dcdata[s][z];
-			}
-		}
-	}
-
-	for (var xx = 0; xx < maxEcCount; xx++) {
-		for (var t = 0; t < rsBlocks.length; t++) {
-			if (xx < ecdata[t].length) {
-				data[index++] = ecdata[t][xx];
-			}
-		}
-	}
-
-	return data;
-
-};
-
-module.exports = QRCode;
-
-},{"./QR8bitByte":160,"./QRBitBuffer":161,"./QRPolynomial":166,"./QRRSBlock":167,"./QRUtil":168}],170:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 
 const canPromise = require('./can-promise')
 
@@ -18452,7 +17031,7 @@ exports.toString = renderCanvas.bind(null, function (data, _, opts) {
   return SvgRenderer.render(data, opts)
 })
 
-},{"./can-promise":171,"./core/qrcode":187,"./renderer/canvas":194,"./renderer/svg-tag.js":195}],171:[function(require,module,exports){
+},{"./can-promise":157,"./core/qrcode":173,"./renderer/canvas":180,"./renderer/svg-tag.js":181}],157:[function(require,module,exports){
 // can-promise has a crash in some versions of react native that dont have
 // standard global objects
 // https://github.com/soldair/node-qrcode/issues/157
@@ -18461,7 +17040,7 @@ module.exports = function () {
   return typeof Promise === 'function' && Promise.prototype && Promise.prototype.then
 }
 
-},{}],172:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 /**
  * Alignment pattern are fixed reference pattern in defined positions
  * in a matrix symbology, which enables the decode software to re-synchronise
@@ -18546,7 +17125,7 @@ exports.getPositions = function getPositions (version) {
   return coords
 }
 
-},{"./utils":191}],173:[function(require,module,exports){
+},{"./utils":177}],159:[function(require,module,exports){
 const Mode = require('./mode')
 
 /**
@@ -18607,7 +17186,7 @@ AlphanumericData.prototype.write = function write (bitBuffer) {
 
 module.exports = AlphanumericData
 
-},{"./mode":184}],174:[function(require,module,exports){
+},{"./mode":170}],160:[function(require,module,exports){
 function BitBuffer () {
   this.buffer = []
   this.length = 0
@@ -18646,7 +17225,7 @@ BitBuffer.prototype = {
 
 module.exports = BitBuffer
 
-},{}],175:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 /**
  * Helper class to handle QR Code symbol modules
  *
@@ -18713,7 +17292,7 @@ BitMatrix.prototype.isReserved = function (row, col) {
 
 module.exports = BitMatrix
 
-},{}],176:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 const encodeUtf8 = require('encode-utf8')
 const Mode = require('./mode')
 
@@ -18745,7 +17324,7 @@ ByteData.prototype.write = function (bitBuffer) {
 
 module.exports = ByteData
 
-},{"./mode":184,"encode-utf8":155}],177:[function(require,module,exports){
+},{"./mode":170,"encode-utf8":152}],163:[function(require,module,exports){
 const ECLevel = require('./error-correction-level')
 
 const EC_BLOCKS_TABLE = [
@@ -18882,7 +17461,7 @@ exports.getTotalCodewordsCount = function getTotalCodewordsCount (version, error
   }
 }
 
-},{"./error-correction-level":178}],178:[function(require,module,exports){
+},{"./error-correction-level":164}],164:[function(require,module,exports){
 exports.L = { bit: 1 }
 exports.M = { bit: 0 }
 exports.Q = { bit: 3 }
@@ -18934,7 +17513,7 @@ exports.from = function from (value, defaultValue) {
   }
 }
 
-},{}],179:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 const getSymbolSize = require('./utils').getSymbolSize
 const FINDER_PATTERN_SIZE = 7
 
@@ -18958,7 +17537,7 @@ exports.getPositions = function getPositions (version) {
   ]
 }
 
-},{"./utils":191}],180:[function(require,module,exports){
+},{"./utils":177}],166:[function(require,module,exports){
 const Utils = require('./utils')
 
 const G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0)
@@ -18989,7 +17568,7 @@ exports.getEncodedBits = function getEncodedBits (errorCorrectionLevel, mask) {
   return ((data << 10) | d) ^ G15_MASK
 }
 
-},{"./utils":191}],181:[function(require,module,exports){
+},{"./utils":177}],167:[function(require,module,exports){
 const EXP_TABLE = new Uint8Array(512)
 const LOG_TABLE = new Uint8Array(256)
 /**
@@ -19060,7 +17639,7 @@ exports.mul = function mul (x, y) {
   return EXP_TABLE[LOG_TABLE[x] + LOG_TABLE[y]]
 }
 
-},{}],182:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 const Mode = require('./mode')
 const Utils = require('./utils')
 
@@ -19116,7 +17695,7 @@ KanjiData.prototype.write = function (bitBuffer) {
 
 module.exports = KanjiData
 
-},{"./mode":184,"./utils":191}],183:[function(require,module,exports){
+},{"./mode":170,"./utils":177}],169:[function(require,module,exports){
 /**
  * Data mask pattern reference
  * @type {Object}
@@ -19352,7 +17931,7 @@ exports.getBestMask = function getBestMask (data, setupFormatFunc) {
   return bestPattern
 }
 
-},{}],184:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 const VersionCheck = require('./version-check')
 const Regex = require('./regex')
 
@@ -19521,7 +18100,7 @@ exports.from = function from (value, defaultValue) {
   }
 }
 
-},{"./regex":189,"./version-check":192}],185:[function(require,module,exports){
+},{"./regex":175,"./version-check":178}],171:[function(require,module,exports){
 const Mode = require('./mode')
 
 function NumericData (data) {
@@ -19566,7 +18145,7 @@ NumericData.prototype.write = function write (bitBuffer) {
 
 module.exports = NumericData
 
-},{"./mode":184}],186:[function(require,module,exports){
+},{"./mode":170}],172:[function(require,module,exports){
 const GF = require('./galois-field')
 
 /**
@@ -19630,7 +18209,7 @@ exports.generateECPolynomial = function generateECPolynomial (degree) {
   return poly
 }
 
-},{"./galois-field":181}],187:[function(require,module,exports){
+},{"./galois-field":167}],173:[function(require,module,exports){
 const Utils = require('./utils')
 const ECLevel = require('./error-correction-level')
 const BitBuffer = require('./bit-buffer')
@@ -20127,7 +18706,7 @@ exports.create = function create (data, options) {
   return createSymbol(data, version, errorCorrectionLevel, mask)
 }
 
-},{"./alignment-pattern":172,"./bit-buffer":174,"./bit-matrix":175,"./error-correction-code":177,"./error-correction-level":178,"./finder-pattern":179,"./format-info":180,"./mask-pattern":183,"./mode":184,"./reed-solomon-encoder":188,"./segments":190,"./utils":191,"./version":193}],188:[function(require,module,exports){
+},{"./alignment-pattern":158,"./bit-buffer":160,"./bit-matrix":161,"./error-correction-code":163,"./error-correction-level":164,"./finder-pattern":165,"./format-info":166,"./mask-pattern":169,"./mode":170,"./reed-solomon-encoder":174,"./segments":176,"./utils":177,"./version":179}],174:[function(require,module,exports){
 const Polynomial = require('./polynomial')
 
 function ReedSolomonEncoder (degree) {
@@ -20185,7 +18764,7 @@ ReedSolomonEncoder.prototype.encode = function encode (data) {
 
 module.exports = ReedSolomonEncoder
 
-},{"./polynomial":186}],189:[function(require,module,exports){
+},{"./polynomial":172}],175:[function(require,module,exports){
 const numeric = '[0-9]+'
 const alphanumeric = '[A-Z $%*+\\-./:]+'
 let kanji = '(?:[u3000-u303F]|[u3040-u309F]|[u30A0-u30FF]|' +
@@ -20218,7 +18797,7 @@ exports.testAlphanumeric = function testAlphanumeric (str) {
   return TEST_ALPHANUMERIC.test(str)
 }
 
-},{}],190:[function(require,module,exports){
+},{}],176:[function(require,module,exports){
 const Mode = require('./mode')
 const NumericData = require('./numeric-data')
 const AlphanumericData = require('./alphanumeric-data')
@@ -20550,7 +19129,7 @@ exports.rawSplit = function rawSplit (data) {
   )
 }
 
-},{"./alphanumeric-data":173,"./byte-data":176,"./kanji-data":182,"./mode":184,"./numeric-data":185,"./regex":189,"./utils":191,"dijkstrajs":153}],191:[function(require,module,exports){
+},{"./alphanumeric-data":159,"./byte-data":162,"./kanji-data":168,"./mode":170,"./numeric-data":171,"./regex":175,"./utils":177,"dijkstrajs":150}],177:[function(require,module,exports){
 let toSJISFunction
 const CODEWORDS_COUNT = [
   0, // Not used
@@ -20615,7 +19194,7 @@ exports.toSJIS = function toSJIS (kanji) {
   return toSJISFunction(kanji)
 }
 
-},{}],192:[function(require,module,exports){
+},{}],178:[function(require,module,exports){
 /**
  * Check if QR Code version is valid
  *
@@ -20626,7 +19205,7 @@ exports.isValid = function isValid (version) {
   return !isNaN(version) && version >= 1 && version <= 40
 }
 
-},{}],193:[function(require,module,exports){
+},{}],179:[function(require,module,exports){
 const Utils = require('./utils')
 const ECCode = require('./error-correction-code')
 const ECLevel = require('./error-correction-level')
@@ -20791,7 +19370,7 @@ exports.getEncodedBits = function getEncodedBits (version) {
   return (version << 12) | d
 }
 
-},{"./error-correction-code":177,"./error-correction-level":178,"./mode":184,"./utils":191,"./version-check":192}],194:[function(require,module,exports){
+},{"./error-correction-code":163,"./error-correction-level":164,"./mode":170,"./utils":177,"./version-check":178}],180:[function(require,module,exports){
 const Utils = require('./utils')
 
 function clearCanvas (ctx, canvas, size) {
@@ -20856,7 +19435,7 @@ exports.renderToDataURL = function renderToDataURL (qrData, canvas, options) {
   return canvasEl.toDataURL(type, rendererOpts.quality)
 }
 
-},{"./utils":196}],195:[function(require,module,exports){
+},{"./utils":182}],181:[function(require,module,exports){
 const Utils = require('./utils')
 
 function getColorAttrib (color, attrib) {
@@ -20939,7 +19518,7 @@ exports.render = function render (qrData, options, cb) {
   return svgTag
 }
 
-},{"./utils":196}],196:[function(require,module,exports){
+},{"./utils":182}],182:[function(require,module,exports){
 function hex2rgba (hex) {
   if (typeof hex === 'number') {
     hex = hex.toString()
@@ -21040,7 +19619,7 @@ exports.qrToImageData = function qrToImageData (imgData, qr, opts) {
   }
 }
 
-},{}],197:[function(require,module,exports){
+},{}],183:[function(require,module,exports){
 /********************************************************************************
     vCards-js, Eric J Nesser, November 2014
 ********************************************************************************/
@@ -21380,7 +19959,7 @@ var vCard = (function () {
 
 module.exports = vCard;
 
-},{"./lib/vCardFormatter":198,"fs":151,"path":157}],198:[function(require,module,exports){
+},{"./lib/vCardFormatter":184,"fs":148,"path":154}],184:[function(require,module,exports){
 /********************************************************************************
  vCards-js, Eric J Nesser, November 2014,
  ********************************************************************************/
@@ -21778,12 +20357,10 @@ module.exports = vCard;
 		}
 	};
 })();
-},{}],199:[function(require,module,exports){
+},{}],185:[function(require,module,exports){
 const { starter } = require("../action/starter")
-const { toParam } = require("../action/toParam")
-const { toCode } = require("../action/toCode")
-const { eventAction } = require("../action/event")
-const { setElement } = require("../action/setElement")
+const { eventExecuter } = require("../action/event")
+const { lineInterpreter } = require("../action/lineInterpreter")
 
 window.views = JSON.parse(document.getElementById("views").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
@@ -21795,21 +20372,31 @@ var global = window.global
 //views.document = document
 document.element = document
 views.body.element = document.body
-views.window = { id: "window", element: window, controls: [] }
+views.window = { id: "window", element: window, controls: [], __: global.__ }
 
 // download arabic font
-var _ar = document.createElement("P")
-_ar.innerHTML = "مرحبا"
-_ar.classList.add("ar")
-_ar.style.position = "absolute"
-_ar.style.top = "-1000px"
-views.body.element.appendChild(_ar)
+var arDiv = document.createElement("P")
+arDiv.innerHTML = "مرحبا"
+arDiv.classList.add("ar")
+arDiv.style.position = "absolute"
+arDiv.style.top = "-1000px"
+views.body.element.appendChild(arDiv)
 
-window.onfocus = () => {
+window.onfocus = (e) => {
 
     views.root.element.click()
     document.activeElement.blur()
-    toParam({ id: "root", data: toCode({ id: "root", string: "():mininote.style():[opacity=0;transform=scale(0)]" }) })
+    
+    var data = "():mininote.style():[opacity=0;transform=scale(0)]"
+    lineInterpreter({ id: "window", e, data })
+}
+
+window.onmousedown = (e) => {
+
+    var global = window.global
+    var views = window.views
+    
+    global.clicked = views[(e || window.event).target.id]
 }
 
 // clicked element
@@ -21824,7 +20411,7 @@ document.body.addEventListener('click', e => {
     if (global.clicked && views.droplist.element.contains(global.clicked.element)) global["droplist-txt"] = global.clicked.element.innerHTML
 
     // body click events
-    Object.values(global.__events__).map(event => event.click && event.click.map(data => eventAction({ ...data, e })))
+    Object.values(global.__events__).map(event => event.click && event.click.map(data => eventExecuter({ ...data, e })))
 })
 
 // mousemove
@@ -21836,7 +20423,7 @@ document.body.addEventListener('mousemove', (e) => {
     global.mousePosY = e.screenY
 
     // body mousemove events
-    Object.values(global.__events__).map(event => event.mousemove && event.mousemove.map(data => eventAction({ ...data, e })))
+    Object.values(global.__events__).map(event => event.mousemove && event.mousemove.map(data => eventExecuter({ ...data, e })))
 })
 
 document.body.addEventListener("mousedown", (e) => {
@@ -21847,7 +20434,7 @@ document.body.addEventListener("mousedown", (e) => {
     global.clicked = window.views[((e || window.event).target || e.currentTarget).id]
 
     // body mousedown events
-    Object.values(global.__events__).map(event => event.mousedown && event.mousedown.map(data => eventAction({ ...data, e })))
+    Object.values(global.__events__).map(event => event.mousedown && event.mousedown.map(data => eventExecuter({ ...data, e })))
 })
 
 document.body.addEventListener("mouseup", (e) => {
@@ -21856,15 +20443,16 @@ document.body.addEventListener("mouseup", (e) => {
     global.mousedowned = false
 
     // body mouseup events
-    Object.values(global.__events__).map(event => event.mouseup && event.mouseup.map(data => eventAction({ ...data, e })))
+    Object.values(global.__events__).map(event => event.mouseup && event.mouseup.map(data => eventExecuter({ ...data, e })))
 })
 
 document.addEventListener('keydown', e => {
 
     var global = window.global
+
     if (global.projectID === "brackettechnologies" && e.ctrlKey && e.key === "s") {
         e.preventDefault();
-        toParam({ id: "saveBtn", e, data: "click()" })
+        lineInterpreter({ id: "saveBtn", e, data: "click()" })
     }
 
     if (global.projectID === "brackettechnologies" && e.ctrlKey && e.shiftKey && e.key === "Delete") {
@@ -21878,12 +20466,11 @@ document.addEventListener('keyup', e => {
     if (!e.ctrlKey) global.ctrlKey = false
 })
 
-global.__IDList__.map(id => setElement({ id }))
-global.__IDList__.map(id => starter({ id }))
+global.__ids__.map(id => starter({ id }))
 
 // show icons
 window.onload = () => {
-    var icons = global.__IDList__.filter(id => views[id] && views[id].__name__ === "Icon").map(id => views[id])
+    var icons = global.__ids__.filter(id => views[id] && views[id].__name__ === "Icon").map(id => views[id])
     icons.map(view => {
         if (view.element) {
             view.element.style.opacity = view.style.opacity !== undefined ? view.style.opacity : "1"
@@ -21892,23 +20479,17 @@ window.onload = () => {
     })
 }
 
-window.onmousedown = (e) => {
-
-    var global = window.global
-    var views = window.views
-    
-    global.clicked = views[(e || window.event).target.id]
-}
-
 Object.entries(views).map(([id, views]) => {
     if (views.status === "Loading") delete views[id]
 })
 
-document.addEventListener('scroll', () => {
+document.addEventListener('scroll', (e) => {
 
     // close droplist
     if (views.droplist.element.style.pointerEvents === "auto") {
-        toParam({ data: toCode({ id: "root", string: "if():[!():droplist.mouseentered]:[():droplist.mouseleave()]" }), id: "droplist" })
+    
+        var data = "if():[!():droplist.mouseentered]:[():droplist.mouseleave()]"
+        lineInterpreter({ id: "body", e, data })
     }
 }, true)
 
@@ -21925,8 +20506,8 @@ window.addEventListener('beforeinstallprompt', function (e) {
     console.log('👍', 'beforeinstallprompt', e);
 
     // Stash the event so it can be triggered later.
-    window.global["installApp"] = e
-    //setTimeout(() => { console.log(window.global["installApp"]); window.global["installApp"].prompt() }, 1000)
+    window.global.__installApp__ = e
+    //setTimeout(() => { console.log(window.global.__installApp__); window.global.__installApp__.prompt() }, 1000)
 })
 
 window.addEventListener('appinstalled', () => {
@@ -21941,7 +20522,7 @@ window.addEventListener('appinstalled', () => {
   link.href = window.location.href.replace('http://', 'https://');
   requireHTTPS.classList.remove('hidden');
 }*/
-},{"../action/event":28,"../action/setElement":77,"../action/starter":81,"../action/toCode":92,"../action/toParam":101}],200:[function(require,module,exports){
+},{"../action/event":26,"../action/lineInterpreter":53,"../action/starter":78}],186:[function(require,module,exports){
 module.exports = (view) => {
   var scrollWidth = `[px():[().swiper.scroll]||100]`
   var clickLeft = `():[().swiper.id]._():[clearTimer():[_.mytimer];_.scroll+=[${scrollWidth}-_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll>_.scrollable]:[_.scroll=0];_.style().transform='translateX('+_.scroll+'px)';if():[_.autorun]:[_.mytimer=interval():[_.scroll+=[${scrollWidth}-_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll>_.scrollable]:[_.scroll=0];_.style().transform='translateX('+_.scroll+'px)']:[_.autorun.timer||100]]]`
@@ -21951,7 +20532,7 @@ module.exports = (view) => {
     view: `Icon?class='flexbox pointer '+[().class||];name=if():[direction=right]:'bi-chevron-right'.elif():[direction=left]:'bi-chevron-left';style:[fontSize=[().style.fontSize||2.5rem];if():[().direction=left]:[left=[().style.left||0]].elif():[().direction=right]:[right=[().style.right||0]]];click:[if():[direction=left;swiper.id]:[${clickLeft}].elif():[direction=right;swiper.id]:[${clickRight}]]`
   }
 }
-},{}],201:[function(require,module,exports){
+},{}],187:[function(require,module,exports){
 const { toComponent } = require('../action/toComponent')
 const { jsonToBracket } = require('../action/jsonToBracket')
 const { override } = require('../action/merge')
@@ -22264,7 +20845,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../action/clone":8,"../action/generate":37,"../action/jsonToBracket":52,"../action/merge":57,"../action/toComponent":93}],202:[function(require,module,exports){
+},{"../action/clone":8,"../action/generate":35,"../action/jsonToBracket":50,"../action/merge":55,"../action/toComponent":90}],188:[function(require,module,exports){
 module.exports = (view) => {
 
   var AutorunScrollInPixel = `[px():[().autorun.scroll]||100]`
@@ -22284,14 +20865,14 @@ module.exports = (view) => {
     view: `View?style:[display=flex;alignItems=if():[().style.alignItems]:[().style.alignItems]:center;if():[vertical]:[flexDirection=column]];scrollLeft=0;scroll=0;${loadedActions};if():[autorun]:[${mouseenterActions};${mouseleaveActions}];${mousedownActions};${bodyMousemoveActions};${bodyMouseupActions};${touchstartActions};${touchmoveActions};${touchendActions}`,
   }
 }
-},{}],203:[function(require,module,exports){
+},{}],189:[function(require,module,exports){
 module.exports = (view) => {
   return {
     ...view,
     view: `View?class='hide-scrollbar '+if():[().class]:[().class]:'';style:[display=if():[().style.display]:[().style.display]:flex;alignItems=if():[().style.alignItems]:[().style.alignItems]:center;position=if():[().style.position]:[().style.position]:relative;overflowX=if():[().style.overflowX]:[().style.overflowX]:hidden]`,
   }
 }
-},{}],204:[function(require,module,exports){
+},{}],190:[function(require,module,exports){
 const { jsonToBracket } = require("../action/jsonToBracket")
 
 module.exports = (component) => {
@@ -22322,7 +20903,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../action/jsonToBracket":52}],205:[function(require,module,exports){
+},{"../action/jsonToBracket":50}],191:[function(require,module,exports){
 module.exports = {
   Input : require("./Input"),
   Switch : require("./Switch"),
@@ -22330,4 +20911,4 @@ module.exports = {
   Chevron : require("./Chevron"),
   SwiperWrapper : require("./SwiperWrapper")
 }
-},{"./Chevron":200,"./Input":201,"./Swiper":202,"./SwiperWrapper":203,"./Switch":204}]},{},[199]);
+},{"./Chevron":186,"./Input":187,"./Swiper":188,"./SwiperWrapper":189,"./Switch":190}]},{},[185]);

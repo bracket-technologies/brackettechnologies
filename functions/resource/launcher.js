@@ -1,8 +1,6 @@
 const { starter } = require("../action/starter")
-const { toParam } = require("../action/toParam")
-const { toCode } = require("../action/toCode")
-const { eventAction } = require("../action/event")
-const { setElement } = require("../action/setElement")
+const { eventExecuter } = require("../action/event")
+const { lineInterpreter } = require("../action/lineInterpreter")
 
 window.views = JSON.parse(document.getElementById("views").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
@@ -14,21 +12,31 @@ var global = window.global
 //views.document = document
 document.element = document
 views.body.element = document.body
-views.window = { id: "window", element: window, controls: [] }
+views.window = { id: "window", element: window, controls: [], __: global.__ }
 
 // download arabic font
-var _ar = document.createElement("P")
-_ar.innerHTML = "مرحبا"
-_ar.classList.add("ar")
-_ar.style.position = "absolute"
-_ar.style.top = "-1000px"
-views.body.element.appendChild(_ar)
+var arDiv = document.createElement("P")
+arDiv.innerHTML = "مرحبا"
+arDiv.classList.add("ar")
+arDiv.style.position = "absolute"
+arDiv.style.top = "-1000px"
+views.body.element.appendChild(arDiv)
 
-window.onfocus = () => {
+window.onfocus = (e) => {
 
     views.root.element.click()
     document.activeElement.blur()
-    toParam({ id: "root", data: toCode({ id: "root", string: "():mininote.style():[opacity=0;transform=scale(0)]" }) })
+    
+    var data = "():mininote.style():[opacity=0;transform=scale(0)]"
+    lineInterpreter({ id: "window", e, data })
+}
+
+window.onmousedown = (e) => {
+
+    var global = window.global
+    var views = window.views
+    
+    global.clicked = views[(e || window.event).target.id]
 }
 
 // clicked element
@@ -43,7 +51,7 @@ document.body.addEventListener('click', e => {
     if (global.clicked && views.droplist.element.contains(global.clicked.element)) global["droplist-txt"] = global.clicked.element.innerHTML
 
     // body click events
-    Object.values(global.__events__).map(event => event.click && event.click.map(data => eventAction({ ...data, e })))
+    Object.values(global.__events__).map(event => event.click && event.click.map(data => eventExecuter({ ...data, e })))
 })
 
 // mousemove
@@ -55,7 +63,7 @@ document.body.addEventListener('mousemove', (e) => {
     global.mousePosY = e.screenY
 
     // body mousemove events
-    Object.values(global.__events__).map(event => event.mousemove && event.mousemove.map(data => eventAction({ ...data, e })))
+    Object.values(global.__events__).map(event => event.mousemove && event.mousemove.map(data => eventExecuter({ ...data, e })))
 })
 
 document.body.addEventListener("mousedown", (e) => {
@@ -66,7 +74,7 @@ document.body.addEventListener("mousedown", (e) => {
     global.clicked = window.views[((e || window.event).target || e.currentTarget).id]
 
     // body mousedown events
-    Object.values(global.__events__).map(event => event.mousedown && event.mousedown.map(data => eventAction({ ...data, e })))
+    Object.values(global.__events__).map(event => event.mousedown && event.mousedown.map(data => eventExecuter({ ...data, e })))
 })
 
 document.body.addEventListener("mouseup", (e) => {
@@ -75,15 +83,16 @@ document.body.addEventListener("mouseup", (e) => {
     global.mousedowned = false
 
     // body mouseup events
-    Object.values(global.__events__).map(event => event.mouseup && event.mouseup.map(data => eventAction({ ...data, e })))
+    Object.values(global.__events__).map(event => event.mouseup && event.mouseup.map(data => eventExecuter({ ...data, e })))
 })
 
 document.addEventListener('keydown', e => {
 
     var global = window.global
+
     if (global.projectID === "brackettechnologies" && e.ctrlKey && e.key === "s") {
         e.preventDefault();
-        toParam({ id: "saveBtn", e, data: "click()" })
+        lineInterpreter({ id: "saveBtn", e, data: "click()" })
     }
 
     if (global.projectID === "brackettechnologies" && e.ctrlKey && e.shiftKey && e.key === "Delete") {
@@ -97,12 +106,11 @@ document.addEventListener('keyup', e => {
     if (!e.ctrlKey) global.ctrlKey = false
 })
 
-global.__IDList__.map(id => setElement({ id }))
-global.__IDList__.map(id => starter({ id }))
+global.__ids__.map(id => starter({ id }))
 
 // show icons
 window.onload = () => {
-    var icons = global.__IDList__.filter(id => views[id] && views[id].__name__ === "Icon").map(id => views[id])
+    var icons = global.__ids__.filter(id => views[id] && views[id].__name__ === "Icon").map(id => views[id])
     icons.map(view => {
         if (view.element) {
             view.element.style.opacity = view.style.opacity !== undefined ? view.style.opacity : "1"
@@ -111,23 +119,17 @@ window.onload = () => {
     })
 }
 
-window.onmousedown = (e) => {
-
-    var global = window.global
-    var views = window.views
-    
-    global.clicked = views[(e || window.event).target.id]
-}
-
 Object.entries(views).map(([id, views]) => {
     if (views.status === "Loading") delete views[id]
 })
 
-document.addEventListener('scroll', () => {
+document.addEventListener('scroll', (e) => {
 
     // close droplist
     if (views.droplist.element.style.pointerEvents === "auto") {
-        toParam({ data: toCode({ id: "root", string: "if():[!():droplist.mouseentered]:[():droplist.mouseleave()]" }), id: "droplist" })
+    
+        var data = "if():[!():droplist.mouseentered]:[():droplist.mouseleave()]"
+        lineInterpreter({ id: "body", e, data })
     }
 }, true)
 
@@ -144,8 +146,8 @@ window.addEventListener('beforeinstallprompt', function (e) {
     console.log('👍', 'beforeinstallprompt', e);
 
     // Stash the event so it can be triggered later.
-    window.global["installApp"] = e
-    //setTimeout(() => { console.log(window.global["installApp"]); window.global["installApp"].prompt() }, 1000)
+    window.global.__installApp__ = e
+    //setTimeout(() => { console.log(window.global.__installApp__); window.global.__installApp__.prompt() }, 1000)
 })
 
 window.addEventListener('appinstalled', () => {

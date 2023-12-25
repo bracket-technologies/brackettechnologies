@@ -10,7 +10,7 @@ module.exports = {
       var global = _window ? _window.global : window.global
 
       // path
-      var path = route.path || (route.page.includes("/") ? route.page : global.__path__.join("/"))
+      var path = route.path || (route.page.includes("/") ? route.page : global.manifest.path.join("/"))
       
       // page
       var currentPage = route.page && (route.page.includes("/") ? (!route.page.split("/")[0] ? route.page.split("/")[1] : route.page.split("/")[0]): route.page ) || path.split("/")[1] || "main"
@@ -19,17 +19,17 @@ module.exports = {
       path = route.path ? path : currentPage === "main" ? "/" : `/${currentPage}`
 
       // prevs
-      global.__prevPath__.push(global.__path__.join("/"))
-      global.__prevPage__.push(global.__currentPage__)
+      global.__prevPath__.push(global.manifest.path.join("/"))
+      global.__prevPage__.push(global.manifest.currentPage)
 
       // update globals
-      global.__currentPage__ = currentPage
-      global.__path__ = path.split("/")
+      global.manifest.currentPage = currentPage
+      global.manifest.path = path.split("/")
       
       if (_window) {
         
         global.__updateLocation__ = true
-        views.root.children = [{ ...clone(global.data.page[currentPage]), id: currentPage, ["__mapViewsPath__"]: [currentPage] }]
+        views.root.children = [clone(global.data.view[currentPage])]
         
         if (id !== "root") {
 

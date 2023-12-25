@@ -1,8 +1,10 @@
 const { lineInterpreter } = require("./lineInterpreter")
 
-const toAwait = ({ _window, lookupActions, stack, address, id, e, req, res, __, _, awaiter }) => {
-
+const toAwait = ({ _window, lookupActions, stack = {}, address, id, e, req, res, __, _, awaiter }) => {
+  
   const { execute } = require("./execute")
+
+  if (stack.terminated) return
   
   var keepGoing = true
 
@@ -11,8 +13,10 @@ const toAwait = ({ _window, lookupActions, stack, address, id, e, req, res, __, 
   // get params
   while (!stack.terminated && stack.addresses.length > 0 && keepGoing) {
 
+    if (stack.terminated) return keepGoing = false
+
     var address = stack.addresses[0]
-    if (keepGoing) keepGoing = !address.asynchronous
+    if (keepGoing) keepGoing = !address.hold
     if (keepGoing) awaitHandler({ _window, req, res, address, lookupActions, stack, id, e, __, keepGoing })
   }
 
@@ -22,27 +26,36 @@ const toAwait = ({ _window, lookupActions, stack, address, id, e, req, res, __, 
 
 const awaitHandler = ({ _window, req, res, address, lookupActions, stack, id, e, _, __, keepGoing }) => {
 
-  if (address.await) {
+  // passed params
+  address.params = address.params || {}
 
-    // modify underscores
-    var my__ = _ !== undefined ? [_, ...(address.params.__ || __)] : (address.params.__ || __)
+  // modify underscores
+  var my__ = _ !== undefined ? [_, ...(address.params.__ || __)] : (address.params.__ || __)
 
-    // interpret
-    var { success, message, data } = lineInterpreter({ _window, lookupActions, stack, headAddressID: address.headAddressID, id, e, req, res, ...(address.params || {}), data: address.await, __: my__ })
-    
-    console.log("ACTION", (new Date()).getTime() - address.executionStartTime, address.action, { success, message, data })
+  // address
+  var headAddress = stack.addresses.find(waitingAddress => waitingAddress.id === address.headAddressID) || {}
 
-  } else console.log("ACTION", (new Date()).getTime() - address.executionStartTime, address.action)
+  var log = ["ACTION end", (new Date()).getTime() - address.executionStartTime, address.id, address.index, address.action, headAddress.id || "", headAddress.index || "", headAddress.action || ""].join(" ")
+  stack.logs.push(log)
+  console.log(log, _ === undefined ? "" : _)
 
   // get await index for splicing
-  var index = stack.addresses.findIndex(await => await.id === address.id)
+  var index = stack.addresses.findIndex(waitingAddress => waitingAddress.id === address.id)
   if (index !== -1) stack.addresses.splice(index, 1)
   if (index !== 0) keepGoing = false
-  
+
+  // consider that waits are part of the head action => reset interpreting to true for head action
+  if (headAddress.id) headAddress.interpreting = true
+
+  // interpret
+  lineInterpreter({ _window, lookupActions, stack, id, e, req, res, ...(address.params || {}), data: address.await, __: my__ })
+
+  if (stack.terminated) return
+
   // unlock head address
-  if (address.headAddressID) {
-    var otherWaiting = stack.addresses.findIndex(await => await.headAddressID === address.headAddressID)
-    if (otherWaiting === -1) stack.addresses.find(await => await.id === address.headAddressID).asynchronous = false
+  if (address.headAddressID && address.asynchronous) {
+    var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.headAddressID === address.headAddressID)
+    if (otherWaiting === -1) stack.addresses.find(waitingAddress => waitingAddress.id === address.headAddressID).hold = false
   }
 }
 

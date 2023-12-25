@@ -32,7 +32,7 @@ const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase
     data = response.data
   }
 
-  console.log("ERASE", (new Date()).getTime() - headers.timestamp, erase.collection, data)
+  // console.log("ERASE", (new Date()).getTime() - headers.timestamp, erase.collection, data)
 
   // stack
   require("./toAwait").toAwait({ _window, lookupActions, stack, id, e, ...params, req, res, _: data, __ })

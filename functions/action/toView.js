@@ -12,7 +12,7 @@ const { toAction } = require("./toAction")
 const { lineInterpreter } = require("./lineInterpreter")
 const builtInViews = require("../view/views")
 
-const toView = async ({ _window, lookupActions, stack, id, req, res, import: _import, params: inheritedParams = {}, __, viewer = "view" }) => {
+const toView = async ({ _window, lookupActions, stack, id, req, res, import: _import, params: inheritedParams = {}, __ }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -27,10 +27,7 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
   if (!view.type) return ""
 
   // set map view path
-  if (!view.__mapViewsPath__) view.__mapViewsPath__ = [...(parent.__mapViewsPath__ || [])]
-
-  // view type (page|view)
-  view.viewType = viewer = view.viewType || parent.viewType || viewer || "view"
+  if (!view.__viewsPath__) view.__viewsPath__ = [...toArray(parent.__viewsPath__)]
 
   // encode
   view.type = toCode({ _window, id, string: toCode({ _window, id, string: view.type, start: "'" }) })
@@ -42,7 +39,7 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
   // action
   if (view.type.split(".")[0].split(":")[0].slice(-2) === "()") {
     var action = toAction({ _window, lookupActions, stack, id, req, res, __, path: view.type.split("."), path0: view.type.split(".")[0].split(":")[0] })
-    if (action !== "__CONTINUE__") return action
+    if (action !== "__continue__") return action
   }
 
   // 
@@ -65,13 +62,13 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
   _import = view.id === "html" || (parent.id === "html" && (["link", "meta", "title", "script", "style"]).includes(type.toLowerCase()))
   
   // view name
-  view.__name__ = type = toValue({ req, res, _window, id, data: type, __ })
+  view.__name__ = type = toValue({ req, res, _window, id, data: type, __, stack })
 
   // sub params
   if (subParams) {
 
-    var { success, data = {} } = lineInterpreter({ _window, lookupActions, stack, id, data: subParams, req, res, __ })
-    if (!success) {
+    var { data = {}, conditionsNotApplied } = lineInterpreter({ _window, lookupActions, stack, id, data: subParams, req, res, __ })
+    if (conditionsNotApplied) {
       delete views[id]
       return ""
     } else subParams = data
@@ -80,7 +77,8 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
   // [View]
   if (loop) {
 
-    var data = subParams || {}
+    var data = subParams || {}, timer = (new Date()).getTime(), id = generate()
+    console.log("LOOP start", id, clone(data));
 
     // mount
     if (!data.preventDefault && (data.doc || data.path)) data.mount = true
@@ -103,14 +101,15 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
       data.doc = data.doc || view.doc || generate()
       global[data.doc] = global[data.doc] || {}
     }
-
+    
     var { doc, data = {}, derivations = [], mount, path, keys, preventDefault, ...myparams } = data
     
     // data
     data = reducer({ _window, lookupActions, stack, id, data: derivations, object: global[doc], req, res, __ })
 
-    var loopData = Object.keys(keys ? data : toArray(data)), values = keys ? data : toArray(data)
-    if (keys) loopData = sortAndArrange({ data: loopData, sort: myparams.sort, arrange: myparams.arrange })
+    var loopData = Object.keys(keys ? data : toArray(data))
+    var values = keys ? data : toArray(data)
+    if (keys && !Array.isArray(data)) loopData = sortAndArrange({ data: loopData, sort: myparams.sort, arrange: myparams.arrange })
 
     // view
     var tags = await Promise.all(loopData.map(async index => {
@@ -132,8 +131,10 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
       }
 
       views[_id_] = _view_
-      return await toView({ _window, lookupActions, stack, id: _id_, req, res, __: [values[index], ...__], viewer })
+      return await toView({ _window, lookupActions, stack, id: _id_, req, res, __: [values[index], ...__] })
     }))
+
+    console.log("LOOP end", (new Date()).getTime() - timer, id);
 
     delete views[view.id]
     return tags.join("")
@@ -161,7 +162,6 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
     view.status = "Loading"
     view.__childrenID__ = []
     view.__timers__ = []
-    view.__stacks__ = {}
     view.__ = __
     views[id] = view
   }
@@ -182,12 +182,11 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
   // params
   if (params) {
 
-    params = toValue({ _window, lookupActions, stack, data: params, id, req, res, mount: true, toView: true, __ })
-    if (typeof params !== "object") params = { [params]: generate() }
+    params = lineInterpreter({ _window, lookupActions, stack, data: params, action: "toParam", id, req, res, mount: true, toView: true, __ }).data
 
     if (params.id && params.id !== id) {
-
-      if (views[params.id] && typeof views[params.id] === "object") params.id += generate()
+      
+      if (views[params.id]) params.id += generate()
       delete Object.assign(views, { [params.id]: views[id] })[id]
       id = params.id
       view = views[id]
@@ -202,18 +201,21 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
   if (_import) return await createHtml({ _window, lookupActions, stack, id, req, res, import: _import, __ })
 
   // custom View
-  if (global.data[viewer][view.__name__]) {
+  if (global.data.view[view.__name__]) {
 
-    var newView = clone(global.data[viewer][view.__name__])
+    var newView = clone(global.data.view[view.__name__])
 
-    view.__mapViewsPath__.push(view.__name__)
-
-    // id exists
-    if (newView.id && views[newView.id]) newView.id += generate()
-
+    view.__viewsPath__.push(view.__name__)
+    
+    // id handler
+    if (newView.id && views[newView.id] && newView.id !== id) {
+      newView.id += generate()
+    } else if (!newView.id) newView.id = id
+    
+    id = newView.id
     views[id] = { ...view, ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)] }
 
-    return await toView({ _window, lookupActions, stack, id, req, res, __: [...(Object.keys(params).length > 0 ? [params] : []), ...__], viewer })
+    return await toView({ _window, lookupActions, stack, id, req, res, __: [...(Object.keys(params).length > 0 ? [params] : []), ...__] })
   }
 
   // data
@@ -241,7 +243,7 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
     componentModifier({ _window, id })
   }
 
-  return await createHtml({ _window, lookupActions, stack, id, req, res, __, viewer })
+  return await createHtml({ _window, lookupActions, stack, id, req, res, __ })
 }
 
 

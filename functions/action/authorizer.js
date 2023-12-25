@@ -1,19 +1,18 @@
 module.exports = {
   authorizer: async ({ _window, req }) => {
 
-    var ref = req.db.collection("_project_"), 
-    promises = [], success, message, error,
-    project = req.headers["project"],
+    var ref = req.db.collection("_project_"),
+    success, message, error,
     global = _window.global,
     timer = (new Date()).getTime()
     
-    promises.push(ref.where("domains", "array-contains", global.host).get().then(doc => {
+    await ref.where("domains", "array-contains", global.manifest.host).get().then(doc => {
       
       if (doc.docs[0] && doc.docs[0].exists) {
   
         success = true
-        global.data.project = project = { ...doc.docs[0].data(), id: doc.docs[0].id }
-        global.__actions__ = Object.keys(project.functions || {})
+        global.data.project = { ...doc.docs[0].data(), id: doc.docs[0].id }
+        global.__serverActions__ = Object.keys(global.data.project.functions || {})
         global.projectID = global.data.project.id
         message = "Project found successfully!"
 
@@ -30,11 +29,9 @@ module.exports = {
         message = "Something went wrong!"
         error = err
         console.log(err);
-    }))
-
-    await Promise.all(promises)
+    })
     
     console.log("AUTHORIZATION", (new Date()).getTime() - timer)
-    return {success, message, error, project}
+    return { success, message, error }
   }
 }

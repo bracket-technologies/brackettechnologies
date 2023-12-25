@@ -1,25 +1,35 @@
+const { defaultInputHandler } = require("./defaultInputHandler")
+const { defaultEventHandler, addEventListener } = require("./event")
+const { toArray } = require("./toArray")
+
 const starter = ({ id }) => {
   
-  const { defaultEventHandler } = require("./event")
-  const { controls } = require("./controls")
-
   var view = window.views[id]
   if (!view) return
   
   // status
-  view.status = "Mounting Actions"
+  view.status = "Mounting Element"
+    
+  view.element = document.getElementById(id)
+  if (!view.element) return delete window.views[id]
+
+  // default input handlers
+  defaultInputHandler({ id })
+  
+  // status
+  view.status = "Mounting Events"
   
   // lunch auto controls
-  Object.entries(require("../event/event")).map(([type, events]) => {
+  Object.entries(require("../event/event")).map(([eventName, events]) => {
     
-    if (view[type]) view.controls.push(...events({ id, controls: view[type] }))
+    if (view[eventName]) view.controls.push(...events({ id, controls: view[eventName] }))
   })
 
-  // mouseenter, click, mouseover...
+  // deafault event handlers
   defaultEventHandler({ id })
   
-  // execute controls
-  if (view.controls) controls({ id })
+  // events
+  toArray(view.controls).map(controls => addEventListener({ controls, id }))
 
   view.status = "Mounted"
 }

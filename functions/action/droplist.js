@@ -1,9 +1,8 @@
 const { update } = require("./update")
 const { clone } = require("./clone")
-const { toValue } = require("./toValue")
 const { jsonToBracket } = require("./jsonToBracket")
 const { reducer } = require("./reducer")
-const { toCode } = require("./toCode")
+const { lineInterpreter } = require("./lineInterpreter")
 
 const droplist = ({ id, e, __, stack, lookupActions }) => {
   
@@ -25,11 +24,11 @@ const droplist = ({ id, e, __, stack, lookupActions }) => {
   clearTimeout(global.__droplistTimer__)
 
   // input id
-  var inputID = toValue({ id, data: "input().id||.id" })
+  var { data: inputID } = lineInterpreter({ id, data: "input().id||.id" })
   var text = views[inputID].element.value || views[inputID].element.innerHTML
   
   // items
-  if (typeof items === "string") items = clone(toValue({ id, e, data: toCode({ id, string: toCode({ id, string: items, start: "'" }) }), __ }))
+  if (typeof items === "string") items = lineInterpreter({ id, data: items, lookupActions, __: view.__ }).data
 
   // filterable
   if (!view.droplist.preventDefault) {

@@ -5,12 +5,12 @@ const { replaceNbsps } = require("./replaceNbsps")
 const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
 
-const toHTML = ({ _window, id, innerHTML }) => {
+const toHTML = ({ _window, id, innerHTML, stack, __ }) => {
 
   var views = _window ? _window.views : window.views
   var view = views[id], name = view.__name__, tag = ""
   
-  toParam({ _window, id, data: toCode({ _window, id, string: "parent().__childrenID__.replace():[.id]" }) })
+  toParam({ _window, id, data: toCode({ _window, id, string: "parent().__childrenID__.replace():[.id]" }), stack, __ })
   
   // text
   var text = (typeof view.text === "boolean" || typeof view.text === "number" || typeof view.text === "string") ? view.text
