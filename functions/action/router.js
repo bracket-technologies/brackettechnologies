@@ -35,19 +35,19 @@ module.exports = (data) => {
 
     if (req.method === "GET") {
 
-      if (path[1] === "storage") return getFile({ _window, req, res, id, __ })
+      // if (path[1] === "storage") return getFile({ _window, req, res, id, __ })
 
       if (path[1] === "database") return getdb({ _window, req, res, id, __ })
 
     } else if (req.method === "POST") {
 
-      if (path[1] === "storage") return postFile({ _window, req, res, id, __ })
+      // if (path[1] === "storage") return postFile({ _window, req, res, id, __ })
 
       if (path[1] === "database") return postdb({ _window, req, res, id, __ })
 
     } else if (req.method === "DELETE") {
 
-      if (path[1] === "storage") return deleteFile({ _window, req, res, id, __ })
+      // if (path[1] === "storage") return deleteFile({ _window, req, res, id, __ })
   
       if (path[1] === "database") return deletedb({ _window, req, res, id, __ })
     }

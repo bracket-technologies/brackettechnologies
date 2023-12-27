@@ -37,7 +37,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, a
         return data
     }
 
-    if (stack.terminated) return terminator({ data: { success: false, message: `Action terminated!`, executionDuration: 0 }, order: 0 })
+    if (stack.terminated || stack.broke || stack.returned) return terminator({ data: { success: false, message: `Action terminated!`, executionDuration: 0 }, order: 0 })
     if (!string) return terminator({ data: { success: true, message: `No action to execute!`, executionDuration: 0 }, order: 1 })
 
     // push address for waits
@@ -96,7 +96,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, a
         data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object, _object, toView })
 
         if (dblExecute && executable({ _window, string: data }))
-            data = lineInterpreter({ lookupActions, stack, id, e, data, req, res, __, mount, condition, toView, object, _object }).data
+            data = lineInterpreter({ _window, lookupActions, stack, id, e, data, req, res, __, mount, condition, toView, object, _object }).data
 
         if (stack.returns && stack.returns[0].returned) {
             returnForWaitActionExists = true

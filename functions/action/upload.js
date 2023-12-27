@@ -16,7 +16,7 @@ module.exports = async ({ _window, lookupActions, stack, address, id, req, res, 
   
   // headers
   var headers = upload.headers || {}
-  headers.project = headers.project || global.projectID
+  headers.project = headers.project || global.manifest.projectID
   headers = { ...headers, timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()) }
   
   promises.push(...([...files]).map(async (f, i) => {

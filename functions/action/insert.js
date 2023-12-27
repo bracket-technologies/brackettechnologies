@@ -75,7 +75,7 @@ module.exports = {
     lDiv.style.left = -1000
     lDiv.style.top = -1000
     lDiv.innerHTML = innerHTML
-
+    
     var el = lDiv.children[0]
     views[el.id].parent = view.id
 

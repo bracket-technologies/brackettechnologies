@@ -112,7 +112,6 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root
       if (lessOp && (equalOp ? !approval : true)) approval = notEqual ? !(parseFloat(key) < parseFloat(value)) : (parseFloat(key) < parseFloat(value))
     }
   })
-
   return approval
 }
 

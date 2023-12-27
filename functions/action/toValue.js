@@ -1,3 +1,4 @@
+const { executable } = require("./executable");
 const { generate } = require("./generate")
 const { isParam } = require("./isParam")
 const { reducer } = require("./reducer");
@@ -12,7 +13,6 @@ function sleep(milliseconds) {
 
 const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params = {}, __, id, e, req, res, object, _object, mount, toView, condition }) => {
 
-  const { toAction } = require("./toAction")
   const { toParam } = require("./toParam")
   
   var view = _window ? _window.views[id] : window.views[id]
@@ -37,7 +37,7 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params 
   else if (value === "false") return false
   else if (value === "true") return true
   else if (value === "null") return null
-  else if (value.charAt(0) === "_" && !value.split("_").find(i => i !== "_" && i !== "")) return __[value.split("_").length - 2] // _ or __ or ___ or ____
+  else if (value.charAt(0) === "_" && !value.split("_").find(i => i !== "_" && i !== "")) return __[value.split("_").length - 2]
   else if (value === "_string") return ""
   else if (value === "[]" || value === "_map") return ({})
   else if (value === ":[]") return ([{}])
@@ -61,86 +61,90 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params 
     var answer
     value.split("||").map(value => {
       if (!answer) { // or answer === undefined ?????
-        answer = toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, mount, condition })
+        answer = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount, condition })
         //console.log(value, answer);
       }
     })
     return answer
   }
   
-  if (value.includes("+")) { // addition
+  // calculations
+  if (global.__calcTests__[value] !== false) {
 
-    // increment
-    if (value.slice(-2) === "++") {
-      
-      value = value.slice(0, -2)
-      value = `${value}=${value}+1`
-      toParam({ req, res, _window, lookupActions, id, e, data: value, __, object, mount, params, toView, condition })
-      return (toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, mount, condition }) - 1)
+    if (value.includes("+")) { // addition
 
-    } else {
-
-      var allAreNumbers = true
-      var values = value.split("+").map(value => {
+      // increment
+      if (value.slice(-2) === "++") {
         
-        var _value = toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, mount/*, condition*/ })
-        if (allAreNumbers) {
-          if (!isNaN(_value) && !emptySpaces(_value)) allAreNumbers = true
-          else allAreNumbers = false
-        }
-        return _value
-      })
-      
-      if (allAreNumbers) {
-        var newVal = parseFloat(values[0]) || 0
-        values.slice(1).map(val => newVal += (parseFloat(val) || 0))
+        value = value.slice(0, -2)
+        value = `${value}=${value}+1`
+        toParam({ req, res, _window, lookupActions, id, e, data: value, __, object, mount, toView, condition })
+        return (toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount, condition }) - 1)
+
       } else {
-        var newVal = values[0]
-        values.slice(1).map(val => newVal += val)
+
+        var allAreNumbers = true
+        var values = value.split("+").map(value => {
+          
+          var _value = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount })
+          if (allAreNumbers) {
+            if (!isNaN(_value) && !emptySpaces(_value)) allAreNumbers = true
+            else allAreNumbers = false
+          }
+          return _value
+        })
+        
+        if (allAreNumbers) {
+          var newVal = parseFloat(values[0]) || 0
+          values.slice(1).map(val => newVal += (parseFloat(val) || 0))
+        } else {
+          var newVal = values[0]
+          values.slice(1).map(val => newVal += val)
+        }
+        return value = newVal
       }
+    }
+    
+    if (value.includes("-")) { // subtraction
+
+      var _value = calcSubs({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition })
+      if (_value !== value) return _value
+    }
+    
+    if (value.includes("*") && value.split("*")[1] !== "") { // multiplication
+
+      var values = value.split("*").map(value => toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount, condition }))
+      var newVal = values[0]
+      values.slice(1).map(val => {
+        if (!isNaN(newVal) && !isNaN(val)) newVal *= val
+        else if (isNaN(newVal) && !isNaN(val)) {
+          while (val > 1) {
+            newVal += newVal
+            val -= 1
+          }
+        } else if (!isNaN(newVal) && isNaN(val)) {
+          var index = newVal
+          newVal = val
+          while (index > 1) {
+            newVal += newVal
+            index -= 1
+          }
+        }
+      })
       return value = newVal
     }
-  }
-  
-  if (value.includes("-")) { // subtraction
+    
+    if (value.includes("/") && value.split("/")[1] !== "") { // division
 
-    var _value = calcSubs({ _window, lookupActions, stack, value, params, __, id, e, req, res, object, condition })
-    if (_value !== value) return _value
-  }
-  
-  if (value.includes("*") && value.split("*")[1] !== "") { // multiplication
+      var _value = calcDivision({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition })
+      if (_value !== value && _value !== undefined) return _value
+    }
+    
+    if (value.includes("%") && value.split("%")[1] !== "") { // modulo
 
-    var values = value.split("*").map(value => toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, mount, condition }))
-    var newVal = values[0]
-    values.slice(1).map(val => {
-      if (!isNaN(newVal) && !isNaN(val)) newVal *= val
-      else if (isNaN(newVal) && !isNaN(val)) {
-        while (val > 1) {
-          newVal += newVal
-          val -= 1
-        }
-      } else if (!isNaN(newVal) && isNaN(val)) {
-        var index = newVal
-        newVal = val
-        while (index > 1) {
-          newVal += newVal
-          index -= 1
-        }
-      }
-    })
-    return value = newVal
-  }
-  
-  if (value.includes("/") && value.split("/")[1] !== "") { // division
-
-    var _value = calcDivision({ _window, lookupActions, stack, value, params, __, id, e, req, res, object, condition })
-    if (_value !== value && _value !== undefined) return _value
-  }
-  
-  if (value.includes("%") && value.split("%")[1] !== "") { // modulo
-
-    var _value = calcModulo({ _window, lookupActions, stack, value, params, __, id, e, req, res, object, condition })
-    if (_value !== value && _value !== undefined) return _value
+      var _value = calcModulo({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition })
+      if (_value !== value && _value !== undefined) return _value
+    }
   }
 
   if (value === "()") return view
@@ -148,27 +152,19 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params 
   // return await value
   if (value.split("await().")[1] !== undefined && !value.split("await().")[0]) return value.split("await().")[1]
 
-  var path = typeof value === "string" ? value.split(".") : [], path0 = path[0].split(":")[0]
-
-  // action
-  if (path0.slice(-2) === "()") {
-    var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, path: [path[0]], path0, condition, mount, toView, object })
-    if (action !== "__continue__") {
-      if (path.length > 1) {
-        path.splice(0, 1)
-        return reducer({ _window, lookupActions, stack, id, object, data: path, value, __, e, req, res, mount, toView, _object: action })
-      }
-      else return action
-    }
-  }
+  var path = typeof value === "string" ? value.split(".") : []
   
   /* value */
-  if (!isNaN(value) && !emptySpaces(value) && (value.length > 1 ? value.charAt(0) !== "0" : true)) value = parseFloat(value)
+  if (isNumber(value)) value = parseFloat(value)
   else if (value === " ") return value
   else if (object || path[0].includes(":") || path[1] || path[0].includes("()") || path[0].includes("@"))
     value = reducer({ _window, lookupActions, stack, id, object, data: path, value, __, e, req, res, mount, toView })
   
   return value
+}
+
+const isNumber = (value) => {
+  return !isNaN(value) && !emptySpaces(value) && (value.length > 1 ? value.charAt(0) !== "0" : true)
 }
 
 const emptySpaces = (string) => {
@@ -185,17 +181,23 @@ const emptySpaces = (string) => {
   return false
 }
 
-const calcSubs = ({ _window, lookupActions, stack, value, params, __, id, e, req, res, object, condition }) => {
+const calcSubs = ({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition, index = 1 }) => {
   
-  if (value.split("-").length > 1) {
+  var allAreNumbers = true, test = value, global = _window ? _window.global : window.global
+  if (value.split("-").length > index) {
 
-    var allAreNumbers = true
-    var values = value.split("-").map(value => {
-      if (value.charAt(0) !== "@" && value.includes(":") && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
+    var _value = value.split("-").slice(0, index).join("-")
+    var _values = value.split("-").slice(index)
+    _values.unshift(_value)
+
+    var values = _values.map(value => {
+
+      if (!allAreNumbers) return
+      if (!executable({ _window, string: value }) && !isNumber(value)) return allAreNumbers = false
 
       if (allAreNumbers) {
-        
-        var num = toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition })
+
+        var num = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, condition })
         if (!isNaN(num) && num !== " " && num !== "") return num
         else allAreNumbers = false
       }
@@ -205,75 +207,33 @@ const calcSubs = ({ _window, lookupActions, stack, value, params, __, id, e, req
 
       value = parseFloat(values[0])
       values.slice(1).map(val => value -= parseFloat(val))
-      // console.log(value);
-      return value
+      global.__calcTests__[test] = true
 
-    } else if (value.split("-").length > 2) {
-
-      var allAreNumbers = true
-      var _value = value.split("-").slice(0, 2).join("-")
-      var _values = value.split("-").slice(2)
-      _values.unshift(_value)
-      
-      var values = _values.map(value => {
-        if (value.charAt(0) !== "@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
-
-        if (allAreNumbers) {
-          var num = toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition })
-          if (!isNaN(num) && num !== " " && num !== "") return num
-          else allAreNumbers = false
-        }
-      })
-
-      if (allAreNumbers) {
-
-        value = parseFloat(values[0])
-        values.slice(1).map(val => value -= parseFloat(val))
-        // console.log(value);
-        return value
-  
-      } else if (value.split("-").length > 3) {
-  
-        var allAreNumbers = true
-        var _value = value.split("-").slice(0, 3).join("-")
-        var _values = value.split("-").slice(3)
-        _values.unshift(_value)
-        var values = _values.map(value => {
-          if (value.charAt(0) !== "@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition })))) ) return allAreNumbers = false
-  
-          if (allAreNumbers) {
-            var num = toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition })
-            if (!isNaN(num) && num !== " " && num !== "") return num
-            else allAreNumbers = false
-          }
-        })
-
-        if (allAreNumbers) {
-
-          value = parseFloat(values[0])
-          values.slice(1).map(val => value -= parseFloat(val))
-          // console.log(value);
-          return value
+    } else value = calcSubs({ _window, lookupActions, stack, value, __, id, e, req, res, object: value.charAt(0) === "." && object, condition, index: index + 1 })
     
-        }
-      }
-    }
-  }
+  } else return value
   
+  if (value === test) global.__calcTests__[test] = false
   return value
 }
 
-const calcDivision = ({ _window, lookupActions, stack, value, params, __, id, e, req, res, object, condition }) => {
+const calcDivision = ({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition, index = 1 }) => {
   
-  if (value.split("/").length > 1) {
+  var allAreNumbers = true, test = value, global = _window ? _window.global : window.global
+  if (value.split("/").length > index) {
 
-    var allAreNumbers = true
-    var values = value.split("/").map(value => {
-      if (value.charAt(0) !== "@" && value.includes(":") && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
+    var _value = value.split("/").slice(0, index).join("/")
+    var _values = value.split("/").slice(index)
+    _values.unshift(_value)
+
+    var values = _values.map(value => {
+
+      if (!allAreNumbers) return
+      if (!executable({ _window, string: value }) && !isNumber(value)) return allAreNumbers = false
 
       if (allAreNumbers) {
         
-        var num = toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition })
+        var num = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object: value.charAt(0) === "." && object, condition })
         if (!isNaN(num) && num !== " " && num !== "") return num
         else allAreNumbers = false
       }
@@ -283,13 +243,13 @@ const calcDivision = ({ _window, lookupActions, stack, value, params, __, id, e,
 
       value = parseFloat(values[0])
       values.slice(1).map(val => {
-        if (!isNaN(value) && !isNaN(val)) value /= val
-        else if (isNaN(value) && !isNaN(val)) {
+        if (!isNumber(value) && !isNaN(val)) value /= val
+        else if (isNumber(value) && !isNaN(val)) {
           while (val > 1) {
             value -= value
             val -= 1
           }
-        } else if (!isNaN(value) && isNaN(val)) {
+        } else if (!isNumber(value) && isNaN(val)) {
           var index = value
           value = val
           while (index > 1) {
@@ -298,105 +258,34 @@ const calcDivision = ({ _window, lookupActions, stack, value, params, __, id, e,
           }
         }
       })
-      // console.log(value);
-      return value
 
-    } else if (value.split("/").length > 2) {
+      // push 
+      global.__calcTests__[test] = true
 
-      var allAreNumbers = true
-      var _value = value.split("/").slice(0, 2).join("/")
-      var _values = value.split("/").slice(2)
-      _values.unshift(_value)
-      
-      var values = _values.map(value => {
-        if (value.charAt(0) !== "@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
-
-        if (allAreNumbers) {
-          var num = toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition })
-          if (!isNaN(num) && num !== " " && num !== "") return num
-          else allAreNumbers = false
-        }
-      })
-
-      if (allAreNumbers) {
-
-        value = parseFloat(values[0])
-        values.slice(1).map(val => {
-          if (!isNaN(value) && !isNaN(val)) value /= val
-          else if (isNaN(value) && !isNaN(val)) {
-            while (val > 1) {
-              value -= value
-              val -= 1
-            }
-          } else if (!isNaN(value) && isNaN(val)) {
-            var index = value
-            value = val
-            while (index > 1) {
-              value -= value
-              index -= 1
-            }
-          }
-        })
-        // console.log(value);
-        return value
-  
-      } else if (value.split("/").length > 3) {
-  
-        var allAreNumbers = true
-        var _value = value.split("/").slice(0, 3).join("/")
-        var _values = value.split("/").slice(3)
-        _values.unshift(_value)
-        var values = _values.map(value => {
-          if (value.charAt(0) !== "@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition })))) ) return allAreNumbers = false
-  
-          if (allAreNumbers) {
-            var num = toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition })
-            if (!isNaN(num) && num !== " " && num !== "") return num
-            else allAreNumbers = false
-          }
-        })
-
-        if (allAreNumbers) {
-
-          value = parseFloat(values[0])
-          values.slice(1).map(val => {
-            if (!isNaN(value) && !isNaN(val)) value /= val
-            else if (isNaN(value) && !isNaN(val)) {
-              while (val > 1) {
-                value -= value
-                val -= 1
-              }
-            } else if (!isNaN(value) && isNaN(val)) {
-              var index = value
-              value = val
-              while (index > 1) {
-                value -= value
-                index -= 1
-              }
-            }
-          })
-          // console.log(value);
-          return value
-    
-        }
-      }
-    }
+    } else calcDivision({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition, index: index + 1 })
   }
   
+  if (value === test) global.__calcTests__[test] = false
   return value
 }
 
-const calcModulo = ({ _window, lookupActions, stack, value, params, __, id, e, req, res, object, condition }) => {
+const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition, index = 1 }) => {
   
-  if (value.split("%").length > 1) {
+  var allAreNumbers = true, test = value, global = _window ? _window.global : window.global
+  if (value.split("%").length > index) {
 
-    var allAreNumbers = true
-    var values = value.split("%").map(value => {
-      if (value.charAt(0) !== "@" && value.includes(":") && (value.split(":")[1] !== "()" ? (!value.split(":")[0].includes("()") || !value.split(":")[1].includes("()")) : (isNaN(toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
+    var _value = value.split("%").slice(0, index).join("%")
+    var _values = value.split("%").slice(index)
+    _values.unshift(_value)
+
+    var values = _values.map(value => {
+      
+      if (!executable({ _window, string: value }) && !isNumber(value)) return allAreNumbers = false
 
       if (allAreNumbers) {
         
-        var num = toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition })
+        var num = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object: value.charAt(0) === "." && object, condition })
+
         if (!isNaN(num) && num !== " " && num !== "") return num
         else allAreNumbers = false
       }
@@ -406,13 +295,13 @@ const calcModulo = ({ _window, lookupActions, stack, value, params, __, id, e, r
 
       value = parseFloat(values[0])
       values.slice(1).map(val => {
-        if (!isNaN(value) && !isNaN(val)) value %= val
-        else if (isNaN(value) && !isNaN(val)) {
+        if (!isNumber(value) && !isNaN(val)) value %= val
+        else if (isNumber(value) && !isNaN(val)) {
           while (val > 1) {
             value -= value
             val -= 1
           }
-        } else if (!isNaN(value) && isNaN(val)) {
+        } else if (!isNumber(value) && isNaN(val)) {
           var index = value
           value = val
           while (index > 1) {
@@ -421,92 +310,14 @@ const calcModulo = ({ _window, lookupActions, stack, value, params, __, id, e, r
           }
         }
       })
-      // console.log(value);
-      return value
 
-    } else if (value.split("%").length > 2) {
+      global.__calcTests__[test] = true
 
-      var allAreNumbers = true
-      var _value = value.split("%").slice(0, 2).join("%")
-      var _values = value.split("%").slice(2)
-      _values.unshift(_value)
-      
-      var values = _values.map(value => {
-        if (value.charAt(0) !== "@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition }))))) return allAreNumbers = false
-
-        if (allAreNumbers) {
-          var num = toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition })
-          if (!isNaN(num) && num !== " " && num !== "") return num
-          else allAreNumbers = false
-        }
-      })
-
-      if (allAreNumbers) {
-
-        value = parseFloat(values[0])
-        values.slice(1).map(val => {
-          if (!isNaN(value) && !isNaN(val)) value %= val
-          else if (isNaN(value) && !isNaN(val)) {
-            while (val > 1) {
-              value -= value
-              val -= 1
-            }
-          } else if (!isNaN(value) && isNaN(val)) {
-            var index = value
-            value = val
-            while (index > 1) {
-              value -= value
-              index -= 1
-            }
-          }
-        })
-        // console.log(value);
-        return value
-  
-      } else if (value.split("%").length > 3) {
-  
-        var allAreNumbers = true
-        var _value = value.split("%").slice(0, 3).join("%")
-        var _values = value.split("%").slice(3)
-        _values.unshift(_value)
-        var values = _values.map(value => {
-          if (value.charAt(0) !== "@" && value.includes(":") && (value.split(":")[1] !== "()" ? !value.split(":")[0].includes("()") : (isNaN(toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition })))) ) return allAreNumbers = false
-  
-          if (allAreNumbers) {
-            var num = toValue({ _window, lookupActions, stack, data: value, params, __, id, e, req, res, object, condition })
-            if (!isNaN(num) && num !== " " && num !== "") return num
-            else allAreNumbers = false
-          }
-        })
-
-        if (allAreNumbers) {
-
-          value = parseFloat(values[0])
-          values.slice(1).map(val => {
-            if (!isNaN(value) && !isNaN(val)) value %= val
-            else if (isNaN(value) && !isNaN(val)) {
-              while (val > 1) {
-                value -= value
-                val -= 1
-              }
-            } else if (!isNaN(value) && isNaN(val)) {
-              var index = value
-              value = val
-              while (index > 1) {
-                value -= value
-                index -= 1
-              }
-            }
-          })
-          // console.log(value);
-          return value
-    
-        }
-      }
-    }
+    } else value = calcModulo({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition, index: index + 1 })
   }
   
+  if (value === test) global.__calcTests__[test] = false
   return value
 }
 
-module.exports = { toValue, calcSubs, calcDivision, calcModulo, emptySpaces }
+module.exports = { toValue, calcSubs, calcDivision, calcModulo, emptySpaces, isNumber }

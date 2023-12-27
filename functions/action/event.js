@@ -20,11 +20,12 @@ const addEventListener = ({ controls, id }) => {
     // decode
     if (substring.charAt(0) === "@" && substring.length === 6) substring = global.__refs__[substring].data
 
-    var { substring, string } = modifyEvent({ id, event: substring, string: mainString })
-
     // event:id
     var { data: eventID } = lineInterpreter({ id, data: substring.split("?")[0].split(":")[1] || id })
     if (typeof eventID === "object" && eventID.__view__) eventID = eventID.id
+
+    // modify
+    var { substring, string } = modifyEvent({ eventID, event: substring, string: mainString })
 
     var event = substring.split("?")[0].split(":")[0]
 
@@ -131,16 +132,22 @@ const defaultInputHandlerByEvent = ({ views, view, id, event, keyName, value }) 
   view.element.addEventListener(event, fn)
 }
 
-const modifyEvent = ({ string, event }) => {
+const modifyEvent = ({ eventID, string, event }) => {
 
+  var view = window.views[eventID]
   var subparams = event.split(":")[1] || ""
   event = event.split(":")[0]
 
   string = string.split("?").slice(1)
   var conditions = string[1] || ""
   
-  if (event === "entry") event = "keyup"
-  else if (event === "enter") {
+  if (event === "change" && (view.input.type === "text" || view.input.type === "number")) {
+    event = "keyup"
+    conditions += ";e().key"
+  } else if (event === "entry") {
+    event = "keyup"
+    conditions += ";e().key"
+  } else if (event === "enter") {
 
     event = "keyup"
     conditions += "e().key=Enter||e().keyCode=13"

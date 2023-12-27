@@ -90,12 +90,12 @@ document.addEventListener('keydown', e => {
 
     var global = window.global
 
-    if (global.projectID === "brackettechnologies" && e.ctrlKey && e.key === "s") {
+    if (global.manifest.projectID === "brackettechnologies" && e.ctrlKey && e.key === "s") {
         e.preventDefault();
         lineInterpreter({ id: "saveBtn", e, data: "click()" })
     }
 
-    if (global.projectID === "brackettechnologies" && e.ctrlKey && e.shiftKey && e.key === "Delete") {
+    if (global.manifest.projectID === "brackettechnologies" && e.ctrlKey && e.shiftKey && e.key === "Delete") {
         e.preventDefault();
     }
 })

@@ -22,7 +22,7 @@ const serverActionExecuter = async ({ _window, stack, req, res, id, __ }) => {
   var data = executeServerAction({ _window, stack, id, action, req, res, __: action.__ })
 
   // respond
-  if (stack.addresses.length === 0) return res.send(data)
+  if (stack.addresses.length === 0) return res.send({ ...data, logs: stack.logs })
 
   // request timeout
   setTimeout(() => { if (!res.headersSent) return res.send({ success: false, message: `Action request timeout!`, executionDuration: 40000, logs: stack.logs }) }, 40000)

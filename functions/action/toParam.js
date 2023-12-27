@@ -27,7 +27,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
   var global = _window ? _window.global : window.global
   
   // returned
-  if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated) return
+  if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.broke || stack.returned) return
 
   if (typeof string !== "string" || !string) return string || {}
   params = object || params
@@ -51,7 +51,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
   string.split(";").map(param => {
 
     // no param || returned || comment
-    if (!param || (stack.returns && stack.returns[0] || {}).returned || param.charAt(0) === "#" || stack.terminated) return
+    if (!param || (stack.returns && stack.returns[0] || {}).returned || param.charAt(0) === "#" || stack.terminated || stack.broke || stack.returned) return
     
     var key, value
     var view = views[id]

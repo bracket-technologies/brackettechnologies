@@ -27,6 +27,7 @@ const initializer = ({ req, res, stack, data: { db, storage, rdb } }) => {
         __: [],
         __refs__: {},
         __events__: {},
+        __calcTests__: {},
         __serverActions__: {},
         __prevPage__: ["main"],
         __currentPage__: currentPage,

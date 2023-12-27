@@ -47,6 +47,9 @@ const awaitHandler = ({ _window, req, res, address, lookupActions, stack, id, e,
   // consider that waits are part of the head action => reset interpreting to true for head action
   if (headAddress.id) headAddress.interpreting = true
 
+  // unbreak action
+  stack.returned = false
+
   // interpret
   lineInterpreter({ _window, lookupActions, stack, id, e, req, res, ...(address.params || {}), data: address.await, __: my__ })
 

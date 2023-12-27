@@ -13,7 +13,7 @@ module.exports = {
         success = true
         global.data.project = { ...doc.docs[0].data(), id: doc.docs[0].id }
         global.__serverActions__ = Object.keys(global.data.project.functions || {})
-        global.projectID = global.data.project.id
+        global.manifest.projectID = global.data.project.id
         message = "Project found successfully!"
 
       } else {

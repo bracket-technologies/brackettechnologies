@@ -8,7 +8,7 @@ const getJson = (url) => {
     return Httpreq.responseText
 }
 
-const importJson = ({ _window, id, e, __, ...params }) => {
+const importFile = ({ _window, id, e, __, ...params }) => {
     
     var global = _window ? _window.global : window.global
     global.import = {}
@@ -26,7 +26,9 @@ const importJson = ({ _window, id, e, __, ...params }) => {
             var reader = new FileReader()
             reader.onload = (e) => {
                 
-                var data = { data: JSON.parse(e.target.result), success: true, message: "Data imported successfully!" }
+                var data = { data: e.target.result, success: true, message: "Data imported successfully!", files: [...event.target.files] }
+                if (params.data.type === "json") data.data = JSON.parse(data.data)
+                    
                 require("./toAwait").toAwait({ _window, id, e, ...params, __, _: data })
             }
             
@@ -37,4 +39,4 @@ const importJson = ({ _window, id, e, __, ...params }) => {
     }, 200)
 }
 
-module.exports = {importJson, getJson}
+module.exports = {importFile, getJson}

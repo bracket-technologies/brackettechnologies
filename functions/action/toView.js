@@ -209,7 +209,7 @@ const toView = async ({ _window, lookupActions, stack, id, req, res, import: _im
     
     // id handler
     if (newView.id && views[newView.id] && newView.id !== id) {
-      newView.id += generate()
+      newView.id += "_" + generate()
     } else if (!newView.id) newView.id = id
     
     id = newView.id

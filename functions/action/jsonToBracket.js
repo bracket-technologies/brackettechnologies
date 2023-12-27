@@ -21,7 +21,7 @@ const jsonToBracket = (object, field) => {
         string += path.map(path => `${key}.${path}`).join(";")
       }
 
-    } else if (typeof value === "string") string += `${key}=${value}`
+    } else if (typeof value === "string") string += `${key}='${value}'`
     else string += `${key}=${value}`
 
     if (index < length - 1) string += ";"

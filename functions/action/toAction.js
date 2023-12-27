@@ -50,14 +50,14 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
       clone(["_project_", ...parentViews]).reverse().map((myview, i) => {
 
         if (!actionFound) {
-          
+
           if (myview !== "_project_" && !global.data.view[myview]) return
-          var actions = myview === "_project_" ? global.__serverActions__ : (global.data.view[myview].functions) || {}
+          var actions = myview === "_project_" ? (stack.server ? global.data.project.functions : global.__serverActions__) : (global.data.view[myview].functions) || {}
           actionFound = (Array.isArray(actions) ? actions : Object.keys(actions)).find(fn => fn === path0.slice(0, -2))
           
           if (actionFound) {
-
-            if (myview === "_project_" && !_window) {
+            
+            if (myview === "_project_" && !stack.server) {
               
               // server action & now we are not on server
               callServerAction = true

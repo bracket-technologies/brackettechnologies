@@ -12,7 +12,7 @@ module.exports = {
 
     // headers
     var headers = search.headers || {}
-    headers.project = headers.project || global.projectID
+    headers.project = headers.project || global.manifest.projectID
     headers = { ...headers, search: encodeURI(jsonToBracket({ search })), timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()) }
     
     if (_window) {

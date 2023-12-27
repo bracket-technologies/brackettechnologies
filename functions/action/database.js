@@ -2,30 +2,33 @@ const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { toCode } = require("./toCode")
 const { toArray } = require("./toArray")
 const { lineInterpreter } = require("./lineInterpreter")
+const { generate } = require("./generate")
 
 var getdb = async ({ _window, req, res, id }) => {
 
-  var string = decodeURI(req.headers.search), data = {}
+  var string = decodeURI(req.headers.search), data = {}, timer = (new Date()).getTime()
   string = toCode({ _window, string })
 
   if (string) data = lineInterpreter({ _window, data: string, id }).data
   var search = data.search || {}
   var { data, success, message } = await getData({ _window, req, res, search })
 
+  console.log("SEARCH", search.collection, (new Date()).getTime() - timer);
   return res.send({ data, success, message })
 }
 
 var postdb = async ({ _window, req, res }) => {
 
-  var save = req.body.save || {}
+  var save = req.body.save || {}, timer = (new Date()).getTime()
   var { data, success, message } = await postData({ _window, req, res, save })
 
+  console.log("SAVE", save.collection, (new Date()).getTime() - timer);
   return res.send({ data, success, message })
 }
 
 var deletedb = async ({ _window, req, res, id }) => {
 
-  var string = decodeURI(req.headers.erase), data = {}
+  var string = decodeURI(req.headers.erase), data = {}, timer = (new Date()).getTime()
   string = toCode({ _window, string })
 
   if (string) data = lineInterpreter({ _window, data: string, id }).data
@@ -33,6 +36,7 @@ var deletedb = async ({ _window, req, res, id }) => {
 
   var { success, message } = await deleteData({ _window, req, res, erase })
 
+  console.log("ERASE", erase.collection, (new Date()).getTime() - timer);
   return res.send({ success, message })
 }
 
@@ -41,7 +45,7 @@ const getData = async ({ _window, req, res, search }) => {
   var db = req.db
   var collection = search.collection
   if (((_window.global.data.project.datastore || {}).collections || []).includes(collection)) collection = 'collection-' + collection
-  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${req.headers["project"]}`
+  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${req.headers.project}`
 
   var doc = search.document || search.doc,
     docs = search.documents || search.docs,
@@ -226,40 +230,26 @@ const postData = async ({ _window, req, res, save }) => {
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
 
   var ref = db.collection(collection)
-  var success, message
+  var success = false, message = "Missing data!"
 
-  if (Array.isArray(data)) {
+ /* if (Array.isArray(data)) {
 
     var batch = db.batch()
+
     data.map((data, i) => {
 
       if (!data["creation-date"] && req.headers.timestamp) {
         data["creation-date"] = parseInt(req.headers.timestamp)
       }
 
+      if (data.id === undefined) data.id = save.doc || generate({ length: 20 })
+      if (!data.id) return
+
       batch.set(db.collection(collection).document(data.id.toString()), data)
-
-      // Commit the batch
-      batch.commit().then(() => {
-
-        success = true
-        message = `Document saved successfuly!`
-
-      }).catch(error => {
-
-        success = false
-        message = error
-      })
     })
 
-  } else if (data) {
-
-    var doc = data.id || save.doc || generate({ length: 20 })
-    data.id = data.id || doc
-
-    if (!data["creation-date"] && req.headers.timestamp) data["creation-date"] = parseInt(req.headers.timestamp)
-
-    await ref.doc(doc.toString()).set(data).then(() => {
+    // Commit the batch
+    batch.commit().then(() => {
 
       success = true
       message = `Document saved successfuly!`
@@ -269,7 +259,29 @@ const postData = async ({ _window, req, res, save }) => {
       success = false
       message = error
     })
-  }
+
+  } else if (data) {*/
+
+  var promises = toArray(data).map(async (data, i) => {
+
+    data.id = data.id || (i === 0 && save.doc) || generate({ length: 60, timestamp })
+
+    if (!data["creation-date"] && req.headers.timestamp) data["creation-date"] = parseInt(req.headers.timestamp)
+
+    return await ref.doc(data.id.toString()).set(data).then(() => {
+
+      success = true
+      message = `Document saved successfuly!`
+
+    }).catch(error => {
+
+      success = false
+      message = error
+    })
+  })
+  //}
+
+  await Promise.all(promises)
 
   return ({ data, success, message })
 }

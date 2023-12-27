@@ -10,6 +10,8 @@ const generate = (params = {}) => {
   for (let i = 0; i < length; i++) {
     result += chars.charAt(Math.floor(Math.random() * charactersLength))
   }
+
+  if (params.timestamp) result += "_" + (new Date()).getTime()
   
   return result
 }

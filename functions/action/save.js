@@ -9,7 +9,7 @@ module.exports = {
     var data
     var headers = save.headers || {}
     var store = save.store || "database"
-    headers.project = headers.project || global.projectID
+    headers.project = headers.project || global.manifest.projectID
 
     if (!save.collection) return console.log("No collection!")
 

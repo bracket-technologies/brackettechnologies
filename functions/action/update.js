@@ -23,7 +23,7 @@ const update = async ({ id, _window, lookupActions, stack, req, res, update = {}
   removeChildren({ id })
 
   // reset children for root
-  if (id === "root") views.root.children = children = [clone(global.data.view[route.currentPage])]
+  if (id === "root") views.root.children = children = [{ ...clone(global.data.view[route.currentPage]), __viewsPath__: [route.currentPage] }]
 
   var innerHTML = await Promise.all(children.map(async (child, index) => {
 
@@ -33,7 +33,7 @@ const update = async ({ id, _window, lookupActions, stack, req, res, update = {}
     views[id].index = index
     views[id].parent = view.id
     views[id].style = views[id].style || {}
-    views[id].__viewsPath__ = [...view.__viewsPath__]
+    views[id].__viewsPath__ = child.__viewsPath__ || [...view.__viewsPath__]
     
     return await toView({ _window, lookupActions, stack, req, res, id, __: view.__ })
   }))

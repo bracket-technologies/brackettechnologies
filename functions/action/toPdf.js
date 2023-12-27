@@ -1,5 +1,5 @@
 module.exports = {
-    toPdf: async ({ id, options }) => {
+    toPdf: async (options) => {
 
         var blob = new Blob([`<html><head><meta charset="UTF-8"></head><body>${options.html}</body></html>`], { type: 'text/html' })
  

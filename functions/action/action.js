@@ -5,7 +5,7 @@ const action = async ({ _window, lookupActions, stack, address, id = "root", req
   // headers
   var headers = action.headers || {}
   var store = action.store || "action"
-  headers.project = headers.project || global.projectID
+  headers.project = headers.project || global.manifest.projectID
 
   // headers
   headers = { ...headers, timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()) }
