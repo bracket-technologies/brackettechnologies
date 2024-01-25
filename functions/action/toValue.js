@@ -1,7 +1,6 @@
 const { executable } = require("./executable");
 const { generate } = require("./generate")
 const { isParam } = require("./isParam")
-const { reducer } = require("./reducer");
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -11,8 +10,9 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params = {}, __, id, e, req, res, object, _object, mount, toView, condition }) => {
+const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id, e, req, res, object, _object, mount, toView, condition, isValue }) => {
 
+  const { reducer } = require("./reducer")
   const { toParam } = require("./toParam")
   
   var view = _window ? _window.views[id] : window.views[id]
@@ -27,7 +27,7 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params 
   if (value.charAt(0) === "@" && value.length == 6) value = global.__refs__[value].data
 
   // value is a param it has key=value
-  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, stack, e, data: value, _object, __, object, mount, toView, condition })
+  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, stack, e, data: value, _object, __, object, mount: !isValue && mount, toView, condition })
 
   // no value
   if (value === "()") return view
@@ -36,13 +36,19 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params 
   else if (value === "undefined") return undefined
   else if (value === "false") return false
   else if (value === "true") return true
+  else if (value === "device()") return global.manifest.device.device
+  else if (value === "desktop()") return global.manifest.device.device.type === "desktop"
+  else if (value === "tablet()") return global.manifest.device.device.type === "tablet"
+  else if (value === "mobile()") return global.manifest.device.device.type === "smartphone"
+  else if (value === "tv()") return global.manifest.device.device.type === "tv"
+  else if (value === "clicked()") return global.__clicked__
+  else if (value === "today()") return new Date()
   else if (value === "null") return null
   else if (value.charAt(0) === "_" && !value.split("_").find(i => i !== "_" && i !== "")) return __[value.split("_").length - 2]
-  else if (value === "_string") return ""
-  else if (value === "[]" || value === "_map") return ({})
+  else if (value === "[]") return ({})
   else if (value === ":[]") return ([{}])
   else if (value === " ") return value
-  else if (value === ":" || value === "_list") return ([])
+  else if (value === ":") return ([])
   else if (value.charAt(0) === ":") return value.split(":").slice(1).map(item =>  toValue({ req, res, _window, id, stack, lookupActions, __, e, data: item })) // :item1:item2
 
   // show loader
@@ -83,25 +89,59 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params 
 
       } else {
 
-        var allAreNumbers = true
+        var allAreNumbers = true, allAreArrays = true, allAreObjects = true
         var values = value.split("+").map(value => {
           
           var _value = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount })
           if (allAreNumbers) {
-            if (!isNaN(_value) && !emptySpaces(_value)) allAreNumbers = true
+
+            allAreArrays = false
+            allAreObjects = false
+            if (isNumber(_value)) allAreNumbers = true
             else allAreNumbers = false
+
+          } else if (allAreArrays) {
+
+            allAreNumbers = false
+            allAreObjects = false
+            if (Array.isArray(_value)) allAreNumbers = true
+            else allAreArrays = false
+
+          } else if (allAreObjects) {
+            
+            allAreNumbers = false
+            allAreArrays = false
+            if (typeof _value === "object") allAreNumbers = true
+            else allAreObjects = false
           }
+
           return _value
         })
         
         if (allAreNumbers) {
-          var newVal = parseFloat(values[0]) || 0
-          values.slice(1).map(val => newVal += (parseFloat(val) || 0))
+
+          var value = 0
+          values.map(val => value += (parseFloat(val) || 0))
+          return value
+
+        } else if (allAreArrays) {
+
+          var array = []
+          values.map(arr => array = array.concat(arr))
+          return array
+
+        } else if (allAreObjects) {
+
+          var object = {}
+          values.map(obj => object = { ...object, ...obj })
+          return object
+
         } else {
-          var newVal = values[0]
-          values.slice(1).map(val => newVal += val)
+          
+          var value = ""
+          values.map(val => value += val + "")
+          return value
         }
-        return value = newVal
       }
     }
     
@@ -147,19 +187,13 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params 
     }
   }
 
-  if (value === "()") return view
-
-  // return await value
-  if (value.split("await().")[1] !== undefined && !value.split("await().")[0]) return value.split("await().")[1]
-
   var path = typeof value === "string" ? value.split(".") : []
   
   /* value */
   if (isNumber(value)) value = parseFloat(value)
-  else if (value === " ") return value
-  else if (object || path[0].includes(":") || path[1] || path[0].includes("()") || path[0].includes("@"))
-    value = reducer({ _window, lookupActions, stack, id, object, data: path, value, __, e, req, res, mount, toView })
-  
+  else if (object || path[0].includes(":") || path[0].includes("()") || path[0].includes("@") || path[1])
+    value = reducer({ _window, lookupActions, stack, id, data: { path, value, object }, __, e, req, res, mount, toView })
+
   return value
 }
 
@@ -243,20 +277,7 @@ const calcDivision = ({ _window, lookupActions, stack, value, __, id, e, req, re
 
       value = parseFloat(values[0])
       values.slice(1).map(val => {
-        if (!isNumber(value) && !isNaN(val)) value /= val
-        else if (isNumber(value) && !isNaN(val)) {
-          while (val > 1) {
-            value -= value
-            val -= 1
-          }
-        } else if (!isNumber(value) && isNaN(val)) {
-          var index = value
-          value = val
-          while (index > 1) {
-            value -= value
-            index -= 1
-          }
-        }
+        if (isNumber(value) && isNumber(val)) value /= val
       })
 
       // push 
@@ -284,32 +305,17 @@ const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res,
 
       if (allAreNumbers) {
         
-        var num = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object: value.charAt(0) === "." && object, condition })
+        var num = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object: value.charAt(0) === "." ? object : undefined, condition })
 
         if (!isNaN(num) && num !== " " && num !== "") return num
         else allAreNumbers = false
       }
     })
-    
+
     if (allAreNumbers) {
 
       value = parseFloat(values[0])
-      values.slice(1).map(val => {
-        if (!isNumber(value) && !isNaN(val)) value %= val
-        else if (isNumber(value) && !isNaN(val)) {
-          while (val > 1) {
-            value -= value
-            val -= 1
-          }
-        } else if (!isNumber(value) && isNaN(val)) {
-          var index = value
-          value = val
-          while (index > 1) {
-            value -= value
-            index -= 1
-          }
-        }
-      })
+      values.slice(1).map(val => value %= val)
 
       global.__calcTests__[test] = true
 

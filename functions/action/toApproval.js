@@ -73,6 +73,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root
       if (value === undefined) return approval = global.__refs__[key].data ? true : false
       else return approval = global.__refs__[key].data === value
     }
+    
     if (key.charAt(0) === "@" && key.length == 6) key = global.__refs__[key].data
 
     // operator has !

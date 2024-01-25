@@ -1,43 +1,35 @@
 const { toView } = require("./toView");
-const { clone } = require("./clone");
 const { getJsonFiles } = require("./jsonFiles");
+const { toArray } = require("./toArray");
+const { addresser } = require("./addresser");
 
 require("dotenv").config();
 
-const initializer = ({ _window }) => {
+const initViews = ({ _window }) => {
 
     _window.views = {
-        html: {
-            id: "html",
-            __childrenID__: []
+        document: {
+            id: "document",
+            __indexing__: 0,
+            __childrenRef__: [],
+            __viewPath__: []
         },
         body: {
             id: "body",
             view: "View",
-            parent: "html",
-        },
-        root: {
-            id: "root",
-            view: "View",
-            parent: "body",
-            style: { backgroundColor: "#fff", position: "relative" },
-        },
-        public: {
-            id: "public",
-            view: "View",
-            parent: "body"
+            __parent__: "document",
+            __indexing__: 0,
+            __childrenRef__: [],
+            __viewPath__: [],
+            children: [...toArray((_window.global.data.project.browser || {}).children), { view: "root" }]
         }
     }
 }
 
 const getProject = async ({ _window, req }) => {
 
-    var global = _window.global, promises = [], timer = (new Date()).getTime()
-
-    // get shared public views
-    Object.entries(getJsonFiles({ search: { collection: "public" } })).map(([doc, data]) => {
-        global.data.view[doc] = { ...data, id: doc }
-    })
+    var global = _window.global
+    var promises = [], timer = (new Date()).getTime()
 
     // views
     promises.push(req.db
@@ -61,47 +53,36 @@ const getProject = async ({ _window, req }) => {
             console.log("COLLECTION", new Date().getTime() - timer)
         }))
 
-    return await Promise.all(promises)
+    await Promise.all(promises)
+
+    // get shared public views
+    Object.entries(getJsonFiles({ search: { collection: "public" } })).map(([doc, data]) => {
+        
+        if (global.data.view[doc]) return
+        global.data.view[doc] = { ...data, id: doc }
+        global.data.view.root.children.unshift({ view: doc })
+    })
 }
 
-const interpreter = async ({ _window, req, res, stack, __ }) => {
+const renderer = ({ _window, req, res, stack, __ }) => {
 
-    var { global, views } = _window, currentPage = global.manifest.currentPage, timer = (new Date()).getTime()
+    var { global, views } = _window, page = global.manifest.page, timer = (new Date()).getTime()
 
-    if (!global.data.view[currentPage]) return res.send("Page not found!")
+    if (!global.data.view[page]) return res.send("Page not found!")
 
-    // views
-    views.root.children = [{ view: currentPage }]
-    views.public.children = Object.values(global.data.view).filter(view => view.__public__).map(publicView => ({ view: publicView.id }))
-    views.body.children = [views.public, views.root]
+    // address
+    var { address } = addresser({ _window, id: "document", type: "function", status: "waiting", file: "projector", function: "documenter", stack, asynchronous: true, renderer: true, action: "documenter()", __ })
 
-    // tags
-    global.data.project.browser = global.data.project.browser || {}
-    global.data.project.browser.children = global.data.project.browser.children || []
-    global.data.project.browser.view = global.data.project.browser.view || global.data.project.browser.type || "html"
-
-    views.html = { ...views.html, ...global.data.project.browser }
-
-    // tags
-    await toView({ _window, id: "html", req, res, stack, __ })
-
-    // views
-    var innerHTML = await toView({ _window, id: "body", req, res, stack, __ })
+    // render
+    toView({ _window, __parent__: "document", req, res, stack, __, address, data: { view: views.body } })
 
     console.log("RENDER", (new Date()).getTime() - timer)
-
-    // html was updated by update or route
-    if (!global.__html__) global.__html__ = innerHTML
-
-    return innerHTML
 }
 
 const documenter = async ({ _window: { global, views }, res, stack }) => {
 
-    var currentPage = global.manifest.currentPage
-    var view = views[global.manifest.currentPage] || {}
-
-    global.promises = {}
+    var page = global.manifest.page
+    var view = views[global.manifest.page] || {}
 
     // head tags
     var favicon = global.data.project.favicon
@@ -119,9 +100,6 @@ const documenter = async ({ _window: { global, views }, res, stack }) => {
     var metaDescription = view.meta.description || ""
     var metaTitle = view.meta.title || view.title || ""
     var metaViewport = view.meta.viewport || ""
-
-    // id list
-    global.__ids__ = global.__html__.split("id='").slice(1).map((id) => id.split("'")[0])
 
     delete global.data.project
 
@@ -163,17 +141,17 @@ const documenter = async ({ _window: { global, views }, res, stack }) => {
                 <script id="global" type="application/json">${JSON.stringify(global)}</script>
                 
                 <!-- Location -->
-                ${global.__updateLocation__ ? `<script defer>window.history.replaceState({}, "${title}", "/${currentPage === "main" ? "" : currentPage}")</script>` : ""}
+                ${global.__updateLocation__ ? `<script defer>window.history.replaceState({}, "${title}", "/${page === "main" ? "" : page}")</script>` : ""}
                 
                 <!-- head tags -->
-                ${global.__tags__.head || ""}
+                ${global.__html__.head || ""}
             </head>
             <body>
                 <!-- body tags -->
-                ${global.__tags__.body || ""}
+                ${global.__html__.body || ""}
 
                 <!-- html -->
-                ${global.__html__ || ""}
+                ${views.root.__html__ || ""}
 
                 <!-- engine -->
                 <script src="/resource/engine.js"></script>
@@ -187,6 +165,9 @@ const documenter = async ({ _window: { global, views }, res, stack }) => {
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/>
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"/>
                 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+                <!-- html2pdf -->
+                <script src="https://cdn.jsdelivr.net/npm/js-html2pdf@1.1.4/lib/html2pdf.min.js"></script>
             </body>
         </html>`
     )
@@ -195,16 +176,23 @@ const documenter = async ({ _window: { global, views }, res, stack }) => {
 const projector = async ({ _window, req, res, stack, __ }) => {
 
     var timer = (new Date()).getTime()
-
-    initializer({ _window })
-    if (res.headersSent) return
+    
+    initViews({ _window })
     await getProject({ _window, req, res, stack, __ })
+    
     if (res.headersSent) return
-    await interpreter({ _window, req, res, stack, __ })
-    if (res.headersSent) return
-    await documenter({ _window, req, res, stack, __ })
+    renderer({ _window, req, res, stack, __ })
+    // if (res.headersSent) return
+    // await documenter({ _window, req, res, stack, __ })
 
     console.log("DOCUMENTATION", (new Date()).getTime() - timer);
 }
 
-module.exports = { getProject, initializer, interpreter, projector }
+module.exports = { getProject, initViews, renderer, projector, documenter }
+
+/* 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.min.js"></script>
+*/

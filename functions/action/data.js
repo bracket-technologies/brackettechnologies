@@ -7,9 +7,9 @@ const createData = ({ data, id }) => {
 
   var view = window.views[id]
 
-  view.derivations.reduce((o, k, i) => {
+  view.__dataPath__.reduce((o, k, i) => {
 
-    if (i === view.derivations.length - 1) return o[k] = data
+    if (i === view.__dataPath__.length - 1) return o[k] = data
     return o[k]
 
   }, global[view.doc])
@@ -22,10 +22,10 @@ const clearData = ({ id, e, clear = {}, __ }) => {
   if (!global[view.doc]) return
   
   var path = clear.path
-  path = path ? path.split(".") : clone(view.derivations)
+  path = path ? path.split(".") : clone(view.__dataPath__)
   path.push('delete()')
   
-  reducer({ id, e, data: path, object: global[view.doc], __ })
+  reducer({ id, e, data: { path, object: global[view.doc] }, __ })
 
   setContent({ id })
   console.log("data removed", global[view.doc])

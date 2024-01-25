@@ -6,7 +6,7 @@ const qr = async ({ _window, id, req, res, data, __, e, stack, lookupActions, ad
 
     // get image
     var view = window.views[data.id], imageEl
-    if (view) imageEl = view.element
+    if (view) imageEl = view.__element__
     
     var qrcode = new QRCode(document.getElementById(data.id), data)
     var data = { message: "QR generated successfully!", data: qrcode, success: true }

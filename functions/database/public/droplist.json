@@ -1,11 +1,9 @@
 {
     "__public__": true,
-    "view": "View:droplist?class=box-shadow flex column;style:[width=fit-content;transition=opacity .1s, transform .1s, background-color .1s;height=fit-content;overflowY=auto;maxWidth=40rem;transform=scale(0.5);opacity=0;pointerEvents=none;position=fixed;padding=.2rem;borderRadius=.5rem;backgroundColor=#fff;zIndex=999]",
-    "controls": [{
-        "event": "mouseleave?clearTimer():[__droplistTimer__:()];__droplistTimer__:()=timer():[if():[!():[__droplistPositioner__:()].mouseentered]:[__droplistMouseenterer__:().del();():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];clearTimer():[__droplistTimer__:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform='scale(0.5)';pointerEvents=none]];__droplistPositioner__:().del()]]:400"
-    }, {
-        "event": "mouseenter?clearTimer():[().droplistLeaved];clearTimer():[__droplistTimer__:()]"
-    }, {
-        "event": "click:body?mouseleave()?!():[__droplistPositioner__:()].preventDefault;!contains():[clicked:()]"
-    }]
+    "view": "View:droplist?class=box-shadow flex column;mouseleave:[mouseleaveDroplist()];mouseenter:[mouseenterDroplist()];():body.click:[outClickDroplist()];style:[width=fit-content;transition=opacity .1s, transform .1s, background-color .1s;height=fit-content;overflowY=auto;maxWidth=40rem;transform=scale(0.5);opacity=0;pointerEvents=none;position=fixed;padding=.2rem;borderRadius=.5rem;backgroundColor=#fff;zIndex=999]",
+    "functions": {
+        "mouseleaveDroplist": "mouseentered=false;clearTimer():[__droplistTimer__:()];__droplistTimer__:()=timer():[__droplistMouseenterer__:().del();():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];clearTimer():[__droplistTimer__:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];():droplist.style():[opacity=0;transform='scale(0.5)';pointerEvents=none];__droplistPositioner__:().del()]:400",
+        "mouseenterDroplist": "mouseentered=true;clearTimer():[().droplistLeaved];clearTimer():[__droplistTimer__:()]",
+        "outClickDroplist": "mouseleave()?!():[__droplistPositioner__:()].preventDefault;!contains():[clicked()];!():[__droplistPositioner__:()].contains():[clicked()]"
+    }
 }

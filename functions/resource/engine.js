@@ -18,23 +18,25 @@ const action = async ({ _window, lookupActions, stack, address, id = "root", req
     }
   })
 
-  // console.log("SERVER", (new Date()).getTime() - headers.timestamp, action.name + "()", data)
+  // var log = ["SERVER", (new Date()).getTime() - headers.timestamp, action.name + "()", data]
+  // stack.logs.push(log.join(" "))
   
   // await
   require("./toAwait").toAwait({ _window, lookupActions, address, stack, id, e, req, res, _: data, __, ...params })
 }
 
 module.exports = { action }
-},{"./toAwait":87,"axios":119}],2:[function(require,module,exports){
+},{"./toAwait":65,"axios":94}],2:[function(require,module,exports){
 module.exports=[
   "data()", "Data()", "doc()", "mail()", "function()", "exec()", "notification()", "notify()", "alert()", "tag()", "view()"
  , "style()", "className()", "getChildrenByClassName()", "erase()", "insert()", "setChild()", "same()", "checker()"
  , "deepChildren()", "children()", "1stChild()", "lastChild()", "2ndChild()", "3rdChild()", "promise()", "type()"
  , "3rdLastChild()", "2ndLastChild()", "parent()", "next()", "text()", "val()", "txt()", "loader()", "resolve()"
  , "element()", "el()", "checked()", "check()", "prev()", "format()", "lastSibling()", "interval()", "export()"
- , "1stSibling()", "derivations()", "path()", "mouseleave()", "mouseenter()", "mouseup()", "blur()", "log()", "pull()"
- , "mousedown()", "copyToClipBoard()", "mininote()", "note()", "date()", "tooltip()", "update()", "updateSelf()" 
- , "refresh()", "save()", "search()", "override()", "click()", "is()", "new()", "preventDefault()", "device()", "mobile()", "tablet()", "desktop()"
+ , "1stSibling()", "path()", "mouseleave()", "mouseenter()", "mouseup()", "blur()", "log()", "pull()"
+ , "mousedown()", "copyToClipBoard()", "mininote()", "note()", "date()", "tooltip()", "update()"
+ , "refresh()", "save()", "search()", "override()", "click()", "clicked()", "is()", "new()", "preventDefault()"
+ , "device()", "mobile()", "tablet()", "desktop()"
  , "gen()", "generate()", "route()", "getInput()", "input()", "getEntry()", "entry()", "capitalize()", "if()"
  , "getEntries()", "entries()", "toggleView()", "clearTimer()", "timer()", "range()", "focus()", "setCookie()"
  , "siblings()", "todayStart()", "time()", "remove()", "rem()", "removeChild()", "remChild()", "keyup()", "keydown()"
@@ -46,138 +48,71 @@ module.exports=[
  , "yearStart()", "month()", "year()", "yearEnd()", "nextYearStart()", "nextYearEnd()", "prevYearStart()", "while()"
  , "prevYearEnd()", "counter()", "exportCSV()", "exportPdf()", "readonly()", "html()", "csvToJson()", "fetch()"
  , "upload()", "timestamp()", "confirmEmail()", "files()", "share()", "return()", "html2pdf()", "dblclick()"
- , "exportExcel()", "2nd()", "2ndPrev()", "3rdPrev()", "2ndParent()", "3rdParent()", "installApp()", "sent()"
+ , "exportExcel()", "2nd()", "2ndPrev()", "3rdPrev()", "2ndParent()", "3rdParent()", "installApp()", "sent()", "stack()"
  , "replaceItem()", "replaceItems()", "findAndReplaceItem()", "grandParent()", "grandChild()", "grandChildren()", "2ndNext()", "isNaN()"
  , "send()", "removeDuplicates()", "stopWatchers()", "getGeoLocation()", "display()", "hide()", "scrollTo()", "colorize()"
 ]
 },{}],3:[function(require,module,exports){
-const { encoded } = require("./encoded");
 const { generate } = require("./generate");
 const { lineInterpreter } = require("./lineInterpreter");
+//const { stacker } = require("./stack");
 
-const addresser = ({ _window, stack = [], args = [], req, res, e, asynchronous = false, interpreting = false, requesterID, action, DOMRendering, renderingID, __, id, _object, object, mount, toView, lookupActions, condition }) => {
+const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "start", file, data = "", function: func, headAddress = {}, interpretByValue = false, asynchronous = false, interpreting = false, renderer = false, requesterID, action, __, id, _object, object, mount, toView, lookupActions, condition }) => {
 
-    var global = _window ? _window.global : window.global
-    var await = args[2], address = { id: generate(), requesterID, index: stack.addresses.length, action, asynchronous, interpreting, executionStartTime: (new Date()).getTime(), hold: true, await: "", DOMRendering, renderingID }
-    var headAddress = {}
+    var address = { id: generate(), type, data: args[2] || data, status, file, function: func, headAddressID: headAddress.id, headAddressrequesterID: requesterID || id, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime(), hold: true }
+    var stackLength = stack.addresses.length
 
-    // lock the head address
-    if (stack.addresses.length > 0) {
+    // find and lock the head address
+    if (stackLength > 0 && !headAddress.id) {
 
         var headAddressIndex = 0
         
         // get the head address by knowing who is being interpreted
-        while (!stack.addresses[headAddressIndex].interpreting) { headAddressIndex += 1 }
-        address.headAddressID = stack.addresses[headAddressIndex].id
+        while (headAddressIndex < stackLength && (!stack.addresses[headAddressIndex].interpreting && !stack.addresses[headAddressIndex].renderer)) { headAddressIndex += 1 }
 
-        // set all head addresses asynchronous
-        if (asynchronous) {
+        // there exist a head address
+        if (headAddressIndex < stackLength) {
+            
+            address.headAddressID = stack.addresses[headAddressIndex].id
 
-            var headAddressID = address.headAddressID
-            while (headAddressID) {
-                
-                var headAddress = stack.addresses.find(waitingAddress => waitingAddress.id === headAddressID)
-                headAddress.asynchronous = true
-                headAddressID = headAddress.headAddressID
+            // set all head addresses asynchronous
+            if (asynchronous) {
+
+                var headAddressID = address.headAddressID
+                while (headAddressID) {
+                    
+                    var headAddress = stack.addresses.find(waitingAddress => waitingAddress.id === headAddressID)
+                    headAddress.asynchronous = true
+                    headAddressID = headAddress.headAddressID
+                }
             }
+
+            // get head address
+            headAddress = stack.addresses.find(waitingAddress => waitingAddress.id === address.headAddressID)
         }
-
-        // get head address
-        headAddress = stack.addresses.find(waitingAddress => waitingAddress.id === address.headAddressID)
     }
 
-    // data params
-    var { data, executionDuration } = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: args[1], _object, object })
-    address.dataExecutionDuration = executionDuration
+    // data
+    var { data, executionDuration } = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, action: interpretByValue && "toValue", __, data: args[1], _object, object })
+    address.paramsExecutionDuration = executionDuration
 
-    if (action === "search()") action += " " + data.collection
-    
-    var log = ["ACTION start", address.id, address.index, action, headAddress.id || "", headAddress.index || "", headAddress.action || ""].join(" ")
-    stack.logs.push(log)
-    console.log(log);
-
-    // waits
-    if (await) {
-
-        if (encoded(await)) await = global.__refs__[await].data
-        address = { ...address, await, status: "Start", params: { __, id, _object, object, mount, toView, lookupActions, condition, data } }
-    }
+    // pass params
+    address.params = { __, id, _object, object, mount, toView, lookupActions, condition }
 
     // push to stack
     stack.addresses.unshift(address)
+
+    // print collection with action name
+    if (action === "search()" || action === "save()" || action === "erase()") address.action += " " + data.collection
+    
+    // log
+    stack.logs.push(`${stack.logs.length} ACTION ${type} ${status} ${address.id} ${address.index} ${address.action}${headAddress.id ? ` ${headAddress.id || ""} ${headAddress.index !== undefined ? headAddress.index : ""} ${headAddress.action || ""}` : ""}`)
 
     return { address, data, __: [...(data !== undefined ? [data] : []), ...__] }
 }
 
 module.exports = { addresser }
-},{"./encoded":24,"./generate":35,"./lineInterpreter":54}],4:[function(require,module,exports){
-const { toAwait } = require("./toAwait")
-
-const axios = async ({ id, lookupActions, stack, ...params }) => {
-
-    var view = window.views[id]
-    var { method, url, headers, payload } = params, data
-
-    if (method === "get" || method === "SEARCH") {
-        
-        data = await require("axios").get(url, {
-            headers: {
-                "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-                ...headers
-            }
-        })
-
-    } else if (method === "post" || method === "save") {
-        
-        data = await require("axios").post(url, payload, {
-            headers: {
-                "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-                ...headers
-            }
-        })
-
-    } else if (method === "delete" || method === "erase") {
-        
-        data = await require("axios").delete(url, {
-            headers: {
-                "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-                ...headers
-            }
-        })
-    }
-
-    // stack
-    console.log(data)
-    view.axios = data
-
-    toAwait({ id, lookupActions, stack, params })
-}
-
-module.exports = { axios }
-},{"./toAwait":87,"axios":119}],5:[function(require,module,exports){
-const blur = ({ id }) => {
-
-  var local = window.views[id]
-  if (!local) return
-
-  var isInput = local.type === "Input" || local.type === "Textarea"
-  if (isInput) local.element.blur()
-  else {
-    if (local.element) {
-      let childElements = local.element.getElementsByTagName("INPUT")
-      if (childElements.length === 0) {
-        childElements = local.element.getElementsByTagName("TEXTAREA")
-      }
-      if (childElements.length > 0) {
-        childElements[0].blur()
-      }
-    }
-  }
-}
-
-module.exports = {blur}
-
-},{}],6:[function(require,module,exports){
+},{"./generate":24,"./lineInterpreter":41}],4:[function(require,module,exports){
 const capitalize = (string, minimize) => {
   if (typeof string !== "string") return string
 
@@ -202,51 +137,9 @@ const capitalizeFirst = (string, minimize) => {
 
 module.exports = {capitalize, capitalizeFirst}
 
-},{}],7:[function(require,module,exports){
-const {clone} = require("./clone");
-
-const clearValues = (obj) => {
-  let newObj = clone(obj);
-
-  if (typeof obj === "undefined") return "";
-
-  if (typeof obj === "string") return "";
-
-  if (Array.isArray(obj)) {
-    newObj = [];
-    if (obj.length > 0) {
-      obj.map((element, index) => {
-        if (typeof element === "object") {
-          newObj[index] = clearValues(element);
-        } else newObj[index] = "";
-      });
-    }
-
-    return newObj;
-  }
-
-  Object.entries(obj).map(([key, value]) => {
-    if (Array.isArray(value)) {
-      newObj[key] = [];
-      if (value.length > 0) {
-        value.map((element, index) => {
-          if (typeof element === "object") {
-            newObj[key][index] = clearValues(element);
-          } else newObj[key][index] = "";
-        });
-      }
-    } else if (typeof value === "object") newObj[key] = clearValues(value);
-    else newObj[key] = "";
-  });
-
-  return newObj;
-};
-
-module.exports = {clearValues};
-
-},{"./clone":8}],8:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 const clone = (obj) => {
-
+  
   if (!obj) return obj
   
   var copy
@@ -266,27 +159,26 @@ const clone = (obj) => {
 
 module.exports = {clone}
 
-},{}],9:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 const { lineInterpreter } = require("./lineInterpreter")
 
-const closePublicViews = ({ id }) => {
+const closePublicViews = ({ _window, id, __, lookupActions }) => {
 
-    var views = window.views
-    var global = window.global
+    if (_window) return
     
     // close droplist
-    if (id !== "droplist" && global.__droplistPositioner__ && !global.clicked.element.contains(views[global.__droplistPositioner__].element))
-        lineInterpreter({ id: "droplist", data: "__keyupIndex__:()=0;clearTimer():[__droplistTimer__:()];__droplistMouseenterer__:().del();():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];clearTimer():[__droplistTimer__:()];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform='scale(0.5)';pointerEvents=none]];__droplistPositioner__:().del()" })
+    if (id !== "droplist")
+    lineInterpreter({ id: "droplist", data: "__keyupIndex__:()=0;clearTimer():[__droplistTimer__:()];__droplistMouseenterer__:().del();():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];clearTimer():[__droplistTimer__:()];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform='scale(0.5)';pointerEvents=none]];__droplistPositioner__:().del()?__droplistPositioner__:();!clicked().contains():[__droplistPositioner__:()]", __, lookupActions })
 
     // close tooltip
-    lineInterpreter({ id: "tooltip", data: "clearTimer():[tooltip-timer:()];tooltip-timer:().del();():tooltip.style().opacity=0" })
+    lineInterpreter({ id: "tooltip", data: "clearTimer():[__tooltipTimer__:()];__tooltipTimer__:().del();():tooltip.style().opacity=0", __, lookupActions })
 
     // close mininote
-    lineInterpreter({ id: "root", data: "():mininote.style():[opacity=0;transform=scale(0)]" })
+    lineInterpreter({ id: "root", data: "():mininote.style():[opacity=0;transform=scale(0)]", __, lookupActions })
 }
 
 module.exports = { closePublicViews }
-},{"./lineInterpreter":54}],10:[function(require,module,exports){
+},{"./lineInterpreter":41}],7:[function(require,module,exports){
 const { decode } = require("./decode")
 const { toArray } = require("./toArray")
 
@@ -355,7 +247,11 @@ const colorizeComment = ({ _window, index, string, colors }) => {
 
     var key = !operator ? string : string.split(string0 + operator).slice(1).join(string0 + operator)
     var comment = key.split("?")[0].split(";")[0]
+
+    comment = (comment || "").replaceAll("[]", "__map__")
     if (comment.split("]")[1] !== undefined) comment = key.split("]")[0]
+    comment = (comment || "").replaceAll("__map__", "[]")
+
     key = key.split(comment).slice(1).join(comment)
     key = colorize({ _window, string: key, index, colors })
 
@@ -393,64 +289,7 @@ const colorizeCoded = ({ _window, index, string, colors }) => {
 }
 
 module.exports = { colorize }
-},{"./decode":21,"./toArray":86}],11:[function(require,module,exports){
-module.exports = {
-    compare: (value1, operator, value2) => {
-        if (operator === "==") return value1 === value2
-        else if (operator === ">") return parseFloat(value1) > parseFloat(value2)
-        else if (operator === "<") return parseFloat(value1) < parseFloat(value2)
-        else if (operator === ">=") return parseFloat(value1) >= parseFloat(value2)
-        else if (operator === "<=") return parseFloat(value1) <= parseFloat(value2)
-        else if (operator === "in") return value1.includes(value2)
-    }
-}
-},{}],12:[function(require,module,exports){
-module.exports = {
-    contentful: ({ id }) => {
-        var local = window.views[id]
-
-        local.element.addEventListener("keydown", (e => {
-            
-            if (e.key === "Tab" || e.key === "Enter" || e.key === "{" || e.key === "[" || e.key === "(") {
-                
-
-                var start = e.target.selectionStart
-                var end = e.target.selectionEnd
-                var value = e.target.value
-
-                var isEnter = e.key === "Enter"
-                var isTab = e.key === "Tab"
-                var isCurly = e.key === "{"
-                var isSquare = e.key === "["
-                var isRound = e.key === "("
-
-                var innerValue = isTab ? "\t" 
-                : isEnter ? "\n"
-                : isCurly ? "{}"
-                : isSquare ? "[]"
-                : isRound ? "()"
-                : ""
-                
-                if (isEnter) {
-                    var after = value.substring(end).slice(0, 1)
-                    after = after === "}" || after === "]" || after === ")"
-                    if (after) innerValue += "\n"
-                }
-        
-                // set textarea value to: text before caret + tab + text after caret
-                e.target.value = value.substring(0, start) + innerValue + value.substring(end)
-        
-                // put caret at right position again (add one for the tab)
-                e.target.selectionStart = e.target.selectionEnd = start + 1
-        
-                // prevent the focus lose
-                e.preventDefault()
-
-            }
-        }))
-    }
-}
-},{}],13:[function(require,module,exports){
+},{"./decode":14,"./toArray":64}],8:[function(require,module,exports){
 const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
 
   var cookie = document.cookie || ""
@@ -486,7 +325,7 @@ const eraseCookie = ({ _window, name }) => {
 }
 
 module.exports = {setCookie, getCookie, eraseCookie}
-},{}],14:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 module.exports = {
   counter: ({ length = 0, counter = 0, end, reset = "daily", timer = 0 }) => {
 
@@ -519,141 +358,11 @@ module.exports = {
       diff -= 1
     }
 
-    console.log({ counter: _counter, length, reset, timer: timestamp });
+    // console.log({ counter: _counter, length, reset, timer: timestamp });
     return { counter: _counter, length, reset, timer: timestamp }
   }
 }
-},{}],15:[function(require,module,exports){
-const control = require("../event/event")
-
-const createActions = ({ params, id }) => {
-
-  const {execute} = require("./execute")
-
-  if (!params.type) return
-  var actions = control[params.type]({ params, id })
-
-  execute({ actions, id })
-}
-
-module.exports = {createActions}
-
-},{"../event/event":114,"./execute":29}],16:[function(require,module,exports){
-const { clone } = require("./clone")
-const { colorize } = require("./colorize")
-const { generate } = require("./generate")
-const { toArray } = require("./toArray")
-const { toCode } = require("./toCode")
-const { toHTML } = require("./toHTML")
-const { toStyle } = require("./toStyle")
-const cssStyleKeyNames = require("./cssStyleKeyNames")
-
-const createHtml = ({ _window, lookupActions, stack, id, req, res, import: _import, __, viewer }) => {
-
-  return new Promise(async resolve => {
-
-    var { toView } = require("./toView")
-    
-    // views
-    var views = _window ? _window.views : window.views
-    var global = _window ? _window.global : window.global
-    var view = views[id], type = view.__name__
-
-    if (view.children) view.children = toArray(view.children)
-
-    var innerHTML = await Promise.all(toArray(view.children).map(async (child, index) => {
-
-      if (!child) return ""
-
-      var _id = child.id || generate()
-      delete views[_id]
-      views[_id] = clone(child)
-      views[_id].id = _id
-      views[_id].index = index
-      views[_id].parent = view.id
-
-      return await toView({ _window, lookupActions, stack, id: _id, req, res, import: _import, __, viewer })
-    }))
-
-    innerHTML = innerHTML.join("")
-
-    // colorize
-    if (view.colorize) {
-
-      innerHTML = innerHTML || view.text || (view.editable ? view.data : "")
-      innerHTML = toCode({ _window, id, string: toCode({ _window, id, string: innerHTML, start: "'" }) })
-      innerHTML = colorize({ _window, string: innerHTML, ...(typeof view.colorize === "object" ? view.colorize : {}) })
-    }
-
-    if (id === "html") return resolve("")
-
-    var tag = _import ? "" : toHTML({ _window, lookupActions, stack, __, id, innerHTML }) || ""
-
-    if (_import) {
-
-      type = type.toLowerCase()
-      delete view.text
-      delete view.type
-      delete view.view
-      delete view.parent
-      delete view.__viewsPath__
-
-      if (type === "link" || type === "meta") {
-
-        delete view.id
-        delete view.index
-
-        tag = `<${type} ${Object.entries(view).map(([key, value]) => key !== "head" && key !== "body" && typeof value === "string" ? `${key}="${value.toString().replace(/\\/g, '')}"` : "").filter(i => i).join(" ")}>`
-
-      } else if (type === "style") {
-
-        tag = `
-          <style>
-    
-            ${Object.entries(view).map(([key, value]) =>
-          typeof value === "object" && !Array.isArray(value)
-            ? `${key} {
-                ${Object.entries(value).map(([key, value]) => `${cssStyleKeyNames[key] || key}: ${value.toString().replace(/\\/g, '')}`).join(`;
-                `)};
-                }` : "").filter(style => style).join(`
-              `)}
-            
-          </style>`
-
-      } else tag = `<${type} ${Object.entries(view).map(([key, value]) => key !== "head" && key !== "body" && typeof value === "string" ? `${key}="${value.toString().replace(/\\/g, '')}"` : "").filter(i => i).join(" ")}>${(view.text || "").replace(/\\/g, '')}</${type}>`
-
-      if (view.head) {
-
-        global.__tags__.head += tag.replace(` head="true"`, "")
-        return resolve(global.__tags__.head)
-
-      } else {
-
-        global.__tags__.body += tag.replace(` body="true"`, "")
-        return resolve(global.__tags__.body)
-      }
-    }
-
-    // linkable
-    if (view.link) {
-
-      var linkID = generate(), style = '', _view, link = typeof view.link === "string" && view.link.includes("http") ? view.link : (view.link.url || view.link.path || global.manifest.host)
-
-      _view = { id: linkID, parent: view.id, controls: [{ "event": `click?route():${view.link.path}?${view.link.path};${view.link.preventDafault ? false : true}` }] }
-      views[linkID] = _view
-
-      _view.style = view.link.style
-      if (_view.style) style = toStyle({ _window, lookupActions, stack, id: linkID })
-
-      tag = `<a ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} id='${linkID}' href=${link} style='${style}' index='${view.index || 0}'>${tag}</a>`
-    }
-
-    resolve(tag)
-  })
-}
-
-module.exports = { createHtml }
-},{"./clone":8,"./colorize":10,"./cssStyleKeyNames":17,"./generate":35,"./toArray":86,"./toCode":90,"./toHTML":95,"./toStyle":102,"./toView":104}],17:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports = {
   "userSelect": "user-select",
   "inlineSize": "inline-size",
@@ -717,7 +426,7 @@ module.exports = {
   "gridAutoRows": "grid-auto-columns",
   "writingMode": "writing-mode"
 }
-},{}],18:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 const { toParam } = require("./toParam");
 
 module.exports = {
@@ -768,7 +477,7 @@ module.exports = {
         reader.readAsBinaryString(file || e.target.files[0]);
     }
 }
-},{"./toParam":99}],19:[function(require,module,exports){
+},{"./toParam":75}],12:[function(require,module,exports){
 (function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -779,9 +488,9 @@ const createData = ({ data, id }) => {
 
   var view = window.views[id]
 
-  view.derivations.reduce((o, k, i) => {
+  view.__dataPath__.reduce((o, k, i) => {
 
-    if (i === view.derivations.length - 1) return o[k] = data
+    if (i === view.__dataPath__.length - 1) return o[k] = data
     return o[k]
 
   }, global[view.doc])
@@ -794,10 +503,10 @@ const clearData = ({ id, e, clear = {}, __ }) => {
   if (!global[view.doc]) return
   
   var path = clear.path
-  path = path ? path.split(".") : clone(view.derivations)
+  path = path ? path.split(".") : clone(view.__dataPath__)
   path.push('delete()')
   
-  reducer({ id, e, data: path, object: global[view.doc], __ })
+  reducer({ id, e, data: { path, object: global[view.doc] }, __ })
 
   setContent({ id })
   console.log("data removed", global[view.doc])
@@ -806,7 +515,7 @@ const clearData = ({ id, e, clear = {}, __ }) => {
 module.exports = { createData, setData, clearData }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":8,"./reducer":65,"./setContent":74,"./setData":75}],20:[function(require,module,exports){
+},{"./clone":5,"./reducer":48,"./setContent":55,"./setData":56}],13:[function(require,module,exports){
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { toCode } = require("./toCode")
 const { toArray } = require("./toArray")
@@ -863,7 +572,7 @@ const getData = async ({ _window, req, res, search }) => {
     data = {}, success, message,
     ref = collection && db.collection(collection),
     promises = []
-
+    
   if (search.url) {
 
     var url = search.url
@@ -940,7 +649,7 @@ const getData = async ({ _window, req, res, search }) => {
     return ({ data, success, message })
   }
 
-  if (!doc && !field) {
+  if (!field) {
 
     if (search.orderBy || search.skip) ref = ref.orderBy(...toArray(search.orderBy || "id"))
     if (search.skip) ref = ref.offset(search.skip)
@@ -988,7 +697,7 @@ const getData = async ({ _window, req, res, search }) => {
         _value = [..._value.slice(0, 10)]
         multiIN = true
       }
-
+      
       _ref = _ref.where(key, operator, _value)
     })
 
@@ -1073,7 +782,7 @@ const postData = async ({ _window, req, res, save }) => {
 
   var promises = toArray(data).map(async (data, i) => {
 
-    data.id = data.id || (i === 0 && save.doc) || generate({ length: 60, timestamp })
+    data.id = data.id || (i === 0 && save.doc) || generate({ length: 60, timestamp: true })
 
     if (!data["creation-date"] && req.headers.timestamp) data["creation-date"] = parseInt(req.headers.timestamp)
 
@@ -1153,7 +862,7 @@ module.exports = {
   deletedb,
   deleteData
 }
-},{"./generate":35,"./lineInterpreter":54,"./toArray":86,"./toCode":90,"./toFirebaseOperator":94,"axios":119}],21:[function(require,module,exports){
+},{"./generate":24,"./lineInterpreter":41,"./toArray":64,"./toCode":68,"./toFirebaseOperator":72,"axios":94}],14:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   var global = _window ? _window.global : window.global
@@ -1185,7 +894,142 @@ const decode = ({ _window, string }) => {
 
 module.exports = { decode }
 
-},{}],22:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
+const { eventExecuter } = require("../action/event")
+const { lineInterpreter } = require("../action/lineInterpreter")
+
+const defaultAppEvents = () => {
+
+    var views = window.views
+    var global = window.global
+
+    // body default event listeners
+
+    // clicked element
+    document.addEventListener('click', e => {
+
+        global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
+
+        // droplist
+        if (global.__clicked__ && views.droplist.__element__.contains(global.__clicked__.__element__)) global["droplist-txt"] = global.__clicked__.__element__.innerHTML
+
+        // body click events
+        Object.entries(global.__events__).map(([id, event]) => views[id] && event.click && event.click.map(data => (global.__clicked__ && (global.__clicked__.id === data.eventID || views[data.eventID].__element__.contains(global.__clicked__.__element__))) && eventExecuter({ ...data, e })))
+    })
+
+    // mousemove
+    document.addEventListener('mousemove', (e) => {
+
+        global.__mousemoved__ = views[((e || window.event).target || e.currentTarget).id]
+
+        // body mousemove events
+        Object.entries(global.__events__).map(([id, event]) => views[id] && event.mousemove && event.mousemove.map(data => (global.__mousemoved__ && (global.__mousemoved__.id === data.eventID || views[data.eventID].__element__.contains(global.__mousemoved__.__element__))) && eventExecuter({ ...data, e })))
+    })
+
+    document.addEventListener("mousedown", (e) => {
+
+        global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
+        global.__mousedowned__ = views[((e || window.event).target || e.currentTarget).id]
+
+        // body mousedown events
+        Object.entries(global.__events__).map(([id, event]) => views[id] && event.mousedown && event.mousedown.map(data => (global.__mousedowned__ && (global.__mousedowned__.id === data.eventID || views[data.eventID].__element__.contains(global.__mousedowned__.__element__))) && eventExecuter({ ...data, e })))
+    })
+
+    document.addEventListener("mouseup", (e) => {
+
+        global.__mouseuped__ = views[((e || window.event).target || e.currentTarget).id]
+
+        // body mouseup events
+        Object.entries(global.__events__).map(([id, event]) => views[id] && event.mouseup && event.mouseup.map(data => (global.__mouseuped__ && (global.__mouseuped__.id === data.eventID || views[data.eventID].__element__.contains(global.__mouseuped__.__element__))) && eventExecuter({ ...data, e })))
+    })
+
+    // document default event listeners
+
+    document.addEventListener('keydown', e => {
+
+        global.__keydowned__ = views[((e || window.event).target || e.currentTarget).id]
+
+        if (global.manifest.projectID === "brackettechnologies" && e.ctrlKey && e.key === "s") e.preventDefault()
+        
+        Object.entries(global.__events__).map(([id, event]) => views[id] && event.keydown && event.keydown.map(data => (data.eventID === "document" || (global.__keydowned__ && (global.__keydowned__.id === data.eventID || views[data.eventID].__element__.contains(global.__keydowned__.__element__)))) && eventExecuter({ ...data, e })))
+    })
+
+    document.addEventListener('keyup', e => {
+
+        global.__keyuped__ = views[((e || window.event).target || e.currentTarget).id]
+        if (!e.ctrlKey) global.ctrlKey = false
+        
+        Object.entries(global.__events__).map(([id, event]) => views[id] && event.keyup && event.keyup.map(data => data.eventID === "document" || (global.__keyuped__ && (global.__keyuped__.id === data.eventID || views[data.eventID].__element__.contains(global.__keyuped__.__element__))) && eventExecuter({ ...data, e })))
+    })
+
+    document.addEventListener('scroll', (e) => {
+
+        global.__scrolled__ = views[((e || window.event).target || e.currentTarget).id]
+
+        // close droplist
+        if (views.droplist.__element__.style.pointerEvents === "auto") {
+
+            var data = "():droplist.mouseleave()?!():droplist.mouseentered"
+            lineInterpreter({ id: "body", e, data })
+        }
+
+        Object.entries(global.__events__).map(([id, event]) => views[id] && event.scroll && event.scroll.map(data => (global.__scrolled__ && (global.__scrolled__.id === data.eventID || views[data.eventID].__element__.contains(global.__scrolled__.__element__))) && eventExecuter({ ...data, e })))
+    }, true)
+
+    // window default event listeners
+
+    window.addEventListener("focus", (e) => {
+
+        views.root.__element__.click()
+        document.activeElement.blur()
+
+        var data = "():mininote.style():[opacity=0;transform=scale(0)]"
+        lineInterpreter({ id: "window", e, data })
+    })
+
+    window.addEventListener("mousedown", (e) => {
+
+        global.__clicked__ = views[(e || window.event).target.id]
+    })
+
+    // show icons
+    window.addEventListener("load", () => {
+
+        var icons = views.body.__html__.split("id='").slice(1).map((id) => id.split("'")[0]).filter(id => views[id] && views[id].__name__ === "Icon").map(id => views[id])
+
+        icons.map(view => {
+            if (view.__element__) {
+                view.__element__.style.opacity = view.style.opacity !== undefined ? view.style.opacity : "1"
+                view.__element__.style.transition = view.style.transition !== undefined ? view.style.transition : "none"
+            }
+        })
+    })
+
+    window.addEventListener("keydown", function (e) {
+        if (["ArrowUp", "ArrowDown"].indexOf(e.code) > -1) {
+            e.preventDefault()
+        }
+    }, false)
+
+    window.addEventListener('beforeinstallprompt', function (e) {
+
+        // Prevent the mini-infobar from appearing on mobile
+        e.preventDefault()
+        console.log('👍', 'beforeinstallprompt', e);
+
+        // Stash the event so it can be triggered later.
+        window.global.__installApp__ = e
+        //setTimeout(() => { console.log(window.global.__installApp__); window.global.__installApp__.prompt() }, 1000)
+    })
+
+    window.addEventListener('appinstalled', () => {
+        // Log install to analytics
+        console.log('INSTALL: Success')
+    })
+}
+
+module.exports = { defaultAppEvents }
+},{"../action/event":19,"../action/lineInterpreter":41}],16:[function(require,module,exports){
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
@@ -1209,7 +1053,7 @@ const defaultInputHandler = ({ id }) => {
   // checkbox input
   if ((view.input || view).type === "checkbox") {
 
-    if (view.data === true) view.element.checked = true
+    if (view.data === true) view.__element__.checked = true
 
     var changeEventHandler = (e) => {
 
@@ -1219,32 +1063,33 @@ const defaultInputHandler = ({ id }) => {
       var data = e.target.checked
       view.data = data
 
-      if (global[view.doc] && view.derivations[0] !== "") {
+      if (global[view.doc] && view.__dataPath__[0] !== "") {
 
         // reset Data
         setData({ id, data })
       }
     }
 
-    return view.element.addEventListener("change", changeEventHandler)
+    return view.__element__.addEventListener("change", changeEventHandler)
   }
 
   if ((view.input || view).type === "number")
-  view.element.addEventListener("mousewheel", (e) => e.target.blur())
+  view.__element__.addEventListener("mousewheel", (e) => e.target.blur())
 
   // readonly
   if (view.readonly) return
 
-  view.element.addEventListener("keydown", (e) => {
-    if (e.keyCode == 13 && !e.shiftKey) e.preventDefault()
-  })
+  /*view.__element__.addEventListener("keydown", (e) => {
+    if (e.keyCode === 13 && !e.shiftKey) e.preventDefault()
+  })*/
 
-  if (view.__name__ === "Input") view.prevValue = view.element.value
-  else if (view.editable) view.prevValue = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
+  if (view.__name__ === "Input") view.prevValue = view.__element__.value
+  else if (view.editable) view.prevValue = (view.__element__.textContent===undefined) ? view.__element__.innerText : view.__element__.textContent
   
   var inputEventHandler = async (e) => {
     
     e.preventDefault()
+
     var value 
     if (view.__name__ === "Input") value = e.target.value
     else if (view.editable) value = (e.target.textContent===undefined) ? e.target.innerText : e.target.textContent
@@ -1274,7 +1119,7 @@ const defaultInputHandler = ({ id }) => {
           if (view.input.min && view.input.min > parseFloat(value)) value = view.input.min
           if (view.input.max && view.input.max < parseFloat(value)) value = view.input.max
           value = parseFloat(value)
-          view.element.value = value.toString()
+          view.__element__.value = value.toString()
 
         } else value = parseFloat(value + ".0")
       }
@@ -1294,7 +1139,7 @@ const defaultInputHandler = ({ id }) => {
     // arabic values
     // isArabic({ id, value })
     
-    console.log(value, global[view.doc], view.derivations)
+    console.log(value, global[view.doc], view.__dataPath__)
 
     view.prevValue = value
   }
@@ -1302,13 +1147,12 @@ const defaultInputHandler = ({ id }) => {
   var blurEventHandler = (e) => {
 
     var value
-    if (view.__name__ === "Input") value = view.element.value
-    else if (view.editable) value = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
+    if (view.__name__ === "Input") value = view.__element__.value
+    else if (view.editable) value = (view.__element__.textContent===undefined) ? view.__element__.innerText : view.__element__.textContent
     
     // colorize
     if (view.colorize) {
       
-      // removeChildren({ id })
       var _value = toCode({ id, string: toCode({ id, string: value, start: "'" }) })
       if (view.__name__ === "Input") e.target.value = colorize({ string: _value, ...(typeof view.colorize === "object" ? view.colorize : {}) })
       else e.target.innerHTML = colorize({ string: _value, ...(typeof view.colorize === "object" ? view.colorize : {}) })
@@ -1330,9 +1174,9 @@ const defaultInputHandler = ({ id }) => {
       global.undo.push({
         collection: global["open-collection"],
         doc: global["open-doc"],
-        path: view.derivations,
+        path: view.__dataPath__,
         value: view.prevContent,
-        id: view.element.parentNode.parentNode.parentNode.parentNode.id
+        id: view.__element__.parentNode.parentNode.parentNode.parentNode.id
       })
     }
   }
@@ -1340,15 +1184,15 @@ const defaultInputHandler = ({ id }) => {
   var focusEventHandler = (e) => {
     
     var value = ""
-    if (view.__name__ === "Input") value = view.element.value
-    else if (view.editable) value = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
+    if (view.__name__ === "Input") value = view.__element__.value
+    else if (view.editable) value = (view.__element__.textContent===undefined) ? view.__element__.innerText : view.__element__.textContent
 
     view.prevContent = value
   }
 
-  view.element.addEventListener("input", inputEventHandler)
-  view.element.addEventListener("blur", blurEventHandler)
-  view.element.addEventListener("focus", focusEventHandler)
+  view.__element__.addEventListener("input", inputEventHandler)
+  view.__element__.addEventListener("blur", blurEventHandler)
+  view.__element__.addEventListener("focus", focusEventHandler)
 }
 
 const getCaretIndex = (element) => {
@@ -1392,56 +1236,61 @@ module.exports = { defaultInputHandler }
   e.target.value = value = _prev + _next
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length + 1)
 
-} else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
+} else if (e.data === "T" && e.target.selectionStart === 1 && view.__dataPath__[view.__dataPath__.length - 1] === "type") {
   e.target.value = value = "Text?class=flexbox;text=;style:[]"
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
 
-} else if (e.data === "c" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
+} else if (e.data === "c" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.__dataPath__[view.__dataPath__.length - 1] === "type") {
   e.target.value = value = "Icon?class=flexbox;name=;style:[]"
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
 
-} else if (e.data === "n" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
+} else if (e.data === "n" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.__dataPath__[view.__dataPath__.length - 1] === "type") {
   e.target.value = value = "Input?style:[]"
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
-} else if (e.data === "m" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
+} else if (e.data === "m" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.__dataPath__[view.__dataPath__.length - 1] === "type") {
   e.target.value = value = "Image?class=flexbox;src=;style:[]"
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
 
-} else if (e.data === "V" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
+} else if (e.data === "V" && e.target.selectionStart === 1 && view.__dataPath__[view.__dataPath__.length - 1] === "type") {
   e.target.value = value = "View?class=vertical;style:[]"
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
 }*/
-},{"./colorize":10,"./data":19,"./isArabic":43,"./replaceNbsps":69,"./resize":70,"./toCode":90}],23:[function(require,module,exports){
+},{"./colorize":7,"./data":12,"./isArabic":32,"./replaceNbsps":50,"./resize":51,"./toCode":68}],17:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { jsonToBracket } = require("./jsonToBracket")
 const { reducer } = require("./reducer")
 const { lineInterpreter } = require("./lineInterpreter")
 
-const droplist = ({ id, e, __, stack, lookupActions }) => {
+const droplist = async ({ id, e, __, stack, lookupActions, address }) => {
   
   var views = window.views
   var global = window.global
   var view = views[id]
-  var droplistView = views.droplist
 
   if (!view.droplist) return
   if (view.droplist.searchable !== false) view.droplist.searchable = {}
+
+  // closedroplist
+  var mouseleaveEvent = new Event("mouseleave")
+  views.droplist.__element__.dispatchEvent(mouseleaveEvent)
   
   // items
   var items = clone(view.droplist.items) || []
-  var derivations = view.droplist.path !== undefined ? (Array.isArray(view.droplist.path) ? view.droplist.path : view.droplist.path.split(".")) : view.derivations
+  var __dataPath__ = view.droplist.path !== undefined ? (Array.isArray(view.droplist.path) ? view.droplist.path : view.droplist.path.split(".")) : view.__dataPath__
   var doc = view.droplist.doc || view.doc
 
-  // 
-  droplistView = { ...droplistView, derivations, doc, __ }
-  clearTimeout(global.__droplistTimer__)
+  // init droplist
+  var droplistView = { ...global.data.view.droplist, children: [], __dataPath__, doc, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["droplist"] }
+
+  // remove prev droplist
+  // clearTimeout(global.__droplistTimer__)
 
   // input id
   var { data: inputID } = lineInterpreter({ id, data: "input().id||.id" })
-  var text = views[inputID].element.value || views[inputID].element.innerHTML
+  var text = views[inputID].__element__.value || views[inputID].__element__.innerHTML
   
   // items
   if (typeof items === "string") items = lineInterpreter({ id, data: items, lookupActions, __: view.__ }).data
@@ -1459,9 +1308,6 @@ const droplist = ({ id, e, __, stack, lookupActions }) => {
       global.__keyupIndex__ = 0
     }
   }
-
-  // init
-  droplistView.children = []
   
   // title
   if (view.droplist.title) {
@@ -1514,20 +1360,14 @@ const droplist = ({ id, e, __, stack, lookupActions }) => {
               view: `Icon?style:[color=#666;fontSize=1.7rem];${jsonToBracket(view.droplist.item && view.droplist.item.icon || {})};${jsonToBracket(view.droplist.icon || {})};${jsonToBracket(item.icon || {})};class=flexbox ${(item.icon || {}).class || ""}`
             }]
           }, {
-            view: `Text?style:[fontSize=1.3rem;width=100%];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item.text)};class=flex align-center ${(item.text || {}).class || ""}?${item.text.text ? true : false}`,
-            controls: [{
-              event: `click?():[__droplistPositioner__:()].():[txt()=txt();data()=txt()]?!():${id}.droplist.preventDefault`
-            }]
+            view: `Text?style:[fontSize=1.3rem;width=100%];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item.text)};class=flex align-center ${(item.text || {}).class || ""};click:[():[__droplistPositioner__:()].():[txt()=txt();data()=txt()]?!():${id}.droplist.preventDefault]?${item.text.text ? true : false}`
           }]
         })
   
       } else {
         
         return ({
-          view: `Text?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item)};class=flex align-center pointer ${item.class || ""}`,
-          controls: [{
-            event: `click?():[__droplistPositioner__:()].():[txt()=txt();data()=txt()]?!():${id}.droplist.preventDefault`,
-          }]
+          view: `Text?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item)};class=flex align-center pointer ${item.class || ""};click:[():[__droplistPositioner__:()].():[txt()=txt();data()=txt()]?!():${id}.droplist.preventDefault]`,
         })
       }
     }))
@@ -1535,9 +1375,9 @@ const droplist = ({ id, e, __, stack, lookupActions }) => {
   } else droplistView.children = []
   
   droplistView.positioner = id
-  views.droplist = droplistView
-
-  update({ id: "droplist", stack, lookupActions, __ })
+  
+  await update({ id: "droplist", stack, lookupActions, __, address, data: { view: droplistView } })
+  droplistView = views.droplist
   
   // searchable
   var mouseEnterItem = () => {
@@ -1566,12 +1406,12 @@ const droplist = ({ id, e, __, stack, lookupActions }) => {
 
               if (inputID) {
 
-                views[inputID].element.value = views[inputID].prevValue = items[_index]
+                views[inputID].__element__.value = views[inputID].prevValue = items[_index]
                 views[inputID].contenteditable = false
 
               } else {
 
-                view.element.innerHTML = view.prevValue = items[_index]
+                view.__element__.innerHTML = view.prevValue = items[_index]
                 view.contenteditable = false
               }
               
@@ -1580,39 +1420,32 @@ const droplist = ({ id, e, __, stack, lookupActions }) => {
               
               if (inputID) {
 
-                views[inputID].element.value = items[_index].slice(0, -1)
+                views[inputID].__element__.value = items[_index].slice(0, -1)
                 views[inputID].contenteditable = true
 
               } else {
 
-                view.element.innerHTML = items[_index].slice(0, -1)
+                view.__element__.innerHTML = items[_index].slice(0, -1)
                 view.contenteditable = true
               }
             }
           }
 
-          reducer({ id, data: droplistView.derivations, value: items[_index], object: global[droplistView.doc], key: true, __ })
+          reducer({ id, data: { path: droplistView.__dataPath__, object: global[droplistView.doc], key: true, value: items[_index] }, __ })
           global.__keyupIndex__ = _index
         }
       }
     }
 
     global.__keyupIndex__ = global.__keyupIndex__ || 0
-    droplistView.element.children[view.droplist.title ? global.__keyupIndex__ + 1 : global.__keyupIndex__].dispatchEvent(new Event("mouseenter"))
+    droplistView.__element__.children[view.droplist.title ? global.__keyupIndex__ + 1 : global.__keyupIndex__].dispatchEvent(new Event("mouseenter"))
   }
 
-  if (!view.droplist.preventDefault) global.__droplistTimer__ = setTimeout(mouseEnterItem, 100)
+  /*if (!view.droplist.preventDefault) */global.__droplistTimer__ = setTimeout(mouseEnterItem, 100)
 }
 
 module.exports = { droplist }
-},{"./clone":8,"./jsonToBracket":51,"./lineInterpreter":54,"./reducer":65,"./update":106}],24:[function(require,module,exports){
-const encoded = (string) => {
-    if (typeof string !== "string") return false
-    return (string.charAt(0) === "@" && string.length === 6)
-}
-
-module.exports = { encoded }
-},{}],25:[function(require,module,exports){
+},{"./clone":5,"./jsonToBracket":38,"./lineInterpreter":41,"./reducer":48,"./update":82}],18:[function(require,module,exports){
 const axios = require("axios")
 const { deleteData } = require("./database")
 const { jsonToBracket } = require("./jsonToBracket")
@@ -1654,23 +1487,26 @@ const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase
 }
 
 module.exports = { erase }
-},{"./database":20,"./jsonToBracket":51,"./toAwait":87,"axios":119}],26:[function(require,module,exports){
+},{"./database":13,"./jsonToBracket":38,"./toAwait":65,"axios":94}],19:[function(require,module,exports){
 const { toCode } = require("./toCode")
-const { stacker } = require("./stack")
+const { stacker, printStack } = require("./stack")
 const { lineInterpreter } = require("./lineInterpreter")
 const { watch } = require("./watch")
+const { clone } = require("./clone")
 
-const addEventListener = ({ controls, id }) => {
+const addEventListener = ({ event, id, __, lookupActions, eventID: mainEventID }) => {
 
   var views = window.views
   var global = window.global
   var view = views[id]
-  var lookupActions = controls.lookupActions
-  var __ = controls.__ || view.__
 
-  if (!view || !controls.event) return
+  if (!view || !event) return
 
-  var mainString = toCode({ id, string: toCode({ id, string: controls.event, start: "'" }) })
+  // inherit from view
+  if (!__) __ = view.__
+  if (!lookupActions) lookupActions = view.__lookupActions__
+
+  var mainString = toCode({ id, string: toCode({ id, string: event, start: "'" }) })
 
   mainString.split("?")[0].split(";").map(substring => {
     
@@ -1678,76 +1514,63 @@ const addEventListener = ({ controls, id }) => {
     if (substring.charAt(0) === "@" && substring.length === 6) substring = global.__refs__[substring].data
 
     // event:id
-    var { data: eventID } = lineInterpreter({ id, data: substring.split("?")[0].split(":")[1] || id })
+    var { data: eventID } = lineInterpreter({ id, data: substring.split("?")[0].split(":")[1] })
     if (typeof eventID === "object" && eventID.__view__) eventID = eventID.id
+    else eventID = eventID || mainEventID || id
 
     // modify
-    var { substring, string } = modifyEvent({ eventID, event: substring, string: mainString })
-
-    var event = substring.split("?")[0].split(":")[0]
+    var { event, string } = modifyEvent({ eventID, event: substring, string: mainString })
 
     // watch
     if (event === "watch") return watch({ lookupActions, __, string, id })
     
     // view doesnot exist
-    if (!event || !views[eventID]) return
+    if (!event || !views[eventID] || !views[id]) return
 
     // loaded event
-    if (event === "loaded") return setTimeout(eventExecuter({ string, event, eventID, controls, id, lookupActions, __ }), 0)
+    if (event === "loaded") return setTimeout(eventExecuter({ string, event, eventID, id, lookupActions, __ }), 0)
     
     // body event
-    if (id === "body") {
-
+    if (id !== eventID) {
+      
       global.__events__[id] = global.__events__[id] || {}
       global.__events__[id][event] = global.__events__[id][event] || []
-      global.__events__[id][event].push({ string, event, eventID, controls, id, lookupActions, id, __ })
-      return
-    }
-
-    const eventHandler = (e) => {
-
-      // view doesnot exist
-      if (!views[id] || !views[eventID]) return
-
-      // unlunch unrelated droplists
-      if (id !== "droplist" && eventID === "droplist" && (!global.__droplistPositioner__ || !views[global.__droplistPositioner__].element.contains(views[id].element))) return
-
-      // unlunch unrelated popups
-      if (id !== "popup" && eventID === "popup" && (!global.__popupPositioner__ || !global.__popupConfirmed__ || !views[global.__popupPositioner__].element.contains(views[id].element))) return
-
-      if (eventID === "droplist" || eventID === "popup") setTimeout(eventExecuter({ string, event, eventID, controls, id, lookupActions, id, __, e }), 100)
-      else eventExecuter({ string, event, eventID, controls, id, lookupActions, id, __, e })
-    }
-
-    views[eventID].element.addEventListener(event, eventHandler)
+      global.__events__[id][event].push({ string, event, eventID, id, lookupActions, __ })
+      
+    } else views[eventID].__element__.addEventListener(event, (e) => eventExecuter({ string, event, eventID, id, lookupActions, __, e }))
   })
 }
 
-const eventExecuter = ({ event, eventID, controls, id, lookupActions, e, string, __ }) => {
-
-  const { execute } = require("./execute")
+const eventExecuter = ({ event, eventID, id, lookupActions, e, string, __ }) => {
 
   var views = window.views
+  var global = window.global
+
   var view = views[id]
+    
+  // view doesnot exist
+  if (!view || !views[eventID]) return
 
   var timerID = setTimeout(() => {
-
-    if (!event || !views[id] || !views[eventID]) return
+    
+    // unlunch unrelated droplists
+    if (id !== "droplist" && eventID === "droplist" && (!global.__droplistPositioner__ || ( views[global.__droplistPositioner__] && !views[global.__droplistPositioner__].__element__.contains(view.__element__)))) return
     
     var stack = stacker({ event, id, eventID, string })
-    
+
     // main params
-    var data = lineInterpreter({ lookupActions, stack, id, e, data: string, index: 1, __, mount: true, action: "toParam" })
+    var data = lineInterpreter({ lookupActions, stack, id, e, data: string, __, mount: true, action: "toParam" })
+    
+    // line interpreting ended
+    stack.interpreting = false
+
+    printStack({ stack, end: true })
 
     // conditions not applied
     if (data.conditionsNotApplied) return data
 
-    // execute
-    if (controls.actions) execute({ lookupActions, stack, controls, e, id, __ })
-
   }, 0)
-
-  view.__timers__ = view.__timers__ || []
+  
   view.__timers__.push(timerID)
 }
 
@@ -1763,7 +1586,7 @@ const defaultEventHandler = ({ id }) => {
 
   // linkable
   if (view.link && typeof view.link === "object" && view.link.preventDefault)
-    view.element.addEventListener("click", (e) => { e.preventDefault() })
+    view.__element__.addEventListener("click", (e) => { e.preventDefault() })
 
   // input
   if (view.__name__ === "Input" || view.editable) {
@@ -1786,13 +1609,14 @@ const defaultInputHandlerByEvent = ({ views, view, id, event, keyName, value }) 
     if (views[id]) view[keyName] = value
   }
 
-  view.element.addEventListener(event, fn)
+  view.__element__.addEventListener(event, fn)
 }
 
 const modifyEvent = ({ eventID, string, event }) => {
 
   var view = window.views[eventID]
-  var subparams = event.split(":")[1] || ""
+  var subparams = event.split("?")[1] || ""
+  var subconditions = event.split("?")[2] || ""
   event = event.split(":")[0]
 
   string = string.split("?").slice(1)
@@ -1800,10 +1624,8 @@ const modifyEvent = ({ eventID, string, event }) => {
   
   if (event === "change" && (view.input.type === "text" || view.input.type === "number")) {
     event = "keyup"
-    conditions += ";e().key"
   } else if (event === "entry") {
-    event = "keyup"
-    conditions += ";e().key"
+    event = "input"
   } else if (event === "enter") {
 
     event = "keyup"
@@ -1818,14 +1640,15 @@ const modifyEvent = ({ eventID, string, event }) => {
     
   }
   
-  event = subparams ? `${event}:${subparams}` : event
-
-  return { string: `${event}?${string[0]}?${conditions}?${string[2] || ""}`, substring: event }
+  string = `${subparams};${string[0]}?${subconditions};${conditions}?${string[2] || ""}`
+  while (string.slice(-1) === "?") string = string.slice(0, -1)
+  
+  return { string, event }
 }
 
 module.exports = { addEventListener, defaultEventHandler, eventExecuter }
 
-},{"./execute":29,"./lineInterpreter":54,"./stack":78,"./toCode":90,"./watch":111}],27:[function(require,module,exports){
+},{"./clone":5,"./lineInterpreter":41,"./stack":59,"./toCode":68,"./watch":86}],20:[function(require,module,exports){
 module.exports=[
   "mouseenter", "mouseleave",  "mouseover", "mousemove", "mousedown", "mouseup", "touchstart", 
   "touchend", "touchmove", "touchcancel", "click", "change", "focus", "blur", "keypress", "keyup", 
@@ -1834,7 +1657,7 @@ module.exports=[
   "resize", "redo", "popstate", "online", "offline", "message", "load", "languagechange",
   "error", "afterprint", "beforeprint", "beforeunload", "paste"
 ]
-},{}],28:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 const {isParam} = require("./isParam")
 
 module.exports = {
@@ -1842,160 +1665,7 @@ module.exports = {
         return typeof string === "string" && (isParam({ _window, string }) || string.includes("()") || string.charAt(0) === "@" || string.includes("_"))
     }
 }
-},{"./isParam":48}],29:[function(require,module,exports){
-const { toApproval } = require("./toApproval")
-const { toArray } = require("./toArray")
-const { toParam } = require("./toParam")
-const _method = require("./function")
-const { toCode } = require("./toCode")
-const { toAwait } = require("./toAwait")
-const { toValue } = require("./toValue")
-const { isParam } = require("./isParam")
-
-const execute = ({ _window, lookupActions, stack, controls, actions, e, id, params, __ }) => {
-
-  var views = _window ? _window.views : window.views
-  var view = views[id] || {}
-  var global = window.global
-  var _params = params, viewId = id
-
-  if (controls) actions = controls.actions || controls.action
-
-  // execute actions
-  toArray(actions).map(_action => {
-
-    _action = toCode({ _window, id, string: toCode({ _window, id, string: _action, start: "'", end: "'" }) })
-
-    var awaiter = ""
-    var approved = true
-    var actions = _action.split("?")
-    var params = actions[1]
-    var conditions = actions[2]
-    
-    actions = actions[0].split(";")
-
-    // approval
-    if (conditions) approved = toApproval({ _window, lookupActions, stack, data: conditions, params, id: viewId, e, __ })
-    if (!approved) return toAwait({ id, lookupActions, stack, e, params: _params, __ })
-
-    // params
-    params = toParam({ _window, lookupActions, stack, data: params, e, id: viewId, executer: true, mount: true, __ })
-    if (_params) params = {..._params, ...params}
-
-    // break
-    if (view["break()"]) delete view["break()"]
-    if (view["return()"]) return delete view["return()"]
-
-    actions.map(action => {
-
-      if (action.includes("async():") || action.includes("wait():")) {
-        
-        var _actions = action.split(":").slice(1)
-        action = _actions[0]
-        params.awaiter = params.awaiter || ""
-        if (_actions.slice(1)[0]) params.awaiter += `wait():${_actions.slice(1).join(":")}`
-        params.asyncer = true
-      }
-      
-      // action is coded
-      if (action.charAt(0) === "@") return execute({ _window, lookupActions, stack, actions: global.__refs__[action].data, e, id, params, __ })
-      
-      var name, caseCondition, timer = "", isInterval = false, actionid, args = action.split(':'), name = args[0], __params = {}
-
-      if (isParam({ _window, lookupActions, stack, string: args[1] }) || (args[2] && isNaN(args[2].split("i")[0]) && !args[3])) { // action:[params]:[conditions]
-
-        __params = toParam({ _window, lookupActions, stack, id: viewId, e, data: args[1], mount: true, __ })
-
-        // break
-        if (view["break()"]) delete view["break()"]
-        if (view["return()"]) return delete view["return()"]
-
-        actionid = toArray(__params.id || viewId) // id
-        if (__params.timer !== undefined) timer = __params.timer.toString() // timer
-        if (args[2]) caseCondition = args[2]
-
-      } else { // action:id:timer:condition
-
-        actionid = toArray(args[1] ? toValue({ _window, lookupActions, stack, data: args[1], params, id: viewId, e, __ }) : viewId) // timer
-        if (args[2]) timer = args[2] // timer
-        if (args[3]) caseCondition = args[3] // conditions
-      }
-
-      // is interval
-      if (timer.includes("i")) isInterval = params.isInterval = true
-      timer = timer.split("i")[0]
-      if (timer) timer = parseInt(timer)
-      
-      actionid = toArray(actionid).map(id => {
-        if (typeof id === "object" && id.id) return id.id
-        else return id
-      })
-
-      const myFn = () => {
-        var approved = true
-
-        // asyncer & awaiter
-        var keys = name.split("."), isAwaiter, isAsyncer
-        if (keys.length > 1) keys.map(k => {
-  
-          if (k === "async()") isAsyncer = true
-          else if (k === "await()") {
-            isAwaiter = true
-            awaiter += action.split("await().")[1] + ";"
-          }
-        })
-
-        if (isAwaiter || isAsyncer) name = name.split(".")[1]
-        if (isAwaiter) return
-
-        // case condition approval
-        if (caseCondition) approved = toApproval({ _window, lookupActions, stack, data: caseCondition, params, id: viewId, e, __ })
-        if (!approved) return toAwait({ id, lookupActions, stack, e, params, __ })
-        
-        if (_method[name]) actionid.map(async id => {
-          
-          if (typeof id !== "string") return
-
-          // id = value.path
-          if (id.indexOf(".") > -1) id = toValue({ _window, lookupActions, stack, data: id, e, id: viewId, __ })
-          
-          // component does not exist
-          if (!id || !views[id]) return
-
-          if (isAsyncer) {
-            params.awaiter = awaiter
-            params.asyncer = isAsyncer
-          }
-          
-          await _method[name]({ _window, lookupActions, stack, ...params, ...__params, e, id })
-          if (name !== "SEARCH" && name !== "save" && name !== "erase" && name !== "importJson" && name !== "upload" && name !== "wait") toAwait({ id, lookupActions, stack, e, params, __ })
-        })
-      }
-
-      if (timer || timer === 0) {
-
-        if (view) {
-
-          var _name = name.split('.')[1] || name.split('.')[0]
-          if (isInterval) {
-            myFn()
-            view[`${_name}-timer`] = setInterval(() => myFn(), timer)
-          } else view[`${_name}-timer`] = setTimeout(myFn, timer)
-
-        } else {
-
-          if (params["setInterval()"]) setInterval(myFn, timer)
-          else setTimeout(myFn, timer)
-        }
-
-      } else myFn()
-    })
-  })
-}
-
-module.exports = { execute }
-
-},{"./function":34,"./isParam":48,"./toApproval":85,"./toArray":86,"./toAwait":87,"./toCode":90,"./toParam":99,"./toValue":103}],30:[function(require,module,exports){
+},{"./isParam":37}],22:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, name }) => {
         
@@ -2011,279 +1681,43 @@ module.exports = {
         // linkElement.delete()
     }
 }
-},{}],31:[function(require,module,exports){
-const { toValue } = require("./action")
-
-module.exports = {
-    fileReader : ({ read: { file, reduce }, id, lookupActions }) => {
-
-        var reader = new FileReader()
-        reader.onload = e => toValue({ id, lookupActions, stack, data: reduce, e })
-        reader.readAsDataURL(file)
-    }
-}
-},{"./action":1}],32:[function(require,module,exports){
-(function (global){(function (){
-const { isEqual } = require("./isEqual")
-const { toArray } = require("./toArray")
-const { compare } = require("./compare")
-const { toOperator } = require("./toOperator")
-const { clone } = require("./clone")
-
-const filter = ({ filter = {}, id, e, ...params }) => {
-
-  var view = window.views[id]
-  if (!view) return
-
-  var Data = filter.doc || view.doc
-  var options = global[`${Data}-options`]
-  if (!options) options = global[`${Data}-options`] = {}
-
-  var path = toArray(filter.path)
-  path = path.map(path => path.split("."))
-
-  var backup = filter.backup
-  var value = filter.value
-
-  if (!value || isEqual(options.filter, value)) {
-
-    options.filter = clone(value)
-    data = backup
-
-  } else {
-
-    // reset backup filter options
-    options.filter = clone(value)
-    
-      // remove spaces
-    Object.entries(value).map(([k, v]) => value[k] = v.toString().split(" ").join("").toLowerCase())
-    
-    var data = []
-    data.push(
-      ...backup.filter(data => {
-        return !Object.entries(value).map(([o, v]) => 
-        compare(path
-        .map(path => (path
-        .reduce((o, k) => o[k], data) || '')
-        .toString()
-        .toLowerCase()
-        .split(" ")
-        .join("")
-        )
-        .join(""),
-        toOperator(o), v))
-        .join("")
-        .includes("false")
-      })
-    )
-  }
-  
-  global[Data] = data
-  view.filter = { success: true, data }
-}
-
-module.exports = {filter}
-
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":8,"./compare":11,"./isEqual":46,"./toArray":86,"./toOperator":98}],33:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var view = window.views[id]
   if (!view) return
 
   var isInput = view.__name__ === "Input" || view.__name__ === "Textarea"
-  if (isInput) view.element.focus()
+  if (isInput) view.__element__.focus()
   else {
-    if (view.element) {
-      let childElements = view.element.getElementsByTagName("INPUT")
+    if (view.__element__) {
+      let childElements = view.__element__.getElementsByTagName("INPUT")
       if (childElements.length === 0) {
-        childElements = view.element.getElementsByTagName("TEXTAREA")
+        childElements = view.__element__.getElementsByTagName("TEXTAREA")
       }
       if (childElements.length > 0) {
         childElements[0].focus()
 
         var _view = window.views[childElements[0].id]
         // focus to the end of input
-        var value = _view.element.value
-        _view.element.value = ""
-        _view.element.value = value
+        var value = _view.__element__.value
+        _view.__element__.value = ""
+        _view.__element__.value = value
 
         return
-      } else view.element.focus()
+      } else view.__element__.focus()
     }
   }
 
   // focus to the end of input
-  var value = view.element.value
-  view.element.value = ""
-  view.element.value = value
+  var value = view.__element__.value
+  view.__element__.value = ""
+  view.__element__.value = value
 }
 
 module.exports = {focus}
 
-},{}],34:[function(require,module,exports){
-const {clearValues} = require("./clearValues")
-const {clone} = require("./clone")
-const {getParam} = require("./getParam")
-const {isArabic} = require("./isArabic")
-const {isEqual} = require("./isEqual")
-const {merge} = require("./merge")
-const {overflow} = require("./overflow")
-const {toApproval} = require("./toApproval")
-const {toId} = require("./toId")
-const {toParam} = require("./toParam")
-const {jsonToBracket} = require("./jsonToBracket")
-const {update, removeChildren} = require("./update")
-const {toControls} = require("./toControls")
-const {toArray} = require("./toArray")
-const {generate} = require("./generate")
-const {refresh} = require("./refresh")
-const {axios} = require("./axios")
-const {wait} = require("./wait")
-const {toView} = require("./toView")
-const {addEventListener} = require("./event")
-const {execute} = require("./execute")
-const {setContent} = require("./setContent")
-const {starter} = require("./starter")
-const {setState} = require("./state")
-const {setPosition} = require("./setPosition")
-const {droplist} = require("./droplist")
-const {filter} = require("./filter")
-const {remove} = require("./remove")
-const {focus} = require("./focus")
-const {sort} = require("./sort")
-const {search} = require("./search")
-const {save} = require("./save")
-const {erase} = require("./erase")
-const {toValue} = require("./toValue")
-const {reducer} = require("./reducer")
-const {toStyle} = require("./toStyle")
-const {preventDefault} = require("./preventDefault")
-const {getJsonFiles} = require("./jsonFiles")
-const {createHtml} = require("./createHtml")
-const {setData} = require("./setData")
-const {defaultInputHandler} = require("./defaultInputHandler")
-const {createActions} = require("./createActions")
-const {blur} = require("./blur")
-const {toAwait} = require("./toAwait")
-const {note} = require("./note")
-const {toCode} = require("./toCode")
-const {isPath} = require("./isPath")
-const {toNumber} = require("./toNumber")
-const {capitalize} = require("./capitalize")
-const {toOperator} = require("./toOperator")
-const {popup} = require("./popup")
-const {keys} = require("./keys")
-const {toggleView} = require("./toggleView")
-const upload = require("./upload")
-const {compare} = require("./compare")
-const {toCSV} = require("./toCSV")
-const {decode} = require("./decode")
-const {route} = require("./route")
-const {contentful} = require("./contentful")
-const {importJson} = require("./importJson")
-const {getDateTime} = require("./getDateTime")
-const {insert} = require("./insert")
-const {exportJson} = require("./exportJson")
-const {switchMode} = require("./switchMode")
-const {setCookie, getCookie} = require("./cookie")
-const {getDaysInMonth} = require("./getDaysInMonth")
-const {reload} = require("./reload")
-const {fileReader} = require("./fileReader")
-const {position, getPadding} = require("./position")
-const {
-  setStyle,
-  resetStyles,
-  toggleStyles,
-  mountAfterStyles,
-} = require("./style")
-const {resize, dimensions, lengthConverter} = require("./resize")
-const {createData, clearData} = require("./data")
-
-module.exports = {
-  switchMode,
-  refresh,
-  getDaysInMonth,
-  importJson,
-  lengthConverter,
-  getCookie,
-  setCookie,
-  position,
-  getPadding,
-  route,
-  decode,
-  contentful,
-  reload,
-  toCSV,
-  compare,
-  clearValues,
-  clone,
-  getJsonFiles,
-  search,
-  getParam,
-  isArabic,
-  isEqual,
-  merge,
-  overflow,
-  addEventListener,
-  setState,
-  toApproval,
-  toId,
-  toParam,
-  fileReader,
-  jsonToBracket,
-  update,
-  execute,
-  removeChildren,
-  toArray,
-  generate,
-  toView,
-  setStyle,
-  resetStyles,
-  toggleStyles,
-  mountAfterStyles,
-  resize,
-  dimensions,
-  createData,
-  setData,
-  clearData,
-  setContent,
-  starter,
-  setPosition,
-  droplist,
-  filter,
-  createActions,
-  blur,
-  toAwait,
-  exportJson,
-  toControls,
-  remove,
-  defaultInputHandler,
-  focus,
-  sort,
-  wait,
-  save,
-  erase,
-  toCode,
-  toValue,
-  reducer,
-  preventDefault,
-  toStyle,
-  createHtml,
-  capitalize,
-  note,
-  isPath,
-  toNumber,
-  popup,
-  getDateTime,
-  keys,
-  toOperator,
-  upload,
-  toggleView,
-  insert,
-  axios
-}
-},{"./axios":4,"./blur":5,"./capitalize":6,"./clearValues":7,"./clone":8,"./compare":11,"./contentful":12,"./cookie":13,"./createActions":15,"./createHtml":16,"./data":19,"./decode":21,"./defaultInputHandler":22,"./droplist":23,"./erase":25,"./event":26,"./execute":29,"./exportJson":30,"./fileReader":31,"./filter":32,"./focus":33,"./generate":35,"./getDateTime":37,"./getDaysInMonth":38,"./getParam":39,"./importJson":41,"./insert":42,"./isArabic":43,"./isEqual":46,"./isPath":49,"./jsonFiles":50,"./jsonToBracket":51,"./keys":52,"./merge":56,"./note":57,"./overflow":58,"./popup":59,"./position":60,"./preventDefault":61,"./reducer":65,"./refresh":66,"./reload":67,"./remove":68,"./resize":70,"./route":71,"./save":72,"./search":73,"./setContent":74,"./setData":75,"./setPosition":76,"./sort":77,"./starter":79,"./state":80,"./style":82,"./switchMode":83,"./toApproval":85,"./toArray":86,"./toAwait":87,"./toCSV":88,"./toCode":90,"./toControls":92,"./toId":96,"./toNumber":97,"./toOperator":98,"./toParam":99,"./toStyle":102,"./toValue":103,"./toView":104,"./toggleView":105,"./update":106,"./upload":108,"./wait":110}],35:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 const numbers = "1234567890"
 
@@ -2304,10 +1738,10 @@ const generate = (params = {}) => {
 
 module.exports = {generate}
 
-},{}],36:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = ({ el, id }) => {
   var view = window.views[id]
-  el = el || view.element
+  el = el || view.__element__
 
   // crossbrowser version
   var box = el.getBoundingClientRect();
@@ -2330,9 +1764,9 @@ module.exports = ({ el, id }) => {
 
   return { top: Math.round(top), left: Math.round(left), right: Math.round(right), bottom: Math.round(bottom), height: Math.round(height), width: Math.round(width) };
 }
-},{}],37:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = {
-    getDateTime: (time) => {
+    getDateTime: (time, format) => {
         
         var sec = parseInt(time.getSeconds())
         var min = parseInt(time.getMinutes())
@@ -2348,40 +1782,16 @@ module.exports = {
         if (month < 10) month = "0" + month
         if (year < 10) year = "0" + year
         
-        return `${year}-${month}-${day}T${hrs}:${min}:${sec}`
+        return format === "yyyy-mm-ddThh-mm-ss" && `${year}-${month}-${day}T${hrs}:${min}:${sec}`
     }
 }
-},{}],38:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = {
     getDaysInMonth: (stampTime) => {
         return new Date(stampTime.getFullYear(), stampTime.getMonth() + 1, 0).getDate()
     }
 }
-},{}],39:[function(require,module,exports){
-const { toParam } = require("./toParam")
-
-const getParam = ({ string, param, defValue }) => {
-
-  if (!string) return defValue
-  if (!string.includes("?")) return defValue
-
-  string = string.split("/?").join("_question")
-  string = string.split("?")[1]
-  if (!string) return defValue
-
-  string = string.split(";")
-  string = string.find((el) => el.includes(param))
-  if (!string) return defValue
-
-  let params = toParam({ data: string })
-  if (params[param]) value = params[param]
-
-  return value
-}
-
-module.exports = {getParam}
-
-},{"./toParam":99}],40:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 const getType = (value) => {
   const { emptySpaces } = require("./toValue")
 
@@ -2402,7 +1812,65 @@ const getType = (value) => {
   if (typeof value === "string") return "string"
 }
 module.exports = { getType }
-},{"./toValue":103}],41:[function(require,module,exports){
+},{"./toValue":79}],29:[function(require,module,exports){
+const nthParent = ({ _window, nth, o }) => {
+
+    if (!o.__view__) return o
+    var views = _window ? _window.views : window.views
+      
+    var n = 0, parent = o.id
+    while (n < nth) {
+      if (views[parent]) parent = views[parent].__parent__
+      n++
+    }
+    
+    return views[parent]
+}
+
+const nthNext = ({ _window, nth, o }) => {
+
+    if (!o.__view__) return o
+    var views = _window ? _window.views : window.views
+      
+    var n = 0, next = o.id
+    while (n < nth) {
+      if (views[next]) next = (views[views[next].__parent__].__childrenRef__[views[next].__index__ + 1] || {}).id
+      n++
+    }
+    
+    return views[next]
+}
+
+const nthPrev = ({ _window, nth, o }) => {
+
+    if (!o.__view__) return o
+    var views = _window ? _window.views : window.views
+      
+    var n = 0, prev = o.id
+    while (n < nth) {
+      if (views[prev]) prev = (views[views[prev].__parent__].__childrenRef__[views[prev].__index__ - 1] || {}).id
+      n++
+    }
+    
+    return views[prev]
+}
+
+const getAllParents = ({ _window, id }) => {
+
+    var views = _window ? _window.views : window.views
+    var view = views[id]
+    if (!view.__parent__) return []
+
+    var parentId = view.__parent__
+    var all = [views[parentId]]
+    
+    all.push(...getAllParents({ _window, id: parentId }))
+
+    return all
+}
+
+module.exports = { nthParent, getAllParents, nthNext, nthPrev }
+},{}],30:[function(require,module,exports){
 const { clone } = require("./clone")
 
 const getJson = (url) => {
@@ -2431,7 +1899,7 @@ const importFile = ({ _window, id, e, __, ...params }) => {
             var reader = new FileReader()
             reader.onload = (e) => {
                 
-                var data = { data: e.target.result, success: true, message: "Data imported successfully!", files: [...event.target.files] }
+                var data = { data: e.target.result, success: true, message: "Data imported successfully!", file: [...event.target.files][0], files: [...event.target.files] }
                 if (params.data.type === "json") data.data = JSON.parse(data.data)
                     
                 require("./toAwait").toAwait({ _window, id, e, ...params, __, _: data })
@@ -2445,119 +1913,87 @@ const importFile = ({ _window, id, e, __, ...params }) => {
 }
 
 module.exports = {importFile, getJson}
-},{"./clone":8,"./toAwait":87}],42:[function(require,module,exports){
+},{"./clone":5,"./toAwait":65}],31:[function(require,module,exports){
 const { clone } = require("./clone")
-const { toView } = require("./toView")
-const { starter } = require("./starter")
+const { decode } = require("./decode")
 const { generate } = require("./generate")
+const { kernel } = require("./kernel")
+const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
+const { isNumber } = require("./toValue")
+const { update } = require("./update")
 
-module.exports = {
-  insert: async ({ lookupActions, stack, id, __, insert, ...params }) => {
+const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
-    var { index, view: component, path, data } = insert
+  var { index, view, path, data, doc } = insert
 
-    var views = window.views, global = window.global, appendTo = (insert.id || insert.parent)
+  var views = window.views
+  var global = window.global
+  var parent = views[id]
+  var passData = {}
 
-    // append to ID
-    if (appendTo && typeof appendTo === "object") appendTo = appendTo.id
-    else if (!appendTo) appendTo = id
+  if (!view) view = views[parent.__childrenRef__[parent.__childrenRef__.length - 1].id]
+  else if (insert.__view__) {
+    index += 1
+    delete insert.data
+    view = insert
+  }
 
-    var view = views[appendTo]
+  // clone
+  if (view.__view__) {
+    
+    path = [...(path || (!doc && view.__dataPath__) || [])]
 
-    // insert index
-    if (index === undefined) {
-      if (!view.length) {
+    // doc
+    doc = doc || view.doc
 
-        view.length = view.element.children.length || 0
-        index = view.length
-        view.length = view.length + 1
-
-      } else {
-
-        index = view.length
-        view.length = view.length + 1
-      }
+    // update path
+    if (isNumber(path[path.length - 1])) {
+      path[path.length - 1] = index = index !== undefined ? index : (parseInt(path[path.length - 1]) + 1)
+      reducer({ id: view.id, lookupActions, stack, __, mount: true, data: { path: toCode({ string: "myIndex=path().[-1];nextSiblings().():[deepChildren().log().():[path().[().myIndex]=.path().[().myIndex]+1]]" }) } })
     }
-
-    if (!component) return
-
-    // custom view
-    if (typeof component === "string" && global.data.view[component]) component = clone(global.data.view[component])
-
-    var insertView = clone(component)
-    insertView.view = toCode({ id, string: toCode({ id, string: insertView.view, start: "'" }) })
-
-    // remove loop
-    if (insertView.view.charAt(0) === "@") insertView.view = "View?" + insertView.view.split("?").slice(1).join("?")
 
     // data
-    if (data) {
-      insertView.data = clone(data)
-      insertView.doc = insert.doc || views[appendTo].doc || generate()
-      global[insertView.doc] = global[insertView.doc] || insertView.data
-    }
+    kernel({ lookupActions, stack, address, id, __, data: { _object: global[doc], path, key: true, value: insert.data || (typeof view.data === "object" ? {} : "") } })
 
-    // path
-    if (path) insertView.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
- 
-    var _id_ = insertView.id || generate()
-
-    views[_id_] = insertView
-    views[_id_].id = _id_
-    views[_id_].index = 0
-    views[_id_].parent = appendTo
-
-    // smooth display
-    views[_id_].style = views[_id_].style || {}
-    views[_id_].style.transition = null
-    views[_id_].style.opacity = "0"
+    // inserted view params
+    passData = { __: view.__, lookupActions: view.__lookupActions__, __viewPath__: [...view.__viewPath__], __customViewPath__: [...view.__customViewPath__] }
     
-    var innerHTML = await toView({ id: _id_, lookupActions, stack, __: views[appendTo].__ })
+    // inserted view
+    view = { view: view.view, children: view.children }
 
-    // insert absolutely
-    var lDiv = document.createElement("div")
-    document.body.appendChild(lDiv)
-    lDiv.style.position = "absolute"
-    lDiv.style.opacity = "0"
-    lDiv.style.left = -1000
-    lDiv.style.top = -1000
-    lDiv.innerHTML = innerHTML
-    
-    var el = lDiv.children[0]
-    views[el.id].parent = view.id
+  } else { // new View
 
-    if (index >= view.element.children.length) view.element.appendChild(el)
-    else view.element.insertBefore(el, view.element.children[index])
-
-    // get ids
-    innerHTML.split("id='").slice(1).map(id => id.split("'")[0]).map(id => starter({ id }))
-
-    // display after insert
-    views[el.id].style.transition = views[el.id].element.style.transition = null
-    views[el.id].style.opacity = views[el.id].element.style.opacity = "1"
-
-    var data = { view: views[el.id], message: "View inserted succefully!", success: true }
-
-    if (lDiv) {
-
-      document.body.removeChild(lDiv)
-      lDiv = null
-    }
-
-    // awaits
-    require("./toAwait").toAwait({ id, lookupActions, stack, __, _: data, ...params })
+    // we need it for nowing path for update
+    var genView = generate()
+    global.data.view[genView] = clone(view)
+    passData = { __viewPath__: [genView], __customViewPath__: [...parent.__customViewPath__, genView] }
   }
+
+  if (typeof view !== "object") return console.log("Missing View!")
+
+  // insert index
+  if (index === undefined) index = parent.__element__.children.length
+
+  // remove loop
+  if (view.view.charAt(0) === "[") {
+    view.view = toCode({ id, string: toCode({ id, string: view.view, start: "'" }) })
+    view.view = global.__refs__[view.view.slice(0, 6)].data + "?" + decode({ string: view.view.split("?").slice(1).join("?") })
+  }
+  
+  update({ lookupActions, stack, address, id, __, data: { view: clone(view), path, data, doc, __index__: index, insert: true, __parent__: id, action: "INSERT", ...passData } })
 }
-},{"./clone":8,"./generate":35,"./starter":79,"./toAwait":87,"./toCode":90,"./toView":104}],43:[function(require,module,exports){
+
+module.exports = { insert }
+},{"./clone":5,"./decode":14,"./generate":24,"./kernel":39,"./reducer":48,"./toCode":68,"./toValue":79,"./update":82}],32:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
 const isArabic = ({ id, value, text }) => {
 
   var view = window.views[id]
-  if (!view || !view.element) return
-  text = text || value || view.element.value || view.element.innerHTML
+  if (!view || !view.__element__) return
+  text = text || value || view.__element__.value || view.__element__.innerHTML
   if (!text) return
 
   var isarabic = arabic.test(text)
@@ -2565,17 +2001,17 @@ const isArabic = ({ id, value, text }) => {
 
   if (isarabic && !isenglish) {
 
-    view.element.classList.add("arabic")
-    view.element.style.textAlign = view.element.style.textAlign || "right"
-    if (view.__name__ !== "Input") view.element.innerHTML = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
-    else view.element.value = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
-    if (view["placeholder-ar"]) view.element.placeholder = view["placeholder-ar"]
+    view.__element__.classList.add("arabic")
+    view.__element__.style.textAlign = view.__element__.style.textAlign || "right"
+    if (view.__name__ !== "Input") view.__element__.innerHTML = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
+    else view.__element__.value = text.toString().replace(/\d/g, d =>  '٠١٢٣٤٥٦٧٨٩'[d])
+    if (view["placeholder-ar"]) view.__element__.placeholder = view["placeholder-ar"]
 
   } else {
 
-    if (view.element.className.includes("arabic")) view.element.style.textAlign = view.element.style.textAlign || "right"
-    view.element.classList.remove("arabic")
-    if (view["placeholder"]) view.element.placeholder = view["placeholder"]
+    if (view.__element__.className.includes("arabic")) view.__element__.style.textAlign = view.__element__.style.textAlign || "right"
+    view.__element__.classList.remove("arabic")
+    if (view["placeholder"]) view.__element__.placeholder = view["placeholder"]
   }
 
   return isarabic && !isenglish
@@ -2583,7 +2019,7 @@ const isArabic = ({ id, value, text }) => {
 
 module.exports = { isArabic }
 
-},{}],44:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 const isCalc = ({ _window, string }) => {
 
     if (typeof string !== "string") return false
@@ -2608,7 +2044,7 @@ const isCalc = ({ _window, string }) => {
 }
 
 module.exports = { isCalc }
-},{}],45:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 module.exports = {
     isCondition: ({ _window, string }) => {
         
@@ -2624,7 +2060,7 @@ module.exports = {
         return false
     }
 }
-},{}],46:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 const isEqual = function(value, other) {
   // if (value === undefined || other === undefined) return false
 
@@ -2735,20 +2171,21 @@ const isEqual = function(value, other) {
 
 module.exports = {isEqual}
 
-},{}],47:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
+var events = require("./events.json")
 const isEvent = ({ string }) => {
     if (string.split("?").length > 1) {
 
         var path = string.split("?")
         var event = path[0].split(";")[0].split(":")[0]
-        if (require("./events.json").includes(event)) return true
+        if (events.includes(event)) return true
         else return false
 
     } else return false
 }
 
 module.exports = { isEvent }
-},{"./events.json":27}],48:[function(require,module,exports){
+},{"./events.json":20}],37:[function(require,module,exports){
 module.exports = {
   isParam: ({ _window, string }) => {
       
@@ -2764,198 +2201,7 @@ module.exports = {
     return false
   }
 }
-},{}],49:[function(require,module,exports){
-module.exports = {
-  isPath: ({ path }) => {
-    path = path.split(".")
-
-    if (path.length === 1 || path.length === 0) return false;
-    else if (
-      /\d/.test(path[0]) ||
-      /\s/.test(path[0]) ||
-      (path[1] && (path[1].includes("rem") || path[1].includes("px")))
-    ) {
-      return false;
-    }
-    return true;
-  },
-};
-
-},{}],50:[function(require,module,exports){
-const fs = require("fs")
-const { toArray } = require("./toArray")
-const { toOperator } = require("./toOperator")
-
-var getJsonFiles = ({ search = {} }) => {
-  
-  var data = {},
-  collection = search.collection, 
-  doc = search.document || search.doc, 
-  docs = search.documents || search.docs, 
-  fields = search.fields || search.field, 
-  limit = search.limit || 100,
-  path = `database/${collection}`
-  
-  // create folder if it doesnot exist
-  if (!fs.existsSync(path)) return data
-
-  if (doc) {
-    
-    if (!fs.existsSync(`${path}/${doc}.json`)) return data // fs.writeFileSync(`${path}/${doc}.json`, "{}")
-    data = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
-
-  } else if (docs && docs.length > 0) {
-    
-    toArray(docs).map(doc => {
-      if (fs.existsSync(`${path}/${doc}.json`)) data[doc] = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
-    })
-    
-  } else if (!fields) {
-
-    var docs = fs.readdirSync(path), i = 0
-    while ((i < limit) && (i <= docs.length - 1)) {
-
-      var doc = docs[i]
-      var _document = JSON.parse(fs.readFileSync(`${path}/${doc}`))
-      doc = doc.split(".json")[0]
-      data[doc] = _document
-      i += 1
-    }
-    
-  } else if (fields) {
-
-    var docs = fs.readdirSync(path), i = 0
-    var _operator = search.operator || "and"
-    
-    while ((Object.keys(data).length <= limit) && (i <= docs.length - 1)) {
-
-      var doc = docs[i]
-      var _document = JSON.parse(fs.readFileSync(`${path}/${doc}`))
-
-      doc = doc.split(".json")[0]
-      var _data = _document, _push = false, pushed = false
-
-      Object.keys(fields).map(field => {
-
-        if (pushed) return
-        Object.entries(fields[field]).map(([operator, value]) => {
-
-          if (pushed) return
-          operator = toOperator(operator)
-          
-          if (operator === "==") {
-            if (_data[field] === value) _push = true
-            else _push = false
-          } else if (operator === "!=") {
-            if (_data[field] !== value) _push = true
-            else _push = false
-          } else if (operator === ">=") {
-            if (_data[field] >= value) _push = true
-            else _push = false
-          } else if (operator === "<=") {
-            if (_data[field] <= value) _push = true
-            else _push = false
-          } else if (operator === "<") {
-            if (_data[field] < value) _push = true
-            else _push = false
-          } else if (operator === ">") {
-            if (_data[field] > value) _push = true
-            else _push = false
-          } else if (operator === "array-contains") {
-            if (toArray(value).length > 0 && toArray(value).filter(v => _data[field].find(_v => _v === v)).length === toArray(value).length) _push = true
-            else _push = false
-          } else if (operator === "array-contains-any") {
-            if (_data[field].find(v => toArray(value).find(_v => _v === v))) _push = true
-            else _push = false
-          } else if (operator === "in") {
-            if (typeof _data[field] === "object") {
-              var records = Array.isArray(_data[field]) ? _data[field] : Object.keys(_data[field])
-              if (records.find(v => value === v)) _push = true
-              else _push = false
-            } else if (typeof _data[field] === "string") {
-              if (value.length >= _data[field].length) {
-                if (value.includes(_data[field]) && _data[field]) _push = true
-                else _push = false
-              } else {
-                if (_data[field].includes(value)) _push = true
-                else _push = false
-              }
-            }
-          } else if (operator === "not-in") {
-            if (typeof _data[field] === "object") {
-              var records = Array.isArray(_data[field]) ? _data[field] : Object.keys(_data[field])
-              if (records.find(v => value === v)) _push = false
-              else _push = true
-            } else if (typeof _data[field] === "string") {
-              if (value.length >= _data[field].length) {
-                if (value.includes(_data[field])) _push = false
-                else _push = true
-              } else {
-                if (_data[field].includes(value)) _push = false
-                else _push = true
-              }
-            }
-          }
-
-          if (_push && _operator === "or") {
-            data[_data.id] = _data
-            pushed = true
-          }
-        })
-      })
-      if (_push && _operator === "and") data[_data.id] = _data
-      i += 1
-    }
-  }
-
-  return data
-}
-
-const postJsonFiles = ({ save = {} }) => {
-  
-  var data = save.data,
-  collection = save.collection, 
-  doc = save.document || save.doc, 
-  path = `database/${collection}`
-  
-  // create folder if it doesnot exist
-  if (!fs.existsSync(path)) fs.mkdirSync(path)
-  fs.writeFileSync(`${path}/${doc}.json`, JSON.stringify(data, null, 2))
-  return data
-}
-
-const removeJsonFiles = ({ erase = {} }) => {
-  
-  var collection = erase.collection, 
-  docs = toArray(erase.document || erase.doc || erase.docs), 
-  path = `database/${collection}`
-  if (!fs.existsSync(path)) return
-
-  // create folder if it doesnot exist
-  docs.map(doc => fs.unlinkSync(`${path}/${doc}.json`))
-}
-
-const uploadJsonFile = ({ upload = {} }) => {
-  
-  var file = upload.file, path, 
-  collection = upload.collection, 
-  doc = upload.document || upload.doc, 
-  data = upload.data, 
-  path = `storage/${collection}/${doc}`
-  
-  // file Type
-  upload.type = upload.type.split("-").join("/")
-  fs.writeFileSync(path, file, "base64")
-  data.url = path
-
-  path = `database/${collection}/${doc}`
-  fs.writeFileSync(path, JSON.stringify(data, null, 2))
-
-  return path
-}
-
-module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }
-},{"./toArray":86,"./toOperator":98,"fs":149}],51:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 const jsonToBracket = (object, field) => {
 
   if (!object) return ""
@@ -2990,525 +2236,11 @@ const jsonToBracket = (object, field) => {
 
 module.exports = {jsonToBracket}
 
-},{}],52:[function(require,module,exports){
-module.exports = {
-    keys: (object) => {
-        return Object.keys(object)
-    }
-}
-},{}],53:[function(require,module,exports){
-const { generate } = require("./generate")
-const { toStyle } = require("./toStyle")
-
-module.exports = {
-  labelHandler: ({ _window, tag, id }) => {
-
-    var views = _window ? _window.views : window.views
-    var view = views[id]
-
-    if (typeof view.label === "string") view.label = { text: view.label }
-    if (!view.container) view.container = {}
-
-    // container
-    var containerId = view.container.id || generate()
-    var container = views[containerId] = {id: containerId, index: view.index, class: `flex column ${view.container.class || ""}`, style: { gap: ".5rem", ...view.container.style }, parent: view.id}
-    var containerStyle = toStyle({ _window, id: containerId })
-    var containerAtts = Object.entries(view.container.att || view.container.attribute || {}).map(([key, value]) => `${key}='${value}'`).join(" ")
-
-    // label
-    var labelId = view.label.id || generate()
-    var label = views[labelId] = {id: labelId, index: 0, style: { fontSize: "1.3rem", textAlign: "left", ...view.label.style }, parent: containerId}
-    var labelStyles = toStyle({ _window, id: labelId })
-    var labelAtts = Object.entries(view.label.att || view.label.attribute || {}).map(([key, value]) => `${key}='${value}'`).join(" ")
-    var labelTag = `<p ${labelAtts} ${label.editable || label.contenteditable ? "contenteditable ": ""}class='${label.class || ""}' id='${labelId}' style='${labelStyles}' index='0'>${view.label.text||""}</p>`
-
-    // view
-    view.parent = containerId
-    view.index = 1
-    
-    return `<div ${containerAtts} ${container.draggable !== undefined ? `draggable='${container.draggable}'` : ''} spellcheck='false' ${container.editable && !container.readonly ? 'contenteditable' : ''} class='${container.class}' id='${containerId}' style='${containerStyle}' index='${container.index || 0}'>${labelTag}${tag}</div>`
-  }
-}
-},{"./generate":35,"./toStyle":102}],54:[function(require,module,exports){
-const { toCode } = require("./toCode")
-const { generate } = require("./generate")
-const { isCondition } = require("./isCondition")
-const { executable } = require("./executable")
-const { stacker } = require("./stack")
-
-const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, action, event, data: string, req, res, __, mount, condition, dblExecute, toView, object, _object, index = 0, splitter = "?" }) => {
-
-    require("./toParam")
-    require("./toValue")
-    require("./toApproval")
-
-    var global = _window ? _window.global : window.global
-    var view = _window ? _window.views[id] : window.views[id]
-
-    // missing stack or __
-    if (!stack) stack = stacker({ _window, event, id, string })
-    if (!__) __ = view.__
-
-    var startTime = (new Date()).getTime(), success = true, data, returnForWaitActionExists = false
-
-    // splitter is for ? or :
-    // index is for using name?params?conditions?elseparams
-
-    var terminator = ({ data, order }) => {
-
-        // remove address of waiter
-        if (address.id) address.interpreting = false
-
-        if (!address.id) return data
-        
-        // execute waits
-        if (stack.addresses.findIndex(await => await.id === address.id) === 0)
-            require("./toAwait").toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: returnForWaitActionExists ? data.data : undefined })
-        
-        // return data
-        return data
-    }
-
-    if (stack.terminated || stack.broke || stack.returned) return terminator({ data: { success: false, message: `Action terminated!`, executionDuration: 0 }, order: 0 })
-    if (!string) return terminator({ data: { success: true, message: `No action to execute!`, executionDuration: 0 }, order: 1 })
-
-    // push address for waits
-    if (address.id) address.interpreting = true
-    
-    // encode
-    string = toCode({ _window, id, string: toCode({ _window, id, string, start: "'" }) })
-
-    // decode
-    if (string.charAt(0) === "@" && string.length === 6) {
-
-        // data is text
-        if (global.__refs__[string].type === "text") 
-            return terminator({ data: { data: global.__refs__[string].data, success: true, message: `No action to execute!`, executionDuration: 0 }, order: 2 })
-        
-        string = global.__refs__[string].data
-    }
-
-    // subparams
-    if (index === 1) {
-
-        // list
-        var substring = string.split(splitter)[0]
-        if (!substring) return terminator({ data: { success: false, message: `Missing name!`, executionDuration: 0 }, order: 3 })
-
-        // decode
-        if (substring.charAt(0) === "@" && substring.length === 6) substring = global.__refs__[substring].data
-
-        // name has subparams => interpret
-        if (substring.includes("?")) {
-
-            var data = lineInterpreter({ lookupActions, stack, id, e, data: substring, index: 1, req, res, __, mount, condition, toView, object, _object })
-            if (data.conditionsNotApplied) return terminator({ data, order: 4 })
-        }
-    }
-
-    var stringList = string.split(splitter)
-    var conditions = stringList[index + 1]
-    var elseParams = stringList[index + 2]
-    string = stringList[index + 0]
-
-    var execute = ({ success, message, string, conditionsNotApplied }) => {
-
-        var actionReturnID = generate(), data
-        stack.returns.unshift({ id: actionReturnID })
-
-        // no params
-        if (!string) message = "No actions to execute!"
-
-        if (!action) {
-            action = "toValue"
-            if (!dblExecute && (condition || isCondition({ _window, string: data }))) action = "toApproval"
-            else if (!dblExecute && mount) action = "toParam"
-        }
-        
-        data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object, _object, toView })
-
-        if (dblExecute && executable({ _window, string: data }))
-            data = lineInterpreter({ _window, lookupActions, stack, id, e, data, req, res, __, mount, condition, toView, object, _object }).data
-
-        if (stack.returns && stack.returns[0].returned) {
-            returnForWaitActionExists = true
-            data = stack.returns[0].data
-        }
-
-        // remove return address
-        stack.returns.splice(stack.returns.findIndex(ret => ret.id === actionReturnID), 1)
-
-        return ({ success, message, data, conditionsNotApplied, executionDuration: (new Date()).getTime() - startTime })
-    }
-
-    var approved = require("./toApproval").toApproval({ _window, data: conditions || "", id, e, req, res, __, stack, lookupActions, object, _object })
-
-    if (!approved && elseParams) data = execute({ success, string: elseParams, message: "Else actions executed!", conditionsNotApplied: true })
-    else if (!approved) data = ({ success, message: `Conditions not applied!`, conditionsNotApplied: true, executionDuration: (new Date()).getTime() - startTime })
-    else data = execute({ success, string, message: `Action executed successfully!` })
-
-    return terminator({ data, order: 5 })
-}
-
-module.exports = { lineInterpreter }
-},{"./executable":28,"./generate":35,"./isCondition":45,"./stack":78,"./toApproval":85,"./toAwait":87,"./toCode":90,"./toParam":99,"./toValue":103}],55:[function(require,module,exports){
-const { toArray } = require("./toArray")
-const readFile = require("./readFile");
-
-module.exports = {
-    mail: async ({ _window, req, res, id, data, __, ...params }) => {
-
-        var { subject, content, text, html, recipient, attachments, recipients = [] } = data
-        
-        const { google } = _window.__package__.googleapis
-        const nodemailer = _window.__package__.nodemailer
-        const OAuth2 = google.auth.OAuth2;
-        var data = req.body.data
-        var global = _window.global
-        var project = global.data.project
-
-        // no recipient
-        if (!data.recipient) return res.send({ success: false, message: `Missing recipient!` })
-        
-        if (project.mail) {
-
-            const OAuth2_client = new OAuth2(project.mail.clientId, project.mail.clientSecret);
-            OAuth2_client.setCredentials({ refresh_token: project.mail.refreshToken })
-
-            const accessToken = OAuth2_client.getAccessToken();
-            const transporter = nodemailer.createTransport({
-                service: project.mail.service,
-                auth: {
-                    type: project.mail.authType,
-                    user: project.mail.user,
-                    clientId: project.mail.clientId,
-                    clientSecret: project.mail.clientSecret,
-                    refreshToken: project.mail.refreshToken,
-                    accessToken: accessToken
-                },
-            });
-
-            const msg = {
-                from: `"Bracket Technologies" <${project.mail.user}>`,
-                to: `${toArray(recipient || recipients).map(r => r).join(", ")}`,
-                subject: subject || "Test Email",
-                text: text || "Hello World!",
-                html: html || "<b>Hello World!</b>",
-            }
-
-            if (attachments) msg.attachments = attachments
-
-            const info = await transporter.sendMail(msg);
-
-            global.mail = { success: true, message: `Email sent successfully!` }
-
-        } else global.mail = { success: false, message: `No mail api exists!` }
-        console.log(global.mail)
-
-        // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, id, ...params, req, res, __: [global.mail, ...__] })
-    }
-}
-},{"./readFile":64,"./toArray":86,"./toAwait":87}],56:[function(require,module,exports){
-const { toArray } = require("./toArray")
-const { clone } = require("./clone")
-
-const merge = (array) => {
-
-  array = clone(array)
-  if (typeof array !== "object") return array
-
-  var type = typeof array[0]
-  array.map(obj => {
-    if (typeof obj !== type) type = false
-  })
-
-  if (type === false) return array[0]
-  var merged = toArray(array[0]).flat()
-
-  array.shift()
-
-  array.map((obj) => {
-    merged.push(...toArray(obj).flat())
-
-    if (!Array.isArray(obj) && typeof obj === "object") {
-      Object.entries(obj).map(([key, value]) => {
-
-        if (merged[key]) {
-
-          if (typeof value === "string" || typeof value === "number") {
-
-            merged[key] = toArray(merged[key])
-            merged[key].push(value)
-
-          } else if (Array.isArray(value)) {
-
-            merged[key].push(...value)
-
-          } else if (typeof value === "object") {
-
-            merged[key] = merge([value, merged[key]])
-
-          }
-
-        } else merged[key] = value
-      })
-    }
-  })
-
-  return merged
-}
-
-const override = (obj1, obj2) => {
-  obj1 = obj1 || {}
-
-  Object.entries(obj2).map(([key, value]) => {
-
-    if (obj1[key]) {
-      if (!Array.isArray(value) && typeof value === "object") {
-
-        obj1[key] = override(obj1[key], value)
-
-      } else obj1[key] = value
-
-    } else obj1[key] = value
-
-  })
-
-  return obj1
-}
-
-module.exports = { merge, override }
-
-},{"./clone":8,"./toArray":86}],57:[function(require,module,exports){
-const { isArabic } = require("./isArabic")
-
-const note = ({ note: _note }) => {
-
-  var views = window.views
-  var note = views["action-note"]
-  var type = (_note.type || (_note.danger && "danger") || (_note.info && "info") || (_note.warning && "warning") || "success").toLowerCase()
-  var noteText = views["action-note-text"]
-  var backgroundColor = type === "success" 
-  ? "#2FB886" : type === "danger" 
-  ? "#F66358" : type === "info"
-  ? "#47A8F5" : type === "warning"
-  && "#FFA92B"
-  
-  if (!_note) return
-
-  clearTimeout(note["note-timer"])
-
-  noteText.element.innerHTML = _note.text
-  isArabic({ id: "action-note-text" })
-
-  var width = note.element.offsetWidth
-  note.element.style.backgroundColor = backgroundColor
-  note.element.style.left = `calc(50% - ${width/2}px)`
-  note.element.style.opacity = "1"
-  note.element.style.transition = "transform .2s"
-  note.element.style.transform = "translateY(0)"
-
-  const myFn = () => note.element.style.transform = "translateY(-200%)"
-
-  note["note-timer"] = setTimeout(myFn, 5000)
-}
-
-module.exports = { note }
-
-},{"./isArabic":43}],58:[function(require,module,exports){
-const overflow = ({ id }) => {
-
-  var view = window.views[id]
-  var width = view.element.clientWidth
-  var height = view.element.clientHeight
-  var text
-
-  if (view.__name__ === "Input" || view.__name__ === "Textarea") {
-    text = view.element.value
-  } else if (
-    view.__name__ === "Text" ||
-    view.__name__ === "Label" ||
-    view.__name__ === "Header"
-  ) {
-    text = view.element.innerHTML
-  } else if (view.__name__ === "UploadInput") text = view.element.value
-
-  // create a test div
-  let lDiv = document.createElement("div")
-
-  document.body.appendChild(lDiv)
-
-  var pStyle = view.element.style
-  var pText = view.data || view.input.value || ""
-  var pFontSize = pStyle.fontSize
-
-  if (pStyle != null) {
-    lDiv.style = pStyle
-  }
-
-  lDiv.style.fontSize = pFontSize
-  lDiv.style.position = "absolute"
-  lDiv.style.left = -1000
-  lDiv.style.top = -1000
-  lDiv.style.padding = pStyle.padding
-
-  lDiv.innerHTML = pText
-
-  var lResult = {
-    width: lDiv.clientWidth,
-    height: lDiv.clientHeight,
-  }
-
-  document.body.removeChild(lDiv)
-  lDiv = null
-
-  var overflowX, overflowY
-  
-  if (width < lResult.width) overflowX = true
-  if (height < lResult.height) overflowY = true
-
-  return [overflowX, overflowY]
-}
-
-module.exports = {overflow}
-
-},{}],59:[function(require,module,exports){
-const popup = ({ id }) => {
-  
-}
-
-module.exports = {popup}
-
-},{}],60:[function(require,module,exports){
-const { lengthConverter } = require("./resize")
-
-const getPadding = (el) => {
-    
-    var padding = el.style.padding.split(" ")
-    if (padding.length === 1) {
-        return padding = {
-            top: lengthConverter(padding[0]),
-            right: lengthConverter(padding[0]),
-            bottom: lengthConverter(padding[0]),
-            left: lengthConverter(padding[0])
-        }
-    } else if (padding.length === 2) {
-        return padding = {
-            top: lengthConverter(padding[0]),
-            right: lengthConverter(padding[1]),
-            bottom: lengthConverter(padding[0]),
-            left: lengthConverter(padding[1])
-        }
-    } else if (padding.length === 4) {
-        return padding = {
-            top: lengthConverter(padding[0]),
-            right: lengthConverter(padding[1]),
-            bottom: lengthConverter(padding[2]),
-            left: lengthConverter(padding[3])
-        }
-    }
-}
-
-const position = (el1, el2) => {
-
-    elPos1 = el1.getBoundingClientRect()
-    elPos2 = el2.getBoundingClientRect()
-
-    var el2padding = getPadding(el2)
-
-    var top  = elPos1.top - elPos2.top - el2padding.top
-    var left = elPos1.left - elPos2.left - el2padding.left
-    
-    return { top: Math.round(top), left: Math.round(left) }
-}
-
-module.exports = {
-    position,
-    getPadding
-}
-},{"./resize":70}],61:[function(require,module,exports){
-const preventDefault = ({e}) => {
-  e.preventDefault();
-};
-
-module.exports = {preventDefault};
-
-},{}],62:[function(require,module,exports){
-const { toParam } = require("./toParam")
-
-module.exports = {
-    print: async ({ id, options, ...params }) => {
-
-        var mediaQueryList = window.matchMedia('print')
-
-        mediaQueryList.addListener(function(mql) {
-            if (mql.matches) {
-                // console.log('before print dialog open');
-                if (options["before-print"]) toParam({ data: options["before-print"], id, mount: true })
-            } else {
-                // await params
-                if (params.asyncer) require("./toAwait").toAwait({ id, ...params })
-                if (options["after-print"]) toParam({ data: options["after-print"], id, mount: true })
-            }
-        })
-        
-        window.print()
-    }
-}   
-},{"./toAwait":87,"./toParam":99}],63:[function(require,module,exports){
-const qr = async ({ _window, id, req, res, data, __, e, stack, lookupActions, address }) => {
-
-    if (res && !res.headersSent) return qrServer({ _window, id, req, res, data, __, e, stack, lookupActions, address })
-    
-    var QRCode = require("easyqrcodejs")
-
-    // get image
-    var view = window.views[data.id], imageEl
-    if (view) imageEl = view.element
-    
-    var qrcode = new QRCode(document.getElementById(data.id), data)
-    var data = { message: "QR generated successfully!", data: qrcode, success: true }
-
-    console.log("QR", data)
-
-    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, req, res, __: [data, ...__] })
-}
-
-const qrServer = async ({ _window, id, req, res, data, __, e, stack, lookupActions, address }) => {
-
-    var text = data.text || data.url
-    if (data.wifi) text = wifiQrText({ data })
-
-    var qrcode = await require('qrcode').toDataURL(text)
-    
-    var data = { message: "QR generated successfully!", data: qrcode, success: true }
-    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, req, res, __: [data, ...__] })
-}
-
-const wifiQrText = ({ data }) => {
-    
-    return `WIFI:S:${data.name || data.ssid || ""};T:${data.type || "WPA"};P:${data.password || ""};;${data.url || ""}`
-}
-
-module.exports = { qr }
-},{"./toAwait":87,"easyqrcodejs":152,"qrcode":157}],64:[function(require,module,exports){
-module.exports = (file) => new Promise(res => {
-
-    var myFile = file.file || file.url
-    if (typeof myFile === "string" && myFile.slice(0, 5) === "data:") res(myFile)
-    else if (typeof file === "object" && file["readAsDataURL"]) res()
-    else {
-        let myReader = new FileReader()
-        myReader.onloadend = () => res(myReader.result)
-        myReader.readAsDataURL(file)
-    }
-})
-},{}],65:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { isEqual } = require("./isEqual")
-const { capitalize, capitalizeFirst } = require("./capitalize")
+const { capitalizeFirst, capitalize } = require("./capitalize")
 const { clone } = require("./clone")
 const { toNumber } = require("./toNumber")
 const { getDateTime } = require("./getDateTime")
@@ -3516,16 +2248,12 @@ const { getDaysInMonth } = require("./getDaysInMonth")
 const { getType } = require("./getType")
 const { exportJson } = require("./exportJson")
 const { importFile } = require("./importJson")
-const { toId } = require("./toId")
 const { setCookie, getCookie, eraseCookie } = require("./cookie")
 const { focus } = require("./focus")
 const { toSimplifiedDate } = require("./toSimplifiedDate")
 const { toClock } = require("./toClock")
-const { toApproval } = require("./toApproval")
-const { toCode } = require("./toCode")
 const { note } = require("./note")
 const { isParam } = require("./isParam")
-const { toAwait } = require("./toAwait")
 const { lengthConverter } = require("./resize")
 const { qr } = require("./qr")
 const { replaceNbsps } = require("./replaceNbsps")
@@ -3533,428 +2261,84 @@ const { addresser } = require("./addresser")
 const { vcard } = require("./vcard")
 const { lineInterpreter } = require("./lineInterpreter")
 const { colorize } = require("./colorize")
-const { isCalc } = require("./isCalc")
-const actions = require("./actions.json")
+const { override } = require("./merge")
+const { nthParent, nthNext, nthPrev } = require("./getView")
+const { remove } = require("./remove")
 const events = require("./events.json")
+const { decode } = require("./decode")
+const { toAwait } = require("./toAwait")
 
-const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: path, value, key, params = {}, object, __, e, req, res, mount, condition, toView, _object }) => {
+const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, pathJoined, value, key, object } }) => {
 
-    const { remove } = require("./remove")
     const { toValue, isNumber } = require("./toValue")
     const { toParam } = require("./toParam")
-    const { insert } = require("./insert")
     const { toAction } = require("./toAction")
-
-    if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.returned || stack.broke) return
+    const { toApproval } = require("./toApproval")
+    const { reducer } = require("./reducer")
 
     var views = _window ? _window.views : window.views
-    var view = views[id], breakRequest, mainId = id
     var global = _window ? _window.global : window.global
+    var view = views[id]
 
-    // path is a string
-    if (typeof path === "string") path = path.split(".")
-    // path is a number
-    if (typeof path === "number") path = [path]
+    var pathJoined = pathJoined || path.join("."), breakRequest
+    
+    // no path but there is value
+    if (path.length === 0 && key && value !== undefined) return _object = value
 
-    var pathJoined = path.join(".")
-
-    // init
-    var path0 = path[0] ? path[0].toString().split(":")[0] : "", args
-    if (path[0] !== undefined) args = path[0].toString().split(":")
-
-    // toParam
-    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, stack, id, e, data: pathJoined, __, object, mount, toView })
-
-    // toValue
-    if (isCalc({ _window, string: pathJoined }) && !key) return toValue({ _window, lookupActions, stack, data: pathJoined, __, id, e, req, res, object, _object, mount, toView, condition })
-
-    // flat()
-    if (pathJoined.slice(0, 3) === "...") {
-
-        var _data = toValue({ req, res, _window, lookupActions, stack, object, id, data: pathJoined.slice(3), __, e })
-        _object = _object || object || (mount ? view : {})
-        if (typeof _data === "object" && typeof _object === "object") {
-            Object.entries(_data).map(([key, value]) => _object[key] = value)
-        }
-        path.splice(0, 4)
-    }
-
-    // [actions?conditions?elseActions]():[params]:[waits]
-    else if (path0.length === 8 && path0.slice(-2) === "()" && path0.charAt(0) === "@") {
-
-        var { address, __: my__ } = addresser({ _window, stack, args, requesterID: id, action: "[...]()", __, lookupActions, id, _object, object })
-
-        var { data } = lineInterpreter({ _window, lookupActions, stack, address, id, data: path0.slice(0, -2), key, object, __: my__, e, dblExecute: true, req, res, mount, condition, toView })
-
-        _object = data
-        path0 = (path[1] || "").split(":")[0]
-        path.splice(0, 1)
-
-        if (path.length === 0) return _object
-        else return reducer({ _window, lookupActions, stack, id, data: path, value, key, object, __, e, req, res, mount, condition, toView, _object })
-    }
-
-    // if
-    else if (path0 === "if()") {
-
-        var approved = toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object })
-
-        if (!approved) {
-
-            if (args[3]) {
-
-                if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[3], id, __, req, res, object })
-                if (path[1]) _object = toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object, mount, toView })
-                else return toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object, mount, toView })
-            }
-
-            if (!path[1]) return
-
-            if (path[1].includes("else()")) {
-
-                if (path[2]) _object = toValue({ req, res, _window, lookupActions, stack, id, data: path[1].split(":")[1], __, e, object, mount })
-                else return toValue({ req, res, _window, lookupActions, stack, id, data: path[1].split(":")[1], __, e, object, mount })
-
-            } else if (path[1].includes("elif()")) {
-
-                var _path = path.slice(2)
-                _path.unshift(`if():${path[1].split(":").slice(1).join(":")}`)
-                return reducer({ _window, lookupActions, stack, id, value, key, data: _path, object, __, e, req, res, mount, condition })
-            }
-
-            path.shift()
-            path0 = path[0].split(":")[0] || ""
-            args = path[0].split(":")
-
-        } else {
-
-            if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[2], id, __, req, res, object, toView })
-            if (path[1]) _object = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
-            else return toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
-
-            path.shift()
-
-            // remove elses and elifs
-            while (path[0] && (path[0].includes("else()") || path[0].includes("elif()"))) { path.shift() }
-
-            if (path[0]) {
-
-                // update args and path0
-                path0 = path[0].split(":")[0] || ""
-                args = path[0].split(":")
-
-            } else return _object
-        }
-    }
-
-    // while
-    else if (path0 === "while()") {
-
-        while (toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object })) {
-            toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
-        }
-        // path = path.slice(1)
-        return global.return = false
-    }
-
-    // globalVariable:()
-    else if (path0 && args[1] === "()" && !args[2]) {
-
-        var globalVariable = toValue({ req, res, _window, id, e, data: args[0], __, stack, lookupActions })
-        if (path.length === 1 && key && globalVariable) return global[globalVariable] = value
-
-        if (globalVariable) path.splice(1, 0, globalVariable)
-        path[0] = path0 = "global()"
-    }
-
-    // view => ():id
-    else if (path0 === "()" && args[1]) {
-
-        // id
-        var _id = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object })
-        if (_id || args[1]) _object = views[_id || args[1]]
-        path.splice(0, 1)
-        path0 = path[0]
-    }
-
-    // .keyName => [object||view].keyName
-    else if (path[0] === "" && path.length > 1) {
-        if (isNaN(path[1].charAt(0)) || path[1].includes("()")) {
-            path.splice(0, 1)
-            _object = _object || object || view
-        } else return path.join(".")
-    }
-
-    // @coded
-    else if (path0.charAt(0) === "@" && path[0].length === 6) {
-
-        var data = lineInterpreter({ _window, req, res, lookupActions, stack, object, id, data: path[0], __, e }).data
-        if (path[1] === "flat()") {
-
-            if (Array.isArray(data)) {
-
-                data = [...data]
-                return data.flat()
-
-            } else {
-
-                if (typeof _object === "object") Object.entries(data).map(([key, value]) => _object[key] = value)
-                return _object
-            }
-
-        } else {
-
-            if (!path[1] && typeof _object === "object" && key && value !== undefined) {
-
-                _object[data] = value
-                return _object
-
-            } else if (path[1]) {
-
-                _object = data
-                path.splice(0, 1)
-                path0 = path[0]
-
-            } else return data
-        }
-    }
-
-    // action()
-    else if (path0.slice(-2) === "()") {
-
-        var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, path: [path[0]], path0, condition, mount, toView, object })
-        if (action !== "__continue__") {
-            if (path.length > 1) {
-                _object = action
-                path.splice(0, 1)
-            }
-            else return action
-        }
-    }
-
-    if (!view) view = views[id]
-
-    // initialize by methods
-    if (actions.includes(path0)) {
-
-        if (path0 === "getChildrenByClassName()" || path0 === "className()") {
-
-            if (!object) {
-                path.unshift("document()")
-                path0 = "document()"
-            }
-
-        } else {
-
-            var __o = ((typeof object === "object" && object.__view__) ? object : views[id]) || {}
-            if (path0.toLowerCase().includes("prev") || path0.toLowerCase().includes("next") || path0.toLowerCase().includes("parent")) {
-
-                if (__o.__labeled__ && __o.__templated__) path = ["2ndParent()", ...path]
-                else if ((__o.__labeled__ && !__o.__templated__) || __o.__templated__ || __o.link) path.unshift("parent()")
-
-            } else if (__o && path0 === "txt()" || path0 === "val()" || path0 === "min()" || path0 === "max()") {
-
-                if (__o.__islabel__ || __o.__templated__ || __o.link || __o.__labeled__) path.unshift("input()")
-            }
-        }
-    }
-
-    // assign reserved vars
-    var reservedVars = {
-        keys: ["()", "global()", "e()", "console()", "document()", "window()", "win()", "history()", "navigator()", "nav()", "request()", "response()", "req()", "res()", "math()"],
-        "()": view || views[id],
-        "global()": _window ? _window.global : window.global,
-        "e()": e,
-        "console()": console,
-        "document()": _window ? {} : document,
-        "window()": _window || window,
-        "win()": _window || window,
-        "history()": _window ? {} : history,
-        "nav()": _window ? {} : navigator,
-        "navigator()": _window ? {} : navigator,
-        "request()": req,
-        "req()": req,
-        "response()": res,
-        "res()": res,
-        "math()": Math
-    }
-
-    // assign _object
-    var reservedVar = false
-    var underScored0 = path0 && path0.charAt(0) === "_" && !path0.split("_").find(i => i !== "_" && i !== "")
-    if (reservedVars.keys.includes(path0) || underScored0) {
-
-        if (reservedVars.keys.includes(path0)) _object = reservedVars[path0]
-        else _object = __[path0.split("_").length - 2]
-
-        path.splice(0, 1)
-        reservedVar = true
-
-    } else _object = _object !== undefined ? _object : object
-
-    // still no _object
-    if (_object === undefined && !reservedVar) {
-
-        if (path[0]) {
-
-            if (path0 === "undefined") return undefined
-            else if (path0 === "false") return false
-            else if (path0 === "true") return true
-            else if (path0 === "desktop()") return global.manifest.device.device.type === "desktop"
-            else if (path0 === "tablet()") return global.manifest.device.device.type === "tablet"
-            else if (path0 === "mobile()") return global.manifest.device.device.type === "phone"
-            else if (path0 === "clicked()") _object = global.clicked
-            else if (path0 === "log()") {
-
-                var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, data: arg || "here", params, __, e, object }))
-                console.log("LOG", ..._log)
-                stack.logs.push("LOG " + _log.join(" "))
-                path = path.slice(1)
-                path0 = (path[1] || "").split(":")[0]
-            }
-
-            else if (path0 === "today()") _object = new Date()
-            else if (path0 === "_array" || path0 === "_list" || (!path0 && path[0].charAt(0) === ":")) {
-
-                _object = []
-                path[0].split(":").slice(1).map(el => {
-
-                    if (isParam({ _window, string: el })) el = toParam({ req, res, stack, lookupActions, _window, id, e, __, data: el })
-                    else el = toValue({ req, res, _window, stack, lookupActions, id, __, e, data: el, params })
-                    _object.push(el)
-                })
-            }
-            else if (path0 === "_map") {
-
-                var __object = {}
-                if (isParam({ _window, string: args[1] })) {
-
-                    return args.slice(1).map(arg => reducer({ _window, lookupActions, stack, id, params, data: arg, object: __object, e, req, res, __, mount }))
-
-                } else {
-
-                    var args = path[0].split(":").slice(1)
-                    args.map((arg, i) => {
-
-                        if (i % 2) return
-                        var f = toValue({ req, res, _window, id, __, e, data: arg, params })
-                        var v
-                        if (isParam({ _window, string: args[i + 1] })) v = toParam({ req, res, _window, id, e, __, data: args[i + 1]/*, object*/ })
-                        else v = toValue({ req, res, _window, id, __, e, data: args[i + 1], params, object })
-                        if (v !== undefined) __object[f] = v
-
-                    })
-                }
-
-            } else if (mount) {
-
-                _object = view
-                path.unshift("()")
-            }
-        }
-
-        if (_object !== undefined) path.splice(0, 1)
-        else {
-            if (path0 && path0.includes("()")) {
-                _object = view
-            } else if (path[1] && path[1].toString().includes("()")) {
-
-                _object = toValue({ req, res, _window, lookupActions, stack, id, __, e, data: path[0], params }) || {}
-                path = path.slice(1)
-
-            } else return pathJoined
-        }
-    }
-
-    var lastIndex = path.length - 1
     var answer = path.reduce((o, k, i) => {
 
-        if (k === undefined) return console.log(view, id, path)
+        var lastIndex = path.length - 1
+
+        if (k === undefined) return //console.log(view, id, path)
 
         k = k.toString()
         var k0 = k.split(":")[0]
         var args = k.split(":")
 
         // get underscores
-        var underScored = 0, k00 = k0
-        while (k00.charAt(0) === "_") {
+        var underScored = 0
+        while (k0.charAt(0) === "_") {
             underScored += 1
-            k00 = k00.slice(1)
+            k0 = k0.slice(1)
+            k = k.slice(1)
         }
 
-        // fake lastIndex
-        if (lastIndex !== path.length - 1) {
-            if (key === true) key = false
-            lastIndex = path.length - 1
+        if (underScored && k0 && !k0.includes("()")) {
+            while (underScored > 0) {
+                k0 = "_" + k0
+                k = "_" + k
+                underScored -= 1
+            }
         }
 
         // break
         if (breakRequest === true || breakRequest >= i) return o
 
-        if (k0 === "else()" || k0 === "or()") {
+        if ((o === undefined || o === null) && k0 !== "push()" && k0 !== "replace()") return o
 
-            var args = k.split(":").slice(1)
-            if (o || o === 0 || o === "") answer = o
-            else if (args[0]) {
-                args.map(arg => {
-                    if (!answer) answer = toValue({ req, res, _window, lookupActions, stack, id: mainId, data: arg, __, e })
-                })
-            }
-            return answer
-        }
+        if (k0 === "log()") { // log
+            
+            var logs = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: underScored ? [o, ...__] : __, data: arg, object: underScored ? object : (o.__view__ && o.id !== id && o) }))
+            if (args.slice(1).length === 0 && pathJoined !== "log()") logs = [o]
 
-        if (k === "undefined()" || k === "isundefined()" || k === "isUndefined()") return answer = o === undefined
-
-        // isEmpty
-        if (k === "isEmpty()") return answer = o === "" ? true : false
-
-        // isnotEmpty
-        if (k === "isnotEmpty()") return (answer = o !== "" && typeof o === "string") ? true : false
-
-        // notExist
-        if (k === "notexist()" || k === "doesnotexist()" || k === "doesnotExist()" || k === "notExist()")
-            return answer = !o ? true : false
-
-        // log
-        if (k0.includes("log()")) {
-
-            var tolog
-            if (k0[0] === "_") tolog = o
-
-            var _log = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: tolog ? [tolog, ...__] : __, data: arg, object: k0[0] !== "_" ? o : object }))
-
-            console.log("LOG", ..._log)
-            stack.logs.push("LOG " + _log.join(" "))
+            console.log("LOG", decode({ _window, string: pathJoined }), ...logs)
+            stack.logs.push(stack.logs.length, "LOG " + logs.join(" "))
 
             return o
-        }
+        } else if (k0 !== "data()" && k0 !== "doc()" && path[i + 1] === "del()") {
 
-        if ((o === undefined || o === null) && k0 !== "push()") return o
-
-        if (k0 !== "data()" && k0 !== "Data()" && k0 !== "doc()" && (path[i + 1] === "delete()" || path[i + 1] === "del()")) {
-
-            var el = k
             breakRequest = i + 1
-            el = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: k, params })
+            if (k.charAt(0) === "@" && k.length === 6) k = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: k, object })
 
             if (Array.isArray(o)) {
-                if (isNaN(el)) {
-                    if (o[0] && o[0][el]) {
-                        delete o[0][el]
+                if (!isNumber(k)) {
+                    if (o[0] && o[0][k]) {
+                        delete o[0][k]
                         return o
                     } else return o
                 }
-                o.splice(el, 1)
-            } else delete o[el]
-
-            return o
-
-        } else if (k0 === "del()") {
-
-            if (args[1]) {
-                var myparam = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-                delete o[myparam]
-            }
+                o.splice(k, 1)
+            } else delete o[k]
 
             return o
 
@@ -3964,11 +2348,24 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                 toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e })
             }
 
-        } else if (underScored && !k00 && o.__) { // _ || __ || ___ ...
+        } else if (underScored && !k0) { // _
+            
+            if (o.__view__) {
 
-            if (o.__view__) return o.__[underScored - 1]
-            if (value !== undefined && key && i === lastIndex) answer = o[__[underScored - 1]] = value
-            else if (typeof o === "object") answer = o[__[underScored - 1]]
+                if (value !== undefined && key && i === lastIndex) answer = o.__[underScored - 1] = value
+                else answer = o.__[underScored - 1]
+
+            } else {
+
+                var underscores = ""
+                while (underScored > 0) {
+                    underscores += "_"
+                    underScored -= 1
+                }
+
+                if (value !== undefined && key && i === lastIndex) answer = o[underscores] = value
+                else answer = o[underscores]
+            }
 
         } else if (k.charAt(0) === "@" && k.length === 6) { // k not k0
 
@@ -3977,10 +2374,20 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
             else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: global.__refs__[k0].data, __, object })
 
             if (typeof data !== "object") {
-                if (i === lastIndex && key && value !== undefined) answer = o[data] = value
-                else if (key && value !== undefined && o[data] === undefined) {
 
-                    if (!isNaN(toValue({ req, res, _window, lookupActions, stack, id, data: path[i + 1], __, e, object }))) answer = o[data] = []
+                if (Array.isArray(o) && isNumber(data) && data < 0) { // negative index
+
+                    var item = o[o.length + data]
+
+                    if (i === lastIndex && key && value !== undefined) {
+                        o.splice(o.length + data, 1, value)
+                        answer = value
+                    } else answer = item
+
+                } else if (i === lastIndex && key && value !== undefined) answer = o[data] = value
+                else if (i !== lastIndex && key && value !== undefined && o[data] === undefined) {
+
+                    if (isNumber(toValue({ req, res, _window, lookupActions, stack, id, data: path[i + 1], __, e, object }))) answer = o[data] = []
                     else answer = o[data] = {}
                 }
                 else answer = o[data]
@@ -3988,46 +2395,19 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
         } else if (k0 === "data()") {
 
-            var _o = o.type ? o : view
-            var _params = {}
+            if (!o.__view__) return
 
-            if (!o) return
-            if (_o.type) breakRequest = true
+            breakRequest = true
 
-            if (args[1]) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
 
-            // just get data()
-            if (!_o.derivations) {
+            if (data.path) return answer = kernel({ req, res, _window, lookupActions, stack, id, e, data: { _object: data.data || global[data.doc || o.doc], value, key, path: data.path, object }, __ })
 
-                var _path = _params.path || views[id].derivations || []
-                var _data
-                if (_params.data) _data = reducer({ req, res, _window, lookupActions, stack, id, e, value, key, data: _path, object: _params.data || global[views[id].doc], __ })
-                else {
+            if (!o.doc) return
 
-                    _path.unshift(`${views[id].doc}:()`)
-                    _data = reducer({ req, res, _window, lookupActions, stack, id, e, value, key, data: _path, object, __ })
-                }
-                return answer = _o[_data]
-            }
+            answer = kernel({ req, res, _window, lookupActions, stack, id, data: { path: [...o.__dataPath__, ...path.slice(i + 1)], object, _object: global[o.doc], value, key }, __, e })
 
-            if (_params.path) return answer = reducer({ req, res, _window, lookupActions, stack, id, e, value, key, data: _params.path, object: _params.data || object, __ })
-            var _derivations = _params.path || _o.derivations || []
-
-            if (path[i + 1] !== undefined) {
-
-                if (!_o.doc) return
-                var _path = [..._derivations, ...path.slice(i + 1)]
-                _path.unshift(`${_o.doc}:()`)
-                answer = reducer({ req, res, _window, lookupActions, stack, id, e, value, key, data: _path, object, __ })
-
-            } else {
-
-                var _path = [..._derivations]
-                _path.unshift(`${_o.doc}:()`)
-                answer = reducer({ req, res, _window, lookupActions, stack, id, value, key: path[i + 1] === undefined ? key : false, data: _path, object, __, e })
-            }
-
-        } else if (k0 === "Data()" || k0 === "doc()") {
+        } else if (k0 === "doc()") {
 
             breakRequest = true
             var doc = o.__view__ ? o.doc : views[id].doc
@@ -4036,631 +2416,260 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
                 if (isParam({ _window, string: args[1] })) {
 
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    args[1] = _params.path || _params.derivations || []
+                    data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                    args[1] = data.path || data.__dataPath__ || []
                     if (typeof args[1] === "string") args[1] = args[1].split(".")
 
-                    return answer = reducer({ req, res, _window, lookupActions, stack, id, e, value, key, data: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object, __ })
+                    return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
                 }
 
                 if (args[1].charAt(0) === "@") args[1] = global.__refs__[args[1]].data
                 args[1] = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
                 if (typeof args[1] === "string") args[1] = args[1].split(".")
 
-                return answer = reducer({ req, res, _window, lookupActions, stack, id, e, value, key, data: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object, __ })
+                return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
             }
 
             if (path[i + 1] !== undefined) {
 
                 if (path[i + 1] && path[i + 1].charAt(0) === "@") path[i + 1] = toValue({ req, res, _window, lookupActions, stack, id, data: global.__refs__[path[i + 1]].data, __, e })
-                answer = reducer({ req, res, _window, lookupActions, stack, id, e, value, key, data: [`${doc}:()`, ...path.slice(i + 1)], object, __ })
+                answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...path.slice(i + 1)], object }, __ })
 
             } else if (key && value !== undefined) {
                 answer = global[doc] = value
             } else answer = global[doc]
 
-        } else if (k0 === "removeAttribute()") {
-
-            var _o, _params
-            if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            else _params = { att: toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) }
-
-            _params.att = _params.att || _params.attribute
-
-            if (_params.id) _o = views[_params.id].element
-            else if (_params.view) _o = _params.view.element
-            else if (_params.element || _params.el) _o = _params.element || _params.el
-            else if (typeof o === "object" && o.element) _o = o.element
-            else if (o.nodeType === Node.ELEMENT_NODE) _o = o
-            answer = _o.removeAttribute(_params.att)
-
         } else if (k0 === "parent()") {
 
-            var _o, _parent, _params = {}
-            if (args[1]) {
+            return nthParent({ _window, nth: 1, o })
 
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-            if (typeof _o === "object") {
-
-                if (_o.status === "Mounted") _parent = views[_o.element.parentNode.id]
-                else _parent = views[_o.parent]
-            }
-
-            answer = _parent
-
-        } else if (k0 === "2ndParent()" || k0 === "grandParent()") {
-
-            var _o, _parent, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-            if (typeof _o === "object") {
-
-                if (_o.status === "Mounted") {
-                    if (_o.element.parentNode && _o.element.parentNode.parentNode) return answer = views[_o.element.parentNode.parentNode.id]
-                } else {
-                    if (views[_o.parent] && views[_o.parent].parent) return answer = views[views[_o.parent].parent]
-                }
-            }
+        } else if (k0 === "2ndParent()") {
+    
+            return nthParent({ _window, nth: 2, o })
 
         } else if (k0 === "3rdParent()") {
+            
+            return nthParent({ _window, nth: 3, o })
+            
+        } else if (k0 === "nthParent()") {
 
-            var _o, _parent, _params = {}
-            if (args[1]) {
+            if (!o.__view__) return
+            var nth = toValue({ _window, id, e, lookupActions, stack, __, data: args[1] })
+            return nthParent({ _window, nth, o })
 
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-            if (typeof _o === "object") {
-
-                if (_o.status === "Mounted") {
-                    if (_o.element.parentNode && _o.element.parentNode.parentNode && _o.element.parentNode.parentNode.parentNode)
-                        return answer = views[_o.element.parentNode.parentNode.parentNode.id]
-                } else {
-                    if (views[_o.parent] && views[_o.parent].parent && views[views[_o.parent].parent].parent) return answer = views[views[views[_o.parent].parent].parent]
-                }
-            }
-
-        } else if (k0 === "siblings()") {
-
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            var _parent = views[window.views[_o.id].parent]
-            answer = [..._parent.element.children].map(el => {
-
-                var _id = el.id, _view = views[_id]
-                if (!_view) return
-                if (_view.component === "Input") {
-
-                    _id = (_view).element.getElementsByTagName("INPUT")[0].id
-                    return _view
-
-                } else return _view
-            })
-
-        } else if (k0 === "next()" || k0 === "nextSibling()") {
-
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            var element = _o.element
-            if (!element) return
-            var nextSibling = element.nextElementSibling
-            if (!nextSibling) return
-            var _id = nextSibling.id
-            answer = views[_id]
-
-        } else if (k0 === "2ndNext()" || k0 === "2nd()" || k0 === "2ndNextSibling()") {
-
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            var element = _o.element
-            // if (_o.__templated__ || _o.link) element = views[_o.parent].element
-
-            if (!element.nextElementSibling || !element.nextElementSibling.nextElementSibling) return
-            var nextSibling = element.nextElementSibling.nextElementSibling
-            if (!nextSibling) return
-            var _id = nextSibling.id
-            answer = views[_id]
-
-        } else if (k0 === "3rdNext()" || k0 === "3rd()" || k0 === "3rdNextSibling()") {
-
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            var element = _o.element
-            // if (_o.__templated__ || _o.link) element = views[_o.parent].element
-
-            if (!element.nextElementSibling || !element.nextElementSibling.nextElementSibling || !element.nextElementSibling.nextElementSibling.nextElementSibling) return
-            var nextSibling = element.nextElementSibling.nextElementSibling.nextElementSibling
-            if (!nextSibling) return
-            var _id = nextSibling.id
-            answer = views[_id]
+        } else if (k0 === "prevSiblings()") {
+            
+            if (!o.__view__) return o
+            return views[o.__parent__].__childrenRef__.slice(0, o.__index__ + 1).map(({ id }) => views[id])
 
         } else if (k0 === "nextSiblings()") {
+            
+            if (!o.__view__) return o
+            return views[o.__parent__].__childrenRef__.slice(o.__index__ + 1).map(({ id }) => views[id])
 
-            var _o, _params = {}
-            if (args[1]) {
+        } else if (k0 === "siblings()") {
+            
+            if (!o.__view__) return o
+            return clone(views[o.__parent__].__childrenRef__).splice(o.__index__, 1).map(({ id }) => views[id])
 
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
+        } else if (k0 === "next()") {
 
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            return nthNext({ _window, nth: 1, o })
 
-            var nextSiblings = [], nextSibling
-            var element = _o.element
-            // if (_o.__templated__ || _o.link) element = views[_o.parent].element
+        } else if (k0 === "2ndNext()") {
 
-            var nextSibling = element.nextElementSibling
-            if (!nextSibling) return
+            return nthNext({ _window, nth: 2, o })
 
-            while (nextSibling) {
-                var _id = nextSibling.id
-                nextSiblings.push(views[_id])
-                nextSibling = (views[_id]).element.nextElementSibling
-            }
-            answer = nextSiblings
+        } else if (k0 === "3rdNext()") {
 
-        } else if (k0 === "last()" || k0 === "lastSibling()") {
+            return nthNext({ _window, nth: 3, o })
 
-            var _o, _params = {}
-            if (args[1]) {
+        } else if (k0 === "nthNext()") {
 
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
+            if (!o.__view__) return
+            var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
+            return nthNext({ _window, nth, o })
 
-            if (Array.isArray(_o)) return answer = _o[_o.length - 1]
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
+        } else if (k0 === "last()") {
+            
+            if (!o.__view__) return
+            return views[views[o.__parent__].__childrenRef__.slice(-1)[0].id]
 
-            if (Array.isArray(_o)) {
+        } else if (k0 === "2ndLast()") {
+            
+            if (!o.__view__) return
+            return views[views[o.__parent__].__childrenRef__.slice(-2)[0].id]
 
-                if (value !== undefined && key) answer = _o[_o.length - 1] = value
-                answer = _o[_o.length - 1]
+        } else if (k0 === "3rdLast()") {
+            
+            if (!o.__view__) return
+            return views[views[o.__parent__].__childrenRef__.slice(-3)[0].id]
 
-            } else if (_o.type && _o.id) {
+        } else if (k0 === "nthLast()") {
 
-                var element = _o.element
-                // if (_o.__templated__ || _o.link) element = views[o.parent].element
-                var lastSibling = element.parentNode.children[element.parentNode.children.length - 1]
-                var _id = lastSibling.id
-                answer = views[_id]
-            }
-
-        } else if (k0 === "2ndLast()" || k0 === "2ndLastSibling()") {
-
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (Array.isArray(_o)) return answer = _o[_o.length - 2]
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            var element = _o.element
-            // if (_o.__templated__ || _o.link) element = views[o.parent].element
-            var seclastSibling = element.parentNode.children[element.parentNode.children.length - 2]
-            var _id = seclastSibling.id
-            answer = views[_id]
-
-        } else if (k0 === "3rdLast()" || k0 === "3rdLastSibling()") {
-
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            var element = _o.element
-            // if (_o.__templated__ || _o.link) element = views[o.parent].element
-            var thirdlastSibling = element.parentNode.children[element.parentNode.children.length - 3]
-            var _id = thirdlastSibling.id
-            answer = views[_id]
+            if (!o.__view__) return
+            var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
+            if (!isNumber(nth)) return
+            return views[views[o.__parent__].__childrenRef__.slice(-1 * nth)[0].id]
 
         } else if (k0 === "1stSibling()") {
-
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            var element = _o.element
-            // if (_o.__templated__ || _o.link) element = views[o.parent].element
-            var firstSibling = element.parentNode.children[0]
-            var _id = firstSibling.id
-            answer = views[_id]
+            
+            if (!o.__view__) return o
+            return views[views[o.__parent__].__childrenRef__[0].id]
 
         } else if (k0 === "2ndSibling()") {
+            
+            if (!o.__view__) return o
+            return views[views[o.__parent__].__childrenRef__[1].id]
 
-            var _o, _params = {}
-            if (args[1]) {
+        } else if (k0 === "3rdSibling()") {
+            
+            if (!o.__view__) return o
+            return views[views[o.__parent__].__childrenRef__[2].id]
 
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
+        } else if (k0 === "nthSibling()") {
+            
+            if (!o.__view__) return o
+            var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
+            return views[views[o.__parent__].__childrenRef__[nth - 1].id]
 
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
+        } else if (k0 === "grandChild()") {
+              
+            if (!o.__view__) return
+            return views[views[o.__childrenRef__[0].id].__childrenRef__[0].id]
+            
+        } else if (k0 === "grandChildren()") {
+              
+            if (!o.__view__) return
+            return views[o.__childrenRef__[0].id].__childrenRef__.map(({ id }) => views[id])
+          
+        } else if (k0 === "2ndGrandChildren()") {
+              
+            if (!o.__view__) return
+            return views[o.__childrenRef__[1].id].__childrenRef__.map(({ id }) => views[id])
+          
+        } else if (k0 === "3rdGrandChildren()") {
+              
+            if (!o.__view__) return
+            return views[o.__childrenRef__[2].id].__childrenRef__.map(({ id }) => views[id])
+          
+        } else if (k0 === "prev()") {
 
-            var element = _o.element
-            // if (_o.__templated__ || _o.link) element = views[o.parent].element
-            var secondSibling = element.parentNode.children[1]
-            var _id = secondSibling.id
-            answer = views[_id]
-
-        } else if (k0 === "prev()" || k0 === "prevSibling()" || k0 === "1stPrev()") {
-
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            var element, _el = _o.element
-            // if (_o.__templated__ || _o.link) _el = views[_o.parent]
-
-            if (!_el) return
-            if (_el.nodeType === Node.ELEMENT_NODE) element = _el
-            else if (_el) element = _el.element
-            else return
-
-            var previousSibling = element.previousSibling
-            if (!previousSibling) return
-
-            var _id = previousSibling.id
-            answer = views[_id]
+            return nthPrev({ _window, nth: 1, o })
 
         } else if (k0 === "2ndPrev()") {
 
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            var _element, _el = _o.element, previousSibling
-            // if (_o.__templated__ || _o.link) _el = views[_o.parent]
-
-            if (!_el) return
-            if (_el.nodeType === Node.ELEMENT_NODE) _element = _el
-            else if (_el) _element = _el.element
-            else return
-
-            if (_element.previousSibling && _element.previousSibling.previousSibling)
-                previousSibling = _element.previousSibling.previousSibling
-
-            if (!previousSibling) return
-            var _id = previousSibling.id
-            return views[_id]
+            return nthPrev({ _window, nth: 2, o })
 
         } else if (k0 === "3rdPrev()") {
 
-            var _o, _params = {}
-            if (args[1]) {
+            return nthPrev({ _window, nth: 3, o })
 
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
+        } else if (k0 === "nthPrev()") {
 
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
+            if (!o.__view__) return
+            var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
+            return nthPrev({ _window, nth, o })
 
-            var _element, _el = _o.element, previousSibling
-            // if (_o.__templated__ || _o.link) _el = views[_o.parent]
+        } else if (k0 === "1stChild()" || k0 === "child()") {
+            
+            if (!o.__view__ || !o.__childrenRef__[0]) return
+            return views[o.__childrenRef__[0].id]
 
-            if (!_el) return
-            if (_el.nodeType === Node.ELEMENT_NODE) _element = _el
-            else if (_el) _element = _el.element
-            else return
+        } else if (k0 === "2ndChild()") {
+            
+            if (!o.__view__ || !o.__childrenRef__[1]) return
+            return views[o.__childrenRef__[1].id]
 
-            if (_element.previousSibling && _element.previousSibling.previousSibling && _element.previousSibling.previousSibling.previousSibling)
-                previousSibling = _element.previousSibling.previousSibling.previousSibling
+        } else if (k0 === "3rdChild()") {
+            
+            if (!o.__view__ || !o.__childrenRef__[2]) return
+            return views[o.__childrenRef__[2].id]
 
-            if (!previousSibling) return
-            var _id = previousSibling.id
-            return views[_id]
+        } else if (k0 === "nthChild()") {
 
-        } else if (k0 === "1stChild()" || k0 === "child()") {// o could be a string or element or view
+            if (!o.__view__) return
+            var nth = toValue({ _window, __, value: args[1], e, id, stack, lookupActions })
+            if (!isNumber(nth)) return
+            if (!o.__childrenRef__[nth - 1]) return
+            return views[o.__childrenRef__[nth - 1].id]
 
-            var _o, _params = {}
-            if (args[1]) {
+        } else if (k0 === "3rdLastChild()") {
+            
+            if (!o.__view__) return
+            return views[o.__childrenRef__.slice(-3)[0].id]
 
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
+        } else if (k0 === "2ndLastChild()") {
+            
+            if (!o.__view__) return
+            return views[o.__childrenRef__.slice(-2)[0].id]
 
-            } else _o = o
+        } else if (k0 === "lastChild()") {
+            
+            if (!o.__view__) return
+            return views[o.__childrenRef__.slice(-1)[0].id]
 
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
-
-            if (!_o.element) return
-            if (!_o.element.children[0]) return
-            var _id = _o.element.children[0].id
-
-            if (views[_id]) answer = views[_id]
-            else answer = views[_id] = { id: _id, element: _o.element.children[0] }
-
-        } else if (k0 === "grandChild()") {
-
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
-
-            if (!_o.element) return
-            if (!_o.element.children[0] && !_o.element.children[0].children[0]) return
-            var _id = _o.element.children[0].children[0].id
-
-            if (views[_id]) answer = views[_id]
-            else answer = views[_id] = { id: _id, element: _o.element.children[0].children[0] }
-
-        } else if (k0 === "grandChildren()") {
-
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
-
-            if (!_o.element) return
-            if (!_o.element.children[0] && !_o.element.children[0].children[0]) return
-            var _children = [..._o.element.children[0].children]
-
-            var _views = []
-            _children.map(child => {
-                _views.push(views[child.id])
-            })
-
-            answer = _views
-
-        } else if (k0 === "2ndChild()") {// o could be a string or element or view
-
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
-
-            if (!_o.element) return
-            if (!_o.element.children[1]) return
-            var _id = _o.element.children[1].id
-
-            if (views[_id]) answer = views[_id]
-            else answer = views[_id] = { id: _id, element: _o.element.children[1] }
-
-        } else if (k0 === "3rdChild()") {// o could be a string or element or view
-
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
-
-            if (!_o.element) return
-            if (!_o.element.children[2]) return
-            var _id = _o.element.children[2].id
-
-            if (views[_id]) answer = views[_id]
-            else answer = views[_id] = { id: _id, element: _o.element.children[2] }
-
-        } else if (k0 === "3rdLastChild()") { // o could be a string or element or view
-
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
-
-            if (!_o.element) return
-            if (!_o.element.children[_o.element.children.length - 3]) return
-            var _id = _o.element.children[_o.element.children.length - 3].id
-
-            if (views[_id]) answer = views[_id]
-            else answer = views[_id] = { id: _id, element: _o.element.children[_o.element.children.length - 3] }
-
-        } else if (k0 === "2ndLastChild()") { // o could be a string or element or view
-
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
-
-            if (!_o.element) return
-            if (!_o.element.children[_o.element.children.length - 2]) return
-            var _id = _o.element.children[_o.element.children.length - 2].id
-
-            answer = views[_id]
-
-        } else if (k0 === "lastChild()") {  // o could be a string or element or view
-
-            var _o, _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-            else if (_o.nodeType === Node.ELEMENT_NODE) _o = views[_o.id]
-
-            if (!_o.element) return
-            if (!_o.element.children[_o.element.children.length - 1]) return
-            var _id = _o.element.children[_o.element.children.length - 1].id
-
-            answer = views[_id]
+        } else if (k0 === "nthLastChild()") {
+            
+            if (!o.__view__) return
+            var nth = toValue({ _window, __, value: args[1], e, id })
+            if (!isNumber(nth)) return
+            return views[o.__childrenRef__.slice(-1 * nth)[0].id]
 
         } else if (k0 === "children()") {
+            
+            if (!o.__view__) return
+            return o.__childrenRef__.map(({ id }) => views[id])
 
-            var _o, _params = {}
-            if (args[1]) {
+        } else if (k0 === "lastEl()") {
+            return o[o.length - 1]
+        } else if (k0 === "2ndLastEl()") {
+            return o[o.length - 2]
+        } else if (k0 === "3rdLastEl()") {
+            return o[o.length - 3]
+        } else if (k0 === "nthLastEl()") {
+            var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
+            return o[o.length - nth]
+        } else if (k0 === "name()") {
 
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
+            var name = toValue({ _window, id, e, object, value: args[1], __ })
+            if (name === o.__name__) return o
+            var children = getDeepChildren({ _window, id: o.id })
+            return children.find(view => view.__name__ === name)
 
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
+        } else if (k0 === "names()") {
 
-            if (!_o.element) return
-            answer = [..._o.element.children].map(el => {
-
-                var _id = el.id, _view = views[_id]
-                if (!_view) return
-
-                if (_view.component === "Input") {
-
-                    _id = (_view).element.getElementsByTagName("INPUT")[0].id
-                    return _view
-
-                } else return _view
-            })
+            var name = toValue({ _window, id, e, object, value: args[1], __ })
+            var children = getDeepChildren({ _window, id: o.id })
+            return children.filter(view => view.__name__ === name)
 
         } else if (k0 === "display()") {
 
-            var _i
-            if (typeof o === "object") _id = o.id
-            else if (typeof o === "string") _id = o
-
-            if (args[1]) {
-                var _o = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-                if (typeof _o === "object") _id = _o.id
-                else if (typeof _o === "string") _id = _o
-            }
-
-            toParam({ req, res, _window, lookupActions, stack, id: _id, e, __, data: `style().display=flex` })
+            if (!o.__view__) return
+            o.__element__.style.display = "flex"
 
         } else if (k0 === "hide()") {
+            
+            if (!o.__view__) return
+            o.__element__.style.display = "none"
 
-            var _i
-            if (typeof o === "object") _id = o.id
-            else if (typeof o === "string") _id = o
+        } else if (k0 === "style()") {
 
-            if (args[1]) {
-                var _o = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-                if (typeof _o === "object") _id = _o.id
-                else if (typeof _o === "string") _id = _o
+            if (!o.__view__) return
+            if (!args[1]) {
+                if (!o.__element__) return o.style
+                return o.__element__.style
             }
 
-            toParam({ req, res, _window, lookupActions, stack, id: _id, e, __, data: `style().display=none` })
+            var styles = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
 
-        } else if (k0 === "style()") { // style():key || style():[key=value;id|el|view|element]
+            if (Object.keys(styles).length > 0) {
 
-            var _o, _params = {}
-
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                else _params = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-
-                if (!_params) return
-                _o = _params.view || _params.id || _params.el || _params.element// || o
-                if (!_o) {
-                    if (!o.element) _o = views[id]
-                    else _o = o
-                }
-
-            } else {
-
-                if (!o.element) _o = views[id]
-                else _o = o
-            }
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            // get element
-            if (_o.nodeType && _o.nodeType === Node.ELEMENT_NODE) answer = _o.style
-            else if (typeof _o === "object") {
-
-                if (_o.element) answer = _o.element.style
-                else answer = _o.style = _o.style || {}
-            }
-
-            if (Object.keys(_params).length > 0) {
-
-                Object.entries(_params).map(([key, value]) => {
-                    answer[key] = value
+                var obj = o.__element__ ? o.__element__ : o
+                if (obj.__view__) obj.style = obj.style || {}
+                
+                Object.entries(styles).map(([key, value]) => {
+                    obj.style[key] = value
                 })
             }
 
@@ -4682,571 +2691,149 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
             if (typeof o === "object") answer = require("./jsonToBracket").jsonToBracket(o)
 
-        } else if (k0 === "getTagElements()") {
+        } else if (k0 === "inputs()") {
 
-            var _o, _params = {}, _tag_name
-            if (args[1]) {
+            if (!o.__view__) return
+            var inputs = [], textareas = [], editables = []
 
-                if (isParam({ _window, string: args[1] })) {
+            inputs = o.__element__.getElementsByTagName("INPUT")
+            textareas = o.__element__.getElementsByTagName("TEXTAREA")
+            editables = getDeepChildren({ _window, lookupActions, stack, id: o.id }).filter(view => view.editable)
+            if (o.editable) editables.push(o)
 
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
-                    _tag_name = _params.tag || _params.tagName
+            answer = [...inputs, ...textareas, ...editables].map(o => views[o.id])
 
-                } else _tag_name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
+        } else if (k0 === "input()") {
 
-            _tag_name = _tag_name.toUpperCase()
-            if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)
-            else answer = _o.element && _o.element.getElementsByTagName(_tag_name)
+            if (!o.__view__) return
+            var inputs = [], textareas = [], editables = []
 
-        } else if (k0 === "getTagElement()") {
-
-            var _o, _params = {}, _tag_name
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
-                    _tag_name = _params.tag || _params.tagName
-
-                } else _tag_name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            _tag_name = _tag_name.toUpperCase()
-            if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)[0]
-            else answer = _o.element && _o.element.getElementsByTagName(_tag_name)[0]
-
-        } else if (k0 === "getTags()" || k0 === "tags()") {
-
-            var _o, _params = {}, _tag_name
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
-                    _tag_name = _params.tag || _params.tagName
-
-                } else _tag_name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            _tag_name = _tag_name.toUpperCase()
-            if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)
-            else answer = _o.element && _o.element.getElementsByTagName(_tag_name)
-
-            answer = [...answer].map(o => views[o.id])
-
-        } else if (k0 === "getTag()" || k0 === "tag()") {
-
-            var _o, _params = {}, _tag_name
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
-                    _tag_name = _params.tag || _params.tagName
-
-                } else _tag_name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            _tag_name = _tag_name.toUpperCase()
-            if (_o.nodeType === Node.ELEMENT_NODE) answer = _o.getElementsByTagName(_tag_name)[0]
-            else answer = _o.element && _o.element.getElementsByTagName(_tag_name)[0]
-            answer = window.views[answer.id]
-
-        } else if (k0 === "getInputs()" || k0 === "inputs()") {
-
-            var _input, _textarea, _editables, _params = {}, _o
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
-
-                } else _o = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            if (_o.nodeType === Node.ELEMENT_NODE) {
-
-                _input = _o.getElementsByTagName("INPUT")
-                _textarea = _o.getElementsByTagName("TEXTAREA")
-
-            } else {
-
-                _input = _o.element && _o.element.getElementsByTagName("INPUT")
-                _textarea = _o.element && _o.element.getElementsByTagName("TEXTAREA")
-                _editables = getDeepChildren({ _window, lookupActions, stack, id: _o.id }).filter(view => view.editable)
-                if (_o.editable) _editables.push(_o)
-            }
-            answer = [..._input, ..._textarea, ..._editables].map(o => views[o.id])
-
-        } else if (k0 === "getInput()" || k0 === "input()") {
-
-            var _o, __o, _params = {}, _o
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
-
-                } else _o = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            if (_o.nodeType === Node.ELEMENT_NODE) __o = views[_o.id]
-            else __o = _o
-
-            if (!__o) return
-            if (__o.type !== "Input") {
-                if (__o.element.getElementsByTagName("INPUT")[0]) answer = views[__o.element.getElementsByTagName("INPUT")[0].id]
-                else if (__o.element.getElementsByTagName("TEXTAREA")[0]) answer = views[__o.element.getElementsByTagName("TEXTAREA")[0].id]
-                else {
-                    var deepChildren = getDeepChildren({ _window, lookupActions, stack, id: __o.id })
-                    if (__o.editable || deepChildren.find(view => view.editable)) {
-                        answer = __o.editable ? __o : deepChildren.find(view => view.editable)
-                    } else return
-                }
-            } else answer = __o
-
-        } else if (k0 === "getEntry()" || k0 === "entry()") {
-
-            var _o, __o, _params = {}, _o
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
-
-                } else _o = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            if (_o.nodeType === Node.ELEMENT_NODE) __o = views[_o.id]
-            else __o = _o
-
-            if (!__o) return
-            if (__o.type !== "Entry") {
-
-                var _elements, _entry
-                if (__o.element.getElementsByTagName("P")[0]) _elements = [...__o.element.getElementsByTagName("P")]
-                answer = _entry = _elements.find(el => views[el.id].type === "Entry")
-
-            } else answer = __o
-
-        } else if (k0 === "getEntries()" || k0 === "entries()") {
-
-            var _o, __o, _params = {}, _o
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
-
-                } else _o = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            if (_o.nodeType === Node.ELEMENT_NODE) __o = views[_o.id]
-            else __o = _o
-
-            if (!__o) return
-            if (__o.type !== "Entry") {
-
-                var _elements, _entry
-                if (__o.element.getElementsByTagName("P")[0]) _elements = [...__o.element.getElementsByTagName("P")]
-                answer = _entry = _elements.filter(el => views[el.id].type === "Entry")
-
-            } else answer = [__o]
+            inputs = o.__element__.getElementsByTagName("INPUT")
+            textareas = o.__element__.getElementsByTagName("TEXTAREA")
+            editables = getDeepChildren({ _window, lookupActions, stack, id: o.id }).filter(view => view.editable)
+            if (o.editable) editables.push(o)
+            
+            if ([...inputs, ...textareas, ...editables].length === 0) return
+            answer = views[[...inputs, ...textareas, ...editables][0].id]
 
         } else if (k0 === "px()") {
 
-            if (args[1]) {
-                return lengthConverter(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params }))
-            }
+            if (args[1]) return lengthConverter(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
             return lengthConverter(o)
 
         } else if (k0 === "touchable()") {
 
-            if (_window) {
+            if (_window) return global.manifest.device.device.type === "smartphone"
+            else return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0))
 
-                return req.device.type === "phone" || req.device.type === "tablet"
+        } else if (k0 === "className()") {
 
-            } else return (('ontouchstart' in window) ||
-                (navigator.maxTouchPoints > 0) ||
-                (navigator.msMaxTouchPoints > 0));
+            if (!o.__view__) return
+            var className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
 
-        } else if (k0 === "getChildrenByClassName()" || k0 === "className()") {
-
-            var className, _params = {}, _o
-            if (isParam({ _window, string: args[1] })) {
-
-                _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.view || _params.id || _params.el || _params.element || o
-                className = _params.className || _params.class
-
-            } else {
-                className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-                _o = o
-            }
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            if (className) {
-                if (typeof _o === "object" && _o.element) answer = [..._o.element.getElementsByClassName(className)]
-                else if (_o.nodeType === Node.ELEMENT_NODE) answer = [..._o.element.getElementsByClassName(className)]
-            } else answer = []
-
+            answer = [...o.__element__.getElementsByClassName(className)]
             answer = answer.map(o => window.views[o.id])
 
-        } else if (k0 === "name()") {
+        } else if (k0 === "classList()") {
 
-            var _o
-            if (o.__view__) _o = o
-            else _o = views[id]
-            var _name = toValue({ req, res, _window, id, e, __, data: args[1] })
-            if (_o.__name__ === _name) return _o
-            else {
-                var children_ = getDeepChildren({ _window, id: _o.id })
-                return children_.find(child => child.__name__ === _name)
-            }
+            if (!o.__view__) return
+            answer = [...o.__element__.classList]
 
-        } else if (k0 === "names()") {
-
-            var _o
-            if (o.__view__) _o = o
-            else _o = views[id]
-            var _name = toValue({ req, res, _window, id, e, __, data: args[1] }), _views_ = []
-            if (_o.__name__ === _name) _views_.push(_o)
-            else {
-                var children_ = getDeepChildren({ _window, id: _o.id })
-                _views_.push(...children_.filter(child => child.__name__ === _name))
-            }
-            return _views_
-
-        } else if (k0 === "classlist()" || k0 === "classList()") {
-
-            var _params = {}, _o
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
-
-                } else _o = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            if (typeof _o === "object" && _o.element) answer = [..._o.element.classList]
-            else if (_o.nodeType === Node.ELEMENT_NODE) answer = [..._o.classList]
-
-        } else if (k0 === "getElementsByClassName()" || k0 === "class()") {
-
-            // map not loaded yet
-            if (view.status === "Loading") {
-                view.controls = toArray(view.controls)
-                return view.controls.push({
-                    event: `loaded?${key}`
-                })
-            }
-
-            var className, _params = {}
-            if (args[1]) className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-
-            if (className && o.element) answer = [...o.element.getElementsByClassName(className)]
-            else answer = []
-
-            answer = answer.map(el => views[el.id])
-            if ([...o.element.classList].includes(className)) answer.unshift(o)
-
-        } else if (k0 === "toInteger()") {
-
-            var integer
-            if (args[1]) integer = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            else integer = o
+        } else if (k0 === "toInt()") {
+            
+            if (!isNumber(o)) return
+            var integer = o
             answer = Math.round(toNumber(integer))
 
+        } else if (k0 === "clicked()") {
+
+            return global.__clicked__
+
         } else if (k0 === "click()") {
+ 
+            if (!o.__view__) return
 
-            if (_window) return view.controls.push({
+            if (_window) return view.__controls__.push({
                 event: `loaded?${pathJoined}`
             })
 
-            var _params = {}, _o
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
-
-                } else _o = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-
-            } else _o = o.__view__ ? o : views[id]
-
-            if (typeof _o === "string" && views[_o]) views[_o].element.click()
-            else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
-            else if (typeof _o === "object" && _o.element) _o.element.click()
-
-        } else if (k0 === "dblclick()") {
-
-            if (_window) return view.controls.push({
-                event: `loaded?${pathJoined}`
-            })
-
-            var _params = {}, _o
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
-
-                } else _o = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) views[_o].element.click()
-            else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
-            else if (typeof _o === "object" && _o.element) _o.element.click()
-
-            setTimeout(() => {
-                if (typeof _o === "string" && views[_o]) views[_o].element.click()
-                else if (_o.nodeType === Node.ELEMENT_NODE) _o.click()
-                else if (typeof _o === "object" && _o.element) _o.element.click()
-            }, 0)
+            o.__element__.click()
 
         } else if (k0 === "focus()") {
 
-            if (_window) return view.controls.push({
+            if (!o.__view__) return
+
+            if (_window) return view.__controls__.push({
                 event: `loaded?${pathJoined}`
             })
 
-            var _params = {}, _o
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
-
-                } else _o = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            focus({ id: _o.id })
+            focus({ id: o.id })
 
         } else if (k0 === "blur()") { // blur
 
-            if (_window) return view.controls.push({
+            if (!o.__view__) return
+
+            if (_window) return view.__controls__.push({
                 event: `loaded?${pathJoined}`
             })
 
-            var _params = {}, _o
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.id || _params.el || _params.element || o
-
-                } else _o = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
-            _o.element.blur()
-
-        } else if (k0 === "axios()") {
-
-            var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            require("./axios").axios({ id, lookupActions, stack, e, __, params: _params })
-
-        } else if (k0 === "getElementById()") {
-
-            var _params = {}, _od
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.el || _params.element || o
-                    _id = _params.id
-
-                } else _id = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            } else _o = o
-
-            answer = _o.getElementById(_id)
+            o.__element__.blur()
 
         } else if (k0 === "mousedown()") {
 
-            var _params = {}, _o
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.el || _params.id || _params.element || o
-
-                } else {
-                    _id = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-                    _o = views[_id]
-                }
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
+            if (!o.__view__) return
             var mousedownEvent = new Event("mousedown")
-
-            if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(mousedownEvent)
-            else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(mousedownEvent)
+            o.__element__.dispatchEvent(mousedownEvent)
 
         } else if (k0 === "mouseup()") {
-
-            var _params = {}, _o
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.el || _params.id || _params.element || o
-
-                } else {
-                    _id = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-                    _o = views[_id]
-                }
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
+            
+            if (!o.__view__) return
             var mouseupEvent = new Event("mouseup")
-
-            if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(mouseupEvent)
-            else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(mouseupEvent)
+            o.__element__.dispatchEvent(mouseupEvent)
 
         } else if (k0 === "mouseenter()") {
 
-            var _params = {}, _o
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.el || _params.id || _params.element || o
-
-                } else {
-                    _id = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-                    _o = views[_id]
-                }
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
+            if (!o.__view__) return
             var mouseenterEvent = new Event("mouseenter")
-
-            if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(mouseenterEvent)
-            else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(mouseenterEvent)
+            o.__element__.dispatchEvent(mouseenterEvent)
 
         } else if (k0 === "mouseleave()") {
 
-            var _params = {}, _o
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.el || _params.id || _params.element || o
-
-                } else {
-                    _id = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-                    _o = views[_id]
-                }
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
+            if (!o.__view__) return
             var mouseleaveEvent = new Event("mouseleave")
-
-            if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(mouseleaveEvent)
-            else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(mouseleaveEvent)
+            o.__element__.dispatchEvent(mouseleaveEvent)
 
         } else if (k0 === "keyup()") {
 
-            var _params = {}, _o, _id
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.el || _params.id || _params.element || o
-
-                } else {
-                    _id = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-                    _o = views[_id]
-                }
-
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
+            if (!o.__view__) return
             var keyupevent = new Event("keyup")
-
-            if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(keyupevent)
-            else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(keyupevent)
+            o.__element__.dispatchEvent(keyupevent)
 
         } else if (k0 === "keydown()") {
 
-            var _params = {}, _o, _id
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.el || _params.id || _params.element || o
-
-                } else {
-                    _id = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-                    _o = views[_id]
-                }
-
-            } else _o = o
-
-            if (typeof _o === "string" && views[_o]) _o = views[_o]
-
+            if (!o.__view__) return
             var keyupevent = new Event("keydown")
-
-            if (_o.nodeType === Node.ELEMENT_NODE) _o.dispatchEvent(keyupevent)
-            else if (typeof _o === "object" && _o.element) _o.element.dispatchEvent(keyupevent)
+            o.__element__.dispatchEvent(keyupevent)
 
         } else if (k0 === "device()") {
 
-            answer = global.manifest.device.type
+            answer = global.manifest.device.device
 
-        } else if (k0 === "mobile()" || k0 === "phone()") {
+        } else if (k0 === "mobile()") {
 
-            answer = global.manifest.device.type === "phone"
+            answer = global.manifest.device.device.type === "smartphone"
 
         } else if (k0 === "desktop()") {
 
-            answer = global.manifest.device.type === "desktop"
+            answer = global.manifest.device.device.type === "desktop"
 
         } else if (k0 === "tablet()") {
 
-            answer = global.manifest.device.type === "tablet"
+            answer = global.manifest.device.device.type === "tablet"
+
+        } else if (k0 === "stack()") {
+
+            answer = stack
 
         } else if (k0 === "installApp()") {
 
@@ -5259,420 +2846,157 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
             installApp()
 
-        } else if (k0 === "clearTimeout()" || k0 === "clearTimer()") {
+        } else if (k0 === "clearTimer()") {
 
-            var _params = {}, _o, _timer
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.el || _params.id || _params.element || o
-                    _timer = _params.timer
-
-                } else {
-                    return args.slice(1).map(arg => {
-
-                        _timer = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg, params })
-                        clearTimeout(_timer)
-                    })
-                }
-            } else _timer = o
-
-            clearTimeout(_timer)
+            answer = clearTimeout(o)
 
         } else if (k0 === "clearInterval()") {
 
-            var _params = {}, _onterval
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    _o = _params.view || _params.el || _params.id || _params.element || o
-                    _interval = _params.interval
-
-                } else {
-                    return args.slice(1).map(arg => {
-
-                        _timer = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg, params })
-                        clearInterval(_timer)
-                    })
-                }
-            } else _interval = o
-
-            answer = clearInterval(_interval)
+            answer = clearInterval(o)
 
         } else if (k0 === "interval()") {
 
+            if (!o.__view__) return
             if (!isNaN(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))) { // interval():params:timer
 
-                var _timer = parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))
+                var timer = parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))
                 var myFn = () => toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], mount: true })
-                answer = setInterval(myFn, _timer)
-
-            } else if (isParam({ _window, string: args[1] }) && !args[2]) { // interval():[params;timer]
-
-                var _params
-                _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], mount: true })
-                var myFn = () => toValue({ req, res, _window, lookupActions, stack, id, data: _params.params || _params.parameters, __, e })
-                answer = setInterval(myFn, _params.timer)
+                answer = setInterval(myFn, timer)
             }
-
-            if (o.type && o.id) o[generate() + "-timer"] = answer
 
         } else if (k0 === "repeat()") {
 
-            var _data_ = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
+            var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
             var times = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
             var loop = []
             for (var i = 0; i < times; i++) {
-                loop.push(_data_)
+                loop.push(item)
             }
             return loop
 
-        } else if (k0 === "timer()" || k0 === "setTimeout()") {
+        } else if (k0 === "timer()") { // timer():params:timer:repeats
 
-            // timer():params:timer:repeats
-            var _timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })) : 0
-            var _repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object })) : false
-            var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object, toView }) }
+            var timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })) : 0
+            var repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object })) : false
+            var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object, toView, mount }) }
 
-            if (typeof _repeats === "boolean") {
+            if (typeof repeats === "boolean") {
 
-                if (_repeats === true) answer = setInterval(myFn, _timer)
-                else if (_repeats === false) answer = setTimeout(myFn, _timer)
+                if (repeats === true) answer = setInterval(myFn, timer)
+                else if (repeats === false) answer = setTimeout(myFn, timer)
 
-            } else if (typeof _repeats === "number") {
+            } else if (typeof repeats === "number") {
 
                 answer = []
-                answer.push(setTimeout(myFn, _timer))
-                if (_repeats > 1) {
-                    for (let index = 0; index < _repeats; index++) {
-                        answer.push(setTimeout(myFn, _timer))
+                answer.push(setTimeout(myFn, timer))
+                if (repeats > 1) {
+                    for (let index = 0; index < repeats; index++) {
+                        answer.push(setTimeout(myFn, timer))
                     }
                 }
             }
 
-            if (o.__view__) toArray(answer).map(timer => o[generate() + "-timer"] = timer)
+            if (o.__view__) toArray(answer).map(timer => o.__timers__.push(timer))
 
-        } /*else if (k0 === "path()") {
-
-            var _path = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            if (typeof _path === "string") _path = _path.split(".")
-            _path = [..._path, ...path.slice(i + 1)]
-            answer = reducer({ req, res, _window, lookupActions, stack, id, path: _path, value, key, object: o, __, e })
-            
-        } */else if (k0 === "pop()") {
-
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            else _o = o
-
-            _o.pop()
-            answer = _o
-
-        } else if (k0 === "shift()") {
-
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            else _o = o
-
-            _o.shift()
-            answer = _o
-
-        } else if (k0 === "slice()") { // slice by text or slice by number
+        } else if (k0 === "slice()") { // slice by text or by number
 
             if (!Array.isArray(o) && typeof o !== "string" && typeof o !== "number") return
-            var _start, _end, _params
 
-            if (isParam({ _window, string: args[1] })) {
+            var start = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object })
+            var end = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[2], __, object })
 
-                _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _o = _params.object || _params.map || o
-                _start = _params.start
-                _end = _params.end
+            if (end !== undefined) {
 
-            } else {
+                if (!isNaN(end)) {
 
-                _start = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object })
-                _end = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[2], __, object })
-            }
-
-            if (_end !== undefined) {
-
-                if (!isNaN(_end)) {
-
-                    if (!isNaN(_start)) answer = o.slice(parseInt(_start), parseInt(_end))
+                    if (!isNaN(start)) answer = o.slice(parseInt(start), parseInt(end))
                     else {
-                        answer = o.split(_start)[1]
-                        answer = answer.slice(0, _end)
+                        answer = o.split(start)[1]
+                        answer = answer.slice(0, end)
                     }
 
                 } else {
 
-                    if (!isNaN(_start)) answer = o.slice(parseInt(_start))
-                    else answer = o.split(_start)[1]
-                    answer = answer.split(_end)[0]
+                    if (!isNaN(start)) answer = o.slice(parseInt(start))
+                    else answer = o.split(start)[1]
+                    answer = answer.split(end)[0]
                 }
 
             } else {
 
-                if (!isNaN(_start)) answer = o.slice(parseInt(_start) || 0)
-                else answer = o.split(_start)[1]
+                if (!isNaN(start)) answer = o.slice(parseInt(start) || 0)
+                else answer = o.split(start)[1]
             }
 
         } else if (k0 === "reduce()") {
 
-            var _params = {}
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+            answer = reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.value !== undefined ? true : key, value: data.value !== undefined ? data.value : value }, e, req, res, __, mount })
+
+        } else if (k0 === "path()") {
+
+            var data = {}
             if (args[1]) {
 
                 if (isParam({ _window, string: args[1] })) {
 
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                    data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
 
-                } else _params.path = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+                } else data.path = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
             }
 
-            answer = reducer({ _window, lookupActions, stack, id, data: _params.path, object: o, e, req, res, __, mount, key: _params.value !== undefined ? true : key, value: _params.value !== undefined ? _params.value : value })
+            if ((key && value !== undefined && lastIndex) || data.value !== undefined) {
 
-        } else if (k0 === "derivations()" || k0 === "path()") {
-
-            var _params = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-
-                } else _params.path = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            }
-
-            _o = _params.object || _params.map || o
-            if (_params.index) return _o.derivations[_params.index]
-
-            if ((key && value !== undefined && lastIndex) || _params.value !== undefined) {
-
-                if (_params.path !== undefined) return toArray(_params.path).reduce((o, k, i) => {
-                    if (i === _params.path.length - 1) return o[k] = _params.value !== undefined ? _params.value : value
+                if (data.path !== undefined) return toArray(data.path).reduce((o, k, i) => {
+                    if (i === data.path.length - 1) return o[k] = data.value !== undefined ? data.value : value
                     else return o[k]
-                }, _o)
+                }, o)
 
-                else return _o.derivations
+                else return o.__dataPath__
 
             } else {
 
-                if (_params.path !== undefined) return toArray(_params.path).reduce((o, k) => o[k], _o)
-                else return _o.derivations
+                if (data.path !== undefined) return toArray(data.path).reduce((o, k) => o[k], o)
+                else return o.__dataPath__
             }
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-            //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        } else if (k0 === "_array" || k0 === "_list") {
-
-            answer = []
-            k.split(":").slice(1).map(el => {
-                el = toValue({ req, res, _window, lookupActions, stack, id, __, e, data: el, params })
-                answer.push(el)
-            })
-
-        } else if (k0 === "_map") {
-
-            answer = {}
-            if (isParam({ _window, string: args[1] })) {
-
-                return args.slice(1).map(arg => reducer({ _window, lookupActions, stack, id, data: arg, object: answer, e, req, res, __, mount }))
-            } else {
-
-                k.split(":").slice(1).map((el, i) => {
-
-                    if (i % 2) return
-                    var f = toValue({ req, res, _window, lookupActions, stack, id, __, e, data: el, params })
-                    var v = toValue({ req, res, _window, lookupActions, stack, id, __, e, data: args[i + 1], params })
-                    if (v !== undefined) answer[f] = v
-                })
-            }
-
-        } else if (k0 === "_semi" || k0 === ";") {
-
-            answer = o + ";"
-            var args = k.split(":").slice(1)
-            if (args[0]) {
-                var _text = toValue({ req, res, _window, lookupActions, stack, id, __, e, data: args.join(":"), params })
-                answer = o = o + _text
-            }
-
-        } else if (k0 === "_quest" || k0 === "?") {
-
-            answer = o + "?"
-            var args = k.split(":").slice(1)
-            if (args[0]) {
-                var _text = toValue({ req, res, _window, lookupActions, stack, id, __, e, data: args.join(":"), params })
-                answer = o = o + _text
-            }
-
-        } else if (k0 === "_dot" || k0 === ".") {
-
-            answer = o + "."
-            var args = k.split(":").slice(1)
-            if (args[0]) {
-                var _text = toValue({ req, res, _window, lookupActions, stack, id, __, e, data: args.join(":"), params })
-                answer = o = o + _text
-            }
-
-        } else if (k0 === "_space" || k0 === " ") {
-
-            answer = o = o + " "
-            var args = k.split(":").slice(1)
-            if (args[0]) {
-                var _text = toValue({ req, res, _window, lookupActions, stack, id, __, e, data: args.join(":"), params })
-                answer = o = o + _text
-            }
-
-        } else if (k0 === "_equal" || k0 === "=") {
-
-            answer = o + "="
-            var args = k.split(":").slice(1)
-            if (args[0]) {
-                var _text = toValue({ req, res, _window, lookupActions, stack, id, __, e, data: args.join(":"), params })
-                answer = o = o + _text
-            }
-
-        } else if (k0 === "_comma" || k0 === ",") {
-
-            answer = o + ","
-            var args = k.split(":").slice(1)
-            if (args[0]) {
-                var _text = toValue({ req, res, _window, lookupActions, stack, id, __, e, data: args.join(":"), params })
-                answer = o = o + _text
-            }
-
+        
         } else if (k0 === "reload()") {
 
             document.location.reload(true)
 
-        } else if (k0 === "same()" || k0 === "isSame()") {
+        } else if (k0 === "contains()") {
 
-            var _next = toValue({ req, res, _window, lookupActions, stack, id: mainId, data: args[1], __, e })
-            if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-                answer = _next === o
+            var first = o, next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            if (!first || !next) return
+            
+            if (typeof first === "string") first = views[first]
+            if (typeof next === "string") next = views[next]
+            
+            if (first.nodeType === Node.ELEMENT_NODE) first = views[first.id]
+            if (next.nodeType === Node.ELEMENT_NODE) next = views[next.id]
 
-        } else if (k0 === "isnotSameNode()" || k0 === "isnotSame()") {
-
-            var _next = toValue({ req, res, _window, lookupActions, stack, id: mainId, data: args[1], __, e }) || {}
-            if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-                answer = _next !== o
-
-        } else if (k0 === "inOrSame()" || k0 === "insideOrSame()") {
-
-            var _next = toValue({ req, res, _window, lookupActions, stack, id: mainId, data: args[1], __, e })
-            if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-                answer = _next.contains(o) || _next === o
-
-        } else if (k0 === "contains()" || k0 === "contain()") {
-
-            var _first, _next = toValue({ req, res, _window, lookupActions, stack, id: mainId, data: args[1], __, e })
-            if (!_next) return
-            if (_next.nodeType === Node.ELEMENT_NODE) { }
-            else if (typeof _next === "object") _next = _next.element
-            else if (typeof _next === "string" && views[_next]) _next = views[_next].element
-
-            if (o.nodeType === Node.ELEMENT_NODE) _first = o
-            else if (typeof o === "object") _first = o.element
-            else if (typeof o === "string" && views[o]) _first = views[o].element
-
-            if (!_first || !_next) return
-            if (_first.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE) {
-                answer = _first.contains(_next)
-                if (!answer) answer = _first.id === _next.id
+            if (!first.__view__ || !next.__view__) return
+            
+            if (first.__element__.nodeType === Node.ELEMENT_NODE && next.__element__.nodeType === Node.ELEMENT_NODE) {
+                answer = first.__element__.contains(next.__element__)
+                if (!answer) answer = first.__element__.id === next.__element__.id
             }
 
-        } else if (k0 === "in()" || k0 === "inside()") {
+        } else if (k0 === "in()") {
 
-            var _next = toValue({ req, res, _window, lookupActions, stack, id: mainId, data: args[1], __, e })
-            if (_next) {
-                if (typeof o === "string" || Array.isArray(o) || typeof o === "number") return answer = _next.includes(o)
-                else if (typeof o === "object") answer = _next[o] !== undefined
-                else if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE) return answer = _next.contains(o)
+            var next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            if (next) {
+                if (typeof o === "string" || Array.isArray(o) || typeof o === "number") return answer = next.includes(o)
+                else if (typeof o === "object") answer = next[o] !== undefined
+                else if (o.nodeType === Node.ELEMENT_NODE && next.nodeType === Node.ELEMENT_NODE) return answer = next.contains(o)
             } else return false
 
-        } else if (k0 === "out()" || k0 === "outside()" || k0 === "isout()" || k0 === "isoutside()") {
+        } else if (k0 === "is()") {
 
-            var _next = toValue({ req, res, _window, lookupActions, stack, id: mainId, data: args[1], __, e })
-            if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-                answer = !_next.contains(o) && _next !== o
-
-        } else if (k0 === "doesnotContain()") {
-
-            var args = k.split(":")
-            var _next = toValue({ req, res, _window, lookupActions, stack, id: mainId, data: args[1], __, e })
-            if (o.nodeType === Node.ELEMENT_NODE && _next.nodeType === Node.ELEMENT_NODE)
-                answer = !o.contains(_next)
-
-        } else if (k0 === "then()") {
-
-            var args = k.split(":").slice(1)
-
-            if (args[0]) {
-                args.map(arg => {
-                    toValue({ req, res, _window, lookupActions, stack, id: mainId, data: arg, __, e })
-                })
-            }
-
-        } else if (k0 === "and()") {
-
-            if (!o) {
-                answer = false
-            } else {
-                var args = k.split(":").slice(1)
-                if (args[0]) {
-                    args.map(arg => {
-                        if (answer) answer = toValue({ req, res, _window, lookupActions, stack, id: mainId, data: arg, __, e })
-                    })
-                }
-            }
-
-        } else if (k0 === "isEqual()" || k0 === "is()") {
-
-            var args = k.split(":")
             var b = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            // console.log(`'${o}'`, `'${b}'`);
             answer = isEqual(o, b)
-            // console.log(answer, o[3] === b[3], o == b);
 
-        } else if (k0 === "greater()" || k0 === "isgreater()" || k0 === "isgreaterthan()" || k0 === "isGreaterThan()") {
-
-            var args = k.split(":")
-            var b = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            answer = parseFloat(o) > parseFloat(b)
-
-        } else if (k0 === "less()" || k0 === "isless()" || k0 === "islessthan()" || k0 === "isLessThan()") {
-
-            var args = k.split(":")
-            var b = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            answer = parseFloat(o) < parseFloat(b)
-
-        } else if (k0 === "isNot()" || k0 === "isNotEqual()" || k0 === "not()" || k0 === "isnot()") {
-
-            var args = k.split(":")
-            var isNot = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            answer = !isEqual(o, isNot)
-
-        } else if (k0 === "isTrue()") {
-
-            answer = o === true
-
-        } else if (k0 === "isFalse()") {
-
-            answer = o === false
-
-        } else if (k0 === "notundefined()" || k0 === "isdefined()") {
-
-            answer = o !== undefined
-
-        } else if (k0 === "opposite()" || k0 === "opp()") {
+        } else if (k0 === "opp()") {
 
             if (typeof o === "number") answer = -1 * o
             else if (typeof o === "boolean") answer = !o
@@ -5681,140 +3005,13 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                 else answer = true
             }
 
-        } else if (k0 === "negative()" || k0 === "neg()") {
+        } else if (k0 === "neg()") {
 
             answer = o < 0 ? o : -o
 
-        } else if (k0 === "positive()" || k0 === "pos()") {
+        } else if (k0 === "pos()") {
 
             answer = o > 0 ? o : o < 0 ? -o : o
-
-        } else if (k0 === "abs()") {
-
-            o = o.toString()
-
-            var isPrice
-            if (o.includes(",")) isPrice = true
-            o = toNumber(o)
-
-            answer = Math.abs(o)
-            if (isPrice) answer = answer.tovieweString()
-
-        } else if (k0 === "dividedBy()" || k0 === "divide()" || k0 === "divided()" || k0 === "divideBy()" || k0 === "/()") {
-
-            var args = k.split(":").slice(1), isPrice
-            answer = o
-            args.map(arg => {
-                var b = toValue({ req, res, _window, lookupActions, stack, id, data: arg, __, e })
-
-                answer = answer === 0 ? answer : (answer || "")
-                b = b === 0 ? b : (b || "")
-                answer = answer.toString()
-                b = b.toString()
-
-                if (answer.includes(",") || b.includes(",")) isPrice = true
-
-                b = toNumber(b)
-                answer = toNumber(answer)
-
-                answer = answer % b === 0 ? answer / b : answer * 1.0 / b
-            })
-            if (isPrice) answer = answer.tovieweString()
-
-        } else if (k0 === "times()" || k0 === "multiplyBy()" || k0 === "multiply()" || k0 === "mult()" || k0 === "x()" || k0 === "*()") {
-
-            var args = k.split(":").slice(1), isPrice
-            answer = o
-            args.map(arg => {
-                var b = toValue({ req, res, _window, lookupActions, stack, id, data: arg, __, e })
-
-                answer = answer === 0 ? answer : (answer || "")
-                b = b === 0 ? b : (b || "")
-                answer = answer.toString()
-                b = b.toString()
-
-                if (answer.includes(",") || b.includes(",")) isPrice = true
-
-                if (typeof b === "number") {
-
-                    b = toNumber(b)
-                    answer = toNumber(answer)
-
-                    answer = answer * b
-
-                } else if (typeof answer !== "number") {
-
-                    var textt = ""
-                    for (var i = 0; i < b; i++) {
-                        textt += answer
-                    }
-                    return textt
-                }
-            })
-            if (isPrice) answer = answer.tovieweString()
-
-        } else if (k0 === "add()" || k0 === "plus()" || k0 === "+()") {
-
-            var args = k.split(":").slice(1), isPrice
-            answer = o
-            args.map(arg => {
-                var b = toValue({ req, res, _window, lookupActions, stack, id, data: arg, __, e })
-
-                answer = answer === 0 ? answer : (answer || "")
-                b = b === 0 ? b : (b || "")
-                answer = answer.toString()
-                b = b.toString()
-                var space = answer.slice(-1) === " " || b.slice(-1) === " "
-
-                if (answer.includes(",") || b.includes(",")) isPrice = true
-
-                b = toNumber(b)
-                answer = toNumber(answer)
-
-                answer = space ? answer + " " + b : answer + b
-            })
-            if (isPrice) answer = answer.tovieweString()
-
-        } else if (k0 === "subs()" || k0 === "minus()" || k0 === "-()") {
-
-            var args = k.split(":").slice(1), isPrice
-            answer = o
-            args.map(arg => {
-
-                var b = toValue({ req, res, _window, lookupActions, stack, id, data: arg, e, __ })
-
-                answer = answer.toString()
-                b = b.toString()
-
-                var isPrice
-                if (answer.includes(",") || b.includes(",")) isPrice = true
-
-                b = toNumber(b)
-                answer = toNumber(answer)
-
-                if (!isNaN(o) && !isNaN(b)) answer = answer - b
-                else answer = answer.split(b)[0] - answer.split(b)[1]
-            })
-
-            if (isPrice) answer = answer.tovieweString()
-
-        } else if (k0 === "mod()") {
-
-            var b = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-
-            /*o = o === 0 ? o : (o || "")
-            b = b === 0 ? b : (b || "")
-            o = o.toString()
-            b = b.toString()
-            
-            var isPrice
-            if (o.includes(",") || b.includes(",")) isPrice = true*/
-
-            b = toNumber(b)
-            o = toNumber(o)
-
-            answer = o % b
-            //if (isPrice) answer = answer.tovieweString()
 
         } else if (k0 === "sum()") {
 
@@ -5822,96 +3019,24 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
         } else if (k0 === "src()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            else _o = o
+            if (!o.__view__) return
 
-            if (typeof _o === "object" && views[_o]) _o = views[_o]
-
-            var __o
-            if (_o.type !== "Image") {
-
-                var imageEl = _o.element.getElementsByTagName("IMG")[0]
-                if (imageEl) __o = views[imageEl.id]
-                else return
-
-            } else __o = _o
-
-            if (__o.element) {
-
-                if (key && value !== undefined) answer = __o.element.src = value
-                else answer = __o.element.src
-
-            } else if (__o.nodeType === Node.ELEMENT_NODE) answer = __o.src = value
-
-        } else if (k0 === "fileReader()") {
-
-            var _files = [], _params = args[1]
-            if (args.length === 2 && e.target && e.target.files) {
-
-                // fileReader():actions
-                _files = [...e.target.files]
-
-            } else {
-
-                // fileReader():file:actions
-                if (isParam({ _window, string: args[1] })) {
-                    _params = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-                    _files = _params.files ? _params.files : (_params.file ? toArray(_params.file) : [])
-                } else _files = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-                _params = args[2]
-            }
-
-            if (!_files || (Array.isArray(_files) && _files.length === 0)) return
-            if (typeof _files !== "object") _files = [_files]
-            _files = [..._files]
-            global.fileReader = []
-            var __key = generate()
-            global.__COUNTER__ = global.__COUNTER__ || {}
-            global.__COUNTER__[__key] = {
-                length: _files.length,
-                count: 0
-            }
-
-            _files.map(file => {
-
-                var reader = new FileReader()
-                reader.onload = (e) => {
-                    global.__COUNTER__[__key].count++;
-                    global.fileReader.push({
-                        readAsDataURL: true,
-                        type: file.type,
-                        lastModified: file.lastModified,
-                        name: file.name,
-                        size: file.size,
-                        file: e.target.result,
-                        url: e.target.result
-                    })
-                    if (global.__COUNTER__[__key].count === global.__COUNTER__[__key].length) {
-                        global.file = global.fileReader[0]
-                        global.files = global.fileReader
-                        console.log(global.files);
-                        toParam({ req, res, _window, lookupActions, stack, id, e, __: [(global.files.length > 1 ? global.files : global.file), ...__], data: _params })
-                    }
-                }
-
-                reader.readAsDataURL(file)
-            })
+            if (lastIndex && key && value !== undefined) answer = o.__element__.src = value
+            else answer = o.__element__.src
 
         } else if (k0 === "clear()") {
 
-            o.element.value = null
+            if (!o.__view__) return
+            o.__element__.value = null
+            o.__element__.text = null
+            o.__element__.files = null
 
         } else if (k0 === "list()") {
 
             answer = toArray(o)
             answer = [...answer]
 
-        } else if (k0 === "json") {
-
-            answer = o + ".json"
-
-        } else if (k0 === "notification()" || k0 === "notify()") {
+        } else if (k0 === "notify()") {
 
             var notify = () => {
                 if (isParam({ _window, string: args[1] })) {
@@ -5921,7 +3046,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
                 } else {
 
-                    var title = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
+                    var title = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
                     new Notification(title || "")
                 }
             }
@@ -5946,10 +3071,6 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                 });
             }
 
-        } else if (k0 === "exists()") {
-
-            answer = o !== undefined ? true : false
-
         } else if (k0 === "alert()") {
 
             var text = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
@@ -5957,64 +3078,29 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
         } else if (k0 === "clone()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            else _o = o
-            answer = clone(_o)
+            answer = clone(o)
 
         } else if (k0 === "override()") {
 
-            var args = k.split(":"), _obj, _o
-            if (args[2]) {
+            var obj1 = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            override(o, obj1)
 
-                _o = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-                _obj = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e })
+        } else if (k0 === "txt()") {
 
-            } else {
-
-                _o = o
-                _obj = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            }
-
-            if (Array.isArray(_o)) {
-
-                if (Array.isArray(_obj)) answer = _o = [..._o, ..._obj]
-                else if (typeof _obj === "object") answer = _o = [..._o, ...Object.values(_obj)]
-
-            } else if (typeof _o === "object") {
-
-                if (typeof _obj === "object") answer = _o = { ..._o, ..._obj }
-                else if (Array.isArray(_obj)) {
-                    var __obj = {}
-                    _obj.map(obj => __obj[obj.id] = obj)
-                    answer = _o = { ..._o, ...__obj }
-                }
-            } else answer = _o = _obj
-
-        } else if (k0 === "text()" || k0 === "val()" || k0 === "txt()") {
-
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            else _o = o
-
+            if (!o.__view__) return
+            
             var el
-            if (typeof _o === "string" && views[_o]) el = views[_o].element
-            else if (_o.nodeType === Node.ELEMENT_NODE) el = _o
-            else if (_o.element) el = _o.element
-
-            var _view
-            if (el) _view = views[el.id]
-
-            if (_view && (_view.__islabel__ || _view.__labeled__) && el && _view.__name__ !== "Input") el = el.getElementsByTagName("INPUT")[0]
-            else if (_view && _view.editable) el = _view.element
+            if ((o.__islabel__ || o.__labeled__) && o.__name__ !== "Input") el = o.__element__.getElementsByTagName("INPUT")[0]
+            else if (views[o.id].__status__ === "Mounted") el = o.__element__
 
             if (value) value = replaceNbsps(value)
 
             if (el) {
-                if (window.views[el.id].__name__ === "Input") {
+
+                if (views[el.id].__name__ === "Input") {
 
                     answer = el.value
-                    if (i === lastIndex && key && value !== undefined && o.element) answer = el.value = value
+                    if (i === lastIndex && key && value !== undefined && o.__element__) answer = el.value = value
                     else if (path[i + 1] === "del()") {
                         breakRequest = i + 1
                         answer = el.value = ""
@@ -6030,90 +3116,47 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                     }
                 }
 
-                if (views[el.id].required) answer = answer.slice(0, -1)
+            } else {
 
-            } else if (view && view.__name__ === "Input") {
-
-                if (i === lastIndex && key && value !== undefined) answer = _o[view.element.value] = value
+                if (i === lastIndex && key && value !== undefined) answer = views[o.id].text = value
                 else if (path[i + 1] === "del()") {
                     breakRequest = i + 1
-                    answer = _o[view.element.value] = ""
+                    answer = views[o.id].text = ""
                 }
-                else return answer = _o[view.element.value]
-
-            } else if (view && view.__name__ !== "Input") {
-
-                if (i === lastIndex && key && value !== undefined) answer = _o[view.element.innerHTML] = value
-                else if (path[i + 1] === "del()") {
-                    breakRequest = i + 1
-                    answer = _o[view.element.innerHTML] = ""
-                }
-                answer = (view.element.textContent === undefined) ? view.element.innerText : view.element.textContent
+                answer = views[o.id].text
             }
 
         } else if (k0 === "min()") {
 
-            var el
-            if (o.nodeType === Node.ELEMENT_NODE) el = o
-            else if (o.element) el = o.element
+            if (!o.__view__) return
 
-            if (el) answer = el.min
-            if (i === lastIndex && key && value !== undefined) el.min = value
+            answer = o.min
+            if (i === lastIndex && key && value !== undefined) o.min = value
 
         } else if (k0 === "max()") {
 
-            var el
-            if (o.nodeType === Node.ELEMENT_NODE) el = o
-            else if (o.element) el = o.element
+            if (!o.__view__) return
 
-            if (el) answer = el.max
-            if (i === lastIndex && key && value !== undefined) el.max = value
+            answer = o.max
+            if (i === lastIndex && key && value !== undefined) o.max = value
 
-        } else if (k0 === "field()") {
+        } else if (k0 === "push()") {
 
-            var fields = k.split(":").slice(1)
-            fields.map((field, i) => {
-                if (i % 2) return
-                var f = toValue({ req, res, _window, lookupActions, stack, id, data: field, __, e })
-                var v = toValue({ req, res, _window, lookupActions, stack, id, data: fields[i + 1], __, e })
-                o[f] = v
-            })
-            answer = o
+            if (!Array.isArray(o)) o = kernel({ req, res, _window, id, data: { path: path.slice(0, i), value: [], key: true, object, _object }, __, e })
 
-        } else if (k0 === "unshift()" || k0 === "pushFirst()" || k0 === "pushStart()") { // push to the begining, push first, push start
+            var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
+            var index = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
 
-            var _item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
-            var _index = 0
-            if (_index === undefined) _index = o.length
+            if (index === undefined) index = o.length || 0
+            
+            if (Array.isArray(item)) {
 
-            if (Array.isArray(_item)) {
-
-                _item.map(_item => {
-                    o.splice(_index, 0, _item)
-                    _index += 1
+                item.map(item => {
+                    o.splice(index, 0, item)
+                    index += 1
                 })
 
-            } else if (Array.isArray(o)) o.splice(_index, 0, _item)
-            answer = o
-
-        } else if (k0.includes("push()")) {
-
-            if (!Array.isArray(o))
-                o = reducer({ req, res, _window, id, data: path.slice(0, i), value: [], key: true, __, e, object: _object })
-
-            var _item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
-            var _index = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
-
-            if (_index === undefined) _index = o.length
-
-            if (Array.isArray(_item)) {
-
-                _item.map(_item => {
-                    o.splice(_index, 0, _item)
-                    _index += 1
-                })
-
-            } else if (Array.isArray(o)) o.splice(_index, 0, _item)
+            } else if (Array.isArray(o)) o.splice(index, 0, item)
 
             answer = o
 
@@ -6127,16 +3170,15 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
         } else if (k0 === "pull()") { // pull by index or by conditions
 
             // if no index pull the last element
-            var _last = 1, _text
-            var _first
-            if (!isParam({ _window, id, string: args[1] })) _first = args[1] !== undefined ? toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack }) : 0
-            if (args[2]) _last = toValue({ _window, id, data: args[2], __, e, object, lookupActions, stack })
+            var lastIndex = 1, firstIndex
+            if (!isParam({ _window, id, string: args[1] })) firstIndex = args[1] !== undefined ? toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack }) : 0
+            if (args[2]) lastIndex = toValue({ _window, id, data: args[2], __, e, object, lookupActions, stack })
 
-            if (typeof _first !== "number") {
+            if (typeof firstIndex !== "number") { // first is a condition
 
-                var _items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __, lookupActions, stack }))
+                var items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __, lookupActions, stack }))
 
-                _items.filter(data => data !== undefined && data !== null).map(_item => {
+                items.filter(data => data !== undefined && data !== null).map(_item => {
                     var _index = o.findIndex(item => isEqual(item, _item))
                     if (_index !== -1) o.splice(_index, 1)
                 })
@@ -6144,14 +3186,14 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                 return answer = o
             }
 
-            o.splice(_first, _last || 1)
+            o.splice(firstIndex, lastIndex || 1)
             answer = o
 
-        } else if (k0 === "pullItem()") { // pull item
+        } else if (k0 === "pullItem()") { // pull by item
 
-            var _item = toValue({ _window, id, data: args[1], __, e, object })
-            var _index = o.findIndex(item => isEqual(item, _item))
-            if (_index !== -1) o.splice(_index, 1)
+            var item = toValue({ _window, id, data: args[1], __, e, object })
+            var index = o.findIndex(_item => isEqual(_item, item))
+            if (index !== -1) o.splice(index, 1)
             answer = o
 
         } else if (k0 === "pullLast()") {
@@ -6160,85 +3202,10 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
             o.splice(o.length - 1, 1)
             answer = o
 
-        } else if (k0 === "findItems()") {
-
-            var _item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            answer = o.filter(item => isEqual(item, _item))
-
-        } else if (k0 === "findItem()") {
-
-            var _item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            answer = o.find(item => isEqual(item, _item))
-
-        } else if (k0 === "findItemIndex()") {
-
-            var _item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            answer = o.findIndex(item => isEqual(item, _item))
-
-        } else if (k0 === "filterItems()") {
-
-            var _items
-
-            if (k[0] === "_") _items = o.filter(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-            else _items = o.filter(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, object: o, req, res, __ }))
-
-            _items.map(_item => {
-                var _index = o.findIndex(item => isEqual(item, _item))
-                if (_index !== -1) o.splice(_index, 1)
-            })
-
-            answer = o
-
-        } else if (k0 === "filterItem()") {
-
-            var _index
-
-            if (k[0] === "_") _index = o.findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-            else _index = o.findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, object: o, req, res, __ }))
-
-            if (_index !== -1) o.splice(_index, 1)
-            answer = o
-
-        } else if (k0 === "splice()") {
-
-            // push at a specific index / splice():value:index
-            var _value = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            var _index = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e })
-            if (_index === undefined) _index = o.length - 1
-            // console.log(clone(o), _valuendex);
-            o.splice(parseInt(_index), 0, _value)
-            answer = o
-
-        } else if (k0 === "remove()" || k0 === "rem()") {
-
-            views.tooltip.element.style.opacity = "0"
-
-            if (args[1] && !isParam({ _window, string: args[1] })) {
-
-                var _id = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-                return remove({ id: _id })
-
-            } else if (args[1] && isParam({ _window, string: args[1] })) {
-
-                var params = toParam({ req, res, _window, lookupActions, stack, e, id, data: args[1], __ })
-                return remove({ id: params.id || o.id, data: params, __ })
-            }
-
-            var _id = typeof o === "string" ? o : o.id
-
+        } else if (k0 === "rem()") {
+            
+            if (!o.__view__) return
             remove({ id: o.id, __ })
-            return true
-
-        } else if (k0 === "scrollTo()") {
-
-            var _x = toValue({ req, res, _window, lookupActions, stack, e, id, data: args[1], __, params })
-            var _y = toValue({ req, res, _window, lookupActions, stack, e, id, data: args[2], __, params })
-            window.scrollTo(_x, _y)
-
-        } else if (k0 === "droplist()") {
-
-            var _params = toParam({ req, res, _window, lookupActions, stack, e, id, data: args[1], __, params })
-            require("./droplist").droplist({ id, e, droplist: _params, __, stack, lookupActions })
 
         } else if (k0 === "keys()") {
 
@@ -6259,101 +3226,55 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
             if (i === lastIndex && value !== undefined && key) answer = o[Object.keys(o)[0]] = value
             else answer = Object.values(o)[0]
 
-        } else if (k0 === "toId()") {
-
-            var checklist = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params }) || []
-            answer = toId({ string: o, checklist })
-
-        } else if (k0 === "generate()" || k0 === "gen()") {
+        } else if (k0 === "gen()") {
 
             if (isParam({ _window, string: args[1] })) {
 
-                _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _params.length = _params.length || _params.len || 5
-                _params.number = _params.number || _params.num
-                answer = generate(_params)
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                data.length = data.length || data.len || 5
+                data.number = data.number || data.num
+                answer = generate(data)
 
             } else {
 
-                var length = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params }) || 5
+                var length = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 5
                 answer = generate({ length })
             }
 
-        } else if (k0 === "includes()" || k0 === "inc()") {
+        } else if (k0 === "inc()") {
 
-            var _item = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            if (typeof o === "string") {
-                answer = o.split(_item).length > 1
-            } else if (Array.isArray(o)) {
-                answer = o.find(item => isEqual(item, _item)) ? true : false
-            }
+            var item = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
 
-        } else if (k0 === "notInclude()" || k0 === "doesnotInclude()") {
-
-            var _include = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            answer = !o.includes(_include)
+            if (typeof o === "string") answer = o.split(item).length > 1
+            else if (Array.isArray(o)) answer = o.find(_item => isEqual(_item, item)) ? true : false
 
         } else if (k0 === "capitalize()") {
 
-            if (isParam({ _window, string: args[1] })) {
-
-                _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                if (_params.all) answer = capitalize(o)
-                else answer = capitalizeFirst(o)
-
-            } else answer = capitalize(o)
+            answer = capitalize(o)
 
         } else if (k0 === "capitalizeFirst()") {
 
             answer = capitalizeFirst(o)
 
-        } else if (k0 === "uncapitalize()") {
-
-            answer = capitalize(o, true)
-
-        } else if (k0 === "uppercase()" || k0 === "toUpperCase()" || k0 === "touppercase()") {
-
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            else _o = o
-            answer = typeof _o === "string" ? _o.toUpperCase() : _o
-
-        } else if (k0 === "lowercase()" || k0 === "toLowerCase()" || k0 === "tolowercase()") {
-
-            answer = o.toLowerCase()
-
-        } else if (k0 === "len()" || k0 === "length()") {
+        } else if (k0 === "len()") {
 
             if (Array.isArray(o)) answer = o.length
             else if (typeof o === "string") answer = o.split("").length
             else if (typeof o === "object") answer = Object.keys(o).length
 
-        } else if (k0 === "promise()") {
-
-            async () => {
-                var _params = await new Promise((res) => {
-                    toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-                })
-                toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __: [_params, ...__] })
-            }
-
-        } else if (k0 === "resolve()") {
-
-            res(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params }))
-
         } else if (k0 === "require()") {
 
-            require(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params }))
+            require(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
 
         } else if (k0 === "new()") {
 
-            var myparams = [], _className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
+            var data = [], className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
             args.slice(1).map(arg => {
-                myparams.push(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg || "", params }))
+                data.push(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg || "" }))
             })
-            if (_className && typeof (new [_className]()) === "object") answer = new [_className](...myparams)
+            if (className && typeof (new [className]()) === "object") answer = new [className](...data)
 
-        } else if (k0 === "today()") {
+        } else if (k0 === "today()" || k0 === "now()") {
 
             answer = new Date()
 
@@ -6368,74 +3289,54 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
             var timeZone = Math.abs(_date.getTimezoneOffset()) * 60 * 1000
             return timeZone
 
-        } else if (k0 === "toClock()") { // dd:hh:mm:ss
+        } else if (k0 === "clock()") { // dd:hh:mm:ss
+            
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+            if (!data.timestamp) data.timestamp = o
 
-            /*
-            if (args[1]) days_ = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            if (args[2]) hours_ = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[2], __ })
-            if (args[3]) mins_ = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[3], __ })
-            if (args[4]) secs_ = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[4], __ })
-            */
-            var _params = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            if (!_params.timestamp) _params.timestamp = o
+            answer = toClock(data)
 
-            answer = toClock(_params)
+        } else if (k0 === "toSimplifiedDate()") {
 
-        } else if (k0 === "toSimplifiedDateAr()") {
+            var data = toParam({ _window, req, res, lookupActions, stack, id, e, data: args[1], __ })
+            answer = toSimplifiedDate({ timestamp: o, lang: data.lang || "en", timer: data.time || false })
 
-            answer = toSimplifiedDate({ timestamp: o, lang: "ar" })
-
-        } else if (k0 === "toSimplifiedDateTimeAr()") {
-
-            answer = toSimplifiedDate({ timestamp: o, lang: "ar", time: true })
-
-        } else if (k0 === "toSimplifiedDate()" || k0 === "toSimplifiedDateEn()") {
-
-            answer = toSimplifiedDate({ timestamp: o, lang: "en" })
-
-        } else if (k0 === "toSimplifiedDateTime()" || k0 === "toSimplifiedDateTimeEn()") {
-
-            answer = toSimplifiedDate({ timestamp: o, lang: "en", time: true })
-
-        } else if (k0 === "ar()" || k0 === "arabic()") {
+        } else if (k0 === "ar()") {
             //
             if (Array.isArray(o)) answer = o.map(o => o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
             else answer = o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d])
 
-        } else if (k0 === "date()" || k0 === "toDate()") {
+        } else if (k0 === "date()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            else _o = o
-
-            if (!isNaN(_o) && typeof _o === "string") _o = parseInt(_o)
-            answer = new Date(_o)
+            var data = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack })
+            if (isNumber(data) && typeof data === "string") data = parseInt(data)
+            answer = new Date(data)
 
         } else if (k0 === "toDateFormat()") { // returns date for input
 
             if (isParam({ _window, string: args[1] })) {
 
-                var _options = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                var format = _options.format, day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var format = data.format, day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
 
                 if (typeof o === "string") {
 
                     if (format.split("/").length > 1) {
 
-                        var _date = o.split("/")
+                        var date = o.split("/")
                         format.split("/").map((format, i) => {
-                            if (format === "dd") day = _date[i]
-                            else if (format === "mm") month = _date[i]
-                            else if (format === "yyyy") year = _date[i]
-                            else if (format === "hh") hour = _date[i]
-                            else if (format === "mm") min = _date[i]
-                            else if (format === "ss") sec = _date[i]
+                            if (format === "dd") day = date[i]
+                            else if (format === "mm") month = date[i]
+                            else if (format === "yyyy") year = date[i]
+                            else if (format === "hh") hour = date[i]
+                            else if (format === "mm") min = date[i]
+                            else if (format === "ss") sec = date[i]
                         })
                     }
 
                     return new Date(year, month, day, hour, min, sec)
 
-                } else if (_options.excel && typeof o === "number") {
+                } else if (data.excel && typeof o === "number") {
 
                     function ExcelDateToJSDate(serial) {
 
@@ -6465,13 +3366,13 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                 var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) || "format1"
 
                 if (!isNaN(o) && typeof o === "string") o = parseInt(o)
-                var _date = new Date(o)
-                var _year = _date.getFullYear()
-                var _month = _date.getMonth() + 1
-                var _day = _date.getDate()
-                var _dayofWeek = _date.getDay()
-                var _hour = _date.getHours()
-                var _mins = _date.getMinutes()
+                var date = new Date(o)
+                var _year = date.getFullYear()
+                var _month = date.getMonth() + 1
+                var _day = date.getDate()
+                var _dayofWeek = date.getDay()
+                var _hour = date.getHours()
+                var _mins = date.getMinutes()
                 var _daysofWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
                 var monthsCode = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
 
@@ -6481,18 +3382,18 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                 else if (format.replace(" ", "") === "format4") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${` | ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}`}`
             }
 
-        } else if (k0 === "toDateInputFormat()" || k0 === "formatDate()") { // returns date for input in a specific format
+        } else if (k0 === "toDateInputFormat()") { // returns date for input in a specific format
 
-            var _params = {}
+            var data = {}
             if (isParam({ _window, string: args[1] })) {
 
-                _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
             } else if (args[1]) {
-                _params = { date: toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) }
-            } else _params = { date: o }
+                data = { date: toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) }
+            } else data = { date: o }
 
-            var format = _params.format || "yyyy-mm-dd"
-            var date = new Date(_params.date || o)
+            var format = data.format || "yyyy-mm-dd"
+            var date = new Date(data.date || o)
             if (!date) return
 
             var day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
@@ -6572,51 +3473,29 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                     if (length === 2 && i === 0) newDate += "T"
                 })
 
-            }/* else {
-
-                if (!isNaN(o) && typeof o === "string") o = parseInt(o)
-                var _date = new Date(o)
-                var _year = _date.getFullYear()
-                var _month = _date.getMonth() + 1
-                var _day = _date.getDate()
-                var _hour = _date.getHours() || 0
-                var _min = _date.getMinutes() || 0
-                
-                // T${_hour.toString().length === 1 ? `0${_hour}` :_hour}:${_min.toString().length === 1 ? `0${_min}` :_min}
-                return `${_year}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
-            }*/
+            }
 
             return newDate
 
-        } else if (k0 === "toUTCString()") {
-
-            if (!isNaN(o) && (parseFloat(o) + "").length === 13) o = new Date(parseFloat(o))
-            answer = o.toUTCString()
-
         } else if (k0 === "getGeoLocation") {
 
-            navigator.geolocation.getCurrentPosition((position) => { console.log(position); global.geolocation = position })
+            navigator.geolocation.getCurrentPosition((position) => { answer = position })
 
         } else if (k0 === "counter()") {
 
-            var _options = {}
-            if (isParam({ _window, string: args[1] })) _options = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            else _options = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+            var data = {}
+            if (isParam({ _window, string: args[1] })) data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
 
-            _options.counter = _options.counter || _options.start || _options.count || 0
-            _options.length = _options.length || _options.len || _options.maxLength || 0
-            _options.end = _options.end || _options.max || _options.maximum || 999999999999
-            //_options.timer = _options.timer || (new Date(_date.setHours(0,0,0,0))).getTime()
+            data.counter = data.counter || data.start || data.count || 0
+            data.length = data.length || data.len || data.maxLength || 0
+            data.end = data.end || data.max || data.maximum || 999999999999
 
-            answer = require("./counter").counter({ ..._options })
+            answer = require("./counter").counter({ ...data })
 
         } else if (k0 === "time()") {
 
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1] || "", __ })
-            else _o = o
-
-            if (parseInt(_o)) {
+            if (isNumber(o)) {
 
                 var _1Day = 24 * 60 * 60 * 1000, _1Hr = 60 * 60 * 1000, _1Min = 60 * 1000
                 o = parseInt(o)
@@ -6633,155 +3512,130 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                 answer = _days + ":" + _hrs + ":" + _mins
             }
 
-        } else if (k0 === "setTime()") {
+        } else if (k0 === "timestamp()") {
+            
+            if (o instanceof Date) answer = o.getTime()
+            else if (o.length === 5 && o.split(":").length === 2) {
 
-            answer = new Date().setTime(o)
-
-        } else if (k0 === "getTime()" || k0 === "timestamp()") {
-
-            var _o
-            if (args[1]) _o = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1] || "", __ })
-            else _o = o
-
-            if (_o instanceof Date) answer = _o.getTime()
-            else if (_o.length === 5 && _o.split(":").length === 2) {
-
-                var _hrs = parseInt(_o.split(":")[0]) * 60 * 60 * 1000
-                var _mins = parseInt(_o.split(":")[1]) * 60 * 1000
+                var _hrs = parseInt(o.split(":")[0]) * 60 * 60 * 1000
+                var _mins = parseInt(o.split(":")[1]) * 60 * 1000
                 answer = _hrs + _mins
 
-            } else if (_o.length === 8 && _o.split(":").length === 3) {
+            } else if (o.length === 8 && o.split(":").length === 3) {
 
-                var _days = parseInt(_o.split(":")[0]) * 24 * 60 * 60 * 1000
-                var _hrs = parseInt(_o.split(":")[1]) * 60 * 60 * 1000
-                var _mins = parseInt(_o.split(":")[2]) * 60 * 1000
+                var _days = parseInt(o.split(":")[0]) * 24 * 60 * 60 * 1000
+                var _hrs = parseInt(o.split(":")[1]) * 60 * 60 * 1000
+                var _mins = parseInt(o.split(":")[2]) * 60 * 1000
                 answer = _days + _hrs + _mins
 
             } else {
 
-                _o = new Date(_o)
-                if (_o.getTime()) return answer = _o.getTime()
-                _o = new Date()
-                answer = _o.getTime()
+                o = new Date(o)
+                if (o.getTime()) return answer = o.getTime()
+                o = new Date()
+                answer = o.getTime()
             }
 
         } else if (k0 === "getDateTime()") {
 
-            answer = getDateTime(o)
+            var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+            answer = getDateTime(o, format)
 
         } else if (k0 === "getDaysInMonth()") {
 
-            answer = getDaysInMonth(o)
+            if (o instanceof Date) answer = new Date(o.getFullYear(), o.getMonth() + 1, 0).getDate()
 
         } else if (k0 === "1MonthLater()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
+            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
 
-            var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
-            var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
-            answer = new Date(_date.setYear(year)).setMonth(month, _date.getDays())
+            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
 
         } else if (k0 === "2MonthLater()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
-
-            var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
-            var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
+            var date = o instanceof Date ? o : new Date()
+            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
             month = month + 1 > 11 ? 1 : month + 1
             year = month === 1 ? year + 1 : year
-            answer = new Date(_date.setYear(year)).setMonth(month, _date.getDays())
+
+            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
 
         } else if (k0 === "3MonthLater()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
-            var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
+            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
             month = month + 1 > 11 ? 1 : month + 1
             year = month === 1 ? year + 1 : year
             month = month + 1 > 11 ? 1 : month + 1
             year = month === 1 ? year + 1 : year
-            answer = new Date(_date.setYear(year)).setMonth(month, _date.getDays())
+            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
 
         } else if (k0 === "1MonthEarlier") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
-            var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
-            answer = new Date(_date.setYear(year)).setMonth(month, _date.getDays())
+            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
 
         } else if (k0 === "2MonthEarlier") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
-            var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
+            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
             month = month - 1 < 0 ? 11 : month - 1
             year = month === 11 ? year - 1 : year
-            answer = new Date(_date.setYear(year)).setMonth(month, _date.getDays())
+            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
 
         } else if (k0 === "3MonthEarlier") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
-            var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
+            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
             month = month - 1 < 0 ? 11 : month - 1
             year = month === 11 ? year - 1 : year
             month = month - 1 < 0 ? 11 : month - 1
             year = month === 11 ? year - 1 : year
-            answer = new Date(_date.setYear(year)).setMonth(month, _date.getDays())
+            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
 
-        } else if (k0 === "todayStart()" || k0 === "today()") {
+        } else if (k0 === "todayStart()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            answer = _date.setHours(_hrs, _min, 0, 0)
+            answer = date.setHours(_hrs, _min, 0, 0)
 
         } else if (k0 === "todayEnd()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            answer = _date.setHours(23 + _hrs, 59 + _min, 59, 999)
+            answer = date.setHours(23 + _hrs, 59 + _min, 59, 999)
 
-        } else if (k0 === "monthStart()" || k0 === "month()") {
+        } else if (k0 === "monthStart()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
             var _min = _date.getTimezoneOffset() % 60
             var _hrs = (_date.getTimezoneOffset() / 60) - _min
@@ -6795,251 +3649,243 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
         } else if (k0 === "monthEnd()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            answer = new Date(_date.setMonth(_date.getMonth(), getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+            answer = new Date(date.setMonth(date.getMonth(), getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
         } else if (k0 === "nextMonthStart()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
-            var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+            answer = new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
 
         } else if (k0 === "nextMonthEnd()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
-            var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+            answer = new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
         } else if (k0 === "2ndNextMonthStart()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            var month = o.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
-            var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
+            var month = o.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
             month = month + 1 > 11 ? 1 : month + 1
             year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+            answer = new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
 
         } else if (k0 === "2ndNextMonthEnd()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date
+            if (typeof o.getMonth === 'function') date = o
+            else date = new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            var month = _date.getMonth() + 1 > 11 ? 1 : _date.getMonth() + 1
-            var year = (month === 1 ? _date.getYear() + 1 : _date.getYear()) + 1900
+            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
             month = month + 1 > 11 ? 1 : month + 1
             year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+            answer = new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
         } else if (k0 === "prevMonthStart()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
-            var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+            answer = new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
 
         } else if (k0 === "prevMonthEnd()") {
 
-            var _date
-            if (typeof _date.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
-            var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+            answer = new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
         } else if (k0 === "2ndPrevMonthStart()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
-            var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
+            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
             month = month - 1 < 0 ? 11 : month - 1
             year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+            answer = new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
 
         } else if (k0 === "2ndPrevMonthEnd()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            var month = _date.getMonth() - 1 < 0 ? 11 : _date.getMonth() - 1
-            var year = (month === 11 ? _date.getYear() - 1 : _date.getYear()) + 1900
+            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
             month = month - 1 < 0 ? 11 : month - 1
             year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(_date.setYear(year)).setMonth(month, getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+            answer = new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
-        } else if (k0 === "yearStart()" || k0 === "year()") {
+        } else if (k0 === "yearStart()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            answer = new Date(_date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
+            answer = new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
 
         } else if (k0 === "yearEnd()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date
+            if (typeof o.getMonth === 'function') date = o
+            else date = new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+            answer = new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
         } else if (k0 === "nextYearStart()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            answer = new Date(_date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
+            answer = new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
 
         } else if (k0 === "nextYearEnd()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date
+            if (typeof o.getMonth === 'function') date = o
+            else date = new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+            answer = new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
         } else if (k0 === "prevYearStart()") {
 
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
+            var date = o instanceof Date ? o : new Date()
 
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
 
             if (_hrs < 0) {
                 _hrs = _hrs * -1
                 _min = _min * -1
             }
 
-            answer = new Date(_date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
+            answer = new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
+
+        } else if (k0 === "prevYearEnd()") {
+
+            var date = o instanceof Date ? o : new Date()
+
+            var _min = date.getTimezoneOffset() % 60
+            var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+            if (_hrs < 0) {
+                _hrs = _hrs * -1
+                _min = _min * -1
+            }
+
+            answer = new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
         } else if (k0 === "removeDuplicates()") {
 
@@ -7058,74 +3904,14 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
             removeDuplicates(o);
             return o
 
-        } /*else if (k0 === "duplicate()") {
+        } else if (k0 === "replace()") { // replace():prev:new
 
-            var _id = args[1] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params }) : o.id
-            require("./duplicate").duplicate({ _window, lookupActions, stack, __, id: _id })
-            return true
-
-          } */else if (k0 === "stopWatchers()") {
-
-            var _view
-            if (args[1]) _view = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            else _view = o
-            if (typeof o === "string") o = views[id]
-
-            // clear time out
-            Object.entries(o).map(([k, v]) => {
-
-                if (k.includes("-timer")) clearTimeout(v)
-            })
-
-        } else if (k0 === "prevYearEnd()") {
-
-            var _date
-            if (typeof o.getMonth === 'function') _date = o
-            else _date = new Date()
-
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(_date.setMonth(0, getDaysInMonth(_date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "exist()" || k0 === "exists()") {
-
-            answer = o !== undefined ? true : false
-
-        } /*else if (k0 === "open()") {
-            
-          var _url
-          if (args[1]) _url = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-          else _url = o
-          open(_url)
-          
-        } */else if (k0 === "removeMapping()") {
-
-            if (o.type.slice(0, 1) === "[") {
-                var _type = o.type.slice(1).split("]")[0]
-                o.type = _type + o.type.split("]").slice(1).join("]")
-            }
-            answer = o
-
-        } else if (k0 === "files()") {
-
-            if (e) answer = [...e.target.files]
-
-        } else if (k0 === "replace()") { //replace():prev:new
-
-            if (!Array.isArray(o) && typeof o !== "string") {
-                o = reducer({ req, res, _window, id, data: path.slice(0, i), value: [], key: true, __, e, object: _object })
-            }
+            if (!Array.isArray(o) && typeof o !== "string") o = reducer({ req, res, _window, id, data: { path: path.slice(0, i), value: [], key: true, object: _object }, __, e })
 
             var rec0, rec1
 
-            rec0 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "", params })
-            rec1 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] || "", params })
+            rec0 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
+            rec1 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] || "" })
 
             if (typeof o === "string") {
 
@@ -7140,31 +3926,31 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                 return o
             }
 
-        } else if (k0 === "replaceItem()") {
+        } else if (k0 === "replaceItem()") { // replace by condition
 
             if (!Array.isArray(o)) return
             if (isParam({ _window, string: args[1] })) {
 
-                var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                var _path = _params.path, _data = _params.data
-                var _index = o.findIndex((item, index) => isEqual(reducer({ req, res, _window, lookupActions, stack, id, data: _path || [], value, __: [o, ...__], e, object: item }), reducer({ req, res, _window, lookupActions, stack, id, data: _path || [], value, __: [o, ...__], e, object: _data })))
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var _path = data.path, _data = data.data
+                var _index = o.findIndex((item, index) => isEqual(reducer({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, object: item }, e, __: [o, ...__] }), reducer({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, object: _data }, __: [o, ...__], e })))
                 if (_index >= 0) o[_index] = _data
                 else o.push(_data)
 
             } else if (args[1]) {
 
-                var _data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
+                var data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
 
-                if (typeof o[0] === "object" || (typeof o[0] === "undefined" && typeof _data === "object")) {
+                if (typeof o[0] === "object" || (typeof o[0] === "undefined" && typeof data === "object")) {
 
-                    var _index = o.findIndex(item => item.id === _data.id)
-                    if (_index >= 0) o[_index] = _data
-                    else o.push(_data)
+                    var _index = o.findIndex(item => item.id === data.id)
+                    if (_index >= 0) o[_index] = data
+                    else o.push(data)
 
-                } else if ((typeof o[0] === "undefined" && typeof _data !== "object") || typeof o[0] === "number" || typeof o[0] === "string") {
+                } else if ((typeof o[0] === "undefined" && typeof data !== "object") || typeof o[0] === "number" || typeof o[0] === "string") {
 
-                    var _index = o.findIndex(item => item === _data)
-                    if (_index < 0) o.push(_data)
+                    var _index = o.findIndex(item => item === data)
+                    if (_index < 0) o.push(data)
                 }
             }
 
@@ -7176,14 +3962,14 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                 var _path = _params.path, _data = _params.data.filter(data => data !== undefined && data !== null)
                 toArray(_data).map(_data => {
 
-                    var _index = o.findIndex((item, index) => isEqual(reducer({ req, res, _window, lookupActions, stack, id, data: _path || [], value, __: [o, ...__], e, object: item }), reducer({ req, res, _window, lookupActions, stack, id, data: _path || [], value, __: [o, ...__], e, object: _data })))
+                    var _index = o.findIndex((item, index) => isEqual(reducer({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], value, object: item }, __: [o, ...__], e }), reducer({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], value, object: _data }, __: [o, ...__], e })))
                     if (_index >= 0) o[_index] = _data
                     else o.push(_data)
                 })
 
             } else if (args[1]) {
 
-                var _data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params }).filter(data => data !== undefined && data !== null)
+                var _data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }).filter(data => data !== undefined && data !== null)
                 if (typeof o[0] === "object") {
 
                     toArray(_data).map(_data => {
@@ -7202,58 +3988,6 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                         else o.push(_data)
                     })
                 }
-            }
-
-        } else if (k0 === "findAndReplaceItem()") {
-
-            if (isParam({ _window, string: args[1] })) {
-
-                var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                var _path = _params.path, _data = _params.data
-                var _index = o.findIndex((item, index) => isEqual(reducer({ req, res, _window, lookupActions, stack, id, data: _path || [], value, __: [o, ...__], e, object: item }), reducer({ req, res, _window, lookupActions, stack, id, data: _path || [], value, __: [o, ...__], e, object: _data })))
-                if (_index >= 0) o[_index] = _data
-
-            } else if (args[1]) {
-
-                var _data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-                var _index = o.findIndex(item => item.id === _data.id)
-                if (_index >= 0) o[_index] = _data
-            }
-
-        } else if (k0 === "replaceLast()") {
-
-            var _item = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "", params })
-            if (Array.isArray(o)) {
-
-                o[o.length - 1] = _item
-                return o
-            }
-
-        } else if (k0 === "replaceSecondLast()" || k0 === "replace2ndLast()") {
-
-            var _item = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "", params })
-            if (Array.isArray(o)) {
-
-                o[o.length - 2] = _item
-                return o
-            }
-
-        } else if (k0 === "replaceFirst()" || k0 === "replace1st()") {
-
-            var _item = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "", params })
-            if (Array.isArray(o)) {
-
-                o[0] = _item
-                return o
-            }
-
-        } else if (k0 === "replaceSecond()" || k0 === "replace2nd()") {
-
-            var _item = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "", params })
-            if (Array.isArray(o)) {
-
-                o[1] = _item
-                return o
             }
 
         } else if (k0 === "terminate()") {
@@ -7302,9 +4036,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                     answer = o.flat()
                 } else {
                     //_object = {..._object, ...o}
-                    if (typeof _object === "object") {
-                        Object.entries(o).map(([key, value]) => _object[key] = value)
-                    }
+                    if (typeof _object === "object") Object.entries(o).map(([key, value]) => _object[key] = value)
                     return _object
                 }
             } else return o
@@ -7317,7 +4049,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
             answer = getDeepChildren({ _window, id: o.id })
 
-        } else if (k0.includes("filter()")) {
+        } else if (k0 === "filter()") {
 
             var args = k.split(":").slice(1), isnot
             if (!args[0]) isnot = true
@@ -7325,23 +4057,22 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
             if (isnot) answer = toArray(o).filter(o => o !== "" && o !== undefined && o !== null)
             else args.map(arg => {
 
-                if (k[0] === "_") answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: arg, id, __: [o, ...__], req, res }))
+                if (underScored) answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: arg, id, __: [o, ...__], req, res }))
                 else answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: arg, id, object: o, req, res, __ }))
             })
 
-        } else if (k0.includes("find()")) {
-
-
+        } else if (k0 === "find()") {
+            
             if (i === lastIndex && key && value !== undefined) {
 
-                var _index
-                if (k[0] === "_") _index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-                else _index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
-                if (_index !== undefined && _index !== -1) o[_index] = answer = value
+                var index
+                if (underScored) index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
+                else index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+                if (index !== undefined && index !== -1) o[index] = answer = value
 
             } else {
 
-                if (k[0] === "_") answer = toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
+                if (underScored) answer = toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
                 else answer = toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
             }
 
@@ -7355,82 +4086,92 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
             return answer
 
-        } else if (k0.includes("findIndex()")) {
+        } else if (k0 === "findIndex()") {
 
             if (typeof o !== "object") return
 
-            if (k[0] === "_") answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
+            if (underScored) answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
             else answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
 
-        } else if (k0 === "_()" || k0 === "()") { // map()
+        } else if (k0 === "()") { // map()
 
             var notArray = false
             if (args[1] && args[1].charAt(0) === "@" && args[1].length == 6) args[1] = global.__refs__[args[1]].data
+            if (args[2] && args[2].charAt(0) === "@" && args[2].length == 6) args[2] = global.__refs__[args[2]].data
+
             if (typeof o === "object" && !Array.isArray(o)) notArray = true
 
             stack.loop = true
 
-            if (k0 === "_()") {
+            if (args[1] && underScored) {
 
-                toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: args[1] || [], value, __: [o, ...__], e, object, toView }))
+                toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object, value }, __: [o, ...__], e, toView }))
                 answer = o
 
-            } else {
-                answer = toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: args[1] || [], object: o, value, __, e, toView }))
-            }
+            } else if (args[1]) {
+
+                answer = toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object: o, value }, __, e, toView }))
+            
+            } else if (args[2] && underScored) {
+
+                breakRequest = true
+                var address;
+                ([...toArray(o)]).reverse().map(o => {
+                    // address
+                    address = addresser({ _window, id: childID, stack, type: "function", status: "waiting", action: "loop()", function: "reducer", asynchronous: true, __: [o, ...__], lookupActions, data: { path: args[2] || [], value, object } }).address
+                })
+
+                // address
+                if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+
+            } else if (args[2]) {
+
+                breakRequest = true
+                var address;
+                ([...toArray(o)]).reverse().map(o => {
+                    // address
+                    address = addresser({ _window, id: childID, stack, type: "function", status: "waiting", action: "loop()", function: "reducer", asynchronous: true, __, lookupActions, data: { path: args[2] || [], value, object: o } }).address
+                })
+
+                // address
+                if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+            } 
 
             stack.loop = false
             stack.broke = false
 
             if (notArray) return o
 
-        } else if (k0 === "index()") {
-
-            var element = views[o.parent].element
-            if (!element) answer = o.mapIndex
-            else {
-                var children = [...element.children]
-                var index = children.findIndex(child => child.id === o.id)
-                if (index > -1) answer = index
-                else answer = 0
-            }
-
         } else if (k0 === "html2pdf()") {
 
-            window.devicePixelRatio = 2
-            var _params = {}, _el, once
-            if (isParam({ _window, string: args[1] })) {
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "html2pdf()", mount, object, toView, _object, lookupActions, __, id })
 
-                _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                _el = _params.element || _params.id || _params.view || o
-
-            } else if (args[1]) _el = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            else if (o) _el = o
-
-            var opt = {
-                margin: [0.1, 0.1],
-                filename: _params.name || generate({ length: 20 }),
+            var options = {
+                margin: .25,
+                filename: data.name || generate({ length: 20 }),
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, dpi: 300 },
-                jsPDF: { unit: 'in', format: _params.size || 'A4', orientation: 'portrait' },
-                execludeImages: _params.execludeImages || false
+                html2canvas: { scale: 2, dpi: 300, letterRendering: true },
+                jsPDF: { unit: 'mm', format: data.format || 'a4', orientation: 'portrait' }
             }
 
-            var _await = "", address = { id: generate(), params: { __ } }
-            if (args[2]) {
-                _await = global.__refs__[args[2]].data
-                address = { id: generate(), asynchronous: true, await: _await, action: "html2pdf()", params: { __ } }
-                stack.addresses.unshift(address)
-            }
+            data.view = data.view || o
+            var exporter = new html2pdf(data.view.__element__, options)
 
-            var pages = _params.pages || [_el], _elements = []
-            console.log("here", _params.pages);
-            pages.map(page => {
+            exporter.getPdf(true).then((pdf) => {
+                console.log('pdf file downloaded')
+            })
+
+            /*exporter.getPdf(false).then((pdf) => {
+                console.log('doing something before downloading pdf file');
+                pdf.save();
+              });*/
+            
+            /*pages.map(page => {
 
                 var _element
-                if (typeof page === "object" && page.id) _element = views[page.id].element
+                if (typeof page === "object" && page.id) _element = views[page.id].__element__
                 else if (page.nodeType === Node.ELEMENT_NODE) _element = page
-                else if (typeof page === "string") _element = views[page].element
+                else if (typeof page === "string") _element = views[page].__element__
 
                 _elements.push(_element)
                 var images = [..._element.getElementsByTagName("IMG")]
@@ -7477,18 +4218,15 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                     if (args[2]) require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __: [pdf, ...__] })
                     window.devicePixelRatio = 1
                 })
-            })
-
-            document.getElementById("loader-container").style.display = "none"
-            sleep(10)
+            })*/
 
         } else if (k0 === "share()") {
 
             if (isParam({ _window, string: args[1] })) { // share():[text;title;url;files]
 
-                var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || {}, images = []
-                _params.files = toArray(_params.file || _params.files) || []
-                if (_params.image || _params.images) _params.images = toArray(_params.image || _params.images)
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || {}, images = []
+                data.files = toArray(data.file || data.files) || []
+                if (data.image || data.images) data.images = toArray(data.image || data.images)
 
                 var getFileFromUrl = async (url, name) => {
 
@@ -7496,14 +4234,14 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                     const blob = await response.blob()
                     images.push(new File([blob], 'rick.jpg', { type: blob.type }))
 
-                    if (images.length === _params.images.length)
-                        await navigator.share({ title: _params.title, text: _params.text, url: _params.url, files: images })
+                    if (images.length === data.images.length)
+                        await navigator.share({ title: data.title, text: data.text, url: data.url, files: images })
                 }
 
-                if (_params.images) _params.images.map(async url => getFileFromUrl(url, _params.title))
+                if (data.images) data.images.map(async url => getFileFromUrl(url, data.title))
                 else {
-                    console.log(_params);
-                    navigator.share(_params)
+                    console.log(data);
+                    navigator.share(data)
                 }
 
             } else if (args[1]) { // share():url
@@ -7512,32 +4250,33 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
         } else if (k0 === "loader()") {
 
-            var _params = {}
+            var data = {}
+
             if (isParam({ _window, string: args[1] })) {
 
-                _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                if (_params.hide) _params.show = false
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                if (data.hide) data.show = false
 
             } else {
 
-                if (args[1] === "show") _params.show = true
-                else if (args[1] === "hide") _params.show = false
+                var show = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                if (show === "show") data.show = true
+                else if (show === "hide") data.show = false
             }
 
             var _o
-            if (_params.id) _o = views[_params.id]
-            else if (_params.window) _o = views["root"]
+            if (data.id) _o = views[data.id]
+            else if (data.window) _o = views["root"]
             else _o = o
 
             if (typeof _o !== "object") return
-            if (_o.status === "Loading") {
-                _o.controls = toArray(_o.controls)
-                return _o.controls.push({
+            if (_o.__status__ === "Loading") {
+                return _o.__controls__.push({
                     event: "loaded?" + k
                 })
             }
 
-            if (_params.show) {
+            if (data.show) {
 
                 var lDiv = document.createElement("div")
                 document.body.appendChild(lDiv)
@@ -7560,21 +4299,21 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                 loader.classList.add("loader")
                 lDiv.style.display = "flex"
 
-                if (_params.style) {
-                    Object.entries(_params.style).map(([key, value]) => {
+                if (data.style) {
+                    Object.entries(data.style).map(([key, value]) => {
                         loader.style[key] = value
                     })
                 }
 
-                if (_params.background && _params.background.style) {
-                    Object.entries(_params.background.style).map(([key, value]) => {
+                if (data.background && data.background.style) {
+                    Object.entries(data.background.style).map(([key, value]) => {
                         lDiv.style[key] = value
                     })
                 }
 
                 return sleep(10)
 
-            } else if (_params.show === false) {
+            } else if (data.show === false) {
 
                 var lDiv = document.getElementById(_o.id + "-loader")
                 if (lDiv) lDiv.parentNode.removeChild(lDiv)
@@ -7597,7 +4336,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
             var _price
             if (args[1]) _price = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
             else _price = o
-            answer = parseFloat(_price);//.toLocaleString()
+            answer = parseFloat(_price);
             answer = formatter.format(answer).slice(1)
 
         } else if (k0 === "bool()") {
@@ -7608,60 +4347,21 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
             answer = toNumber(o)
 
-        } else if (k0 === "isNaN()") {
-
-            answer = !isNumber(o)
-
-        } else if (k0 === "isNumber()") {
+        } else if (k0 === "isNum()") {
 
             answer = isNumber(o)
 
         } else if (k0 === "round()") {
 
-            if (!isNaN(o)) {
+            if (isNumber(o)) {
                 var nth = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 2
                 answer = parseFloat(o || 0).toFixed(nth)
             }
 
-        } else if (k0 === "toString()" || k0 === "string()" || k0 === "str()") {
+        } else if (k0 === "str()") {
 
-            if (args[1]) {
-                var number = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                answer = number + ""
-            } else {
-                if (typeof o !== "object") answer = o + ""
-                else answer = toString(o)
-            }
-
-        } else if (k0 === "1stElement()" || k0 === "1stEl()") {
-
-            if (value !== undefined && key && i === lastIndex) answer = o[0] = value
-            answer = o[0]
-
-        } else if (k0 === "2ndElement()" || k0 === "2ndEl()") {
-
-            if (value !== undefined && key && i === lastIndex) answer = o[1] = value
-            answer = o[1]
-
-        } else if (k0 === "3rdElement()" || k0 === "3rdEl()") {
-
-            if (value !== undefined && key && i === lastIndex) answer = o[2] = value
-            answer = o[2]
-
-        } else if (k0 === "3rdLastElement()" || k0 === "3rdLastEl()") {
-
-            if (value !== undefined && key && i === lastIndex) answer = o[o.length - 3] = value
-            answer = o[o.length - 3]
-
-        } else if (k0 === "2ndLastElement()" || k0 === "2ndLastEl()") {
-
-            if (value !== undefined && key && i === lastIndex) answer = o[o.length - 2] = value
-            answer = o[o.length - 2]
-
-        } else if (k0 === "lastElement()" || k0 === "lastEl()") {
-
-            if (value !== undefined && key && i === lastIndex) answer = o[o.length - 1] = value
-            answer = o[o.length - 1]
+            if (typeof o !== "object") answer = o + ""
+            else answer = toString(o)
 
         } else if (k0 === "lastIndex()") {
 
@@ -7671,40 +4371,35 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
             answer = o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
 
-        } else if (k0 === "element()" || k0 === "el()") {
+        } else if (k0 === "2ndLastIndex()") {
 
-            answer = o.element
+            answer = o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
+
+        } else if (k0 === "nthLastIndex()") {
+
+            answer = o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
+
+        } else if (k0 === "el()") {
+
+            answer = o.__element__
+
+        } else if (k0 === "index()") {
+
+            answer = o.__index__
 
         } else if (k0 === "checked()") {
 
-            var _o
-            if (typeof o === "string") _o = views[o]
-            else if (o.nodeType === Node.ELEMENT_NODE) _o = views[o.id]
-            else _o = o
+            if (!o.__view__) return
 
-            if (value !== undefined && key) answer = _o.checked.checked = _o.element.checked = value
-            else answer = _o.checked.checked || _o.element.checked || false
+            if (value !== undefined && key) answer = o.checked.checked = o.__element__.checked = value
+            else answer = o.checked.checked || o.__element__.checked || false
 
         } else if (k0 === "check()") {
 
             breakRequest = true
-            var _o
-            if (typeof o === "string") _o = views[o]
-            else if (o.nodeType === Node.ELEMENT_NODE) _o = views[o.id]
-            else _o = o
+            if (!o.__view__) return
 
-            answer = _o.checked.checked = _o.element.checked = true
-
-        } else if (k0 === "checker()") {
-
-            breakRequest = true
-            var _o
-            if (typeof o === "string") _o = views[o]
-            else if (o.nodeType === Node.ELEMENT_NODE) _o = views[o.id]
-            else _o = o
-
-            if (_o.checked.checked || _o.element.checked) answer = _o.checked.checked = _o.element.checked = false
-            else answer = _o.checked.checked = _o.element.checked = true
+            answer = o.checked.checked = o.__element__.checked = value || false
 
         } else if (k0 === "parseFloat()") {
 
@@ -7724,13 +4419,11 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
         } else if (k0 === "getCookie()") {
 
-            // if (_window) return views.root.controls.push({ event: `loading?${pathJoined}` })
-
             // getCookie():name
             if (isParam({ _window, string: args[1], req, res })) {
 
-                var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                return getCookie({ ..._params, req, res, _window })
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                return getCookie({ ...data, req, res, _window })
             }
 
             var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
@@ -7739,12 +4432,12 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
         } else if (k0 === "eraseCookie()") {
 
-            if (_window) return views.root.controls.push({ event: `loading?${pathJoined}` })
+            if (_window) return views.root.__controls__.push({ event: `loading?${pathJoined}` })
 
             // getCookie():name
             if (isParam({ _window, req, res, string: args[1] })) {
-                var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                return eraseCookie({ ..._params, req, res, _window })
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                return eraseCookie({ ...data, req, res, _window })
             }
             var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
             var _cookie = eraseCookie({ name: _name, req, res, _window })
@@ -7752,7 +4445,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
         } else if (k0 === "setCookie()") {
 
-            if (_window) return views.root.controls.push({ event: `loading?${pathJoined}` })
+            if (_window) return views.root.__controls__.push({ event: `loading?${pathJoined}` })
 
             // X setCookie():value:name:expiry-date X // setCookie():[value;name;expiry]
             var cookies = []
@@ -7760,10 +4453,10 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
                 args.slice(1).map(arg => {
 
-                    var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: arg })
-                    setCookie({ ..._params, req, res, _window })
+                    var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: arg })
+                    setCookie({ ...data, req, res, _window })
 
-                    cookies.push(_params)
+                    cookies.push(data)
                 })
 
             } else {
@@ -7779,24 +4472,14 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
             if (cookies.length === 1) return cookies[0]
             else return cookies
 
-        } else if (path0 === "cookie()") {
+        } else if (k0 === "cookie()") {
 
-            var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
 
-            if (_window && params.method === "post" || params.method === "delete") return views.root.controls.push({ event: `loading?${pathJoined}` })
-            if (params.method === "post") return setCookie({ ..._params, req, res, _window })
-            if (params.method === "delete") return eraseCookie({ ..._params, req, res, _window })
-            if (params.method === "get") return getCookie({ ..._params, req, res, _window })
-
-        } else if (k0 === "split()") {
-
-            var splited = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-            answer = o.split(splited)
-
-        } else if (k0 === "join()") {
-
-            var joiner = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1] || "", __ })
-            answer = o.join(joiner)
+            if (_window && data.method === "post" || data.method === "delete") return views.root.__controls__.push({ event: `loading?${pathJoined}` })
+            if (data.method === "post") return setCookie({ ...data, req, res, _window })
+            if (data.method === "delete") return eraseCookie({ ...data, req, res, _window })
+            if (data.method === "get") return getCookie({ ...data, req, res, _window })
 
         } else if (k0 === "clean()") {
 
@@ -7807,77 +4490,14 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
             var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1] || "", __ })
             answer = colorize({ _window, string: o, ...data })
 
-        } else if (k0 === "route()") {
-
-            if (isParam({ _window, string: args[1] })) {
-
-                var route = toParam({ req, res, _window, id, e, data: args[1] || "", __ })
-                require("./route").route({ _window, lookupActions, stack, req, res, id, route, __ })
-
-            } else {
-
-                // route():page:path
-                var _page = toValue({ req, res, _window, id, e, data: args[1] || "", __ })
-                var _path = toValue({ req, res, _window, id, e, data: args[2] || "", __ })
-                require("./route").route({ _window, lookupActions, stack, id, req, res, route: { path: _path, page: _page }, __ })
-            }
-
-        } else if (k0 === "toggleView()") {
-
-            var toggle = {}
-            if (isParam({ _window, string: args[1] })) {
-
-                toggle = toParam({ req, res, _window, id, e, data: args[1] || "", __ })
-
-            } else toggle = { view: toValue({ req, res, _window, id, e, data: args[1] || "", __ }) }
-
-            require("./toggleView").toggleView({ _window, lookupActions, stack, req, res, toggle, id: o.id, __ })
-
         } else if (k0 === "deepChildren()") {
 
             answer = getDeepChildren({ _window, lookupActions, stack, id: o.id })
 
-        } else if (k0 === "view()") {
-
-            var _o
-            if (typeof o === "object" && o.type && o.id) _o = o
-            else _o = view
-
-            var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            _params.parent = _params.parent || _o.id
-            _params.id = _params.id || generate()
-            if (!_params.type && _params.text) _params.type = _params.type = "Text"
-            views[_params.id] = _params
-            var _view = require("./toHTML")({ _window, lookupActions, stack, id: _params.id })
-            return _view
-
         } else if (k0 === "note()") { // note
 
-            if (isParam({ _window, string: args[1] })) {
-                var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                note({ note: _params })
-            } else {
-                var text = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
-                var type = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2], params })
-                note({ note: { text, type } })
-            }
-            return true
-
-        } else if (k0 === "mininote()") {
-
-            var _text = k.split(":")[1]
-            _text = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: _text, params })
-            var mininoteControls = toCode({ _window, id, string: `():mininote-text.txt()=${_text};clearTimer():[mininote-timer:()];():mininote.style():[opacity=1;transform=scale(1)];mininote-timer:()=timer():[():mininote.style():[opacity=0;transform=scale(0)]]:3000` })
-            toParam({ _window, lookupActions, stack, data: mininoteControls, e, id, req, res, __ })
-            return true
-
-        } else if (k0 === "tooltip()") {
-
-            var _text = k.split(":")[1]
-            _text = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: _text, params })
-            var mininoteControls = toCode({ _window, id, string: `():tooltip-text.txt()=${_text};clearTimer():[tooltip-timer:()];():tooltip.style():[opacity=1;transform=scale(1)];tooltip-timer:()=timer():[():tooltip.style():[opacity=0;transform=scale(0)]]:500` })
-            toParam({ _window, lookupActions, stack, data: mininoteControls, e, id, req, res, __ })
-            return true
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            note({ note: data })
 
         } else if (k0 === "readonly()") {
 
@@ -7886,10 +4506,10 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
             children.map(child => {
 
-                child.element.setAttribute("readOnly", true)
+                child.__element__.setAttribute("readOnly", true)
                 child.readonly = true
 
-                child.element.setAttribute("contenteditable", false)
+                child.__element__.setAttribute("contenteditable", false)
                 child.editable = false
             })
 
@@ -7900,77 +4520,82 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
             children.map(child => {
 
-                child.element.setAttribute("readOnly", false)
+                child.__element__.setAttribute("readOnly", false)
                 child.readonly = false
 
-                child.element.setAttribute("contenteditable", true)
+                child.__element__.setAttribute("contenteditable", true)
                 child.editable = true
             })
 
         } else if (k0 === "range()") {
 
-            var args = k.split(":").slice(1)
-            var _index = 0, _range = []
-            var _startIndex = args[1] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[0], params }) : 0 || 0
-            var _endIndex = args[1] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params }) : toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[0], params })
-            var _steps = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2], params }) || 1
-            var _lang = args[3] || ""
-            _index = _startIndex
-            while (_index <= _endIndex) {
-                if ((_index - _startIndex) % _steps === 0) {
-                    _range.push(_index)
-                    _index += _steps
+            var index = 0
+            var range = []
+            var startIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) : 0 || 0
+            var endIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] }) : toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var steps = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[3] }) || 1
+            var lang = args[4] || ""
+            index = startIndex
+            while (index <= endIndex) {
+                if ((index - startIndex) % steps === 0) {
+                    range.push(index)
+                    index += steps
                 }
             }
-            if (_lang === "ar") _range = _range.map(num => num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
-            answer = _range
+            if (lang === "ar") range = range.map(num => num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
+            answer = range
 
-        } else if (k0 === "wait()") {
+        } else if (k0 === "view()") {
 
-            var _params = { await: args.join(":"), awaiter: `wait():${args.slice(1).map(() => "nothing").join(":")}` }
-            toAwait({ id, e, params: _params, lookupActions })
+            if (!o.__view__) return
+            
+            var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, renderer: true, requesterID: o.id, action: "view()", object, toView, _object, lookupActions, __, id })
+            data.view = data.view || o
+            
+            require("./toView").toView({ _window, __parent__: data.__parent__, id: o.id, e, __, stack, address, lookupActions, data, req, res })
+
+        } else if (k0 === "html()") {
+            
+            if (!o.__view__) return
+            
+            require("./toHTML").toHTML({ _window, id: o.id, e, __, stack, lookupActions, data })
+
+        } else if (k0 === "droplist()") {
+
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, interpreting: true, renderer: true, requesterID: o.id, action: "droplist()", object, toView, _object, lookupActions, __, id })
+            require("./droplist").droplist({ id, e, data, __, stack, address, lookupActions })
+
+        } else if (k0 === "route()") {
+
+            var { address, data } = addresser({ _window, stack, args, interpretByValue: true, asynchronous: true, interpreting: true, renderer: true, requesterID: o.id, action: "route()", object, toView, _object, lookupActions, __, id })
+            if (typeof data === "string") data = { page: data }
+            require("./route").route({ _window, lookupActions, stack, address, id, req, res, route: data, __ })
+
+        } else if (k0 === "toggleView()") {
+
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, interpreting: true, renderer: true, requesterID: o.id, action: "toggleView()", object, toView, _object, lookupActions, __, id })
+            require("./toggleView").toggleView({ _window, lookupActions, stack, address, req, res, toggle: data, id: o.id, __ })
 
         } else if (k0 === "update()") {
 
-            if (_window) return view.controls.push({
-                event: `loaded?${pathJoined}`
-            })
+            if (!o.__view__) return o
 
-            var { address } = addresser({ _window, stack, args, asynchronous: true, interpreting: true, requesterID: o.id, action: "update()", object, toView, _object, lookupActions, __, id })
-            require("./update").update({ _window, lookupActions, stack, req, res, id: o.id, mainId: id, address, __ })
-
-            return true
-
-        } else if (k0 === "updateSelf()") {
-
-            if (_window) return view.controls.push({
-                event: `loaded?${pathJoined}`
-            })
-
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "updateSelf()", object, toView, _object, lookupActions, __, id })
-            require("./updateSelf").updateSelf({ _window, lookupActions, stack, req, res, id: data.id, address, __ })
-            return true
-
-        } else if (k0 === "upload()") {
-
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "upload()", object, toView, _object, lookupActions, __, id })
-            require("./upload")({ _window, lookupActions, stack, req, res, id, e, upload: data, __ })
-                ``
-        } else if (k0 === "confirmEmail()") {
-
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "confirmEmail()", object, toView, _object, lookupActions, __, id })
-            data.store = "confirmEmail"
-            require("./save").save({ id, lookupActions, stack, address, e, __, save: data })
+            var { address, data = {} } = addresser({ _window, stack, args, interpretByValue: true, asynchronous: true, interpreting: true, renderer: true, requesterID: o.id, action: "update()", object, toView, _object, lookupActions, __, id })
+            require("./update").update({ _window, lookupActions, stack, req, res, id, address, __, data: { id: data.id || o.id, ...data } })
 
         } else if (k0 === "insert()") {
 
             if (!o.__view__) return o
 
             // wait address
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, interpreting: true, requesterID: o.id, action: "insert()", toView, _object, lookupActions, __, id })
+            var { address, data = {} } = addresser({ _window, stack, args, asynchronous: true, interpreting: true, renderer: true, requesterID: o.id, action: "insert()", toView, _object, lookupActions, __, id })
+            require("./insert").insert({ id: o.id, insert: data, lookupActions, stack, address, __ })
 
-            insert({ id: o.id, insert: data, lookupActions, stack, address, __ })
-            return true
+        } else if (k0 === "confirmEmail()") {
+
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "confirmEmail()", object, toView, _object, lookupActions, __, id })
+            data.store = "confirmEmail"
+            require("./save").save({ id, lookupActions, stack, address, e, __, save: data })
 
         } else if (k0 === "mail()") {
 
@@ -7990,23 +4615,23 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
         } else if (k0 === "read()") {
 
-            var _params = {}
+            var data = {}
             if (isParam({ _window, string: args[1] }))
-                _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            else _params.file = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            else data.file = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
 
-            _params.files = (_params.file ? toArray(_params.file) : _params.files) || []
+            data.files = (data.file ? toArray(data.file) : data.files) || []
 
-            //_params.files = [..._params.files]
+            //data.files = [...data.files]
             global.fileReader = []
             var __key = generate()
             global.__COUNTER__ = global.__COUNTER__ || {}
             global.__COUNTER__[__key] = {
-                length: _params.files.length,
+                length: data.files.length,
                 count: 0
             };
 
-            ([..._params.files]).map(file => {
+            ([...data.files]).map(file => {
 
                 var reader = new FileReader()
                 reader.onload = (e) => {
@@ -8037,12 +4662,14 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                 }
             })
 
+        } else if (k0 === "upload()") {
+
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "upload()", object, toView, _object, lookupActions, __, id })
+            require("./upload")({ _window, lookupActions, stack, address, req, res, id, e, upload: data, __ })
+                
         } else if (k0 === "search()") {
 
             var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "search()", mount, object, toView, _object, lookupActions, __, id })
-
-            // print collection with action name
-            address.action += " " + data.collection
 
             require("./search").search({ _window, lookupActions, stack, address, id, e, __, req, res, search: data })
             return true
@@ -8051,9 +4678,6 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
             var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "erase()", mount, object, toView, _object, lookupActions, __, id })
 
-            // print collection with action name
-            address.action += " " + data.collection
-
             require("./erase").erase({ _window, lookupActions, stack, address, id, e, __, req, res, erase: data })
             return true
 
@@ -8061,15 +4685,8 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
             var { address, data } = addresser({ _window, stack, args, asynchronous: true, requesterID: o.id, action: "save()", mount, object, toView, _object, lookupActions, __, id })
 
-            // print collection with action name
-            address.action += " " + data.collection
-
             require("./save").save({ _window, lookupActions, stack, address, id, e, __, req, res, save: data })
             return true
-
-        } else if (k0 === "fetch()") {
-
-
 
         } else if (k0 === "send()") {
 
@@ -8092,11 +4709,11 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                 respond = { success: true, message: "Action executed successfully!", data, executionDuration }
             }
 
-            var log = "SEND " + executionDuration
+            var log = stack.logs.length + " SEND " + executionDuration
             stack.logs.push(log)
-
-            console.log(log, respond)
             respond.logs = stack.logs
+
+            stack.terminated = true
 
             res.send(respond)
 
@@ -8105,18 +4722,10 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
             if (!res || res.headersSent) return true
             else return false
 
-        } else if (k0.length === 8 && k0.slice(-2) === "()" && k0.charAt(0) === "@") { // [actions?conditions]():[params]:[stack]
-
-
         } else if (k0 === "setPosition()" || k0 === "position()") {
 
             var position = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-
             return require("./setPosition").setPosition({ position, id: o.id || id, e })
-
-        } else if (k0 === "refresh()") {
-
-
 
         } else if (k0 === "csvToJson()") {
 
@@ -8126,7 +4735,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
         } else if (k0 === "copyToClipBoard()") {
 
             var text
-            if (args[1]) text = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], params })
+            if (args[1]) text = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
             else text = o
 
             if (navigator.clipboard) answer = navigator.clipboard.writeText(text)
@@ -8145,17 +4754,14 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
         } else if (k0 === "addClass()") {
 
             if (!o.__view__) return o
+            var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
+            if (o.__element__) answer = o.__element__.classList.add(_class)
 
-            var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1], params })
+        } else if (k0 === "remClass()") {
 
-            if (o.element) answer = o.element.classList.add(_class)
-
-        } else if (k0 === "removeClass()" || k0 === "remClass()") {
             if (!o.__view__) return o
-
-            var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1], params })
-
-            if (o.element) answer = o.element.classList.remove(_class)
+            var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
+            if (o.__element__) answer = o.__element__.classList.remove(_class)
 
         } else if (k0 === "encodeURI()") {
 
@@ -8165,20 +4771,20 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
             answer = decodeURI(o)
 
-        } else if (k0.includes("()") && typeof o[k0.slice(0, -2)] === "function") {
+        } else if (k0.slice(-2) === "()" && typeof o[k0.slice(0, -2)] === "function") {
 
-            var myparams = []
+            var data = []
             args.slice(1).map(arg => {
-                myparams.push(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg || "" }))
+                data.push(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg || "" }))
             })
 
-            answer = o[k0.slice(0, -2)](...myparams)
+            answer = o[k0.slice(0, -2)](...data)
 
         } else if (k0.slice(-2) === "()") {
 
             if (k0.charAt(0) === "@" && k0.length == 6) k0 = toValue({ req, res, _window, id, e, __, data: k0, object })
 
-            if (k0.charAt(0) === "_") {
+            if (underScored) {
                 answer = toAction({ _window, lookupActions, stack, id, req, res, __: [o, ...__], e, path: [k], path0: k0, condition, mount, toView, object })
             } else {
                 answer = toAction({ _window, lookupActions, stack, id, req, res, __, e, path: [k], path0: k0, condition, mount, toView, object: object || o })
@@ -8193,37 +4799,34 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
 
             o[k0] = o[k0] || {}
 
-            if (toView && events.includes(k0)) {
+            if (mount && events.includes(k0)) {
 
                 if (!o.__view__) return
 
                 var data = global.__refs__["@" + args[1].slice(-5)].data
-                views[id].controls = toArray(views[id].controls)
-
-                return views[id].controls.push({
-                    "event": k0 + (o.id !== id ? (":" + o.id) : "") + "?" + data,
-                    __, lookupActions
-                })
+                
+                if (views[id].__status__ === "Mounted") return require("./event").addEventListener({ event: k0 + "?" + data, id, __, lookupActions, eventID: o.id })
+                else return views[id].__controls__.push({ event: k0 + "?" + data, id, __, lookupActions, eventID: o.id })
             }
 
             args[1] = ((global.__refs__["@" + args[1].slice(-5)] || {}).data || "").split(".")
-            if (args[1]) answer = reducer({ req, res, _window, lookupActions, stack, id, e, key, data: [...args.slice(1).flat(), ...path.slice(i + 1)], object: o[k0], __ })
+            if (args[1]) answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { path: [...args.slice(1).flat(), ...path.slice(i + 1)], object: o[k0], key }, __ })
             else return
 
         } else if (key && value !== undefined && i === lastIndex) {
 
             if (Array.isArray(o)) {
-                if (isNaN(k)) {
+                if (!isNumber(k)) {
                     if (o.length === 0) o.push({})
                     o = o[0]
                 }
             }
-
             answer = o[k] = value
 
         } else if (key && o[k] === undefined && i !== lastIndex) {
 
-            if (!isNaN(path[i + 1]) || (path[i + 1] || "").slice(0, 4) === "_():" || (path[i + 1] || "").slice(0, 3) === "():" || (path[i + 1] || "").includes("find()") || (path[i + 1] || "").includes("filter()")) answer = o[k] = []
+            var path1 = path[i + 1]
+            if (path1 && (isNumber(path1) || path1.slice(0, 3) === "():" || path1.includes("find()") || path1.includes("filter()") || path1.includes("push()"))) answer = o[k] = []
             else {
 
                 if (Array.isArray(o)) {
@@ -8234,21 +4837,8 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: p
                 }
                 answer = o[k] = {}
             }
-
-        } else {
-
-            if (Array.isArray(o)) {
-                if (isNaN(k) && o.length === 0) {
-
-                    if (o.length === 0) o.push({})
-                    o = o[0]
-
-                } else k = parseFloat(k)
-            }
-
-            answer = o[k]
-        }
-
+        } else answer = o[k]
+        
         return answer
 
     }, _object)
@@ -8263,13 +4853,13 @@ const getDeepChildren = ({ _window, id }) => {
     var all = [view]
     if (!view) return []
 
-    if (view.__childrenID__ && view.__childrenID__.length > 0)
-        view.__childrenID__.map(id => {
+    if (view.__childrenRef__.length > 0)
+        view.__childrenRef__.map(({ id }) => {
 
             var _view = views[id]
             if (!_view) return
 
-            if (_view.__childrenID__ && _view.__childrenID__.length > 0)
+            if (_view.__childrenRef__.length > 0)
                 all.push(...getDeepChildren({ _window, id }))
 
             else all.push(_view)
@@ -8285,13 +4875,13 @@ const getDeepChildrenId = ({ _window, id }) => {
     var all = [id]
     if (!view) return []
 
-    if (view.__childrenID__ && view.__childrenID__.length > 0)
-        view.__childrenID__.map(id => {
+    if (view.__childrenRef__.length > 0)
+        view.__childrenRef__.map(({ id }) => {
 
             var _view = views[id]
             if (!_view) return
 
-            if (_view.__childrenID__ && _view.__childrenID__.length > 0)
+            if (_view.__childrenRef__.length > 0)
                 all.push(...getDeepChildrenId({ _window, id }))
 
             else all.push(id)
@@ -8306,9 +4896,9 @@ const getDeepParentId = ({ _window, lookupActions, stack, id }) => {
     var view = views[id]
 
     if (!view) return []
-    if (!view.element.parentNode || view.element.parentNode.nodeName === "BODY") return []
+    if (!view.__element__.parentNode || view.__element__.parentNode.nodeName === "BODY") return []
 
-    var parentId = view.element.parentNode.id
+    var parentId = view.__element__.parentNode.id
     var all = [parentId]
 
     all.push(...getDeepParentId({ _window, lookupActions, stack, id: parentId }))
@@ -8372,157 +4962,696 @@ const toDataURL = url => fetch(url)
 var formatter = new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-});
+})
 
-module.exports = { reducer, getDeepChildren, getDeepChildrenId }
-},{"./actions.json":2,"./addresser":3,"./axios":4,"./capitalize":6,"./clone":8,"./colorize":10,"./cookie":13,"./counter":14,"./csvToJson":18,"./droplist":23,"./erase":25,"./events.json":27,"./exportJson":30,"./focus":33,"./generate":35,"./getCoords":36,"./getDateTime":37,"./getDaysInMonth":38,"./getType":40,"./importJson":41,"./insert":42,"./isCalc":44,"./isEqual":46,"./isParam":48,"./jsonToBracket":51,"./lineInterpreter":54,"./mail":55,"./note":57,"./print":62,"./qr":63,"./remove":68,"./replaceNbsps":69,"./resize":70,"./route":71,"./save":72,"./search":73,"./setPosition":76,"./sort":77,"./toAction":84,"./toApproval":85,"./toArray":86,"./toAwait":87,"./toCSV":88,"./toClock":89,"./toCode":90,"./toExcel":93,"./toHTML":95,"./toId":96,"./toNumber":97,"./toParam":99,"./toPdf":100,"./toSimplifiedDate":101,"./toValue":103,"./toggleView":105,"./update":106,"./updateSelf":107,"./upload":108,"./vcard":109}],66:[function(require,module,exports){
+module.exports = { kernel, getDeepChildren, getDeepChildrenId }
+},{"./addresser":3,"./capitalize":4,"./clone":5,"./colorize":7,"./cookie":8,"./counter":9,"./csvToJson":11,"./decode":14,"./droplist":17,"./erase":18,"./event":19,"./events.json":20,"./exportJson":22,"./focus":23,"./generate":24,"./getCoords":25,"./getDateTime":26,"./getDaysInMonth":27,"./getType":28,"./getView":29,"./importJson":30,"./insert":31,"./isEqual":35,"./isParam":37,"./jsonToBracket":38,"./lineInterpreter":41,"./mail":42,"./merge":43,"./note":44,"./print":45,"./qr":46,"./reducer":48,"./remove":49,"./replaceNbsps":50,"./resize":51,"./route":52,"./save":53,"./search":54,"./setPosition":57,"./sort":58,"./toAction":62,"./toApproval":63,"./toArray":64,"./toAwait":65,"./toCSV":66,"./toClock":67,"./toExcel":71,"./toHTML":73,"./toNumber":74,"./toParam":75,"./toPdf":76,"./toSimplifiedDate":77,"./toValue":79,"./toView":80,"./toggleView":81,"./update":82,"./upload":83,"./vcard":84}],40:[function(require,module,exports){
 const { generate } = require("./generate")
-const { starter } = require("./starter")
-const { toArray } = require("./toArray")
-const { toView } = require("./toView")
-const { clone } = require("./clone")
-const { removeChildren } = require("./update")
+const { toStyle } = require("./toStyle")
 
-const refresh = async ({ id, update = {}, lookupActions, __ }) => {
+module.exports = {
+  labelHandler: ({ _window, tag, id }) => {
 
-  var views = window.views
-  var view = views[id]
-  var timer = update.timer || 0
-  
-  if (!view || !view.element) return
-  var parent = views[view.parent]
-  var index = view.index
+    var views = _window ? _window.views : window.views
+    var view = views[id]
 
-  // children
-  var children = clone(toArray(parent.children[index]))
-  
-  // remove children
-  removeChildren({ id })
+    if (typeof view.label === "string") view.label = { text: view.label }
+    if (!view.container) view.container = {}
 
-  ////// remove view
-  Object.entries(views[id]).map(([k, v]) => {
+    // container
+    var containerId = view.container.id || generate()
+    var container = views[containerId] = {id: containerId, __index__: view.__index__, class: `flex column ${view.container.class || ""}`, style: { gap: ".5rem", ...view.container.style }, parent: view.id}
+    var containerStyle = toStyle({ _window, id: containerId })
+    var containerAtts = Object.entries(view.container.att || view.container.attribute || {}).map(([key, value]) => `${key}='${value}'`).join(" ")
 
-    if (k.includes("-timer")) clearTimeout(v)
-  })
-  delete views[id]
-  ///////
+    // label
+    var labelId = view.label.id || generate()
+    var label = views[labelId] = {id: labelId, __index__: 0, style: { fontSize: "1.3rem", textAlign: "left", ...view.label.style }, parent: containerId}
+    var labelStyles = toStyle({ _window, id: labelId })
+    var labelAtts = Object.entries(view.label.att || view.label.attribute || {}).map(([key, value]) => `${key}='${value}'`).join(" ")
+    var labelTag = `<p ${labelAtts} ${label.editable || label.contenteditable ? "contenteditable ": ""}class='${label.class || ""}' id='${labelId}' style='${labelStyles}' index='0'>${view.label.text||""}</p>`
 
-  var innerHTML = await Promise.all(children.map(async child => {
-
-    var id = child.id || generate()
-    views[id] = child
-    views[id].id = id
-    views[id].index = index
-    views[id].parent = parent.id
-    views[id].style = views[id].style || {}
-    views[id].__viewsPath__ = [...view.__viewsPath__]
-    views[id].style.opacity = "0"
-    if (timer) views[id].style.transition = `opacity ${timer}ms`
+    // view
+    view.__parent__ = containerId
+    view.__index__ = 1
     
-    return await toView({ id, lookupActions, __ })
-
-  }))
-  
-  innerHTML = innerHTML.join("")
-  
-  var childrenNodes = [...parent.element.children]
-  childrenNodes.map((childNode, i) => {
-    var _index = parseInt(childNode.getAttribute("index"))
-    if (_index === index) parent.element.removeChild(childrenNodes[i])
-  })
-  
-  var lDiv = document.createElement("div")
-  document.body.appendChild(lDiv)
-  lDiv.style.position = "absolute"
-  lDiv.style.opacity = "0"
-  lDiv.style.left = -1000
-  lDiv.style.top = -1000
-  lDiv.innerHTML = innerHTML
-  var node = lDiv.children[0]
-
-  parent.element.insertBefore(node, parent.element.children[index])
-  var __ids__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-  __ids__.map(id => starter({ id }))
-  
-  var _children = [...parent.element.children]
-  _children.map(childNode => {
-    var _index = childNode.getAttribute("index")
-    if (_index === index) return childNode
-    else return
-  }).filter(child => child)
-  
-  if (timer) setTimeout(() => _children.map(el => views[el.id].style.opacity = views[el.id].element.style.opacity = "1"), 0)
-  else _children.map(el => views[el.id].style.opacity = views[el.id].element.style.opacity = "1")
-  
-  if (lDiv) {
-    document.body.removeChild(lDiv)
-    lDiv = null
+    return `<div ${containerAtts} ${container.draggable !== undefined ? `draggable='${container.draggable}'` : ''} spellcheck='false' ${container.editable && !container.readonly ? 'contenteditable' : ''} class='${container.class}' id='${containerId}' style='${containerStyle}' index='${container.__index__ || 0}'>${labelTag}${tag}</div>`
   }
 }
+},{"./generate":24,"./toStyle":78}],41:[function(require,module,exports){
+const { toCode } = require("./toCode")
+const { generate } = require("./generate")
+const { isCondition } = require("./isCondition")
+const { executable } = require("./executable")
+const { clone } = require("./clone")
 
-module.exports = {refresh}
-},{"./clone":8,"./generate":35,"./starter":79,"./toArray":86,"./toView":104,"./update":106}],67:[function(require,module,exports){
+const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, action, data: string, req, res, __, mount, condition, dblExecute, toView, object, _object, index = 0, splitter = "?" }) => {
+
+    require("./toParam")
+    require("./toValue")
+    require("./toApproval")
+
+    var global = _window ? _window.global : window.global
+    var view = _window ? _window.views[id] : window.views[id]
+
+    // missing stack or __
+    if (!stack) stack = { addresses: [], returns: [] }
+    if (!__) __ = view.__
+
+    var startTime = (new Date()).getTime(), success = true, data, returnForWaitActionExists = false
+
+    // splitter is for ? or :
+    // index is for using name?params?conditions?elseparams
+
+    var terminator = ({ data, order }) => {
+
+        // remove address of waiter
+        if (address.id) address.interpreting = false
+        
+        if (stack.terminated) return
+
+        if (!address.id) return data
+        
+        // execute waits
+        if (stack.addresses.findIndex(await => await.id === address.id) === 0)
+            require("./toAwait").toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: returnForWaitActionExists ? data.data : undefined })
+        
+        // return data
+        return data
+    }
+
+    if (stack.terminated || stack.broke || stack.returned) return terminator({ data: { success: false, message: `Action terminated!`, executionDuration: 0 }, order: 0 })
+    if (!string) return terminator({ data: { success: true, message: `No action to execute!`, executionDuration: 0 }, order: 1 })
+
+    // push address for waits
+    if (address.id) address.interpreting = true
+
+    // encode
+    string = toCode({ _window, id, string: toCode({ _window, id, string, start: "'" }) })
+
+    // decode
+    if (string.charAt(0) === "@" && string.length === 6) {
+
+        // data is text
+        if (global.__refs__[string].type === "text") 
+            return terminator({ data: { data: global.__refs__[string].data, success: true, message: `No action to execute!`, executionDuration: 0 }, order: 2 })
+        
+        string = global.__refs__[string].data
+    }
+
+    // subparams
+    if (index === 1) {
+
+        // list
+        var substring = string.split(splitter)[0]
+        if (!substring) return terminator({ data: { success: false, message: `Missing name!`, executionDuration: 0 }, order: 3 })
+
+        // decode
+        if (substring.charAt(0) === "@" && substring.length === 6) substring = global.__refs__[substring].data
+
+        // name has subparams => interpret
+        if (substring.includes("?")) {
+
+            var data = lineInterpreter({ lookupActions, stack, id, e, data: substring, index: 1, req, res, __, mount, condition, toView, object, _object })
+            if (data.conditionsNotApplied) return terminator({ data, order: 4 })
+        }
+    }
+
+    var stringList = string.split(splitter)
+    var conditions = stringList[index + 1]
+    var elseParams = stringList[index + 2]
+    string = stringList[index + 0]
+
+    var execute = ({ success, message, string, conditionsNotApplied }) => {
+
+        var actionReturnID = generate(), data
+        stack.returns.unshift({ id: actionReturnID })
+
+        // no params
+        if (!string) message = "No actions to execute!"
+
+        if (!action) {
+            action = "toValue"
+            if (!dblExecute && (condition || isCondition({ _window, string: data }))) action = "toApproval"
+            else if (!dblExecute && mount) action = "toParam"
+        }
+        
+        data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object, _object, toView })
+        
+        if (dblExecute && executable({ _window, string: data }))
+            data = lineInterpreter({ _window, lookupActions, stack, id, e, data, req, res, __, mount, condition, toView, object, _object }).data
+
+        if (stack.returns && stack.returns[0].returned) {
+            returnForWaitActionExists = true
+            data = stack.returns[0].data
+        }
+
+        // remove return address
+        stack.returns.splice(stack.returns.findIndex(ret => ret.id === actionReturnID), 1)
+
+        return ({ success, message, data, conditionsNotApplied, executionDuration: (new Date()).getTime() - startTime })
+    }
+
+    var approved = require("./toApproval").toApproval({ _window, data: conditions || "", id, e, req, res, __, stack, lookupActions, object, _object })
+
+    if (!approved && elseParams) data = execute({ success, string: elseParams, message: "Else actions executed!", conditionsNotApplied: true })
+    else if (!approved) data = ({ success, message: `Conditions not applied!`, conditionsNotApplied: true, executionDuration: (new Date()).getTime() - startTime })
+    else data = execute({ success, string, message: `Action executed successfully!` })
+
+    return terminator({ data, order: 5 })
+}
+
+module.exports = { lineInterpreter }
+},{"./clone":5,"./executable":21,"./generate":24,"./isCondition":34,"./toApproval":63,"./toAwait":65,"./toCode":68,"./toParam":75,"./toValue":79}],42:[function(require,module,exports){
+const { toArray } = require("./toArray")
+const readFile = require("./readFile");
+
 module.exports = {
-    reload: () => {
-        document.location.reload(true)
+    mail: async ({ _window, req, res, id, data, __, ...params }) => {
+
+        var { subject, content, text, html, recipient, attachments, recipients = [] } = data
+        
+        const { google } = _window.__package__.googleapis
+        const nodemailer = _window.__package__.nodemailer
+        const OAuth2 = google.auth.OAuth2;
+        var data = req.body.data
+        var global = _window.global
+        var project = global.data.project
+
+        // no recipient
+        if (!data.recipient) return res.send({ success: false, message: `Missing recipient!` })
+        
+        if (project.mail) {
+
+            const OAuth2_client = new OAuth2(project.mail.clientId, project.mail.clientSecret);
+            OAuth2_client.setCredentials({ refresh_token: project.mail.refreshToken })
+
+            const accessToken = OAuth2_client.getAccessToken();
+            const transporter = nodemailer.createTransport({
+                service: project.mail.service,
+                auth: {
+                    type: project.mail.authType,
+                    user: project.mail.user,
+                    clientId: project.mail.clientId,
+                    clientSecret: project.mail.clientSecret,
+                    refreshToken: project.mail.refreshToken,
+                    accessToken: accessToken
+                },
+            });
+
+            const msg = {
+                from: `"Bracket Technologies" <${project.mail.user}>`,
+                to: `${toArray(recipient || recipients).map(r => r).join(", ")}`,
+                subject: subject || "Test Email",
+                text: text || "Hello World!",
+                html: html || "<b>Hello World!</b>",
+            }
+
+            if (attachments) msg.attachments = attachments
+
+            const info = await transporter.sendMail(msg);
+
+            global.mail = { success: true, message: `Email sent successfully!` }
+
+        } else global.mail = { success: false, message: `No mail api exists!` }
+        console.log(global.mail)
+
+        // await params
+        if (params.asyncer) require("./toAwait").toAwait({ _window, id, ...params, req, res, __: [global.mail, ...__] })
     }
 }
-},{}],68:[function(require,module,exports){
-const { removeChildren } = require("./update")
+},{"./readFile":47,"./toArray":64,"./toAwait":65}],43:[function(require,module,exports){
+const { toArray } = require("./toArray")
+const { clone } = require("./clone")
+
+const merge = (array) => {
+
+  array = clone(array)
+  if (typeof array !== "object") return array
+
+  var type = typeof array[0]
+  array.map(obj => {
+    if (typeof obj !== type) type = false
+  })
+
+  if (type === false) return array[0]
+  var merged = toArray(array[0]).flat()
+
+  array.shift()
+
+  array.map((obj) => {
+    merged.push(...toArray(obj).flat())
+
+    if (!Array.isArray(obj) && typeof obj === "object") {
+      Object.entries(obj).map(([key, value]) => {
+
+        if (merged[key]) {
+
+          if (typeof value === "string" || typeof value === "number") {
+
+            merged[key] = toArray(merged[key])
+            merged[key].push(value)
+
+          } else if (Array.isArray(value)) {
+
+            merged[key].push(...value)
+
+          } else if (typeof value === "object") {
+
+            merged[key] = merge([value, merged[key]])
+
+          }
+
+        } else merged[key] = value
+      })
+    }
+  })
+
+  return merged
+}
+
+const override = (obj1, obj2) => {
+  obj1 = obj1 || {}
+
+  Object.entries(obj2).map(([key, value]) => {
+
+    if (obj1[key]) {
+      if (!Array.isArray(value) && typeof value === "object") {
+
+        obj1[key] = override(obj1[key], value)
+
+      } else obj1[key] = value
+
+    } else obj1[key] = value
+
+  })
+
+  return obj1
+}
+
+module.exports = { merge, override }
+
+},{"./clone":5,"./toArray":64}],44:[function(require,module,exports){
+const { isArabic } = require("./isArabic")
+
+const note = ({ note: _note }) => {
+
+  var views = window.views
+  var note = views["action-note"]
+  var type = (_note.type || (_note.danger && "danger") || (_note.info && "info") || (_note.warning && "warning") || "success").toLowerCase()
+  var noteText = views["action-note-text"]
+  var backgroundColor = type === "success" 
+  ? "#2FB886" : type === "danger" 
+  ? "#F66358" : type === "info"
+  ? "#47A8F5" : type === "warning"
+  && "#FFA92B"
+  
+  if (!_note) return
+
+  clearTimeout(note["note-timer"])
+
+  noteText.__element__.innerHTML = _note.text
+  isArabic({ id: "action-note-text" })
+
+  var width = note.__element__.offsetWidth
+  note.__element__.style.backgroundColor = backgroundColor
+  note.__element__.style.left = `calc(50% - ${width/2}px)`
+  note.__element__.style.opacity = "1"
+  note.__element__.style.transition = "transform .2s"
+  note.__element__.style.transform = "translateY(0)"
+
+  const myFn = () => note.__element__.style.transform = "translateY(-200%)"
+
+  note["note-timer"] = setTimeout(myFn, 5000)
+}
+
+module.exports = { note }
+
+},{"./isArabic":32}],45:[function(require,module,exports){
+const { toParam } = require("./toParam")
+
+module.exports = {
+    print: async ({ id, options, ...params }) => {
+
+        var mediaQueryList = window.matchMedia('print')
+
+        mediaQueryList.addListener(function(mql) {
+            if (mql.matches) {
+                // console.log('before print dialog open');
+                if (options["before-print"]) toParam({ data: options["before-print"], id, mount: true })
+            } else {
+                // await params
+                if (params.asyncer) require("./toAwait").toAwait({ id, ...params })
+                if (options["after-print"]) toParam({ data: options["after-print"], id, mount: true })
+            }
+        })
+        
+        window.print()
+    }
+}   
+},{"./toAwait":65,"./toParam":75}],46:[function(require,module,exports){
+const qr = async ({ _window, id, req, res, data, __, e, stack, lookupActions, address }) => {
+
+    if (res && !res.headersSent) return qrServer({ _window, id, req, res, data, __, e, stack, lookupActions, address })
+    
+    var QRCode = require("easyqrcodejs")
+
+    // get image
+    var view = window.views[data.id], imageEl
+    if (view) imageEl = view.__element__
+    
+    var qrcode = new QRCode(document.getElementById(data.id), data)
+    var data = { message: "QR generated successfully!", data: qrcode, success: true }
+
+    console.log("QR", data)
+
+    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, req, res, __: [data, ...__] })
+}
+
+const qrServer = async ({ _window, id, req, res, data, __, e, stack, lookupActions, address }) => {
+
+    var text = data.text || data.url
+    if (data.wifi) text = wifiQrText({ data })
+
+    var qrcode = await require('qrcode').toDataURL(text)
+    
+    var data = { message: "QR generated successfully!", data: qrcode, success: true }
+    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, req, res, __: [data, ...__] })
+}
+
+const wifiQrText = ({ data }) => {
+    
+    return `WIFI:S:${data.name || data.ssid || ""};T:${data.type || "WPA"};P:${data.password || ""};;${data.url || ""}`
+}
+
+module.exports = { qr }
+},{"./toAwait":65,"easyqrcodejs":127,"qrcode":132}],47:[function(require,module,exports){
+module.exports = (file) => new Promise(res => {
+
+    var myFile = file.file || file.url
+    if (typeof myFile === "string" && myFile.slice(0, 5) === "data:") res(myFile)
+    else if (typeof file === "object" && file["readAsDataURL"]) res()
+    else {
+        let myReader = new FileReader()
+        myReader.onloadend = () => res(myReader.result)
+        myReader.readAsDataURL(file)
+    }
+})
+},{}],48:[function(require,module,exports){
+const { isParam } = require("./isParam")
+const { addresser } = require("./addresser")
+const { lineInterpreter } = require("./lineInterpreter")
+const { isCalc } = require("./isCalc")
+const { kernel } = require("./kernel")
+const { decode } = require("./decode")
+
+const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: { path, value, key, object, _object }, __, e, req, res, mount, condition, toView }) => {
+
+    const { toValue } = require("./toValue")
+    const { toParam } = require("./toParam")
+    const { toAction } = require("./toAction")
+    const { toApproval } = require("./toApproval")
+
+    if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.returned || stack.broke) return
+
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
+    var view = views[id]
+
+    // path is a string
+    if (typeof path === "string") path = path.split(".")
+    // path is a number
+    if (typeof path === "number") path = [path]
+
+    var pathJoined = path.join(".")
+    
+    // init
+    var path0 = path[0] ? path[0].toString().split(":")[0] : "", args
+    if (path[0] !== undefined) args = path[0].toString().split(":")
+
+    // toParam
+    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, stack, id, e, data: pathJoined, __, object, mount, toView })
+
+    // toValue
+    if (isCalc({ _window, string: pathJoined }) && !key) return toValue({ _window, lookupActions, stack, data: pathJoined, __, id, e, req, res, object, _object, mount, toView, condition })
+
+    // [actions?conditions?elseActions]():[params]:[waits]
+    else if (path0.length === 8 && path0.slice(-2) === "()" && path0.charAt(0) === "@") {
+        
+        var { address, __: my__ } = addresser({ _window, stack, args, requesterID: id, action: "[...]()", __, lookupActions, id, _object, object })
+
+        var { data } = lineInterpreter({ _window, lookupActions, stack, address, id, data: path0.slice(0, -2), key, object, __: my__, e, dblExecute: true, req, res, mount, condition, toView })
+
+        _object = data
+        path0 = (path[1] || "").split(":")[0]
+        path.splice(0, 1)
+
+        if (path.length === 0) return _object
+        else return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, value, key, pathJoined, object } })
+    }
+
+    // if()
+    else if (path0 === "if()") {
+
+        var approved = toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object })
+
+        if (!approved) {
+
+            if (args[3]) {
+
+                if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[3], id, __, req, res, object })
+                if (path[1]) _object = toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object, mount, toView })
+                else return toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object, mount, toView })
+
+                path.shift()
+
+            } else if (path[1] && path[1].includes("elif()")) {
+
+                path.shift()
+                path[0] = path[0].slice(2)
+                return reducer({ _window, lookupActions, stack, id, data: { path, object, value, key }, __, e, req, res, mount, condition })
+
+            } else return
+
+        } else {
+
+            if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[2], id, __, req, res, object, toView })
+            if (path[1]) _object = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
+            else return toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
+            
+            path.shift()
+
+            // remove elses and elifs
+            while (path[0] && path[0].includes("elif()")) { path.shift() }
+            
+            // empty path
+            if (!path[0]) return _object
+        }
+
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined } })
+    }
+
+    // while()
+    else if (path0 === "while()") {
+
+        while (toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object })) {
+            toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
+        }
+        // path = path.slice(1)
+        return global.return = false
+    }
+
+    // global:()
+    else if (path0 && args[1] === "()" && !args[2]) {
+
+        var globalVariable = toValue({ req, res, _window, id, e, data: args[0], __, stack, lookupActions })
+        if (path.length === 1 && key && globalVariable) return global[globalVariable] = value
+
+        path.splice(0, 1, globalVariable)
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object: global, path, value, key, object, pathJoined } })
+    }
+
+    // view => ():id
+    else if (path0 === "()" && args[1]) {
+
+        // id
+        var _id = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object })
+        path.shift()
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object: views[_id || args[1] || id], path, value, key, object, pathJoined } })
+    }
+
+    // .keyName => [object||view].keyName
+    else if (path[0] === "" && path.length > 1) {
+        if (isNaN(path[1].charAt(0)) || path[1].includes("()")) {
+            path.shift()
+            _object = object || _object || view
+            return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined } })
+        } else return path.join(".")
+    }
+
+    // @coded
+    else if (path0.charAt(0) === "@" && path[0].length === 6) {
+        var data = lineInterpreter({ _window, req, res, lookupActions, stack, object, id, data: path[0], __, e }).data
+
+        if (path[1] === "flat()") {
+
+            if (Array.isArray(data)) {
+
+                data = [...data]
+                return data.flat()
+
+            } else {
+
+                if (typeof object === "object") Object.entries(data || {}).map(([key, value]) => object[key] = value)
+                return object
+            }
+
+        } else {
+
+            if (!path[1] && typeof object === "object" && key && value !== undefined) {
+
+                object[data] = value
+                return object[data]
+
+            } else if (path[1]) {
+
+                _object = data
+                path.splice(0, 1)
+                return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined } })
+
+            } else return data
+        }
+    }
+
+    // action()
+    else if (path0.slice(-2) === "()") {
+
+        var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, path: [path[0]], path0, condition, mount, toView, object })
+        if (action !== "__continue__") {
+                
+            path.shift()
+            return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object: action, path, value, key, object, pathJoined } })
+        }
+    }
+
+    if (!view) view = views[id]
+
+    if (path0 === "className()") {
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object: views.document, path, value, key, object, pathJoined } })
+    } else {
+        var __o = ((typeof object === "object" && object.__view__) ? object : views[id]) || {}
+        if (__o.__labeled__ && (path0.toLowerCase().includes("prev") || path0.toLowerCase().includes("next") || path0.toLowerCase().includes("parent"))) {
+
+            if (__o.__featured__) path = ["2ndParent()", ...path]
+            else path.unshift("parent()")
+
+        } else if (__o.__islabel__ && path0 === "txt()" || path0 === "min()" || path0 === "max()" || path0 === "readonly()" || path0 === "editable()") path.unshift("input()")
+    }
+
+    // assign reserved vars
+    var reservedVars = {
+        keys: ["()", "global()", "e()", "console()", "document()", "window()", "win()", "history()", "navigator()", "nav()", "request()", "response()", "req()", "res()", "math()"],
+        "()": view || views[id],
+        "global()": _window ? _window.global : window.global,
+        "e()": e,
+        "console()": console,
+        "document()": _window ? {} : document,
+        "window()": _window || window,
+        "win()": _window || window,
+        "history()": _window ? {} : history,
+        "nav()": _window ? {} : navigator,
+        "navigator()": _window ? {} : navigator,
+        "request()": req,
+        "req()": req,
+        "response()": res,
+        "res()": res,
+        "math()": Math
+    }
+
+    // assign _object
+    var underScored = path0 && path0.charAt(0) === "_" && !path0.split("_").find(i => i !== "_" && i !== "")
+    if (reservedVars.keys.includes(path0) || underScored) {
+
+        if (reservedVars.keys.includes(path0)) _object = reservedVars[path0]
+        else _object = __[path0.split("_").length - 2]
+
+        path.shift()
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined } })
+
+    } else _object = _object !== undefined ? _object : object
+
+    // still no _object
+    if (_object === undefined) {
+
+        if ((path[0] && mount) || (path0 && path0.includes("()"))) {
+
+            return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object: view, path, value, key, object, pathJoined } })
+
+        } else if (path[1] && path[1].toString().includes("()")) {
+
+            _object = toValue({ req, res, _window, lookupActions, stack, id, __, e, data: path[0] }) || {}
+            path.shift()
+            return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined }})
+
+        } else return pathJoined
+    }
+
+    return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined }})
+}
+module.exports = { reducer }
+},{"./addresser":3,"./decode":14,"./isCalc":33,"./isParam":37,"./kernel":39,"./lineInterpreter":41,"./toAction":62,"./toApproval":63,"./toParam":75,"./toValue":79}],49:[function(require,module,exports){
+const { removeView } = require("./view")
 const { clone } = require("./clone")
 const { closePublicViews } = require("./closePublicViews")
 const { lineInterpreter } = require("./lineInterpreter")
+const { isNumber } = require("./toValue")
 
-const remove = ({ data = {}, id, __ }) => {
+const remove = ({ _window, data = {}, id, __, lookupActions }) => {
 
   var views = window.views
   var view = window.views[id]
 
-  var path = data.path, derivations = []
+  var path = data.path, __dataPath__ = []
 
-  if (path) derivations = path
-  else derivations = clone(view.derivations) || []
+  if (path) __dataPath__ = path
+  else __dataPath__ = clone(view.__dataPath__) || []
   
-  if (derivations.length > 0 && !data.preventDefault) {
+  if (__dataPath__.length > 0 && !data.preventDefault) {
 
-    var string = `${view.doc}:().` + derivations.join(".").slice(0, -1)
+    var string = `${view.doc}:().` + __dataPath__.join(".").slice(0, -1)
     var parentData = lineInterpreter({ id, data: string })
 
     // remove data
     if (Array.isArray(parentData) && parentData.length === 0) {
 
-      var string = `${view.doc}:().` + derivations.join(".").slice(0, -1) + "=:"
-      lineInterpreter({ id, data: string })
+      var string = `${view.doc}:().` + __dataPath__.join(".").slice(0, -1) + "=:"
+      lineInterpreter({ id, data: string, __, lookupActions })
 
     } else {
 
-      var string = `${view.doc}:().` + derivations.join(".") + ".del()"
-      lineInterpreter({ id, data: string })
+      var string = `${view.doc}:().` + __dataPath__.join(".") + ".del()"
+      lineInterpreter({ id, data: string, __, lookupActions })
     }
   }
 
   // close publics
-  closePublicViews({ id })
+  closePublicViews({ _window, id, __, lookupActions })
 
-  removeChildren({ id })
+  removeView({ id, self: false })
 
-  // pull id from parent childrenID
-  var childrenID = views[view.parent].__childrenID__
-  var index = childrenID.findIndex(childID => childID === view.id)
-  childrenID.splice(index, 1)
+  // pull id from parent childrenRef
+  var childrenRef = views[view.__parent__].__childrenRef__
+  var index = childrenRef.findIndex(({ id }) => id === view.id)
+  childrenRef.splice(index, 1)
   // END
   
-  if (derivations.length === 0) {
-    
-    view.element.remove()
-    delete window.views[id]
-    return
-  }
+  // no data
+  if (__dataPath__.length === 0) return removeView({ id, main: true }).remove()
 
-  // reset length and derivations
+  // reset length and __dataPath__
   var nextSibling = false
-  var children = [...window.views[view.parent].element.children]
-  var index = view.derivations.length - 1
+  var children = [...window.views[view.__parent__].__element__.children]
+  var index = view.__dataPath__.length - 1
   
   children.map((child) => {
 
@@ -8534,8 +5663,7 @@ const remove = ({ data = {}, id, __ }) => {
 
     if (id === view.id) {
       nextSibling = true
-      view.element.remove()
-      delete window.views[id]
+      removeView({ id, main: true }).remove()
     }
   })
 }
@@ -8546,24 +5674,25 @@ const resetDerivations = ({ id, index }) => {
   var view = views[id]
 
   if (!view) return
-  if (isNaN(view.derivations[index])) return
+  if (!isNumber(view.__dataPath__[index])) return
 
-  view.derivations[index] -= 1
+  view.__dataPath__[index] -= 1
 
-  var children = [...view.element.children]
+  var children = [...view.__element__.children]
   children.map((child) => resetDerivations({ id: child.id, index }) )
 }
 
 module.exports = { remove }
 
-},{"./clone":8,"./closePublicViews":9,"./lineInterpreter":54,"./update":106}],69:[function(require,module,exports){
+},{"./clone":5,"./closePublicViews":6,"./lineInterpreter":41,"./toValue":79,"./view":85}],50:[function(require,module,exports){
 const replaceNbsps = (str) => {
+  if (typeof str !== "string") return str
     var re = new RegExp(String.fromCharCode(160), "g");
     return str.toString().replace(re, " ");
   }
 
   module.exports = { replaceNbsps }
-},{}],70:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -8575,16 +5704,16 @@ const resize = ({ id }) => {
 
   // for width
   var width = view.style.width
-  if (width === "fit-content" && view.element) {
-    view.element.style.width = results.width + "px"
-    view.element.style.minWidth = results.width + "px"
+  if (width === "fit-content" && view.__element__) {
+    view.__element__.style.width = results.width + "px"
+    view.__element__.style.minWidth = results.width + "px"
   }
 
   // for height
   var height = view.style.height
-  if (height === "fit-content" && view.element) {
-    view.element.style.height = results.height + "px"
-    view.element.style.minHeight = results.height + "px"
+  if (height === "fit-content" && view.__element__) {
+    view.__element__.style.height = results.height + "px"
+    view.__element__.style.minHeight = results.height + "px"
   }
 }
 
@@ -8600,7 +5729,7 @@ const dimensions = ({ id, text }) => {
   document.body.appendChild(lDiv)
 
   var pStyle = view.style
-  var pText = text || (view.__name__ === "Input" && view.element && view.element.value) || "A"
+  var pText = text || (view.__name__ === "Input" && view.__element__ && view.__element__.value) || "A"
   if (pText.includes("<") || pText.includes(">")) pText = pText.split("<").join("&lt;").split(">").join("&gt;")
   
   if (pStyle != null) lDiv.style = pStyle
@@ -8634,13 +5763,13 @@ const dimensions = ({ id, text }) => {
   lDiv.style.opacity = "0"
   lDiv.innerHTML = pText
   
-  if (pStyle.width === "100%") lDiv.style.width = (view.element ? view.element.clientWidth : lDiv.style.width) + "px"
+  if (pStyle.width === "100%") lDiv.style.width = (view.__element__ ? view.__element__.clientWidth : lDiv.style.width) + "px"
   var height, width = lDiv.clientWidth + 2
 
-  if (view.element.tagName === "TEXTAREA") {
+  if (view.__element__.tagName === "TEXTAREA") {
 
     height = lDiv.clientHeight
-    if (lDiv.clientHeight < view.element.scrollHeight) height = view.element.scrollHeight
+    if (lDiv.clientHeight < view.__element__.scrollHeight) height = view.__element__.scrollHeight
     if (!pText) height = lDiv.clientHeight
   }
   
@@ -8666,14 +5795,14 @@ var lengthConverter = (length) => {
 
 module.exports = {resize, dimensions, lengthConverter}
 
-},{}],71:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 const { clone } = require("./clone")
 const { update } = require("./update")
 const { toView } = require("./toView")
 const { toArray } = require("./toArray")
 
 module.exports = {
-    route: async ({ id, _window, route = {}, stack, lookupActions, req, res, __ }) => {
+    route: async ({ id, _window, route = {}, stack, lookupActions, address, req, res, __ }) => {
       
       var views = _window ? _window.views : window.views
       var global = _window ? _window.global : window.global
@@ -8682,51 +5811,43 @@ module.exports = {
       var path = route.path || (route.page.includes("/") ? route.page : global.manifest.path.join("/"))
       
       // page
-      var currentPage = route.page && (route.page.includes("/") ? (!route.page.split("/")[0] ? route.page.split("/")[1] : route.page.split("/")[0]): route.page ) || path.split("/")[1] || "main"
+      var page = route.page && (route.page.includes("/") ? (!route.page.split("/")[0] ? route.page.split("/")[1] : route.page.split("/")[0]): route.page ) || path.split("/")[1] || "main"
       
       // recheck path
-      path = route.path ? path : currentPage === "main" ? "/" : `/${currentPage}`
+      path = route.path ? path : page === "main" ? "/" : `/${page}`
 
       // prevs
       global.__prevPath__.push(global.manifest.path.join("/"))
-      global.__prevPage__.push(global.manifest.currentPage)
+      global.__prevPage__.push(global.manifest.page)
 
-      // update globals
-      global.manifest.currentPage = currentPage
+      // page & path
+      global.manifest.page = page
       global.manifest.path = path.split("/")
+
+      // params
+      route.path = path
+      route.page = page
       
       if (_window) {
         
         global.__updateLocation__ = true
-        views.root.children = [clone(global.data.view[currentPage])]
+        views.root.children = [clone(global.data.view[page])]
         
         if (id !== "root") {
 
-          global.promises[id] = toArray(global.promises[id])
-
-          // change path and title
-          views.root.controls.push({ event: "loaded?history().pushState()::[():root.title]:[path:()]"})
-
-          global.promises[id].push(new Promise (async resolve => {
+          toArray(global.promises[id]).push(new Promise (async resolve => {
               
-              global.__html__ = await toView({ _window, id: "body", req, res, __ })
+              global.__html__ = toView({ _window, __parent__: "body", req, res, lookupActions, stack: stack.address, address, __ })
               global.breaktoView[id] = true
               resolve()
             })
           )
         }
 
-      } else {
-        
-        route.path = path
-        route.currentPage = currentPage
-        
-        if (document.getElementById("loader-container").style.display === "none") document.getElementById("loader-container").style.display = "flex"
-        update({ _window, req, res, stack, lookupActions, id: "root", route, __ })
-      }
+      } else update({ _window, req, res, stack, lookupActions, address, id: "root", data: { route }, __ })
     }
 }
-},{"./clone":8,"./toArray":86,"./toView":104,"./update":106}],72:[function(require,module,exports){
+},{"./clone":5,"./toArray":64,"./toView":80,"./update":82}],53:[function(require,module,exports){
 const axios = require('axios')
 const { postData } = require('./database')
 
@@ -8767,7 +5888,7 @@ module.exports = {
     require("./toAwait").toAwait({ _window, lookupActions, stack, id, address, e, req, res, _: data, __ })
   }
 }
-},{"./database":20,"./toAwait":87,"axios":119}],73:[function(require,module,exports){
+},{"./database":13,"./toAwait":65,"axios":94}],54:[function(require,module,exports){
 const axios = require('axios')
 const { jsonToBracket } = require('./jsonToBracket')
 const { getData } = require('./database')
@@ -8786,7 +5907,7 @@ module.exports = {
     headers = { ...headers, search: encodeURI(jsonToBracket({ search })), timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()) }
     
     if (_window) {
-      
+
       data = await getData({ _window, req, res, search })
 
     } else {
@@ -8807,7 +5928,7 @@ module.exports = {
     require("./toAwait").toAwait({ _window, lookupActions, stack, id, e, address, req, res, _: data, __ })
   }
 }
-},{"./database":20,"./jsonToBracket":51,"./toAwait":87,"axios":119}],74:[function(require,module,exports){
+},{"./database":13,"./jsonToBracket":38,"./toAwait":65,"axios":94}],55:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const setContent = ({ id, content = {} }) => {
@@ -8818,22 +5939,22 @@ const setContent = ({ id, content = {} }) => {
   if (typeof value !== "string" && typeof value !== "number") return
 
   // not loaded yet
-  if (!view.element) return
+  if (!view.__element__) return
 
-  if (view.input && view.input.type === "radio" && value) view.element.checked = "checked"
-  else if (view.__name__ === "Input") view.element.value = value || ""
-  else if (view.__name__ === "Text") view.element.innerHTML = value || ""
+  if (view.input && view.input.type === "radio" && value) view.__element__.checked = "checked"
+  else if (view.__name__ === "Input") view.__element__.value = value || ""
+  else if (view.__name__ === "Text") view.__element__.innerHTML = value || ""
 
   isArabic({ id, value })
 }
 
 module.exports = {setContent}
 
-},{"./isArabic":43}],75:[function(require,module,exports){
+},{"./isArabic":32}],56:[function(require,module,exports){
 const {clone} = require("./clone")
-const {reducer} = require("./reducer")
+const { kernel } = require("./kernel")
 
-const setData = ({ id, data, __ }) => {
+const setData = ({ id, data, __, stack = {} }) => {
 
   var view = window.views[id]
   var global = window.global
@@ -8856,31 +5977,23 @@ const setData = ({ id, data, __ }) => {
   })
 
   // keys
-  var derivations = clone(view.derivations)
-  var keys = [...derivations, ...path]
+  var __dataPath__ = clone(view.__dataPath__)
+  var keys = [...__dataPath__, ...path]
   
   // set value
-  reducer({ id, object: global[view.doc], data: keys, value: defValue, key: true, __ })
-/*
-  view.data = value
-  if (view.input && view.input.type === "file") return
-
-  // setContent
-  var content = data.content || value
-  setContent({ id, content: { value: content } })
-*/
+  kernel({ id, data: { _object: global[view.doc], path: keys, value: defValue, key: true }, stack, __ })
 }
 
 module.exports = { setData }
 
-},{"./clone":8,"./reducer":65}],76:[function(require,module,exports){
+},{"./clone":5,"./kernel":39}],57:[function(require,module,exports){
 const setPosition = ({ position = {}, id, e }) => {
 
   var views = window.views
   var leftDeviation = position.left
   var topDeviation = position.top
   var align = position.align
-  var element = views[position.id || id].element
+  var element = views[position.id || id].__element__
   var mousePos = position.positioner === "mouse"
   var fin = element.getElementsByClassName("fin")[0]
   var positioner = position.positioner || id
@@ -8900,7 +6013,7 @@ const setPosition = ({ position = {}, id, e }) => {
     
   } else {
 
-    positioner = views[positioner].element
+    positioner = views[positioner].__element__
     topPos = positioner.getBoundingClientRect().top
     bottomPos = positioner.getBoundingClientRect().bottom
     rightPos = positioner.getBoundingClientRect().right
@@ -9058,7 +6171,7 @@ const setPosition = ({ position = {}, id, e }) => {
 
 module.exports = {setPosition}
 
-},{}],77:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 (function (global){(function (){
 const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
@@ -9090,11 +6203,11 @@ const sort = ({ _window, sort = {}, id, e, lookupActions, __, stack }) => {
 
   data.sort((a, b) => {
     
-    a = reducer({ _window, id, data: path, object: a, e, lookupActions, __, stack }) || "!"
+    a = reducer({ _window, id, data: { path, object: a }, e, lookupActions, __, stack }) || "!"
     
     if (a !== undefined) a = a.toString()
 
-    b = reducer({ _window, id, data: path, object: b, e, lookupActions, __, stack }) || "!"
+    b = reducer({ _window, id, data: { path, object: b }, e, lookupActions, __, stack }) || "!"
 
     if (b !== undefined) b = b.toString()
 
@@ -9161,25 +6274,32 @@ const sort = ({ _window, sort = {}, id, e, lookupActions, __, stack }) => {
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./reducer":65,"./toArray":86,"./toCode":90}],78:[function(require,module,exports){
+},{"./reducer":48,"./toArray":64,"./toCode":68}],59:[function(require,module,exports){
 const { decode } = require("./decode")
 const { generate } = require("./generate")
+const { toArray } = require("./toArray")
 
-const stacker = ({ _window, id: viewID, string = "", ...data }) => {
+const stacker = ({ _window, id: viewID, string = "", address = [], ...data }) => {
 
-  return {
+  var stack = {
     ...data,
+    print: false,
     id: generate(),
     viewID,
     terminated: false,
     broke: false,
     returned: false,
+    interpreting: true,
     string: string ? decode({ _window, string }) : "",
-    executionStartTime: (new Date()).getTime(), 
-    addresses: [], 
-    logs: [], 
+    executionStartTime: (new Date()).getTime(),
+    addresses: toArray(address),
+    logs: [],
     returns: []
   }
+
+  stack.logs.push(`STACK start ${stack.id} ${stack.event} ${stack.string}`)
+
+  return stack
 }
 
 const clearStack = ({ stack }) => {
@@ -9190,10 +6310,21 @@ const clearStack = ({ stack }) => {
   stack.addresses = []
 }
 
-module.exports = { stacker, clearStack }
-},{"./decode":21,"./generate":35}],79:[function(require,module,exports){
+const printStack = ({ stack, end }) => {
+
+  if (end && stack.print && !stack.interpreting && !stack.printed && stack.addresses.length === 0) {
+
+    stack.printed = true
+    var logs = `%cSTACK ${(new Date()).getTime() - stack.executionStartTime} ${stack.event}`
+    stack.logs.push(`STACK end ${(new Date()).getTime() - stack.executionStartTime} ${stack.id} ${stack.event}`)
+    console.log(logs, "color: blue", stack.logs)
+  }
+}
+
+module.exports = { stacker, clearStack, printStack }
+},{"./decode":14,"./generate":24,"./toArray":64}],60:[function(require,module,exports){
 const { defaultInputHandler } = require("./defaultInputHandler")
-const { defaultEventHandler, addEventListener } = require("./event")
+const { addEventListener } = require("./event")
 const { toArray } = require("./toArray")
 
 const starter = ({ id }) => {
@@ -9202,40 +6333,33 @@ const starter = ({ id }) => {
   if (!view) return
   
   // status
-  view.status = "Mounting Element"
-    
-  view.element = document.getElementById(id)
-  if (!view.element) return delete window.views[id]
+  view.__status__ = "Mounting Element"
+  view.__rendered__ = true
+  
+  view.__element__ = document.getElementById(id)
+  if (!view.__element__) return delete window.views[id]
+  view.__element__.setAttribute("index", view.__index__)
 
   // default input handlers
   defaultInputHandler({ id })
   
   // status
-  view.status = "Mounting Events"
+  view.__status__ = "Mounting Events"
   
   // lunch auto controls
   Object.entries(require("../event/event")).map(([eventName, events]) => {
     
-    if (view[eventName]) view.controls.push(...events({ id, controls: view[eventName] }))
+    if (view[eventName]) view.__controls__.push(...events({ id, data: view[eventName] }))
   })
-
-  // deafault event handlers
-  defaultEventHandler({ id })
   
   // events
-  toArray(view.controls).map(controls => addEventListener({ controls, id }))
+  toArray(view.__controls__).map(data => addEventListener({ ...data, event: data.event, id }))
 
-  view.status = "Mounted"
+  view.__status__ = "Mounted"
 }
 
 module.exports = { starter }
-
-},{"../event/event":114,"./defaultInputHandler":22,"./event":26,"./toArray":86}],80:[function(require,module,exports){
-const setState = ({}) => {}
-
-module.exports = {setState};
-
-},{}],81:[function(require,module,exports){
+},{"../event/event":89,"./defaultInputHandler":16,"./event":19,"./toArray":64}],61:[function(require,module,exports){
 (function (Buffer){(function (){
 const fs = require("fs")
 const { generate } = require("./generate")
@@ -9265,11 +6389,11 @@ var getFile = ({ req, res, storage }) => {
 const postFile = async ({ req, res }) => {
 
   var upload = req.body.upload
-  var data = await storeFile({ upload })
+  var data = await storeFile({ req, upload })
   res.send(data)
 }
 
-const storeFile = async ({ upload }) => {
+const storeFile = async ({ req, upload }) => {
 
   var db = req.db
   var storage = req.storage
@@ -9345,197 +6469,15 @@ const deleteFile = async ({ req, res }) => {
 
 module.exports = { getFile, postFile, storeFile, deleteFile }
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./generate":35,"./toArray":86,"buffer":150,"fs":149}],82:[function(require,module,exports){
-const { resize } = require("./resize")
-const { toArray } = require("./toArray")
-
-const setStyle = ({ id, style = {} }) => {
-
-  var view = window.views[id]
-  view.style = view.style || {}
-  
-  Object.entries(style).map(([key, value]) => {
-
-    if (key === "after") return
-    var timer = 0
-    if (value || value === 0) value = value + ""
-
-    const style = () => {
-      // value = width || height
-      if (value) {
-
-        if (value === "available-width") {
-          var left = view.element.getBoundingClientRect().left
-          var tWidth = window.innerWidth
-          if (left) {
-            value = (tWidth - left) + "px"
-          } else {
-            key = "flex"
-            value = "1"
-          }
-          
-        } else if (value === "width" || value.includes("width/")) {
-
-          var divide = value.split("/")[1]
-          value = view.element.clientWidth
-          if (divide) value = value / parseFloat(divide)
-
-          value += "px"
-
-        } else if (value === "height" || value.includes("height/")) {
-
-          var divide = value.split("/")[1]
-          value = view.element.clientHeight
-          if (divide) value = value / parseFloat(divide)
-
-          value += "px"
-
-        } else if (key === "left" && value === "center") {
-
-          var width = view.element.offsetWidth
-          var parentWidth = window.views[view.parent].element.clientWidth
-
-          value = parentWidth / 2 - width / 2 + "px"
-        }
-      }
-
-      if (view.element) view.element.style[key] = value
-      else view.style[key] = value
-    }
-
-    if (timer) view[`${key}-timer`] = setTimeout(style, timer)
-    else style()
-
-    // resize
-    if (key === "width") setTimeout(() => resize({ id }), 0)
-  })
-}
-
-const resetStyles = ({ id, style = {} }) => {
-
-  var view = window.views[id]
-  view.afterStylesMounted = false
-
-  Object.entries({...view.style.after, ...(view.hover && view.hover.style || {})}).map(([key]) => {
-    if (view.style[key] !== undefined) style[key] = view.style[key]
-    else style[key] = null
-  })
-  
-  setStyle({ id, style })
-}
-
-const toggleStyles = ({ id }) => {
-
-  var view = window.views[id]
-  if (view.afterStylesMounted) resetStyles({ id, style })
-  else mountAfterStyles({ id })
-}
-
-const mountAfterStyles = ({ id }) => {
-
-  var view = window.views[id]
-  if (!view.style || !view.style.after) return
-
-  view.afterStylesMounted = true
-
-  Object.entries(view.style.after).map(([key, value]) => {
-
-    var timer = 0
-    value = value + ""
-    if (value.includes(">>")) {
-      timer = value.split(">>")[1]
-      value = value.split(">>")[0]
-    }
-
-    var myFn = () => view.element.style[key] = value
-
-    if (timer) view[`${key}-timer`] = setTimeout(myFn, timer)
-    else {
-
-      if (view.element) myFn()
-      else {
-        return view.controls.push({
-          event: `loaded?().element.style.${key}=${value}`
-        })
-      }
-    }
-  })
-}
-
-module.exports = { setStyle, resetStyles, toggleStyles, mountAfterStyles }
-
-},{"./resize":70,"./toArray":86}],83:[function(require,module,exports){
-const { setStyle } = require("./style")
-const { capitalize } = require("./capitalize")
-const { clone } = require("./clone")
-
-const switchMode = ({ mode, _id = "body" }) => {
-
-    var view = window.views
-    var children = [...view[_id].element.children]
-
-    mode = mode.toLowerCase()
-    if (mode === window.global.mode.toLowerCase()) return
-
-    children.map(el => {
-        
-        var local = view[el.id], style = {}
-        if (!local) return
-            
-        if (local.mode) {
-            
-            if (mode === window.global["default-mode"].toLowerCase()) {
-
-                style = clone(local.mode[mode] ? (local.mode[mode].style || {}) : {})
-                Object.keys(local.mode).map(_mode => {
-                    if (_mode.toLowerCase() !== mode) {
-                        Object.entries(local.mode[_mode].style).map(([k, v]) => {
-                            style[k] = style[k] || local.style[k] || null
-                        })
-                    }
-                })
-                
-            } else if (local.mode[mode]) style = local.mode[mode].style
-
-            setStyle({ id: el.id, style })
-
-            // hover
-            local.hover && local.hover.style && Object.keys(local.hover.style).map(key => 
-                local.hover.before[key] = style[key] !== undefined ? style[key] : null 
-            )
-
-            // clicked
-            local.clicked && local.clicked.style && Object.keys(local.clicked.style).map(key => 
-                local.clicked.before[key] = style[key] !== undefined ? style[key] : null 
-            )
-
-            // click
-            local.click && local.click.style && Object.keys(local.click.style).map(key => 
-                local.click.before[key] = style[key] !== undefined ? style[key] : null 
-            )
-
-            // touch
-            local.touch && local.touch.style && Object.keys(local.touch.style).map(key => 
-                local.touch.before[key] = style[key] !== undefined ? style[key] : null 
-            )
-        }
-        
-        switchMode({ _id: el.id, mode })
-    })
-
-    // set global mode view
-    if (_id === "body") window.global.mode = capitalize(mode)
-}
-
-module.exports = {switchMode}
-},{"./capitalize":6,"./clone":8,"./style":82}],84:[function(require,module,exports){
+},{"./generate":24,"./toArray":64,"buffer":125,"fs":124}],62:[function(require,module,exports){
 const { clone } = require("./clone")
 const { toArray } = require("./toArray")
 const { addresser } = require("./addresser")
 const actions = require("./actions.json")
-const { lineInterpreter } = require("./lineInterpreter")
 
 const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount, toView, object, lookupActions = {}, stack }) => {
+
+  const { lineInterpreter } = require("./lineInterpreter")
 
   var global = _window ? _window.global : window.global
   var views = _window ? _window.views : window.views
@@ -9544,7 +6486,7 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
   if (path.length === 1 && path0.slice(-2) === "()" && path0 !== "()" && path0 !== "_()" && !actions.includes(path0) && path0.charAt(0) !== "@") {
     
     var newLookupActions
-    var parentViews = (view || {}).__viewsPath__ || []
+    var myCustomViews = (view || {}).__customViewPath__ || []
 
     // lookup through parent map actions
     toArray(lookupActions).map((lookupActions, indexx) => {
@@ -9556,8 +6498,8 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 
           if (!actionFound) {
             
-            var actions = clone(lookupActions.view === "_project_" ? global.data.project.functions : global.data.view[lookupActions.view].functions) || {}
-            actionFound = Object.keys(clone(fn).slice(0, fn.length - i).reduce((o, k) => o[k] || {}, actions)).find(fn => fn === path0.slice(0, -2))
+            var actions = (lookupActions.view === "_project_" ? global.data.project.functions : global.data.view[lookupActions.view].functions) || {}
+            actionFound = Object.keys(clone(fn).slice(0, fn.length - i).reduce((o, k) => o && o[k], actions) || {}).find(fn => fn === path0.slice(0, -2))
 
             if (actionFound) {
 
@@ -9578,12 +6520,12 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
     // lookup through parent views actions => server actions
     if (!actionFound) {
 
-      clone(["_project_", ...parentViews]).reverse().map((myview, i) => {
+      clone(["_project_", ...myCustomViews]).reverse().map((myview, i) => {
 
         if (!actionFound) {
 
           if (myview !== "_project_" && !global.data.view[myview]) return
-          var actions = myview === "_project_" ? (stack.server ? global.data.project.functions : global.__serverActions__) : (global.data.view[myview].functions) || {}
+          var actions =( myview === "_project_" ? (stack.server ? global.data.project.functions : global.__serverActions__) : (global.data.view[myview].functions)) || {}
           actionFound = (Array.isArray(actions) ? actions : Object.keys(actions)).find(fn => fn === path0.slice(0, -2))
           
           if (actionFound) {
@@ -9610,7 +6552,7 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 
     if (actionFound) {
       
-      var address = addresser({ _window, req, res, stack, args: path[0].split(":"), asynchronous: callServerAction && true, e, hold: true, requesterID: id, action: path0, __, id, object, mount, toView, condition, lookupActions })
+      var address = addresser({ _window, req, res, stack, args: path[0].split(":"), asynchronous: callServerAction && true, e, requesterID: id, action: path0, __, id, object, mount, toView, condition, lookupActions })
       var { address, data } = address
 
       var my__ = [...(data !== undefined ? [data] : []), ...__]
@@ -9623,9 +6565,9 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
         var action = { name: actionFound, __: my__, lookupActions: [], stack: [], condition, object }
         return require("./action").action({ _window, req, res, id, e, action, __, stack, lookupActions, address })
       }
-      
+
       // interpret
-      var { data } = lineInterpreter({ _window, lookupActions: newLookupActions, stack, address, id, e, data: actionFound, req, res, mount, __: my__, condition, object, toView })
+      var { data } = lineInterpreter({ _window, lookupActions: newLookupActions, stack, address, id, e, data: actionFound, req, res, mount, __: my__, condition, object, toView }) || {}
 
       return data
     }
@@ -9635,7 +6577,7 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 }
 
 module.exports = { toAction }
-},{"./action":1,"./actions.json":2,"./addresser":3,"./clone":8,"./lineInterpreter":54,"./toArray":86}],85:[function(require,module,exports){
+},{"./action":1,"./actions.json":2,"./addresser":3,"./clone":5,"./lineInterpreter":41,"./toArray":64}],63:[function(require,module,exports){
 const { isEqual } = require("./isEqual")
 
 const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root", __, req, res, object, elser }) => {
@@ -9711,6 +6653,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root
       if (value === undefined) return approval = global.__refs__[key].data ? true : false
       else return approval = global.__refs__[key].data === value
     }
+    
     if (key.charAt(0) === "@" && key.length == 6) key = global.__refs__[key].data
 
     // operator has !
@@ -9755,25 +6698,25 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root
 
 module.exports = { toApproval }
 
-},{"./isEqual":46,"./toAction":84,"./toValue":103}],86:[function(require,module,exports){
+},{"./isEqual":35,"./toAction":62,"./toValue":79}],64:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? data : [data]) : [];
 }
 
 module.exports = {toArray}
 
-},{}],87:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
+const { addresser } = require("./addresser")
 const { lineInterpreter } = require("./lineInterpreter")
+const { printStack } = require("./stack")
 
-const toAwait = ({ _window, lookupActions, stack = {}, address, id, e, req, res, __, _, awaiter }) => {
-  
-  const { execute } = require("./execute")
+const toAwait = ({ _window, lookupActions, stack = {}, address, id, e, req, res, __, _, executer }) => {
 
   if (stack.terminated) return
   
-  var keepGoing = true
+  var keepGoing = true, executer = executer || (address.id + " " + address.index + " " + address.action)
 
-  if (address) awaitHandler({ _window, address, req, res, lookupActions, stack, id, e, _, __ })
+  if (address) awaitHandler({ _window, address, req, res, lookupActions, stack, id, e, _, __, executer })
 
   // get params
   while (!stack.terminated && stack.addresses.length > 0 && keepGoing) {
@@ -9781,54 +6724,100 @@ const toAwait = ({ _window, lookupActions, stack = {}, address, id, e, req, res,
     if (stack.terminated) return keepGoing = false
 
     var address = stack.addresses[0]
-    if (keepGoing) keepGoing = !address.hold
-    if (keepGoing) awaitHandler({ _window, req, res, address, lookupActions, stack, id, e, __, keepGoing })
+    if (keepGoing) keepGoing = !address.hold && !address.interpreting
+    if (keepGoing) awaitHandler({ _window, req, res, address, lookupActions, stack, id, e, __, keepGoing, executer })
   }
-
-  // override params
-  if (awaiter) execute({ _window, lookupActions, stack, id, e, actions: awaiter, __, req, res})
+  
+  printStack({ stack, end: true })
 }
 
-const awaitHandler = ({ _window, req, res, address, lookupActions, stack, id, e, _, __, keepGoing }) => {
+const awaitHandler = ({ _window, req, res, address, lookupActions, stack, id, e, _, __, keepGoing, executer }) => {
 
-  // passed params
+  // params
   address.params = address.params || {}
 
   // modify underscores
   var my__ = _ !== undefined ? [_, ...(address.params.__ || __)] : (address.params.__ || __)
 
   // address
-  var headAddress = stack.addresses.find(waitingAddress => waitingAddress.id === address.headAddressID) || {}
-
-  var log = ["ACTION end", (new Date()).getTime() - address.executionStartTime, address.id, address.index, address.action, headAddress.id || "", headAddress.index || "", headAddress.action || ""].join(" ")
-  stack.logs.push(log)
-  console.log(log, _ === undefined ? "" : _)
-
-  // get await index for splicing
-  var index = stack.addresses.findIndex(waitingAddress => waitingAddress.id === address.id)
-  if (index !== -1) stack.addresses.splice(index, 1)
-  if (index !== 0) keepGoing = false
-
-  // consider that waits are part of the head action => reset interpreting to true for head action
-  if (headAddress.id) headAddress.interpreting = true
-
+  var headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
+  
   // unbreak action
   stack.returned = false
 
-  // interpret
-  lineInterpreter({ _window, lookupActions, stack, id, e, req, res, ...(address.params || {}), data: address.await, __: my__ })
+  if (address.status === "start") {
+  
+    // get await index for splicing
+    var index = stack.addresses.findIndex(waitingAddress => waitingAddress.id === address.id)
+    if (index !== -1) stack.addresses.splice(index, 1)
+    if (index !== 0) keepGoing = false
+
+    address.status = "end"
+    address.interpreting = false
+    stack.logs.push(`${stack.logs.length} ACTION ${address.type} ${address.status} ${(new Date()).getTime() - address.executionStartTime} ${address.id} ${address.index} ${address.action}${headAddress.id ? ` ${headAddress.id || ""} ${headAddress.index !== undefined ? headAddress.index : ""} ${headAddress.action || ""}` : ""} | executer: ${executer}`)
+
+    if (address.data) {
+      
+      // address 
+      var { address: add } = addresser({ _window, req, res, stack, e, type: "waits", id, ...(address.params || {}), __: my__, asynchronous: address.asynchronous, renderer: address.renderer, interpreting: true, headAddress, requesterID: id, action: address.action + "::[...]" })
+
+      // interpret
+      return lineInterpreter({ _window, lookupActions, address: add, stack, id, e, req, res, ...(address.params || {}), data: address.data, __: my__ })
+    }
+
+  } else if (address.status === "waiting") {
+
+    return addressFunctionExecuter({ _window, lookupActions, stack, id, e, req, res, address, headAddress, __: my__, executer })
+
+  } else if (address.status === "executing") {
+    
+    // get await index for splicing
+    var index = stack.addresses.findIndex(waitingAddress => waitingAddress.id === address.id)
+    if (index !== -1) stack.addresses.splice(index, 1)
+    if (index !== 0) keepGoing = false
+
+    address.status = "end"
+    stack.logs.push(`${stack.logs.length} ACTION ${address.type} ${address.status} ${(new Date()).getTime() - address.executionStartTime} ${address.id} ${address.index} ${address.action}${headAddress.id ? ` ${headAddress.id || ""} ${headAddress.index !== undefined ? headAddress.index : ""} ${headAddress.action || ""}` : ""} | executer: ${executer}`)
+  }
 
   if (stack.terminated) return
-
+  
   // unlock head address
-  if (address.headAddressID && address.asynchronous) {
+  if (address.headAddressID && (address.asynchronous || address.renderer)) {
+    
     var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.headAddressID === address.headAddressID)
-    if (otherWaiting === -1) stack.addresses.find(waitingAddress => waitingAddress.id === address.headAddressID).hold = false
+    var headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID)
+
+    if (otherWaiting === -1 && headAddress && !headAddress.interpreting) {
+      
+      headAddress.hold = false
+      toAwait({ _window, lookupActions, stack, address: headAddress, id, e, req, res, __, executer })
+    }
   }
 }
 
+const addressFunctionExecuter = ({ _window, lookupActions, stack, id, e, req, res, address, headAddress, __, executer }) => {
+
+  require("./toView")
+  require("./toHTML")
+  require("./reducer")
+
+  address.status = "start"
+  stack.logs.push(`${stack.logs.length} ACTION ${address.type} ${address.status} ${address.id} ${address.index} ${address.action}${headAddress.id ? ` ${headAddress.id || ""} ${headAddress.index !== undefined ? headAddress.index : ""} ${headAddress.action || ""}` : ""}`)
+
+  address.status = "executing"
+  var method = address.function || "lineInterpreter"
+  var file = address.file || method
+  
+  address.interpreting = true
+  require(`./${file}`)[method]({ _window, lookupActions, stack, id, e, req, res, address, ...(address.params || {}), data: address.data, __ })
+  address.interpreting = false
+  
+  toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, executer })
+}
+
 module.exports = { toAwait }
-},{"./execute":29,"./lineInterpreter":54}],88:[function(require,module,exports){
+},{"./addresser":3,"./lineInterpreter":41,"./reducer":48,"./stack":59,"./toHTML":73,"./toView":80}],66:[function(require,module,exports){
 module.exports = {
     toCSV: (file = {}) => {
 
@@ -9903,7 +6892,7 @@ module.exports = {
         }
     }
 }
-},{}],89:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 module.exports = {
     toClock: ({ timestamp, day, hr, min, sec }) => {
 
@@ -9924,7 +6913,7 @@ module.exports = {
         return (day ? days_ + ":" : "") + (hr ? hrs_ + ":" : "") + (min ? mins_ : "") + (sec ? ":" + secs_ : "")
     }
 }
-},{}],90:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) => {
@@ -9988,7 +6977,7 @@ const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) =
 }
 
 module.exports = { toCode }
-},{"./generate":35}],91:[function(require,module,exports){
+},{"./generate":24}],69:[function(require,module,exports){
 const {generate} = require("./generate")
 const {toArray} = require("./toArray")
 
@@ -10020,12 +7009,18 @@ const toComponent = (obj) => {
 
 module.exports = {toComponent}
 
-},{"./generate":35,"./toArray":86}],92:[function(require,module,exports){
-const toControls = ({ id }) => {}
+},{"./generate":24,"./toArray":64}],70:[function(require,module,exports){
+const { toArray } = require("./toArray")
 
-module.exports = {toControls}
+const toEvent = ({ _window, id, string, __, lookupActions }) => {
 
-},{}],93:[function(require,module,exports){
+  var view = _window ? _window.views[id] : window.views[id]
+  toArray(view.__controls__).push({ event: string, __, lookupActions })
+  return "__event__"
+}
+
+module.exports = { toEvent }
+},{"./toArray":64}],71:[function(require,module,exports){
 // const XLSX = require("xlsx")
 
 module.exports = {
@@ -10050,7 +7045,7 @@ module.exports = {
         XLSX.writeFile(myWorkBook, myFile)
     }
 }
-},{}],94:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 module.exports = {
     toFirebaseOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -10066,123 +7061,192 @@ module.exports = {
         else return string
     }
 }
-},{}],95:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 const { labelHandler } = require("./labelHandler")
 const { replaceNbsps } = require("./replaceNbsps")
-const { toParam } = require("./toParam")
 const { toCode } = require("./toCode")
+const { initView, getViewParams, removeView } = require("./view")
+const { colorize } = require("./colorize")
+const cssStyleKeyNames = require("./cssStyleKeyNames")
+const { clone } = require("./clone")
 
-const toHTML = ({ _window, id, innerHTML, stack, __ }) => {
+const toHTML = ({ _window, id, __ }) => {
 
   var views = _window ? _window.views : window.views
-  var view = views[id], name = view.__name__, tag = ""
-  
-  toParam({ _window, id, data: toCode({ _window, id, string: "parent().__childrenID__.replace():[.id]" }), stack, __ })
-  
-  // text
-  var text = (typeof view.text === "boolean" || typeof view.text === "number" || typeof view.text === "string") ? view.text
-    : (typeof view.data === "boolean" || typeof view.data === "number" || typeof view.data === "string") ? view.data : ""
+  var global = _window ? _window.global : window.global
 
+  var view = views[id], parent = views[view.__parent__]
+  var name = view.__name__, html = ""
+
+  // linkable
+  //if (view.link && !view.__linked__) return link({ _window, id, stack, __ })
+
+  // text
+  var text = typeof view.text !== "object" && view.text !== undefined ? view.text : ((view.editable || view.__name__ === "Input" || view.__name__ === "Text") && typeof view.data !== "object" && view.data !== undefined) ? view.data : ""
+
+  // replace encoded spaces
   if (text) text = replaceNbsps(text)
 
-  // innerhtml
-  innerHTML = innerHTML || (name !== "View" ? text : "")
+  // html
+  var innerHTML = (view.__childrenRef__.map(({ id }) => views[id].__html__).join("") || text || "") + ""
 
   // required
   if (view.required && name === "Text") {
+
     if (typeof view.required === "string") view.required = {}
     name = "View"
     view.style.display = "block"
-    innerHTML += `<span style='color:red; font-size:${(view.required.style && view.required.style.fontSize)||"1.6rem"}; padding:${(view.required.style && view.required.style.padding)||"0 0.4rem"}'>*</span>`
+    innerHTML += `<span style='color:red; font-size:${(view.required.style && view.required.style.fontSize) || "1.6rem"}; padding:${(view.required.style && view.required.style.padding) || "0 0.4rem"}'>*</span>`
   }
-  
-  // styles
-  var style = toStyle({ _window, id })
 
   // html attributes
   var atts = Object.entries(view.attribute || {}).map(([key, value]) => `${key}='${value}'`).join(" ")
 
-  // element
-  view.element = { value: text, text, id }
-  
-  if (name === "View" || name === "Box") {
-    tag = `<div ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ''} spellcheck='false' ${view.editable && !view.readonly ? 'contenteditable' : ''} class='${view.class}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML || view.text || ''}</div>`
-  } else if (name === "Image") {
-    tag = `<img ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' alt='${view.alt || ''}' id='${view.id}' style='${style}' index='${view.index || 0}' ${view.src ? `src='${view.src}'` : ""}></img>`
-  } else if (name === "Tag" && view.tag) {
-    tag = `<${view.tag.toLowerCase()} ${atts} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${view.content}</${view.tag.toLowerCase()}>`
-  } else if (name === "Text") {
-    if (view.h1) {
-      tag = `<h1 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h1>`
-    } else if (view.h2) {
-      tag = `<h2 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h2>`
-    } else if (view.h3) {
-      tag = `<h3 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h3>`
-    } else if (view.h4) {
-      tag = `<h4 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h4>`
-    } else if (view.h5) {
-      tag = `<h5 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h5>`
-    } else if (view.h6) {
-      tag = `<h6 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${innerHTML}</h6>`
-    } else {
-      tag = `<p ${atts} ${view.editable ? "contenteditable ": ""}class='${view.class || ""}' id='${view.id}' style='${style}' index='${view.index || 0}'>${text}</p>`
-    }
-  } else if (name === "Icon") {
-    tag = `<i ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.outlined ? "material-icons-outlined" : (view.symbol.outlined) ? "material-symbols-outlined": (view.rounded || view.round) ? "material-icons-round" : (view.symbol.rounded || view.symbol.round) ? "material-symbols-round" : view.sharp ? "material-icons-sharp" : view.symbol.sharp ? "material-symbols-sharp" : (view.filled || view.fill) ? "material-icons" : (view.symbol.filled || view.symbol.fill) ? "material-symbols" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || "" || ""} ${view.icon.name}' id='${view.id}' style='${style}${_window ? "; opacity:0; transition:.2s" : ""}' index='${view.index || 0}'>${view.google ? view.icon.name : ""}</i>`
-  } else if (name === "Textarea") {
-    tag = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index || 0}'>${text || ""}</textarea>`
-  } else if (name === "Input") {
-    if (view.textarea) {
-      tag = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} spellcheck='false' class='${view.class || ""}' id='${view.id}' style='${style}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""} index='${view.index || 0}'>${text}</textarea>`
-    } else {
-      tag = `<input ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} ${view.multiple?"multiple":""} ${view["data-date-inline-picker"] ? "data-date-inline-picker='true'" : ""} spellcheck='false' class='${view.class || ""}' id='${view.id}' style='${style}' ${view.input.type ? `type="${view.input.type}"` : ""} ${view.input.accept ? `accept="${view.input.accept}"` : ""} type='${view.input.name || "text"}' ${view.placeholder ? `placeholder="${view.placeholder}"` : ""} ${text !== undefined ? `value="${text}"` : ""} ${view.readonly ? "readonly" : ""} ${view.input.min ? `min="${view.input.min}"` : ""} ${view.input.max ? `max="${view.input.max}"` : ""} ${view.checked ? "checked" : ""} ${view.disabled ? "disabled" : ''} index='${view.index || 0}'/>`
-    }
-  } else if (name === "Video") {
-    tag = `<video ${atts} style='${style}' controls>
-      ${toArray(view.src).map(src => typeof src === "string" ? `<source src=${src}>` : typeof src === "object" ? `<source src=${src.src} type=${src.type}>`: "")}
-      ${view.alt || view.message || ""}
-    </video>`
+  // styles
+  toStyle({ _window, id })
+
+  // colorize
+  if (view.colorize) {
+
+    innerHTML = toCode({ _window, id, string: toCode({ _window, id, string: innerHTML, start: "'" }) })
+    innerHTML = colorize({ _window, string: innerHTML, ...(typeof view.colorize === "object" ? view.colorize : {}) })
   }
 
+  if (name === "View") {
+    html = `<div ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ''} spellcheck='false' ${view.editable && !view.readonly ? 'contenteditable' : ''} class='${view.class || ""}' id='${view.id}' style='${view.__htmlStyles__}'>${innerHTML || view.text || ''}</div>`
+  } else if (name === "Image") {
+    html = `<img ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' alt='${view.alt || ''}' id='${view.id}' style='${view.__htmlStyles__}' ${view.src ? `src='${view.src}'` : ""}></img>`
+  } else if (name === "Text") {
+    if (view.h1) {
+      html = `<h1 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${view.__htmlStyles__}'>${innerHTML}</h1>`
+    } else if (view.h2) {
+      html = `<h2 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${view.__htmlStyles__}'>${innerHTML}</h2>`
+    } else if (view.h3) {
+      html = `<h3 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${view.__htmlStyles__}'>${innerHTML}</h3>`
+    } else if (view.h4) {
+      html = `<h4 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${view.__htmlStyles__}'>${innerHTML}</h4>`
+    } else if (view.h5) {
+      html = `<h5 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${view.__htmlStyles__}'>${innerHTML}</h5>`
+    } else if (view.h6) {
+      html = `<h6 ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${view.__htmlStyles__}'>${innerHTML}</h6>`
+    } else {
+      html = `<p ${atts} ${view.editable ? "contenteditable " : ""}class='${view.class || ""}' id='${view.id}' style='${view.__htmlStyles__}'>${text}</p>`
+    }
+  } else if (name === "Icon") {
+    html = `<i ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.outlined ? "material-icons-outlined" : (view.symbol.outlined) ? "material-symbols-outlined" : (view.rounded || view.round) ? "material-icons-round" : (view.symbol.rounded || view.symbol.round) ? "material-symbols-round" : view.sharp ? "material-icons-sharp" : view.symbol.sharp ? "material-symbols-sharp" : (view.filled || view.fill) ? "material-icons" : (view.symbol.filled || view.symbol.fill) ? "material-symbols" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || "" || ""} ${view.icon.name}' id='${view.id}' style='${view.__htmlStyles__}${_window ? "; opacity:0; transition:.2s" : ""}'>${view.google ? view.icon.name : ""}</i>`
+  } else if (name === "Textarea") {
+    html = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${view.__htmlStyles__}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""}>${text || ""}</textarea>`
+  } else if (name === "Input") {
+    if (view.textarea) {
+      html = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} spellcheck='false' class='${view.class || ""}' id='${view.id}' style='${view.__htmlStyles__}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""}>${text}</textarea>`
+    } else {
+      html = `<input ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} ${view.multiple ? "multiple" : ""} ${view["data-date-inline-picker"] ? "data-date-inline-picker='true'" : ""} spellcheck='false' class='${view.class || ""}' id='${view.id}' style='${view.__htmlStyles__}' ${view.input.type ? `type="${view.input.type}"` : ""} ${view.input.accept ? `accept="${view.input.accept}"` : ""} type='${view.input.name || "text"}' ${view.placeholder ? `placeholder="${view.placeholder}"` : ""} ${text !== undefined ? `value="${text}"` : ""} ${view.readonly ? "readonly" : ""} ${view.input.min ? `min="${view.input.min}"` : ""} ${view.input.max ? `max="${view.input.max}"` : ""} ${view.checked ? "checked" : ""} ${view.disabled ? "disabled" : ''}/>`
+    }
+  } else if (name === "Video") {
+    html = `<video ${atts} style='${view.__htmlStyles__}' controls>
+      ${toArray(view.src).map(src => typeof src === "string" ? `<source src=${src}>` : typeof src === "object" ? `<source src=${src.src} type=${src.type}>` : "")}
+      ${view.alt || view.message || ""}
+    </video>`
+  } else if (name === "Link" || name === "Meta") {
+
+    name = name.toLowerCase()
+    view = getViewParams({ view })
+    
+    html = `<${name} ${Object.entries(view).map(([key, value]) => key !== "head" && key !== "body" && typeof value === "string" ? `${key}="${value.toString().replace(/\\/g, '')}"` : "").filter(i => i).join(" ")}>`
+
+    // push to tags
+    if (view.head) global.__html__.head += html.replace(` head="true"`, "")
+    else global.__html__.body += html.replace(` body="true"`, "")
+
+  } else if (name === "Style") {
+
+    name = name.toLowerCase()
+    view = getViewParams({ view })
+
+    html = `
+      <style>
+        ${Object.entries(view).map(([key, value]) => typeof value === "object" && !Array.isArray(value)
+      ? `${key}{
+          ${Object.entries(value).map(([key, value]) => `${cssStyleKeyNames[key] || key}: ${value.toString().replace(/\\/g, '')}`).join(`;
+          `)};
+        }` : "").filter(style => style).join(`
+        `)}
+      </style>`
+
+    // push to tags
+    if (view.head) global.__html__.head += html.replace(` head="true"`, "")
+    else global.__html__.body += html.replace(` body="true"`, "")
+
+  } else if (name === "A") {
+    html = `<a ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} id='${id}' href=${view.link} style='${view.__htmlStyles__}'>${innerHTML}</a>`
+  } else return removeView({ _window, id })
+
+  // indexing
+  var index = indexing({ views, id, view, parent })
+
+  // init element
+  view.__element__ = view.__element__ || { text, id, innerHTML, index }
+  
   // label
-  if (view.label && !view.__labeled__) tag = labelHandler({ _window, id, tag })
+  // if (view.label && !view.__labeled__) html = labelHandler({ _window, id, tag })
 
-  return tag
+  view.__innerHTML__ = innerHTML
+  view.__html__ = html
+  
+  // id list
+  view.__idList__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
 }
 
-module.exports = {toHTML}
-},{"./labelHandler":53,"./replaceNbsps":69,"./toArray":86,"./toCode":90,"./toParam":99,"./toStyle":102}],96:[function(require,module,exports){
-const { generate } = require("./generate")
+const link = ({ _window, id, stack, __ }) => {
 
-const toId = ({ string, checklist = [] }) => {
-    
-    var newId
-    string = string.split(" ").join("-").toLowerCase()
-    var candidates = [
-        string, string.split("-").join(""), string.split("-").slice(1).join("-") + string.split("-")[0],
-        string + "1", string + "2", string + "3", string + "4", string + "5", string + "6", string + "7",
-        string + "8", string + "9", string + "10", string + "11", string + "12", string + "13", string + "14",
-        string + "15", string + "16", string + "17", string + "18", string + "19", string + "20", string + "21"
-    ]
-    
-    candidates.map(cand => {
+  var views = _window ? _window.views : window.views
+  var global = _window ? _window.global : window.global
 
-      if (newId) return
-      var exists = checklist.find(id => id === cand)
-      if (!exists) newId = cand
-    })
-    
-    if (!newId) newId = generate(12)
-    // checklist.push(newId)
-    
-    return newId
+  var view = views[id]
+
+  var link = typeof view.link === "string" && view.link.includes("http") ? view.link : (view.link.url || view.link.path || global.manifest.host)
+  var linkView = typeof view.link === "string" ? { link } : { ...view.link, link, __name__: "A" }
+
+  // link
+  var { view: linkView, id: linkID } = initView({ views, global, __parent__: view.__parent__, ...linkView, __, __controls__: [{ event: `click?route():'${view.link.path}'?${view.link.path || "false"};${view.link.preventDafault ? "false" : "true"}` }] })
+  toHTML({ _window, id: linkID, stack, __ })
+  
+  // view
+  view.__parent__ = linkID
+  view.__linked__ = true
+  toHTML({ _window, id, stack, __ })
 }
 
-module.exports = {toId}
+const indexing = ({ id, views, view, parent }) => {
 
-},{"./generate":35}],97:[function(require,module,exports){
+  if (view.__indexed__) return view.__index__
+  
+  var index = 0
+  
+  // find index
+  while (parent.__childrenRef__[index] && ((parent.__childrenRef__[index].childIndex < view.__childIndex__) || (parent.__childrenRef__[index].childIndex === view.__childIndex__ && parent.__childrenRef__[index].initialIndex < view.__initialIndex__))) { index++ }
+  
+  // set index
+  view.__index__ = index
+  
+  // increment next children index
+  parent.__childrenRef__.slice(index).map(viewRef => {
+    viewRef.index++
+    views[viewRef.id].__index__ = viewRef.index
+  })
+  
+  // push id to parent children ids
+  parent.__childrenRef__.splice(index, 0, { id, index, childIndex: view.__childIndex__, initialIndex: view.__initialIndex__ })
+
+  view.__indexed__ = true
+
+  return index
+}
+
+module.exports = { toHTML }
+},{"./clone":5,"./colorize":7,"./cssStyleKeyNames":10,"./labelHandler":40,"./replaceNbsps":50,"./toArray":64,"./toCode":68,"./toStyle":78,"./view":85}],74:[function(require,module,exports){
 module.exports = {
   toNumber: (string) => {
     
@@ -10204,23 +7268,7 @@ module.exports = {
   },
 };
 
-},{}],98:[function(require,module,exports){
-module.exports = {
-    toOperator: (string) => {
-        if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
-        if (string === 'notEqual' || string === 'different' || string === 'isnot') return '!='
-        if (string === 'greaterOrEqual' || string === 'greaterorequal') return '>='
-        if (string === 'lessOrEqual' || string === 'lessorequal') return '<='
-        if (string === 'less' || string === 'lessthan' || string === 'lessThan') return '<'
-        if (string === 'greater' || string === 'greaterthan' || string === 'greaterThan') return '>'
-        if (string === 'contains' || string === 'contain') return 'array-contains'
-        if (string === 'containsAny' || string === 'containAny' || string === "contains-any" || string === "contain-any") return 'array-contains-any'
-        if (string === 'includes' || string === 'include') return 'in'
-        if (string === '!includes' || string === 'doesnotInclude' || string === 'doesnotinclude') return 'not-in'
-        else return string
-    }
-} 
-},{}],99:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
@@ -10231,6 +7279,8 @@ const { isCondition } = require("./isCondition")
 const { lineInterpreter } = require("./lineInterpreter")
 const { isEvent } = require("./isEvent")
 const { override } = require("./merge")
+const { toEvent } = require("./toEvent")
+const { kernel } = require("./kernel")
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -10240,20 +7290,19 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "root", req, res, mount, object, __, toView, params = {}, executer, condition }) => {
+const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "root", req, res, mount, object, __, toView, executer, condition }) => {
 
   const { toAction } = require("./toAction")
   const { toApproval } = require("./toApproval")
 
-  var mountDataUsed = false, mountPathUsed = false
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
+  var params = object || {}
   
   // returned
   if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.broke || stack.returned) return
 
   if (typeof string !== "string" || !string) return string || {}
-  params = object || params
 
   // decode
   if (string.charAt(0) === "@" && string.length == 6 && global.__refs__[string].type === "text") return global.__refs__[string].data
@@ -10265,7 +7314,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
     if (isEvent({ _window, string })) return toEvent({ _window, string, id, __, lookupActions })
 
     // line interpreter
-    return lineInterpreter({ _window, lookupActions, stack, id, e, data: string, req, res, mount, __, condition, object, toView }).data
+    return lineInterpreter({ _window, lookupActions, stack, id, e, data: string, req, res, mount, __, condition, object, toView, action: "toParam" }).data
   }
 
   // conditions
@@ -10282,8 +7331,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
     // =
     if (param.includes("=")) {
 
-      var keys = param.split("=")
-      key = keys[0]
+      key = param.split("=")[0]
       value = param.substring(key.length + 1)
 
     } else key = param
@@ -10311,7 +7359,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
 
       key = key.slice(0, -1)
       var myVal = key.split(".")[0].includes("()") || key.includes("_") || key.split(".")[0] === "" ? key : (`().` + key)
-      var data = toCode({ _window, id, string: `[${myVal}||[if():[type():[${value}]=number]:0:]]` })
+      var data = toCode({ _window, id, string: `[${myVal}||[if():[type():[${value}]=number]:0.elif():[type():[${value}]=map]:[].elif():[type():[${value}]=list]:[:]:]]` })
       value = `${data}+${value}`
     }
 
@@ -10334,30 +7382,6 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
       value = `${data}*${value}`
     }
 
-    // await
-    if (key.slice(0, 8) === "async():" || key.slice(0, 7) === "wait():") {
-
-      var awaiter = param.split(":").slice(1)
-      if (asyncer) {
-        if (awaiter[0].charAt(0) === "@") awaiter[0] = global.__refs__[awaiter[0]].data
-        var _params = toParam({ _window, lookupActions, stack, data: awaiter[0], e, id, req, res, mount, __, })
-        params = { ...params, ..._params }
-        awaiter = awaiter.slice(1)
-      }
-
-      params.await = params.await || ""
-      if (awaiter[0]) return params.await += `wait():${awaiter.join(":")};`
-      else if (awaiter.length === 0) return
-    }
-    
-    // await
-    if (key.includes("await().")) {
-
-      var awaiter = param.split("await().")[1]
-      params.await = params.await || ""
-      return params.await += `${awaiter};`
-    }
-
     // !key
     if (param.slice(0, 1) === "!" && value === undefined) {
       value = false
@@ -10365,13 +7389,15 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
     }
 
     // show loader
-    if (!_window && param === "loader.show") {
+    if (param === "loader.show") {
+      if (_window || !document.getElementById("loader-container")) return
       document.getElementById("loader-container").style.display = "flex"
       return sleep(30)
     }
     
     // hide loader
-    if (!_window && param === "loader.hide") {
+    if (param === "loader.hide") {
+      if (_window || !document.getElementById("loader-container")) return
       document.getElementById("loader-container").style.display = "none"
       return sleep(20)
     }
@@ -10385,13 +7411,13 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
     // interpret value
     if (typeof value === "string") {
 
-      value = toValue({ _window, lookupActions, stack, req, res, id, e, data: value, __, condition, object: inheritObject ? object : undefined })
+      value = toValue({ _window, lookupActions, stack, req, res, id, e, data: value, __, condition, object: inheritObject ? object : undefined, isValue: true })
       if (value && typeof value === "string") value = replaceNbsps(value)
 
     } else if (value === undefined) value = generate()
     
     // :@1asd1
-    if (path0 === "" && param.slice(0, 3) !== "...") return
+    if (path0 === "") return
 
     // action()
     if (path0.slice(-2) === "()") {
@@ -10414,14 +7440,15 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
       // interpret key
       if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()"  || path[0].includes("_") || object) {
         
-        reducer({ _window, lookupActions, stack, id, data: path, value, key, e, req, res, __, object, mount, toView, condition })
+        reducer({ _window, lookupActions, stack, id, data: { path, value, key, object }, e, req, res, __, mount, toView, condition })
 
       } else {
 
-        if (mount) reducer({ _window, lookupActions, stack, id, data: path, value, key, params, e, req, res, __, mount, object: view, toView, condition })
-        reducer({ _window, lookupActions, stack, id, data: path, value, key, params, e, req, res, __, mount, object, _object: params, toView, condition })
+        mount
+        ? reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: view }, e, req, res, __, mount, toView, condition })
+        : reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: params }, e, req, res, __, mount, toView, condition })
       }
-      
+
       if (!params.path && dataPath !== undefined) params.path = dataPath
       
     } else if (key) {
@@ -10436,19 +7463,17 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
     if (mount && toView) {
 
       // mount data directly when found
-      if (!mountDataUsed && ((params.data !== undefined && (!view.doc || !global[view.doc])) || params.doc || (view.data !== undefined && !view.doc))) {
+      if (key === "doc" || key === "data") {
 
-        if (params.doc || (params.data !== undefined && !view.doc)) view.derivations = []
-        mountDataUsed = true
-        view.doc = params.doc || view.doc || generate()
-        params.data = global[view.doc] = params.data !== undefined ? params.data : (global[view.doc] !== undefined ? global[view.doc] : {})
+        view.__dataPath__ = []
+        view.doc = view.doc || generate()
+        global[view.doc] = view.data = global[view.doc] || {}
       }
     
       // mount path directly when found
-      if (!mountPathUsed && params.path && params.path.toString().charAt(0) !== "/") {
+      else if (key === "path" && params.path.toString().charAt(0) !== "/") {
 
         var dataPath = params.path
-        mountPathUsed = true
 
         // setup doc
         if (!view.doc) {
@@ -10460,9 +7485,9 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
         // list path
         var myPath = (typeof dataPath === "string" || typeof dataPath === "number") ? dataPath.toString().split(".") : dataPath || []
         
-        // push path to derivations
-        view.derivations.push(...myPath)
-        view.data = reducer({ _window, id, stack, lookupActions, data: view.derivations, _object: global[view.doc], value: view.data, key: true })
+        // push path to __dataPath__
+        view.__dataPath__.push(...myPath)
+        view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, _object: global[view.doc], value: view.data, key: true } })
       }
     }
   })
@@ -10471,7 +7496,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
 }
 
 module.exports = { toParam }
-},{"./clone":8,"./generate":35,"./isCondition":45,"./isEvent":47,"./lineInterpreter":54,"./merge":56,"./reducer":65,"./replaceNbsps":69,"./toAction":84,"./toApproval":85,"./toCode":90,"./toValue":103}],100:[function(require,module,exports){
+},{"./clone":5,"./generate":24,"./isCondition":34,"./isEvent":36,"./kernel":39,"./lineInterpreter":41,"./merge":43,"./reducer":48,"./replaceNbsps":50,"./toAction":62,"./toApproval":63,"./toCode":68,"./toEvent":70,"./toValue":79}],76:[function(require,module,exports){
 module.exports = {
     toPdf: async (options) => {
 
@@ -10500,7 +7525,7 @@ module.exports = {
         }
     }
 }
-},{}],101:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -10548,7 +7573,7 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],102:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 const cssStyleKeyNames = require("./cssStyleKeyNames")
 
 module.exports = {
@@ -10566,15 +7591,15 @@ module.exports = {
       styles = styles.slice(0, -2)
     }
     
+    view.__htmlStyles__ = styles
     return styles
   }
 }
 
-},{"./cssStyleKeyNames":17}],103:[function(require,module,exports){
+},{"./cssStyleKeyNames":10}],79:[function(require,module,exports){
 const { executable } = require("./executable");
 const { generate } = require("./generate")
 const { isParam } = require("./isParam")
-const { reducer } = require("./reducer");
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -10584,8 +7609,9 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params = {}, __, id, e, req, res, object, _object, mount, toView, condition }) => {
+const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id, e, req, res, object, _object, mount, toView, condition, isValue }) => {
 
+  const { reducer } = require("./reducer")
   const { toParam } = require("./toParam")
   
   var view = _window ? _window.views[id] : window.views[id]
@@ -10600,7 +7626,7 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params 
   if (value.charAt(0) === "@" && value.length == 6) value = global.__refs__[value].data
 
   // value is a param it has key=value
-  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, stack, e, data: value, _object, __, object, mount, toView, condition })
+  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, stack, e, data: value, _object, __, object, mount: !isValue && mount, toView, condition })
 
   // no value
   if (value === "()") return view
@@ -10609,13 +7635,19 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params 
   else if (value === "undefined") return undefined
   else if (value === "false") return false
   else if (value === "true") return true
+  else if (value === "device()") return global.manifest.device.device
+  else if (value === "desktop()") return global.manifest.device.device.type === "desktop"
+  else if (value === "tablet()") return global.manifest.device.device.type === "tablet"
+  else if (value === "mobile()") return global.manifest.device.device.type === "smartphone"
+  else if (value === "tv()") return global.manifest.device.device.type === "tv"
+  else if (value === "clicked()") return global.__clicked__
+  else if (value === "today()") return new Date()
   else if (value === "null") return null
   else if (value.charAt(0) === "_" && !value.split("_").find(i => i !== "_" && i !== "")) return __[value.split("_").length - 2]
-  else if (value === "_string") return ""
-  else if (value === "[]" || value === "_map") return ({})
+  else if (value === "[]") return ({})
   else if (value === ":[]") return ([{}])
   else if (value === " ") return value
-  else if (value === ":" || value === "_list") return ([])
+  else if (value === ":") return ([])
   else if (value.charAt(0) === ":") return value.split(":").slice(1).map(item =>  toValue({ req, res, _window, id, stack, lookupActions, __, e, data: item })) // :item1:item2
 
   // show loader
@@ -10656,25 +7688,59 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params 
 
       } else {
 
-        var allAreNumbers = true
+        var allAreNumbers = true, allAreArrays = true, allAreObjects = true
         var values = value.split("+").map(value => {
           
           var _value = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount })
           if (allAreNumbers) {
-            if (!isNaN(_value) && !emptySpaces(_value)) allAreNumbers = true
+
+            allAreArrays = false
+            allAreObjects = false
+            if (isNumber(_value)) allAreNumbers = true
             else allAreNumbers = false
+
+          } else if (allAreArrays) {
+
+            allAreNumbers = false
+            allAreObjects = false
+            if (Array.isArray(_value)) allAreNumbers = true
+            else allAreArrays = false
+
+          } else if (allAreObjects) {
+            
+            allAreNumbers = false
+            allAreArrays = false
+            if (typeof _value === "object") allAreNumbers = true
+            else allAreObjects = false
           }
+
           return _value
         })
         
         if (allAreNumbers) {
-          var newVal = parseFloat(values[0]) || 0
-          values.slice(1).map(val => newVal += (parseFloat(val) || 0))
+
+          var value = 0
+          values.map(val => value += (parseFloat(val) || 0))
+          return value
+
+        } else if (allAreArrays) {
+
+          var array = []
+          values.map(arr => array = array.concat(arr))
+          return array
+
+        } else if (allAreObjects) {
+
+          var object = {}
+          values.map(obj => object = { ...object, ...obj })
+          return object
+
         } else {
-          var newVal = values[0]
-          values.slice(1).map(val => newVal += val)
+          
+          var value = ""
+          values.map(val => value += val + "")
+          return value
         }
-        return value = newVal
       }
     }
     
@@ -10720,19 +7786,13 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, params 
     }
   }
 
-  if (value === "()") return view
-
-  // return await value
-  if (value.split("await().")[1] !== undefined && !value.split("await().")[0]) return value.split("await().")[1]
-
   var path = typeof value === "string" ? value.split(".") : []
   
   /* value */
   if (isNumber(value)) value = parseFloat(value)
-  else if (value === " ") return value
-  else if (object || path[0].includes(":") || path[1] || path[0].includes("()") || path[0].includes("@"))
-    value = reducer({ _window, lookupActions, stack, id, object, data: path, value, __, e, req, res, mount, toView })
-  
+  else if (object || path[0].includes(":") || path[0].includes("()") || path[0].includes("@") || path[1])
+    value = reducer({ _window, lookupActions, stack, id, data: { path, value, object }, __, e, req, res, mount, toView })
+
   return value
 }
 
@@ -10816,20 +7876,7 @@ const calcDivision = ({ _window, lookupActions, stack, value, __, id, e, req, re
 
       value = parseFloat(values[0])
       values.slice(1).map(val => {
-        if (!isNumber(value) && !isNaN(val)) value /= val
-        else if (isNumber(value) && !isNaN(val)) {
-          while (val > 1) {
-            value -= value
-            val -= 1
-          }
-        } else if (!isNumber(value) && isNaN(val)) {
-          var index = value
-          value = val
-          while (index > 1) {
-            value -= value
-            index -= 1
-          }
-        }
+        if (isNumber(value) && isNumber(val)) value /= val
       })
 
       // push 
@@ -10857,32 +7904,17 @@ const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res,
 
       if (allAreNumbers) {
         
-        var num = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object: value.charAt(0) === "." && object, condition })
+        var num = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object: value.charAt(0) === "." ? object : undefined, condition })
 
         if (!isNaN(num) && num !== " " && num !== "") return num
         else allAreNumbers = false
       }
     })
-    
+
     if (allAreNumbers) {
 
       value = parseFloat(values[0])
-      values.slice(1).map(val => {
-        if (!isNumber(value) && !isNaN(val)) value %= val
-        else if (isNumber(value) && !isNaN(val)) {
-          while (val > 1) {
-            value -= value
-            val -= 1
-          }
-        } else if (!isNumber(value) && isNaN(val)) {
-          var index = value
-          value = val
-          while (index > 1) {
-            value -= value
-            index -= 1
-          }
-        }
-      })
+      values.slice(1).map(val => value %= val)
 
       global.__calcTests__[test] = true
 
@@ -10895,255 +7927,141 @@ const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res,
 
 module.exports = { toValue, calcSubs, calcDivision, calcModulo, emptySpaces, isNumber }
 
-},{"./executable":28,"./generate":35,"./isParam":48,"./reducer":65,"./toParam":99}],104:[function(require,module,exports){
+},{"./executable":21,"./generate":24,"./isParam":37,"./reducer":48,"./toParam":75}],80:[function(require,module,exports){
 const { generate } = require("./generate")
-const { toParam } = require("./toParam")
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
-const { toValue } = require("./toValue")
+const { toValue, isNumber } = require("./toValue")
 const { toArray } = require("./toArray")
-const { createHtml } = require("./createHtml")
 const { override } = require("./merge")
-const { toAction } = require("./toAction")
 const { lineInterpreter } = require("./lineInterpreter")
+const { initView, removeView, getViewParams } = require("./view")
+const { addresser } = require("./addresser")
+const { toAwait } = require("./toAwait")
 const builtInViews = require("../view/views")
 
-const toView = async ({ _window, lookupActions, stack, id, req, res, import: _import, params: inheritedParams = {}, __ }) => {
+const toView = ({ _window, lookupActions, stack, __parent__, address, req, res, __, id, data = {} }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
-  var view = views[id], tags = ""
-  var parent = views[view.parent] || {}
 
-  // use view instead of type
-  if (view.view) view.type = view.view
-  view.__view__ = true
+  // init view
+  var { id, view } = initView({ views, global, id, __parent__, ...(data.view || {}), __lookupActions__: lookupActions, __ })
 
-  // view is empty
-  if (!view.type) return ""
-
-  // set map view path
-  if (!view.__viewsPath__) view.__viewsPath__ = [...toArray(parent.__viewsPath__)]
+  // no view
+  if (!view.view) return removeView({ _window, lookupActions, stack, id, address, __ })
 
   // encode
-  view.type = toCode({ _window, id, string: toCode({ _window, id, string: view.type, start: "'" }) })
-
-  // inherit data
-  view.doc = view.doc || parent.doc
-  view.derivations = view.derivations || [...(parent.derivations || [])]
-
-  // action
-  if (view.type.split(".")[0].split(":")[0].slice(-2) === "()") {
-    var action = toAction({ _window, lookupActions, stack, id, req, res, __, path: view.type.split("."), path0: view.type.split(".")[0].split(":")[0] })
-    if (action !== "__continue__") return action
-  }
+  view.__name__ = toCode({ _window, id, string: toCode({ _window, id, string: view.__name__, start: "'" }) })
 
   // 
-  var type = view.type.split("?")[0]
-  var params = view.type.split("?")[1]
-  var conditions = view.type.split("?")[2]
-  var subParams = type.split(":")[1] || ""
-  type = type.split(":")[0]
+  var name = view.__name__.split("?")[0]
+  var params = view.__name__.split("?")[1]
+  var conditions = view.__name__.split("?")[2]
+  var subParams = name.split(":")[1] || ""
+  view.__name__ = name.split(":")[0]
 
-  // view name is a global var
+  // global:()
   if (subParams.includes("()")) {
-    type = type + ":" + subParams
+    view.__name__ = view.__name__ + ":" + subParams
     subParams = ""
   }
 
   // loop over view
-  var loop = type.charAt(0) === "@" && type.length == 6
-
-  // header
-  _import = view.id === "html" || (parent.id === "html" && (["link", "meta", "title", "script", "style"]).includes(type.toLowerCase()))
+  var loop = view.__name__.charAt(0) === "@" && view.__name__.length == 6
   
   // view name
-  view.__name__ = type = toValue({ req, res, _window, id, data: type, __, stack })
+  view.__name__ = toValue({ _window, id, req, res, data: view.__name__, __, stack })
 
+  // no view
+  if (!view.__name__ || view.__name__.charAt(0) === "#") return removeView({ _window, id })
+  else views[id] = view
+  
   // sub params
   if (subParams) {
 
     var { data = {}, conditionsNotApplied } = lineInterpreter({ _window, lookupActions, stack, id, data: subParams, req, res, __ })
-    if (conditionsNotApplied) {
-      delete views[id]
-      return ""
-    } else subParams = data
+
+    if (conditionsNotApplied) return removeView({ _window, id })
+    else subParams = data
   }
 
   // [View]
-  if (loop) {
+  if (loop) return loopOverView({ _window, id, stack, lookupActions, __, data: subParams || {}, req, res })
 
-    var data = subParams || {}, timer = (new Date()).getTime(), id = generate()
-    console.log("LOOP start", id, clone(data));
+  // subparam is params or id
+  if (typeof subParams === "object") {
 
-    // mount
-    if (!data.preventDefault && (data.doc || data.path)) data.mount = true
+    my__ = [subParams, ...__]
+    override(view, subParams)
 
-    // path
-    if (!data.path) data.path = []
-
-    // split path
-    data.path = Array.isArray(data.path) ? data.path : data.path.split(".")
-
-    if (data.data) {
-
-      data.doc = data.doc || generate()
-      global[data.doc] = global[data.doc] || data.data || {}
-      data.derivations = data.path
-
-    } else {
-
-      data.derivations = [...(data.doc ? [] : view.derivations), ...data.path]
-      data.doc = data.doc || view.doc || generate()
-      global[data.doc] = global[data.doc] || {}
-    }
+  } else if (subParams && typeof subParams === "string" && subParams !== id) {
     
-    var { doc, data = {}, derivations = [], mount, path, keys, preventDefault, ...myparams } = data
+    var newID = subParams
+    if (views[newID] && view.id !== newID) newID += "_" + generate()
     
-    // data
-    data = reducer({ _window, lookupActions, stack, id, data: derivations, object: global[doc], req, res, __ })
-
-    var loopData = Object.keys(keys ? data : toArray(data))
-    var values = keys ? data : toArray(data)
-    if (keys && !Array.isArray(data)) loopData = sortAndArrange({ data: loopData, sort: myparams.sort, arrange: myparams.arrange })
-
-    // view
-    var tags = await Promise.all(loopData.map(async index => {
-
-      if (!isNaN(index) && index !== "") index = parseInt(index)
-
-      var _id_ = view.id + "_" + index
-      var _type_ = type + "?" + view.type.split("?").slice(1).join("?")
-      var _view_ = clone({ ...view, ...myparams, id: _id_, view: _type_, i: index })
-      if (!preventDefault && mount) _view_ = { ..._view_, doc, derivations: [...derivations, index] }
-
-      if (!preventDefault) {
-
-        if (type === "Chevron") _view_.direction = values[index]
-        else if (type === "Icon") _view_.name = values[index]
-        else if (type === "Image") _view_.src = values[index]
-        else if (type === "Text") _view_.text = values[index]
-        else if (type === "Checkbox") _view_.label = { text: values[index] }
-      }
-
-      views[_id_] = _view_
-      return await toView({ _window, lookupActions, stack, id: _id_, req, res, __: [values[index], ...__] })
-    }))
-
-    console.log("LOOP end", (new Date()).getTime() - timer, id);
-
-    delete views[view.id]
-    return tags.join("")
-  }
-
-  // subparam is id
-  if (typeof subParams === "object") inheritedParams = { ...inheritedParams, ...subParams }
-  else if (subParams && typeof subParams === "string") {
-
-    if (views[subParams] && view.id !== subParams) view.id = subParams + generate()
-    else view.id = id = subParams
-  }
-
-  view.id = id = view.id || generate()
-  views[id] = view
-
-  // init view
-  if (!_import) {
-
-    view.style = view.style || {}
-    view.class = view.class || ""
-    view.doc = view.doc || parent.doc
-    view.derivations = view.derivations || [...(parent.derivations || [])]
-    view.controls = toArray(view.controls) || []
-    view.status = "Loading"
-    view.__childrenID__ = []
-    view.__timers__ = []
-    view.__ = __
-    views[id] = view
-  }
-
-  // events
-  if (view.event) {
-    toArray(view.event).map(event => view.controls.push({ event }))
-    delete view.event
+    delete Object.assign(views, { [newID]: views[id] })[id]
+    id = newID
+    views[id].id = id
+    view = views[id]
   }
 
   // conditions
   var approved = toApproval({ _window, lookupActions, stack, data: conditions, id, req, res, __ })
-  if (!approved) {
-    delete views[id]
-    return ""
-  }
-
+  if (!approved) return removeView({ _window, id })
+  
   // params
   if (params) {
 
-    params = lineInterpreter({ _window, lookupActions, stack, data: params, action: "toParam", id, req, res, mount: true, toView: true, __ }).data
+    //lineInterpreter({ _window, lookupActions, stack, data: params, action: "toParam", id, req, res, mount: true, toView: true, __ }).data
+    lineInterpreter({ _window, lookupActions, stack, data: params, action: "toParam", id, req, res, mount: true, toView: true, __ }).data
 
-    if (params.id && params.id !== id) {
+    if (view.id !== id) {
       
-      if (views[params.id]) params.id += generate()
-      delete Object.assign(views, { [params.id]: views[id] })[id]
-      id = params.id
-      view = views[id]
+      if (views[view.id]) view.id += "_" + generate()
+      delete Object.assign(views, { [view.id]: views[id] })[id]
+      id = view.id
     }
-
-  } else params = {}
-
-  // inherited params
-  if (Object.keys(inheritedParams).length > 0) override(view, inheritedParams)
-
-  // head links
-  if (_import) return await createHtml({ _window, lookupActions, stack, id, req, res, import: _import, __ })
-
-  // custom View
-  if (global.data.view[view.__name__]) {
-
-    var newView = clone(global.data.view[view.__name__])
-
-    view.__viewsPath__.push(view.__name__)
-    
-    // id handler
-    if (newView.id && views[newView.id] && newView.id !== id) {
-      newView.id += "_" + generate()
-    } else if (!newView.id) newView.id = id
-    
-    id = newView.id
-    views[id] = { ...view, ...newView, controls: [...toArray(view.controls), ...toArray(newView.controls)], children: [...toArray(view.children), ...toArray(newView.children)] }
-
-    return await toView({ _window, lookupActions, stack, id, req, res, __: [...(Object.keys(params).length > 0 ? [params] : []), ...__] })
   }
 
+  // custom View
+  if (global.data.view[view.__name__]) return customView({ _window, id, lookupActions, stack, __, req, res })
+  
   // data
-  view.data = reducer({ _window, lookupActions, stack, id, data: view.derivations, value: view.data, key: true, object: global[view.doc] || {}, req, res, __ })
-
-  // doc
-  if (!global[view.doc] && view.data) global[view.doc] = view.data
-
+  view.data = reducer({ _window, id, data: { path: view.__dataPath__, object: global[view.doc] || {}, value: view.data, key: true }, __ })
+  
   // components
   componentModifier({ _window, id })
 
-  if (builtInViews[view.__name__]) {
-
-    views[id] = view = builtInViews[view.__name__](view)
-
-    var { data } = lineInterpreter({ _window, lookupActions, stack, data: view.view, id, req, res, mount: true, toView: true, __, index: 1 })
-    view.__name__ = view.view.split("?")[0]
-
-    if (data.id) {
-
-      delete Object.assign(views, { [data.id]: views[id] })[id]
-      id = data.id
-    }
-
-    componentModifier({ _window, id })
-  }
-
-  return await createHtml({ _window, lookupActions, stack, id, req, res, __ })
+  // build-in view
+  if (builtInViews[view.__name__] && !view.__templated__) var { id, view } = builtInViewHandler({ _window, lookupActions, stack, id, req, res, __ })
+  
+  // children renderer
+  viewAddress({ _window, id, stack, __, lookupActions, req, res })
 }
 
+const viewAddress = ({ _window, id, stack, __, lookupActions, req, res }) => {
+
+  var views = _window ? _window.views : window.views
+  var view = views[id]
+
+  var address = addresser({ _window, id, stack, renderer: true, type: "function", status: "waiting", action: "html()", function: "toHTML", __, lookupActions, stack }).address
+  var lastIndex = view.children.length - 1;
+
+  ([...toArray(view.children)]).reverse().map(async (child, index) => {
+    
+    var childID = child.id || generate()
+    views[childID] = { ...clone(child), id: childID, __view__: true, __parent__: id, __viewPath__: [...view.__viewPath__, "children", lastIndex - index], __childIndex__: lastIndex - index }
+
+    // address
+    address = addresser({ _window, id: childID, stack, type: "function", status: "waiting", action: "view()", function: "toView", renderer: true, __, lookupActions, data: { view: views[childID] } }).address
+  })
+  
+  // awaits
+  toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+}
 
 const sortAndArrange = ({ data, sort, arrange }) => {
 
@@ -11240,29 +8158,141 @@ const componentModifier = ({ _window, id }) => {
   }
 }
 
+const loopOverView = ({ _window, id, stack, lookupActions, __, data = {}, req, res }) => {
+
+  var global = _window ? _window.global : window.global
+  var views = _window ? _window.views : window.views
+  var view = views[id]
+
+  var timer = (new Date()).getTime(), loopID = generate()
+  stack.logs.push([stack.logs.length, "LOOP start", loopID, JSON.stringify(data)].join(" "));
+
+  // mount
+  if (!data.preventDefault && (data.doc || data.path)) data.mount = true
+
+  // path
+  data.path = data.path || []
+
+  // split path
+  data.path = Array.isArray(data.path) ? data.path : data.path !== undefined ? (data.path || "").split(".") : []
+
+  if (data.data) {
+
+    data.doc = data.doc || generate()
+    global[data.doc] = global[data.doc] || data.data || {}
+    data.__dataPath__ = data.path
+
+  } else {
+
+    data.__dataPath__ = [...(data.doc ? [] : view.__dataPath__), ...data.path]
+    data.doc = data.doc || view.doc || generate()
+    global[data.doc] = global[data.doc] || {}
+  }
+  
+  var { doc, data = {}, __dataPath__ = [], mount, path, keys, preventDefault, ...myparams } = data
+  
+  // data
+  data = reducer({ _window, lookupActions, stack, id, data: { path: __dataPath__, object: global[doc] }, req, res, __ })
+
+  var loopData = []
+  var isObj = !Array.isArray(data) && typeof data === "object"
+  if (isObj && keys) loopData = Object.keys(data)
+  else if (Array.isArray(data)) {
+    if (data.length === 1) loopData = ["0"]
+    else loopData = Object.keys(data)
+  } else if (isObj) loopData = ["0"]
+
+  var values = keys ? data : toArray(data), address = {}
+  if (keys && !Array.isArray(data)) loopData = sortAndArrange({ data: loopData, sort: myparams.sort, arrange: myparams.arrange })
+  var lastIndex = loopData.length - 1;
+
+  // view
+  ([...loopData]).reverse().map(async (key, index) => {
+
+    view.__looped__ = true
+
+    var params = { i: lastIndex - index, view: view.__name__ + "?" + view.view.split("?").slice(1).join("?"), id: `${view.id}_${lastIndex - index}` }
+    key = isNumber(key) ? parseInt(key) : key
+    if (!preventDefault && mount) params = { ...params, doc, __dataPath__: [...__dataPath__, key] }
+
+    views[params.id] = { __view__: true, ...clone(view), ...myparams, ...params }
+    
+    address = addresser({ _window, id: params.id, stack, type: "function", status: "waiting", function: "toView", renderer: true, action: "view()", __: [values[key], ...__], lookupActions, data: { view: views[params.id] } }).address
+  })
+
+  removeView({ _window, id })
+
+  // awaits
+  toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+
+  // log loop
+  stack.logs.push([stack.logs.length, "LOOP end", (new Date()).getTime() - timer, loopID].join(" ")); 
+}
+
+const customView = ({ _window, id, lookupActions, stack, __, req, res }) => {
+  
+  var global = _window ? _window.global : window.global
+  var views = _window ? _window.views : window.views
+  var view = views[id]
+
+  var newView = { ...clone(global.data.view[view.__name__]), __view__: true, __viewPath__: [view.__name__] }
+
+  view.__customViewPath__.push(view.__name__)
+  view.__customView__ = view.__name__
+  
+  // id
+  if (newView.id && views[newView.id] && newView.id !== id) newView.id += "_" + generate()
+  else if (!newView.id) newView.id = id
+
+  var child = { ...view, ...newView }
+  views[child.id] = child
+
+  var data = getViewParams({ view })
+
+  toView({ _window, lookupActions, stack, __parent__: view.__parent__, req, res, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: views[child.id] } })
+}
+
+const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ }) => {
+  
+  var views = _window ? _window.views : window.views
+  var global = _window ? _window.global : window.global
+  var view = views[id]
+
+  views[id] = builtInViews[view.__name__](view)
+  var { id, view } = initView({ views, global, ...views[id] })
+
+  lineInterpreter({ _window, lookupActions, stack, data: view.view, id, req, res, mount: true, toView: true, __, index: 1 })
+  view.__name__ = view.view.split("?")[0]
+
+  if (view.id !== id) {
+
+    delete Object.assign(views, { [view.id]: views[id] })[id]
+    id = view.id
+  }
+  
+  componentModifier({ _window, id })
+
+  return { id, view }
+}
+
 module.exports = { toView }
-},{"../view/views":192,"./clone":8,"./createHtml":16,"./generate":35,"./lineInterpreter":54,"./merge":56,"./reducer":65,"./toAction":84,"./toApproval":85,"./toArray":86,"./toCode":90,"./toParam":99,"./toValue":103}],105:[function(require,module,exports){
-const { generate } = require("./generate")
+},{"../view/views":167,"./addresser":3,"./clone":5,"./generate":24,"./lineInterpreter":41,"./merge":43,"./reducer":48,"./toApproval":63,"./toArray":64,"./toAwait":65,"./toCode":68,"./toValue":79,"./view":85}],81:[function(require,module,exports){
 const { starter } = require("./starter")
 const { toView } = require("./toView")
 const { clone } = require("./clone")
-const { removeChildren } = require("./update")
-const { toParam } = require("./toParam")
+const { removeView } = require("./view")
 const { closePublicViews } = require("./closePublicViews")
+const { toHTML } = require("./toHTML")
 
-const toggleView = async ({ _window, toggle = {}, id, res, __, stack, lookupActions }) => {
+const toggleView = async ({ _window, toggle = {}, id, req, res, lookupActions, stack, __, address }) => {
 
   var views = _window ? _window.views : window.views
-  var global = _window ? _window.global : window.global
-  var togglePage = toggle.page, view = {}
-  var viewId = toggle.viewId || toggle.view
+  
+  var viewName = toggle.view
   var toggleId = toggle.id || id
-  var parentId = toggle.parent
-  if (togglePage) parentId = "root"
-  if (!toggleId) {
-    if (!parentId) parentId = id
-    toggleId = views[parentId].element.children[0] && views[parentId].element.children[0].id
-  } else if (!parentId) parentId = views[toggleId].parent
+
+  // parent view
+  var view = views[toggle.__parent__ || views[toggleId].__parent__]
 
   toggle.fadein = toggle.fadein || {}
   toggle.fadeout = toggle.fadeout || {}
@@ -11275,77 +8305,52 @@ const toggleView = async ({ _window, toggle = {}, id, res, __, stack, lookupActi
 
   document.getElementById("loader-container").style.display = "flex"
 
-  // children
-  var child = clone(global.data.view[viewId] || { view: "View" })
-  if (togglePage) {
-
-    global.__prevPage__.push(global.manifest.currentPage)
-    if (global.__prevPage__.length > 5) global.__prevPage__.shift()
-    var currentPage = global.manifest.currentPage = togglePage.split("/")[0]
-
-    viewId = currentPage
-
-  } else {
-    view = views[parentId]
-
-    if (id === "root" && global.data.view[viewId]) {
-
-      var page = global.data.view[viewId]
-      var _params = toParam({ data: page.type.split("?")[1] || "" })
-      global.__prevPath__.push(global.path)
-      if (global.__prevPath__.length > 5) global.__prevPath__.shift()
-      global.path = _params.path
-      history.pushState({}, _params.title, _params.path)
-      document.title = _params.title
-    }
-  }
-
-  if (!view || !view.element) return
-
   // close publics
-  closePublicViews({ id })
-
-  if (res) return views.root.children = clone([global.data.view[currentPage]])
+  closePublicViews({ _window, id, __, lookupActions })
 
   // fadeout
   var timer = toggle.timer || toggle.fadeout.timer || 0
 
-  var ID = child.id || generate()
-  views[ID] = clone(child)
-  views[ID].id = ID
-  // views[ID].index = index
-  views[ID].parent = view.id
-  views[ID].style = {}
-  views[ID].__viewsPath__ = viewId ? [...view.__viewsPath__, viewId] : [...view.__viewsPath__]
-  views[ID].style.transition = toggle.fadein.before.transition || null
-  views[ID].style.opacity = toggle.fadein.before.opacity || "0"
-  views[ID].style.transform = toggle.fadein.before.transform || null
+  // styles
+  var style = { transition: toggle.fadein.before.transition || null, opacity: toggle.fadein.before.opacity || "0", transform: toggle.fadein.before.transform || null }
 
-  var innerHTML = await toView({ id: ID, __: view.__, stack, lookupActions })
+  // children
+  var data = { view: viewName || "View", style }
 
-  // remve prev view
-  if (toggleId && views[toggleId] && views[toggleId].element) {
+  // clear children
+  view.__childrenRef__ = []
+  view.__html__ = ""
+  view.__childIndex__ = 0
 
-    views[toggleId].element.style.transition = toggle.fadeout.after.transition || `${timer}ms ease-out`
-    views[toggleId].element.style.transform = toggle.fadeout.after.transform || null
-    views[toggleId].element.style.opacity = toggle.fadeout.after.opacity || "0"
+  await toView({ __parent__: view.id, __: view.__, req, res, stack: address.stack, lookupActions, data: { view: data } })
 
-    removeChildren({ id: toggleId })
-    delete views[toggleId]
+  // remove prev view
+  if (toggleId && views[toggleId] && views[toggleId].__element__) {
+
+    views[toggleId].__element__.style.transition = toggle.fadeout.after.transition || `${timer}ms ease-out`
+    views[toggleId].__element__.style.transform = toggle.fadeout.after.transform || null
+    views[toggleId].__element__.style.opacity = toggle.fadeout.after.opacity || "0"
+
+    removeView({ id: toggleId, self: false })
   }
 
   // timer
   var timer = toggle.timer || toggle.fadein.timer || 0
-  view.element.innerHTML = ""
-  view.element.innerHTML = innerHTML
 
-  var __ids__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-  __ids__.map(id => starter({ id }))
+  // html
+  toHTML({ _window, lookupActions, stack: address.stack, __, id: view.id })
+  var innerHTML = view.__innerHTML__
+
+  view.__element__.innerHTML = ""
+  view.__element__.innerHTML = innerHTML
+
+  // start
+  view.__idList__.map(id => starter({ _window, lookupActions, stack: address.stack, id }))
 
   // set visible
   setTimeout(async () => {
 
-    var children = [...view.element.children]
+    var children = [...view.__element__.children]
     children.map(el => {
 
       var id = el.id
@@ -11360,165 +8365,93 @@ const toggleView = async ({ _window, toggle = {}, id, res, __, stack, lookupActi
 }
 
 module.exports = { toggleView }
-},{"./clone":8,"./closePublicViews":9,"./generate":35,"./starter":79,"./toParam":99,"./toView":104,"./update":106}],106:[function(require,module,exports){
-const { generate } = require("./generate")
+},{"./clone":5,"./closePublicViews":6,"./starter":60,"./toHTML":73,"./toView":80,"./view":85}],82:[function(require,module,exports){
 const { starter } = require("./starter")
-const { toArray } = require("./toArray")
 const { toView } = require("./toView")
 const { clone } = require("./clone")
 const { closePublicViews } = require("./closePublicViews")
+const { toHTML } = require("./toHTML")
+const { removeView } = require("./view")
+const { generate } = require("./generate")
 
-const update = async ({ id, _window, lookupActions, stack, req, res, update = {}, __, route = {}, mainId, ...params }) => {
+const update = ({ _window, id, lookupActions, stack, address, req, res, __, data = {}, mainId }) => {
 
   var views = _window ? _window.views : window.views
-  var global = _window ? _window.views : window.global
-  var view = views[id], timer = (new Date()).getTime()
+  var global = _window ? _window.global : window.global
+
+  var view = views[data.id || id]
+  var parent = views[data.__parent__ || view.__parent__]
   
-  if (!view || !view.element) return
+  var index = data.__index__ !== undefined ? data.__index__ : view.__childIndex__
+  var __viewPath__ = [...(data.__viewPath__ || view.__viewPath__)]
+  var __customViewPath__ = [...(data.__customViewPath__ || view.__customViewPath__)]
+  var my__ = data.__ || view.__
+  var myLookupActions = data.__lookupActions__ || lookupActions
+
+  var elements = []
+  var timer = (new Date()).getTime()
+
+  if (!view) return
 
   // close publics
-  closePublicViews({ id })
+  closePublicViews({ _window, id, __, lookupActions })
 
-  // children
-  var children = clone(toArray(view.children))
-  
-  // remove id from views
-  removeChildren({ id })
+  /*if (data.view) {
+    data.view = typeof data.view === "string" ? global.data.view[data.view] : typeof data.view === "object" ? data.view : ""
+    if (!data.view) return
+  }*/
 
-  // reset children for root
-  if (id === "root") views.root.children = children = [{ ...clone(global.data.view[route.currentPage]), __viewsPath__: [route.currentPage] }]
+  // get view to be rendered
+  var reducedView = { ...(data.view ? data.view : clone(__viewPath__.reduce((o, k) => o[k], global.data.view))), __childIndex__: index, __view__: true, __viewPath__, __customViewPath__ }
 
-  var innerHTML = await Promise.all(children.map(async (child, index) => {
-
-    var id = child.id || generate()
-    views[id] = child
-    views[id].id = id
-    views[id].index = index
-    views[id].parent = view.id
-    views[id].style = views[id].style || {}
-    views[id].__viewsPath__ = child.__viewsPath__ || [...view.__viewsPath__]
-    
-    return await toView({ _window, lookupActions, stack, req, res, id, __: view.__ })
-  }))
-  
-  if (id === "root" && route.currentPage && route.currentPage !== global.manifest.currentPage) return
-  
-  innerHTML = innerHTML.join("")
-  
-  view.element.innerHTML = ""
-  view.element.innerHTML = innerHTML
-  
-  var __ids__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-  
-  __ids__.map(id => starter({ _window, lookupActions, stack, req, res, id }))
-  
-  var data = { view: views[id], message: "View updated successfully!", success: true }
-
-  // routing
-  if (id === "root") {
-
-    document.body.scrollTop = document.documentElement.scrollTop = 0
-    var title = route.title || views[global.manifest.currentPage].title
-    var path = route.path || views[global.manifest.currentPage].path
-    
-    history.pushState(null, title, path)
-    document.title = title
-
-    if (document.getElementById("loader-container")) document.getElementById("loader-container").style.display = "none"
+  // data
+  if (data.data) {
+    reducedView.data = clone(data.data)
+    reducedView.doc = data.doc || parent.doc || generate()
+    global[reducedView.doc] = global[reducedView.doc] || reducedView.data
+  } else if (data.doc) {
+    reducedView.doc = data.doc
+    global[reducedView.doc] = global[reducedView.doc] || reducedView.data || {}
   }
 
-  console.log(id === "root" ? "ROUTE" : "UPDATE", (new Date()).getTime() - timer, id)
+  // path
+  if (data.path !== undefined) reducedView.__dataPath__ = (Array.isArray(data.path) ? data.path : typeof data.path === "number" ? [data.path] : data.path.split(".")) || []
 
-  // await params
-  require("./toAwait").toAwait({ _window, lookupActions, stack, req, res, id: mainId || id, ...params, __, _: data })
+  // remove views
+  if (!data.insert) parent.__childrenRef__.filter(({ childIndex }) => childIndex === index).map(({ id }) => elements.push(removeView({ _window, id, main: true })))
+
+  // render
+  toView({ _window, lookupActions: myLookupActions, stack, req, res, __parent__: parent.id, __: my__, data: { view: reducedView } })
+
+  postUpdate({ _window, lookupActions, stack, __, req, res, address, id: data.id || id, parent, mainId, data: { ...data, index, elements, timer } })
 }
 
-const removeChildren = ({ id }) => {
-
-  var views = window.views
-  var global = window.global
-  var view = views[id]
-
-  if (!view.element) return
+const postUpdate = ({ _window, lookupActions, stack, __, req, res, address, id, parent, mainId, data: { index, elements, route, timer, ...data } }) => {
   
-  toArray(view.__childrenID__).map(id => {
-    
-    var view = views[id]
-    if (!views[id]) return
-    
-    (view.__timers__ || []).map(timerID => clearTimeout(timerID))
+  var views = _window ? _window.views : window.views
+  var global = _window ? _window.global : window.global
 
-    removeChildren({ id })
-    Object.keys(view).map(key => delete view[key])
+  // tohtml parent
+  toHTML({ _window, lookupActions, __, id: parent.id })
 
-    delete global.__events__[id]
-    delete views[id]
+  var renderedView = parent.__childrenRef__.filter(({ id, childIndex }) => childIndex === index && !views[id].__rendered__ && views[id])
+  var updatedViews = [], idLists = [], innerHTML = ""
+
+  // insert absolutely
+  renderedView.map(({ id }) => {
+
+    var { __idList__, __html__ } = views[id]
+
+    // push to html
+    innerHTML += __html__
+
+    // _.data
+    updatedViews.push(views[id])
+
+    // start
+    idLists.push(...[id, ...__idList__])
   })
-}
 
-module.exports = {update, removeChildren}
-},{"./clone":8,"./closePublicViews":9,"./generate":35,"./starter":79,"./toArray":86,"./toAwait":87,"./toView":104}],107:[function(require,module,exports){
-const { generate } = require("./generate")
-const { starter } = require("./starter")
-const { toArray } = require("./toArray")
-const { toView } = require("./toView")
-const { clone } = require("./clone")
-const { removeChildren } = require("./update")
-const { closePublicViews } = require("./closePublicViews")
-
-const updateSelf = async ({ _window, lookupActions, stack, id, update = {}, route, __ }) => {
-
-  var views = window.views
-  var view = views[id]
-  var global = window.global
-  var timer = update.timer || 0
-  
-  if (!view || !view.element) return
-  var parent = views[view.parent]
-  var index = view.index || 0
-  
-  // close publics
-  closePublicViews({ id })
-
-  // children
-  var children = clone(toArray(parent.children[index]))
-  if (id === "popup") children = clone([global.data.public[popup]])
-  
-  // remove children
-  removeChildren({ id })
-
-  ////// remove view
-  Object.entries(views[id]).map(([k, v]) => {
-
-    if (k.includes("-timer")) clearTimeout(v)
-  })
-  delete views[id]
-  ///////
-
-  var innerHTML = await Promise.all(children.map(async child => {
-
-    var id = child.id || generate()
-    views[id] = child
-    views[id].id = id
-    views[id].index = index
-    views[id].parent = parent.id
-    views[id].style = views[id].style || {}
-    views[id].__viewsPath__ = [...view.__viewsPath__]
-    //views[id].style.opacity = "0"
-    //if (timer) views[id].style.transition = `opacity ${timer}ms`
-    
-    return await toView({ id, __ })
-
-  }))
-  
-  innerHTML = innerHTML.join("")
-  
-  var childrenNodes = [...parent.element.children]
-  childrenNodes.map((childNode, i) => {
-    var _index = parseInt(childNode.getAttribute("index"))
-    if (_index === index) parent.element.removeChild(childrenNodes[i])
-  })
-  
   var lDiv = document.createElement("div")
   document.body.appendChild(lDiv)
   lDiv.style.position = "absolute"
@@ -11526,44 +8459,49 @@ const updateSelf = async ({ _window, lookupActions, stack, id, update = {}, rout
   lDiv.style.left = -1000
   lDiv.style.top = -1000
   lDiv.innerHTML = innerHTML
-  var node = lDiv.children[0]
-  
-  parent.element.insertBefore(node, [...parent.element.children][index])
-  var __ids__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-  
-  __ids__.map(id => starter({ id }))
-  
-  /*var _children = [...parent.element.children]
-  _children.map(childNode => {
-    var _index = childNode.getAttribute("index")
-    if (_index === index) return childNode
-    else return
-  }).filter(child => child)*/
-  
-  if (lDiv) {
-    document.body.removeChild(lDiv)
-    lDiv = null
-  }
-  
-  view.update = { view: views[node.id], message: "View updated succefully!", success: true }
+  lDiv.children[0].style.opacity = "0"
 
-  // routing
+  // remove prev elements
+  elements.map(element => element.remove())
+  
+  // innerHTML
+  if (index >= parent.__element__.children.length || parent.__element__.children.length === 0) parent.__element__.appendChild(lDiv.children[0])
+  else parent.__element__.insertBefore(lDiv.children[0], parent.__element__.children[index])
+
+  idLists.map(id => starter({ _window, lookupActions, stack: address.stack, id }))
+
+  // display
+  parent.__element__.children[index].style.opacity = "1"
+
+  console.log(data.action || (id === "root" ? "ROUTE" : "UPDATE"), (new Date()).getTime() - timer, id)
+
+  var data = { view: updatedViews.length === 1 ? updatedViews[0] : updatedViews, message: "View updated successfully!", success: true }
+
+  // rout
   if (id === "root") {
-
+    
     document.body.scrollTop = document.documentElement.scrollTop = 0
-
-    var title = route.title || views[views.root.element.children[0].id].title
-    var path = route.path || views[views.root.element.children[0].id].path
-
+    var title = route.title || views[global.manifest.page].title
+    var path = route.path || views[global.manifest.page].path
+    
     history.pushState(null, title, path)
     document.title = title
 
     if (document.getElementById("loader-container")) document.getElementById("loader-container").style.display = "none"
   }
+
+  if (lDiv) {
+
+    document.body.removeChild(lDiv)
+    lDiv = null
+  }
+
+  // await params
+  require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id: mainId || id, __, _: data })
 }
 
-module.exports = {updateSelf}
-},{"./clone":8,"./closePublicViews":9,"./generate":35,"./starter":79,"./toArray":86,"./toView":104,"./update":106}],108:[function(require,module,exports){
+module.exports = {update}
+},{"./clone":5,"./closePublicViews":6,"./generate":24,"./starter":60,"./toAwait":65,"./toHTML":73,"./toView":80,"./view":85}],83:[function(require,module,exports){
 const axios = require("axios")
 const { clone } = require("./clone")
 const { generate } = require("./generate")
@@ -11609,7 +8547,7 @@ module.exports = async ({ _window, lookupActions, stack, address, id, req, res, 
 
     if (_window) {
       
-      var data = await storeFile({ upload })
+      var data = await storeFile({ req, upload })
 
       uploads.push(data)
       return data
@@ -11633,7 +8571,7 @@ module.exports = async ({ _window, lookupActions, stack, address, id, req, res, 
   // await
   require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __, _: uploads.length === 1 ? uploads[0] : uploads, ...params })
 }
-},{"./clone":8,"./generate":35,"./readFile":64,"./storage":81,"./toArray":86,"./toAwait":87,"axios":119}],109:[function(require,module,exports){
+},{"./clone":5,"./generate":24,"./readFile":47,"./storage":61,"./toArray":64,"./toAwait":65,"axios":94}],84:[function(require,module,exports){
 'use strict';
 
 const downloadToFile = (content, filename, contentType) => {
@@ -11706,15 +8644,98 @@ const vcardServer = ({ res, data }) => {
 }
 
 module.exports = { vcard }
-},{"vcards-js":184}],110:[function(require,module,exports){
-const wait = async ({ id, e, lookupActions, stack, ...params }) => {
+},{"vcards-js":159}],85:[function(require,module,exports){
+const { generate } = require("./generate")
+const { toArray } = require("./toArray")
 
-  // await params
-  if (params.asyncer) require("./toAwait").toAwait({ id, lookupActions, stack, e, params })
+const initView = ({ views, global, id = generate(), doc, children = [], __status__ = "Loading", __dataPath__, __parent__, __lookupActions__ = [], __controls__ = [], ...data }) => {
+
+    var parentView = (__parent__ ? views[__parent__] : {}) || {}
+
+    views[id] = {
+        ...data,
+        id,
+        children: toArray(children),
+        doc: doc || parentView.doc,
+        __lookupActions__,
+        __status__,
+        __view__: true,
+        __parent__,
+        __dataPath__: __dataPath__ || [...(parentView.__dataPath__ || [])],
+        __indexing__: 0,
+        __name__: data.view,
+        __controls__: toArray(__controls__),
+        __childrenRef__: [],
+        __timers__: [],
+        __rendered__: false,
+        __initialIndex__: parentView.__indexing__ || 0,
+        __viewPath__: [...(data.__viewPath__ || [])],
+        __customViewPath__: [...(data.__customViewPath__ || parentView.__customViewPath__ || [])]
+    }
+
+    parentView.__indexing__ += 1
+
+    return { id, view: views[id] }
 }
 
-module.exports = { wait }
-},{"./toAwait":87}],111:[function(require,module,exports){
+const getViewParams = ({ view }) => {
+    
+    var { id, doc, data, view, children, __lookupActions__, __element__, __dataPath__, __childrenRef__, __index__,
+        __viewPath__, __customViewPath__, __indexing__, __childIndex__, __initialIndex__, __customView__, __htmlStyles__, 
+        __parent__, __controls__, __status__, __rendered__, __timers__, __view__, __name__, __, ...params } = view
+        
+    return params
+}
+
+const removeView = ({ _window, id, self = true, main }) => {
+    
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
+    var view = views[id], parent = views[view.__parent__], element = {}
+    
+    toArray(view.__childrenRef__).map(({ id }) => id).map(id => removeView({ _window, id }))
+
+    if (self) {
+
+        view.__timers__.map(timerID => clearTimeout(timerID))
+
+        var index = parent.__childrenRef__.findIndex(({ id }) => id === view.id)
+
+        if (index >= 0) {
+            parent.__childrenRef__.slice(index).map(viewRef => {
+                
+                viewRef.index--
+                views[id].__index__ = viewRef.index
+                views[id].__element__.index = viewRef.index
+            })
+            parent.__childrenRef__.splice(index, 1)
+        }
+
+        if (main) element = view.__element__
+        
+        deepDelete({ obj: global.__events__, key: id })
+
+        Object.keys(view).map(key => delete view[key])
+
+        delete views[id]
+    }
+
+    return element
+}
+
+const deepDelete = ({ obj, key }) => {
+
+    if (typeof obj !== "object") return obj
+    if (typeof obj[key] === "object") 
+        Object.keys(obj[key]).map(key => {
+            deepDelete({ obj: obj[key], key })
+        })
+
+    delete obj[key]
+}
+
+module.exports = { initView, getViewParams, removeView }
+},{"./generate":24,"./toArray":64}],86:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
@@ -11762,12 +8783,12 @@ const watch = ({ lookupActions, __, string, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":8,"./generate":35,"./isEqual":46,"./toApproval":85,"./toCode":90,"./toParam":99,"./toValue":103}],112:[function(require,module,exports){
+},{"./clone":5,"./generate":24,"./isEqual":35,"./toApproval":63,"./toCode":68,"./toParam":75,"./toValue":79}],87:[function(require,module,exports){
 const { generate } = require("../action/generate");
 
-module.exports = ({ controls, id }) => {
+module.exports = ({ data, id }) => {
   var view = window.views[id];
-  var _id = controls.id || id;
+  var _id = data.id || id;
   if (typeof _id === "object" && _id.id) _id = _id.id;
 
   view.clicked.state = view.clicked.state || generate();
@@ -11795,15 +8816,15 @@ module.exports = ({ controls, id }) => {
     }
   ]
 }
-},{"../action/generate":35}],113:[function(require,module,exports){
+},{"../action/generate":24}],88:[function(require,module,exports){
 module.exports = () => {
   
   return [{ // close droplist
-    event: "[keyup:input()??e().key=Escape];[blur:input()??clicked:().id!=droplist;!():droplist.contains():[clicked:()]]?clearTimer():[__droplistTimer__:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()"
+    event: "[keyup:input()??e().key=Escape];[blur:input()??clicked().id!=droplist;!():droplist.contains():[clicked()]]?clearTimer():[__droplistTimer__:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];():droplist.():[#children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()"
   }, { // open droplist on click
-    event: `click;[focus:input()??clicked:().id!=.id;!clicked:().contains():[input().id]]?clearTimer():[__droplistTimer__:()];if():[__droplistPositioner__:()!=.id]:[__keyupIndex__:()=0;__droplistPositioner__:()=.id;droplist();():droplist.():[children().():[style().pointerEvents=auto];style():[transition='opacity .1s, transform .1s';opacity=1;transform='scale(1)';pointerEvents=auto]];droplist.style.keys()._():[():droplist.style().[_]=().droplist.style.[_]];timer():[():droplist.position():[positioner=.id;placement=.droplist.placement||bottom;distance=.droplist.distance;align=.droplist.align]]:0]:[droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]||null];():droplist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(.5);pointerEvents=none]];__droplistPositioner__:().del()]`,
+    event: `click;[focus:input()??clicked().id!=.id;!clicked().contains():[input().id]]?clearTimer():[__droplistTimer__:()];if():[__droplistPositioner__:()!=.id]:[__keyupIndex__:()=0;__droplistPositioner__:()=.id;droplist()::[():droplist.():[#children().():[style().pointerEvents=auto];style():[transition='opacity .1s, transform .1s';opacity=1;transform='scale(1)';pointerEvents=auto]];droplist.style.keys()._():[():droplist.style().[_]=().droplist.style.[_]];():droplist.position():[positioner=.id;placement=[.droplist.placement||bottom];distance=[.droplist.distance||0];align=[.droplist.align||left]]]]:[droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]||null];():droplist.():[style():[opacity=0;transform=scale(.5)]];__droplistPositioner__:().del()]`,
   }, { // open on hoverin
-    event: `mouseenter?clearTimer():[().droplistLeaved];if():[__droplistMouseenterer__:()!=().id]:[click();__droplistMouseenterer__:()=().id]?droplist.hoverable`
+    event: `mouseenter?clearTimer():[.droplistLeaved];if():[__droplistMouseenterer__:()!=().id]:[click();__droplistMouseenterer__:()=().id]?droplist.hoverable`
   }, { // close on hoverout
     event: `mouseleave?droplistLeaved=timer():[if():[!():droplist.mouseentered;__droplistMouseenterer__:()=().id;():droplist.style().opacity='1']:[click();__droplistMouseenterer__:().del()]]:400?droplist.hoverable`
   }, { // search droplist
@@ -11814,7 +8835,7 @@ module.exports = () => {
     event: `keyup:input()?():droplist.children().[__keyupIndex__:()||0].mouseleave();__keyupIndex__:()=if():[e().keyCode=40]:[__keyupIndex__:()+1]:[__keyupIndex__:()-1];():droplist.children().[__keyupIndex__:()].mouseenter()?!droplist.preventDefault;e().keyCode=40||e().keyCode=38;__droplistPositioner__:();if():[e().keyCode=38]:[__keyupIndex__:()>0].elif():[e().keyCode=40]:[__keyupIndex__:()<():droplist.children.lastIndex()]`
   }]
 }
-},{}],114:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 module.exports = {
   popup: require("./popup"),
   droplist: require("./droplist"),
@@ -11823,11 +8844,11 @@ module.exports = {
   hover: require("./hover"),
   clicked: require("./clicked"),
 }
-},{"./clicked":112,"./droplist":113,"./hover":115,"./mininote":116,"./popup":117,"./tooltip":118}],115:[function(require,module,exports){
-module.exports = ({ controls, id }) => {
+},{"./clicked":87,"./droplist":88,"./hover":90,"./mininote":91,"./popup":92,"./tooltip":93}],90:[function(require,module,exports){
+module.exports = ({ data, id }) => {
 
     var view = window.views[id]
-    var _id = controls.id || controls.controllerId || id
+    var _id = data.id || data.controllerId || id
     if (typeof _id === "object" && _id.id) _id = _id.id
     
     view.hover.default = view.hover.default || { style: {} }
@@ -11837,53 +8858,55 @@ module.exports = ({ controls, id }) => {
     )
     
     return [{
-        "event": `loaded:${_id}?mouseenter()?hover.mount;!clicked.mount`
+        //"event": `loaded:${_id}?mouseenter()?hover.mount;!clicked.mount`
     }, {
         "event": `mouseenter:${_id}?hover.style.keys()._():[style().[_]=.hover.style.[_]]?!clicked.disable;!clicked.mount;!hover.disable`
     }, {
         "event": `mouseleave:${_id}?hover.default.style.keys()._():[style().[_]=.hover.default.style.[_]]?!clicked.disable;!clicked.mount;!hover.disable`
     }]
 }
-},{}],116:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 module.exports = () => {
   
   return [{
     event: `click?():mininote-text.txt()=[.mininote.text||.mininote.note||''];clearTimeout():[mininote-timer:()];():mininote.style():[opacity=1;transform='scale(1)'];mininote-timer:()=():root.timer():[():mininote.style():[opacity=0;transform=scale(0)]]:[.mininote.timer||3000]`
   }]
 }
-},{}],117:[function(require,module,exports){
-module.exports = ({ controls, id }) => {
+},{}],92:[function(require,module,exports){
+module.exports = ({ data, id }) => {
   
   var view = window.views[id]
   
   if (typeof view.popup !== "object") view.popup = {}
-  view.popup.id = controls.id = id = controls.id || id
+  view.popup.id = data.id = id = data.id || id
   if (view.popup.model2) view.popup.model = "model2"
   else if (view.popup.model3) view.popup.model = "model3"
   if (!view.popup.model) view.popup.model = "model1"
   
   return [{
-    event: `click?clearTimer():[popup-timer:()];if():[__popupPositioner__:()=${id}]:[timer():[().popup.style.keys()._():[():popup.style().[_]=():popup.style._||null];():popup.():[if():[():${id}.popup.model=model1]:[child().style().transform='scale(0.5)'];style():[opacity=0;pointerEvents=none]];__popupPositioner__:().del()]:0].elif():[__popupPositioner__:()!=${id}]:[__popupPositioner__:()=${id};update():popup;timer():[if():[():${id}.popup.model=model1]:[():popup.position():[positioner=${controls.positioner || id};placement=${controls.placement || "left"};distance=${controls.distance};align=${controls.align}]];():popup.():[if():[():${id}.popup.model=model1]:[child().style().transform='scale(1)'];style():[opacity=1;pointerEvents=auto]];().popup.style():[().popup.style]]:50]`
+    event: `click?clearTimer():[popup-timer:()];if():[__popupPositioner__:()=${id}]:[timer():[().popup.style.keys()._():[():popup.style().[_]=():popup.style._||null];():popup.():[if():[():${id}.popup.model=model1]:[child().style().transform='scale(0.5)'];style():[opacity=0;pointerEvents=none]];__popupPositioner__:().del()]:0].elif():[__popupPositioner__:()!=${id}]:[__popupPositioner__:()=${id};update():popup;timer():[if():[():${id}.popup.model=model1]:[():popup.position():[positioner=${data.positioner || id};placement=${data.placement || "left"};distance=${data.distance};align=${data.align}]];():popup.():[if():[():${id}.popup.model=model1]:[child().style().transform='scale(1)'];style():[opacity=1;pointerEvents=auto]];().popup.style():[().popup.style]]:50]`
   }]
 }
-},{}],118:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[a-zA-Z]/
 
-module.exports = ({ controls, id }) => {
+module.exports = ({ data, id }) => {
   
-  id = controls.id || id
-  var text = controls.text || ""
+  id = data.id || id
+  var text = data.text || ""
   
   return [{
-    event: `mousemove?if():[!tooltip-timer:()]:[tooltip-timer:()=timer():[():tooltip.style().opacity=1]:500];():tooltip-text.txt()=.tooltip.text;():tooltip-text.removeClass():ar;if():[${arabic.test(text) && !english.test(text)}]:[():tooltip-text.addClass():ar];():tooltip.position():[positioner=mouse;placement=[.tooltip.placement||left];distance=[.tooltip.distance||0]]`
+    event: `mousemove?if():[!__tooltipTimer__:()]:[__tooltipTimer__:()=timer():[():tooltip.style().opacity=1?mouseentered]:500];():tooltip-text.txt()=.tooltip.text;():tooltip-text.removeClass():ar;if():[${arabic.test(text) && !english.test(text)}]:[():tooltip-text.addClass():ar];():tooltip.position():[positioner=mouse;placement=[.tooltip.placement||left];distance=[.tooltip.distance||0]]?mouseentered`
   }, {
-    event: "mouseleave?clearTimer():[tooltip-timer:()];tooltip-timer:().del();():tooltip.style().opacity=0"
+    event: "mouseleave?mouseentered=false;clearTimer():[__tooltipTimer__:()];__tooltipTimer__:().del();():tooltip.style().opacity=0"
+  }, {
+    event: "mouseenter?mouseentered=true"
   }]
 }
-},{}],119:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":121}],120:[function(require,module,exports){
+},{"./lib/axios":96}],95:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12074,7 +9097,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":127,"../core/createError":128,"./../core/settle":132,"./../helpers/buildURL":136,"./../helpers/cookies":138,"./../helpers/isURLSameOrigin":141,"./../helpers/parseHeaders":143,"./../utils":146}],121:[function(require,module,exports){
+},{"../core/buildFullPath":102,"../core/createError":103,"./../core/settle":107,"./../helpers/buildURL":111,"./../helpers/cookies":113,"./../helpers/isURLSameOrigin":116,"./../helpers/parseHeaders":118,"./../utils":121}],96:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -12132,7 +9155,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":122,"./cancel/CancelToken":123,"./cancel/isCancel":124,"./core/Axios":125,"./core/mergeConfig":131,"./defaults":134,"./helpers/bind":135,"./helpers/isAxiosError":140,"./helpers/spread":144,"./utils":146}],122:[function(require,module,exports){
+},{"./cancel/Cancel":97,"./cancel/CancelToken":98,"./cancel/isCancel":99,"./core/Axios":100,"./core/mergeConfig":106,"./defaults":109,"./helpers/bind":110,"./helpers/isAxiosError":115,"./helpers/spread":119,"./utils":121}],97:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12153,7 +9176,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],123:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -12212,14 +9235,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":122}],124:[function(require,module,exports){
+},{"./Cancel":97}],99:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],125:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12369,7 +9392,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":136,"../helpers/validator":145,"./../utils":146,"./InterceptorManager":126,"./dispatchRequest":129,"./mergeConfig":131}],126:[function(require,module,exports){
+},{"../helpers/buildURL":111,"../helpers/validator":120,"./../utils":121,"./InterceptorManager":101,"./dispatchRequest":104,"./mergeConfig":106}],101:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12425,7 +9448,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":146}],127:[function(require,module,exports){
+},{"./../utils":121}],102:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -12447,7 +9470,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":137,"../helpers/isAbsoluteURL":139}],128:[function(require,module,exports){
+},{"../helpers/combineURLs":112,"../helpers/isAbsoluteURL":114}],103:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -12467,7 +9490,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":130}],129:[function(require,module,exports){
+},{"./enhanceError":105}],104:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12551,7 +9574,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":124,"../defaults":134,"./../utils":146,"./transformData":133}],130:[function(require,module,exports){
+},{"../cancel/isCancel":99,"../defaults":109,"./../utils":121,"./transformData":108}],105:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12595,7 +9618,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],131:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -12684,7 +9707,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":146}],132:[function(require,module,exports){
+},{"../utils":121}],107:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -12711,7 +9734,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":128}],133:[function(require,module,exports){
+},{"./createError":103}],108:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12735,7 +9758,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":134,"./../utils":146}],134:[function(require,module,exports){
+},{"./../defaults":109,"./../utils":121}],109:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -12873,7 +9896,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":120,"./adapters/xhr":120,"./core/enhanceError":130,"./helpers/normalizeHeaderName":142,"./utils":146,"_process":156}],135:[function(require,module,exports){
+},{"./adapters/http":95,"./adapters/xhr":95,"./core/enhanceError":105,"./helpers/normalizeHeaderName":117,"./utils":121,"_process":131}],110:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -12886,7 +9909,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],136:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -12958,7 +9981,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":146}],137:[function(require,module,exports){
+},{"./../utils":121}],112:[function(require,module,exports){
 'use strict';
 
 /**
@@ -12974,7 +9997,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],138:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13029,7 +10052,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":146}],139:[function(require,module,exports){
+},{"./../utils":121}],114:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13045,7 +10068,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],140:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13058,7 +10081,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],141:[function(require,module,exports){
+},{}],116:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13128,7 +10151,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":146}],142:[function(require,module,exports){
+},{"./../utils":121}],117:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -13142,7 +10165,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":146}],143:[function(require,module,exports){
+},{"../utils":121}],118:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -13197,7 +10220,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":146}],144:[function(require,module,exports){
+},{"./../utils":121}],119:[function(require,module,exports){
 'use strict';
 
 /**
@@ -13226,7 +10249,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],145:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -13333,7 +10356,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":147}],146:[function(require,module,exports){
+},{"./../../package.json":122}],121:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -13684,7 +10707,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":135}],147:[function(require,module,exports){
+},{"./helpers/bind":110}],122:[function(require,module,exports){
 module.exports={
   "name": "axios",
   "version": "0.21.4",
@@ -13770,7 +10793,7 @@ module.exports={
   ]
 }
 
-},{}],148:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -13922,9 +10945,9 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],149:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 
-},{}],150:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 (function (Buffer){(function (){
 /*!
  * The buffer module from node.js, for the browser.
@@ -15705,7 +12728,7 @@ function numberIsNaN (obj) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"base64-js":148,"buffer":150,"ieee754":154}],151:[function(require,module,exports){
+},{"base64-js":123,"buffer":125,"ieee754":129}],126:[function(require,module,exports){
 'use strict';
 
 /******************************************************************************
@@ -15872,7 +12895,7 @@ if (typeof module !== 'undefined') {
   module.exports = dijkstra;
 }
 
-},{}],152:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 (function (global){(function (){
 /**
  * EasyQRCodeJS
@@ -15896,7 +12919,7 @@ if (typeof module !== 'undefined') {
 !function(){"use strict";function a(a,b){var c,d=Object.keys(b);for(c=0;c<d.length;c++)a=a.replace(new RegExp("\\{"+d[c]+"\\}","gi"),b[d[c]]);return a}function b(a){var b,c,d;if(!a)throw new Error("cannot create a random attribute name for an undefined object");b="ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz",c="";do{for(c="",d=0;d<12;d++)c+=b[Math.floor(Math.random()*b.length)]}while(a[c]);return c}function c(a){var b={left:"start",right:"end",center:"middle",start:"start",end:"end"};return b[a]||b.start}function d(a){var b={alphabetic:"alphabetic",hanging:"hanging",top:"text-before-edge",bottom:"text-after-edge",middle:"central"};return b[a]||b.alphabetic}var e,f,g,h,i;i=function(a,b){var c,d,e,f={};for(a=a.split(","),b=b||10,c=0;c<a.length;c+=2)d="&"+a[c+1]+";",e=parseInt(a[c],b),f[d]="&#"+e+";";return f["\\xa0"]="&#160;",f}("50,nbsp,51,iexcl,52,cent,53,pound,54,curren,55,yen,56,brvbar,57,sect,58,uml,59,copy,5a,ordf,5b,laquo,5c,not,5d,shy,5e,reg,5f,macr,5g,deg,5h,plusmn,5i,sup2,5j,sup3,5k,acute,5l,micro,5m,para,5n,middot,5o,cedil,5p,sup1,5q,ordm,5r,raquo,5s,frac14,5t,frac12,5u,frac34,5v,iquest,60,Agrave,61,Aacute,62,Acirc,63,Atilde,64,Auml,65,Aring,66,AElig,67,Ccedil,68,Egrave,69,Eacute,6a,Ecirc,6b,Euml,6c,Igrave,6d,Iacute,6e,Icirc,6f,Iuml,6g,ETH,6h,Ntilde,6i,Ograve,6j,Oacute,6k,Ocirc,6l,Otilde,6m,Ouml,6n,times,6o,Oslash,6p,Ugrave,6q,Uacute,6r,Ucirc,6s,Uuml,6t,Yacute,6u,THORN,6v,szlig,70,agrave,71,aacute,72,acirc,73,atilde,74,auml,75,aring,76,aelig,77,ccedil,78,egrave,79,eacute,7a,ecirc,7b,euml,7c,igrave,7d,iacute,7e,icirc,7f,iuml,7g,eth,7h,ntilde,7i,ograve,7j,oacute,7k,ocirc,7l,otilde,7m,ouml,7n,divide,7o,oslash,7p,ugrave,7q,uacute,7r,ucirc,7s,uuml,7t,yacute,7u,thorn,7v,yuml,ci,fnof,sh,Alpha,si,Beta,sj,Gamma,sk,Delta,sl,Epsilon,sm,Zeta,sn,Eta,so,Theta,sp,Iota,sq,Kappa,sr,Lambda,ss,Mu,st,Nu,su,Xi,sv,Omicron,t0,Pi,t1,Rho,t3,Sigma,t4,Tau,t5,Upsilon,t6,Phi,t7,Chi,t8,Psi,t9,Omega,th,alpha,ti,beta,tj,gamma,tk,delta,tl,epsilon,tm,zeta,tn,eta,to,theta,tp,iota,tq,kappa,tr,lambda,ts,mu,tt,nu,tu,xi,tv,omicron,u0,pi,u1,rho,u2,sigmaf,u3,sigma,u4,tau,u5,upsilon,u6,phi,u7,chi,u8,psi,u9,omega,uh,thetasym,ui,upsih,um,piv,812,bull,816,hellip,81i,prime,81j,Prime,81u,oline,824,frasl,88o,weierp,88h,image,88s,real,892,trade,89l,alefsym,8cg,larr,8ch,uarr,8ci,rarr,8cj,darr,8ck,harr,8dl,crarr,8eg,lArr,8eh,uArr,8ei,rArr,8ej,dArr,8ek,hArr,8g0,forall,8g2,part,8g3,exist,8g5,empty,8g7,nabla,8g8,isin,8g9,notin,8gb,ni,8gf,prod,8gh,sum,8gi,minus,8gn,lowast,8gq,radic,8gt,prop,8gu,infin,8h0,ang,8h7,and,8h8,or,8h9,cap,8ha,cup,8hb,int,8hk,there4,8hs,sim,8i5,cong,8i8,asymp,8j0,ne,8j1,equiv,8j4,le,8j5,ge,8k2,sub,8k3,sup,8k4,nsub,8k6,sube,8k7,supe,8kl,oplus,8kn,otimes,8l5,perp,8m5,sdot,8o8,lceil,8o9,rceil,8oa,lfloor,8ob,rfloor,8p9,lang,8pa,rang,9ea,loz,9j0,spades,9j3,clubs,9j5,hearts,9j6,diams,ai,OElig,aj,oelig,b0,Scaron,b1,scaron,bo,Yuml,m6,circ,ms,tilde,802,ensp,803,emsp,809,thinsp,80c,zwnj,80d,zwj,80e,lrm,80f,rlm,80j,ndash,80k,mdash,80o,lsquo,80p,rsquo,80q,sbquo,80s,ldquo,80t,rdquo,80u,bdquo,810,dagger,811,Dagger,81g,permil,81p,lsaquo,81q,rsaquo,85c,euro",32),e={strokeStyle:{svgAttr:"stroke",canvas:"#000000",svg:"none",apply:"stroke"},fillStyle:{svgAttr:"fill",canvas:"#000000",svg:null,apply:"fill"},lineCap:{svgAttr:"stroke-linecap",canvas:"butt",svg:"butt",apply:"stroke"},lineJoin:{svgAttr:"stroke-linejoin",canvas:"miter",svg:"miter",apply:"stroke"},miterLimit:{svgAttr:"stroke-miterlimit",canvas:10,svg:4,apply:"stroke"},lineWidth:{svgAttr:"stroke-width",canvas:1,svg:1,apply:"stroke"},globalAlpha:{svgAttr:"opacity",canvas:1,svg:1,apply:"fill stroke"},font:{canvas:"10px sans-serif"},shadowColor:{canvas:"#000000"},shadowOffsetX:{canvas:0},shadowOffsetY:{canvas:0},shadowBlur:{canvas:0},textAlign:{canvas:"start"},textBaseline:{canvas:"alphabetic"},lineDash:{svgAttr:"stroke-dasharray",canvas:[],svg:null,apply:"stroke"}},g=function(a,b){this.__root=a,this.__ctx=b},g.prototype.addColorStop=function(b,c){var d,e,f=this.__ctx.__createElement("stop");f.setAttribute("offset",b),-1!==c.indexOf("rgba")?(d=/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d?\.?\d*)\s*\)/gi,e=d.exec(c),f.setAttribute("stop-color",a("rgb({r},{g},{b})",{r:e[1],g:e[2],b:e[3]})),f.setAttribute("stop-opacity",e[4])):f.setAttribute("stop-color",c),this.__root.appendChild(f)},h=function(a,b){this.__root=a,this.__ctx=b},f=function(a){var b,c={width:500,height:500,enableMirroring:!1};if(arguments.length>1?(b=c,b.width=arguments[0],b.height=arguments[1]):b=a||c,!(this instanceof f))return new f(b);this.width=b.width||c.width,this.height=b.height||c.height,this.enableMirroring=void 0!==b.enableMirroring?b.enableMirroring:c.enableMirroring,this.canvas=this,this.__document=b.document||document,b.ctx?this.__ctx=b.ctx:(this.__canvas=this.__document.createElement("canvas"),this.__ctx=this.__canvas.getContext("2d")),this.__setDefaultStyles(),this.__stack=[this.__getStyleState()],this.__groupStack=[],this.__root=this.__document.createElementNS("http://www.w3.org/2000/svg","svg"),this.__root.setAttribute("version",1.1),this.__root.setAttribute("xmlns","http://www.w3.org/2000/svg"),this.__root.setAttributeNS("http://www.w3.org/2000/xmlns/","xmlns:xlink","http://www.w3.org/1999/xlink"),this.__root.setAttribute("width",this.width),this.__root.setAttribute("height",this.height),this.__ids={},this.__defs=this.__document.createElementNS("http://www.w3.org/2000/svg","defs"),this.__root.appendChild(this.__defs),this.__currentElement=this.__document.createElementNS("http://www.w3.org/2000/svg","g"),this.__root.appendChild(this.__currentElement)},f.prototype.__createElement=function(a,b,c){void 0===b&&(b={});var d,e,f=this.__document.createElementNS("http://www.w3.org/2000/svg",a),g=Object.keys(b);for(c&&(f.setAttribute("fill","none"),f.setAttribute("stroke","none")),d=0;d<g.length;d++)e=g[d],f.setAttribute(e,b[e]);return f},f.prototype.__setDefaultStyles=function(){var a,b,c=Object.keys(e);for(a=0;a<c.length;a++)b=c[a],this[b]=e[b].canvas},f.prototype.__applyStyleState=function(a){var b,c,d=Object.keys(a);for(b=0;b<d.length;b++)c=d[b],this[c]=a[c]},f.prototype.__getStyleState=function(){var a,b,c={},d=Object.keys(e);for(a=0;a<d.length;a++)b=d[a],c[b]=this[b];return c},f.prototype.__applyStyleToCurrentElement=function(b){var c=this.__currentElement,d=this.__currentElementsToStyle;d&&(c.setAttribute(b,""),c=d.element,d.children.forEach(function(a){a.setAttribute(b,"")}));var f,i,j,k,l,m,n=Object.keys(e);for(f=0;f<n.length;f++)if(i=e[n[f]],j=this[n[f]],i.apply)if(j instanceof h){if(j.__ctx)for(;j.__ctx.__defs.childNodes.length;)k=j.__ctx.__defs.childNodes[0].getAttribute("id"),this.__ids[k]=k,this.__defs.appendChild(j.__ctx.__defs.childNodes[0]);c.setAttribute(i.apply,a("url(#{id})",{id:j.__root.getAttribute("id")}))}else if(j instanceof g)c.setAttribute(i.apply,a("url(#{id})",{id:j.__root.getAttribute("id")}));else if(-1!==i.apply.indexOf(b)&&i.svg!==j)if("stroke"!==i.svgAttr&&"fill"!==i.svgAttr||-1===j.indexOf("rgba")){var o=i.svgAttr;if("globalAlpha"===n[f]&&(o=b+"-"+i.svgAttr,c.getAttribute(o)))continue;c.setAttribute(o,j)}else{l=/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d?\.?\d*)\s*\)/gi,m=l.exec(j),c.setAttribute(i.svgAttr,a("rgb({r},{g},{b})",{r:m[1],g:m[2],b:m[3]}));var p=m[4],q=this.globalAlpha;null!=q&&(p*=q),c.setAttribute(i.svgAttr+"-opacity",p)}},f.prototype.__closestGroupOrSvg=function(a){return a=a||this.__currentElement,"g"===a.nodeName||"svg"===a.nodeName?a:this.__closestGroupOrSvg(a.parentNode)},f.prototype.getSerializedSvg=function(a){var b,c,d,e,f,g,h=(new XMLSerializer).serializeToString(this.__root);if(g=/xmlns="http:\/\/www\.w3\.org\/2000\/svg".+xmlns="http:\/\/www\.w3\.org\/2000\/svg/gi,g.test(h)&&(h=h.replace('xmlns="http://www.w3.org/2000/svg','xmlns:xlink="http://www.w3.org/1999/xlink')),a)for(b=Object.keys(i),c=0;c<b.length;c++)d=b[c],e=i[d],f=new RegExp(d,"gi"),f.test(h)&&(h=h.replace(f,e));return h},f.prototype.getSvg=function(){return this.__root},f.prototype.save=function(){var a=this.__createElement("g"),b=this.__closestGroupOrSvg();this.__groupStack.push(b),b.appendChild(a),this.__currentElement=a,this.__stack.push(this.__getStyleState())},f.prototype.restore=function(){this.__currentElement=this.__groupStack.pop(),this.__currentElementsToStyle=null,this.__currentElement||(this.__currentElement=this.__root.childNodes[1]);var a=this.__stack.pop();this.__applyStyleState(a)},f.prototype.__addTransform=function(a){var b=this.__closestGroupOrSvg();if(b.childNodes.length>0){"path"===this.__currentElement.nodeName&&(this.__currentElementsToStyle||(this.__currentElementsToStyle={element:b,children:[]}),this.__currentElementsToStyle.children.push(this.__currentElement),this.__applyCurrentDefaultPath());var c=this.__createElement("g");b.appendChild(c),this.__currentElement=c}var d=this.__currentElement.getAttribute("transform");d?d+=" ":d="",d+=a,this.__currentElement.setAttribute("transform",d)},f.prototype.scale=function(b,c){void 0===c&&(c=b),this.__addTransform(a("scale({x},{y})",{x:b,y:c}))},f.prototype.rotate=function(b){var c=180*b/Math.PI;this.__addTransform(a("rotate({angle},{cx},{cy})",{angle:c,cx:0,cy:0}))},f.prototype.translate=function(b,c){this.__addTransform(a("translate({x},{y})",{x:b,y:c}))},f.prototype.transform=function(b,c,d,e,f,g){this.__addTransform(a("matrix({a},{b},{c},{d},{e},{f})",{a:b,b:c,c:d,d:e,e:f,f:g}))},f.prototype.beginPath=function(){var a,b;this.__currentDefaultPath="",this.__currentPosition={},a=this.__createElement("path",{},!0),b=this.__closestGroupOrSvg(),b.appendChild(a),this.__currentElement=a},f.prototype.__applyCurrentDefaultPath=function(){var a=this.__currentElement;"path"===a.nodeName?a.setAttribute("d",this.__currentDefaultPath):console.error("Attempted to apply path command to node",a.nodeName)},f.prototype.__addPathCommand=function(a){this.__currentDefaultPath+=" ",this.__currentDefaultPath+=a},f.prototype.moveTo=function(b,c){"path"!==this.__currentElement.nodeName&&this.beginPath(),this.__currentPosition={x:b,y:c},this.__addPathCommand(a("M {x} {y}",{x:b,y:c}))},f.prototype.closePath=function(){this.__currentDefaultPath&&this.__addPathCommand("Z")},f.prototype.lineTo=function(b,c){this.__currentPosition={x:b,y:c},this.__currentDefaultPath.indexOf("M")>-1?this.__addPathCommand(a("L {x} {y}",{x:b,y:c})):this.__addPathCommand(a("M {x} {y}",{x:b,y:c}))},f.prototype.bezierCurveTo=function(b,c,d,e,f,g){this.__currentPosition={x:f,y:g},this.__addPathCommand(a("C {cp1x} {cp1y} {cp2x} {cp2y} {x} {y}",{cp1x:b,cp1y:c,cp2x:d,cp2y:e,x:f,y:g}))},f.prototype.quadraticCurveTo=function(b,c,d,e){this.__currentPosition={x:d,y:e},this.__addPathCommand(a("Q {cpx} {cpy} {x} {y}",{cpx:b,cpy:c,x:d,y:e}))};var j=function(a){var b=Math.sqrt(a[0]*a[0]+a[1]*a[1]);return[a[0]/b,a[1]/b]};f.prototype.arcTo=function(a,b,c,d,e){var f=this.__currentPosition&&this.__currentPosition.x,g=this.__currentPosition&&this.__currentPosition.y;if(void 0!==f&&void 0!==g){if(e<0)throw new Error("IndexSizeError: The radius provided ("+e+") is negative.");if(f===a&&g===b||a===c&&b===d||0===e)return void this.lineTo(a,b);var h=j([f-a,g-b]),i=j([c-a,d-b]);if(h[0]*i[1]==h[1]*i[0])return void this.lineTo(a,b);var k=h[0]*i[0]+h[1]*i[1],l=Math.acos(Math.abs(k)),m=j([h[0]+i[0],h[1]+i[1]]),n=e/Math.sin(l/2),o=a+n*m[0],p=b+n*m[1],q=[-h[1],h[0]],r=[i[1],-i[0]],s=function(a){var b=a[0];return a[1]>=0?Math.acos(b):-Math.acos(b)},t=s(q),u=s(r);this.lineTo(o+q[0]*e,p+q[1]*e),this.arc(o,p,e,t,u)}},f.prototype.stroke=function(){"path"===this.__currentElement.nodeName&&this.__currentElement.setAttribute("paint-order","fill stroke markers"),this.__applyCurrentDefaultPath(),this.__applyStyleToCurrentElement("stroke")},f.prototype.fill=function(){"path"===this.__currentElement.nodeName&&this.__currentElement.setAttribute("paint-order","stroke fill markers"),this.__applyCurrentDefaultPath(),this.__applyStyleToCurrentElement("fill")},f.prototype.rect=function(a,b,c,d){"path"!==this.__currentElement.nodeName&&this.beginPath(),this.moveTo(a,b),this.lineTo(a+c,b),this.lineTo(a+c,b+d),this.lineTo(a,b+d),this.lineTo(a,b),this.closePath()},f.prototype.fillRect=function(a,b,c,d){var e,f;e=this.__createElement("rect",{x:a,y:b,width:c,height:d,"shape-rendering":"crispEdges"},!0),f=this.__closestGroupOrSvg(),f.appendChild(e),this.__currentElement=e,this.__applyStyleToCurrentElement("fill")},f.prototype.strokeRect=function(a,b,c,d){var e,f;e=this.__createElement("rect",{x:a,y:b,width:c,height:d},!0),f=this.__closestGroupOrSvg(),f.appendChild(e),this.__currentElement=e,this.__applyStyleToCurrentElement("stroke")},f.prototype.__clearCanvas=function(){for(var a=this.__closestGroupOrSvg(),b=a.getAttribute("transform"),c=this.__root.childNodes[1],d=c.childNodes,e=d.length-1;e>=0;e--)d[e]&&c.removeChild(d[e]);this.__currentElement=c,this.__groupStack=[],b&&this.__addTransform(b)},f.prototype.clearRect=function(a,b,c,d){if(0===a&&0===b&&c===this.width&&d===this.height)return void this.__clearCanvas();var e,f=this.__closestGroupOrSvg();e=this.__createElement("rect",{x:a,y:b,width:c,height:d,fill:"#FFFFFF"},!0),f.appendChild(e)},f.prototype.createLinearGradient=function(a,c,d,e){var f=this.__createElement("linearGradient",{id:b(this.__ids),x1:a+"px",x2:d+"px",y1:c+"px",y2:e+"px",gradientUnits:"userSpaceOnUse"},!1);return this.__defs.appendChild(f),new g(f,this)},f.prototype.createRadialGradient=function(a,c,d,e,f,h){var i=this.__createElement("radialGradient",{id:b(this.__ids),cx:e+"px",cy:f+"px",r:h+"px",fx:a+"px",fy:c+"px",gradientUnits:"userSpaceOnUse"},!1);return this.__defs.appendChild(i),new g(i,this)},f.prototype.__parseFont=function(){var a=/^\s*(?=(?:(?:[-a-z]+\s*){0,2}(italic|oblique))?)(?=(?:(?:[-a-z]+\s*){0,2}(small-caps))?)(?=(?:(?:[-a-z]+\s*){0,2}(bold(?:er)?|lighter|[1-9]00))?)(?:(?:normal|\1|\2|\3)\s*){0,3}((?:xx?-)?(?:small|large)|medium|smaller|larger|[.\d]+(?:\%|in|[cem]m|ex|p[ctx]))(?:\s*\/\s*(normal|[.\d]+(?:\%|in|[cem]m|ex|p[ctx])))?\s*([-,\'\"\sa-z0-9]+?)\s*$/i,b=a.exec(this.font),c={style:b[1]||"normal",size:b[4]||"10px",family:b[6]||"sans-serif",weight:b[3]||"normal",decoration:b[2]||"normal",href:null};return"underline"===this.__fontUnderline&&(c.decoration="underline"),this.__fontHref&&(c.href=this.__fontHref),c},f.prototype.__wrapTextLink=function(a,b){if(a.href){var c=this.__createElement("a");return c.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href",a.href),c.appendChild(b),c}return b},f.prototype.__applyText=function(a,b,e,f){var g=this.__parseFont(),h=this.__closestGroupOrSvg(),i=this.__createElement("text",{"font-family":g.family,"font-size":g.size,"font-style":g.style,"font-weight":g.weight,"text-decoration":g.decoration,x:b,y:e,"text-anchor":c(this.textAlign),"dominant-baseline":d(this.textBaseline)},!0);i.appendChild(this.__document.createTextNode(a)),this.__currentElement=i,this.__applyStyleToCurrentElement(f),h.appendChild(this.__wrapTextLink(g,i))},f.prototype.fillText=function(a,b,c){this.__applyText(a,b,c,"fill")},f.prototype.strokeText=function(a,b,c){this.__applyText(a,b,c,"stroke")},f.prototype.measureText=function(a){return this.__ctx.font=this.font,this.__ctx.measureText(a)},f.prototype.arc=function(b,c,d,e,f,g){if(e!==f){e%=2*Math.PI,f%=2*Math.PI,e===f&&(f=(f+2*Math.PI-.001*(g?-1:1))%(2*Math.PI));var h=b+d*Math.cos(f),i=c+d*Math.sin(f),j=b+d*Math.cos(e),k=c+d*Math.sin(e),l=g?0:1,m=0,n=f-e;n<0&&(n+=2*Math.PI),m=g?n>Math.PI?0:1:n>Math.PI?1:0,this.lineTo(j,k),this.__addPathCommand(a("A {rx} {ry} {xAxisRotation} {largeArcFlag} {sweepFlag} {endX} {endY}",{rx:d,ry:d,xAxisRotation:0,largeArcFlag:m,sweepFlag:l,endX:h,endY:i})),this.__currentPosition={x:h,y:i}}},f.prototype.clip=function(){var c=this.__closestGroupOrSvg(),d=this.__createElement("clipPath"),e=b(this.__ids),f=this.__createElement("g");this.__applyCurrentDefaultPath(),c.removeChild(this.__currentElement),d.setAttribute("id",e),d.appendChild(this.__currentElement),this.__defs.appendChild(d),c.setAttribute("clip-path",a("url(#{id})",{id:e})),c.appendChild(f),this.__currentElement=f},f.prototype.drawImage=function(){var a,b,c,d,e,g,h,i,j,k,l,m,n,o,p=Array.prototype.slice.call(arguments),q=p[0],r=0,s=0;if(3===p.length)a=p[1],b=p[2],e=q.width,g=q.height,c=e,d=g;else if(5===p.length)a=p[1],b=p[2],c=p[3],d=p[4],e=q.width,g=q.height;else{if(9!==p.length)throw new Error("Invalid number of arguments passed to drawImage: "+arguments.length);r=p[1],s=p[2],e=p[3],g=p[4],a=p[5],b=p[6],c=p[7],d=p[8]}h=this.__closestGroupOrSvg(),this.__currentElement;var t="translate("+a+", "+b+")";if(q instanceof f){if(i=q.getSvg().cloneNode(!0),i.childNodes&&i.childNodes.length>1){for(j=i.childNodes[0];j.childNodes.length;)o=j.childNodes[0].getAttribute("id"),this.__ids[o]=o,this.__defs.appendChild(j.childNodes[0]);if(k=i.childNodes[1]){var u,v=k.getAttribute("transform");u=v?v+" "+t:t,k.setAttribute("transform",u),h.appendChild(k)}}}else"CANVAS"!==q.nodeName&&"IMG"!==q.nodeName||(l=this.__createElement("image"),l.setAttribute("width",c),l.setAttribute("height",d),l.setAttribute("preserveAspectRatio","none"),l.setAttribute("opacity",this.globalAlpha),(r||s||e!==q.width||g!==q.height)&&(m=this.__document.createElement("canvas"),m.width=c,m.height=d,n=m.getContext("2d"),n.drawImage(q,r,s,e,g,0,0,c,d),q=m),l.setAttribute("transform",t),l.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href","CANVAS"===q.nodeName?q.toDataURL():q.originalSrc),h.appendChild(l))},f.prototype.createPattern=function(a,c){var d,e=this.__document.createElementNS("http://www.w3.org/2000/svg","pattern"),g=b(this.__ids);return e.setAttribute("id",g),e.setAttribute("width",a.width),e.setAttribute("height",a.height),"CANVAS"===a.nodeName||"IMG"===a.nodeName?(d=this.__document.createElementNS("http://www.w3.org/2000/svg","image"),d.setAttribute("width",a.width),d.setAttribute("height",a.height),d.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href","CANVAS"===a.nodeName?a.toDataURL():a.getAttribute("src")),e.appendChild(d),this.__defs.appendChild(e)):a instanceof f&&(e.appendChild(a.__root.childNodes[1]),this.__defs.appendChild(e)),new h(e,this)},f.prototype.setLineDash=function(a){a&&a.length>0?this.lineDash=a.join(","):this.lineDash=null},f.prototype.drawFocusRing=function(){},f.prototype.createImageData=function(){},f.prototype.getImageData=function(){},f.prototype.putImageData=function(){},f.prototype.globalCompositeOperation=function(){},f.prototype.setTransform=function(){},"object"==typeof window&&(window.C2S=f),"object"==typeof module&&"object"==typeof module.exports&&(module.exports=f)}(),function(){"use strict";function a(a,b,c){if(this.mode=q.MODE_8BIT_BYTE,this.data=a,this.parsedData=[],b){for(var d=0,e=this.data.length;d<e;d++){var f=[],g=this.data.charCodeAt(d);f[0]=g,this.parsedData.push(f)}this.parsedData=Array.prototype.concat.apply([],this.parsedData)}else this.parsedData=function(a){for(var b=[],c=0;c<a.length;c++){var d=a.charCodeAt(c);d<128?b.push(d):d<2048?b.push(192|d>>6,128|63&d):d<55296||d>=57344?b.push(224|d>>12,128|d>>6&63,128|63&d):(c++,d=65536+((1023&d)<<10|1023&a.charCodeAt(c)),b.push(240|d>>18,128|d>>12&63,128|d>>6&63,128|63&d))}return b}(a);this.parsedData=Array.prototype.concat.apply([],this.parsedData),c||this.parsedData.length==this.data.length||(this.parsedData.unshift(191),this.parsedData.unshift(187),this.parsedData.unshift(239))}function b(a,b){this.typeNumber=a,this.errorCorrectLevel=b,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[]}function c(a,b){if(a.length==i)throw new Error(a.length+"/"+b);for(var c=0;c<a.length&&0==a[c];)c++;this.num=new Array(a.length-c+b);for(var d=0;d<a.length-c;d++)this.num[d]=a[d+c]}function d(a,b){this.totalCount=a,this.dataCount=b}function e(){this.buffer=[],this.length=0}function f(){var a=!1,b=navigator.userAgent;if(/android/i.test(b)){a=!0;var c=b.toString().match(/android ([0-9]\.[0-9])/i);c&&c[1]&&(a=parseFloat(c[1]))}return a}function g(a,b){for(var c=b.correctLevel,d=1,e=h(a),f=0,g=w.length;f<g;f++){var i=0;switch(c){case r.L:i=w[f][0];break;case r.M:i=w[f][1];break;case r.Q:i=w[f][2];break;case r.H:i=w[f][3]}if(e<=i)break;d++}if(d>w.length)throw new Error("Too long data. the CorrectLevel."+["M","L","H","Q"][c]+" limit length is "+i);return 0!=b.version&&(d<=b.version?(d=b.version,b.runVersion=d):(console.warn("QR Code version "+b.version+" too small, run version use "+d),b.runVersion=d)),d}function h(a){return encodeURI(a).toString().replace(/\%[0-9a-fA-F]{2}/g,"a").length}var i,j,k="object"==typeof global&&global&&global.Object===Object&&global,l="object"==typeof self&&self&&self.Object===Object&&self,m=k||l||Function("return this")(),n="object"==typeof exports&&exports&&!exports.nodeType&&exports,o=n&&"object"==typeof module&&module&&!module.nodeType&&module,p=m.QRCode;a.prototype={getLength:function(a){return this.parsedData.length},write:function(a){for(var b=0,c=this.parsedData.length;b<c;b++)a.put(this.parsedData[b],8)}},b.prototype={addData:function(b,c,d){var e=new a(b,c,d);this.dataList.push(e),this.dataCache=null},isDark:function(a,b){if(a<0||this.moduleCount<=a||b<0||this.moduleCount<=b)throw new Error(a+","+b);return this.modules[a][b][0]},getEye:function(a,b){if(a<0||this.moduleCount<=a||b<0||this.moduleCount<=b)throw new Error(a+","+b);var c=this.modules[a][b];if(c[1]){var d="P"+c[1]+"_"+c[2];return"A"==c[2]&&(d="A"+c[1]),{isDark:c[0],type:d}}return null},getModuleCount:function(){return this.moduleCount},make:function(){this.makeImpl(!1,this.getBestMaskPattern())},makeImpl:function(a,c){this.moduleCount=4*this.typeNumber+17,this.modules=new Array(this.moduleCount);for(var d=0;d<this.moduleCount;d++){this.modules[d]=new Array(this.moduleCount);for(var e=0;e<this.moduleCount;e++)this.modules[d][e]=[]}this.setupPositionProbePattern(0,0,"TL"),this.setupPositionProbePattern(this.moduleCount-7,0,"BL"),this.setupPositionProbePattern(0,this.moduleCount-7,"TR"),this.setupPositionAdjustPattern("A"),this.setupTimingPattern(),this.setupTypeInfo(a,c),this.typeNumber>=7&&this.setupTypeNumber(a),null==this.dataCache&&(this.dataCache=b.createData(this.typeNumber,this.errorCorrectLevel,this.dataList)),this.mapData(this.dataCache,c)},setupPositionProbePattern:function(a,b,c){for(var d=-1;d<=7;d++)if(!(a+d<=-1||this.moduleCount<=a+d))for(var e=-1;e<=7;e++)b+e<=-1||this.moduleCount<=b+e||(0<=d&&d<=6&&(0==e||6==e)||0<=e&&e<=6&&(0==d||6==d)||2<=d&&d<=4&&2<=e&&e<=4?(this.modules[a+d][b+e][0]=!0,this.modules[a+d][b+e][2]=c,this.modules[a+d][b+e][1]=-0==d||-0==e||6==d||6==e?"O":"I"):this.modules[a+d][b+e][0]=!1)},getBestMaskPattern:function(){for(var a=0,b=0,c=0;c<8;c++){this.makeImpl(!0,c);var d=t.getLostPoint(this);(0==c||a>d)&&(a=d,b=c)}return b},createMovieClip:function(a,b,c){var d=a.createEmptyMovieClip(b,c);this.make();for(var e=0;e<this.modules.length;e++)for(var f=1*e,g=0;g<this.modules[e].length;g++){var h=1*g,i=this.modules[e][g][0];i&&(d.beginFill(0,100),d.moveTo(h,f),d.lineTo(h+1,f),d.lineTo(h+1,f+1),d.lineTo(h,f+1),d.endFill())}return d},setupTimingPattern:function(){for(var a=8;a<this.moduleCount-8;a++)null==this.modules[a][6][0]&&(this.modules[a][6][0]=a%2==0);for(var b=8;b<this.moduleCount-8;b++)null==this.modules[6][b][0]&&(this.modules[6][b][0]=b%2==0)},setupPositionAdjustPattern:function(a){for(var b=t.getPatternPosition(this.typeNumber),c=0;c<b.length;c++)for(var d=0;d<b.length;d++){var e=b[c],f=b[d];if(null==this.modules[e][f][0])for(var g=-2;g<=2;g++)for(var h=-2;h<=2;h++)-2==g||2==g||-2==h||2==h||0==g&&0==h?(this.modules[e+g][f+h][0]=!0,this.modules[e+g][f+h][2]=a,this.modules[e+g][f+h][1]=-2==g||-2==h||2==g||2==h?"O":"I"):this.modules[e+g][f+h][0]=!1}},setupTypeNumber:function(a){for(var b=t.getBCHTypeNumber(this.typeNumber),c=0;c<18;c++){var d=!a&&1==(b>>c&1);this.modules[Math.floor(c/3)][c%3+this.moduleCount-8-3][0]=d}for(var c=0;c<18;c++){var d=!a&&1==(b>>c&1);this.modules[c%3+this.moduleCount-8-3][Math.floor(c/3)][0]=d}},setupTypeInfo:function(a,b){for(var c=this.errorCorrectLevel<<3|b,d=t.getBCHTypeInfo(c),e=0;e<15;e++){var f=!a&&1==(d>>e&1);e<6?this.modules[e][8][0]=f:e<8?this.modules[e+1][8][0]=f:this.modules[this.moduleCount-15+e][8][0]=f}for(var e=0;e<15;e++){var f=!a&&1==(d>>e&1);e<8?this.modules[8][this.moduleCount-e-1][0]=f:e<9?this.modules[8][15-e-1+1][0]=f:this.modules[8][15-e-1][0]=f}this.modules[this.moduleCount-8][8][0]=!a},mapData:function(a,b){for(var c=-1,d=this.moduleCount-1,e=7,f=0,g=this.moduleCount-1;g>0;g-=2)for(6==g&&g--;;){for(var h=0;h<2;h++)if(null==this.modules[d][g-h][0]){var i=!1;f<a.length&&(i=1==(a[f]>>>e&1));var j=t.getMask(b,d,g-h);j&&(i=!i),this.modules[d][g-h][0]=i,e--,-1==e&&(f++,e=7)}if((d+=c)<0||this.moduleCount<=d){d-=c,c=-c;break}}}},b.PAD0=236,b.PAD1=17,b.createData=function(a,c,f){for(var g=d.getRSBlocks(a,c),h=new e,i=0;i<f.length;i++){var j=f[i];h.put(j.mode,4),h.put(j.getLength(),t.getLengthInBits(j.mode,a)),j.write(h)}for(var k=0,i=0;i<g.length;i++)k+=g[i].dataCount;if(h.getLengthInBits()>8*k)throw new Error("code length overflow. ("+h.getLengthInBits()+">"+8*k+")");for(h.getLengthInBits()+4<=8*k&&h.put(0,4);h.getLengthInBits()%8!=0;)h.putBit(!1);for(;;){if(h.getLengthInBits()>=8*k)break;if(h.put(b.PAD0,8),h.getLengthInBits()>=8*k)break;h.put(b.PAD1,8)}return b.createBytes(h,g)},b.createBytes=function(a,b){for(var d=0,e=0,f=0,g=new Array(b.length),h=new Array(b.length),i=0;i<b.length;i++){var j=b[i].dataCount,k=b[i].totalCount-j;e=Math.max(e,j),f=Math.max(f,k),g[i]=new Array(j);for(var l=0;l<g[i].length;l++)g[i][l]=255&a.buffer[l+d];d+=j;var m=t.getErrorCorrectPolynomial(k),n=new c(g[i],m.getLength()-1),o=n.mod(m);h[i]=new Array(m.getLength()-1);for(var l=0;l<h[i].length;l++){var p=l+o.getLength()-h[i].length;h[i][l]=p>=0?o.get(p):0}}for(var q=0,l=0;l<b.length;l++)q+=b[l].totalCount;for(var r=new Array(q),s=0,l=0;l<e;l++)for(var i=0;i<b.length;i++)l<g[i].length&&(r[s++]=g[i][l]);for(var l=0;l<f;l++)for(var i=0;i<b.length;i++)l<h[i].length&&(r[s++]=h[i][l]);return r};for(var q={MODE_NUMBER:1,MODE_ALPHA_NUM:2,MODE_8BIT_BYTE:4,MODE_KANJI:8},r={L:1,M:0,Q:3,H:2},s={PATTERN000:0,PATTERN001:1,PATTERN010:2,PATTERN011:3,PATTERN100:4,PATTERN101:5,PATTERN110:6,PATTERN111:7},t={PATTERN_POSITION_TABLE:[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],G15:1335,G18:7973,G15_MASK:21522,getBCHTypeInfo:function(a){for(var b=a<<10;t.getBCHDigit(b)-t.getBCHDigit(t.G15)>=0;)b^=t.G15<<t.getBCHDigit(b)-t.getBCHDigit(t.G15);return(a<<10|b)^t.G15_MASK},getBCHTypeNumber:function(a){for(var b=a<<12;t.getBCHDigit(b)-t.getBCHDigit(t.G18)>=0;)b^=t.G18<<t.getBCHDigit(b)-t.getBCHDigit(t.G18);return a<<12|b},getBCHDigit:function(a){for(var b=0;0!=a;)b++,a>>>=1;return b},getPatternPosition:function(a){return t.PATTERN_POSITION_TABLE[a-1]},getMask:function(a,b,c){switch(a){case s.PATTERN000:return(b+c)%2==0;case s.PATTERN001:return b%2==0;case s.PATTERN010:return c%3==0;case s.PATTERN011:return(b+c)%3==0;case s.PATTERN100:return(Math.floor(b/2)+Math.floor(c/3))%2==0;case s.PATTERN101:return b*c%2+b*c%3==0;case s.PATTERN110:return(b*c%2+b*c%3)%2==0;case s.PATTERN111:return(b*c%3+(b+c)%2)%2==0;default:throw new Error("bad maskPattern:"+a)}},getErrorCorrectPolynomial:function(a){for(var b=new c([1],0),d=0;d<a;d++)b=b.multiply(new c([1,u.gexp(d)],0));return b},getLengthInBits:function(a,b){if(1<=b&&b<10)switch(a){case q.MODE_NUMBER:return 10;case q.MODE_ALPHA_NUM:return 9;case q.MODE_8BIT_BYTE:case q.MODE_KANJI:return 8;default:throw new Error("mode:"+a)}else if(b<27)switch(a){case q.MODE_NUMBER:return 12;case q.MODE_ALPHA_NUM:return 11;case q.MODE_8BIT_BYTE:return 16;case q.MODE_KANJI:return 10;default:throw new Error("mode:"+a)}else{if(!(b<41))throw new Error("type:"+b);switch(a){case q.MODE_NUMBER:return 14;case q.MODE_ALPHA_NUM:return 13;case q.MODE_8BIT_BYTE:return 16;case q.MODE_KANJI:return 12;default:throw new Error("mode:"+a)}}},getLostPoint:function(a){for(var b=a.getModuleCount(),c=0,d=0;d<b;d++)for(var e=0;e<b;e++){for(var f=0,g=a.isDark(d,e),h=-1;h<=1;h++)if(!(d+h<0||b<=d+h))for(var i=-1;i<=1;i++)e+i<0||b<=e+i||0==h&&0==i||g==a.isDark(d+h,e+i)&&f++;f>5&&(c+=3+f-5)}for(var d=0;d<b-1;d++)for(var e=0;e<b-1;e++){var j=0;a.isDark(d,e)&&j++,a.isDark(d+1,e)&&j++,a.isDark(d,e+1)&&j++,a.isDark(d+1,e+1)&&j++,0!=j&&4!=j||(c+=3)}for(var d=0;d<b;d++)for(var e=0;e<b-6;e++)a.isDark(d,e)&&!a.isDark(d,e+1)&&a.isDark(d,e+2)&&a.isDark(d,e+3)&&a.isDark(d,e+4)&&!a.isDark(d,e+5)&&a.isDark(d,e+6)&&(c+=40);for(var e=0;e<b;e++)for(var d=0;d<b-6;d++)a.isDark(d,e)&&!a.isDark(d+1,e)&&a.isDark(d+2,e)&&a.isDark(d+3,e)&&a.isDark(d+4,e)&&!a.isDark(d+5,e)&&a.isDark(d+6,e)&&(c+=40);for(var k=0,e=0;e<b;e++)for(var d=0;d<b;d++)a.isDark(d,e)&&k++;return c+=Math.abs(100*k/b/b-50)/5*10}},u={glog:function(a){if(a<1)throw new Error("glog("+a+")");return u.LOG_TABLE[a]},gexp:function(a){for(;a<0;)a+=255;for(;a>=256;)a-=255;return u.EXP_TABLE[a]},EXP_TABLE:new Array(256),LOG_TABLE:new Array(256)},v=0;v<8;v++)u.EXP_TABLE[v]=1<<v;for(var v=8;v<256;v++)u.EXP_TABLE[v]=u.EXP_TABLE[v-4]^u.EXP_TABLE[v-5]^u.EXP_TABLE[v-6]^u.EXP_TABLE[v-8];for(var v=0;v<255;v++)u.LOG_TABLE[u.EXP_TABLE[v]]=v;c.prototype={get:function(a){return this.num[a]},getLength:function(){return this.num.length},multiply:function(a){for(var b=new Array(this.getLength()+a.getLength()-1),d=0;d<this.getLength();d++)for(var e=0;e<a.getLength();e++)b[d+e]^=u.gexp(u.glog(this.get(d))+u.glog(a.get(e)));return new c(b,0)},mod:function(a){if(this.getLength()-a.getLength()<0)return this;for(var b=u.glog(this.get(0))-u.glog(a.get(0)),d=new Array(this.getLength()),e=0;e<this.getLength();e++)d[e]=this.get(e);for(var e=0;e<a.getLength();e++)d[e]^=u.gexp(u.glog(a.get(e))+b);return new c(d,0).mod(a)}},
 d.RS_BLOCK_TABLE=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12,7,37,13],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],d.getRSBlocks=function(a,b){var c=d.getRsBlockTable(a,b);if(c==i)throw new Error("bad rs block @ typeNumber:"+a+"/errorCorrectLevel:"+b);for(var e=c.length/3,f=[],g=0;g<e;g++)for(var h=c[3*g+0],j=c[3*g+1],k=c[3*g+2],l=0;l<h;l++)f.push(new d(j,k));return f},d.getRsBlockTable=function(a,b){switch(b){case r.L:return d.RS_BLOCK_TABLE[4*(a-1)+0];case r.M:return d.RS_BLOCK_TABLE[4*(a-1)+1];case r.Q:return d.RS_BLOCK_TABLE[4*(a-1)+2];case r.H:return d.RS_BLOCK_TABLE[4*(a-1)+3];default:return i}},e.prototype={get:function(a){var b=Math.floor(a/8);return 1==(this.buffer[b]>>>7-a%8&1)},put:function(a,b){for(var c=0;c<b;c++)this.putBit(1==(a>>>b-c-1&1))},getLengthInBits:function(){return this.length},putBit:function(a){var b=Math.floor(this.length/8);this.buffer.length<=b&&this.buffer.push(0),a&&(this.buffer[b]|=128>>>this.length%8),this.length++}};var w=[[17,14,11,7],[32,26,20,14],[53,42,32,24],[78,62,46,34],[106,84,60,44],[134,106,74,58],[154,122,86,64],[192,152,108,84],[230,180,130,98],[271,213,151,119],[321,251,177,137],[367,287,203,155],[425,331,241,177],[458,362,258,194],[520,412,292,220],[586,450,322,250],[644,504,364,280],[718,560,394,310],[792,624,442,338],[858,666,482,382],[929,711,509,403],[1003,779,565,439],[1091,857,611,461],[1171,911,661,511],[1273,997,715,535],[1367,1059,751,593],[1465,1125,805,625],[1528,1190,868,658],[1628,1264,908,698],[1732,1370,982,742],[1840,1452,1030,790],[1952,1538,1112,842],[2068,1628,1168,898],[2188,1722,1228,958],[2303,1809,1283,983],[2431,1911,1351,1051],[2563,1989,1423,1093],[2699,2099,1499,1139],[2809,2213,1579,1219],[2953,2331,1663,1273]],x=function(){return"undefined"!=typeof CanvasRenderingContext2D}()?function(){function a(){if("svg"==this._htOption.drawer){var a=this._oContext.getSerializedSvg(!0);this.dataURL=a,this._el.innerHTML=a}else try{var b=this._elCanvas.toDataURL("image/png");this.dataURL=b}catch(a){console.error(a)}this._htOption.onRenderingEnd&&(this.dataURL||console.error("Can not get base64 data, please check: 1. Published the page and image to the server 2. The image request support CORS 3. Configured `crossOrigin:'anonymous'` option"),this._htOption.onRenderingEnd(this._htOption,this.dataURL))}function b(a,b){var c=this;if(c._fFail=b,c._fSuccess=a,null===c._bSupportDataURI){var d=document.createElement("img"),e=function(){c._bSupportDataURI=!1,c._fFail&&c._fFail.call(c)},f=function(){c._bSupportDataURI=!0,c._fSuccess&&c._fSuccess.call(c)};d.onabort=e,d.onerror=e,d.onload=f,d.src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="}else!0===c._bSupportDataURI&&c._fSuccess?c._fSuccess.call(c):!1===c._bSupportDataURI&&c._fFail&&c._fFail.call(c)}if(m._android&&m._android<=2.1){var c=1/window.devicePixelRatio,d=CanvasRenderingContext2D.prototype.drawImage;CanvasRenderingContext2D.prototype.drawImage=function(a,b,e,f,g,h,i,j,k){if("nodeName"in a&&/img/i.test(a.nodeName))for(var l=arguments.length-1;l>=1;l--)arguments[l]=arguments[l]*c;else void 0===j&&(arguments[1]*=c,arguments[2]*=c,arguments[3]*=c,arguments[4]*=c);d.apply(this,arguments)}}var e=function(a,b){this._bIsPainted=!1,this._android=f(),this._el=a,this._htOption=b,"svg"==this._htOption.drawer?(this._oContext={},this._elCanvas={}):(this._elCanvas=document.createElement("canvas"),this._el.appendChild(this._elCanvas),this._oContext=this._elCanvas.getContext("2d")),this._bSupportDataURI=null,this.dataURL=null};return e.prototype.draw=function(a){function b(){d.quietZone>0&&d.quietZoneColor&&(j.lineWidth=0,j.fillStyle=d.quietZoneColor,j.fillRect(0,0,k._elCanvas.width,d.quietZone),j.fillRect(0,d.quietZone,d.quietZone,k._elCanvas.height-2*d.quietZone),j.fillRect(k._elCanvas.width-d.quietZone,d.quietZone,d.quietZone,k._elCanvas.height-2*d.quietZone),j.fillRect(0,k._elCanvas.height-d.quietZone,k._elCanvas.width,d.quietZone))}function c(a){function c(a){var c=Math.round(d.width/3.5),e=Math.round(d.height/3.5);c!==e&&(c=e),d.logoMaxWidth?c=Math.round(d.logoMaxWidth):d.logoWidth&&(c=Math.round(d.logoWidth)),d.logoMaxHeight?e=Math.round(d.logoMaxHeight):d.logoHeight&&(e=Math.round(d.logoHeight));var f,g;void 0===a.naturalWidth?(f=a.width,g=a.height):(f=a.naturalWidth,g=a.naturalHeight),(d.logoMaxWidth||d.logoMaxHeight)&&(d.logoMaxWidth&&f<=c&&(c=f),d.logoMaxHeight&&g<=e&&(e=g),f<=c&&g<=e&&(c=f,e=g));var h=(d.realWidth-c)/2,i=(d.realHeight-e)/2,k=Math.min(c/f,e/g),l=f*k,m=g*k;(d.logoMaxWidth||d.logoMaxHeight)&&(c=l,e=m,h=(d.realWidth-c)/2,i=(d.realHeight-e)/2),d.logoBackgroundTransparent||(j.fillStyle=d.logoBackgroundColor,j.fillRect(h,i,c,e));var n=j.imageSmoothingQuality,o=j.imageSmoothingEnabled;j.imageSmoothingEnabled=!0,j.imageSmoothingQuality="high",j.drawImage(a,h+(c-l)/2,i+(e-m)/2,l,m),j.imageSmoothingEnabled=o,j.imageSmoothingQuality=n,b(),s._bIsPainted=!0,s.makeImage()}d.onRenderingStart&&d.onRenderingStart(d);for(var h=0;h<e;h++)for(var i=0;i<e;i++){var k=i*f+d.quietZone,l=h*g+d.quietZone,m=a.isDark(h,i),n=a.getEye(h,i),o=d.dotScale;j.lineWidth=0;var p,q;n?(p=d[n.type]||d[n.type.substring(0,2)]||d.colorDark,q=d.colorLight):d.backgroundImage?(q="rgba(0,0,0,0)",6==h?d.autoColor?(p=d.timing_H||d.timing||d.autoColorDark,q=d.autoColorLight):p=d.timing_H||d.timing||d.colorDark:6==i?d.autoColor?(p=d.timing_V||d.timing||d.autoColorDark,q=d.autoColorLight):p=d.timing_V||d.timing||d.colorDark:d.autoColor?(p=d.autoColorDark,q=d.autoColorLight):p=d.colorDark):(p=6==h?d.timing_H||d.timing||d.colorDark:6==i?d.timing_V||d.timing||d.colorDark:d.colorDark,q=d.colorLight),j.strokeStyle=m?p:q,j.fillStyle=m?p:q,n?(o="AO"==n.type?d.dotScaleAO:"AI"==n.type?d.dotScaleAI:1,d.backgroundImage&&d.autoColor?(p=("AO"==n.type?d.AI:d.AO)||d.autoColorDark,q=d.autoColorLight):p=("AO"==n.type?d.AI:d.AO)||p,m=n.isDark,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))):6==h?(o=d.dotScaleTiming_H,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))):6==i?(o=d.dotScaleTiming_V,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))):(d.backgroundImage,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))),1==d.dotScale||n||(j.strokeStyle=d.colorLight)}if(d.title&&(j.fillStyle=d.titleBackgroundColor,j.fillRect(d.quietZone,d.quietZone,d.width,d.titleHeight),j.font=d.titleFont,j.fillStyle=d.titleColor,j.textAlign="center",j.fillText(d.title,this._elCanvas.width/2,+d.quietZone+d.titleTop)),d.subTitle&&(j.font=d.subTitleFont,j.fillStyle=d.subTitleColor,j.fillText(d.subTitle,this._elCanvas.width/2,+d.quietZone+d.subTitleTop)),d.logo){var r=new Image,s=this;r.onload=function(){c(r)},r.onerror=function(a){console.error(a)},null!=d.crossOrigin&&(r.crossOrigin=d.crossOrigin),r.originalSrc=d.logo,r.src=d.logo}else b(),this._bIsPainted=!0,this.makeImage()}var d=this._htOption,e=a.getModuleCount(),f=d.width/e,g=d.height/e;f<=1&&(f=1),g<=1&&(g=1);var h=f*e,i=g*e;d.heightWithTitle=i+d.titleHeight,d.realHeight=d.heightWithTitle+2*d.quietZone,d.realWidth=h+2*d.quietZone,this._elCanvas.width=d.realWidth,this._elCanvas.height=d.realHeight,"canvas"!=d.drawer&&(this._oContext=new C2S(this._elCanvas.width,this._elCanvas.height)),this.clear();var j=this._oContext;j.lineWidth=0,j.fillStyle=d.colorLight,j.fillRect(0,0,this._elCanvas.width,this._elCanvas.height),j.clearRect(d.quietZone,d.quietZone,d.width,d.titleHeight);var k=this;if(d.backgroundImage){var l=new Image;l.onload=function(){j.globalAlpha=1,j.globalAlpha=d.backgroundImageAlpha;var b=j.imageSmoothingQuality,e=j.imageSmoothingEnabled;j.imageSmoothingEnabled=!0,j.imageSmoothingQuality="high",(d.title||d.subTitle)&&d.titleHeight?j.drawImage(l,d.quietZone,d.quietZone+d.titleHeight,d.width,d.height):j.drawImage(l,0,0,d.realWidth,d.realHeight),j.imageSmoothingEnabled=e,j.imageSmoothingQuality=b,j.globalAlpha=1,c.call(k,a)},null!=d.crossOrigin&&(l.crossOrigin=d.crossOrigin),l.originalSrc=d.backgroundImage,l.src=d.backgroundImage}else c.call(k,a)},e.prototype.makeImage=function(){this._bIsPainted&&b.call(this,a)},e.prototype.isPainted=function(){return this._bIsPainted},e.prototype.clear=function(){this._oContext.clearRect(0,0,this._elCanvas.width,this._elCanvas.height),this._bIsPainted=!1},e.prototype.remove=function(){this._oContext.clearRect(0,0,this._elCanvas.width,this._elCanvas.height),this._bIsPainted=!1,this._el.innerHTML=""},e.prototype.round=function(a){return a?Math.floor(1e3*a)/1e3:a},e}():function(){var a=function(a,b){this._el=a,this._htOption=b};return a.prototype.draw=function(a){var b=this._htOption,c=this._el,d=a.getModuleCount(),e=b.width/d,f=b.height/d;e<=1&&(e=1),f<=1&&(f=1);var g=e*d,h=f*d;b.heightWithTitle=h+b.titleHeight,b.realHeight=b.heightWithTitle+2*b.quietZone,b.realWidth=g+2*b.quietZone;var i=[],j="",k=Math.round(e*b.dotScale),l=Math.round(f*b.dotScale);k<4&&(k=4,l=4);var m=b.colorDark,n=b.colorLight;if(b.backgroundImage){b.autoColor?(b.colorDark="rgba(0, 0, 0, .6);filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#99000000', EndColorStr='#99000000');",b.colorLight="rgba(255, 255, 255, .7);filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#B2FFFFFF', EndColorStr='#B2FFFFFF');"):b.colorLight="rgba(0,0,0,0)";var o='<div style="display:inline-block; z-index:-10;position:absolute;"><img src="'+b.backgroundImage+'" width="'+(b.width+2*b.quietZone)+'" height="'+b.realHeight+'" style="opacity:'+b.backgroundImageAlpha+";filter:alpha(opacity="+100*b.backgroundImageAlpha+'); "/></div>';i.push(o)}if(b.quietZone&&(j="display:inline-block; width:"+(b.width+2*b.quietZone)+"px; height:"+(b.width+2*b.quietZone)+"px;background:"+b.quietZoneColor+"; text-align:center;"),i.push('<div style="font-size:0;'+j+'">'),i.push('<table  style="font-size:0;border:0;border-collapse:collapse; margin-top:'+b.quietZone+'px;" border="0" cellspacing="0" cellspadding="0" align="center" valign="middle">'),i.push('<tr height="'+b.titleHeight+'" align="center"><td style="border:0;border-collapse:collapse;margin:0;padding:0" colspan="'+d+'">'),b.title){var p=b.titleColor,q=b.titleFont;i.push('<div style="width:100%;margin-top:'+b.titleTop+"px;color:"+p+";font:"+q+";background:"+b.titleBackgroundColor+'">'+b.title+"</div>")}b.subTitle&&i.push('<div style="width:100%;margin-top:'+(b.subTitleTop-b.titleTop)+"px;color:"+b.subTitleColor+"; font:"+b.subTitleFont+'">'+b.subTitle+"</div>"),i.push("</td></tr>");for(var r=0;r<d;r++){i.push('<tr style="border:0; padding:0; margin:0;" height="7">');for(var s=0;s<d;s++){var t=a.isDark(r,s),u=a.getEye(r,s);if(u){t=u.isDark;var v=u.type,w=b[v]||b[v.substring(0,2)]||m;i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+'px;"><span style="width:'+e+"px;height:"+f+"px;background-color:"+(t?w:n)+';display:inline-block"></span></td>')}else{var x=b.colorDark;6==r?(x=b.timing_H||b.timing||m,i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+"px;background-color:"+(t?x:n)+';"></td>')):6==s?(x=b.timing_V||b.timing||m,i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+"px;background-color:"+(t?x:n)+';"></td>')):i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+'px;"><div style="display:inline-block;width:'+k+"px;height:"+l+"px;background-color:"+(t?x:b.colorLight)+';"></div></td>')}}i.push("</tr>")}if(i.push("</table>"),i.push("</div>"),b.logo){var y=new Image;null!=b.crossOrigin&&(y.crossOrigin=b.crossOrigin),y.src=b.logo;var z=b.width/3.5,A=b.height/3.5;z!=A&&(z=A),b.logoWidth&&(z=b.logoWidth),b.logoHeight&&(A=b.logoHeight);var B="position:relative; z-index:1;display:table-cell;top:-"+(b.height/2+A/2+b.quietZone)+"px;text-align:center; width:"+z+"px; height:"+A+"px;line-height:"+z+"px; vertical-align: middle;";b.logoBackgroundTransparent||(B+="background:"+b.logoBackgroundColor),i.push('<div style="'+B+'"><img  src="'+b.logo+'"  style="max-width: '+z+"px; max-height: "+A+'px;" /> <div style=" display: none; width:1px;margin-left: -1px;"></div></div>')}b.onRenderingStart&&b.onRenderingStart(b),c.innerHTML=i.join("");var C=c.childNodes[0],D=(b.width-C.offsetWidth)/2,E=(b.heightWithTitle-C.offsetHeight)/2;D>0&&E>0&&(C.style.margin=E+"px "+D+"px"),this._htOption.onRenderingEnd&&this._htOption.onRenderingEnd(this._htOption,null)},a.prototype.clear=function(){this._el.innerHTML=""},a}();j=function(a,b){if(this._htOption={width:256,height:256,typeNumber:4,colorDark:"#000000",colorLight:"#ffffff",correctLevel:r.H,dotScale:1,dotScaleTiming:1,dotScaleTiming_H:i,dotScaleTiming_V:i,dotScaleA:1,dotScaleAO:i,dotScaleAI:i,quietZone:0,quietZoneColor:"rgba(0,0,0,0)",title:"",titleFont:"normal normal bold 16px Arial",titleColor:"#000000",titleBackgroundColor:"#ffffff",titleHeight:0,titleTop:30,subTitle:"",subTitleFont:"normal normal normal 14px Arial",subTitleColor:"#4F4F4F",subTitleTop:60,logo:i,logoWidth:i,logoHeight:i,logoMaxWidth:i,logoMaxHeight:i,logoBackgroundColor:"#ffffff",logoBackgroundTransparent:!1,PO:i,PI:i,PO_TL:i,PI_TL:i,PO_TR:i,PI_TR:i,PO_BL:i,PI_BL:i,AO:i,AI:i,timing:i,timing_H:i,timing_V:i,backgroundImage:i,backgroundImageAlpha:1,autoColor:!1,autoColorDark:"rgba(0, 0, 0, .6)",autoColorLight:"rgba(255, 255, 255, .7)",onRenderingStart:i,onRenderingEnd:i,version:0,tooltip:!1,binary:!1,drawer:"canvas",crossOrigin:null,utf8WithoutBOM:!0},"string"==typeof b&&(b={text:b}),b)for(var c in b)this._htOption[c]=b[c];this._htOption.title||this._htOption.subTitle||(this._htOption.titleHeight=0),(this._htOption.version<0||this._htOption.version>40)&&(console.warn("QR Code version '"+this._htOption.version+"' is invalidate, reset to 0"),this._htOption.version=0),(this._htOption.dotScale<0||this._htOption.dotScale>1)&&(console.warn(this._htOption.dotScale+" , is invalidate, dotScale must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScale=1),(this._htOption.dotScaleTiming<0||this._htOption.dotScaleTiming>1)&&(console.warn(this._htOption.dotScaleTiming+" , is invalidate, dotScaleTiming must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleTiming=1),this._htOption.dotScaleTiming_H?(this._htOption.dotScaleTiming_H<0||this._htOption.dotScaleTiming_H>1)&&(console.warn(this._htOption.dotScaleTiming_H+" , is invalidate, dotScaleTiming_H must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleTiming_H=1):this._htOption.dotScaleTiming_H=this._htOption.dotScaleTiming,this._htOption.dotScaleTiming_V?(this._htOption.dotScaleTiming_V<0||this._htOption.dotScaleTiming_V>1)&&(console.warn(this._htOption.dotScaleTiming_V+" , is invalidate, dotScaleTiming_V must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleTiming_V=1):this._htOption.dotScaleTiming_V=this._htOption.dotScaleTiming,(this._htOption.dotScaleA<0||this._htOption.dotScaleA>1)&&(console.warn(this._htOption.dotScaleA+" , is invalidate, dotScaleA must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleA=1),this._htOption.dotScaleAO?(this._htOption.dotScaleAO<0||this._htOption.dotScaleAO>1)&&(console.warn(this._htOption.dotScaleAO+" , is invalidate, dotScaleAO must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleAO=1):this._htOption.dotScaleAO=this._htOption.dotScaleA,this._htOption.dotScaleAI?(this._htOption.dotScaleAI<0||this._htOption.dotScaleAI>1)&&(console.warn(this._htOption.dotScaleAI+" , is invalidate, dotScaleAI must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleAI=1):this._htOption.dotScaleAI=this._htOption.dotScaleA,(this._htOption.backgroundImageAlpha<0||this._htOption.backgroundImageAlpha>1)&&(console.warn(this._htOption.backgroundImageAlpha+" , is invalidate, backgroundImageAlpha must between 0 and 1, now reset to 1. "),this._htOption.backgroundImageAlpha=1),this._htOption.quietZone||(this._htOption.quietZone=0),this._htOption.titleHeight||(this._htOption.titleHeight=0),this._htOption.width=Math.round(this._htOption.width),this._htOption.height=Math.round(this._htOption.height),this._htOption.quietZone=Math.round(this._htOption.quietZone),this._htOption.titleHeight=Math.round(this._htOption.titleHeight),"string"==typeof a&&(a=document.getElementById(a)),(!this._htOption.drawer||"svg"!=this._htOption.drawer&&"canvas"!=this._htOption.drawer)&&(this._htOption.drawer="canvas"),this._android=f(),this._el=a,this._oQRCode=null,this._htOption._element=a;var d={};for(var c in this._htOption)d[c]=this._htOption[c];this._oDrawing=new x(this._el,d),this._htOption.text&&this.makeCode(this._htOption.text)},j.prototype.makeCode=function(a){this._oQRCode=new b(g(a,this._htOption),this._htOption.correctLevel),this._oQRCode.addData(a,this._htOption.binary,this._htOption.utf8WithoutBOM),this._oQRCode.make(),this._htOption.tooltip&&(this._el.title=a),this._oDrawing.draw(this._oQRCode)},j.prototype.makeImage=function(){"function"==typeof this._oDrawing.makeImage&&(!this._android||this._android>=3)&&this._oDrawing.makeImage()},j.prototype.clear=function(){this._oDrawing.remove()},j.prototype.resize=function(a,b){this._oDrawing._htOption.width=a,this._oDrawing._htOption.height=b,this._oDrawing.draw(this._oQRCode)},j.prototype.download=function(a){var b=this._oDrawing.dataURL,c=document.createElement("a");if("svg"==this._htOption.drawer){a+=".svg";var d=new Blob([b],{type:"text/plain"});if(navigator.msSaveBlob)navigator.msSaveBlob(d,a);else{c.download=a;var e=new FileReader;e.onload=function(){c.href=e.result,c.click()},e.readAsDataURL(d)}}else if(a+=".png",navigator.msSaveBlob){var f=function(a){var b=atob(a.split(",")[1]),c=a.split(",")[0].split(":")[1].split(";")[0],d=new ArrayBuffer(b.length),e=new Uint8Array(d);for(v=0;v<b.length;v++)e[v]=b.charCodeAt(v);return new Blob([d],{type:c})}(b);navigator.msSaveBlob(f,a)}else c.download=a,c.href=b,c.click()},j.prototype.noConflict=function(){return m.QRCode===this&&(m.QRCode=p),j},j.CorrectLevel=r,"function"==typeof define&&(define.amd||define.cmd)?define([],function(){return j}):o?((o.exports=j).QRCode=j,n.QRCode=j):m.QRCode=j}.call(this);
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],153:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 'use strict'
 
 module.exports = function encodeUtf8 (input) {
@@ -15953,7 +12976,7 @@ module.exports = function encodeUtf8 (input) {
   return new Uint8Array(result).buffer
 }
 
-},{}],154:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
@@ -16040,7 +13063,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],155:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 (function (process){(function (){
 // 'path' module extracted from Node.js v8.11.1 (only the posix part)
 // transplited with Babel
@@ -16573,7 +13596,7 @@ posix.posix = posix;
 module.exports = posix;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":156}],156:[function(require,module,exports){
+},{"_process":131}],131:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -16759,7 +13782,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],157:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 
 const canPromise = require('./can-promise')
 
@@ -16837,7 +13860,7 @@ exports.toString = renderCanvas.bind(null, function (data, _, opts) {
   return SvgRenderer.render(data, opts)
 })
 
-},{"./can-promise":158,"./core/qrcode":174,"./renderer/canvas":181,"./renderer/svg-tag.js":182}],158:[function(require,module,exports){
+},{"./can-promise":133,"./core/qrcode":149,"./renderer/canvas":156,"./renderer/svg-tag.js":157}],133:[function(require,module,exports){
 // can-promise has a crash in some versions of react native that dont have
 // standard global objects
 // https://github.com/soldair/node-qrcode/issues/157
@@ -16846,7 +13869,7 @@ module.exports = function () {
   return typeof Promise === 'function' && Promise.prototype && Promise.prototype.then
 }
 
-},{}],159:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 /**
  * Alignment pattern are fixed reference pattern in defined positions
  * in a matrix symbology, which enables the decode software to re-synchronise
@@ -16931,7 +13954,7 @@ exports.getPositions = function getPositions (version) {
   return coords
 }
 
-},{"./utils":178}],160:[function(require,module,exports){
+},{"./utils":153}],135:[function(require,module,exports){
 const Mode = require('./mode')
 
 /**
@@ -16992,7 +14015,7 @@ AlphanumericData.prototype.write = function write (bitBuffer) {
 
 module.exports = AlphanumericData
 
-},{"./mode":171}],161:[function(require,module,exports){
+},{"./mode":146}],136:[function(require,module,exports){
 function BitBuffer () {
   this.buffer = []
   this.length = 0
@@ -17031,7 +14054,7 @@ BitBuffer.prototype = {
 
 module.exports = BitBuffer
 
-},{}],162:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 /**
  * Helper class to handle QR Code symbol modules
  *
@@ -17098,7 +14121,7 @@ BitMatrix.prototype.isReserved = function (row, col) {
 
 module.exports = BitMatrix
 
-},{}],163:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 const encodeUtf8 = require('encode-utf8')
 const Mode = require('./mode')
 
@@ -17130,7 +14153,7 @@ ByteData.prototype.write = function (bitBuffer) {
 
 module.exports = ByteData
 
-},{"./mode":171,"encode-utf8":153}],164:[function(require,module,exports){
+},{"./mode":146,"encode-utf8":128}],139:[function(require,module,exports){
 const ECLevel = require('./error-correction-level')
 
 const EC_BLOCKS_TABLE = [
@@ -17267,7 +14290,7 @@ exports.getTotalCodewordsCount = function getTotalCodewordsCount (version, error
   }
 }
 
-},{"./error-correction-level":165}],165:[function(require,module,exports){
+},{"./error-correction-level":140}],140:[function(require,module,exports){
 exports.L = { bit: 1 }
 exports.M = { bit: 0 }
 exports.Q = { bit: 3 }
@@ -17319,7 +14342,7 @@ exports.from = function from (value, defaultValue) {
   }
 }
 
-},{}],166:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 const getSymbolSize = require('./utils').getSymbolSize
 const FINDER_PATTERN_SIZE = 7
 
@@ -17343,7 +14366,7 @@ exports.getPositions = function getPositions (version) {
   ]
 }
 
-},{"./utils":178}],167:[function(require,module,exports){
+},{"./utils":153}],142:[function(require,module,exports){
 const Utils = require('./utils')
 
 const G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0)
@@ -17374,7 +14397,7 @@ exports.getEncodedBits = function getEncodedBits (errorCorrectionLevel, mask) {
   return ((data << 10) | d) ^ G15_MASK
 }
 
-},{"./utils":178}],168:[function(require,module,exports){
+},{"./utils":153}],143:[function(require,module,exports){
 const EXP_TABLE = new Uint8Array(512)
 const LOG_TABLE = new Uint8Array(256)
 /**
@@ -17445,7 +14468,7 @@ exports.mul = function mul (x, y) {
   return EXP_TABLE[LOG_TABLE[x] + LOG_TABLE[y]]
 }
 
-},{}],169:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 const Mode = require('./mode')
 const Utils = require('./utils')
 
@@ -17501,7 +14524,7 @@ KanjiData.prototype.write = function (bitBuffer) {
 
 module.exports = KanjiData
 
-},{"./mode":171,"./utils":178}],170:[function(require,module,exports){
+},{"./mode":146,"./utils":153}],145:[function(require,module,exports){
 /**
  * Data mask pattern reference
  * @type {Object}
@@ -17737,7 +14760,7 @@ exports.getBestMask = function getBestMask (data, setupFormatFunc) {
   return bestPattern
 }
 
-},{}],171:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 const VersionCheck = require('./version-check')
 const Regex = require('./regex')
 
@@ -17906,7 +14929,7 @@ exports.from = function from (value, defaultValue) {
   }
 }
 
-},{"./regex":176,"./version-check":179}],172:[function(require,module,exports){
+},{"./regex":151,"./version-check":154}],147:[function(require,module,exports){
 const Mode = require('./mode')
 
 function NumericData (data) {
@@ -17951,7 +14974,7 @@ NumericData.prototype.write = function write (bitBuffer) {
 
 module.exports = NumericData
 
-},{"./mode":171}],173:[function(require,module,exports){
+},{"./mode":146}],148:[function(require,module,exports){
 const GF = require('./galois-field')
 
 /**
@@ -18015,7 +15038,7 @@ exports.generateECPolynomial = function generateECPolynomial (degree) {
   return poly
 }
 
-},{"./galois-field":168}],174:[function(require,module,exports){
+},{"./galois-field":143}],149:[function(require,module,exports){
 const Utils = require('./utils')
 const ECLevel = require('./error-correction-level')
 const BitBuffer = require('./bit-buffer')
@@ -18512,7 +15535,7 @@ exports.create = function create (data, options) {
   return createSymbol(data, version, errorCorrectionLevel, mask)
 }
 
-},{"./alignment-pattern":159,"./bit-buffer":161,"./bit-matrix":162,"./error-correction-code":164,"./error-correction-level":165,"./finder-pattern":166,"./format-info":167,"./mask-pattern":170,"./mode":171,"./reed-solomon-encoder":175,"./segments":177,"./utils":178,"./version":180}],175:[function(require,module,exports){
+},{"./alignment-pattern":134,"./bit-buffer":136,"./bit-matrix":137,"./error-correction-code":139,"./error-correction-level":140,"./finder-pattern":141,"./format-info":142,"./mask-pattern":145,"./mode":146,"./reed-solomon-encoder":150,"./segments":152,"./utils":153,"./version":155}],150:[function(require,module,exports){
 const Polynomial = require('./polynomial')
 
 function ReedSolomonEncoder (degree) {
@@ -18570,7 +15593,7 @@ ReedSolomonEncoder.prototype.encode = function encode (data) {
 
 module.exports = ReedSolomonEncoder
 
-},{"./polynomial":173}],176:[function(require,module,exports){
+},{"./polynomial":148}],151:[function(require,module,exports){
 const numeric = '[0-9]+'
 const alphanumeric = '[A-Z $%*+\\-./:]+'
 let kanji = '(?:[u3000-u303F]|[u3040-u309F]|[u30A0-u30FF]|' +
@@ -18603,7 +15626,7 @@ exports.testAlphanumeric = function testAlphanumeric (str) {
   return TEST_ALPHANUMERIC.test(str)
 }
 
-},{}],177:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 const Mode = require('./mode')
 const NumericData = require('./numeric-data')
 const AlphanumericData = require('./alphanumeric-data')
@@ -18935,7 +15958,7 @@ exports.rawSplit = function rawSplit (data) {
   )
 }
 
-},{"./alphanumeric-data":160,"./byte-data":163,"./kanji-data":169,"./mode":171,"./numeric-data":172,"./regex":176,"./utils":178,"dijkstrajs":151}],178:[function(require,module,exports){
+},{"./alphanumeric-data":135,"./byte-data":138,"./kanji-data":144,"./mode":146,"./numeric-data":147,"./regex":151,"./utils":153,"dijkstrajs":126}],153:[function(require,module,exports){
 let toSJISFunction
 const CODEWORDS_COUNT = [
   0, // Not used
@@ -19000,7 +16023,7 @@ exports.toSJIS = function toSJIS (kanji) {
   return toSJISFunction(kanji)
 }
 
-},{}],179:[function(require,module,exports){
+},{}],154:[function(require,module,exports){
 /**
  * Check if QR Code version is valid
  *
@@ -19011,7 +16034,7 @@ exports.isValid = function isValid (version) {
   return !isNaN(version) && version >= 1 && version <= 40
 }
 
-},{}],180:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 const Utils = require('./utils')
 const ECCode = require('./error-correction-code')
 const ECLevel = require('./error-correction-level')
@@ -19176,7 +16199,7 @@ exports.getEncodedBits = function getEncodedBits (version) {
   return (version << 12) | d
 }
 
-},{"./error-correction-code":164,"./error-correction-level":165,"./mode":171,"./utils":178,"./version-check":179}],181:[function(require,module,exports){
+},{"./error-correction-code":139,"./error-correction-level":140,"./mode":146,"./utils":153,"./version-check":154}],156:[function(require,module,exports){
 const Utils = require('./utils')
 
 function clearCanvas (ctx, canvas, size) {
@@ -19241,7 +16264,7 @@ exports.renderToDataURL = function renderToDataURL (qrData, canvas, options) {
   return canvasEl.toDataURL(type, rendererOpts.quality)
 }
 
-},{"./utils":183}],182:[function(require,module,exports){
+},{"./utils":158}],157:[function(require,module,exports){
 const Utils = require('./utils')
 
 function getColorAttrib (color, attrib) {
@@ -19324,7 +16347,7 @@ exports.render = function render (qrData, options, cb) {
   return svgTag
 }
 
-},{"./utils":183}],183:[function(require,module,exports){
+},{"./utils":158}],158:[function(require,module,exports){
 function hex2rgba (hex) {
   if (typeof hex === 'number') {
     hex = hex.toString()
@@ -19425,7 +16448,7 @@ exports.qrToImageData = function qrToImageData (imgData, qr, opts) {
   }
 }
 
-},{}],184:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 /********************************************************************************
     vCards-js, Eric J Nesser, November 2014
 ********************************************************************************/
@@ -19765,7 +16788,7 @@ var vCard = (function () {
 
 module.exports = vCard;
 
-},{"./lib/vCardFormatter":185,"fs":149,"path":155}],185:[function(require,module,exports){
+},{"./lib/vCardFormatter":160,"fs":124,"path":130}],160:[function(require,module,exports){
 /********************************************************************************
  vCards-js, Eric J Nesser, November 2014,
  ********************************************************************************/
@@ -20163,10 +17186,10 @@ module.exports = vCard;
 		}
 	};
 })();
-},{}],186:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 const { starter } = require("../action/starter")
-const { eventExecuter } = require("../action/event")
-const { lineInterpreter } = require("../action/lineInterpreter")
+const { initView } = require("../action/view")
+const { defaultAppEvents } = require("../action/defaultAppEvents")
 
 window.views = JSON.parse(document.getElementById("views").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
@@ -20175,160 +17198,25 @@ window.global = JSON.parse(document.getElementById("global").textContent)
 var views = window.views
 var global = window.global
 
-//views.document = document
-document.element = document
-views.body.element = document.body
-views.window = { id: "window", element: window, controls: [], __: global.__ }
+views.body.__element__ = document.body
+initView({ views, global, id: "document", __element__: document })
+initView({ views, global, id: "window", __element__: window })
 
-// download arabic font
+// app default event listeneres
+defaultAppEvents()
+
+// start app
+// starter({ id: "body" })
+views.body.__idList__.map(id => starter({ id }))
+
+// load arabic font
 var arDiv = document.createElement("P")
 arDiv.innerHTML = "مرحبا"
 arDiv.classList.add("ar")
 arDiv.style.position = "absolute"
 arDiv.style.top = "-1000px"
-views.body.element.appendChild(arDiv)
-
-window.onfocus = (e) => {
-
-    views.root.element.click()
-    document.activeElement.blur()
-    
-    var data = "():mininote.style():[opacity=0;transform=scale(0)]"
-    lineInterpreter({ id: "window", e, data })
-}
-
-window.onmousedown = (e) => {
-
-    var global = window.global
-    var views = window.views
-    
-    global.clicked = views[(e || window.event).target.id]
-}
-
-// clicked element
-document.body.addEventListener('click', e => {
-
-    var views = window.views
-    var global = window.global
-    
-    global.clicked = views[((e || window.event).target || e.currentTarget).id]
-
-    // droplist
-    if (global.clicked && views.droplist.element.contains(global.clicked.element)) global["droplist-txt"] = global.clicked.element.innerHTML
-
-    // body click events
-    Object.values(global.__events__).map(event => event.click && event.click.map(data => eventExecuter({ ...data, e })))
-})
-
-// mousemove
-document.body.addEventListener('mousemove', (e) => {
-
-    var global = window.global
-
-    global.mousePosX = e.screenX
-    global.mousePosY = e.screenY
-
-    // body mousemove events
-    Object.values(global.__events__).map(event => event.mousemove && event.mousemove.map(data => eventExecuter({ ...data, e })))
-})
-
-document.body.addEventListener("mousedown", (e) => {
-
-    var global = window.global
-
-    global.mousedowned = true
-    global.clicked = window.views[((e || window.event).target || e.currentTarget).id]
-
-    // body mousedown events
-    Object.values(global.__events__).map(event => event.mousedown && event.mousedown.map(data => eventExecuter({ ...data, e })))
-})
-
-document.body.addEventListener("mouseup", (e) => {
-
-    var global = window.global
-    global.mousedowned = false
-
-    // body mouseup events
-    Object.values(global.__events__).map(event => event.mouseup && event.mouseup.map(data => eventExecuter({ ...data, e })))
-})
-
-document.addEventListener('keydown', e => {
-
-    var global = window.global
-
-    if (global.manifest.projectID === "brackettechnologies" && e.ctrlKey && e.key === "s") {
-        e.preventDefault();
-        lineInterpreter({ id: "saveBtn", e, data: "click()" })
-    }
-
-    if (global.manifest.projectID === "brackettechnologies" && e.ctrlKey && e.shiftKey && e.key === "Delete") {
-        e.preventDefault();
-    }
-})
-
-document.addEventListener('keyup', e => {
-    
-    var global = window.global
-    if (!e.ctrlKey) global.ctrlKey = false
-})
-
-global.__ids__.map(id => starter({ id }))
-
-// show icons
-window.onload = () => {
-    var icons = global.__ids__.filter(id => views[id] && views[id].__name__ === "Icon").map(id => views[id])
-    icons.map(view => {
-        if (view.element) {
-            view.element.style.opacity = view.style.opacity !== undefined ? view.style.opacity : "1"
-            view.element.style.transition = view.style.transition !== undefined ? view.style.transition : "none"
-        }
-    })
-}
-
-Object.entries(views).map(([id, views]) => {
-    if (views.status === "Loading") delete views[id]
-})
-
-document.addEventListener('scroll', (e) => {
-
-    // close droplist
-    if (views.droplist.element.style.pointerEvents === "auto") {
-    
-        var data = "if():[!():droplist.mouseentered]:[():droplist.mouseleave()]"
-        lineInterpreter({ id: "body", e, data })
-    }
-}, true)
-
-window.addEventListener("keydown", function (e) {
-    if (["ArrowUp", "ArrowDown"].indexOf(e.code) > -1) {
-        e.preventDefault()
-    }
-}, false)
-
-window.addEventListener('beforeinstallprompt', function (e) {
-
-    // Prevent the mini-infobar from appearing on mobile
-    e.preventDefault()
-    console.log('👍', 'beforeinstallprompt', e);
-
-    // Stash the event so it can be triggered later.
-    window.global.__installApp__ = e
-    //setTimeout(() => { console.log(window.global.__installApp__); window.global.__installApp__.prompt() }, 1000)
-})
-
-window.addEventListener('appinstalled', () => {
-    // Log install to analytics
-    console.log('INSTALL: Success')
-})
-
-/*if (window.location.protocol === 'http:') {
-
-  const requireHTTPS = document.getElementById('requireHTTPS');
-  const link = requireHTTPS.querySelector('a');
-  link.href = window.location.href.replace('http://', 'https://');
-  requireHTTPS.classList.remove('hidden');
-}*/
-},{"../action/event":26,"../action/lineInterpreter":54,"../action/starter":79}],187:[function(require,module,exports){
+views.body.__element__.appendChild(arDiv)
+},{"../action/defaultAppEvents":15,"../action/starter":60,"../action/view":85}],162:[function(require,module,exports){
 module.exports = (view) => {
   var scrollWidth = `[px():[().swiper.scroll]||100]`
   var clickLeft = `():[().swiper.id]._():[clearTimer():[_.mytimer];_.scroll+=[${scrollWidth}-_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll>_.scrollable]:[_.scroll=0];_.style().transform='translateX('+_.scroll+'px)';if():[_.autorun]:[_.mytimer=interval():[_.scroll+=[${scrollWidth}-_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll>_.scrollable]:[_.scroll=0];_.style().transform='translateX('+_.scroll+'px)']:[_.autorun.timer||100]]]`
@@ -20338,7 +17226,7 @@ module.exports = (view) => {
     view: `Icon?class='flexbox pointer '+[().class||];name=if():[direction=right]:'bi-chevron-right'.elif():[direction=left]:'bi-chevron-left';style:[fontSize=[().style.fontSize||2.5rem];if():[().direction=left]:[left=[().style.left||0]].elif():[().direction=right]:[right=[().style.right||0]]];click:[if():[direction=left;swiper.id]:[${clickLeft}].elif():[direction=right;swiper.id]:[${clickRight}]]`
   }
 }
-},{}],188:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 const { toComponent } = require('../action/toComponent')
 const { jsonToBracket } = require('../action/jsonToBracket')
 const { override } = require('../action/merge')
@@ -20348,6 +17236,7 @@ const { generate } = require('../action/generate')
 const Input = (component) => {
 
   if (component.__templated__) return component
+  component.__templated__ = true
 
   component.hover = component.hover || {}
   component.style = component.style || {}
@@ -20378,9 +17267,9 @@ const Input = (component) => {
   component = toComponent(component)
 
   var {
-    id, input, model, droplist, readonly, style, controls, duplicated, duration, required, preventDefault,
-    placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, __labeled__,
-    duplicatable, lang, unit, currency, google, key, minlength, children, container, generator,
+    id, input, model, droplist, readonly, style, __controls__, duplicated, duration, required, preventDefault,
+    placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, __labeled__, __childIndex__,
+    duplicatable, lang, unit, currency, google, key, minlength, children, container, generator, __templated__
   } = component
 
   if (duplicatable && typeof duplicatable !== "object") duplicatable = {}
@@ -20407,9 +17296,9 @@ const Input = (component) => {
     } : {}
 
   var _component = component = {
-    ...component, id, input, model, droplist, readonly, style, controls, duplicated, duration, required, preventDefault,
-    placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, __labeled__,
-    duplicatable, lang, unit, currency, google, key, minlength, children, container, generator
+    ...component, id, input, model, droplist, readonly, style, __controls__, duplicated, duration, required, preventDefault,
+    placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, __labeled__, __childIndex__,
+    duplicatable, lang, unit, currency, google, key, minlength, children, container, generator, __templated__
   }
 
   if (duplicatable) {
@@ -20420,50 +17309,51 @@ const Input = (component) => {
   if (label && (label.location === "inside" || label.position === "inside")) {
 
     var label = clone(component.label)
-    var derivations = clone(component.derivations)
+    var __dataPath__ = clone(component.__dataPath__)
     var path = component.path
-    var parent = component.parent
-    var Data = component.Data
+    var __parent__ = component.__parent__
+    var doc = component.doc
     var password = component.password && true
     var text = label.text
     id = id || generate()
 
-    delete component.parent
     delete component.label
     delete component.path
     delete component.id
     delete component.password
-    delete component.derivations
+    delete component.__dataPath__
+    delete component.__parent__
+    delete component.__templated__
     delete label.text
 
     return {
-      id, path, Data, parent, derivations, tooltip: component.tooltip, __islabel__: true, preventDefault,
+      id, path, doc, __parent__, tooltip: component.tooltip, __dataPath__, __islabel__: true, preventDefault, __templated__, __childIndex__,
       "view": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=${component.style.width || "100%"};style.maxWidth=${component.style.maxWidth || "100%"};${jsonToBracket(container)}`,
       "children": [{
         "view": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
         "children": [{
-          "view": `Text?id=${id}-label;text='${text || "Label"}';if():[parent().required]:[required=true];style.fontSize=1.1rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)}`,
-          "controls": [{
+          "view": `Text?id=${id}_label;text='${text || "Label"}';if():[parent().required]:[required=true];style.fontSize=1.1rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)}`,
+          "__controls__": [{
             "event": "click?parent().input().focus()"
           }]
-        }, Input({ ...component, component: true, __labeled__: id, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
+        }, Input({ ...component, component: true, __labeled__: id, __parent__: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
         ]
       }, {
         "view": `View?style.height=inherit;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative;${jsonToBracket(password)}?${password}`,
         "children": [{
           "view": `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
-          "controls": [{
-            "event": "click?parent().prev().getInput().element.type=text;next().style().display=flex;style().display=none"
+          "__controls__": [{
+            "event": "click?parent().prev().getInput().el().type=text;next().style().display=flex;style().display=none"
           }]
         }, {
           "view": `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
-          "controls": [{
-            "event": "click?parent().prev().getInput().element.type=password;prev().style().display=flex;style().display=none"
+          "__controls__": [{
+            "event": "click?parent().prev().getInput().el().type=password;prev().style().display=flex;style().display=none"
           }]
         }]
       }],
-      "controls": [{
-        "event": "click:body?style().border=if():[clicked:().outside():[().element]]:[1px solid #ccc]:[2px solid #008060]?!contains():[clicked:()];!droplist.contains():[clicked:()]"
+      "__controls__": [{
+        "event": "click:body?style().border=if():[clicked().outside():[().el()]]:[1px solid #ccc]:[2px solid #008060]?!contains():[clicked()];!droplist.contains():[clicked()]"
       }, {
         "event": "click?getInput().focus()?!getInput().focus"
       }]
@@ -20473,10 +17363,10 @@ const Input = (component) => {
   if ((label && (label.location === "outside" || label.position === "outside")) || label) {
 
     var label = clone(component.label)
-    var derivations = clone(component.derivations)
+    var __dataPath__ = clone(component.__dataPath__)
     var path = component.path
-    var parent = component.parent
-    var Data = component.Data
+    var __parent__ = component.__parent__
+    var doc = component.doc
     var tooltip = component.tooltip
     var text = label.text
     id = id || generate()
@@ -20486,20 +17376,23 @@ const Input = (component) => {
     delete component.id
     delete component.tooltip
     delete component.required
+    delete component.__parent__
+    delete component.__templated__
+    delete component.__childIndex__
     delete label.text
     label.tooltip = tooltip
 
     return {
-      id, Data, parent, derivations, path, __islabel__: true, preventDefault, controls: [],
+      id, doc, __parent__, __dataPath__, path, __islabel__: true, preventDefault, __controls__: [], __templated__, __childIndex__,
       "view": `View?class=flex start column;style.gap=.5rem;style.width=${component.style.width || "100%"};style.maxWidth=${component.style.maxWidth || "100%"};${jsonToBracket(container)}`,
       "children": [
         {
-          "view": `Text?id=${id}-label;text='${text || "Label"}';${required ? "required=true" : ""};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)}`,
-          "controls": [{
+          "view": `Text?id=${id}_label;text='${text || "Label"}';${required ? "required=true" : ""};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)}`,
+          "__controls__": [{
             "event": "click?parent().input().focus()"
           }]
         },
-        Input({ ...component, component: true, __labeled__: id, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
+        Input({ ...component, component: true, __labeled__: id, __parent__: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
         {
           "view": `View:${id}-required?class=flex gap-1;style:[alignItems=center;opacity=${required && required.style && required.style.opacity || "0"};transition=.2s]?${required ? true : false}`,
           "children": [{
@@ -20521,7 +17414,7 @@ const Input = (component) => {
       view: "View",
       class: `flex align-items-center unselectable ${component.class || ""}`,
       // remove from comp
-      controls: [{
+      __controls__: [{
         event: `mouseenter?if():[clearable||removable||duplicatable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():duplicatable:[():[${id}+'-duplicate'].style().opacity=1]];if():generator:[():[${id}+'-generate'].style().opacity=1]?!mobile()`
       }, {
         event: `mouseleave?if():[clearable||removable||duplicatable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0];if():duplicatable:[():[${id}+'-duplicate'].style().opacity=0]];if():generator:[():[${id}+'-generate'].style().opacity=0]?!mobile()`
@@ -20569,6 +17462,7 @@ const Input = (component) => {
         disabled,
         duplicatable,
         preventDefault,
+        __featured__: true,
         __templated__: true,
         style: {
           width: password || clearable || removable || copyable || generator ? "100%" : "fit-content",
@@ -20586,8 +17480,8 @@ const Input = (component) => {
           ...uploadInputStyle,
           ...input.style
         },
-        controls: [...controls, {
-          event: `focus?if():[__labeled__]:[if():[!():${__labeled__}.contains():[clicked:()]]:[if():${duplicatable ? true : false}:[parent().click()]:[2ndChild().click()]]]:[if():[!():${id}.contains():[clicked:()]]:[click():[__droplistPositioner__:().del();]]]?!preventDefault`
+        __controls__: [...__controls__, {
+          event: `focus?if():[__labeled__]:[if():[!():${__labeled__}.contains():[clicked()]]:[if():${duplicatable ? true : false}:[parent().click()]:[2ndChild().click()]]]:[if():[!():${id}.contains():[clicked()]]:[click():[__droplistPositioner__:().del();]]]?!preventDefault`
         }, {
           event: `blur?():body.click()`
         }, {
@@ -20607,13 +17501,13 @@ const Input = (component) => {
         view: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
         children: [{
           view: `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
-          controls: [{
-            event: "click?parent().prev().element.type=text;next().style().display=flex;style().display=none"
+          __controls__: [{
+            event: "click?parent().prev().el().type=text;next().style().display=flex;style().display=none"
           }]
         }, {
           view: `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
-          controls: [{
-            event: "click?parent().prev().element.type=password;prev().style().display=flex;style().display=none"
+          __controls__: [{
+            event: "click?parent().prev().el().type=password;prev().style().display=flex;style().display=none"
           }]
         }]
       }]
@@ -20641,7 +17535,7 @@ const Input = (component) => {
         ...input.style,
         ...style,
       },
-      controls: [...controls, {
+      __controls__: [...__controls__, {
         event: `focus?clicked.mount;clicked.style.keys()._():[().style().[_]=().clicked.style.[_]];state:().[().clicked.state]=().id`
       }, {
         event: `blur?if():[state:().[().clicked.state]]:[():[state:().[().clicked.state]]._():[_.clicked.mount.del();_.clicked.style.keys()._():[__.style().[_]=[__.style._||null]]]]`
@@ -20651,7 +17545,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../action/clone":8,"../action/generate":35,"../action/jsonToBracket":51,"../action/merge":56,"../action/toComponent":91}],189:[function(require,module,exports){
+},{"../action/clone":5,"../action/generate":24,"../action/jsonToBracket":38,"../action/merge":43,"../action/toComponent":69}],164:[function(require,module,exports){
 module.exports = (view) => {
 
   var AutorunScrollInPixel = `[px():[().autorun.scroll]||100]`
@@ -20671,14 +17565,14 @@ module.exports = (view) => {
     view: `View?style:[display=flex;alignItems=if():[().style.alignItems]:[().style.alignItems]:center;if():[vertical]:[flexDirection=column]];scrollLeft=0;scroll=0;${loadedActions};if():[autorun]:[${mouseenterActions};${mouseleaveActions}];${mousedownActions};${bodyMousemoveActions};${bodyMouseupActions};${touchstartActions};${touchmoveActions};${touchendActions}`,
   }
 }
-},{}],190:[function(require,module,exports){
+},{}],165:[function(require,module,exports){
 module.exports = (view) => {
   return {
     ...view,
     view: `View?class='hide-scrollbar '+if():[().class]:[().class]:'';style:[display=if():[().style.display]:[().style.display]:flex;alignItems=if():[().style.alignItems]:[().style.alignItems]:center;position=if():[().style.position]:[().style.position]:relative;overflowX=if():[().style.overflowX]:[().style.overflowX]:hidden]`,
   }
 }
-},{}],191:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 const { jsonToBracket } = require("../action/jsonToBracket")
 
 module.exports = (component) => {
@@ -20692,24 +17586,24 @@ module.exports = (component) => {
 
   return {
     ...component,
-    type: `View?class=flexbox pointer;hover.style.backgroundColor=#ddd;style.justifyContent=flex-start;style.width=5rem;style.height=2.4rem;style.position=relative;style.borderRadius=2.2rem;style.backgroundColor=#eee;${jsonToBracket({ style })}`,
+    view: `View?class=flexbox pointer;hover.style.backgroundColor=#ddd;style.justifyContent=flex-start;style.width=5rem;style.height=2.4rem;style.position=relative;style.borderRadius=2.2rem;style.backgroundColor=#eee;${jsonToBracket({ style })}`,
     children: [{
-      type: `View?class=flexbox;style.transition=.3s;style.width=2rem;style.height=2rem;style.borderRadius=2rem;style.backgroundColor=#fff;style.position=absolute;style.left=0.3rem;${jsonToBracket(pin)}`,
+      view: `View?class=flexbox;style.transition=.3s;style.width=2rem;style.height=2rem;style.borderRadius=2rem;style.backgroundColor=#fff;style.position=absolute;style.left=0.3rem;${jsonToBracket(pin)}`,
       children: [{
-          type: `Icon?style.color=red;style.fontSize=1.8rem;style.position=absolute;style.transition=.3s;${jsonToBracket(icon.off)}?[${icon.off.name}]`
+          view: `Icon?style.color=red;style.fontSize=1.8rem;style.position=absolute;style.transition=.3s;${jsonToBracket(icon.off)}?[${icon.off.name}]`
         }, {
-          type: `Icon?style.color=blue;style.fontSize=1.3rem;style.position=absolute;style.opacity=0;style.transition=.3s;${jsonToBracket(icon.on)}?[${icon.on.name}]`
+          view: `Icon?style.color=blue;style.fontSize=1.3rem;style.position=absolute;style.opacity=0;style.transition=.3s;${jsonToBracket(icon.on)}?[${icon.on.name}]`
         }]
     }],
-    controls: [{
-        event: "click?().element.checked=[true].if().[().element.checked.notexist()].else().[false];().checked=().element.checked;().1stChild().element.style.left=[calc(100% - 2.3rem)].if().[().element.checked].else().[0.3rem];().1stChild().1stChild().element.style.opacity=[0].if().[().element.checked].else().[1];().1stChild().2ndChild().element.style.opacity=[1].if().[().element.checked].else().[0]"
+    __controls__: [{
+        event: "click?().el().checked=[true].if().[().el().checked.notexist()].else().[false];().checked=().el().checked;().1stChild().el().style.left=[calc(100% - 2.3rem)].if().[().el().checked].else().[0.3rem];().1stChild().1stChild().el().style.opacity=[0].if().[().el().checked].else().[1];().1stChild().2ndChild().el().style.opacity=[1].if().[().el().checked].else().[0]"
       },
       ...controls
     ]
   }
 }
 
-},{"../action/jsonToBracket":51}],192:[function(require,module,exports){
+},{"../action/jsonToBracket":38}],167:[function(require,module,exports){
 module.exports = {
   Input : require("./Input"),
   Switch : require("./Switch"),
@@ -20717,4 +17611,4 @@ module.exports = {
   Chevron : require("./Chevron"),
   SwiperWrapper : require("./SwiperWrapper")
 }
-},{"./Chevron":187,"./Input":188,"./Swiper":189,"./SwiperWrapper":190,"./Switch":191}]},{},[186]);
+},{"./Chevron":162,"./Input":163,"./Swiper":164,"./SwiperWrapper":165,"./Switch":166}]},{},[161]);

@@ -30,7 +30,7 @@ module.exports = {
       diff -= 1
     }
 
-    console.log({ counter: _counter, length, reset, timer: timestamp });
+    // console.log({ counter: _counter, length, reset, timer: timestamp });
     return { counter: _counter, length, reset, timer: timestamp }
   }
 }

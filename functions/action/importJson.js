@@ -26,7 +26,7 @@ const importFile = ({ _window, id, e, __, ...params }) => {
             var reader = new FileReader()
             reader.onload = (e) => {
                 
-                var data = { data: e.target.result, success: true, message: "Data imported successfully!", files: [...event.target.files] }
+                var data = { data: e.target.result, success: true, message: "Data imported successfully!", file: [...event.target.files][0], files: [...event.target.files] }
                 if (params.data.type === "json") data.data = JSON.parse(data.data)
                     
                 require("./toAwait").toAwait({ _window, id, e, ...params, __, _: data })

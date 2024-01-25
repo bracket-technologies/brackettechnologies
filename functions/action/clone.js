@@ -1,5 +1,5 @@
 const clone = (obj) => {
-
+  
   if (!obj) return obj
   
   var copy

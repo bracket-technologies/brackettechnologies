@@ -11,16 +11,16 @@ module.exports = {
     if (view) {
 
       var doc = global[view.doc]
-      var path = view.derivations
+      var path = view.__dataPath__
 
-      var myData = reducer({ _window, id, __, object: doc, data: path, __ })
-      var parentData = reducer({ _window, id, __, object: doc, data: path.slice(0, -1) })
+      var myData = reducer({ _window, id, __, data: { path, object: doc }, __ })
+      var parentData = reducer({ _window, id, __, data: { path: path.slice(0, -1), object: doc } })
 
       if (typeof myData === "number") parentData.push(0)
       else if (typeof myData === "string") parentData.push("")
       else if (typeof myData === "object") parentData.push({})
 
-      update({ _window, id: view.parent, __ })
+      update({ _window, id: view.__parent__, __ })
     }
   }
 }

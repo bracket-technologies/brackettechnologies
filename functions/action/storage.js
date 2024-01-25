@@ -26,11 +26,11 @@ var getFile = ({ req, res, storage }) => {
 const postFile = async ({ req, res }) => {
 
   var upload = req.body.upload
-  var data = await storeFile({ upload })
+  var data = await storeFile({ req, upload })
   res.send(data)
 }
 
-const storeFile = async ({ upload }) => {
+const storeFile = async ({ req, upload }) => {
 
   var db = req.db
   var storage = req.storage

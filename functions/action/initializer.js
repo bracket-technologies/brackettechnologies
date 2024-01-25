@@ -20,7 +20,7 @@ const initializer = ({ req, res, stack, data: { db, storage, rdb } }) => {
     // 
     var id = generate()
     var path = decodeURI(req.url).split("/")
-    var currentPage = path[1] || "main"
+    var page = path[1] || "main"
     var host = req.headers['x-forwarded-host'] || req.headers.host || req.headers.referer
 
     var global = {
@@ -29,18 +29,16 @@ const initializer = ({ req, res, stack, data: { db, storage, rdb } }) => {
         __events__: {},
         __calcTests__: {},
         __serverActions__: {},
+        __frequentLogs__: {},
         __prevPage__: ["main"],
-        __currentPage__: currentPage,
+        __page__: page,
         __prevPath__: ["/"],
-        __tags__: {
-            body: "",
-            head: ""
-        },
+        __html__: { body: "", head: "" },
         manifest: {
             id,
             path,
             host,
-            currentPage,
+            page,
             os: req.headers["sec-ch-ua-platform"],
             browser: req.headers["sec-ch-ua"],
             country: req.headers["x-country-code"],
@@ -49,9 +47,20 @@ const initializer = ({ req, res, stack, data: { db, storage, rdb } }) => {
             device: detector.detect(req.headers['user-agent'])
         },
         data: {
-            view: {},
-            account: {},
-            project: {},
+            view: {
+                root: {
+                    view: "View:root",
+                    children: [{
+                        view: "manifest:().page"
+                    }]
+                },
+                middleware: {
+                    view: "View:middleware",
+                    children: [{
+                        view: "manifest:().action"
+                    }]
+                }
+            },
             collection: {}
         },
         path: path.join("/"),

@@ -21,7 +21,7 @@ const defaultInputHandler = ({ id }) => {
   // checkbox input
   if ((view.input || view).type === "checkbox") {
 
-    if (view.data === true) view.element.checked = true
+    if (view.data === true) view.__element__.checked = true
 
     var changeEventHandler = (e) => {
 
@@ -31,32 +31,33 @@ const defaultInputHandler = ({ id }) => {
       var data = e.target.checked
       view.data = data
 
-      if (global[view.doc] && view.derivations[0] !== "") {
+      if (global[view.doc] && view.__dataPath__[0] !== "") {
 
         // reset Data
         setData({ id, data })
       }
     }
 
-    return view.element.addEventListener("change", changeEventHandler)
+    return view.__element__.addEventListener("change", changeEventHandler)
   }
 
   if ((view.input || view).type === "number")
-  view.element.addEventListener("mousewheel", (e) => e.target.blur())
+  view.__element__.addEventListener("mousewheel", (e) => e.target.blur())
 
   // readonly
   if (view.readonly) return
 
-  view.element.addEventListener("keydown", (e) => {
-    if (e.keyCode == 13 && !e.shiftKey) e.preventDefault()
-  })
+  /*view.__element__.addEventListener("keydown", (e) => {
+    if (e.keyCode === 13 && !e.shiftKey) e.preventDefault()
+  })*/
 
-  if (view.__name__ === "Input") view.prevValue = view.element.value
-  else if (view.editable) view.prevValue = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
+  if (view.__name__ === "Input") view.prevValue = view.__element__.value
+  else if (view.editable) view.prevValue = (view.__element__.textContent===undefined) ? view.__element__.innerText : view.__element__.textContent
   
   var inputEventHandler = async (e) => {
     
     e.preventDefault()
+
     var value 
     if (view.__name__ === "Input") value = e.target.value
     else if (view.editable) value = (e.target.textContent===undefined) ? e.target.innerText : e.target.textContent
@@ -86,7 +87,7 @@ const defaultInputHandler = ({ id }) => {
           if (view.input.min && view.input.min > parseFloat(value)) value = view.input.min
           if (view.input.max && view.input.max < parseFloat(value)) value = view.input.max
           value = parseFloat(value)
-          view.element.value = value.toString()
+          view.__element__.value = value.toString()
 
         } else value = parseFloat(value + ".0")
       }
@@ -106,7 +107,7 @@ const defaultInputHandler = ({ id }) => {
     // arabic values
     // isArabic({ id, value })
     
-    console.log(value, global[view.doc], view.derivations)
+    console.log(value, global[view.doc], view.__dataPath__)
 
     view.prevValue = value
   }
@@ -114,13 +115,12 @@ const defaultInputHandler = ({ id }) => {
   var blurEventHandler = (e) => {
 
     var value
-    if (view.__name__ === "Input") value = view.element.value
-    else if (view.editable) value = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
+    if (view.__name__ === "Input") value = view.__element__.value
+    else if (view.editable) value = (view.__element__.textContent===undefined) ? view.__element__.innerText : view.__element__.textContent
     
     // colorize
     if (view.colorize) {
       
-      // removeChildren({ id })
       var _value = toCode({ id, string: toCode({ id, string: value, start: "'" }) })
       if (view.__name__ === "Input") e.target.value = colorize({ string: _value, ...(typeof view.colorize === "object" ? view.colorize : {}) })
       else e.target.innerHTML = colorize({ string: _value, ...(typeof view.colorize === "object" ? view.colorize : {}) })
@@ -142,9 +142,9 @@ const defaultInputHandler = ({ id }) => {
       global.undo.push({
         collection: global["open-collection"],
         doc: global["open-doc"],
-        path: view.derivations,
+        path: view.__dataPath__,
         value: view.prevContent,
-        id: view.element.parentNode.parentNode.parentNode.parentNode.id
+        id: view.__element__.parentNode.parentNode.parentNode.parentNode.id
       })
     }
   }
@@ -152,15 +152,15 @@ const defaultInputHandler = ({ id }) => {
   var focusEventHandler = (e) => {
     
     var value = ""
-    if (view.__name__ === "Input") value = view.element.value
-    else if (view.editable) value = (view.element.textContent===undefined) ? view.element.innerText : view.element.textContent
+    if (view.__name__ === "Input") value = view.__element__.value
+    else if (view.editable) value = (view.__element__.textContent===undefined) ? view.__element__.innerText : view.__element__.textContent
 
     view.prevContent = value
   }
 
-  view.element.addEventListener("input", inputEventHandler)
-  view.element.addEventListener("blur", blurEventHandler)
-  view.element.addEventListener("focus", focusEventHandler)
+  view.__element__.addEventListener("input", inputEventHandler)
+  view.__element__.addEventListener("blur", blurEventHandler)
+  view.__element__.addEventListener("focus", focusEventHandler)
 }
 
 const getCaretIndex = (element) => {
@@ -204,23 +204,23 @@ module.exports = { defaultInputHandler }
   e.target.value = value = _prev + _next
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - (_next.length + 1)
 
-} else if (e.data === "T" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
+} else if (e.data === "T" && e.target.selectionStart === 1 && view.__dataPath__[view.__dataPath__.length - 1] === "type") {
   e.target.value = value = "Text?class=flexbox;text=;style:[]"
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
 
-} else if (e.data === "c" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
+} else if (e.data === "c" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.__dataPath__[view.__dataPath__.length - 1] === "type") {
   e.target.value = value = "Icon?class=flexbox;name=;style:[]"
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
 
-} else if (e.data === "n" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
+} else if (e.data === "n" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.__dataPath__[view.__dataPath__.length - 1] === "type") {
   e.target.value = value = "Input?style:[]"
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
-} else if (e.data === "m" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.derivations[view.derivations.length - 1] === "type") {
+} else if (e.data === "m" && e.target.selectionStart === 2 && value.charAt(0) === "I" && view.__dataPath__[view.__dataPath__.length - 1] === "type") {
   e.target.value = value = "Image?class=flexbox;src=;style:[]"
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 9
 
-} else if (e.data === "V" && e.target.selectionStart === 1 && view.derivations[view.derivations.length - 1] === "type") {
+} else if (e.data === "V" && e.target.selectionStart === 1 && view.__dataPath__[view.__dataPath__.length - 1] === "type") {
   e.target.value = value = "View?class=vertical;style:[]"
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 

@@ -7,6 +7,7 @@ const { generate } = require('../action/generate')
 const Input = (component) => {
 
   if (component.__templated__) return component
+  component.__templated__ = true
 
   component.hover = component.hover || {}
   component.style = component.style || {}
@@ -37,9 +38,9 @@ const Input = (component) => {
   component = toComponent(component)
 
   var {
-    id, input, model, droplist, readonly, style, controls, duplicated, duration, required, preventDefault,
-    placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, __labeled__,
-    duplicatable, lang, unit, currency, google, key, minlength, children, container, generator,
+    id, input, model, droplist, readonly, style, __controls__, duplicated, duration, required, preventDefault,
+    placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, __labeled__, __childIndex__,
+    duplicatable, lang, unit, currency, google, key, minlength, children, container, generator, __templated__
   } = component
 
   if (duplicatable && typeof duplicatable !== "object") duplicatable = {}
@@ -66,9 +67,9 @@ const Input = (component) => {
     } : {}
 
   var _component = component = {
-    ...component, id, input, model, droplist, readonly, style, controls, duplicated, duration, required, preventDefault,
-    placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, __labeled__,
-    duplicatable, lang, unit, currency, google, key, minlength, children, container, generator
+    ...component, id, input, model, droplist, readonly, style, __controls__, duplicated, duration, required, preventDefault,
+    placeholder, textarea, clearable, removable, day, disabled, label, password, copyable, __labeled__, __childIndex__,
+    duplicatable, lang, unit, currency, google, key, minlength, children, container, generator, __templated__
   }
 
   if (duplicatable) {
@@ -79,50 +80,51 @@ const Input = (component) => {
   if (label && (label.location === "inside" || label.position === "inside")) {
 
     var label = clone(component.label)
-    var derivations = clone(component.derivations)
+    var __dataPath__ = clone(component.__dataPath__)
     var path = component.path
-    var parent = component.parent
-    var Data = component.Data
+    var __parent__ = component.__parent__
+    var doc = component.doc
     var password = component.password && true
     var text = label.text
     id = id || generate()
 
-    delete component.parent
     delete component.label
     delete component.path
     delete component.id
     delete component.password
-    delete component.derivations
+    delete component.__dataPath__
+    delete component.__parent__
+    delete component.__templated__
     delete label.text
 
     return {
-      id, path, Data, parent, derivations, tooltip: component.tooltip, __islabel__: true, preventDefault,
+      id, path, doc, __parent__, tooltip: component.tooltip, __dataPath__, __islabel__: true, preventDefault, __templated__, __childIndex__,
       "view": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=${component.style.width || "100%"};style.maxWidth=${component.style.maxWidth || "100%"};${jsonToBracket(container)}`,
       "children": [{
         "view": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
         "children": [{
-          "view": `Text?id=${id}-label;text='${text || "Label"}';if():[parent().required]:[required=true];style.fontSize=1.1rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)}`,
-          "controls": [{
+          "view": `Text?id=${id}_label;text='${text || "Label"}';if():[parent().required]:[required=true];style.fontSize=1.1rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)}`,
+          "__controls__": [{
             "event": "click?parent().input().focus()"
           }]
-        }, Input({ ...component, component: true, __labeled__: id, parent: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
+        }, Input({ ...component, component: true, __labeled__: id, __parent__: id, style: override({ backgroundColor: "inherit", height: "3rem", width: "100%", padding: "0", fontSize: "1.5rem" }, style) })
         ]
       }, {
         "view": `View?style.height=inherit;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative;${jsonToBracket(password)}?${password}`,
         "children": [{
           "view": `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
-          "controls": [{
-            "event": "click?parent().prev().getInput().element.type=text;next().style().display=flex;style().display=none"
+          "__controls__": [{
+            "event": "click?parent().prev().getInput().el().type=text;next().style().display=flex;style().display=none"
           }]
         }, {
           "view": `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
-          "controls": [{
-            "event": "click?parent().prev().getInput().element.type=password;prev().style().display=flex;style().display=none"
+          "__controls__": [{
+            "event": "click?parent().prev().getInput().el().type=password;prev().style().display=flex;style().display=none"
           }]
         }]
       }],
-      "controls": [{
-        "event": "click:body?style().border=if():[clicked:().outside():[().element]]:[1px solid #ccc]:[2px solid #008060]?!contains():[clicked:()];!droplist.contains():[clicked:()]"
+      "__controls__": [{
+        "event": "click:body?style().border=if():[clicked().outside():[().el()]]:[1px solid #ccc]:[2px solid #008060]?!contains():[clicked()];!droplist.contains():[clicked()]"
       }, {
         "event": "click?getInput().focus()?!getInput().focus"
       }]
@@ -132,10 +134,10 @@ const Input = (component) => {
   if ((label && (label.location === "outside" || label.position === "outside")) || label) {
 
     var label = clone(component.label)
-    var derivations = clone(component.derivations)
+    var __dataPath__ = clone(component.__dataPath__)
     var path = component.path
-    var parent = component.parent
-    var Data = component.Data
+    var __parent__ = component.__parent__
+    var doc = component.doc
     var tooltip = component.tooltip
     var text = label.text
     id = id || generate()
@@ -145,20 +147,23 @@ const Input = (component) => {
     delete component.id
     delete component.tooltip
     delete component.required
+    delete component.__parent__
+    delete component.__templated__
+    delete component.__childIndex__
     delete label.text
     label.tooltip = tooltip
 
     return {
-      id, Data, parent, derivations, path, __islabel__: true, preventDefault, controls: [],
+      id, doc, __parent__, __dataPath__, path, __islabel__: true, preventDefault, __controls__: [], __templated__, __childIndex__,
       "view": `View?class=flex start column;style.gap=.5rem;style.width=${component.style.width || "100%"};style.maxWidth=${component.style.maxWidth || "100%"};${jsonToBracket(container)}`,
       "children": [
         {
-          "view": `Text?id=${id}-label;text='${text || "Label"}';${required ? "required=true" : ""};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)}`,
-          "controls": [{
+          "view": `Text?id=${id}_label;text='${text || "Label"}';${required ? "required=true" : ""};style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)}`,
+          "__controls__": [{
             "event": "click?parent().input().focus()"
           }]
         },
-        Input({ ...component, component: true, __labeled__: id, parent: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
+        Input({ ...component, component: true, __labeled__: id, __parent__: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
         {
           "view": `View:${id}-required?class=flex gap-1;style:[alignItems=center;opacity=${required && required.style && required.style.opacity || "0"};transition=.2s]?${required ? true : false}`,
           "children": [{
@@ -180,7 +185,7 @@ const Input = (component) => {
       view: "View",
       class: `flex align-items-center unselectable ${component.class || ""}`,
       // remove from comp
-      controls: [{
+      __controls__: [{
         event: `mouseenter?if():[clearable||removable||duplicatable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():duplicatable:[():[${id}+'-duplicate'].style().opacity=1]];if():generator:[():[${id}+'-generate'].style().opacity=1]?!mobile()`
       }, {
         event: `mouseleave?if():[clearable||removable||duplicatable]:[():[${id}+'-clear'].style().opacity=0];if():copyable:[():[${id}+'-copy'].style().opacity=0];if():duplicatable:[():[${id}+'-duplicate'].style().opacity=0]];if():generator:[():[${id}+'-generate'].style().opacity=0]?!mobile()`
@@ -228,6 +233,7 @@ const Input = (component) => {
         disabled,
         duplicatable,
         preventDefault,
+        __featured__: true,
         __templated__: true,
         style: {
           width: password || clearable || removable || copyable || generator ? "100%" : "fit-content",
@@ -245,8 +251,8 @@ const Input = (component) => {
           ...uploadInputStyle,
           ...input.style
         },
-        controls: [...controls, {
-          event: `focus?if():[__labeled__]:[if():[!():${__labeled__}.contains():[clicked:()]]:[if():${duplicatable ? true : false}:[parent().click()]:[2ndChild().click()]]]:[if():[!():${id}.contains():[clicked:()]]:[click():[__droplistPositioner__:().del();]]]?!preventDefault`
+        __controls__: [...__controls__, {
+          event: `focus?if():[__labeled__]:[if():[!():${__labeled__}.contains():[clicked()]]:[if():${duplicatable ? true : false}:[parent().click()]:[2ndChild().click()]]]:[if():[!():${id}.contains():[clicked()]]:[click():[__droplistPositioner__:().del();]]]?!preventDefault`
         }, {
           event: `blur?():body.click()`
         }, {
@@ -266,13 +272,13 @@ const Input = (component) => {
         view: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
         children: [{
           view: `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
-          controls: [{
-            event: "click?parent().prev().element.type=text;next().style().display=flex;style().display=none"
+          __controls__: [{
+            event: "click?parent().prev().el().type=text;next().style().display=flex;style().display=none"
           }]
         }, {
           view: `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
-          controls: [{
-            event: "click?parent().prev().element.type=password;prev().style().display=flex;style().display=none"
+          __controls__: [{
+            event: "click?parent().prev().el().type=password;prev().style().display=flex;style().display=none"
           }]
         }]
       }]
@@ -300,7 +306,7 @@ const Input = (component) => {
         ...input.style,
         ...style,
       },
-      controls: [...controls, {
+      __controls__: [...__controls__, {
         event: `focus?clicked.mount;clicked.style.keys()._():[().style().[_]=().clicked.style.[_]];state:().[().clicked.state]=().id`
       }, {
         event: `blur?if():[state:().[().clicked.state]]:[():[state:().[().clicked.state]]._():[_.clicked.mount.del();_.clicked.style.keys()._():[__.style().[_]=[__.style._||null]]]]`

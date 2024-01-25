@@ -16,7 +16,7 @@ module.exports = {
     headers = { ...headers, search: encodeURI(jsonToBracket({ search })), timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()) }
     
     if (_window) {
-      
+
       data = await getData({ _window, req, res, search })
 
     } else {

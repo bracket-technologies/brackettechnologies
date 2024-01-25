@@ -2,7 +2,7 @@ module.exports = {
     contentful: ({ id }) => {
         var local = window.views[id]
 
-        local.element.addEventListener("keydown", (e => {
+        local.__element__.addEventListener("keydown", (e => {
             
             if (e.key === "Tab" || e.key === "Enter" || e.key === "{" || e.key === "[" || e.key === "(") {
                 

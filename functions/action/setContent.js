@@ -8,11 +8,11 @@ const setContent = ({ id, content = {} }) => {
   if (typeof value !== "string" && typeof value !== "number") return
 
   // not loaded yet
-  if (!view.element) return
+  if (!view.__element__) return
 
-  if (view.input && view.input.type === "radio" && value) view.element.checked = "checked"
-  else if (view.__name__ === "Input") view.element.value = value || ""
-  else if (view.__name__ === "Text") view.element.innerHTML = value || ""
+  if (view.input && view.input.type === "radio" && value) view.__element__.checked = "checked"
+  else if (view.__name__ === "Input") view.__element__.value = value || ""
+  else if (view.__name__ === "Text") view.__element__.innerHTML = value || ""
 
   isArabic({ id, value })
 }

@@ -1,19 +1,22 @@
 const { toCode } = require("./toCode")
-const { stacker } = require("./stack")
+const { stacker, printStack } = require("./stack")
 const { lineInterpreter } = require("./lineInterpreter")
 const { watch } = require("./watch")
+const { clone } = require("./clone")
 
-const addEventListener = ({ controls, id }) => {
+const addEventListener = ({ event, id, __, lookupActions, eventID: mainEventID }) => {
 
   var views = window.views
   var global = window.global
   var view = views[id]
-  var lookupActions = controls.lookupActions
-  var __ = controls.__ || view.__
 
-  if (!view || !controls.event) return
+  if (!view || !event) return
 
-  var mainString = toCode({ id, string: toCode({ id, string: controls.event, start: "'" }) })
+  // inherit from view
+  if (!__) __ = view.__
+  if (!lookupActions) lookupActions = view.__lookupActions__
+
+  var mainString = toCode({ id, string: toCode({ id, string: event, start: "'" }) })
 
   mainString.split("?")[0].split(";").map(substring => {
     
@@ -21,76 +24,63 @@ const addEventListener = ({ controls, id }) => {
     if (substring.charAt(0) === "@" && substring.length === 6) substring = global.__refs__[substring].data
 
     // event:id
-    var { data: eventID } = lineInterpreter({ id, data: substring.split("?")[0].split(":")[1] || id })
+    var { data: eventID } = lineInterpreter({ id, data: substring.split("?")[0].split(":")[1] })
     if (typeof eventID === "object" && eventID.__view__) eventID = eventID.id
+    else eventID = eventID || mainEventID || id
 
     // modify
-    var { substring, string } = modifyEvent({ eventID, event: substring, string: mainString })
-
-    var event = substring.split("?")[0].split(":")[0]
+    var { event, string } = modifyEvent({ eventID, event: substring, string: mainString })
 
     // watch
     if (event === "watch") return watch({ lookupActions, __, string, id })
     
     // view doesnot exist
-    if (!event || !views[eventID]) return
+    if (!event || !views[eventID] || !views[id]) return
 
     // loaded event
-    if (event === "loaded") return setTimeout(eventExecuter({ string, event, eventID, controls, id, lookupActions, __ }), 0)
+    if (event === "loaded") return setTimeout(eventExecuter({ string, event, eventID, id, lookupActions, __ }), 0)
     
     // body event
-    if (id === "body") {
-
+    if (id !== eventID) {
+      
       global.__events__[id] = global.__events__[id] || {}
       global.__events__[id][event] = global.__events__[id][event] || []
-      global.__events__[id][event].push({ string, event, eventID, controls, id, lookupActions, id, __ })
-      return
-    }
-
-    const eventHandler = (e) => {
-
-      // view doesnot exist
-      if (!views[id] || !views[eventID]) return
-
-      // unlunch unrelated droplists
-      if (id !== "droplist" && eventID === "droplist" && (!global.__droplistPositioner__ || !views[global.__droplistPositioner__].element.contains(views[id].element))) return
-
-      // unlunch unrelated popups
-      if (id !== "popup" && eventID === "popup" && (!global.__popupPositioner__ || !global.__popupConfirmed__ || !views[global.__popupPositioner__].element.contains(views[id].element))) return
-
-      if (eventID === "droplist" || eventID === "popup") setTimeout(eventExecuter({ string, event, eventID, controls, id, lookupActions, id, __, e }), 100)
-      else eventExecuter({ string, event, eventID, controls, id, lookupActions, id, __, e })
-    }
-
-    views[eventID].element.addEventListener(event, eventHandler)
+      global.__events__[id][event].push({ string, event, eventID, id, lookupActions, __ })
+      
+    } else views[eventID].__element__.addEventListener(event, (e) => eventExecuter({ string, event, eventID, id, lookupActions, __, e }))
   })
 }
 
-const eventExecuter = ({ event, eventID, controls, id, lookupActions, e, string, __ }) => {
-
-  const { execute } = require("./execute")
+const eventExecuter = ({ event, eventID, id, lookupActions, e, string, __ }) => {
 
   var views = window.views
+  var global = window.global
+
   var view = views[id]
+    
+  // view doesnot exist
+  if (!view || !views[eventID]) return
 
   var timerID = setTimeout(() => {
-
-    if (!event || !views[id] || !views[eventID]) return
+    
+    // unlunch unrelated droplists
+    if (id !== "droplist" && eventID === "droplist" && (!global.__droplistPositioner__ || ( views[global.__droplistPositioner__] && !views[global.__droplistPositioner__].__element__.contains(view.__element__)))) return
     
     var stack = stacker({ event, id, eventID, string })
-    
+
     // main params
-    var data = lineInterpreter({ lookupActions, stack, id, e, data: string, index: 1, __, mount: true, action: "toParam" })
+    var data = lineInterpreter({ lookupActions, stack, id, e, data: string, __, mount: true, action: "toParam" })
+    
+    // line interpreting ended
+    stack.interpreting = false
+
+    printStack({ stack, end: true })
 
     // conditions not applied
     if (data.conditionsNotApplied) return data
 
-    // execute
-    if (controls.actions) execute({ lookupActions, stack, controls, e, id, __ })
-
   }, 0)
-
-  view.__timers__ = view.__timers__ || []
+  
   view.__timers__.push(timerID)
 }
 
@@ -106,7 +96,7 @@ const defaultEventHandler = ({ id }) => {
 
   // linkable
   if (view.link && typeof view.link === "object" && view.link.preventDefault)
-    view.element.addEventListener("click", (e) => { e.preventDefault() })
+    view.__element__.addEventListener("click", (e) => { e.preventDefault() })
 
   // input
   if (view.__name__ === "Input" || view.editable) {
@@ -129,13 +119,14 @@ const defaultInputHandlerByEvent = ({ views, view, id, event, keyName, value }) 
     if (views[id]) view[keyName] = value
   }
 
-  view.element.addEventListener(event, fn)
+  view.__element__.addEventListener(event, fn)
 }
 
 const modifyEvent = ({ eventID, string, event }) => {
 
   var view = window.views[eventID]
-  var subparams = event.split(":")[1] || ""
+  var subparams = event.split("?")[1] || ""
+  var subconditions = event.split("?")[2] || ""
   event = event.split(":")[0]
 
   string = string.split("?").slice(1)
@@ -143,10 +134,8 @@ const modifyEvent = ({ eventID, string, event }) => {
   
   if (event === "change" && (view.input.type === "text" || view.input.type === "number")) {
     event = "keyup"
-    conditions += ";e().key"
   } else if (event === "entry") {
-    event = "keyup"
-    conditions += ";e().key"
+    event = "input"
   } else if (event === "enter") {
 
     event = "keyup"
@@ -161,9 +150,10 @@ const modifyEvent = ({ eventID, string, event }) => {
     
   }
   
-  event = subparams ? `${event}:${subparams}` : event
-
-  return { string: `${event}?${string[0]}?${conditions}?${string[2] || ""}`, substring: event }
+  string = `${subparams};${string[0]}?${subconditions};${conditions}?${string[2] || ""}`
+  while (string.slice(-1) === "?") string = string.slice(0, -1)
+  
+  return { string, event }
 }
 
 module.exports = { addEventListener, defaultEventHandler, eventExecuter }

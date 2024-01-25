@@ -4,31 +4,31 @@ const focus = ({ id }) => {
   if (!view) return
 
   var isInput = view.__name__ === "Input" || view.__name__ === "Textarea"
-  if (isInput) view.element.focus()
+  if (isInput) view.__element__.focus()
   else {
-    if (view.element) {
-      let childElements = view.element.getElementsByTagName("INPUT")
+    if (view.__element__) {
+      let childElements = view.__element__.getElementsByTagName("INPUT")
       if (childElements.length === 0) {
-        childElements = view.element.getElementsByTagName("TEXTAREA")
+        childElements = view.__element__.getElementsByTagName("TEXTAREA")
       }
       if (childElements.length > 0) {
         childElements[0].focus()
 
         var _view = window.views[childElements[0].id]
         // focus to the end of input
-        var value = _view.element.value
-        _view.element.value = ""
-        _view.element.value = value
+        var value = _view.__element__.value
+        _view.__element__.value = ""
+        _view.__element__.value = value
 
         return
-      } else view.element.focus()
+      } else view.__element__.focus()
     }
   }
 
   // focus to the end of input
-  var value = view.element.value
-  view.element.value = ""
-  view.element.value = value
+  var value = view.__element__.value
+  view.__element__.value = ""
+  view.__element__.value = value
 }
 
 module.exports = {focus}

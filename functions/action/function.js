@@ -9,7 +9,7 @@ const {toApproval} = require("./toApproval")
 const {toId} = require("./toId")
 const {toParam} = require("./toParam")
 const {jsonToBracket} = require("./jsonToBracket")
-const {update, removeChildren} = require("./update")
+const {update} = require("./update")
 const {toControls} = require("./toControls")
 const {toArray} = require("./toArray")
 const {generate} = require("./generate")
@@ -36,7 +36,6 @@ const {reducer} = require("./reducer")
 const {toStyle} = require("./toStyle")
 const {preventDefault} = require("./preventDefault")
 const {getJsonFiles} = require("./jsonFiles")
-const {createHtml} = require("./createHtml")
 const {setData} = require("./setData")
 const {defaultInputHandler} = require("./defaultInputHandler")
 const {createActions} = require("./createActions")
@@ -57,7 +56,6 @@ const {toCSV} = require("./toCSV")
 const {decode} = require("./decode")
 const {route} = require("./route")
 const {contentful} = require("./contentful")
-const {importJson} = require("./importJson")
 const {getDateTime} = require("./getDateTime")
 const {insert} = require("./insert")
 const {exportJson} = require("./exportJson")
@@ -80,7 +78,6 @@ module.exports = {
   switchMode,
   refresh,
   getDaysInMonth,
-  importJson,
   lengthConverter,
   getCookie,
   setCookie,
@@ -110,7 +107,6 @@ module.exports = {
   jsonToBracket,
   update,
   execute,
-  removeChildren,
   toArray,
   generate,
   toView,
@@ -145,7 +141,6 @@ module.exports = {
   reducer,
   preventDefault,
   toStyle,
-  createHtml,
   capitalize,
   note,
   isPath,

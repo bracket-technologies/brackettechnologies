@@ -1,6 +1,6 @@
 module.exports = ({ el, id }) => {
   var view = window.views[id]
-  el = el || view.element
+  el = el || view.__element__
 
   // crossbrowser version
   var box = el.getBoundingClientRect();

@@ -66,7 +66,11 @@ const colorizeComment = ({ _window, index, string, colors }) => {
 
     var key = !operator ? string : string.split(string0 + operator).slice(1).join(string0 + operator)
     var comment = key.split("?")[0].split(";")[0]
+
+    comment = (comment || "").replaceAll("[]", "__map__")
     if (comment.split("]")[1] !== undefined) comment = key.split("]")[0]
+    comment = (comment || "").replaceAll("__map__", "[]")
+
     key = key.split(comment).slice(1).join(comment)
     key = colorize({ _window, string: key, index, colors })
 

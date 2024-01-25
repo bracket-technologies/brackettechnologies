@@ -54,7 +54,7 @@ const getData = async ({ _window, req, res, search }) => {
     data = {}, success, message,
     ref = collection && db.collection(collection),
     promises = []
-
+    
   if (search.url) {
 
     var url = search.url
@@ -131,7 +131,7 @@ const getData = async ({ _window, req, res, search }) => {
     return ({ data, success, message })
   }
 
-  if (!doc && !field) {
+  if (!field) {
 
     if (search.orderBy || search.skip) ref = ref.orderBy(...toArray(search.orderBy || "id"))
     if (search.skip) ref = ref.offset(search.skip)
@@ -179,7 +179,7 @@ const getData = async ({ _window, req, res, search }) => {
         _value = [..._value.slice(0, 10)]
         multiIN = true
       }
-
+      
       _ref = _ref.where(key, operator, _value)
     })
 
@@ -264,7 +264,7 @@ const postData = async ({ _window, req, res, save }) => {
 
   var promises = toArray(data).map(async (data, i) => {
 
-    data.id = data.id || (i === 0 && save.doc) || generate({ length: 60, timestamp })
+    data.id = data.id || (i === 0 && save.doc) || generate({ length: 60, timestamp: true })
 
     if (!data["creation-date"] && req.headers.timestamp) data["creation-date"] = parseInt(req.headers.timestamp)
 

@@ -1,25 +1,15 @@
 {
   "__public__": true,
-  "view": "View:popup?class=box-shadow;style:[zIndex=10;pointerEvents=none;opacity=0;transition=opacity .1s;position=fixed]",
+  "view": "View:popup?class=box-shadow;style:[zIndex=10;pointerEvents=none;opacity=0;transition=opacity .1s;position=fixed];():body.click:[closePopup()];mouseenter:[enterPopup()];mouseleave:[leavePopup()]",
   "children": [
     {
       "view": "View?style:[border=1px solid #f0f0f0;transform='scale(0.5)';borderRadius=.5rem;backgroundColor=#fff;transition=.2s]?():[__popupPositioner__:()].popup.model=model1",
       "children": [
         {
-          "view": "Icon?class=pointer;id=popup-confirm;name=bi-check2;tooltip.text=Confirm;hover.style.backgroundColor=#0000ff22;style:[fontSize=1.8rem;height=4rem;width=3rem]",
-          "controls": [
-            {
-              "event": "click?__popupConfirmed__:()=true;():popup.():[style():[opacity=0;pointerEvents=none];1stChild().style().transform=scale(0.5)]"
-            }
-          ]
+          "view": "Icon?class=pointer;id=popup-confirm;name=bi-check2;tooltip.text=Confirm;hover.style.backgroundColor=#0000ff22;style:[fontSize=1.8rem;height=4rem;width=3rem];click:[confirmPopup()]"
         },
         {
-          "view": "Icon?class=pointer;id=popup-cancel;name=bi-x;tooltip.text=Cancel;hover.style.backgroundColor=#ff000022;style:[fontSize=2rem;height=4rem;width=3rem]",
-          "controls": [
-            {
-              "event": "click?__popupPositioner__:().del();__popupConfirmed__:()=false;():popup.():[style():[opacity=0;pointerEvents=none];1stChild().style().transform=scale(0.5)]"
-            }
-          ]
+          "view": "Icon?class=pointer;id=popup-cancel;name=bi-x;tooltip.text=Cancel;hover.style.backgroundColor=#ff000022;style:[fontSize=2rem;height=4rem;width=3rem];click:[cancelPopup()]"
         }
       ]
     }, {
@@ -38,20 +28,10 @@
               "view": "View?class=flex align-center;style:[gap=2rem;justifyContent=flex-end]",
               "children": [
                 {
-                  "view": "Text:popup-confirm?class=flexbox pointer;hover.style.opacity=1;style:[fontSize=1.3rem;transition=.2s;color=#fff;borderRadius=.5rem;backgroundColor=blue;height=3rem;width=12rem];text=[():[__popupPositioner__:()].popup.confirm.text||'Confirm']",
-                  "controls": [
-                    {
-                      "event": "click?__popupConfirmed__:()=true;():popup.style():[opacity=0;pointerEvents=none]"
-                    }
-                  ]
+                  "view": "Text:popup-confirm?class=flexbox pointer;hover.style.opacity=1;style:[fontSize=1.3rem;transition=.2s;color=#fff;borderRadius=.5rem;backgroundColor=blue;height=3rem;width=12rem];text=[():[__popupPositioner__:()].popup.confirm.text||'Confirm'];click:[confirmPopupModel2()]"
                 },
                 {
-                  "view": "Text:popup-cancel?class=flexbox pointer;hover.style.opacity=1;style:[fontSize=1.3rem;transition=.2s;borderRadius=.5rem;backgroundColor=#bbb;height=3rem;width=12rem];text=[():[__popupPositioner__:()].popup.cancel.text||'Cancel']",
-                  "controls": [
-                    {
-                      "event": "click?__popupPositioner__:().del();__popupConfirmed__:()=false;():popup.():[style():[opacity=0;pointerEvents=none]]"
-                    }
-                  ]
+                  "view": "Text:popup-cancel?class=flexbox pointer;hover.style.opacity=1;style:[fontSize=1.3rem;transition=.2s;borderRadius=.5rem;backgroundColor=#bbb;height=3rem;width=12rem];text=[():[__popupPositioner__:()].popup.cancel.text||'Cancel'];click:[cancelPopupModel2()]"
                 }
               ]
             }
@@ -60,15 +40,13 @@
       ]
     }
   ],
-  "controls": [
-    {
-      "event": "click:body?clearTimer():[popup-timer:()];popup-timer:()=timer():[():[__popupPositioner__:()].popup.style.keys()._():[():popup.style().[_]=():popup.style.[_]];clearTimer():[popup-timer:()];timer():[():[__popupPositioner__:()].popup.style.keys()._():[():popup.style().[_]=():popup.style.[_]];():popup.():[1stChild().style().transform=scale(0.5);style():[opacity=0;pointerEvents=none]];__popupPositioner__:().del()]:0]:400?__popupPositioner__:();!__popupPositioner__:().contains():[clicked:()];!popup.contains():[clicked:()]"
-    },
-    {
-      "event": "mouseleave?clearTimer():[popup-timer:()];popup-timer:()=timer():[():[__popupPositioner__:()].popup.style.keys()._():[():popup.style().[_]=():popup.style.[_]];clearTimer():[popup-timer:()];timer():[():[__popupPositioner__:()].popup.style.keys()._():[():popup.style().[_]=():popup.style.[_]];():popup.():[1stChild().style().transform=scale(0.5);style():[opacity=0;pointerEvents=none]];__popupPositioner__:().del()]:0]:400"
-    },
-    {
-      "event": "mouseenter?clearTimer():[popup-timer:()]"
-    }
-  ]
+  "functions": {
+    "cancelPopup": "__popupPositioner__:().del();__popupConfirmed__:()=false;():popup.():[style():[opacity=0;pointerEvents=none];1stChild().style().transform=scale(0.5)]",
+    "confirmPopup": "__popupConfirmed__:()=true;():popup.():[style():[opacity=0;pointerEvents=none];1stChild().style().transform=scale(0.5)]",
+    "confirmPopupModel2": "__popupConfirmed__:()=true;():popup.style():[opacity=0;pointerEvents=none]",
+    "cancelPopupModel2": "__popupPositioner__:().del();__popupConfirmed__:()=false;():popup.():[style():[opacity=0;pointerEvents=none]]",
+    "closePopup": "leavePopup()?__popupPositioner__:();!__popupPositioner__:().contains():[clicked()];!popup.contains():[clicked()]",
+    "leavePopup": "clearTimer():[popup-timer:()];popup-timer:()=timer():[():[__popupPositioner__:()].popup.style.keys()._():[():popup.style().[_]=():popup.style.[_]];clearTimer():[popup-timer:()];timer():[():[__popupPositioner__:()].popup.style.keys()._():[():popup.style().[_]=():popup.style.[_]];():popup.():[1stChild().style().transform=scale(0.5);style():[opacity=0;pointerEvents=none]];__popupPositioner__:().del()]:0]:400",
+    "enterPopup": "clearTimer():[popup-timer:()]"
+  }
 }

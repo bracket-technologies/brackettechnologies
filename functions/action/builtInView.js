@@ -7,27 +7,18 @@ module.exports = {
   builtInView: ({ _window, lookupActions, stack, id, __ }) => {
     
     var views = _window ? _window.views : window.views
-    var view = views[id], parent = view.parent
+    var view = views[id]
     
     views[id] = view = builtInViews[view.__name__](view)
     view.__builtInViewMounted__ = true
     
-    // my views
-    if (!view.__path__) view.__path__ = [...views[view.parent].__path__]
-
-    view.type = view.view
+    // encode
+    view.__name__ = toCode({ _window, id, string: toCode({ _window, id, string: view.view, start: "'", end: "'" }) })
     
-    // 
-    view.type = toCode({ _window, id, string: toCode({ _window, id, string: view.type, start: "'", end: "'" }) })
-    
-    var type = view.type.split("?")[0]
-    var params = view.type.split("?")[1]
-    var conditions = view.type.split("?")[2]
-    var elseParams = view.type.split("?")[3]
-
-    // type
-    view.__name__ = type
-    view.parent = parent
+    view.__name__ = view.__name__.split("?")[0]
+    var params = view.__name__.split("?")[1]
+    var conditions = view.__name__.split("?")[2]
+    var elseParams = view.__name__.split("?")[3]
 
     // approval
     var approved = toApproval({ _window, lookupActions, stack, data: conditions, id, __ })
@@ -36,7 +27,7 @@ module.exports = {
       else return delete views[id]
     }
 
-    // push destructured params from type to view
+    // params
     if (params) {
       
       params = toParam({ _window, lookupActions, stack, data: params, id, mount: true, toView: true, __ })

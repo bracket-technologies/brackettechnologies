@@ -43,7 +43,7 @@ module.exports = async ({ _window, lookupActions, stack, address, id, req, res, 
 
     if (_window) {
       
-      var data = await storeFile({ upload })
+      var data = await storeFile({ req, upload })
 
       uploads.push(data)
       return data

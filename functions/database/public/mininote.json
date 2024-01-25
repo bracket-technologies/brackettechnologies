@@ -1,10 +1,7 @@
 {
     "__public__": true,
-    "view": "View:mininote?class=flex-start;style.zIndex=99999;style.width=fit-content;style.alignItems=center;style.position=absolute;style.transform=scale(0);style.transition=transform .1s, opacity .2s;style.opacity=0;style.pointerEvents=none;style.padding=.5rem 1rem;style.backgroundColor=#444444dd;style.borderRadius=.5rem",
+    "view": "View:mininote?class=flex-start;style:[zIndex=99999;width=fit-content;alignItems=center;position=absolute;transform=scale(0);transition=transform .1s, opacity .2s;opacity=0;pointerEvents=none;padding=.5rem 1rem;backgroundColor=#444444dd;borderRadius=.5rem];():body.mousemove:[position():[positioner=mouse;placement=right]]",
     "children": [{
         "view": "Text:mininote-text?style.width=fit-content;style.fontSize=1.1rem;style.color=#fff"
-    }],
-    "controls": [{
-        "event": "mousemove:body?position():[positioner=mouse;placement=right]"
     }]
 }

@@ -1,7 +1,7 @@
 const {clone} = require("./clone")
-const {reducer} = require("./reducer")
+const { kernel } = require("./kernel")
 
-const setData = ({ id, data, __ }) => {
+const setData = ({ id, data, __, stack = {} }) => {
 
   var view = window.views[id]
   var global = window.global
@@ -24,19 +24,11 @@ const setData = ({ id, data, __ }) => {
   })
 
   // keys
-  var derivations = clone(view.derivations)
-  var keys = [...derivations, ...path]
+  var __dataPath__ = clone(view.__dataPath__)
+  var keys = [...__dataPath__, ...path]
   
   // set value
-  reducer({ id, object: global[view.doc], data: keys, value: defValue, key: true, __ })
-/*
-  view.data = value
-  if (view.input && view.input.type === "file") return
-
-  // setContent
-  var content = data.content || value
-  setContent({ id, content: { value: content } })
-*/
+  kernel({ id, data: { _object: global[view.doc], path: keys, value: defValue, key: true }, stack, __ })
 }
 
 module.exports = { setData }

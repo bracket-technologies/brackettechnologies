@@ -15,6 +15,7 @@ module.exports = {
       styles = styles.slice(0, -2)
     }
     
+    view.__htmlStyles__ = styles
     return styles
   }
 }

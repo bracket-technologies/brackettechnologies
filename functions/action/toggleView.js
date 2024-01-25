@@ -1,24 +1,19 @@
-const { generate } = require("./generate")
 const { starter } = require("./starter")
 const { toView } = require("./toView")
 const { clone } = require("./clone")
-const { removeChildren } = require("./update")
-const { toParam } = require("./toParam")
+const { removeView } = require("./view")
 const { closePublicViews } = require("./closePublicViews")
+const { toHTML } = require("./toHTML")
 
-const toggleView = async ({ _window, toggle = {}, id, res, __, stack, lookupActions }) => {
+const toggleView = async ({ _window, toggle = {}, id, req, res, lookupActions, stack, __, address }) => {
 
   var views = _window ? _window.views : window.views
-  var global = _window ? _window.global : window.global
-  var togglePage = toggle.page, view = {}
-  var viewId = toggle.viewId || toggle.view
+  
+  var viewName = toggle.view
   var toggleId = toggle.id || id
-  var parentId = toggle.parent
-  if (togglePage) parentId = "root"
-  if (!toggleId) {
-    if (!parentId) parentId = id
-    toggleId = views[parentId].element.children[0] && views[parentId].element.children[0].id
-  } else if (!parentId) parentId = views[toggleId].parent
+
+  // parent view
+  var view = views[toggle.__parent__ || views[toggleId].__parent__]
 
   toggle.fadein = toggle.fadein || {}
   toggle.fadeout = toggle.fadeout || {}
@@ -31,77 +26,52 @@ const toggleView = async ({ _window, toggle = {}, id, res, __, stack, lookupActi
 
   document.getElementById("loader-container").style.display = "flex"
 
-  // children
-  var child = clone(global.data.view[viewId] || { view: "View" })
-  if (togglePage) {
-
-    global.__prevPage__.push(global.manifest.currentPage)
-    if (global.__prevPage__.length > 5) global.__prevPage__.shift()
-    var currentPage = global.manifest.currentPage = togglePage.split("/")[0]
-
-    viewId = currentPage
-
-  } else {
-    view = views[parentId]
-
-    if (id === "root" && global.data.view[viewId]) {
-
-      var page = global.data.view[viewId]
-      var _params = toParam({ data: page.type.split("?")[1] || "" })
-      global.__prevPath__.push(global.path)
-      if (global.__prevPath__.length > 5) global.__prevPath__.shift()
-      global.path = _params.path
-      history.pushState({}, _params.title, _params.path)
-      document.title = _params.title
-    }
-  }
-
-  if (!view || !view.element) return
-
   // close publics
-  closePublicViews({ id })
-
-  if (res) return views.root.children = clone([global.data.view[currentPage]])
+  closePublicViews({ _window, id, __, lookupActions })
 
   // fadeout
   var timer = toggle.timer || toggle.fadeout.timer || 0
 
-  var ID = child.id || generate()
-  views[ID] = clone(child)
-  views[ID].id = ID
-  // views[ID].index = index
-  views[ID].parent = view.id
-  views[ID].style = {}
-  views[ID].__viewsPath__ = viewId ? [...view.__viewsPath__, viewId] : [...view.__viewsPath__]
-  views[ID].style.transition = toggle.fadein.before.transition || null
-  views[ID].style.opacity = toggle.fadein.before.opacity || "0"
-  views[ID].style.transform = toggle.fadein.before.transform || null
+  // styles
+  var style = { transition: toggle.fadein.before.transition || null, opacity: toggle.fadein.before.opacity || "0", transform: toggle.fadein.before.transform || null }
 
-  var innerHTML = await toView({ id: ID, __: view.__, stack, lookupActions })
+  // children
+  var data = { view: viewName || "View", style }
 
-  // remve prev view
-  if (toggleId && views[toggleId] && views[toggleId].element) {
+  // clear children
+  view.__childrenRef__ = []
+  view.__html__ = ""
+  view.__childIndex__ = 0
 
-    views[toggleId].element.style.transition = toggle.fadeout.after.transition || `${timer}ms ease-out`
-    views[toggleId].element.style.transform = toggle.fadeout.after.transform || null
-    views[toggleId].element.style.opacity = toggle.fadeout.after.opacity || "0"
+  await toView({ __parent__: view.id, __: view.__, req, res, stack: address.stack, lookupActions, data: { view: data } })
 
-    removeChildren({ id: toggleId })
-    delete views[toggleId]
+  // remove prev view
+  if (toggleId && views[toggleId] && views[toggleId].__element__) {
+
+    views[toggleId].__element__.style.transition = toggle.fadeout.after.transition || `${timer}ms ease-out`
+    views[toggleId].__element__.style.transform = toggle.fadeout.after.transform || null
+    views[toggleId].__element__.style.opacity = toggle.fadeout.after.opacity || "0"
+
+    removeView({ id: toggleId, self: false })
   }
 
   // timer
   var timer = toggle.timer || toggle.fadein.timer || 0
-  view.element.innerHTML = ""
-  view.element.innerHTML = innerHTML
 
-  var __ids__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
-  __ids__.map(id => starter({ id }))
+  // html
+  toHTML({ _window, lookupActions, stack: address.stack, __, id: view.id })
+  var innerHTML = view.__innerHTML__
+
+  view.__element__.innerHTML = ""
+  view.__element__.innerHTML = innerHTML
+
+  // start
+  view.__idList__.map(id => starter({ _window, lookupActions, stack: address.stack, id }))
 
   // set visible
   setTimeout(async () => {
 
-    var children = [...view.element.children]
+    var children = [...view.__element__.children]
     children.map(el => {
 
       var id = el.id

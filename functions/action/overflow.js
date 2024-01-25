@@ -1,26 +1,26 @@
 const overflow = ({ id }) => {
 
   var view = window.views[id]
-  var width = view.element.clientWidth
-  var height = view.element.clientHeight
+  var width = view.__element__.clientWidth
+  var height = view.__element__.clientHeight
   var text
 
   if (view.__name__ === "Input" || view.__name__ === "Textarea") {
-    text = view.element.value
+    text = view.__element__.value
   } else if (
     view.__name__ === "Text" ||
     view.__name__ === "Label" ||
     view.__name__ === "Header"
   ) {
-    text = view.element.innerHTML
-  } else if (view.__name__ === "UploadInput") text = view.element.value
+    text = view.__element__.innerHTML
+  } else if (view.__name__ === "UploadInput") text = view.__element__.value
 
   // create a test div
   let lDiv = document.createElement("div")
 
   document.body.appendChild(lDiv)
 
-  var pStyle = view.element.style
+  var pStyle = view.__element__.style
   var pText = view.data || view.input.value || ""
   var pFontSize = pStyle.fontSize
 

@@ -2,9 +2,9 @@ const { toCode } = require("./toCode")
 const { generate } = require("./generate")
 const { isCondition } = require("./isCondition")
 const { executable } = require("./executable")
-const { stacker } = require("./stack")
+const { clone } = require("./clone")
 
-const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, action, event, data: string, req, res, __, mount, condition, dblExecute, toView, object, _object, index = 0, splitter = "?" }) => {
+const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, action, data: string, req, res, __, mount, condition, dblExecute, toView, object, _object, index = 0, splitter = "?" }) => {
 
     require("./toParam")
     require("./toValue")
@@ -14,7 +14,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, a
     var view = _window ? _window.views[id] : window.views[id]
 
     // missing stack or __
-    if (!stack) stack = stacker({ _window, event, id, string })
+    if (!stack) stack = { addresses: [], returns: [] }
     if (!__) __ = view.__
 
     var startTime = (new Date()).getTime(), success = true, data, returnForWaitActionExists = false
@@ -26,6 +26,8 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, a
 
         // remove address of waiter
         if (address.id) address.interpreting = false
+        
+        if (stack.terminated) return
 
         if (!address.id) return data
         
@@ -42,7 +44,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, a
 
     // push address for waits
     if (address.id) address.interpreting = true
-    
+
     // encode
     string = toCode({ _window, id, string: toCode({ _window, id, string, start: "'" }) })
 
@@ -94,7 +96,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, a
         }
         
         data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object, _object, toView })
-
+        
         if (dblExecute && executable({ _window, string: data }))
             data = lineInterpreter({ _window, lookupActions, stack, id, e, data, req, res, __, mount, condition, toView, object, _object }).data
 

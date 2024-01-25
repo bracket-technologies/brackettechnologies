@@ -9,16 +9,16 @@ const resize = ({ id }) => {
 
   // for width
   var width = view.style.width
-  if (width === "fit-content" && view.element) {
-    view.element.style.width = results.width + "px"
-    view.element.style.minWidth = results.width + "px"
+  if (width === "fit-content" && view.__element__) {
+    view.__element__.style.width = results.width + "px"
+    view.__element__.style.minWidth = results.width + "px"
   }
 
   // for height
   var height = view.style.height
-  if (height === "fit-content" && view.element) {
-    view.element.style.height = results.height + "px"
-    view.element.style.minHeight = results.height + "px"
+  if (height === "fit-content" && view.__element__) {
+    view.__element__.style.height = results.height + "px"
+    view.__element__.style.minHeight = results.height + "px"
   }
 }
 
@@ -34,7 +34,7 @@ const dimensions = ({ id, text }) => {
   document.body.appendChild(lDiv)
 
   var pStyle = view.style
-  var pText = text || (view.__name__ === "Input" && view.element && view.element.value) || "A"
+  var pText = text || (view.__name__ === "Input" && view.__element__ && view.__element__.value) || "A"
   if (pText.includes("<") || pText.includes(">")) pText = pText.split("<").join("&lt;").split(">").join("&gt;")
   
   if (pStyle != null) lDiv.style = pStyle
@@ -68,13 +68,13 @@ const dimensions = ({ id, text }) => {
   lDiv.style.opacity = "0"
   lDiv.innerHTML = pText
   
-  if (pStyle.width === "100%") lDiv.style.width = (view.element ? view.element.clientWidth : lDiv.style.width) + "px"
+  if (pStyle.width === "100%") lDiv.style.width = (view.__element__ ? view.__element__.clientWidth : lDiv.style.width) + "px"
   var height, width = lDiv.clientWidth + 2
 
-  if (view.element.tagName === "TEXTAREA") {
+  if (view.__element__.tagName === "TEXTAREA") {
 
     height = lDiv.clientHeight
-    if (lDiv.clientHeight < view.element.scrollHeight) height = view.element.scrollHeight
+    if (lDiv.clientHeight < view.__element__.scrollHeight) height = view.__element__.scrollHeight
     if (!pText) height = lDiv.clientHeight
   }
   

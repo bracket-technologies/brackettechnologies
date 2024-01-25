@@ -17,7 +17,7 @@ const setStyle = ({ id, style = {} }) => {
       if (value) {
 
         if (value === "available-width") {
-          var left = view.element.getBoundingClientRect().left
+          var left = view.__element__.getBoundingClientRect().left
           var tWidth = window.innerWidth
           if (left) {
             value = (tWidth - left) + "px"
@@ -29,7 +29,7 @@ const setStyle = ({ id, style = {} }) => {
         } else if (value === "width" || value.includes("width/")) {
 
           var divide = value.split("/")[1]
-          value = view.element.clientWidth
+          value = view.__element__.clientWidth
           if (divide) value = value / parseFloat(divide)
 
           value += "px"
@@ -37,21 +37,21 @@ const setStyle = ({ id, style = {} }) => {
         } else if (value === "height" || value.includes("height/")) {
 
           var divide = value.split("/")[1]
-          value = view.element.clientHeight
+          value = view.__element__.clientHeight
           if (divide) value = value / parseFloat(divide)
 
           value += "px"
 
         } else if (key === "left" && value === "center") {
 
-          var width = view.element.offsetWidth
-          var parentWidth = window.views[view.parent].element.clientWidth
+          var width = view.__element__.offsetWidth
+          var parentWidth = window.views[view.__parent__].element.clientWidth
 
           value = parentWidth / 2 - width / 2 + "px"
         }
       }
 
-      if (view.element) view.element.style[key] = value
+      if (view.__element__) view.__element__.style[key] = value
       else view.style[key] = value
     }
 
@@ -99,14 +99,14 @@ const mountAfterStyles = ({ id }) => {
       value = value.split(">>")[0]
     }
 
-    var myFn = () => view.element.style[key] = value
+    var myFn = () => view.__element__.style[key] = value
 
     if (timer) view[`${key}-timer`] = setTimeout(myFn, timer)
     else {
 
-      if (view.element) myFn()
+      if (view.__element__) myFn()
       else {
-        return view.controls.push({
+        return view.__controls__.push({
           event: `loaded?().element.style.${key}=${value}`
         })
       }

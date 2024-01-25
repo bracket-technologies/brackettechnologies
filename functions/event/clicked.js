@@ -1,8 +1,8 @@
 const { generate } = require("../action/generate");
 
-module.exports = ({ controls, id }) => {
+module.exports = ({ data, id }) => {
   var view = window.views[id];
-  var _id = controls.id || id;
+  var _id = data.id || id;
   if (typeof _id === "object" && _id.id) _id = _id.id;
 
   view.clicked.state = view.clicked.state || generate();

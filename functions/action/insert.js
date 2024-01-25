@@ -1,103 +1,71 @@
 const { clone } = require("./clone")
-const { toView } = require("./toView")
-const { starter } = require("./starter")
+const { decode } = require("./decode")
 const { generate } = require("./generate")
+const { kernel } = require("./kernel")
+const { reducer } = require("./reducer")
 const { toCode } = require("./toCode")
+const { isNumber } = require("./toValue")
+const { update } = require("./update")
 
-module.exports = {
-  insert: async ({ lookupActions, stack, id, __, insert, ...params }) => {
+const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
-    var { index, view: component, path, data } = insert
+  var { index, view, path, data, doc } = insert
 
-    var views = window.views, global = window.global, appendTo = (insert.id || insert.parent)
+  var views = window.views
+  var global = window.global
+  var parent = views[id]
+  var passData = {}
 
-    // append to ID
-    if (appendTo && typeof appendTo === "object") appendTo = appendTo.id
-    else if (!appendTo) appendTo = id
+  if (!view) view = views[parent.__childrenRef__[parent.__childrenRef__.length - 1].id]
+  else if (insert.__view__) {
+    index += 1
+    delete insert.data
+    view = insert
+  }
 
-    var view = views[appendTo]
+  // clone
+  if (view.__view__) {
+    
+    path = [...(path || (!doc && view.__dataPath__) || [])]
 
-    // insert index
-    if (index === undefined) {
-      if (!view.length) {
+    // doc
+    doc = doc || view.doc
 
-        view.length = view.element.children.length || 0
-        index = view.length
-        view.length = view.length + 1
-
-      } else {
-
-        index = view.length
-        view.length = view.length + 1
-      }
+    // update path
+    if (isNumber(path[path.length - 1])) {
+      path[path.length - 1] = index = index !== undefined ? index : (parseInt(path[path.length - 1]) + 1)
+      reducer({ id: view.id, lookupActions, stack, __, mount: true, data: { path: toCode({ string: "myIndex=path().[-1];nextSiblings().():[deepChildren().log().():[path().[().myIndex]=.path().[().myIndex]+1]]" }) } })
     }
-
-    if (!component) return
-
-    // custom view
-    if (typeof component === "string" && global.data.view[component]) component = clone(global.data.view[component])
-
-    var insertView = clone(component)
-    insertView.view = toCode({ id, string: toCode({ id, string: insertView.view, start: "'" }) })
-
-    // remove loop
-    if (insertView.view.charAt(0) === "@") insertView.view = "View?" + insertView.view.split("?").slice(1).join("?")
 
     // data
-    if (data) {
-      insertView.data = clone(data)
-      insertView.doc = insert.doc || views[appendTo].doc || generate()
-      global[insertView.doc] = global[insertView.doc] || insertView.data
-    }
+    kernel({ lookupActions, stack, address, id, __, data: { _object: global[doc], path, key: true, value: insert.data || (typeof view.data === "object" ? {} : "") } })
 
-    // path
-    if (path) insertView.derivations = (Array.isArray(path) ? path : typeof path === "number" ? [path] : path.split(".")) || []
- 
-    var _id_ = insertView.id || generate()
-
-    views[_id_] = insertView
-    views[_id_].id = _id_
-    views[_id_].index = 0
-    views[_id_].parent = appendTo
-
-    // smooth display
-    views[_id_].style = views[_id_].style || {}
-    views[_id_].style.transition = null
-    views[_id_].style.opacity = "0"
+    // inserted view params
+    passData = { __: view.__, lookupActions: view.__lookupActions__, __viewPath__: [...view.__viewPath__], __customViewPath__: [...view.__customViewPath__] }
     
-    var innerHTML = await toView({ id: _id_, lookupActions, stack, __: views[appendTo].__ })
+    // inserted view
+    view = { view: view.view, children: view.children }
 
-    // insert absolutely
-    var lDiv = document.createElement("div")
-    document.body.appendChild(lDiv)
-    lDiv.style.position = "absolute"
-    lDiv.style.opacity = "0"
-    lDiv.style.left = -1000
-    lDiv.style.top = -1000
-    lDiv.innerHTML = innerHTML
-    
-    var el = lDiv.children[0]
-    views[el.id].parent = view.id
+  } else { // new View
 
-    if (index >= view.element.children.length) view.element.appendChild(el)
-    else view.element.insertBefore(el, view.element.children[index])
-
-    // get ids
-    innerHTML.split("id='").slice(1).map(id => id.split("'")[0]).map(id => starter({ id }))
-
-    // display after insert
-    views[el.id].style.transition = views[el.id].element.style.transition = null
-    views[el.id].style.opacity = views[el.id].element.style.opacity = "1"
-
-    var data = { view: views[el.id], message: "View inserted succefully!", success: true }
-
-    if (lDiv) {
-
-      document.body.removeChild(lDiv)
-      lDiv = null
-    }
-
-    // awaits
-    require("./toAwait").toAwait({ id, lookupActions, stack, __, _: data, ...params })
+    // we need it for nowing path for update
+    var genView = generate()
+    global.data.view[genView] = clone(view)
+    passData = { __viewPath__: [genView], __customViewPath__: [...parent.__customViewPath__, genView] }
   }
+
+  if (typeof view !== "object") return console.log("Missing View!")
+
+  // insert index
+  if (index === undefined) index = parent.__element__.children.length
+
+  // remove loop
+  if (view.view.charAt(0) === "[") {
+    view.view = toCode({ id, string: toCode({ id, string: view.view, start: "'" }) })
+    view.view = global.__refs__[view.view.slice(0, 6)].data + "?" + decode({ string: view.view.split("?").slice(1).join("?") })
+  }
+  
+  update({ lookupActions, stack, address, id, __, data: { view: clone(view), path, data, doc, __index__: index, insert: true, __parent__: id, action: "INSERT", ...passData } })
 }
+
+module.exports = { insert }

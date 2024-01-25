@@ -1,7 +1,7 @@
-module.exports = ({ controls, id }) => {
+module.exports = ({ data, id }) => {
 
     var view = window.views[id]
-    var _id = controls.id || controls.controllerId || id
+    var _id = data.id || data.controllerId || id
     if (typeof _id === "object" && _id.id) _id = _id.id
     
     view.hover.default = view.hover.default || { style: {} }
@@ -11,7 +11,7 @@ module.exports = ({ controls, id }) => {
     )
     
     return [{
-        "event": `loaded:${_id}?mouseenter()?hover.mount;!clicked.mount`
+        //"event": `loaded:${_id}?mouseenter()?hover.mount;!clicked.mount`
     }, {
         "event": `mouseenter:${_id}?hover.style.keys()._():[style().[_]=.hover.style.[_]]?!clicked.disable;!clicked.mount;!hover.disable`
     }, {

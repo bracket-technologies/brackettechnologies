@@ -4,7 +4,7 @@ const setPosition = ({ position = {}, id, e }) => {
   var leftDeviation = position.left
   var topDeviation = position.top
   var align = position.align
-  var element = views[position.id || id].element
+  var element = views[position.id || id].__element__
   var mousePos = position.positioner === "mouse"
   var fin = element.getElementsByClassName("fin")[0]
   var positioner = position.positioner || id
@@ -24,7 +24,7 @@ const setPosition = ({ position = {}, id, e }) => {
     
   } else {
 
-    positioner = views[positioner].element
+    positioner = views[positioner].__element__
     topPos = positioner.getBoundingClientRect().top
     bottomPos = positioner.getBoundingClientRect().bottom
     rightPos = positioner.getBoundingClientRect().right

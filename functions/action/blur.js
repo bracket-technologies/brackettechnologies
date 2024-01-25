@@ -3,13 +3,13 @@ const blur = ({ id }) => {
   var local = window.views[id]
   if (!local) return
 
-  var isInput = local.type === "Input" || local.type === "Textarea"
-  if (isInput) local.element.blur()
+  var isInput = local.__name__ === "Input" || local.__name__ === "Textarea"
+  if (isInput) local.__element__.blur()
   else {
-    if (local.element) {
-      let childElements = local.element.getElementsByTagName("INPUT")
+    if (local.__element__) {
+      let childElements = local.__element__.getElementsByTagName("INPUT")
       if (childElements.length === 0) {
-        childElements = local.element.getElementsByTagName("TEXTAREA")
+        childElements = local.__element__.getElementsByTagName("TEXTAREA")
       }
       if (childElements.length > 0) {
         childElements[0].blur()

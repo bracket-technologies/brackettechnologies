@@ -5,7 +5,7 @@ const { clone } = require("./clone")
 const switchMode = ({ mode, _id = "body" }) => {
 
     var view = window.views
-    var children = [...view[_id].element.children]
+    var children = [...view[_id].__element__.children]
 
     mode = mode.toLowerCase()
     if (mode === window.global.mode.toLowerCase()) return

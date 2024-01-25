@@ -4,28 +4,33 @@ const { jsonToBracket } = require("./jsonToBracket")
 const { reducer } = require("./reducer")
 const { lineInterpreter } = require("./lineInterpreter")
 
-const droplist = ({ id, e, __, stack, lookupActions }) => {
+const droplist = async ({ id, e, __, stack, lookupActions, address }) => {
   
   var views = window.views
   var global = window.global
   var view = views[id]
-  var droplistView = views.droplist
 
   if (!view.droplist) return
   if (view.droplist.searchable !== false) view.droplist.searchable = {}
+
+  // closedroplist
+  var mouseleaveEvent = new Event("mouseleave")
+  views.droplist.__element__.dispatchEvent(mouseleaveEvent)
   
   // items
   var items = clone(view.droplist.items) || []
-  var derivations = view.droplist.path !== undefined ? (Array.isArray(view.droplist.path) ? view.droplist.path : view.droplist.path.split(".")) : view.derivations
+  var __dataPath__ = view.droplist.path !== undefined ? (Array.isArray(view.droplist.path) ? view.droplist.path : view.droplist.path.split(".")) : view.__dataPath__
   var doc = view.droplist.doc || view.doc
 
-  // 
-  droplistView = { ...droplistView, derivations, doc, __ }
-  clearTimeout(global.__droplistTimer__)
+  // init droplist
+  var droplistView = { ...global.data.view.droplist, children: [], __dataPath__, doc, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["droplist"] }
+
+  // remove prev droplist
+  // clearTimeout(global.__droplistTimer__)
 
   // input id
   var { data: inputID } = lineInterpreter({ id, data: "input().id||.id" })
-  var text = views[inputID].element.value || views[inputID].element.innerHTML
+  var text = views[inputID].__element__.value || views[inputID].__element__.innerHTML
   
   // items
   if (typeof items === "string") items = lineInterpreter({ id, data: items, lookupActions, __: view.__ }).data
@@ -43,9 +48,6 @@ const droplist = ({ id, e, __, stack, lookupActions }) => {
       global.__keyupIndex__ = 0
     }
   }
-
-  // init
-  droplistView.children = []
   
   // title
   if (view.droplist.title) {
@@ -98,20 +100,14 @@ const droplist = ({ id, e, __, stack, lookupActions }) => {
               view: `Icon?style:[color=#666;fontSize=1.7rem];${jsonToBracket(view.droplist.item && view.droplist.item.icon || {})};${jsonToBracket(view.droplist.icon || {})};${jsonToBracket(item.icon || {})};class=flexbox ${(item.icon || {}).class || ""}`
             }]
           }, {
-            view: `Text?style:[fontSize=1.3rem;width=100%];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item.text)};class=flex align-center ${(item.text || {}).class || ""}?${item.text.text ? true : false}`,
-            controls: [{
-              event: `click?():[__droplistPositioner__:()].():[txt()=txt();data()=txt()]?!():${id}.droplist.preventDefault`
-            }]
+            view: `Text?style:[fontSize=1.3rem;width=100%];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item.text)};class=flex align-center ${(item.text || {}).class || ""};click:[():[__droplistPositioner__:()].():[txt()=txt();data()=txt()]?!():${id}.droplist.preventDefault]?${item.text.text ? true : false}`
           }]
         })
   
       } else {
         
         return ({
-          view: `Text?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item)};class=flex align-center pointer ${item.class || ""}`,
-          controls: [{
-            event: `click?():[__droplistPositioner__:()].():[txt()=txt();data()=txt()]?!():${id}.droplist.preventDefault`,
-          }]
+          view: `Text?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item)};class=flex align-center pointer ${item.class || ""};click:[():[__droplistPositioner__:()].():[txt()=txt();data()=txt()]?!():${id}.droplist.preventDefault]`,
         })
       }
     }))
@@ -119,9 +115,9 @@ const droplist = ({ id, e, __, stack, lookupActions }) => {
   } else droplistView.children = []
   
   droplistView.positioner = id
-  views.droplist = droplistView
-
-  update({ id: "droplist", stack, lookupActions, __ })
+  
+  await update({ id: "droplist", stack, lookupActions, __, address, data: { view: droplistView } })
+  droplistView = views.droplist
   
   // searchable
   var mouseEnterItem = () => {
@@ -150,12 +146,12 @@ const droplist = ({ id, e, __, stack, lookupActions }) => {
 
               if (inputID) {
 
-                views[inputID].element.value = views[inputID].prevValue = items[_index]
+                views[inputID].__element__.value = views[inputID].prevValue = items[_index]
                 views[inputID].contenteditable = false
 
               } else {
 
-                view.element.innerHTML = view.prevValue = items[_index]
+                view.__element__.innerHTML = view.prevValue = items[_index]
                 view.contenteditable = false
               }
               
@@ -164,28 +160,28 @@ const droplist = ({ id, e, __, stack, lookupActions }) => {
               
               if (inputID) {
 
-                views[inputID].element.value = items[_index].slice(0, -1)
+                views[inputID].__element__.value = items[_index].slice(0, -1)
                 views[inputID].contenteditable = true
 
               } else {
 
-                view.element.innerHTML = items[_index].slice(0, -1)
+                view.__element__.innerHTML = items[_index].slice(0, -1)
                 view.contenteditable = true
               }
             }
           }
 
-          reducer({ id, data: droplistView.derivations, value: items[_index], object: global[droplistView.doc], key: true, __ })
+          reducer({ id, data: { path: droplistView.__dataPath__, object: global[droplistView.doc], key: true, value: items[_index] }, __ })
           global.__keyupIndex__ = _index
         }
       }
     }
 
     global.__keyupIndex__ = global.__keyupIndex__ || 0
-    droplistView.element.children[view.droplist.title ? global.__keyupIndex__ + 1 : global.__keyupIndex__].dispatchEvent(new Event("mouseenter"))
+    droplistView.__element__.children[view.droplist.title ? global.__keyupIndex__ + 1 : global.__keyupIndex__].dispatchEvent(new Event("mouseenter"))
   }
 
-  if (!view.droplist.preventDefault) global.__droplistTimer__ = setTimeout(mouseEnterItem, 100)
+  /*if (!view.droplist.preventDefault) */global.__droplistTimer__ = setTimeout(mouseEnterItem, 100)
 }
 
 module.exports = { droplist }

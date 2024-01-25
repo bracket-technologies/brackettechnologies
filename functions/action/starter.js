@@ -1,5 +1,5 @@
 const { defaultInputHandler } = require("./defaultInputHandler")
-const { defaultEventHandler, addEventListener } = require("./event")
+const { addEventListener } = require("./event")
 const { toArray } = require("./toArray")
 
 const starter = ({ id }) => {
@@ -8,30 +8,29 @@ const starter = ({ id }) => {
   if (!view) return
   
   // status
-  view.status = "Mounting Element"
-    
-  view.element = document.getElementById(id)
-  if (!view.element) return delete window.views[id]
+  view.__status__ = "Mounting Element"
+  view.__rendered__ = true
+  
+  view.__element__ = document.getElementById(id)
+  if (!view.__element__) return delete window.views[id]
+  view.__element__.setAttribute("index", view.__index__)
 
   // default input handlers
   defaultInputHandler({ id })
   
   // status
-  view.status = "Mounting Events"
+  view.__status__ = "Mounting Events"
   
   // lunch auto controls
   Object.entries(require("../event/event")).map(([eventName, events]) => {
     
-    if (view[eventName]) view.controls.push(...events({ id, controls: view[eventName] }))
+    if (view[eventName]) view.__controls__.push(...events({ id, data: view[eventName] }))
   })
-
-  // deafault event handlers
-  defaultEventHandler({ id })
   
   // events
-  toArray(view.controls).map(controls => addEventListener({ controls, id }))
+  toArray(view.__controls__).map(data => addEventListener({ ...data, event: data.event, id }))
 
-  view.status = "Mounted"
+  view.__status__ = "Mounted"
 }
 
 module.exports = { starter }

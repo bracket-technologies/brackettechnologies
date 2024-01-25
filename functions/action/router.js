@@ -5,7 +5,7 @@ const { authorizer } = require("./authorizer")
 const { projector } = require('./projector')
 const { getLocalFile } = require("./storageLocal")
 const { initializer } = require("./initializer")
-const { stacker } = require("./stack")
+const { stacker, printStack } = require("./stack")
 
 require("dotenv").config();
 

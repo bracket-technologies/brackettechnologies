@@ -1,58 +1,55 @@
-const { removeChildren } = require("./update")
+const { removeView } = require("./view")
 const { clone } = require("./clone")
 const { closePublicViews } = require("./closePublicViews")
 const { lineInterpreter } = require("./lineInterpreter")
+const { isNumber } = require("./toValue")
 
-const remove = ({ data = {}, id, __ }) => {
+const remove = ({ _window, data = {}, id, __, lookupActions }) => {
 
   var views = window.views
   var view = window.views[id]
 
-  var path = data.path, derivations = []
+  var path = data.path, __dataPath__ = []
 
-  if (path) derivations = path
-  else derivations = clone(view.derivations) || []
+  if (path) __dataPath__ = path
+  else __dataPath__ = clone(view.__dataPath__) || []
   
-  if (derivations.length > 0 && !data.preventDefault) {
+  if (__dataPath__.length > 0 && !data.preventDefault) {
 
-    var string = `${view.doc}:().` + derivations.join(".").slice(0, -1)
+    var string = `${view.doc}:().` + __dataPath__.join(".").slice(0, -1)
     var parentData = lineInterpreter({ id, data: string })
 
     // remove data
     if (Array.isArray(parentData) && parentData.length === 0) {
 
-      var string = `${view.doc}:().` + derivations.join(".").slice(0, -1) + "=:"
-      lineInterpreter({ id, data: string })
+      var string = `${view.doc}:().` + __dataPath__.join(".").slice(0, -1) + "=:"
+      lineInterpreter({ id, data: string, __, lookupActions })
 
     } else {
 
-      var string = `${view.doc}:().` + derivations.join(".") + ".del()"
-      lineInterpreter({ id, data: string })
+      var string = `${view.doc}:().` + __dataPath__.join(".") + ".del()"
+      lineInterpreter({ id, data: string, __, lookupActions })
     }
   }
 
   // close publics
-  closePublicViews({ id })
+  closePublicViews({ _window, id, __, lookupActions })
 
-  removeChildren({ id })
+  removeView({ id, self: false })
 
-  // pull id from parent childrenID
-  var childrenID = views[view.parent].__childrenID__
-  var index = childrenID.findIndex(childID => childID === view.id)
-  childrenID.splice(index, 1)
+  // pull id from parent childrenRef
+  var childrenRef = views[view.__parent__].__childrenRef__
+  var index = childrenRef.findIndex(({ id }) => id === view.id)
+  childrenRef.splice(index, 1)
   // END
   
-  if (derivations.length === 0) {
-    
-    view.element.remove()
-    delete window.views[id]
-    return
-  }
+  // no data
+  if (__dataPath__.length === 0) return removeView({ id, main: true }).remove()
 
-  // reset length and derivations
+  // reset length and __dataPath__
   var nextSibling = false
-  var children = [...window.views[view.parent].element.children]
-  var index = view.derivations.length - 1
+  var children = [...window.views[view.__parent__].__element__.children]
+  var index = view.__dataPath__.length - 1
   
   children.map((child) => {
 
@@ -64,8 +61,7 @@ const remove = ({ data = {}, id, __ }) => {
 
     if (id === view.id) {
       nextSibling = true
-      view.element.remove()
-      delete window.views[id]
+      removeView({ id, main: true }).remove()
     }
   })
 }
@@ -76,11 +72,11 @@ const resetDerivations = ({ id, index }) => {
   var view = views[id]
 
   if (!view) return
-  if (isNaN(view.derivations[index])) return
+  if (!isNumber(view.__dataPath__[index])) return
 
-  view.derivations[index] -= 1
+  view.__dataPath__[index] -= 1
 
-  var children = [...view.element.children]
+  var children = [...view.__element__.children]
   children.map((child) => resetDerivations({ id: child.id, index }) )
 }
 

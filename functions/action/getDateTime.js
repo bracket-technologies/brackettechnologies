@@ -1,5 +1,5 @@
 module.exports = {
-    getDateTime: (time) => {
+    getDateTime: (time, format) => {
         
         var sec = parseInt(time.getSeconds())
         var min = parseInt(time.getMinutes())
@@ -15,6 +15,6 @@ module.exports = {
         if (month < 10) month = "0" + month
         if (year < 10) year = "0" + year
         
-        return `${year}-${month}-${day}T${hrs}:${min}:${sec}`
+        return format === "yyyy-mm-ddThh-mm-ss" && `${year}-${month}-${day}T${hrs}:${min}:${sec}`
     }
 }
