@@ -4,7 +4,7 @@ const { jsonToBracket } = require("./jsonToBracket")
 const { reducer } = require("./reducer")
 const { lineInterpreter } = require("./lineInterpreter")
 
-const droplist = async ({ id, e, __, stack, lookupActions, address }) => {
+const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   
   var views = window.views
   var global = window.global
@@ -29,11 +29,11 @@ const droplist = async ({ id, e, __, stack, lookupActions, address }) => {
   // clearTimeout(global.__droplistTimer__)
 
   // input id
-  var { data: inputID } = lineInterpreter({ id, data: "input().id||.id" })
+  var { data: inputID } = lineInterpreter({ id, data: { string: "input().id||.id" } })
   var text = views[inputID].__element__.value || views[inputID].__element__.innerHTML
   
   // items
-  if (typeof items === "string") items = lineInterpreter({ id, data: items, lookupActions, __: view.__ }).data
+  if (typeof items === "string") items = lineInterpreter({ id, data: { string: items }, lookupActions, __: view.__ }).data
 
   // filterable
   if (!view.droplist.preventDefault) {
@@ -116,7 +116,7 @@ const droplist = async ({ id, e, __, stack, lookupActions, address }) => {
   
   droplistView.positioner = id
   
-  await update({ id: "droplist", stack, lookupActions, __, address, data: { view: droplistView } })
+  update({ stack, lookupActions, __, address, data: { id: "droplist", view: droplistView } })
   droplistView = views.droplist
   
   // searchable

@@ -1,6 +1,6 @@
 const { isEqual } = require("./isEqual")
 
-const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root", __, req, res, object, elser }) => {
+const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root", __, req, res, object }) => {
 
   const { toAction } = require("./toAction")
   const { toValue } = require("./toValue")
@@ -31,20 +31,20 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root
     if (condition === "") return true
     if (!approval) return false
 
-    if (condition.charAt(0) === "#") {
-      if (elser) return approval = false
-      else return
-    }
+    if (condition.charAt(0) === "#") return
 
     // or
     if (condition.includes("||")) {
-      var conditions = condition.split("||"), _i = 0
+      
+      var conditions = condition.split("||"), i = 0
       approval = false
-      while (!approval && conditions[_i] !== undefined) {
-        if (conditions[_i].slice(0,2) === "=") conditions[_i] = conditions[0] + conditions[_i]
-        approval = toApproval({ _window, lookupActions, stack, e, data: conditions[_i], id, __, req, res, object, elser: true })
-        _i += 1
+
+      while (!approval && conditions[i] !== undefined) {
+        if (conditions[i].charAt(0) === "=") conditions[i] = conditions[0].split("=")[0] + conditions[i]
+        approval = toApproval({ _window, lookupActions, stack, e, data: conditions[i], id, __, req, res, object })
+        i += 1
       }
+
       return approval
     }
 

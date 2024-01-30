@@ -43,14 +43,14 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
     if (isEvent({ _window, string })) return toEvent({ _window, string, id, __, lookupActions })
 
     // line interpreter
-    return lineInterpreter({ _window, lookupActions, stack, id, e, data: string, req, res, mount, __, condition, object, toView, action: "toParam" }).data
+    return lineInterpreter({ _window, lookupActions, stack, id, e, data: {string, action: "toParam"}, req, res, mount, __, condition, object, toView }).data
   }
 
   // conditions
   if (condition || isCondition({ _window, string })) return toApproval({ id, lookupActions, stack, e, data: string, req, res, _window, __, object })
 
   string.split(";").map(param => {
-
+    
     // no param || returned || comment
     if (!param || (stack.returns && stack.returns[0] || {}).returned || param.charAt(0) === "#" || stack.terminated || stack.broke || stack.returned) return
     
@@ -64,6 +64,15 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
       value = param.substring(key.length + 1)
 
     } else key = param
+
+    // key = key1 = ... = value
+    if (value && value.includes("=")) {
+      value = param.split("=").at(-1)
+      param = param.slice(0, lastValue.length * (-1) - 1)
+      var newParam = key + "=" + value
+      param.split("=").slice(1).map(key => { newParam += ";" + key + "=" + value })
+      return params = { ...params, ...toParam({ _window, lookupActions, stack, data: param, e, id, req, res, mount, object, __, toView, executer, condition }) }
+    }
 
     // increment
     if (key && value === undefined && key.slice(-2) === "++") {

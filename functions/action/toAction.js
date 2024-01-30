@@ -2,14 +2,13 @@ const { clone } = require("./clone")
 const { toArray } = require("./toArray")
 const { addresser } = require("./addresser")
 const actions = require("./actions.json")
+const { toAwait } = require("./toAwait")
 
 const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount, toView, object, lookupActions = {}, stack }) => {
 
-  const { lineInterpreter } = require("./lineInterpreter")
-
   var global = _window ? _window.global : window.global
   var views = _window ? _window.views : window.views
-  var view = views[id], callServerAction = false, actionFound = false
+  var view = views[id], asynchronous = false, actionFound = false
 
   if (path.length === 1 && path0.slice(-2) === "()" && path0 !== "()" && path0 !== "_()" && !actions.includes(path0) && path0.charAt(0) !== "@") {
     
@@ -19,23 +18,23 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
     // lookup through parent map actions
     toArray(lookupActions).map((lookupActions, indexx) => {
 
-      if (lookupActions.fn) {
+      if (lookupActions.actionPath) {
         
-        var fn = lookupActions.fn
-        clone(fn).reverse().map((myfn, i) => {
+        var actionPath = lookupActions.actionPath
+        clone(actionPath).reverse().map((x, i) => {
 
           if (!actionFound) {
             
             var actions = (lookupActions.view === "_project_" ? global.data.project.functions : global.data.view[lookupActions.view].functions) || {}
-            actionFound = Object.keys(clone(fn).slice(0, fn.length - i).reduce((o, k) => o && o[k], actions) || {}).find(fn => fn === path0.slice(0, -2))
+            actionFound = Object.keys(clone(actionPath).slice(0, actionPath.length - i).reduce((o, k) => o && o[k], actions) || {}).find(actionPath => actionPath === path0.slice(0, -2))
 
             if (actionFound) {
 
-              actionFound = fn.slice(0, fn.length - i).reduce((o, k) => o[k], actions)[actionFound]
+              actionFound = actionPath.slice(0, actionPath.length - i).reduce((o, k) => o[k], actions)[actionFound]
               if (typeof actionFound === "object" && actionFound._) {
 
                 actionFound = actionFound._ || ""
-                newLookupActions = { view: lookupActions.view, fn: [...fn, path0.slice(0, -2)] }
+                newLookupActions = { view: lookupActions.view, actionPath: [...actionPath, path0.slice(0, -2)] }
                 if (toArray(lookupActions).length > 1) newLookupActions = [newLookupActions, ...toArray(lookupActions).slice(indexx)]
 
               } else if (toArray(lookupActions).length > 1) toArray(lookupActions).slice(indexx)
@@ -54,14 +53,14 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 
           if (myview !== "_project_" && !global.data.view[myview]) return
           var actions =( myview === "_project_" ? (stack.server ? global.data.project.functions : global.__serverActions__) : (global.data.view[myview].functions)) || {}
-          actionFound = (Array.isArray(actions) ? actions : Object.keys(actions)).find(fn => fn === path0.slice(0, -2))
+          actionFound = (Array.isArray(actions) ? actions : Object.keys(actions)).find(action => action === path0.slice(0, -2))
           
           if (actionFound) {
             
             if (myview === "_project_" && !stack.server) {
               
               // server action & now we are not on server
-              callServerAction = true
+              asynchronous = true
               newLookupActions = []
 
             } else {
@@ -69,7 +68,7 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
               if (typeof actions[actionFound] === "object") {
 
                 actionFound = actions[actionFound]._ || ""
-                newLookupActions = { view: myview, fn: [path0.slice(0, -2)] }
+                newLookupActions = { view: myview, actionPath: [path0.slice(0, -2)] }
 
               } else actionFound = actions[actionFound]
             }
@@ -77,27 +76,23 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
         }
       })
     }
-
+    
     if (actionFound) {
-      
-      var address = addresser({ _window, req, res, stack, args: path[0].split(":"), asynchronous: callServerAction && true, e, requesterID: id, action: path0, __, id, object, mount, toView, condition, lookupActions })
+
+      var address = addresser({ _window, req, res, stack, status: "Wait", args: path[0].split(":"), newLookupActions: newLookupActions || lookupActions, asynchronous, e, id, data: { string: !asynchronous ? actionFound : "" }, action: path0, __, id, object, mount, toView, condition, lookupActions })
       var { address, data } = address
-
-      var my__ = [...(data !== undefined ? [data] : []), ...__]
-
+      
       // lookupActions
       newLookupActions = newLookupActions || lookupActions
 
-      if (callServerAction) {
+      if (asynchronous) {
 
-        var action = { name: actionFound, __: my__, lookupActions: [], stack: [], condition, object }
+        address.status = "Start"
+        var action = { name: actionFound, __: data !== undefined ? [data] : [], lookupActions: [], stack: [], condition, object }
         return require("./action").action({ _window, req, res, id, e, action, __, stack, lookupActions, address })
       }
 
-      // interpret
-      var { data } = lineInterpreter({ _window, lookupActions: newLookupActions, stack, address, id, e, data: actionFound, req, res, mount, __: my__, condition, object, toView }) || {}
-
-      return data
+      return toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: data }).data
     }
   }
 

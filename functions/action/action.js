@@ -1,4 +1,4 @@
-const action = async ({ _window, lookupActions, stack, address, id = "root", req, __, res, e, action = {}, ...params }) => {
+const action = async ({ _window, lookupActions, stack, address, id = "root", req, __, res, e, action = {} }) => {
 
   var global = _window ? _window.global : window.global
 
@@ -16,12 +16,9 @@ const action = async ({ _window, lookupActions, stack, address, id = "root", req
       ...headers
     }
   })
-
-  // var log = ["SERVER", (new Date()).getTime() - headers.timestamp, action.name + "()", data]
-  // stack.logs.push(log.join(" "))
   
   // await
-  require("./toAwait").toAwait({ _window, lookupActions, address, stack, id, e, req, res, _: data, __, ...params })
+  require("./toAwait").toAwait({ _window, lookupActions, address, stack, id, e, req, res, _: data, __ })
 }
 
 module.exports = { action }

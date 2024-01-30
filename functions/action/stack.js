@@ -20,7 +20,7 @@ const stacker = ({ _window, id: viewID, string = "", address = [], ...data }) =>
     returns: []
   }
 
-  stack.logs.push(`STACK start ${stack.id} ${stack.event} ${stack.string}`)
+  stack.logs.push(`0 Start STACK ${stack.id} ${stack.event} ${stack.string}`)
 
   return stack
 }
@@ -39,7 +39,7 @@ const printStack = ({ stack, end }) => {
 
     stack.printed = true
     var logs = `%cSTACK ${(new Date()).getTime() - stack.executionStartTime} ${stack.event}`
-    stack.logs.push(`STACK end ${(new Date()).getTime() - stack.executionStartTime} ${stack.id} ${stack.event}`)
+    stack.logs.push(`${stack.logs.length} End STACK ${(new Date()).getTime() - stack.executionStartTime} ${stack.id} ${stack.event}`)
     console.log(logs, "color: blue", stack.logs)
   }
 }

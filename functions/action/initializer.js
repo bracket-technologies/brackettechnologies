@@ -64,8 +64,7 @@ const initializer = ({ req, res, stack, data: { db, storage, rdb } }) => {
             collection: {}
         },
         path: path.join("/"),
-        promises: {},
-        breakCreateElement: {},
+        __server__: { startTime: (new Date()).getTime() },
     }
 
     var views = { [id]: { id } }

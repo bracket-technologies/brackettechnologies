@@ -1,10 +1,13 @@
+const { timerLogger } = require("./logger")
+
 module.exports = {
   authorizer: async ({ _window, req }) => {
 
     var ref = req.db.collection("_project_"),
     success, message, error,
-    global = _window.global,
-    timer = (new Date()).getTime()
+    global = _window.global
+
+    timerLogger({ _window, key: "authorization", start: true })
     
     await ref.where("domains", "array-contains", global.manifest.host).get().then(doc => {
       
@@ -31,7 +34,8 @@ module.exports = {
         console.log(err);
     })
     
-    console.log("AUTHORIZATION", (new Date()).getTime() - timer)
+    timerLogger({ _window, key: "authorization", end: true })
+    
     return { success, message, error }
   }
 }

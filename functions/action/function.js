@@ -13,7 +13,6 @@ const {update} = require("./update")
 const {toControls} = require("./toControls")
 const {toArray} = require("./toArray")
 const {generate} = require("./generate")
-const {refresh} = require("./refresh")
 const {axios} = require("./axios")
 const {wait} = require("./wait")
 const {toView} = require("./toView")
@@ -49,7 +48,6 @@ const {capitalize} = require("./capitalize")
 const {toOperator} = require("./toOperator")
 const {popup} = require("./popup")
 const {keys} = require("./keys")
-const {toggleView} = require("./toggleView")
 const upload = require("./upload")
 const {compare} = require("./compare")
 const {toCSV} = require("./toCSV")
@@ -76,7 +74,6 @@ const {createData, clearData} = require("./data")
 
 module.exports = {
   switchMode,
-  refresh,
   getDaysInMonth,
   lengthConverter,
   getCookie,
@@ -150,7 +147,6 @@ module.exports = {
   keys,
   toOperator,
   upload,
-  toggleView,
   insert,
   axios
 }

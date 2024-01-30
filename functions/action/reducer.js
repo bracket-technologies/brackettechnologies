@@ -4,6 +4,7 @@ const { lineInterpreter } = require("./lineInterpreter")
 const { isCalc } = require("./isCalc")
 const { kernel } = require("./kernel")
 const { decode } = require("./decode")
+const { toAwait } = require("./toAwait")
 
 const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: { path, value, key, object, _object }, __, e, req, res, mount, condition, toView }) => {
 
@@ -38,16 +39,9 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: {
     // [actions?conditions?elseActions]():[params]:[waits]
     else if (path0.length === 8 && path0.slice(-2) === "()" && path0.charAt(0) === "@") {
         
-        var { address, __: my__ } = addresser({ _window, stack, args, requesterID: id, action: "[...]()", __, lookupActions, id, _object, object })
+        var { address, data } = addresser({ _window, stack, args, id, status: "Wait", type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, lookupActions, id, _object, object })
 
-        var { data } = lineInterpreter({ _window, lookupActions, stack, address, id, data: path0.slice(0, -2), key, object, __: my__, e, dblExecute: true, req, res, mount, condition, toView })
-
-        _object = data
-        path0 = (path[1] || "").split(":")[0]
-        path.splice(0, 1)
-
-        if (path.length === 0) return _object
-        else return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, value, key, pathJoined, object } })
+        return toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: data }).data
     }
 
     // if()
@@ -131,7 +125,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: {
 
     // @coded
     else if (path0.charAt(0) === "@" && path[0].length === 6) {
-        var data = lineInterpreter({ _window, req, res, lookupActions, stack, object, id, data: path[0], __, e }).data
+        var data = lineInterpreter({ _window, req, res, lookupActions, stack, object, id, data: { string: path[0] }, __, e }).data
 
         if (path[1] === "flat()") {
 
@@ -190,11 +184,14 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: {
 
     // assign reserved vars
     var reservedVars = {
-        keys: ["()", "global()", "e()", "console()", "document()", "window()", "win()", "history()", "navigator()", "nav()", "request()", "response()", "req()", "res()", "math()"],
+        keys: ["()", "global()", "e()", "console()", "string()", "object()", "array()", "document()", "window()", "win()", "history()", "navigator()", "nav()", "request()", "response()", "req()", "res()", "math()"],
         "()": view || views[id],
         "global()": _window ? _window.global : window.global,
         "e()": e,
         "console()": console,
+        "string()": String,
+        "object()": Object,
+        "array()": Array,
         "document()": _window ? {} : document,
         "window()": _window || window,
         "win()": _window || window,

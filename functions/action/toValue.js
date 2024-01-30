@@ -66,9 +66,8 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
   if (value.includes("||")) { // or
     var answer
     value.split("||").map(value => {
-      if (!answer) { // or answer === undefined ?????
+      if (!answer) {
         answer = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount, condition })
-        //console.log(value, answer);
       }
     })
     return answer
@@ -198,7 +197,7 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
 }
 
 const isNumber = (value) => {
-  return !isNaN(value) && !emptySpaces(value) && (value.length > 1 ? value.charAt(0) !== "0" : true)
+  return !isNaN(value) && !emptySpaces(value)// && (value.length > 1 ? value.charAt(0) !== "0" : true)
 }
 
 const emptySpaces = (string) => {

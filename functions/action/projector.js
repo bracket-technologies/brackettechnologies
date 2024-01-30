@@ -2,6 +2,7 @@ const { toView } = require("./toView");
 const { getJsonFiles } = require("./jsonFiles");
 const { toArray } = require("./toArray");
 const { addresser } = require("./addresser");
+const { timerLogger } = require("./logger");
 
 require("dotenv").config();
 
@@ -28,8 +29,10 @@ const initViews = ({ _window }) => {
 
 const getProject = async ({ _window, req }) => {
 
-    var global = _window.global
-    var promises = [], timer = (new Date()).getTime()
+    var { global } = _window
+    var promises = []
+    timerLogger({ _window, key: "view", start: true })
+    timerLogger({ _window, key: "collection", start: true })
 
     // views
     promises.push(req.db
@@ -39,7 +42,7 @@ const getProject = async ({ _window, req }) => {
             q.forEach(doc => {
                 global.data.view[doc.id] = { ...doc.data(), id: doc.id }
             })
-            console.log("VIEW", new Date().getTime() - timer)
+            timerLogger({ _window, key: "view", end: true })
         }))
 
     // collections
@@ -50,7 +53,7 @@ const getProject = async ({ _window, req }) => {
             q.forEach(doc => {
                 global.data.collection[doc.id] = { ...doc.data(), id: doc.id }
             })
-            console.log("COLLECTION", new Date().getTime() - timer)
+            timerLogger({ _window, key: "collection", end: true })
         }))
 
     await Promise.all(promises)
@@ -66,21 +69,22 @@ const getProject = async ({ _window, req }) => {
 
 const renderer = ({ _window, req, res, stack, __ }) => {
 
-    var { global, views } = _window, page = global.manifest.page, timer = (new Date()).getTime()
+    var { global, views } = _window, page = global.manifest.page
+    timerLogger({ _window, key: "render", start: true })
 
     if (!global.data.view[page]) return res.send("Page not found!")
 
     // address
-    var { address } = addresser({ _window, id: "document", type: "function", status: "waiting", file: "projector", function: "documenter", stack, asynchronous: true, renderer: true, action: "documenter()", __ })
+    var { address } = addresser({ _window, id: "document", type: "function", status: "Wait", file: "projector", function: "documenter", stack, renderer: true, action: "documenter()", __ })
 
     // render
-    toView({ _window, __parent__: "document", req, res, stack, __, address, data: { view: views.body } })
-
-    console.log("RENDER", (new Date()).getTime() - timer)
+    toView({ _window, req, res, stack, __, address, data: { view: views.body, parent: "document" } })
+    timerLogger({ _window, key: "render", end: true })
 }
 
-const documenter = async ({ _window: { global, views }, res, stack }) => {
+const documenter = async ({ _window, res, stack }) => {
 
+    var { global, views } = _window
     var page = global.manifest.page
     var view = views[global.manifest.page] || {}
 
@@ -104,7 +108,9 @@ const documenter = async ({ _window: { global, views }, res, stack }) => {
     delete global.data.project
 
     // logs
-    global.__logs__ = stack.logs
+    global.__server__.logs = stack.logs
+
+    timerLogger({ _window, key: "documentation", end: true })
 
     res.send(
         `<!DOCTYPE html>
@@ -174,18 +180,14 @@ const documenter = async ({ _window: { global, views }, res, stack }) => {
 }
 
 const projector = async ({ _window, req, res, stack, __ }) => {
-
-    var timer = (new Date()).getTime()
+    
+    timerLogger({ _window, key: "documentation", start: true })
     
     initViews({ _window })
     await getProject({ _window, req, res, stack, __ })
     
     if (res.headersSent) return
     renderer({ _window, req, res, stack, __ })
-    // if (res.headersSent) return
-    // await documenter({ _window, req, res, stack, __ })
-
-    console.log("DOCUMENTATION", (new Date()).getTime() - timer);
 }
 
 module.exports = { getProject, initViews, renderer, projector, documenter }

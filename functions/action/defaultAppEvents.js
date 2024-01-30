@@ -72,8 +72,8 @@ const defaultAppEvents = () => {
         // close droplist
         if (views.droplist.__element__.style.pointerEvents === "auto") {
 
-            var data = "():droplist.mouseleave()?!():droplist.mouseentered"
-            lineInterpreter({ id: "body", e, data })
+            var string = "():droplist.mouseleave()?!():droplist.mouseentered"
+            lineInterpreter({ id: "body", e, data: {string} })
         }
 
         Object.entries(global.__events__).map(([id, event]) => views[id] && event.scroll && event.scroll.map(data => (global.__scrolled__ && (global.__scrolled__.id === data.eventID || views[data.eventID].__element__.contains(global.__scrolled__.__element__))) && eventExecuter({ ...data, e })))
@@ -86,8 +86,8 @@ const defaultAppEvents = () => {
         views.root.__element__.click()
         document.activeElement.blur()
 
-        var data = "():mininote.style():[opacity=0;transform=scale(0)]"
-        lineInterpreter({ id: "window", e, data })
+        var string = "():mininote.style():[opacity=0;transform=scale(0)]"
+        lineInterpreter({ id: "window", e, data: {string} })
     })
 
     window.addEventListener("mousedown", (e) => {

@@ -24,7 +24,7 @@ const addEventListener = ({ event, id, __, lookupActions, eventID: mainEventID }
     if (substring.charAt(0) === "@" && substring.length === 6) substring = global.__refs__[substring].data
 
     // event:id
-    var { data: eventID } = lineInterpreter({ id, data: substring.split("?")[0].split(":")[1] })
+    var { data: eventID } = lineInterpreter({ id, data: { string: substring.split("?")[0].split(":")[1] } })
     if (typeof eventID === "object" && eventID.__view__) eventID = eventID.id
     else eventID = eventID || mainEventID || id
 
@@ -69,7 +69,7 @@ const eventExecuter = ({ event, eventID, id, lookupActions, e, string, __ }) => 
     var stack = stacker({ event, id, eventID, string })
 
     // main params
-    var data = lineInterpreter({ lookupActions, stack, id, e, data: string, __, mount: true, action: "toParam" })
+    var data = lineInterpreter({ lookupActions, stack, id, e, data: {string, action: "toParam"}, __, mount: true })
     
     // line interpreting ended
     stack.interpreting = false
@@ -132,7 +132,7 @@ const modifyEvent = ({ eventID, string, event }) => {
   string = string.split("?").slice(1)
   var conditions = string[1] || ""
   
-  if (event === "change" && (view.input.type === "text" || view.input.type === "number")) {
+  if (event === "change" && (view.editable || view.input.type === "text" || view.input.type === "number")) {
     event = "keyup"
   } else if (event === "entry") {
     event = "input"

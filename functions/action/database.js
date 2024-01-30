@@ -9,7 +9,7 @@ var getdb = async ({ _window, req, res, id }) => {
   var string = decodeURI(req.headers.search), data = {}, timer = (new Date()).getTime()
   string = toCode({ _window, string })
 
-  if (string) data = lineInterpreter({ _window, data: string, id }).data
+  if (string) data = lineInterpreter({ _window, data: { string }, id }).data
   var search = data.search || {}
   var { data, success, message } = await getData({ _window, req, res, search })
 
@@ -31,7 +31,7 @@ var deletedb = async ({ _window, req, res, id }) => {
   var string = decodeURI(req.headers.erase), data = {}, timer = (new Date()).getTime()
   string = toCode({ _window, string })
 
-  if (string) data = lineInterpreter({ _window, data: string, id }).data
+  if (string) data = lineInterpreter({ _window, data: { string }, id }).data
   var erase = data.erase || {}
 
   var { success, message } = await deleteData({ _window, req, res, erase })
@@ -165,7 +165,7 @@ const getData = async ({ _window, req, res, search }) => {
   }
 
   const myPromise = () => new Promise(async (resolve) => {
-
+try {
     // search field
     var multiIN = false, _ref = ref
     if (field) Object.entries(field).map(([key, value]) => {
@@ -214,6 +214,11 @@ const getData = async ({ _window, req, res, search }) => {
     }
 
     resolve({ data, success, message })
+  
+  } catch (error) {
+    
+    resolve({ data, success: false, message: error })
+  }
   })
 
   var { data, success, message } = await myPromise()

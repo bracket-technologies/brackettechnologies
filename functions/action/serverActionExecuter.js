@@ -1,7 +1,7 @@
 const { clone } = require("./clone")
-const { lineInterpreter } = require("./lineInterpreter")
 const { addresser } = require("./addresser")
 const { printStack } = require("./stack")
+const { toAwait } = require("./toAwait")
 
 const serverActionExecuter = async ({ _window, stack, req, res, id, __ }) => {
   
@@ -46,13 +46,13 @@ const executeServerAction = ({ _window, lookupActions = [], stack, action, id, r
   // map action
   if (typeof string === "object") {
     string = string._ || ""
-    lookupActions.unshift({ view: "_project_", fn: [name] })
+    lookupActions.unshift({ view: "_project_", actionPath: [name] })
   }
 
-  var { address } = addresser({ _window, stack, action: name + "()", __, id, lookupActions })
+  var address = addresser({ _window, stack, status: "Wait", action: name + "()", __, id, lookupActions, mount: true, data: { string } }).address
 
   // interpret line
-  return lineInterpreter({ _window, lookupActions, stack, address, id, data: string, req, res, __, mount: true })
+  return toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
 }
 
 module.exports = { serverActionExecuter, executeServerAction }

@@ -8,7 +8,7 @@ const { colorize } = require("./colorize")
 const cssStyleKeyNames = require("./cssStyleKeyNames")
 const { clone } = require("./clone")
 
-const toHTML = ({ _window, id, __ }) => {
+const toHTML = ({ _window, id, stack, __ }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -117,7 +117,7 @@ const toHTML = ({ _window, id, __ }) => {
 
   } else if (name === "A") {
     html = `<a ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} id='${id}' href=${view.link} style='${view.__htmlStyles__}'>${innerHTML}</a>`
-  } else return removeView({ _window, id })
+  } else return removeView({ _window, stack, id })
 
   // indexing
   var index = indexing({ views, id, view, parent })
@@ -146,7 +146,7 @@ const link = ({ _window, id, stack, __ }) => {
   var linkView = typeof view.link === "string" ? { link } : { ...view.link, link, __name__: "A" }
 
   // link
-  var { view: linkView, id: linkID } = initView({ views, global, __parent__: view.__parent__, ...linkView, __, __controls__: [{ event: `click?route():'${view.link.path}'?${view.link.path || "false"};${view.link.preventDafault ? "false" : "true"}` }] })
+  var { view: linkView, id: linkID } = initView({ views, global, parent: view.__parent__, ...linkView, __, __controls__: [{ event: `click?route():'${view.link.path}'?${view.link.path || "false"};${view.link.preventDafault ? "false" : "true"}` }] })
   toHTML({ _window, id: linkID, stack, __ })
   
   // view
@@ -162,7 +162,8 @@ const indexing = ({ id, views, view, parent }) => {
   var index = 0
   
   // find index
-  while (parent.__childrenRef__[index] && ((parent.__childrenRef__[index].childIndex < view.__childIndex__) || (parent.__childrenRef__[index].childIndex === view.__childIndex__ && parent.__childrenRef__[index].initialIndex < view.__initialIndex__))) { index++ }
+  if (!view.__index__) while (parent.__childrenRef__[index] && ((parent.__childrenRef__[index].childIndex < view.__childIndex__) || (!view.__inserted__ && parent.__childrenRef__[index].childIndex === view.__childIndex__ && parent.__childrenRef__[index].initialIndex < view.__initialIndex__))) { index++ }
+  else index = view.__index__
   
   // set index
   view.__index__ = index
@@ -171,6 +172,7 @@ const indexing = ({ id, views, view, parent }) => {
   parent.__childrenRef__.slice(index).map(viewRef => {
     viewRef.index++
     views[viewRef.id].__index__ = viewRef.index
+    views[viewRef.id].__rendered__ && views[viewRef.id].__element__.setAttribute("index", viewRef.index)
   })
   
   // push id to parent children ids

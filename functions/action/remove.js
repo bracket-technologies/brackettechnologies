@@ -4,7 +4,7 @@ const { closePublicViews } = require("./closePublicViews")
 const { lineInterpreter } = require("./lineInterpreter")
 const { isNumber } = require("./toValue")
 
-const remove = ({ _window, data = {}, id, __, lookupActions }) => {
+const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
 
   var views = window.views
   var view = window.views[id]
@@ -17,67 +17,48 @@ const remove = ({ _window, data = {}, id, __, lookupActions }) => {
   if (__dataPath__.length > 0 && !data.preventDefault) {
 
     var string = `${view.doc}:().` + __dataPath__.join(".").slice(0, -1)
-    var parentData = lineInterpreter({ id, data: string })
+    var parentData = lineInterpreter({ id, data: {string} })
 
     // remove data
     if (Array.isArray(parentData) && parentData.length === 0) {
 
       var string = `${view.doc}:().` + __dataPath__.join(".").slice(0, -1) + "=:"
-      lineInterpreter({ id, data: string, __, lookupActions })
+      lineInterpreter({ id, data: {string}, __, lookupActions })
 
     } else {
 
       var string = `${view.doc}:().` + __dataPath__.join(".") + ".del()"
-      lineInterpreter({ id, data: string, __, lookupActions })
+      lineInterpreter({ id, data: {string}, __, lookupActions })
     }
   }
 
   // close publics
   closePublicViews({ _window, id, __, lookupActions })
-
-  removeView({ id, self: false })
-
-  // pull id from parent childrenRef
-  var childrenRef = views[view.__parent__].__childrenRef__
-  var index = childrenRef.findIndex(({ id }) => id === view.id)
-  childrenRef.splice(index, 1)
-  // END
   
   // no data
-  if (__dataPath__.length === 0) return removeView({ id, main: true }).remove()
+  if (__dataPath__.length === 0) return removeView({ id, stack, main: true }).remove()
 
   // reset length and __dataPath__
-  var nextSibling = false
-  var children = [...window.views[view.__parent__].__element__.children]
-  var index = view.__dataPath__.length - 1
+  var itemIndex = view.__dataPath__.length - 1
+  var parent = views[view.__parent__]
   
-  children.map((child) => {
-
-    var id = child.id
-    window.views[id].length -= 1
-
-    // derivation in array of next siblings must decrease by 1
-    if (nextSibling) resetDerivations({ id, index })
-
-    if (id === view.id) {
-      nextSibling = true
-      removeView({ id, main: true }).remove()
-    }
-  })
+  // update data path
+  parent.__childrenRef__.slice(view.__index__ + 1).map(({ id }) => updateDataPath({ id, index: itemIndex, decrement: true }))
+  removeView({ id, stack, main: true }).remove()
 }
 
-const resetDerivations = ({ id, index }) => {
+const updateDataPath = ({ id, index, decrement, increment }) => {
 
   var views = window.views
   var view = views[id]
-
+  
   if (!view) return
   if (!isNumber(view.__dataPath__[index])) return
 
-  view.__dataPath__[index] -= 1
+  if (decrement) view.__dataPath__[index] -= 1
+  else if (increment) view.__dataPath__[index] += 1
 
-  var children = [...view.__element__.children]
-  children.map((child) => resetDerivations({ id: child.id, index }) )
+  view.__childrenRef__.map(({ id }) => updateDataPath({ id, index, decrement, increment }) )
 }
 
-module.exports = { remove }
+module.exports = { remove, updateDataPath }
