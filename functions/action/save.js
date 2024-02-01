@@ -2,7 +2,7 @@ const axios = require('axios')
 const { postData } = require('./database')
 
 module.exports = {
-  save: async ({ _window, lookupActions, stack, address, id = "root", req, res, e, __, save = {} }) => {
+  save: async ({ _window, lookupActions, stack, address, id, req, res, e, __, save = {} }) => {
       
     var global = _window ? _window.global : window.global
 

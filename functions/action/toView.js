@@ -116,7 +116,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
     var headAddress = addresser({ _window, id, stack, renderer: true, headAddressID: address.headAddressID, type: "render", status: "Wait", action: "continue()", function: "continueToView", file: "toView", __, lookupActions, stack }).address
     return address.headAddressID = headAddress.id
   }
-  
+
   continueToView({ _window, id, stack, __, address, lookupActions, req, res })
 }
 

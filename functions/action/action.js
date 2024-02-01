@@ -1,4 +1,4 @@
-const action = async ({ _window, lookupActions, stack, address, id = "root", req, __, res, e, action = {} }) => {
+const action = async ({ _window, lookupActions, stack, address, id, req, __, res, e, action = {} }) => {
 
   var global = _window ? _window.global : window.global
 

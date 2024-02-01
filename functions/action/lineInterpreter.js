@@ -47,6 +47,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
             return terminator({ data: { data: global.__refs__[string].data, success: true, message: `No action to execute!`, executionDuration: 0 }, order: 2 })
         
         string = global.__refs__[string].data
+        if (action) object = {}
     }
 
     // subparams

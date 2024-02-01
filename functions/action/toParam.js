@@ -19,7 +19,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "root", req, res, mount, object, __, toView, executer, condition }) => {
+const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req, res, mount, object, __, toView, condition }) => {
 
   const { toAction } = require("./toAction")
   const { toApproval } = require("./toApproval")
@@ -54,6 +54,11 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
     // no param || returned || comment
     if (!param || (stack.returns && stack.returns[0] || {}).returned || param.charAt(0) === "#" || stack.terminated || stack.broke || stack.returned) return
     
+    // scope
+    if (string.charAt(0) === "@" && string.length == 6) {
+      return toParam({ _window, lookupActions, stack, data: global.__refs__[string].data, e, id, req, res, mount, object: {}, __, toView, condition }) 
+    }
+
     var key, value
     var view = views[id]
 
@@ -71,7 +76,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
       param = param.slice(0, lastValue.length * (-1) - 1)
       var newParam = key + "=" + value
       param.split("=").slice(1).map(key => { newParam += ";" + key + "=" + value })
-      return params = { ...params, ...toParam({ _window, lookupActions, stack, data: param, e, id, req, res, mount, object, __, toView, executer, condition }) }
+      return params = { ...params, ...toParam({ _window, lookupActions, stack, data: param, e, id, req, res, mount, object, __, toView, condition }) }
     }
 
     // increment
@@ -159,7 +164,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id = "ro
 
     // action()
     if (path0.slice(-2) === "()") {
-      var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, path, path0, condition, mount, toView, executer, object })
+      var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, path, path0, condition, mount, toView, object })
       if (action !== "__continue__") {
         if (typeof action === "object") override(params, action)
         return action

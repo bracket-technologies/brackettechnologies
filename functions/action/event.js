@@ -40,7 +40,7 @@ const addEventListener = ({ event, id, __, lookupActions, eventID: mainEventID }
     // loaded event
     if (event === "loaded") return setTimeout(eventExecuter({ string, event, eventID, id, lookupActions, __ }), 0)
     
-    // body event
+    //
     if (id !== eventID) {
       
       global.__events__[id] = global.__events__[id] || {}

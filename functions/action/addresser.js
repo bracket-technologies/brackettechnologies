@@ -48,7 +48,7 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
     address.paramsExecutionDuration = executionDuration
 
     // pass params
-    address.params = { __, id, _object, object, mount, toView, lookupActions: newLookupActions || lookupActions, condition }
+    address.params = { __, id, _object, object, mount, toView, action, lookupActions: newLookupActions || lookupActions, condition }
 
     // push to stack
     stack.addresses.unshift(address)

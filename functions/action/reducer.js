@@ -6,7 +6,7 @@ const { kernel } = require("./kernel")
 const { decode } = require("./decode")
 const { toAwait } = require("./toAwait")
 
-const reducer = ({ _window, lookupActions = [], stack = {}, id = "root", data: { path, value, key, object, _object }, __, e, req, res, mount, condition, toView }) => {
+const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, value, key, object, _object }, __, e, req, res, mount, condition, toView }) => {
 
     const { toValue } = require("./toValue")
     const { toParam } = require("./toParam")

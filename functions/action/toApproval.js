@@ -1,7 +1,7 @@
 const { decode } = require("./decode")
 const { isEqual } = require("./isEqual")
 
-const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root", __, req, res, object }) => {
+const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, req, res, object }) => {
 
   const { toAction } = require("./toAction")
   const { toValue } = require("./toValue")

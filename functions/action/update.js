@@ -28,7 +28,7 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
   if (!view) return
   
   // close publics
-  closePublicViews({ _window, id, __, lookupActions })
+  closePublicViews({ _window, id: data.id, __, stack, lookupActions })
 
   // get view to be rendered
   var reducedView = { ...(data.view ? data.view : clone(__viewPath__.reduce((o, k) => o[k], global.data.view))), __index__, __childIndex__, __view__: true, __viewPath__, __customViewPath__ }

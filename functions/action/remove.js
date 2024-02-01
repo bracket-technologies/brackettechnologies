@@ -33,7 +33,7 @@ const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
   }
 
   // close publics
-  closePublicViews({ _window, id, __, lookupActions })
+  closePublicViews({ _window, id, __, stack, lookupActions })
   
   // no data
   if (__dataPath__.length === 0) return removeView({ id, stack, main: true }).remove()
