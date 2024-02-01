@@ -1,7 +1,7 @@
 {
-  "name": "bracketjs",
+  "name": "brackettechnologies",
   "version": "1.0.0",
-  "description": "Bracket Website Builder",
+  "description": "Bracket Platform Builder",
   "scripts": {
     "lint": "eslint .",
     "serve": "firebase emulators:start --only functions",

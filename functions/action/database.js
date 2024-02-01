@@ -237,36 +237,6 @@ const postData = async ({ _window, req, res, save }) => {
   var ref = db.collection(collection)
   var success = false, message = "Missing data!"
 
- /* if (Array.isArray(data)) {
-
-    var batch = db.batch()
-
-    data.map((data, i) => {
-
-      if (!data["creation-date"] && req.headers.timestamp) {
-        data["creation-date"] = parseInt(req.headers.timestamp)
-      }
-
-      if (data.id === undefined) data.id = save.doc || generate({ length: 20 })
-      if (!data.id) return
-
-      batch.set(db.collection(collection).document(data.id.toString()), data)
-    })
-
-    // Commit the batch
-    batch.commit().then(() => {
-
-      success = true
-      message = `Document saved successfuly!`
-
-    }).catch(error => {
-
-      success = false
-      message = error
-    })
-
-  } else if (data) {*/
-
   var promises = toArray(data).map(async (data, i) => {
 
     data.id = data.id || (i === 0 && save.doc) || generate({ length: 60, timestamp: true })
