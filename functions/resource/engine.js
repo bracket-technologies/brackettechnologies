@@ -2363,7 +2363,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
             
             var logs = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: underScored ? [o, ...__] : __, data: arg, object: underScored ? object : (o.__view__ && o.id !== id && o || undefined) }))
             if (args.slice(1).length === 0 && pathJoined !== "log()") logs = [o]
-
+            
             console.log("LOG", decode({ _window, string: pathJoined }), ...logs)
             stack.logs.push(stack.logs.length + " LOG " + logs.join(" "))
 
@@ -4154,7 +4154,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
                 var address;
                 ([...toArray(o)]).reverse().map(o => {
                     // address
-                    address = addresser({ _window, id, stack, headAddress: address, type: "function", status: "Wait", action: "loop()", function: "reducer", asynchronous: true, __: [o, ...__], lookupActions, mount, data: { path: args[2] || [], value, object } }).address
+                    address = addresser({ _window, id, stack, headAddress: address, type: "function", status: "Wait", action: "loop()", function: "reducer", __: [o, ...__], lookupActions, mount, data: { path: args[2] || [], value, object } }).address
                 })
                 
                 // address
@@ -4166,7 +4166,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
                 var address;
                 ([...toArray(o)]).reverse().map(o => {
                     // address
-                    address = addresser({ _window, id, stack, headAddress: address, type: "function", status: "Wait", action: "loop()", function: "reducer", asynchronous: true, __, lookupActions, mount, data: { path: args[2] || [], value, object: o } }).address
+                    address = addresser({ _window, id, stack, headAddress: address, type: "function", status: "Wait", action: "loop()", function: "reducer", __, lookupActions, mount, data: { path: args[2] || [], value, object: o } }).address
                 })
 
                 // address
@@ -4744,6 +4744,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
             }
 
             var sender = false, headAddressID = stack.interpretingAddressID, respond = false
+            var address = stack.addresses.find(address => address.id === headAddressID)
+            if (!address) headAddressID = (stack.addresses.find(address => address.interpreting) || {}) .id
+
             while (!sender && headAddressID) {
 
                 var address = stack.addresses.find(address => address.id === headAddressID)
@@ -4778,13 +4781,13 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
                 stack.terminated = true
 
                 // logs
-                stack.logs.push(stack.logs.length + " SEND " + executionDuration)
+                console.log("SEND (" + executionDuration + ")")
+                stack.logs.push(stack.logs.length + " SEND (" + executionDuration + ")")
                 response.logs = stack.logs
 
                 // respond
                 res.send(response)
-
-            }// else toAwait({ _window, id, lookupActions, stack, addressID: stack.interpretingAddressID, __, req, res })
+            }
 
         } else if (k0 === "sent()") {
 
@@ -6571,6 +6574,7 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 
 module.exports = { toAction }
 },{"./action":1,"./actions.json":2,"./addresser":3,"./clone":5,"./toArray":63,"./toAwait":64}],62:[function(require,module,exports){
+const { decode } = require("./decode")
 const { isEqual } = require("./isEqual")
 
 const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root", __, req, res, object }) => {
@@ -6610,10 +6614,12 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root
     if (condition.includes("||")) {
       
       var conditions = condition.split("||"), i = 0
+      var key = conditions[0].split("=")[0]
+      if (key.at(-1) === "!") key = key.slice(0, -1)
       approval = false
 
       while (!approval && conditions[i] !== undefined) {
-        if (conditions[i].charAt(0) === "=") conditions[i] = conditions[0].split("=")[0] + conditions[i]
+        if (conditions[i].charAt(0) === "=" || conditions[i].slice(0, 2) === "!=") conditions[i] = key + conditions[i]
         approval = toApproval({ _window, lookupActions, stack, e, data: conditions[i], id, __, req, res, object })
         i += 1
       }
@@ -6691,7 +6697,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root
 
 module.exports = { toApproval }
 
-},{"./isEqual":35,"./toAction":61,"./toValue":78}],63:[function(require,module,exports){
+},{"./decode":14,"./isEqual":35,"./toAction":61,"./toValue":78}],63:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? data : [data]) : [];
 }
@@ -8024,7 +8030,7 @@ const continueToView = ({ _window, id, stack, __, address, lookupActions, req, r
   if (global.data.view[view.__name__]) return customView({ _window, id, lookupActions, address, stack, __, req, res })
   
   // data
-  view.data = kernel({ _window, id, data: { path: view.__dataPath__, _object: global[view.doc] || {}, value: view.data, key: true }, __ })
+  view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, _object: global[view.doc] || {}, value: view.data, key: true }, __ })
   
   // components
   componentModifier({ _window, id })

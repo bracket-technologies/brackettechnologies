@@ -10,7 +10,7 @@ const detector = new (require('node-device-detector'))({
 
 const initializer = ({ req, res, stack, data: { db, storage, rdb } }) => {
 
-    console.log(req.method, req.url);
+    console.log(req.method, req.url, req.body.action ? req.body.action.name + "()" : "");
 
     req.db = db
     req.storage = storage

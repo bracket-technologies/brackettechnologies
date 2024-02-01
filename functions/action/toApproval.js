@@ -1,3 +1,4 @@
+const { decode } = require("./decode")
 const { isEqual } = require("./isEqual")
 
 const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root", __, req, res, object }) => {
@@ -37,10 +38,12 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id = "root
     if (condition.includes("||")) {
       
       var conditions = condition.split("||"), i = 0
+      var key = conditions[0].split("=")[0]
+      if (key.at(-1) === "!") key = key.slice(0, -1)
       approval = false
 
       while (!approval && conditions[i] !== undefined) {
-        if (conditions[i].charAt(0) === "=") conditions[i] = conditions[0].split("=")[0] + conditions[i]
+        if (conditions[i].charAt(0) === "=" || conditions[i].slice(0, 2) === "!=") conditions[i] = key + conditions[i]
         approval = toApproval({ _window, lookupActions, stack, e, data: conditions[i], id, __, req, res, object })
         i += 1
       }

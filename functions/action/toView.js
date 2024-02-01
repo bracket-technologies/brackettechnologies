@@ -130,7 +130,7 @@ const continueToView = ({ _window, id, stack, __, address, lookupActions, req, r
   if (global.data.view[view.__name__]) return customView({ _window, id, lookupActions, address, stack, __, req, res })
   
   // data
-  view.data = kernel({ _window, id, data: { path: view.__dataPath__, _object: global[view.doc] || {}, value: view.data, key: true }, __ })
+  view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, _object: global[view.doc] || {}, value: view.data, key: true }, __ })
   
   // components
   componentModifier({ _window, id })
