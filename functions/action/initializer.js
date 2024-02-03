@@ -25,6 +25,7 @@ const initializer = ({ req, res, stack, data: { db, storage, rdb } }) => {
 
     var global = {
         __: [],
+        __dots__: [],
         __refs__: {},
         __events__: {},
         __calcTests__: {},
@@ -34,6 +35,7 @@ const initializer = ({ req, res, stack, data: { db, storage, rdb } }) => {
         __page__: page,
         __prevPath__: ["/"],
         __html__: { body: "", head: "" },
+        __server__: { startTime: (new Date()).getTime() },
         manifest: {
             id,
             path,
@@ -64,7 +66,6 @@ const initializer = ({ req, res, stack, data: { db, storage, rdb } }) => {
             collection: {}
         },
         path: path.join("/"),
-        __server__: { startTime: (new Date()).getTime() },
     }
 
     var views = { [id]: { id } }

@@ -1,4 +1,5 @@
-const timerLogger = ({ _window: { global }, key, start, end }) => {
+const timerLogger = ({ _window: { global }, data: { key, start, end } }) => {
+    
     if (!key) return
     if (start) global.__server__[`${key}StartTime`] = (new Date()).getTime()
     else if (end) {

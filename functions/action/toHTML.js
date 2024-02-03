@@ -24,7 +24,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
 
   // replace encoded spaces
   if (text) text = replaceNbsps(text)
-
+  
   // html
   var innerHTML = (view.__childrenRef__.map(({ id }) => views[id].__html__).join("") || text || "") + ""
 

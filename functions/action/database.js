@@ -47,15 +47,17 @@ const getData = async ({ _window, req, res, search }) => {
   if (((_window.global.data.project.datastore || {}).collections || []).includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${req.headers.project}`
 
-  var doc = search.document || search.doc,
-    docs = search.documents || search.docs,
-    field = search.field || search.fields,
+  var doc = search.doc,
+    docs = search.docs,
+    field = search.field,
     limit = search.limit || 1000,
     data = {}, success, message,
     ref = collection && db.collection(collection),
     promises = []
     
-  if (search.url) {
+  if ("url" in search) {
+
+    if (!search.url) return ({ data: {}, success: false, message: "Missing Url!" })
 
     var url = search.url
     delete search.url
@@ -84,7 +86,9 @@ const getData = async ({ _window, req, res, search }) => {
     return ({ data, success, message })
   }
 
-  if (docs) {
+  else if ("docs" in search) {
+
+    if (!docs) return ({ data: {}, success: false, message: "Missing Docs!" })
 
     var _docs = [], index = 1, length = Math.floor(search.docs.length / 10) + (search.docs.length % 10 > 0 ? 1 : 0), promises = []
     while (index <= length) {
@@ -112,7 +116,9 @@ const getData = async ({ _window, req, res, search }) => {
     return ({ data, success, message })
   }
 
-  if (doc) {
+  else if ("doc" in search) {
+
+    if (!doc) return ({ data: {}, success: false, message: "Missing Doc!" })
 
     await ref.doc(doc.toString()).get().then(doc => {
 
@@ -131,7 +137,7 @@ const getData = async ({ _window, req, res, search }) => {
     return ({ data, success, message })
   }
 
-  if (!field) {
+  else if (!("field" in search)) {
 
     if (search.orderBy || search.skip) ref = ref.orderBy(...toArray(search.orderBy || "id"))
     if (search.skip) ref = ref.offset(search.skip)
@@ -164,61 +170,63 @@ const getData = async ({ _window, req, res, search }) => {
     return ({ data, success, message })
   }
 
+  if (Object.values(field).length === 0) return ({ data: {}, success: false, message: "Missing Field!" })
+
   const myPromise = () => new Promise(async (resolve) => {
-try {
-    // search field
-    var multiIN = false, _ref = ref
-    if (field) Object.entries(field).map(([key, value]) => {
+    try {
+      // search field
+      var multiIN = false, _ref = ref
+      if (field) Object.entries(field).map(([key, value]) => {
 
-      if (typeof value !== "object") value = { equal: value }
-      var operator = toFirebaseOperator(Object.keys(value)[0])
-      var _value = value[Object.keys(value)[0]]
-      if (operator === "in" && _value.length > 10) {
+        if (typeof value !== "object") value = { equal: value }
+        var operator = toFirebaseOperator(Object.keys(value)[0])
+        var _value = value[Object.keys(value)[0]]
+        if (operator === "in" && _value.length > 10) {
 
-        field[key][Object.keys(value)[0]] = [..._value.slice(10)]
-        _value = [..._value.slice(0, 10)]
-        multiIN = true
+          field[key][Object.keys(value)[0]] = [..._value.slice(10)]
+          _value = [..._value.slice(0, 10)]
+          multiIN = true
+        }
+
+        _ref = _ref.where(key, operator, _value)
+      })
+
+      if (search.orderBy || search.skip) _ref = _ref.orderBy(...toArray(search.orderBy || "id"))
+      if (search.skip) _ref = _ref.offset(search.skip)
+      if (search.limitToLast) _ref = _ref.limitToLast(search.limitToLast)
+
+      if (search.startAt) _ref = _ref.startAt(search.startAt)
+      if (search.startAfter) _ref = _ref.startAfter(search.startAfter)
+
+      if (search.endAt) _ref = _ref.endAt(search.endAt)
+      if (search.endBefore) _ref = _ref.endBefore(search.endBefore)
+      if (limit || 100) _ref = _ref.limit(limit || 100)
+
+      // retrieve data
+      await _ref.get().then(query => {
+
+        success = true
+        query.docs.forEach(doc => data[doc.id] = doc.data())
+        message = `Documents mounted successfuly!`
+
+      }).catch(error => {
+
+        success = false
+        message = error
+      })
+
+      if (multiIN) {
+
+        var { data: _data } = await myPromise()
+        data = { ...data, ..._data }
       }
-      
-      _ref = _ref.where(key, operator, _value)
-    })
 
-    if (search.orderBy || search.skip) _ref = _ref.orderBy(...toArray(search.orderBy || "id"))
-    if (search.skip) _ref = _ref.offset(search.skip)
-    if (search.limitToLast) _ref = _ref.limitToLast(search.limitToLast)
+      resolve({ data, success, message })
 
-    if (search.startAt) _ref = _ref.startAt(search.startAt)
-    if (search.startAfter) _ref = _ref.startAfter(search.startAfter)
+    } catch (error) {
 
-    if (search.endAt) _ref = _ref.endAt(search.endAt)
-    if (search.endBefore) _ref = _ref.endBefore(search.endBefore)
-    if (limit || 100) _ref = _ref.limit(limit || 100)
-
-    // retrieve data
-    await _ref.get().then(query => {
-
-      success = true
-      query.docs.forEach(doc => data[doc.id] = doc.data())
-      message = `Documents mounted successfuly!`
-
-    }).catch(error => {
-
-      success = false
-      message = error
-    })
-
-    if (multiIN) {
-
-      var { data: _data } = await myPromise()
-      data = { ...data, ..._data }
+      resolve({ data, success: false, message: error })
     }
-
-    resolve({ data, success, message })
-  
-  } catch (error) {
-    
-    resolve({ data, success: false, message: error })
-  }
   })
 
   var { data, success, message } = await myPromise()

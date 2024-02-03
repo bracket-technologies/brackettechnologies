@@ -1,6 +1,7 @@
 const { executable } = require("./executable");
 const { generate } = require("./generate")
-const { isParam } = require("./isParam")
+const { isParam } = require("./isParam");
+const { lineInterpreter } = require("./lineInterpreter");
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -10,7 +11,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id, e, req, res, object, _object, mount, toView, condition, isValue }) => {
+const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id, e, req, res, object, _object, mount, toView, condition, isValue, key, param }) => {
 
   const { reducer } = require("./reducer")
   const { toParam } = require("./toParam")
@@ -28,6 +29,9 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
 
   // value is a param it has key=value
   if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, stack, e, data: value, _object, __, object, mount: !isValue && mount, toView, condition })
+
+  // value?condition?value
+  if (value.split("?").length > 1) return lineInterpreter({ _window, lookupActions, stack, id, e, data: {string: value, action: "toValue"}, req, res, mount, __, condition, object, toView }).data
 
   // no value
   if (value === "()") return view
@@ -92,11 +96,12 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
         var values = value.split("+").map(value => {
           
           var _value = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount })
+          
           if (allAreNumbers) {
 
             allAreArrays = false
             allAreObjects = false
-            if (isNumber(_value)) allAreNumbers = true
+            if (isNumber(value) || (executable({ _window, string: value }) && typeof _value === "number")) allAreNumbers = true
             else allAreNumbers = false
 
           } else if (allAreArrays) {

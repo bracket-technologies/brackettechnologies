@@ -4,12 +4,12 @@ const { isCondition } = require("./isCondition")
 const { executable } = require("./executable")
 const { clone } = require("./clone")
 
-const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, data: { string, dblExecute, index = 0, splitter = "?", action }, req, res, __, mount, condition, toView, object, _object }) => {
+const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, data: { string, dblExecute, index: i = 0, splitter = "?", action }, req, res, __, mount, condition, toView, object, _object }) => {
 
     require("./toParam")
     require("./toValue")
     require("./toApproval")
-
+    
     var global = _window ? _window.global : window.global
     var view = _window ? _window.views[id] : window.views[id]
 
@@ -20,7 +20,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
     var startTime = (new Date()).getTime(), success = true, data, returnForWaitActionExists = false
 
     // splitter is for ? or :
-    // index is for using name?params?conditions?elseparams
+    // i is for using name?params?conditions?elseparams
 
     var terminator = ({ data, order }) => {
         
@@ -51,7 +51,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
     }
 
     // subparams
-    if (index === 1) {
+    if (i === 1) {
 
         // list
         var substring = string.split(splitter)[0]
@@ -63,16 +63,38 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         // name has subparams => interpret
         if (substring.includes("?")) {
 
-            var data = lineInterpreter({ lookupActions, stack, id, e, data: { string: substring, index: 1 }, req, res, __, mount, condition, toView, object, _object })
+            var data = lineInterpreter({ lookupActions, stack, id, e, data: { string: substring, i: 1 }, req, res, __, mount, condition, toView, object, _object })
             if (data.conditionsNotApplied) return terminator({ data, order: 4 })
         }
     }
 
     var stringList = string.split(splitter)
-    var conditions = stringList[index + 1]
-    var elseParams = stringList[index + 2]
-    string = stringList[index + 0]
+    var elseIfList = string.split("??")
 
+    if (splitter === "?" && elseIfList[1]) {
+
+        // case: key=value??elseValue (condition is the key)
+        if (elseIfList[1] && !elseIfList[0].split("?")[1] && elseIfList[0].split("=")[1]) {
+
+            var key = elseIfList[0].split("=")[0]
+            string = toCode({ _window, id, string: key + "=[" + elseIfList[0].split("=").slice(1).join("=") + "?" + key + "?" + elseIfList.slice(1).join("?") + "]" })
+        
+        // case: key=value?condition??value1?condition1??value2?condition2 (?? is elseif)
+        } else if (elseIfList[1] && elseIfList[0].split("?")[1]) {
+
+            string = elseIfList.at(-1)
+            elseIfList.slice(0, -1).reverse().map(elseIf => string = elseIf + "?[" + string + "]")
+            console.log(string);
+            string = toCode({ _window, id, string })
+        }
+
+        stringList = string.split("?")
+    }
+
+    var conditions = stringList[i + 1]
+    var elseParams = stringList[i + 2]
+    string = stringList[i + 0]
+    
     var execute = ({ success, message, string, conditionsNotApplied }) => {
 
         var actionReturnID = generate(), data
@@ -88,7 +110,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         }
         
         data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object, _object, toView })
-        
+
         if (dblExecute && executable({ _window, string: data }))
             data = lineInterpreter({ _window, lookupActions, stack, id, e, data: { string: data }, req, res, __, mount, condition, toView, object, _object }).data
 

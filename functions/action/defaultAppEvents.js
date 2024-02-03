@@ -17,7 +17,7 @@ const defaultAppEvents = () => {
         if (global.__clicked__ && views.droplist.__element__.contains(global.__clicked__.__element__)) global["droplist-txt"] = global.__clicked__.__element__.innerHTML
 
         // body click events
-        Object.entries(global.__events__).map(([id, event]) => views[id] && event.click && event.click.map(data => (global.__clicked__ && (global.__clicked__.id === data.eventID || views[data.eventID].__element__.contains(global.__clicked__.__element__))) && eventExecuter({ ...data, e })))
+        Object.entries(global.__events__).map(([id, event]) => { views[id] && event.click && event.click.map(data => { global.__clicked__ && global.__clicked__.id === data.eventID && console.log("here", data);(global.__clicked__ && (global.__clicked__.id === data.eventID || views[data.eventID].__element__.contains(global.__clicked__.__element__))) && eventExecuter({ ...data, e }) }) })
     })
 
     // mousemove

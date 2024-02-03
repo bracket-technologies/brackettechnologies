@@ -5,6 +5,7 @@ const { closePublicViews } = require("./closePublicViews")
 const { toHTML } = require("./toHTML")
 const { removeView } = require("./view")
 const { generate } = require("./generate")
+const { addresser } = require("./addresser")
 
 const update = ({ _window, id, lookupActions, stack, address, req, res, __, data = {} }) => {
 
@@ -35,10 +36,13 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
 
   // data
   if (data.data) {
+
     reducedView.data = clone(data.data)
     reducedView.doc = data.doc || parent.doc || generate()
     global[reducedView.doc] = global[reducedView.doc] || reducedView.data
+
   } else if (data.doc) {
+
     reducedView.doc = data.doc
     global[reducedView.doc] = global[reducedView.doc] || reducedView.data || {}
   }
@@ -47,15 +51,17 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
   if (data.path !== undefined) reducedView.__dataPath__ = (Array.isArray(data.path) ? data.path : typeof data.path === "number" ? [data.path] : data.path.split(".")) || []
 
   // remove views
-  if (!data.insert) parent.__childrenRef__.filter(({ childIndex }) => childIndex === __childIndex__).map(({ id }) => elements.push(removeView({ _window, id, stack, main: true, insert: data.insert })))
+  if (!data.insert && parent.__rendered__) parent.__childrenRef__.filter(({ childIndex }) => childIndex === __childIndex__).map(({ id }) => elements.push(removeView({ _window, id, stack, main: true, insert: data.insert })))
+  else if (!parent.__rendered__) { removeView({ _window, id: data.id, stack, main: true }) }
+
+  // address for postUpdate
+  var address = addresser({ _window, id, stack, headAddress: address, status: "Wait", action: "postUpdate()", function: "postUpdate", file: "update", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent, address } }).address
 
   // render
   toView({ _window, lookupActions: myLookupActions, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
-
-  postUpdate({ _window, lookupActions, stack, __, req, res, address, id, parent, data: { ...data, childIndex: __childIndex__, elements, timer } })
 }
 
-const postUpdate = ({ _window, lookupActions, stack, __, req, res, address, id, parent, data: { childIndex, elements, route, timer, ...data } }) => {
+const postUpdate = ({ _window, lookupActions, stack, __, req, res, id, data: { childIndex, elements, route, timer, parent, address, ...data } }) => {
   
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -63,15 +69,14 @@ const postUpdate = ({ _window, lookupActions, stack, __, req, res, address, id, 
   // tohtml parent
   toHTML({ _window, lookupActions, stack, __, id: parent.id })
 
-  var renderedRefView = parent.__childrenRef__.filter(({ id, childIndex: cdIndex }) => cdIndex === childIndex && !views[id].__rendered__ && views[id])
+  var renderedRefView = parent.__childrenRef__.filter(({ id, childIndex: chdIndex }) => chdIndex === childIndex && !views[id].__rendered__ && views[id])
+
   var updatedViews = [], idLists = [], innerHTML = ""
-  var renderedID
 
   // insert absolutely
   renderedRefView.map(({ id }) => {
 
     var { __idList__, __html__ } = views[id]
-    renderedID = id
 
     // push to html
     innerHTML += __html__
@@ -82,55 +87,60 @@ const postUpdate = ({ _window, lookupActions, stack, __, req, res, address, id, 
     // start
     idLists.push(...[id, ...__idList__])
   })
-
-  var lDiv = document.createElement("div")
-  document.body.appendChild(lDiv)
-  lDiv.style.position = "absolute"
-  lDiv.style.opacity = "0"
-  lDiv.style.left = -1000
-  lDiv.style.top = -1000
-  lDiv.innerHTML = innerHTML
-  lDiv.children[0].style.opacity = "0"
-
-  // remove prev elements
-  elements.map(element => element.remove())
   
-  // innerHTML
-  renderedRefView.map(({ index }) => {
-    if (index >= parent.__element__.children.length || parent.__element__.children.length === 0) parent.__element__.appendChild(lDiv.children[0])
-    else parent.__element__.insertBefore(lDiv.children[0], parent.__element__.children[index])
-  })
+  // browser actions
+  if (!_window) {
 
-  idLists.map(id => starter({ _window, lookupActions, stack: address.stack, id }))
-  
-  // display
-  renderedRefView.map(({ id }) => views[id].__element__.style.opacity = "1")
+    var lDiv = document.createElement("div")
+    document.body.appendChild(lDiv)
+    lDiv.style.position = "absolute"
+    lDiv.style.opacity = "0"
+    lDiv.style.left = -1000
+    lDiv.style.top = -1000
+    lDiv.innerHTML = innerHTML
+    lDiv.children[0].style.opacity = "0"
 
-  console.log(data.action || (renderedRefView[0].id === "root" ? "ROUTE" : "UPDATE"), (new Date()).getTime() - timer, renderedRefView[0].id)
+    // remove prev elements
+    elements.map(element => element.remove())
+
+    // innerHTML
+    renderedRefView.map(({ index }) => {
+
+      if (index >= parent.__element__.children.length || parent.__element__.children.length === 0) parent.__element__.appendChild(lDiv.children[0])
+      else parent.__element__.insertBefore(lDiv.children[0], parent.__element__.children[index])
+    })
+
+    idLists.map(id => starter({ _window, lookupActions, stack, id }))
+    
+    // display
+    updatedViews.map(({ id }) => views[id].__element__.style.opacity = "1")
+
+    // rout
+    if (updatedViews[0].id === "root") {
+      
+      document.body.scrollTop = document.documentElement.scrollTop = 0
+      var title = route.title || views[global.manifest.page].title
+      var path = route.path || views[global.manifest.page].path
+      
+      history.pushState(null, title, path)
+      document.title = title
+
+      if (document.getElementById("loader-container")) document.getElementById("loader-container").style.display = "none"
+    }
+
+    if (lDiv) {
+
+      document.body.removeChild(lDiv)
+      lDiv = null
+    }
+  }
 
   var data = { view: updatedViews.length === 1 ? updatedViews[0] : updatedViews, message: "View updated successfully!", success: true }
 
-  // rout
-  if (renderedID === "root") {
-    
-    document.body.scrollTop = document.documentElement.scrollTop = 0
-    var title = route.title || views[global.manifest.page].title
-    var path = route.path || views[global.manifest.page].path
-    
-    history.pushState(null, title, path)
-    document.title = title
-
-    if (document.getElementById("loader-container")) document.getElementById("loader-container").style.display = "none"
-  }
-
-  if (lDiv) {
-
-    document.body.removeChild(lDiv)
-    lDiv = null
-  }
+  console.log(data.action || (updatedViews[0].id === "root" ? "ROUTE" : "UPDATE"), (new Date()).getTime() - timer, updatedViews[0].id)
 
   // await params
-  address && require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id: views[id] ? id : renderedID, __, _: data })
+  address && require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id: views[id] ? id : updatedViews[0].id, __, _: data })
 }
 
-module.exports = {update}
+module.exports = { update, postUpdate }

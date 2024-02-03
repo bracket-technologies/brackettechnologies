@@ -11,14 +11,6 @@ const { override } = require("./merge")
 const { toEvent } = require("./toEvent")
 const { kernel } = require("./kernel")
 
-function sleep(milliseconds) {
-  const date = Date.now();
-  let currentDate = null;
-  do {
-    currentDate = Date.now();
-  } while (currentDate - date < milliseconds);
-}
-
 const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req, res, mount, object, __, toView, condition }) => {
 
   const { toAction } = require("./toAction")
@@ -27,7 +19,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
   var params = object || {}
-  
+
   // returned
   if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.broke || stack.returned) return
 
@@ -37,27 +29,23 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
   if (string.charAt(0) === "@" && string.length == 6 && global.__refs__[string].type === "text") return global.__refs__[string].data
   if (string.charAt(0) === "@" && string.length == 6) string = global.__refs__[string].data
 
+  // check event else interpret
   if (string.split("?").length > 1) {
 
     // check if event
     if (isEvent({ _window, string })) return toEvent({ _window, string, id, __, lookupActions })
 
     // line interpreter
-    return lineInterpreter({ _window, lookupActions, stack, id, e, data: {string, action: "toParam"}, req, res, mount, __, condition, object, toView }).data
+    return lineInterpreter({ _window, lookupActions, stack, id, e, data: { string, action: "toParam" }, req, res, mount, __, condition, object, toView }).data
   }
 
   // conditions
   if (condition || isCondition({ _window, string })) return toApproval({ id, lookupActions, stack, e, data: string, req, res, _window, __, object })
 
   string.split(";").map(param => {
-    
+
     // no param || returned || comment
     if (!param || (stack.returns && stack.returns[0] || {}).returned || param.charAt(0) === "#" || stack.terminated || stack.broke || stack.returned) return
-    
-    // scope
-    if (string.charAt(0) === "@" && string.length == 6) {
-      return toParam({ _window, lookupActions, stack, data: global.__refs__[string].data, e, id, req, res, mount, object: {}, __, toView, condition }) 
-    }
 
     var key, value
     var view = views[id]
@@ -72,8 +60,10 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
     // key = key1 = ... = value
     if (value && value.includes("=")) {
+
       value = param.split("=").at(-1)
-      param = param.slice(0, lastValue.length * (-1) - 1)
+      param = param.slice(0, value.length * (-1) - 1)
+
       var newParam = key + "=" + value
       param.split("=").slice(1).map(key => { newParam += ";" + key + "=" + value })
       return params = { ...params, ...toParam({ _window, lookupActions, stack, data: param, e, id, req, res, mount, object, __, toView, condition }) }
@@ -102,7 +92,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
       key = key.slice(0, -1)
       var myVal = key.split(".")[0].includes("()") || key.includes("_") || key.split(".")[0] === "" ? key : (`().` + key)
-      var data = toCode({ _window, id, string: `[${myVal}||[if():[type():[${value}]=number]:0.elif():[type():[${value}]=map]:[].elif():[type():[${value}]=list]:[:]:]]` })
+      var data = toCode({ _window, id, string: toCode({ _window, id, string: `[${myVal}||[if():[type():[${value}]=number]:0.elif():[type():[${value}]=map]:[].elif():[type():[${value}]=list]:[:]:'']]`, start: "'" }) })
       value = `${data}+${value}`
     }
 
@@ -137,7 +127,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
       document.getElementById("loader-container").style.display = "flex"
       return sleep(30)
     }
-    
+
     // hide loader
     if (param === "loader.hide") {
       if (_window || !document.getElementById("loader-container")) return
@@ -145,7 +135,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
       return sleep(20)
     }
 
-    var path = typeof key === "string" ? key.split(".") : [], path0 = path[0].split(":")[0]
+    var path = typeof key === "string" ? key.split(".") : [], args = path[0].split(":"), path0 = path[0].split(":")[0]
 
     // .value => inherit object
     var inheritObject = false
@@ -154,11 +144,11 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     // interpret value
     if (typeof value === "string") {
 
-      value = toValue({ _window, lookupActions, stack, req, res, id, e, data: value, __, condition, object: inheritObject ? object : undefined, isValue: true })
+      value = toValue({ _window, lookupActions, stack, req, res, id, e, data: value, __, condition, object: inheritObject ? object : undefined, isValue: true, key, param })
       if (value && typeof value === "string") value = replaceNbsps(value)
 
     } else if (value === undefined) value = generate()
-    
+
     // :@1asd1
     if (path0 === "") return
 
@@ -170,32 +160,70 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
         return action
       }
     }
-    
+
+    // if()
+    if (path0 === "if()") {
+
+      var data = {}
+      var approved = toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object })
+
+      if (!approved) {
+
+        if (args[3]) {
+
+          data = toParam({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object, mount, toView })
+          path.shift()
+
+        } else if (path[1] && path[1].includes("elif()")) {
+
+          path.shift()
+          path[0] = path[0].slice(2)
+          data = toParam({ _window, lookupActions, stack, id, data: path.join("."), __, e, req, res, mount, condition })
+        }
+        
+        return params = override(params, data)
+
+      } else {
+
+        data = toParam({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
+
+        path.shift()
+
+        // remove elses and elifs
+        while (path[0] && path[0].includes("elif()")) { path.shift() }
+
+        // empty path
+        if (!path[0]) return params = override(params, data)
+      }
+
+      return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object: data, path, value, key, object, pathJoined: param } })
+    }
+
     // interpret key
-    if (path.length > 1 || path[0].includes("()") || object  || path[0].includes("@")) {
-      
+    if (path.length > 1 || path[0].includes("()") || object || path[0].includes("@")) {
+
       var dataPath
       if (toView && params.path) {
         dataPath = clone(params.path)
         delete params.path
       }
-      
+
       // interpret key
-      if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()"  || path[0].includes("_") || object) {
-        
+      if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()" || path[0].includes("_") || object) {
+
         reducer({ _window, lookupActions, stack, id, data: { path, value, key, object }, e, req, res, __, mount, toView, condition })
 
       } else {
 
         mount
-        ? reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: view }, e, req, res, __, mount, toView, condition })
-        : reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: params }, e, req, res, __, mount, toView, condition })
+          ? reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: view }, e, req, res, __, mount, toView, condition })
+          : reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: params }, e, req, res, __, mount, toView, condition })
       }
 
       if (!params.path && dataPath !== undefined) params.path = dataPath
-      
+
     } else if (key) {
-      
+
       if (key === "_" && __[0]) return __[0] = value
       if (id && view && mount) view[key] = value
       params[key] = value
@@ -212,7 +240,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
         view.doc = view.doc || generate()
         global[view.doc] = view.data = global[view.doc] || {}
       }
-    
+
       // mount path directly when found
       else if (key === "path" && params.path.toString().charAt(0) !== "/") {
 
@@ -224,10 +252,10 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
           view.doc = generate()
           global[view.doc] = view.data || {}
         }
-        
+
         // list path
         var myPath = (typeof dataPath === "string" || typeof dataPath === "number") ? dataPath.toString().split(".") : dataPath || []
-        
+
         // push path to __dataPath__
         view.__dataPath__.push(...myPath)
         view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, _object: global[view.doc], value: view.data, key: true } })
@@ -236,6 +264,14 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
   })
 
   return params
+}
+
+const sleep = (milliseconds) => {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
 }
 
 module.exports = { toParam }

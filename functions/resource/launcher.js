@@ -19,6 +19,7 @@ defaultAppEvents()
 // start app
 // starter({ id: "body" })
 views.body.__idList__.map(id => starter({ id }))
+views.body.__rendered__ = true
 
 // load arabic font
 var arDiv = document.createElement("P")

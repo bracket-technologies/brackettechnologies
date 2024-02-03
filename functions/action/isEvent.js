@@ -1,5 +1,7 @@
 var events = require("./events.json")
-const isEvent = ({ string }) => {
+
+const isEvent = ({ _window, string }) => {
+    
     if (string.split("?").length > 1) {
 
         var path = string.split("?")

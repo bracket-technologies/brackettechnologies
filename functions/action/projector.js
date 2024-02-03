@@ -31,8 +31,8 @@ const getProject = async ({ _window, req }) => {
 
     var { global } = _window
     var promises = []
-    timerLogger({ _window, key: "view", start: true })
-    timerLogger({ _window, key: "collection", start: true })
+    timerLogger({ _window, data: { key: "view", start: true } })
+    timerLogger({ _window, data: { key: "collection", start: true } })
 
     // views
     promises.push(req.db
@@ -42,7 +42,7 @@ const getProject = async ({ _window, req }) => {
             q.forEach(doc => {
                 global.data.view[doc.id] = { ...doc.data(), id: doc.id }
             })
-            timerLogger({ _window, key: "view", end: true })
+            timerLogger({ _window, data: { key: "view", end: true } })
         }))
 
     // collections
@@ -53,7 +53,7 @@ const getProject = async ({ _window, req }) => {
             q.forEach(doc => {
                 global.data.collection[doc.id] = { ...doc.data(), id: doc.id }
             })
-            timerLogger({ _window, key: "collection", end: true })
+            timerLogger({ _window, data: { key: "collection", end: true } })
         }))
 
     await Promise.all(promises)
@@ -69,17 +69,19 @@ const getProject = async ({ _window, req }) => {
 
 const renderer = ({ _window, req, res, stack, __ }) => {
 
-    var { global, views } = _window, page = global.manifest.page
-    timerLogger({ _window, key: "render", start: true })
+    var { global, views } = _window, page = global.manifest.page, dots = global.__dots__
+
+    timerLogger({ _window, data: { key: "render", start: true } })
 
     if (!global.data.view[page]) return res.send("Page not found!")
 
-    // address
-    var { address } = addresser({ _window, id: "document", type: "function", status: "Wait", file: "projector", function: "documenter", stack, renderer: true, action: "documenter()", __ })
+    // documenter
+    addresser({ _window, id: "document", type: "function", status: "Wait", file: "projector", function: "documenter", stack, renderer: true, action: "documenter()", __, dots }).address
 
+    var address = addresser({ _window, id: "document", type: "function", status: "Wait", file: "logger", function: "timerLogger", stack, __, dots, data: { key: "render", end: true } }).address
+    
     // render
-    toView({ _window, req, res, stack, __, address, data: { view: views.body, parent: "document" } })
-    timerLogger({ _window, key: "render", end: true })
+    toView({ _window, req, res, stack, __, dots, address, data: { view: views.body, parent: "document" } })
 }
 
 const documenter = async ({ _window, res, stack }) => {
@@ -110,7 +112,7 @@ const documenter = async ({ _window, res, stack }) => {
     // logs
     global.__server__.logs = stack.logs
 
-    timerLogger({ _window, key: "documentation", end: true })
+    timerLogger({ _window, data: { key: "documentation", end: true } })
 
     res.send(
         `<!DOCTYPE html>
@@ -181,7 +183,7 @@ const documenter = async ({ _window, res, stack }) => {
 
 const projector = async ({ _window, req, res, stack, __ }) => {
     
-    timerLogger({ _window, key: "documentation", start: true })
+    timerLogger({ _window, data: { key: "documentation", start: true } })
     
     initViews({ _window })
     await getProject({ _window, req, res, stack, __ })

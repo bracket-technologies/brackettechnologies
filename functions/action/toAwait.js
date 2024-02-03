@@ -67,6 +67,7 @@ const addressFunctionExecuter = ({ _window, lookupActions, stack, id, e, req, re
   require("./toView")
   require("./toHTML")
   require("./reducer")
+  require("./update")
 
   var method = address.function || "lineInterpreter"
   var file = address.file || method

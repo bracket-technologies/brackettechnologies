@@ -7,7 +7,7 @@ module.exports = {
     success, message, error,
     global = _window.global
 
-    timerLogger({ _window, key: "authorization", start: true })
+    timerLogger({ _window, data: { key: "authorization", start: true } })
     
     await ref.where("domains", "array-contains", global.manifest.host).get().then(doc => {
       
@@ -34,7 +34,7 @@ module.exports = {
         console.log(err);
     })
     
-    timerLogger({ _window, key: "authorization", end: true })
+    timerLogger({ _window, data: { key: "authorization", end: true } })
     
     return { success, message, error }
   }

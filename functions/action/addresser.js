@@ -8,7 +8,7 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
     if (headAddressID && !headAddress.id) headAddress = stack.addresses.find(headAddress => headAddress.id === headAddressID)
 
     // address waits
-    if (args[2]) headAddress = addresser({ _window, stack, req, res, e, type: "line", status: "Wait", action: action+"::[...]", data: { string: args[2] }, headAddress, blockable, interpretByValue, __, id, _object, object, mount, toView, lookupActions, condition }).address
+    if (args[2]) headAddress = addresser({ _window, stack, req, res, e, type: "line", status: "Wait", action: action + "::[...]", data: { string: args[2] }, headAddress, blockable, interpretByValue, __, id, _object, object, mount, toView, lookupActions, condition }).address
 
     var address = { id: generate(), viewID: id, type, data, status, file, function: func, hasWaits: args[2] ? true : false, headAddressID: headAddress.id, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
     var stackLength = stack.addresses.length
@@ -52,19 +52,16 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
 
     // push to stack
     stack.addresses.unshift(address)
-
-    // print collection with action name
-    if (action === "search()" || action === "save()" || action === "erase()") address.action += " " + data.collection
     
     // log
     if (!newLookupActions)
-     stack.logs.push(`${stack.logs.length} ${address.status} ${type.toUpperCase()} ${address.id} ${address.index} ${address.action} => ${headAddress.id || ""} ${headAddress.index || ""} ${headAddress.action || ""}`)
+     stack.logs.push(`${stack.logs.length} ${address.status} ${type.toUpperCase()} ${address.id} ${address.index} ${address.action} => ${headAddress.id || ""} ${headAddress.index || 0} ${headAddress.action || ""}`)
 
     return { address, data, __: [...(data !== undefined ? [data] : []), ...__] }
 }
 
 const printAddress = ({ stack, address, headAddress }) => {
-    stack.logs.push(`${stack.logs.length} ${address.status}${address.status === "End" ? (" (" + ((new Date()).getTime() - address.executionStartTime) + ") ") : " "}${address.type.toUpperCase()} ${address.id} ${address.index} ${address.action} => ${headAddress.id || ""} ${headAddress.index || ""} ${headAddress.action || ""}`)
+    stack.logs.push(`${stack.logs.length} ${address.status}${address.status === "End" ? (" (" + ((new Date()).getTime() - address.executionStartTime) + ") ") : " "}${address.type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action} => ${headAddress.id || ""} ${headAddress.index || 0} ${headAddress.action || ""}`)
 }
 
 module.exports = { addresser, printAddress }
