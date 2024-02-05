@@ -47,7 +47,7 @@ const merge = (array) => {
   return merged
 }
 
-const override = (obj1, obj2) => {
+const override = (obj1, obj2) => { // (old, new)
   obj1 = obj1 || {}
 
   Object.entries(obj2).map(([key, value]) => {

@@ -2,13 +2,13 @@ const { generate } = require("./generate");
 const { lineInterpreter } = require("./lineInterpreter");
 //const { stacker } = require("./stack");
 
-const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Start", file, data = "", function: func, newLookupActions, headAddressID, headAddress = {}, blockable = true, interpretByValue = false, asynchronous = false, interpreting = false, renderer = false, action, __, id, _object, object, mount, toView, lookupActions, condition }) => {
+const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Start", file, data = "", function: func, newLookupActions, headAddressID, headAddress = {}, blockable = true, interpretByValue = false, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, toView, lookupActions, condition }) => {
 
     // find headAddress by headAddressID
     if (headAddressID && !headAddress.id) headAddress = stack.addresses.find(headAddress => headAddress.id === headAddressID)
 
     // address waits
-    if (args[2]) headAddress = addresser({ _window, stack, req, res, e, type: "line", status: "Wait", action: action + "::[...]", data: { string: args[2] }, headAddress, blockable, interpretByValue, __, id, _object, object, mount, toView, lookupActions, condition }).address
+    if (args[2]) headAddress = addresser({ _window, stack, req, res, e, type: "line", status: "Wait", action: action + "::[...]", data: { string: args[2] }, headAddress, blockable, interpretByValue, __, id, object, mount, toView, lookupActions, condition }).address
 
     var address = { id: generate(), viewID: id, type, data, status, file, function: func, hasWaits: args[2] ? true : false, headAddressID: headAddress.id, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
     var stackLength = stack.addresses.length
@@ -44,11 +44,11 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
     }
 
     // data
-    var { data, executionDuration } = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: { string: args[1], action: interpretByValue && "toValue" }, _object, object })
+    var { data, executionDuration } = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: { string: args[1] }, object, action: interpretByValue && "toValue" })
     address.paramsExecutionDuration = executionDuration
 
     // pass params
-    address.params = { __, id, _object, object, mount, toView, action, lookupActions: newLookupActions || lookupActions, condition }
+    address.params = { __, id, object, mount, toView, action, lookupActions: newLookupActions || lookupActions, condition }
 
     // push to stack
     stack.addresses.unshift(address)

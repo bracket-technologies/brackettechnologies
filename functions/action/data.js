@@ -1,6 +1,5 @@
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
-const { setContent } = require("./setContent")
 const { setData } = require("./setData")
 
 const createData = ({ data, id }) => {
@@ -27,7 +26,6 @@ const clearData = ({ id, e, clear = {}, __ }) => {
   
   reducer({ id, e, data: { path, object: global[view.doc] }, __ })
 
-  setContent({ id })
   console.log("data removed", global[view.doc])
 }
 

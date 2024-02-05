@@ -96,7 +96,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, dots
   // params
   if (params) {
 
-    lineInterpreter({ _window, lookupActions, stack, data: { string: params, action: "toParam" }, id, req, res, mount: true, toView: true, __, dots }).data
+    lineInterpreter({ _window, lookupActions, stack, data: { string: params }, id, req, res, mount: true, toView: true, __, dots, action: "toParam" }).data
 
     if (view.id !== id) {
       
@@ -130,7 +130,7 @@ const continueToView = ({ _window, id, stack, __, dots, address, lookupActions, 
   if (global.data.view[view.__name__]) return customView({ _window, id, lookupActions, address, stack, __, dots, req, res })
   
   // data
-  view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, _object: global[view.doc] || {}, value: view.data, key: true }, __, dots })
+  view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, data: global[view.doc] || {}, value: view.data, key: true }, __, dots })
   
   // components
   componentModifier({ _window, id })
@@ -284,7 +284,7 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, dots, address, da
   var { doc, data = {}, __dataPath__ = [], mount, path, keys, preventDefault, ...myparams } = data
   
   // data
-  data = kernel({ _window, lookupActions, stack, id, data: { path: __dataPath__, _object: global[doc] }, req, res, __, dots })
+  data = kernel({ _window, lookupActions, stack, id, data: { path: __dataPath__, data: global[doc] }, req, res, __, dots })
 
   var loopData = []
   var isObj = !Array.isArray(data) && typeof data === "object"

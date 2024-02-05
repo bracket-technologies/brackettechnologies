@@ -30,7 +30,7 @@ const { decode } = require("./decode")
 const { toAwait } = require("./toAwait")
 const { searchParams } = require("./searchParams")
 
-const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { _object, path, pathJoined, value, key, object } }) => {
+const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: _object, path, pathJoined, value, key, object } }) => {
 
     const { toValue, isNumber } = require("./toValue")
     const { toParam } = require("./toParam")
@@ -45,7 +45,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
     var pathJoined = pathJoined || path.join("."), breakRequest
     
     // no path but there is value
-    if (path.length === 0 && key && value !== undefined) return _object = value
+    if (path.length === 0 && key && value !== undefined) return value
 
     var answer = path.reduce((o, k, i) => {
 
@@ -87,6 +87,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
             stack.logs.push(stack.logs.length + " LOG " + logs.join(" "))
 
             return o
+
         } else if (k0 !== "data()" && k0 !== "doc()" && path[i + 1] === "del()") {
 
             breakRequest = i + 1
@@ -153,6 +154,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
                     else answer = o[data] = {}
                 }
                 else answer = o[data]
+
             } else answer = data
 
         } else if (k0 === "data()") {
@@ -163,11 +165,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] || "" })
 
-            if (data.path) return answer = kernel({ req, res, _window, lookupActions, stack, id, e, data: { _object: data.data || global[data.doc || o.doc], value, key, path: data.path, object }, __, dots })
+            if (data.path) return answer = kernel({ req, res, _window, lookupActions, stack, id, e, data: { data: data.data || global[data.doc || o.doc], value, key, path: data.path, object }, __, dots })
 
             if (!o.doc) return
-
-            answer = kernel({ req, res, _window, lookupActions, stack, id, data: { path: [...o.__dataPath__, ...path.slice(i + 1)], object, _object: global[o.doc], value, key }, __, dots, e })
+            
+            answer = kernel({ req, res, _window, lookupActions, stack, id, data: { path: [...o.__dataPath__, ...path.slice(i + 1)], object, data: global[o.doc], value, key }, __, dots, e })
 
         } else if (k0 === "doc()") {
 
@@ -430,7 +432,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
         } else if (k0 === "qr()") {
 
             // wait address
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "qr()", object, toView, _object, lookupActions, __, dots, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "qr()", object, toView, lookupActions, __, dots, id })
 
             qr({ _window, id, req, res, data, e, __, dots, stack, address, lookupActions })
 
@@ -614,7 +616,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
             if (!isNaN(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e }))) { // interval():params:timer
 
                 var timer = parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e }))
-                var myFn = () => toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1], mount: true })
+                var myFn = () => toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1], object })
                 answer = setInterval(myFn, timer)
             }
 
@@ -632,7 +634,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             var timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object })) : 0
             var repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, dots, e, object })) : false
-            var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e, object, toView, mount }) }
+            var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e, object, toView }) }
 
             if (typeof repeats === "boolean") {
 
@@ -686,7 +688,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots })
             if (Array.isArray(data)) data = { path: data }
-            answer = reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.value !== undefined ? true : key, value: data.value !== undefined ? data.value : value }, e, req, res, __, mount })
+            answer = reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.value !== undefined ? true : key, value: data.value !== undefined ? data.value : value }, e, req, res, __ })
 
         } else if (k0 === "path()") {
 
@@ -898,11 +900,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
         } else if (k0 === "push()") {
 
-            if (!Array.isArray(o)) o = kernel({ req, res, _window, id, data: { path: path.slice(0, i), value: [], key: true, object, _object }, __, dots, e })
+            if (!Array.isArray(o)) o = kernel({ req, res, _window, id, data: { data: _object, path: path.slice(0, i), value: [], key: true, object }, __, dots, e })
 
             var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e, object })
             var index = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object })
-
+            
+            if (!Array.isArray(o)) return
             if (index === undefined) index = o.length || 0
             
             if (Array.isArray(item)) {
@@ -1042,13 +1045,13 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
         } else if (k0 === "require()") {
 
-            require(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
+            require(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots }))
 
         } else if (k0 === "new()") {
 
-            var data = [], className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var data = [], className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
             args.slice(1).map(arg => {
-                data.push(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg || "" }))
+                data.push(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg || "", dots }))
             })
             if (className && typeof (new [className]()) === "object") answer = new [className](...data)
 
@@ -1069,14 +1072,14 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
         } else if (k0 === "clock()") { // dd:hh:mm:ss
             
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots })
             if (!data.timestamp) data.timestamp = o
 
             answer = toClock(data)
 
         } else if (k0 === "toSimplifiedDate()") {
 
-            var data = toParam({ _window, req, res, lookupActions, stack, id, e, data: args[1], __ })
+            var data = toParam({ _window, req, res, lookupActions, stack, id, e, data: args[1], __, dots })
             answer = toSimplifiedDate({ timestamp: o, lang: data.lang || "en", timer: data.time || false })
 
         } else if (k0 === "ar()") {
@@ -1086,7 +1089,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
         } else if (k0 === "date()") {
 
-            var data = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack })
+            var data = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack, dots })
             if (isNumber(data) && typeof data === "string") data = parseInt(data)
             answer = new Date(data)
 
@@ -1094,7 +1097,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             if (isParam({ _window, string: args[1] })) {
 
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
                 var format = data.format, day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
 
                 if (typeof o === "string") {
@@ -1141,7 +1144,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             } else {
 
-                var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) || "format1"
+                var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots }) || "format1"
 
                 if (!isNaN(o) && typeof o === "string") o = parseInt(o)
                 var date = new Date(o)
@@ -1165,9 +1168,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
             var data = {}
             if (isParam({ _window, string: args[1] })) {
 
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
             } else if (args[1]) {
-                data = { date: toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) }
+                data = { date: toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots }) }
             } else data = { date: o }
 
             var format = data.format || "yyyy-mm-dd"
@@ -1262,8 +1265,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
         } else if (k0 === "counter()") {
 
             var data = {}
-            if (isParam({ _window, string: args[1] })) data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+            if (isParam({ _window, string: args[1] })) data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
+            else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots })
 
             data.counter = data.counter || data.start || data.count || 0
             data.length = data.length || data.len || data.maxLength || 0
@@ -1316,7 +1319,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
         } else if (k0 === "getDateTime()") {
 
-            var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+            var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots })
             answer = getDateTime(o, format)
 
         } else if (k0 === "getDaysInMonth()") {
@@ -1684,7 +1687,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
         } else if (k0 === "replace()") { // replace():prev:new
 
-            if (!Array.isArray(o) && typeof o !== "string") o = reducer({ req, res, _window, id, data: { path: path.slice(0, i), value: [], key: true, object: _object }, __, e })
+            if (!Array.isArray(o) && typeof o !== "string") o = kernel({ req, res, _window, id, data: { data: _object, path: path.slice(0, i), value: [], key: true, object }, __, e, dots })
 
             var rec0, rec1
 
@@ -1709,9 +1712,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
             if (!Array.isArray(o)) return
             if (isParam({ _window, string: args[1] })) {
 
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
                 var _path = data.path, _data = data.data
-                var _index = o.findIndex((item, index) => isEqual(reducer({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, object: item }, e, __: [o, ...__] }), reducer({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, object: _data }, __: [o, ...__], e })))
+                var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, data: item }, e, __: [o, ...__], dots }), kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, data: _data }, __: [o, ...__], e, dots })))
                 if (_index >= 0) o[_index] = _data
                 else o.push(_data)
 
@@ -1736,18 +1739,18 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             if (isParam({ _window, string: args[1] })) {
 
-                var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
                 var _path = _params.path, _data = _params.data.filter(data => data !== undefined && data !== null)
                 toArray(_data).map(_data => {
 
-                    var _index = o.findIndex((item, index) => isEqual(reducer({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], value, object: item }, __: [o, ...__], e }), reducer({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], value, object: _data }, __: [o, ...__], e })))
+                    var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], value, data: item }, __: [o, ...__], e, dots }), reducer({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], value, data: _data }, __: [o, ...__], e, dots })))
                     if (_index >= 0) o[_index] = _data
                     else o.push(_data)
                 })
 
             } else if (args[1]) {
 
-                var _data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }).filter(data => data !== undefined && data !== null)
+                var _data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots }).filter(data => data !== undefined && data !== null)
                 if (typeof o[0] === "object") {
 
                     toArray(_data).map(_data => {
@@ -1778,12 +1781,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
         } else if (k0 === "return()") {
 
-            stack.returns[0].data = answer = toValue({ _window, data: args[1], e, id, object, __, stack, lookupActions })
+            stack.returns[0].data = answer = toValue({ _window, data: args[1], e, id, object, __, stack, lookupActions, dots })
             stack.returns[0].returned = true
 
         } else if (k0 === "export()") {
 
-            var data = lineInterpreter({ _window, req, res, _window, id, e, __, data: { string: args[1] } }).data
+            var data = lineInterpreter({ _window, req, res, _window, id, e, __, data: { string: args[1] }, dots }).data
 
             if (data.json) data.type = "json"
             if (data.csv) data.type = "csv"
@@ -1798,11 +1801,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
         } else if (k0 === "import()") {
 
             // wait address
-            var address = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "import()", object, toView, _object, lookupActions, __, id })
+            var address = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "import()", object, toView, lookupActions, __, dots, id })
             var { address, data } = address
 
             if (data.json) data.type = "json"
-            importFile({ req, res, _window, address, lookupActions, stack, id, e, __, data })
+            importFile({ req, res, _window, address, lookupActions, stack, id, e, __, dots, data })
 
             return true
 
@@ -1813,7 +1816,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
                     o = [...o]
                     answer = o.flat()
                 } else {
-                    //_object = {..._object, ...o}
+                    
                     if (typeof _object === "object") Object.entries(o).map(([key, value]) => _object[key] = value)
                     return _object
                 }
@@ -1835,8 +1838,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
             if (isnot) answer = toArray(o).filter(o => o !== "" && o !== undefined && o !== null)
             else args.map(arg => {
 
-                if (underScored) answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: arg, id, __: [o, ...__], req, res }))
-                else answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: arg, id, object: o, req, res, __ }))
+                if (underScored) answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: arg, id, __: [o, ...__], dots, req, res }))
+                else answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: arg, id, object: o, req, res, __, dots }))
             })
 
         } else if (k0 === "find()") {
@@ -1844,23 +1847,23 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
             if (i === lastIndex && key && value !== undefined) {
 
                 var index
-                if (underScored) index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-                else index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+                if (underScored) index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], dots, req, res }))
+                else index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, dots, req, res, object: o }))
                 if (index !== undefined && index !== -1) o[index] = answer = value
 
             } else {
 
-                if (underScored) answer = toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-                else answer = toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+                if (underScored) answer = toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], dots, req, res }))
+                else answer = toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, dots, req, res, object: o }))
             }
 
         } else if (k0 === "sort()") {
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
             if (!data.data) data.data = o
 
             // else return o
-            data.data = answer = require("./sort").sort({ _window, lookupActions, stack, __, sort: data, id, e })
+            data.data = answer = require("./sort").sort({ _window, lookupActions, stack, __, dots, sort: data, id, e })
 
             return answer
 
@@ -1868,8 +1871,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             if (typeof o !== "object") return
 
-            if (underScored) answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-            else answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+            if (underScored) answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], dots, req, res }))
+            else answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, dots, req, res, object: o }))
 
         } else if (k0 === "()") { // map()
 
@@ -1883,12 +1886,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             if (args[1] && underScored) {
 
-                toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object, value }, __: [o, ...__], e, toView }))
+                toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object, value }, __: [o, ...__], dots, e, toView }))
                 answer = o
 
             } else if (args[1]) {
 
-                answer = toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object: o, value }, __, e, toView }))
+                answer = toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object: o, value }, __, dots, e, toView }))
             
             } else if (args[2] && underScored) {
 
@@ -1896,11 +1899,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
                 var address;
                 ([...toArray(o)]).reverse().map(o => {
                     // address
-                    address = addresser({ _window, id, stack, headAddress: address, type: "function", status: "Wait", action: "loop()", function: "reducer", __: [o, ...__], lookupActions, mount, data: { path: args[2] || [], value, object } }).address
+                    address = addresser({ _window, id, stack, headAddress: address, type: "function", status: "Wait", action: "loop()", function: "reducer", __: [o, ...__], dots, lookupActions, data: { path: args[2] || [], value, object } }).address
                 })
                 
                 // address
-                if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+                if (address) toAwait({ _window, id, lookupActions, stack, address, __, dots, req, res })
 
             } else if (args[2]) {
 
@@ -1908,11 +1911,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
                 var address;
                 ([...toArray(o)]).reverse().map(o => {
                     // address
-                    address = addresser({ _window, id, stack, headAddress: address, type: "function", status: "Wait", action: "loop()", function: "reducer", __, lookupActions, mount, data: { path: args[2] || [], value, object: o } }).address
+                    address = addresser({ _window, id, stack, headAddress: address, type: "function", status: "Wait", action: "loop()", function: "reducer", __, dots, lookupActions, data: { path: args[2] || [], value, object: o } }).address
                 })
 
                 // address
-                if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+                if (address) toAwait({ _window, id, lookupActions, stack, address, __, dots, req, res })
             } 
 
             stack.loop = false
@@ -1922,7 +1925,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
         } else if (k0 === "html2pdf()") {
 
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "html2pdf()", mount, object, toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "html2pdf()", object, toView, lookupActions, __, dots, id })
 
             var options = {
                 margin: .25,
@@ -2002,7 +2005,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             if (isParam({ _window, string: args[1] })) { // share():[text;title;url;files]
 
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || {}, images = []
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots }) || {}, images = []
                 data.files = toArray(data.file || data.files) || []
                 if (data.image || data.images) data.images = toArray(data.image || data.images)
 
@@ -2023,7 +2026,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
                 }
 
             } else if (args[1]) { // share():url
-                navigator.share({ url: toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) })
+                navigator.share({ url: toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] }) })
             }
 
         } else if (k0 === "loader()") {
@@ -2032,12 +2035,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             if (isParam({ _window, string: args[1] })) {
 
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
                 if (data.hide) data.show = false
 
             } else {
 
-                var show = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var show = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
                 if (show === "show") data.show = true
                 else if (show === "hide") data.show = false
             }
@@ -2100,21 +2103,17 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
         } else if (k0 === "type()") {
 
-            if (args[1]) answer = getType(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
+            if (args[1]) answer = getType(toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] }))
             else answer = getType(o)
 
         } else if (k0 === "coords()") {
 
-            var _id = o.id
-            if (args[1]) _id = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            require("./getCoords")({ id: _id || id })
+            if (!o.__view__) return
+            require("./getCoords")({ id: o.id })
 
         } else if (k0 === "price()") {
 
-            var _price
-            if (args[1]) _price = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            else _price = o
-            answer = parseFloat(_price);
+            answer = parseFloat(o)
             answer = formatter.format(answer).slice(1)
 
         } else if (k0 === "bool()") {
@@ -2132,7 +2131,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
         } else if (k0 === "round()") {
 
             if (isNumber(o)) {
-                var nth = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 2
+                var nth = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots }) || 2
                 answer = parseFloat(o || 0).toFixed(nth)
             }
 
@@ -2200,11 +2199,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
             // getCookie():name
             if (isParam({ _window, string: args[1], req, res })) {
 
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
                 return getCookie({ ...data, req, res, _window })
             }
 
-            var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
             var _cookie = getCookie({ name: _name, req, res, _window })
             return _cookie
 
@@ -2214,10 +2213,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             // getCookie():name
             if (isParam({ _window, req, res, string: args[1] })) {
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
                 return eraseCookie({ ...data, req, res, _window })
             }
-            var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+
+            var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
             var _cookie = eraseCookie({ name: _name, req, res, _window })
             return _cookie
 
@@ -2231,7 +2231,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
                 args.slice(1).map(arg => {
 
-                    var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: arg })
+                    var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: arg })
                     setCookie({ ...data, req, res, _window })
 
                     cookies.push(data)
@@ -2239,9 +2239,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             } else {
 
-                var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                var _value = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] })
-                var _expiryDate = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[3] })
+                var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
+                var _value = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[2] })
+                var _expiryDate = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[3] })
 
                 setCookie({ name: _name, value: _value, expires: _expiryDate, req, res, _window })
             }
@@ -2252,7 +2252,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
         } else if (k0 === "cookie()") {
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
 
             if (_window && data.method === "post" || data.method === "delete") return views.root.__controls__.push({ event: `loading?${pathJoined}` })
             if (data.method === "post") return setCookie({ ...data, req, res, _window })
@@ -2265,7 +2265,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
         } else if (k0 === "colorize()") {
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1] || "", __ })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1] || "", __, dots })
             answer = colorize({ _window, string: o, ...data })
 
         } else if (k0 === "deepChildren()") {
@@ -2274,7 +2274,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
         } else if (k0 === "note()") { // note
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
             note({ note: data })
 
         } else if (k0 === "readonly()") {
@@ -2309,9 +2309,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             var index = 0
             var range = []
-            var startIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) : 0 || 0
-            var endIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] }) : toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            var steps = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[3] }) || 1
+            var startIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] }) : 0 || 0
+            var endIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[2] }) : toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
+            var steps = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[3] }) || 1
             var lang = args[4] || ""
             index = startIndex
 
@@ -2329,60 +2329,60 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             if (!o.__view__) return
             
-            var { address, data = {} } = addresser({ _window, stack, args, type: "render", interpreting: true, renderer: true, id: o.id, action: "view()", object, toView, _object, lookupActions, __, id })
+            var { address, data = {} } = addresser({ _window, stack, args, type: "render", interpreting: true, renderer: true, id: o.id, action: "view()", object, toView, lookupActions, __, dots, id })
             data.view = data.view || o
             
-            require("./toView").toView({ _window, id: o.id, e, __, stack, address, lookupActions, data, req, res })
+            require("./toView").toView({ _window, id: o.id, e, __, dots, stack, address, lookupActions, data, req, res })
 
         } else if (k0 === "html()") {
             
             if (!o.__view__) return
             
-            require("./toHTML").toHTML({ _window, id: o.id, type: "render", e, __, stack, lookupActions, data })
+            require("./toHTML").toHTML({ _window, id: o.id, type: "render", e, __, dots, stack, lookupActions, data })
 
         } else if (k0 === "droplist()") {
 
-            var { address, data } = addresser({ _window, stack, args, id: o.id, action: "droplist()", object, toView, _object, lookupActions, __, id })
-            require("./droplist").droplist({ id, e, data, __, stack, lookupActions, address })
+            var { address, data } = addresser({ _window, stack, args, id: o.id, action: "droplist()", object, toView, lookupActions, __, dots, id })
+            require("./droplist").droplist({ id, e, data, __, dots, stack, lookupActions, address })
 
         } else if (k0 === "route()") {
 
-            var { address, data } = addresser({ _window, stack, args, type: "action", interpretByValue: true, blockable: false, renderer: true, id: o.id, action: "route()", object, toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, type: "action", interpretByValue: true, blockable: false, renderer: true, id: o.id, action: "route()", object, toView, lookupActions, __, dots, id })
             if (typeof data === "string") data = { page: data }
-            require("./route").route({ _window, lookupActions, stack, address, id, req, res, route: data, __ })
+            require("./route").route({ _window, lookupActions, stack, address, id, req, res, route: data, __, dots })
 
         } else if (k0 === "update()") {
 
             if (!o.__view__) return o
 
-            var { address, data = {} } = addresser({ _window, stack, args, type: "action", interpretByValue: true, renderer: true, blockable: false, id: o.id, action: "update()", object, toView, _object, lookupActions, __, id })
-            require("./update").update({ _window, lookupActions, stack, req, res, id, address, __, data: { id: data.id || o.id, ...data } })
+            var { address, data = {} } = addresser({ _window, stack, args, type: "action", interpretByValue: true, renderer: true, blockable: false, id: o.id, action: "update()", object, toView, lookupActions, __, dots, id })
+            require("./update").update({ _window, lookupActions, stack, req, res, id, address, __, dots, data: { id: data.id || o.id, ...data } })
 
         } else if (k0 === "insert()") {
 
             if (!o.__view__) return o
 
             // wait address
-            var { address, data = {} } = addresser({ _window, stack, args, type: "action", renderer: true, id: o.id, action: "insert()", toView, _object, lookupActions, __, id })
+            var { address, data = {} } = addresser({ _window, stack, args, type: "action", renderer: true, id: o.id, action: "insert()", toView, lookupActions, __, dots, id })
             if (data.__view__) data = { view: data }
             data.parent = o.id
 
-            require("./insert").insert({ id, insert: data, lookupActions, stack, address, __ })
+            require("./insert").insert({ id, insert: data, lookupActions, stack, address, __, dots })
 
         } else if (k0 === "confirmEmail()") {
 
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "confirmEmail()", object, toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "confirmEmail()", object, toView, lookupActions, __, dots, id })
             data.store = "confirmEmail"
-            require("./save").save({ id, lookupActions, stack, address, e, __, save: data })
+            require("./save").save({ id, lookupActions, stack, address, e, __, dots, save: data })
 
         } else if (k0 === "mail()") {
 
             if (!o.__view__) return o
 
             // wait address
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "mail()", object, toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "mail()", object, toView, lookupActions, __, dots, id })
 
-            require("./mail").mail({ req, res, _window, lookupActions, stack, address, id, e, __, data })
+            require("./mail").mail({ req, res, _window, lookupActions, stack, address, id, e, __, dots, data })
             return true
 
         } else if (k0 === "print()") {
@@ -2391,8 +2391,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             var data = {}
             if (isParam({ _window, string: args[1] }))
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            else data.file = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
+            else data.file = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
 
             data.files = (data.file ? toArray(data.file) : data.files) || []
 
@@ -2425,7 +2425,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
                         global.files = global.fileReader
                         console.log(global.files, global.file);
                         var my_ = { success: true, data: global.files.length === 1 ? global.files[0] : global.files }
-                        toParam({ req, res, _window, lookupActions, stack, id, e, __: [my_, ...__], data: args[2] })
+                        toParam({ req, res, _window, lookupActions, stack, id, e, __: [my_, ...__], dots, data: args[2] })
                     }
                 }
 
@@ -2438,32 +2438,32 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
         } else if (k0 === "upload()") {
 
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, type: "async", action: "upload()", object, toView, _object, lookupActions, __, id })
-            require("./upload")({ _window, lookupActions, stack, address, req, res, id, e, upload: data, __ })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, type: "async", action: "upload()", object, toView, lookupActions, __, dots, id })
+            require("./upload")({ _window, lookupActions, stack, address, req, res, id, e, upload: data, __, dots })
                 
         } else if (k0 === "search()") {
 
-            var { address, data } = addresser({ _window, stack, args, req, res, asynchronous: true, id: o.id, type: "async", action: "search()", mount, object, toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, req, res, asynchronous: true, id: o.id, type: "async", action: "search()", object, toView, lookupActions, __, dots, id })
             // var data = searchParams({ _window, lookupActions, stack, address, id, e, __, req, res, string: args[1], object })
 
             address.action += " " + data.collection
-            require("./search").search({ _window, lookupActions, stack, address, id, e, __, req, res, data })
+            require("./search").search({ _window, lookupActions, stack, address, id, e, __, dots, req, res, data })
             return true
 
         } else if (k0 === "erase()") {
 
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, type: "async", action: "erase()", mount, object, toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, type: "async", action: "erase()", object, toView, lookupActions, __, dots, id })
 
             address.action += " " + data.collection
-            require("./erase").erase({ _window, lookupActions, stack, address, id, e, __, req, res, erase: data })
+            require("./erase").erase({ _window, lookupActions, stack, address, id, e, __, dots, req, res, erase: data })
             return true
 
         } else if (k0 === "save()") {
 
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, type: "async", action: "save()", mount, object, toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, type: "async", action: "save()", object, toView, lookupActions, __, dots, id })
 
             address.action += " " + data.collection
-            require("./save").save({ _window, lookupActions, stack, address, id, e, __, req, res, save: data })
+            require("./save").save({ _window, lookupActions, stack, address, id, e, __, dots, req, res, save: data })
             return true
 
         } else if (k0 === "send()") {
@@ -2477,7 +2477,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             if (isParam({ _window, string: args[1] })) {
 
-                response = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                response = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
                 response.success = response.success !== undefined ? response.success : true
                 response.message = response.message || response.msg || "Action executed successfully!"
                 response.executionDuration = executionDuration
@@ -2485,7 +2485,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             } else {
 
-                var data = toValue({ req, res, _window, lookupActions, id, e, __, data: args[1] })
+                var data = toValue({ req, res, _window, lookupActions, id, e, __, dots, data: args[1] })
                 response = { success: true, message: "Action executed successfully!", data, executionDuration }
             }
 
@@ -2542,18 +2542,18 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
         } else if (k0 === "setPosition()" || k0 === "position()") {
 
-            var position = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var position = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
             return require("./setPosition").setPosition({ position, id: o.id || id, e })
 
         } else if (k0 === "csvToJson()") {
 
-            var file = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            require("./csvToJson").csvToJson({ id, lookupActions, stack, e, file, onload: args[2] || "", __ })
+            var file = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
+            require("./csvToJson").csvToJson({ id, lookupActions, stack, e, file, onload: args[2] || "", __, dots })
 
         } else if (k0 === "copyToClipBoard()") {
 
             var text
-            if (args[1]) text = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            if (args[1]) text = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
             else text = o
 
             if (navigator.clipboard) answer = navigator.clipboard.writeText(text)
@@ -2572,7 +2572,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
         } else if (k0 === "addClass()") {
 
             if (!o.__view__) return o
-            var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
+            var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], dots, data: args[1] })
             if (o.__element__) answer = o.__element__.classList.add(_class)
 
         } else if (k0 === "remClass()") {
@@ -2598,14 +2598,14 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             answer = o[k0.slice(0, -2)](...data)
 
-        } else if (k0.slice(-2) === "()") {
+        } else if (k0.slice(-2) === "()") { // action()
 
             if (k0.charAt(0) === "@" && k0.length == 6) k0 = toValue({ req, res, _window, id, e, __, data: k0, object })
 
             if (underScored) {
-                answer = toAction({ _window, lookupActions, stack, id, req, res, __: [o, ...__], e, path: [k], path0: k0, condition, mount, toView, object })
+                answer = toAction({ _window, lookupActions, stack, id, req, res, __: [o, ...__], e, path: [k], path0: k0, condition, toView, object })
             } else {
-                answer = toAction({ _window, lookupActions, stack, id, req, res, __, e, path: [k], path0: k0, condition, mount, toView, object: object || o })
+                answer = toAction({ _window, lookupActions, stack, id, req, res, __, e, path: [k], path0: k0, condition, toView, object: object || o })
             }
 
         } else if (k.includes(":@")) {
@@ -2617,7 +2617,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
 
             o[k0] = o[k0] || {}
 
-            if (mount && events.includes(k0)) {
+            if (events.includes(k0)) {
 
                 if (!o.__view__) return
 
@@ -2627,7 +2627,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, moun
                 else return views[id].__controls__.push({ event: k0 + "?" + data, id, __, lookupActions, eventID: o.id })
             }
 
-            args[1] = ((global.__refs__["@" + args[1].slice(-5)] || {}).data || "").split(".")
+            args[1] = (global.__refs__[args[1]].data || "").split(".")
             if (args[1]) answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { path: [...args.slice(1).flat(), ...path.slice(i + 1)], object: o[k0], key }, __ })
             else return
 

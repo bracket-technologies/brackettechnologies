@@ -23,7 +23,7 @@ const action = async ({ _window, lookupActions, stack, address, id, req, __, res
 }
 
 module.exports = { action }
-},{"./toAwait":65,"axios":93}],2:[function(require,module,exports){
+},{"./toAwait":64,"axios":92}],2:[function(require,module,exports){
 module.exports=[
   "data()", "Data()", "doc()", "mail()", "function()", "exec()", "notification()", "notify()", "alert()", "tag()", "view()"
  , "style()", "className()", "getChildrenByClassName()", "erase()", "insert()", "setChild()", "same()", "checker()"
@@ -54,13 +54,13 @@ const { generate } = require("./generate");
 const { lineInterpreter } = require("./lineInterpreter");
 //const { stacker } = require("./stack");
 
-const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Start", file, data = "", function: func, newLookupActions, headAddressID, headAddress = {}, blockable = true, interpretByValue = false, asynchronous = false, interpreting = false, renderer = false, action, __, id, _object, object, mount, toView, lookupActions, condition }) => {
+const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Start", file, data = "", function: func, newLookupActions, headAddressID, headAddress = {}, blockable = true, interpretByValue = false, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, toView, lookupActions, condition }) => {
 
     // find headAddress by headAddressID
     if (headAddressID && !headAddress.id) headAddress = stack.addresses.find(headAddress => headAddress.id === headAddressID)
 
     // address waits
-    if (args[2]) headAddress = addresser({ _window, stack, req, res, e, type: "line", status: "Wait", action: action + "::[...]", data: { string: args[2] }, headAddress, blockable, interpretByValue, __, id, _object, object, mount, toView, lookupActions, condition }).address
+    if (args[2]) headAddress = addresser({ _window, stack, req, res, e, type: "line", status: "Wait", action: action + "::[...]", data: { string: args[2] }, headAddress, blockable, interpretByValue, __, id, object, mount, toView, lookupActions, condition }).address
 
     var address = { id: generate(), viewID: id, type, data, status, file, function: func, hasWaits: args[2] ? true : false, headAddressID: headAddress.id, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
     var stackLength = stack.addresses.length
@@ -96,11 +96,11 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
     }
 
     // data
-    var { data, executionDuration } = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: { string: args[1], action: interpretByValue && "toValue" }, _object, object })
+    var { data, executionDuration } = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: { string: args[1] }, object, action: interpretByValue && "toValue" })
     address.paramsExecutionDuration = executionDuration
 
     // pass params
-    address.params = { __, id, _object, object, mount, toView, action, lookupActions: newLookupActions || lookupActions, condition }
+    address.params = { __, id, object, mount, toView, action, lookupActions: newLookupActions || lookupActions, condition }
 
     // push to stack
     stack.addresses.unshift(address)
@@ -294,7 +294,7 @@ const colorizeCoded = ({ _window, index, string, colors }) => {
 }
 
 module.exports = { colorize }
-},{"./decode":14,"./toArray":64}],8:[function(require,module,exports){
+},{"./decode":14,"./toArray":63}],8:[function(require,module,exports){
 const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
 
   var cookie = document.cookie || ""
@@ -482,11 +482,10 @@ module.exports = {
         reader.readAsBinaryString(file || e.target.files[0]);
     }
 }
-},{"./toParam":75}],12:[function(require,module,exports){
+},{"./toParam":74}],12:[function(require,module,exports){
 (function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
-const { setContent } = require("./setContent")
 const { setData } = require("./setData")
 
 const createData = ({ data, id }) => {
@@ -513,14 +512,13 @@ const clearData = ({ id, e, clear = {}, __ }) => {
   
   reducer({ id, e, data: { path, object: global[view.doc] }, __ })
 
-  setContent({ id })
   console.log("data removed", global[view.doc])
 }
 
 module.exports = { createData, setData, clearData }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":5,"./reducer":48,"./setContent":55,"./setData":56}],13:[function(require,module,exports){
+},{"./clone":5,"./reducer":47,"./setData":55}],13:[function(require,module,exports){
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { toCode } = require("./toCode")
 const { toArray } = require("./toArray")
@@ -850,7 +848,7 @@ module.exports = {
   deletedb,
   deleteData
 }
-},{"./generate":24,"./lineInterpreter":41,"./toArray":64,"./toCode":68,"./toFirebaseOperator":72,"axios":93}],14:[function(require,module,exports){
+},{"./generate":24,"./lineInterpreter":41,"./toArray":63,"./toCode":67,"./toFirebaseOperator":71,"axios":92}],14:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   var global = _window ? _window.global : window.global
@@ -902,7 +900,7 @@ const defaultAppEvents = () => {
         if (global.__clicked__ && views.droplist.__element__.contains(global.__clicked__.__element__)) global["droplist-txt"] = global.__clicked__.__element__.innerHTML
 
         // body click events
-        Object.entries(global.__events__).map(([id, event]) => { views[id] && event.click && event.click.map(data => { global.__clicked__ && global.__clicked__.id === data.eventID && console.log("here", data);(global.__clicked__ && (global.__clicked__.id === data.eventID || views[data.eventID].__element__.contains(global.__clicked__.__element__))) && eventExecuter({ ...data, e }) }) })
+        Object.entries(global.__events__).map(([id, event]) => { views[id] && event.click && event.click.map(data => (global.__clicked__ && (global.__clicked__.id === data.eventID || views[data.eventID].__element__.contains(global.__clicked__.__element__))) && eventExecuter({ ...data, e }) ) })
     })
 
     // mousemove
@@ -1245,7 +1243,7 @@ module.exports = { defaultInputHandler }
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
 }*/
-},{"./colorize":7,"./data":12,"./isArabic":32,"./replaceNbsps":50,"./resize":51,"./toCode":68}],17:[function(require,module,exports){
+},{"./colorize":7,"./data":12,"./isArabic":32,"./replaceNbsps":49,"./resize":50,"./toCode":67}],17:[function(require,module,exports){
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { jsonToBracket } = require("./jsonToBracket")
@@ -1433,7 +1431,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":5,"./jsonToBracket":38,"./lineInterpreter":41,"./reducer":48,"./update":81}],18:[function(require,module,exports){
+},{"./clone":5,"./jsonToBracket":38,"./lineInterpreter":41,"./reducer":47,"./update":80}],18:[function(require,module,exports){
 const axios = require("axios")
 const { deleteData } = require("./database")
 const { jsonToBracket } = require("./jsonToBracket")
@@ -1475,7 +1473,7 @@ const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase
 }
 
 module.exports = { erase }
-},{"./database":13,"./jsonToBracket":38,"./toAwait":65,"axios":93}],19:[function(require,module,exports){
+},{"./database":13,"./jsonToBracket":38,"./toAwait":64,"axios":92}],19:[function(require,module,exports){
 const { toCode } = require("./toCode")
 const { stacker, printStack } = require("./stack")
 const { lineInterpreter } = require("./lineInterpreter")
@@ -1636,7 +1634,7 @@ const modifyEvent = ({ eventID, string, event }) => {
 
 module.exports = { addEventListener, defaultEventHandler, eventExecuter }
 
-},{"./clone":5,"./lineInterpreter":41,"./stack":59,"./toCode":68,"./watch":85}],20:[function(require,module,exports){
+},{"./clone":5,"./lineInterpreter":41,"./stack":58,"./toCode":67,"./watch":84}],20:[function(require,module,exports){
 module.exports=[
   "mouseenter", "mouseleave",  "mouseover", "mousemove", "mousedown", "mouseup", "touchstart", 
   "touchend", "touchmove", "touchcancel", "click", "change", "focus", "blur", "keypress", "keyup", 
@@ -1800,7 +1798,7 @@ const getType = (value) => {
   if (typeof value === "string") return "string"
 }
 module.exports = { getType }
-},{"./toValue":79}],29:[function(require,module,exports){
+},{"./toValue":78}],29:[function(require,module,exports){
 const nthParent = ({ _window, nth, o }) => {
 
     if (!o.__view__) return o
@@ -1901,7 +1899,7 @@ const importFile = ({ _window, id, e, __, ...params }) => {
 }
 
 module.exports = {importFile, getJson}
-},{"./clone":5,"./toAwait":65}],31:[function(require,module,exports){
+},{"./clone":5,"./toAwait":64}],31:[function(require,module,exports){
 const { clone } = require("./clone")
 const { decode } = require("./decode")
 const { generate } = require("./generate")
@@ -2003,7 +2001,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 }
 
 module.exports = { insert }
-},{"./clone":5,"./decode":14,"./generate":24,"./kernel":39,"./remove":49,"./toCode":68,"./toValue":79,"./update":81}],32:[function(require,module,exports){
+},{"./clone":5,"./decode":14,"./generate":24,"./kernel":39,"./remove":48,"./toCode":67,"./toValue":78,"./update":80}],32:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -2287,9 +2285,9 @@ const { remove } = require("./remove")
 const events = require("./events.json")
 const { decode } = require("./decode")
 const { toAwait } = require("./toAwait")
-const { operatorToText } = require("./operatorToText")
+const { searchParams } = require("./searchParams")
 
-const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, pathJoined, value, key, object } }) => {
+const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { data: _object, path, pathJoined, value, key, object } }) => {
 
     const { toValue, isNumber } = require("./toValue")
     const { toParam } = require("./toParam")
@@ -2304,7 +2302,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
     var pathJoined = pathJoined || path.join("."), breakRequest
     
     // no path but there is value
-    if (path.length === 0 && key && value !== undefined) return _object = value
+    if (path.length === 0 && key && value !== undefined) return value
 
     var answer = path.reduce((o, k, i) => {
 
@@ -2339,17 +2337,18 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         if (k0 === "log()") { // log
             
-            var logs = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: underScored ? [o, ...__] : __, data: arg, object: underScored ? object : (o.__view__ && o.id !== id && o || undefined) }))
+            var logs = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: underScored ? [o, ...__] : __, dots, data: arg, object: underScored ? object : (o.__view__ && o.id !== id && o || undefined) }))
             if (args.slice(1).length === 0 && pathJoined !== "log()") logs = [o]
             
             console.log("LOG", decode({ _window, string: pathJoined }), ...logs)
             stack.logs.push(stack.logs.length + " LOG " + logs.join(" "))
 
             return o
+
         } else if (k0 !== "data()" && k0 !== "doc()" && path[i + 1] === "del()") {
 
             breakRequest = i + 1
-            if (k.charAt(0) === "@" && k.length === 6) k = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: k, object })
+            if (k.charAt(0) === "@" && k.length === 6) k = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: k, object })
 
             if (Array.isArray(o)) {
                 if (!isNumber(k)) {
@@ -2365,8 +2364,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "while()") {
 
-            while (toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })) {
-                toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e })
+            while (toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e })) {
+                toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e })
             }
 
         } else if (underScored && !k0) { // _
@@ -2392,7 +2391,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             var data
             if (k0.charAt(0) === "@" && global.__refs__[k0].type === "text") data = global.__refs__[k0].data
-            else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: global.__refs__[k0].data, __, object })
+            else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: global.__refs__[k0].data, __, dots, object })
 
             if (typeof data !== "object") {
 
@@ -2408,10 +2407,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
                 } else if (i === lastIndex && key && value !== undefined) answer = o[data] = value
                 else if (i !== lastIndex && key && value !== undefined && o[data] === undefined) {
 
-                    if (isNumber(toValue({ req, res, _window, lookupActions, stack, id, data: path[i + 1], __, e, object }))) answer = o[data] = []
+                    if (isNumber(toValue({ req, res, _window, lookupActions, stack, id, data: path[i + 1], __, dots, e, object }))) answer = o[data] = []
                     else answer = o[data] = {}
                 }
                 else answer = o[data]
+
             } else answer = data
 
         } else if (k0 === "data()") {
@@ -2420,13 +2420,13 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             breakRequest = true
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] || "" })
 
-            if (data.path) return answer = kernel({ req, res, _window, lookupActions, stack, id, e, data: { _object: data.data || global[data.doc || o.doc], value, key, path: data.path, object }, __ })
+            if (data.path) return answer = kernel({ req, res, _window, lookupActions, stack, id, e, data: { data: data.data || global[data.doc || o.doc], value, key, path: data.path, object }, __, dots })
 
             if (!o.doc) return
-
-            answer = kernel({ req, res, _window, lookupActions, stack, id, data: { path: [...o.__dataPath__, ...path.slice(i + 1)], object, _object: global[o.doc], value, key }, __, e })
+            
+            answer = kernel({ req, res, _window, lookupActions, stack, id, data: { path: [...o.__dataPath__, ...path.slice(i + 1)], object, data: global[o.doc], value, key }, __, dots, e })
 
         } else if (k0 === "doc()") {
 
@@ -2437,24 +2437,24 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
                 if (isParam({ _window, string: args[1] })) {
 
-                    data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                    data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
                     args[1] = data.path || data.__dataPath__ || []
                     if (typeof args[1] === "string") args[1] = args[1].split(".")
 
-                    return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
+                    return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __, dots })
                 }
 
                 if (args[1].charAt(0) === "@") args[1] = global.__refs__[args[1]].data
-                args[1] = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+                args[1] = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e })
                 if (typeof args[1] === "string") args[1] = args[1].split(".")
 
-                return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
+                return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __, dots })
             }
 
             if (path[i + 1] !== undefined) {
 
-                if (path[i + 1] && path[i + 1].charAt(0) === "@") path[i + 1] = toValue({ req, res, _window, lookupActions, stack, id, data: global.__refs__[path[i + 1]].data, __, e })
-                answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...path.slice(i + 1)], object }, __ })
+                if (path[i + 1] && path[i + 1].charAt(0) === "@") path[i + 1] = toValue({ req, res, _window, lookupActions, stack, id, data: global.__refs__[path[i + 1]].data, __, dots, e })
+                answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...path.slice(i + 1)], object }, __, dots })
 
             } else if (key && value !== undefined) {
                 answer = global[doc] = value
@@ -2475,7 +2475,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "nthParent()") {
 
             if (!o.__view__) return
-            var nth = toValue({ _window, id, e, lookupActions, stack, __, data: args[1] })
+            var nth = toValue({ _window, id, e, lookupActions, stack, __, dots, data: args[1] })
             return nthParent({ _window, nth, o })
 
         } else if (k0 === "prevSiblings()") {
@@ -2510,7 +2510,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "nthNext()") {
 
             if (!o.__view__) return
-            var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
+            var nth = toValue({ _window, __, dots, value: args[1], e, id, lookupActions, stack })
             return nthNext({ _window, nth, o })
 
         } else if (k0 === "last()") {
@@ -2531,7 +2531,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "nthLast()") {
 
             if (!o.__view__) return
-            var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
+            var nth = toValue({ _window, __, dots, value: args[1], e, id, lookupActions, stack })
             if (!isNumber(nth)) return
             return views[views[o.__parent__].__childrenRef__.slice(-1 * nth)[0].id]
 
@@ -2553,7 +2553,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "nthSibling()") {
             
             if (!o.__view__) return o
-            var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
+            var nth = toValue({ _window, id, e, __, dots, value: args[1], lookupActions, stack })
             return views[views[o.__parent__].__childrenRef__[nth - 1].id]
 
         } else if (k0 === "grandChild()") {
@@ -2581,7 +2581,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "nthPrev()") {
 
             if (!o.__view__) return
-            var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
+            var nth = toValue({ _window, id, e, __, dots, value: args[1], lookupActions, stack })
             return nthPrev({ _window, nth, o })
 
         } else if (k0 === "1stChild()" || k0 === "child()") {
@@ -2602,7 +2602,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "nthChild()") {
 
             if (!o.__view__) return
-            var nth = toValue({ _window, __, value: args[1], e, id, stack, lookupActions })
+            var nth = toValue({ _window, __, dots, value: args[1], e, id, stack, lookupActions })
             if (!isNumber(nth)) return
             if (!o.__childrenRef__[nth - 1]) return
             return views[o.__childrenRef__[nth - 1].id]
@@ -2625,7 +2625,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "nthLastChild()") {
             
             if (!o.__view__) return
-            var nth = toValue({ _window, __, value: args[1], e, id })
+            var nth = toValue({ _window, __, dots, value: args[1], e, id })
             if (!isNumber(nth)) return
             return views[o.__childrenRef__.slice(-1 * nth)[0].id]
 
@@ -2641,18 +2641,18 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "3rdLastEl()") {
             return o[o.length - 3]
         } else if (k0 === "nthLastEl()") {
-            var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
+            var nth = toValue({ _window, __, dots, value: args[1], e, id, lookupActions, stack })
             return o[o.length - nth]
         } else if (k0 === "name()") {
 
-            var name = toValue({ _window, id, e, object, value: args[1], __ })
+            var name = toValue({ _window, id, e, object, value: args[1], __, dots })
             if (name === o.__name__) return o
             var children = getDeepChildren({ _window, id: o.id })
             return children.find(view => view.__name__ === name)
 
         } else if (k0 === "names()") {
 
-            var name = toValue({ _window, id, e, object, value: args[1], __ })
+            var name = toValue({ _window, id, e, object, value: args[1], __, dots })
             var children = getDeepChildren({ _window, id: o.id })
             return children.filter(view => view.__name__ === name)
 
@@ -2674,7 +2674,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
                 return o.__element__.style
             }
 
-            var styles = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var styles = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
 
             if (Object.keys(styles).length > 0) {
 
@@ -2689,16 +2689,16 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "qr()") {
 
             // wait address
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "qr()", object, toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "qr()", object, toView, lookupActions, __, dots, id })
 
-            qr({ _window, id, req, res, data, e, __, stack, address, lookupActions })
+            qr({ _window, id, req, res, data, e, __, dots, stack, address, lookupActions })
 
         } else if (k0 === "contact()") {
 
-            var data = toValue({ req, res, _window, id, e, __, data: args[1] })
+            var data = toValue({ req, res, _window, id, e, __, dots, data: args[1] })
             if (typeof data !== "obejct") return o
 
-            vcard({ _window, id, req, res, data, e, __ })
+            vcard({ _window, id, req, res, data, e, __, dots })
 
         } else if (k0 === "bracket()") {
 
@@ -2731,7 +2731,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "px()") {
 
-            if (args[1]) return lengthConverter(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
+            if (args[1]) return lengthConverter(toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] }))
             return lengthConverter(o)
 
         } else if (k0 === "touchable()") {
@@ -2742,7 +2742,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "className()") {
 
             if (!o.__view__) return
-            var className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var className = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
 
             answer = [...o.__element__.getElementsByClassName(className)]
             answer = answer.map(o => window.views[o.id])
@@ -2870,17 +2870,17 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "interval()") {
 
             if (!o.__view__) return
-            if (!isNaN(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))) { // interval():params:timer
+            if (!isNaN(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e }))) { // interval():params:timer
 
-                var timer = parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))
-                var myFn = () => toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], mount: true })
+                var timer = parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e }))
+                var myFn = () => toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1], mount: true })
                 answer = setInterval(myFn, timer)
             }
 
         } else if (k0 === "repeat()") {
 
-            var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
-            var times = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
+            var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e, object })
+            var times = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object })
             var loop = []
             for (var i = 0; i < times; i++) {
                 loop.push(item)
@@ -2889,9 +2889,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "timer()") { // timer():params:timer:repeats
 
-            var timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })) : 0
-            var repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object })) : false
-            var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object, toView, mount }) }
+            var timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object })) : 0
+            var repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, dots, e, object })) : false
+            var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e, object, toView }) }
 
             if (typeof repeats === "boolean") {
 
@@ -2915,8 +2915,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             if (!Array.isArray(o) && typeof o !== "string" && typeof o !== "number") return
 
-            var start = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object })
-            var end = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[2], __, object })
+            var start = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots, object })
+            var end = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[2], __, dots, object })
 
             if (end !== undefined) {
 
@@ -2941,10 +2941,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
                 else answer = o.split(start)[1]
             }
 
-        } else if (k0 === "reduce()") {
+        } else if (k0 === "reduce()") { // o.reduce():[path=]
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            answer = reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.value !== undefined ? true : key, value: data.value !== undefined ? data.value : value }, e, req, res, __, mount })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots })
+            if (Array.isArray(data)) data = { path: data }
+            answer = reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.value !== undefined ? true : key, value: data.value !== undefined ? data.value : value }, e, req, res, __ })
 
         } else if (k0 === "path()") {
 
@@ -2953,9 +2954,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
                 if (isParam({ _window, string: args[1] })) {
 
-                    data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                    data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
 
-                } else data.path = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+                } else data.path = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots })
             }
 
             if ((key && value !== undefined && lastIndex) || data.value !== undefined) {
@@ -2979,7 +2980,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "contains()") {
 
-            var first = o, next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            var first = o, next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e })
             if (!first || !next) return
             
             if (typeof first === "string") first = views[first]
@@ -2997,7 +2998,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "in()") {
 
-            var next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            var next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e })
             
             if (next) {
                 if (typeof o === "string" || Array.isArray(o) || typeof o === "number") return answer = next.includes(o)
@@ -3007,7 +3008,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "is()") {
 
-            var b = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            var b = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e })
             answer = isEqual(o, b)
 
         } else if (k0 === "opp()") {
@@ -3055,12 +3056,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
             var notify = () => {
                 if (isParam({ _window, string: args[1] })) {
 
-                    var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                    var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
                     new Notification(_params.title || "", _params)
 
                 } else {
 
-                    var title = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                    var title = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
                     new Notification(title || "")
                 }
             }
@@ -3087,7 +3088,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "alert()") {
 
-            var text = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            var text = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e })
             alert(text)
 
         } else if (k0 === "clone()") {
@@ -3096,7 +3097,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "override()") {
 
-            var obj1 = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            var obj1 = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e })
             override(o, obj1)
 
         } else if (k0 === "txt()") {
@@ -3156,11 +3157,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "push()") {
 
-            if (!Array.isArray(o)) o = kernel({ req, res, _window, id, data: { path: path.slice(0, i), value: [], key: true, object, _object }, __, e })
+            if (!Array.isArray(o)) o = kernel({ req, res, _window, id, data: { data: _object, path: path.slice(0, i), value: [], key: true, object }, __, dots, e })
 
-            var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
-            var index = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
-
+            var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e, object })
+            var index = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object })
+            
+            if (!Array.isArray(o)) return
             if (index === undefined) index = o.length || 0
             
             if (Array.isArray(item)) {
@@ -3185,12 +3187,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             // if no index pull the last element
             var lastIndex = 1, firstIndex
-            if (!isParam({ _window, id, string: args[1] })) firstIndex = args[1] !== undefined ? toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack }) : 0
-            if (args[2]) lastIndex = toValue({ _window, id, data: args[2], __, e, object, lookupActions, stack })
+            if (!isParam({ _window, id, string: args[1] })) firstIndex = args[1] !== undefined ? toValue({ _window, id, data: args[1], __, dots, e, object, lookupActions, stack }) : 0
+            if (args[2]) lastIndex = toValue({ _window, id, data: args[2], __, dots, e, object, lookupActions, stack })
 
             if (typeof firstIndex !== "number") { // first is a condition
 
-                var items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __, lookupActions, stack }))
+                var items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __, dots, lookupActions, stack }))
 
                 items.filter(data => data !== undefined && data !== null).map(_item => {
                     var _index = o.findIndex(item => isEqual(item, _item))
@@ -3205,7 +3207,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "pullItem()") { // pull by item
 
-            var item = toValue({ _window, id, data: args[1], __, e, object })
+            var item = toValue({ _window, id, data: args[1], __, dots, e, object })
             var index = o.findIndex(_item => isEqual(_item, item))
             if (index !== -1) o.splice(index, 1)
             answer = o
@@ -3244,14 +3246,14 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             if (isParam({ _window, string: args[1] })) {
 
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
                 data.length = data.length || data.len || 5
                 data.number = data.number || data.num
                 answer = generate(data)
 
             } else {
 
-                var length = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 5
+                var length = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] }) || 5
                 answer = generate({ length })
             }
 
@@ -3264,7 +3266,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "incAny()") {
 
-            var items = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+            var items = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots })
             answer = false
 
             if (typeof o === "string") {
@@ -3300,13 +3302,13 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "require()") {
 
-            require(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
+            require(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots }))
 
         } else if (k0 === "new()") {
 
-            var data = [], className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var data = [], className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
             args.slice(1).map(arg => {
-                data.push(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg || "" }))
+                data.push(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg || "", dots }))
             })
             if (className && typeof (new [className]()) === "object") answer = new [className](...data)
 
@@ -3327,14 +3329,14 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "clock()") { // dd:hh:mm:ss
             
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots })
             if (!data.timestamp) data.timestamp = o
 
             answer = toClock(data)
 
         } else if (k0 === "toSimplifiedDate()") {
 
-            var data = toParam({ _window, req, res, lookupActions, stack, id, e, data: args[1], __ })
+            var data = toParam({ _window, req, res, lookupActions, stack, id, e, data: args[1], __, dots })
             answer = toSimplifiedDate({ timestamp: o, lang: data.lang || "en", timer: data.time || false })
 
         } else if (k0 === "ar()") {
@@ -3344,7 +3346,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "date()") {
 
-            var data = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack })
+            var data = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack, dots })
             if (isNumber(data) && typeof data === "string") data = parseInt(data)
             answer = new Date(data)
 
@@ -3352,7 +3354,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             if (isParam({ _window, string: args[1] })) {
 
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
                 var format = data.format, day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
 
                 if (typeof o === "string") {
@@ -3399,7 +3401,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             } else {
 
-                var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) || "format1"
+                var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots }) || "format1"
 
                 if (!isNaN(o) && typeof o === "string") o = parseInt(o)
                 var date = new Date(o)
@@ -3423,9 +3425,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
             var data = {}
             if (isParam({ _window, string: args[1] })) {
 
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
             } else if (args[1]) {
-                data = { date: toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) }
+                data = { date: toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots }) }
             } else data = { date: o }
 
             var format = data.format || "yyyy-mm-dd"
@@ -3520,8 +3522,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "counter()") {
 
             var data = {}
-            if (isParam({ _window, string: args[1] })) data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+            if (isParam({ _window, string: args[1] })) data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
+            else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots })
 
             data.counter = data.counter || data.start || data.count || 0
             data.length = data.length || data.len || data.maxLength || 0
@@ -3574,7 +3576,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "getDateTime()") {
 
-            var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+            var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots })
             answer = getDateTime(o, format)
 
         } else if (k0 === "getDaysInMonth()") {
@@ -3942,7 +3944,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "replace()") { // replace():prev:new
 
-            if (!Array.isArray(o) && typeof o !== "string") o = reducer({ req, res, _window, id, data: { path: path.slice(0, i), value: [], key: true, object: _object }, __, e })
+            if (!Array.isArray(o) && typeof o !== "string") o = kernel({ req, res, _window, id, data: { data: _object, path: path.slice(0, i), value: [], key: true, object }, __, e, dots })
 
             var rec0, rec1
 
@@ -3967,9 +3969,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
             if (!Array.isArray(o)) return
             if (isParam({ _window, string: args[1] })) {
 
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
                 var _path = data.path, _data = data.data
-                var _index = o.findIndex((item, index) => isEqual(reducer({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, object: item }, e, __: [o, ...__] }), reducer({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, object: _data }, __: [o, ...__], e })))
+                var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, data: item }, e, __: [o, ...__], dots }), kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, data: _data }, __: [o, ...__], e, dots })))
                 if (_index >= 0) o[_index] = _data
                 else o.push(_data)
 
@@ -3994,18 +3996,18 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             if (isParam({ _window, string: args[1] })) {
 
-                var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
                 var _path = _params.path, _data = _params.data.filter(data => data !== undefined && data !== null)
                 toArray(_data).map(_data => {
 
-                    var _index = o.findIndex((item, index) => isEqual(reducer({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], value, object: item }, __: [o, ...__], e }), reducer({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], value, object: _data }, __: [o, ...__], e })))
+                    var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], value, data: item }, __: [o, ...__], e, dots }), reducer({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], value, data: _data }, __: [o, ...__], e, dots })))
                     if (_index >= 0) o[_index] = _data
                     else o.push(_data)
                 })
 
             } else if (args[1]) {
 
-                var _data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }).filter(data => data !== undefined && data !== null)
+                var _data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots }).filter(data => data !== undefined && data !== null)
                 if (typeof o[0] === "object") {
 
                     toArray(_data).map(_data => {
@@ -4036,12 +4038,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "return()") {
 
-            stack.returns[0].data = answer = toValue({ _window, data: args[1], e, id, object, __, stack, lookupActions })
+            stack.returns[0].data = answer = toValue({ _window, data: args[1], e, id, object, __, stack, lookupActions, dots })
             stack.returns[0].returned = true
 
         } else if (k0 === "export()") {
 
-            var data = lineInterpreter({ _window, req, res, _window, id, e, __, data: { string: args[1] } }).data
+            var data = lineInterpreter({ _window, req, res, _window, id, e, __, data: { string: args[1] }, dots }).data
 
             if (data.json) data.type = "json"
             if (data.csv) data.type = "csv"
@@ -4056,11 +4058,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "import()") {
 
             // wait address
-            var address = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "import()", object, toView, _object, lookupActions, __, id })
+            var address = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "import()", object, toView, lookupActions, __, dots, id })
             var { address, data } = address
 
             if (data.json) data.type = "json"
-            importFile({ req, res, _window, address, lookupActions, stack, id, e, __, data })
+            importFile({ req, res, _window, address, lookupActions, stack, id, e, __, dots, data })
 
             return true
 
@@ -4071,7 +4073,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
                     o = [...o]
                     answer = o.flat()
                 } else {
-                    //_object = {..._object, ...o}
+                    
                     if (typeof _object === "object") Object.entries(o).map(([key, value]) => _object[key] = value)
                     return _object
                 }
@@ -4093,8 +4095,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
             if (isnot) answer = toArray(o).filter(o => o !== "" && o !== undefined && o !== null)
             else args.map(arg => {
 
-                if (underScored) answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: arg, id, __: [o, ...__], req, res }))
-                else answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: arg, id, object: o, req, res, __ }))
+                if (underScored) answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: arg, id, __: [o, ...__], dots, req, res }))
+                else answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: arg, id, object: o, req, res, __, dots }))
             })
 
         } else if (k0 === "find()") {
@@ -4102,23 +4104,23 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
             if (i === lastIndex && key && value !== undefined) {
 
                 var index
-                if (underScored) index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-                else index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+                if (underScored) index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], dots, req, res }))
+                else index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, dots, req, res, object: o }))
                 if (index !== undefined && index !== -1) o[index] = answer = value
 
             } else {
 
-                if (underScored) answer = toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-                else answer = toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+                if (underScored) answer = toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], dots, req, res }))
+                else answer = toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, dots, req, res, object: o }))
             }
 
         } else if (k0 === "sort()") {
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
             if (!data.data) data.data = o
 
             // else return o
-            data.data = answer = require("./sort").sort({ _window, lookupActions, stack, __, sort: data, id, e })
+            data.data = answer = require("./sort").sort({ _window, lookupActions, stack, __, dots, sort: data, id, e })
 
             return answer
 
@@ -4126,8 +4128,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             if (typeof o !== "object") return
 
-            if (underScored) answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-            else answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+            if (underScored) answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], dots, req, res }))
+            else answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, dots, req, res, object: o }))
 
         } else if (k0 === "()") { // map()
 
@@ -4141,12 +4143,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             if (args[1] && underScored) {
 
-                toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object, value }, __: [o, ...__], e, toView }))
+                toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object, value }, __: [o, ...__], dots, e, toView }))
                 answer = o
 
             } else if (args[1]) {
 
-                answer = toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object: o, value }, __, e, toView }))
+                answer = toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object: o, value }, __, dots, e, toView }))
             
             } else if (args[2] && underScored) {
 
@@ -4154,11 +4156,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
                 var address;
                 ([...toArray(o)]).reverse().map(o => {
                     // address
-                    address = addresser({ _window, id, stack, headAddress: address, type: "function", status: "Wait", action: "loop()", function: "reducer", __: [o, ...__], lookupActions, mount, data: { path: args[2] || [], value, object } }).address
+                    address = addresser({ _window, id, stack, headAddress: address, type: "function", status: "Wait", action: "loop()", function: "reducer", __: [o, ...__], dots, lookupActions, data: { path: args[2] || [], value, object } }).address
                 })
                 
                 // address
-                if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+                if (address) toAwait({ _window, id, lookupActions, stack, address, __, dots, req, res })
 
             } else if (args[2]) {
 
@@ -4166,11 +4168,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
                 var address;
                 ([...toArray(o)]).reverse().map(o => {
                     // address
-                    address = addresser({ _window, id, stack, headAddress: address, type: "function", status: "Wait", action: "loop()", function: "reducer", __, lookupActions, mount, data: { path: args[2] || [], value, object: o } }).address
+                    address = addresser({ _window, id, stack, headAddress: address, type: "function", status: "Wait", action: "loop()", function: "reducer", __, dots, lookupActions, data: { path: args[2] || [], value, object: o } }).address
                 })
 
                 // address
-                if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+                if (address) toAwait({ _window, id, lookupActions, stack, address, __, dots, req, res })
             } 
 
             stack.loop = false
@@ -4180,7 +4182,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "html2pdf()") {
 
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "html2pdf()", mount, object, toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "html2pdf()", object, toView, lookupActions, __, dots, id })
 
             var options = {
                 margin: .25,
@@ -4260,7 +4262,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             if (isParam({ _window, string: args[1] })) { // share():[text;title;url;files]
 
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || {}, images = []
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots }) || {}, images = []
                 data.files = toArray(data.file || data.files) || []
                 if (data.image || data.images) data.images = toArray(data.image || data.images)
 
@@ -4281,7 +4283,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
                 }
 
             } else if (args[1]) { // share():url
-                navigator.share({ url: toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) })
+                navigator.share({ url: toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] }) })
             }
 
         } else if (k0 === "loader()") {
@@ -4290,12 +4292,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             if (isParam({ _window, string: args[1] })) {
 
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
                 if (data.hide) data.show = false
 
             } else {
 
-                var show = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var show = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
                 if (show === "show") data.show = true
                 else if (show === "hide") data.show = false
             }
@@ -4358,21 +4360,17 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "type()") {
 
-            if (args[1]) answer = getType(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
+            if (args[1]) answer = getType(toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] }))
             else answer = getType(o)
 
         } else if (k0 === "coords()") {
 
-            var _id = o.id
-            if (args[1]) _id = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            require("./getCoords")({ id: _id || id })
+            if (!o.__view__) return
+            require("./getCoords")({ id: o.id })
 
         } else if (k0 === "price()") {
 
-            var _price
-            if (args[1]) _price = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            else _price = o
-            answer = parseFloat(_price);
+            answer = parseFloat(o)
             answer = formatter.format(answer).slice(1)
 
         } else if (k0 === "bool()") {
@@ -4390,7 +4388,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "round()") {
 
             if (isNumber(o)) {
-                var nth = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 2
+                var nth = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots }) || 2
                 answer = parseFloat(o || 0).toFixed(nth)
             }
 
@@ -4458,11 +4456,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
             // getCookie():name
             if (isParam({ _window, string: args[1], req, res })) {
 
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
                 return getCookie({ ...data, req, res, _window })
             }
 
-            var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
             var _cookie = getCookie({ name: _name, req, res, _window })
             return _cookie
 
@@ -4472,10 +4470,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             // getCookie():name
             if (isParam({ _window, req, res, string: args[1] })) {
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
                 return eraseCookie({ ...data, req, res, _window })
             }
-            var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+
+            var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
             var _cookie = eraseCookie({ name: _name, req, res, _window })
             return _cookie
 
@@ -4489,7 +4488,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
                 args.slice(1).map(arg => {
 
-                    var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: arg })
+                    var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: arg })
                     setCookie({ ...data, req, res, _window })
 
                     cookies.push(data)
@@ -4497,9 +4496,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             } else {
 
-                var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                var _value = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] })
-                var _expiryDate = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[3] })
+                var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
+                var _value = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[2] })
+                var _expiryDate = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[3] })
 
                 setCookie({ name: _name, value: _value, expires: _expiryDate, req, res, _window })
             }
@@ -4510,7 +4509,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "cookie()") {
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
 
             if (_window && data.method === "post" || data.method === "delete") return views.root.__controls__.push({ event: `loading?${pathJoined}` })
             if (data.method === "post") return setCookie({ ...data, req, res, _window })
@@ -4523,7 +4522,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "colorize()") {
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1] || "", __ })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1] || "", __, dots })
             answer = colorize({ _window, string: o, ...data })
 
         } else if (k0 === "deepChildren()") {
@@ -4532,7 +4531,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "note()") { // note
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
             note({ note: data })
 
         } else if (k0 === "readonly()") {
@@ -4567,9 +4566,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             var index = 0
             var range = []
-            var startIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) : 0 || 0
-            var endIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] }) : toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            var steps = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[3] }) || 1
+            var startIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] }) : 0 || 0
+            var endIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[2] }) : toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
+            var steps = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[3] }) || 1
             var lang = args[4] || ""
             index = startIndex
 
@@ -4587,60 +4586,60 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             if (!o.__view__) return
             
-            var { address, data = {} } = addresser({ _window, stack, args, type: "render", interpreting: true, renderer: true, id: o.id, action: "view()", object, toView, _object, lookupActions, __, id })
+            var { address, data = {} } = addresser({ _window, stack, args, type: "render", interpreting: true, renderer: true, id: o.id, action: "view()", object, toView, lookupActions, __, dots, id })
             data.view = data.view || o
             
-            require("./toView").toView({ _window, id: o.id, e, __, stack, address, lookupActions, data, req, res })
+            require("./toView").toView({ _window, id: o.id, e, __, dots, stack, address, lookupActions, data, req, res })
 
         } else if (k0 === "html()") {
             
             if (!o.__view__) return
             
-            require("./toHTML").toHTML({ _window, id: o.id, type: "render", e, __, stack, lookupActions, data })
+            require("./toHTML").toHTML({ _window, id: o.id, type: "render", e, __, dots, stack, lookupActions, data })
 
         } else if (k0 === "droplist()") {
 
-            var { address, data } = addresser({ _window, stack, args, id: o.id, action: "droplist()", object, toView, _object, lookupActions, __, id })
-            require("./droplist").droplist({ id, e, data, __, stack, lookupActions, address })
+            var { address, data } = addresser({ _window, stack, args, id: o.id, action: "droplist()", object, toView, lookupActions, __, dots, id })
+            require("./droplist").droplist({ id, e, data, __, dots, stack, lookupActions, address })
 
         } else if (k0 === "route()") {
 
-            var { address, data } = addresser({ _window, stack, args, type: "action", interpretByValue: true, blockable: false, renderer: true, id: o.id, action: "route()", object, toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, type: "action", interpretByValue: true, blockable: false, renderer: true, id: o.id, action: "route()", object, toView, lookupActions, __, dots, id })
             if (typeof data === "string") data = { page: data }
-            require("./route").route({ _window, lookupActions, stack, address, id, req, res, route: data, __ })
+            require("./route").route({ _window, lookupActions, stack, address, id, req, res, route: data, __, dots })
 
         } else if (k0 === "update()") {
 
             if (!o.__view__) return o
 
-            var { address, data = {} } = addresser({ _window, stack, args, type: "action", interpretByValue: true, renderer: true, blockable: false, id: o.id, action: "update()", object, toView, _object, lookupActions, __, id })
-            require("./update").update({ _window, lookupActions, stack, req, res, id, address, __, data: { id: data.id || o.id, ...data } })
+            var { address, data = {} } = addresser({ _window, stack, args, type: "action", interpretByValue: true, renderer: true, blockable: false, id: o.id, action: "update()", object, toView, lookupActions, __, dots, id })
+            require("./update").update({ _window, lookupActions, stack, req, res, id, address, __, dots, data: { id: data.id || o.id, ...data } })
 
         } else if (k0 === "insert()") {
 
             if (!o.__view__) return o
 
             // wait address
-            var { address, data = {} } = addresser({ _window, stack, args, type: "action", renderer: true, id: o.id, action: "insert()", toView, _object, lookupActions, __, id })
+            var { address, data = {} } = addresser({ _window, stack, args, type: "action", renderer: true, id: o.id, action: "insert()", toView, lookupActions, __, dots, id })
             if (data.__view__) data = { view: data }
             data.parent = o.id
 
-            require("./insert").insert({ id, insert: data, lookupActions, stack, address, __ })
+            require("./insert").insert({ id, insert: data, lookupActions, stack, address, __, dots })
 
         } else if (k0 === "confirmEmail()") {
 
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "confirmEmail()", object, toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "confirmEmail()", object, toView, lookupActions, __, dots, id })
             data.store = "confirmEmail"
-            require("./save").save({ id, lookupActions, stack, address, e, __, save: data })
+            require("./save").save({ id, lookupActions, stack, address, e, __, dots, save: data })
 
         } else if (k0 === "mail()") {
 
             if (!o.__view__) return o
 
             // wait address
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "mail()", object, toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "mail()", object, toView, lookupActions, __, dots, id })
 
-            require("./mail").mail({ req, res, _window, lookupActions, stack, address, id, e, __, data })
+            require("./mail").mail({ req, res, _window, lookupActions, stack, address, id, e, __, dots, data })
             return true
 
         } else if (k0 === "print()") {
@@ -4649,8 +4648,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             var data = {}
             if (isParam({ _window, string: args[1] }))
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            else data.file = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
+            else data.file = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
 
             data.files = (data.file ? toArray(data.file) : data.files) || []
 
@@ -4683,7 +4682,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
                         global.files = global.fileReader
                         console.log(global.files, global.file);
                         var my_ = { success: true, data: global.files.length === 1 ? global.files[0] : global.files }
-                        toParam({ req, res, _window, lookupActions, stack, id, e, __: [my_, ...__], data: args[2] })
+                        toParam({ req, res, _window, lookupActions, stack, id, e, __: [my_, ...__], dots, data: args[2] })
                     }
                 }
 
@@ -4696,32 +4695,32 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "upload()") {
 
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, type: "async", action: "upload()", object, toView, _object, lookupActions, __, id })
-            require("./upload")({ _window, lookupActions, stack, address, req, res, id, e, upload: data, __ })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, type: "async", action: "upload()", object, toView, lookupActions, __, dots, id })
+            require("./upload")({ _window, lookupActions, stack, address, req, res, id, e, upload: data, __, dots })
                 
         } else if (k0 === "search()") {
 
-            var { address, data } = addresser({ _window, stack, args, req, res, asynchronous: true, id: o.id, type: "async", action: "search()", mount, object, toView, _object, lookupActions, __, id })
-            // var data = operatorToText({ _window, lookupActions, stack, address, id, e, __, req, res, string: args[1], object })
+            var { address, data } = addresser({ _window, stack, args, req, res, asynchronous: true, id: o.id, type: "async", action: "search()", object, toView, lookupActions, __, dots, id })
+            // var data = searchParams({ _window, lookupActions, stack, address, id, e, __, req, res, string: args[1], object })
 
             address.action += " " + data.collection
-            require("./search").search({ _window, lookupActions, stack, address, id, e, __, req, res, data })
+            require("./search").search({ _window, lookupActions, stack, address, id, e, __, dots, req, res, data })
             return true
 
         } else if (k0 === "erase()") {
 
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, type: "async", action: "erase()", mount, object, toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, type: "async", action: "erase()", object, toView, lookupActions, __, dots, id })
 
             address.action += " " + data.collection
-            require("./erase").erase({ _window, lookupActions, stack, address, id, e, __, req, res, erase: data })
+            require("./erase").erase({ _window, lookupActions, stack, address, id, e, __, dots, req, res, erase: data })
             return true
 
         } else if (k0 === "save()") {
 
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, type: "async", action: "save()", mount, object, toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, type: "async", action: "save()", object, toView, lookupActions, __, dots, id })
 
             address.action += " " + data.collection
-            require("./save").save({ _window, lookupActions, stack, address, id, e, __, req, res, save: data })
+            require("./save").save({ _window, lookupActions, stack, address, id, e, __, dots, req, res, save: data })
             return true
 
         } else if (k0 === "send()") {
@@ -4735,7 +4734,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             if (isParam({ _window, string: args[1] })) {
 
-                response = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                response = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
                 response.success = response.success !== undefined ? response.success : true
                 response.message = response.message || response.msg || "Action executed successfully!"
                 response.executionDuration = executionDuration
@@ -4743,7 +4742,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             } else {
 
-                var data = toValue({ req, res, _window, lookupActions, id, e, __, data: args[1] })
+                var data = toValue({ req, res, _window, lookupActions, id, e, __, dots, data: args[1] })
                 response = { success: true, message: "Action executed successfully!", data, executionDuration }
             }
 
@@ -4800,18 +4799,18 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "setPosition()" || k0 === "position()") {
 
-            var position = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var position = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
             return require("./setPosition").setPosition({ position, id: o.id || id, e })
 
         } else if (k0 === "csvToJson()") {
 
-            var file = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            require("./csvToJson").csvToJson({ id, lookupActions, stack, e, file, onload: args[2] || "", __ })
+            var file = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
+            require("./csvToJson").csvToJson({ id, lookupActions, stack, e, file, onload: args[2] || "", __, dots })
 
         } else if (k0 === "copyToClipBoard()") {
 
             var text
-            if (args[1]) text = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            if (args[1]) text = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
             else text = o
 
             if (navigator.clipboard) answer = navigator.clipboard.writeText(text)
@@ -4830,7 +4829,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "addClass()") {
 
             if (!o.__view__) return o
-            var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
+            var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], dots, data: args[1] })
             if (o.__element__) answer = o.__element__.classList.add(_class)
 
         } else if (k0 === "remClass()") {
@@ -4856,14 +4855,14 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             answer = o[k0.slice(0, -2)](...data)
 
-        } else if (k0.slice(-2) === "()") {
+        } else if (k0.slice(-2) === "()") { // action()
 
             if (k0.charAt(0) === "@" && k0.length == 6) k0 = toValue({ req, res, _window, id, e, __, data: k0, object })
 
             if (underScored) {
-                answer = toAction({ _window, lookupActions, stack, id, req, res, __: [o, ...__], e, path: [k], path0: k0, condition, mount, toView, object })
+                answer = toAction({ _window, lookupActions, stack, id, req, res, __: [o, ...__], e, path: [k], path0: k0, condition, toView, object })
             } else {
-                answer = toAction({ _window, lookupActions, stack, id, req, res, __, e, path: [k], path0: k0, condition, mount, toView, object: object || o })
+                answer = toAction({ _window, lookupActions, stack, id, req, res, __, e, path: [k], path0: k0, condition, toView, object: object || o })
             }
 
         } else if (k.includes(":@")) {
@@ -4875,7 +4874,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             o[k0] = o[k0] || {}
 
-            if (mount && events.includes(k0)) {
+            if (events.includes(k0)) {
 
                 if (!o.__view__) return
 
@@ -4885,7 +4884,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
                 else return views[id].__controls__.push({ event: k0 + "?" + data, id, __, lookupActions, eventID: o.id })
             }
 
-            args[1] = ((global.__refs__["@" + args[1].slice(-5)] || {}).data || "").split(".")
+            args[1] = (global.__refs__[args[1]].data || "").split(".")
             if (args[1]) answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { path: [...args.slice(1).flat(), ...path.slice(i + 1)], object: o[k0], key }, __ })
             else return
 
@@ -5041,7 +5040,7 @@ var formatter = new Intl.NumberFormat('en-US', {
 })
 
 module.exports = { kernel, getDeepChildren, getDeepChildrenId }
-},{"./addresser":3,"./capitalize":4,"./clone":5,"./colorize":7,"./cookie":8,"./counter":9,"./csvToJson":11,"./decode":14,"./droplist":17,"./erase":18,"./event":19,"./events.json":20,"./exportJson":22,"./focus":23,"./generate":24,"./getCoords":25,"./getDateTime":26,"./getDaysInMonth":27,"./getType":28,"./getView":29,"./importJson":30,"./insert":31,"./isEqual":35,"./isParam":37,"./jsonToBracket":38,"./lineInterpreter":41,"./mail":42,"./merge":43,"./note":44,"./operatorToText":45,"./qr":46,"./reducer":48,"./remove":49,"./replaceNbsps":50,"./resize":51,"./route":52,"./save":53,"./search":54,"./setPosition":57,"./sort":58,"./toAction":62,"./toApproval":63,"./toArray":64,"./toAwait":65,"./toCSV":66,"./toClock":67,"./toExcel":71,"./toHTML":73,"./toNumber":74,"./toParam":75,"./toPdf":76,"./toSimplifiedDate":77,"./toValue":79,"./toView":80,"./update":81,"./upload":82,"./vcard":83}],40:[function(require,module,exports){
+},{"./addresser":3,"./capitalize":4,"./clone":5,"./colorize":7,"./cookie":8,"./counter":9,"./csvToJson":11,"./decode":14,"./droplist":17,"./erase":18,"./event":19,"./events.json":20,"./exportJson":22,"./focus":23,"./generate":24,"./getCoords":25,"./getDateTime":26,"./getDaysInMonth":27,"./getType":28,"./getView":29,"./importJson":30,"./insert":31,"./isEqual":35,"./isParam":37,"./jsonToBracket":38,"./lineInterpreter":41,"./mail":42,"./merge":43,"./note":44,"./qr":45,"./reducer":47,"./remove":48,"./replaceNbsps":49,"./resize":50,"./route":51,"./save":52,"./search":53,"./searchParams":54,"./setPosition":56,"./sort":57,"./toAction":61,"./toApproval":62,"./toArray":63,"./toAwait":64,"./toCSV":65,"./toClock":66,"./toExcel":70,"./toHTML":72,"./toNumber":73,"./toParam":74,"./toPdf":75,"./toSimplifiedDate":76,"./toValue":78,"./toView":79,"./update":80,"./upload":81,"./vcard":82}],40:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toStyle } = require("./toStyle")
 
@@ -5074,14 +5073,16 @@ module.exports = {
     return `<div ${containerAtts} ${container.draggable !== undefined ? `draggable='${container.draggable}'` : ''} spellcheck='false' ${container.editable && !container.readonly ? 'contenteditable' : ''} class='${container.class}' id='${containerId}' style='${containerStyle}' index='${container.__index__ || 0}'>${labelTag}${tag}</div>`
   }
 }
-},{"./generate":24,"./toStyle":78}],41:[function(require,module,exports){
+},{"./generate":24,"./toStyle":77}],41:[function(require,module,exports){
 const { toCode } = require("./toCode")
 const { generate } = require("./generate")
 const { isCondition } = require("./isCondition")
 const { executable } = require("./executable")
 const { clone } = require("./clone")
+const { isEvent } = require("./isEvent")
+const { toEvent } = require("./toEvent")
 
-const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, data: { string, dblExecute, index: i = 0, splitter = "?", action }, req, res, __, mount, condition, toView, object, _object }) => {
+const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, data: { string, dblExecute, index: i = 0, splitter = "?" }, req, res, __, dots, mount, condition, toView, object, action }) => {
 
     require("./toParam")
     require("./toValue")
@@ -5093,6 +5094,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
     // missing stack or __
     if (!stack) stack = { addresses: [], returns: [] }
     if (!__) __ = view.__
+    // if (!dots) dots = view.__dots__
 
     var startTime = (new Date()).getTime(), success = true, data, returnForWaitActionExists = false
 
@@ -5106,7 +5108,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         address.interpreting = false
         
         // execute waits
-        require("./toAwait").toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: returnForWaitActionExists ? data.data : undefined })
+        require("./toAwait").toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, dots, _: returnForWaitActionExists ? data.data : undefined })
         return data
     }
 
@@ -5127,6 +5129,9 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         if (action) object = {}
     }
 
+    // check event
+    if (string.split("?").length > 1 && isEvent({ _window, string })) return toEvent({ _window, string, id, __, dots, lookupActions })
+
     // subparams
     if (i === 1) {
 
@@ -5140,7 +5145,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         // name has subparams => interpret
         if (substring.includes("?")) {
 
-            var data = lineInterpreter({ lookupActions, stack, id, e, data: { string: substring, i: 1 }, req, res, __, mount, condition, toView, object, _object })
+            var data = lineInterpreter({ lookupActions, stack, id, e, data: { string: substring, i: 1 }, req, res, __, dots, mount, condition, toView, object })
             if (data.conditionsNotApplied) return terminator({ data, order: 4 })
         }
     }
@@ -5186,10 +5191,10 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
             else if (!dblExecute && mount) action = "toParam"
         }
         
-        data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object, _object, toView })
+        data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, dots, mount, object, toView })
 
         if (dblExecute && executable({ _window, string: data }))
-            data = lineInterpreter({ _window, lookupActions, stack, id, e, data: { string: data }, req, res, __, mount, condition, toView, object, _object }).data
+            data = lineInterpreter({ _window, lookupActions, stack, id, e, data: { string: data }, req, res, __, dots, mount, condition, toView, object }).data
 
         if (stack.returns && stack.returns[0].returned) {
             returnForWaitActionExists = true
@@ -5202,7 +5207,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         return ({ success, message, data, conditionsNotApplied, executionDuration: (new Date()).getTime() - startTime })
     }
 
-    var approved = require("./toApproval").toApproval({ _window, data: conditions || "", id, e, req, res, __, stack, lookupActions, object, _object })
+    var approved = require("./toApproval").toApproval({ _window, data: conditions || "", id, e, req, res, __, dots, stack, lookupActions, object })
 
     if (!approved && elseParams) data = execute({ success, string: elseParams, message: "Else actions executed!", conditionsNotApplied: true })
     else if (!approved) data = ({ success, message: `Conditions not applied!`, conditionsNotApplied: true, executionDuration: (new Date()).getTime() - startTime })
@@ -5212,12 +5217,12 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
 }
 
 module.exports = { lineInterpreter }
-},{"./clone":5,"./executable":21,"./generate":24,"./isCondition":34,"./toApproval":63,"./toAwait":65,"./toCode":68,"./toParam":75,"./toValue":79}],42:[function(require,module,exports){
+},{"./clone":5,"./executable":21,"./generate":24,"./isCondition":34,"./isEvent":36,"./toApproval":62,"./toAwait":64,"./toCode":67,"./toEvent":69,"./toParam":74,"./toValue":78}],42:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const readFile = require("./readFile");
 
 module.exports = {
-    mail: async ({ _window, req, res, id, data, __, ...params }) => {
+    mail: async ({ _window, req, res, id, data, __, dots, ...params }) => {
 
         var { subject, content, text, html, recipient, attachments, recipients = [] } = data
         
@@ -5264,13 +5269,12 @@ module.exports = {
             global.mail = { success: true, message: `Email sent successfully!` }
 
         } else global.mail = { success: false, message: `No mail api exists!` }
-        console.log(global.mail)
 
         // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, id, ...params, req, res, __: [global.mail, ...__] })
+        if (params.asyncer) require("./toAwait").toAwait({ _window, id, ...params, req, res, __, _: global.mail, dots })
     }
 }
-},{"./readFile":47,"./toArray":64,"./toAwait":65}],43:[function(require,module,exports){
+},{"./readFile":46,"./toArray":63,"./toAwait":64}],43:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
@@ -5320,7 +5324,7 @@ const merge = (array) => {
   return merged
 }
 
-const override = (obj1, obj2) => {
+const override = (obj1, obj2) => { // (old, new)
   obj1 = obj1 || {}
 
   Object.entries(obj2).map(([key, value]) => {
@@ -5341,14 +5345,14 @@ const override = (obj1, obj2) => {
 
 module.exports = { merge, override }
 
-},{"./clone":5,"./toArray":64}],44:[function(require,module,exports){
+},{"./clone":5,"./toArray":63}],44:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
-const note = ({ note: _note }) => {
+const note = ({ note: data }) => {
 
   var views = window.views
   var note = views["action-note"]
-  var type = (_note.type || (_note.danger && "danger") || (_note.info && "info") || (_note.warning && "warning") || "success").toLowerCase()
+  var type = (data.type || (data.danger && "danger") || (data.info && "info") || (data.warning && "warning") || "success").toLowerCase()
   var noteText = views["action-note-text"]
   var backgroundColor = type === "success" 
   ? "#2FB886" : type === "danger" 
@@ -5356,11 +5360,11 @@ const note = ({ note: _note }) => {
   ? "#47A8F5" : type === "warning"
   && "#FFA92B"
   
-  if (!_note) return
+  if (!data) return
 
   clearTimeout(note["note-timer"])
 
-  noteText.__element__.innerHTML = _note.text
+  noteText.__element__.innerHTML = data.text
   isArabic({ id: "action-note-text" })
 
   var width = note.__element__.offsetWidth
@@ -5378,74 +5382,9 @@ const note = ({ note: _note }) => {
 module.exports = { note }
 
 },{"./isArabic":32}],45:[function(require,module,exports){
-const { decode } = require("./decode")
-const { lineInterpreter } = require("./lineInterpreter")
-const { toCode } = require("./toCode")
+const qr = async ({ _window, id, req, res, data, __, dots, e, stack, lookupActions, address }) => {
 
-const operatorToText = ({ _window, lookupActions, stack, req, res, id, e, __, string, _object, object }) => {
-
-    var global = _window ? _window.global : window.global
-
-    if (string.charAt(0) === "@" && string.length === 6) string = global.__refs__[string].data
-
-    string = decode({ _window, string })
-    string = string.replaceAll("field:", "field=")
-    
-    // case: collection=value;field:[key1=value1;key2>=value2;key3<=value3;key4.in():[value4];key5.inc():[value6]]
-
-    var i = 1, stringList = string.split("field=")
-    while (stringList[i]) {
-
-        stringList[i] = toCode({ _window, string: stringList[i] })
-        var code = stringList[i].slice(0, 6)
-        global.__refs__[code].type = "text"
-        i++
-    }
-
-    string = stringList.join("field=")
-    
-    var data = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: { string }, _object, object }).data
-
-    if (!data.field || typeof data.field !== "string") return data
-
-    // convert operators to texts
-    var fields = data.field
-    
-    fields = fields.replaceAll("<=", ".lessorequal=")
-    fields = fields.replaceAll(">=", ".greaterorequal=")
-    fields = fields.replaceAll("!=", ".notequal=")
-    fields = fields.replaceAll("<", ".less=")
-    fields = fields.replaceAll(">", ".greater=")
-    fields = fields.replaceAll("in():", "in=")
-    fields = fields.replaceAll("inc():", "contains=")
-
-    var string = ""
-    fields.split(";").map(field => {
-        if (field.charAt(0) === "!" && field.includes(".in=")) {
-
-            field = field.slice(1)
-            field = fields.replace(".in=", ".not-in=")
-
-        } else if (field.charAt(0) === "!") {
-
-            field = field.slice(1)
-            field = field + "=null"
-        }
-        string += field + ";"
-    })
-
-    string = string.slice(0, -1)
-
-    data.field = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: { string, action: "toParam" }, _object, object }).data
-
-    return data
-}
-
-module.exports = { operatorToText }
-},{"./decode":14,"./lineInterpreter":41,"./toCode":68}],46:[function(require,module,exports){
-const qr = async ({ _window, id, req, res, data, __, e, stack, lookupActions, address }) => {
-
-    if (res && !res.headersSent) return qrServer({ _window, id, req, res, data, __, e, stack, lookupActions, address })
+    if (res && !res.headersSent) return qrServer({ _window, id, req, res, data, __, dots, e, stack, lookupActions, address })
     
     var QRCode = require("easyqrcodejs")
 
@@ -5458,18 +5397,18 @@ const qr = async ({ _window, id, req, res, data, __, e, stack, lookupActions, ad
 
     console.log("QR", data)
 
-    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, req, res, __: [data, ...__] })
+    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, req, res, __, dots, _: data })
 }
 
-const qrServer = async ({ _window, id, req, res, data, __, e, stack, lookupActions, address }) => {
+const qrServer = async ({ _window, id, req, res, data, __, dots, e, stack, lookupActions, address }) => {
 
     var text = data.text || data.url
     if (data.wifi) text = wifiQrText({ data })
 
     var qrcode = await require('qrcode').toDataURL(text)
-    
     var data = { message: "QR generated successfully!", data: qrcode, success: true }
-    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, req, res, __: [data, ...__] })
+
+    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, req, res, __, dots, _: data })
 }
 
 const wifiQrText = ({ data }) => {
@@ -5478,7 +5417,7 @@ const wifiQrText = ({ data }) => {
 }
 
 module.exports = { qr }
-},{"./toAwait":65,"easyqrcodejs":126,"qrcode":131}],47:[function(require,module,exports){
+},{"./toAwait":64,"easyqrcodejs":125,"qrcode":130}],46:[function(require,module,exports){
 module.exports = (file) => new Promise(res => {
 
     var myFile = file.file || file.url
@@ -5490,7 +5429,7 @@ module.exports = (file) => new Promise(res => {
         myReader.readAsDataURL(file)
     }
 })
-},{}],48:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 const { isParam } = require("./isParam")
 const { addresser } = require("./addresser")
 const { lineInterpreter } = require("./lineInterpreter")
@@ -5498,8 +5437,10 @@ const { isCalc } = require("./isCalc")
 const { kernel } = require("./kernel")
 const { decode } = require("./decode")
 const { toAwait } = require("./toAwait")
+const { override } = require("./merge")
+const { clone } = require("./clone")
 
-const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, value, key, object, _object }, __, e, req, res, mount, condition, toView }) => {
+const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, value, key, object }, __, dots, e, req, res, condition, toView, action }) => {
 
     const { toValue } = require("./toValue")
     const { toParam } = require("./toParam")
@@ -5524,47 +5465,45 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     if (path[0] !== undefined) args = path[0].toString().split(":")
 
     // toParam
-    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, stack, id, e, data: pathJoined, __, object, mount, toView })
+    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, stack, id, e, data: pathJoined, __, dots, object, toView })
 
     // toValue
-    if (isCalc({ _window, string: pathJoined }) && !key) return toValue({ _window, lookupActions, stack, data: pathJoined, __, id, e, req, res, object, _object, mount, toView, condition })
+    if (isCalc({ _window, string: pathJoined }) && !key) return toValue({ _window, lookupActions, stack, data: pathJoined, __, dots, id, e, req, res, object, toView, condition })
 
     // [actions?conditions?elseActions]():[params]:[waits]
     else if (path0.length === 8 && path0.slice(-2) === "()" && path0.charAt(0) === "@") {
         
-        var { address, data } = addresser({ _window, stack, args, id, status: "Wait", type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, lookupActions, id, _object, object })
+        var { address, data } = addresser({ _window, stack, args, id, status: "Wait", type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, dots, lookupActions, id, object })
 
-        return toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: data }).data
+        return toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, dots, _: data }).data
     }
 
     // if()
     else if (path0 === "if()") {
 
-        var approved = toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object })
+        var data
+        var approved = toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, dots, req, res, object })
 
         if (!approved) {
 
             if (args[3]) {
 
-                if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[3], id, __, req, res, object })
-                if (path[1]) _object = toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object, mount, toView })
-                else return toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object, mount, toView })
-
-                path.shift()
+                if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[3], id, __, dots, req, res, object })
+                else return toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, dots, e, object, toView })
 
             } else if (path[1] && path[1].includes("elif()")) {
 
                 path.shift()
                 path[0] = path[0].slice(2)
-                return reducer({ _window, lookupActions, stack, id, data: { path, object, value, key }, __, e, req, res, mount, condition })
+                return reducer({ _window, lookupActions, stack, id, data: { path, object, value, key }, __, dots, e, req, res, condition })
 
-            } else return
+            } else return data
 
         } else {
 
-            if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[2], id, __, req, res, object, toView })
-            if (path[1]) _object = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
-            else return toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
+            if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[2], id, __, dots, req, res, object, toView })
+            if (path[1]) data = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object, toView })
+            else return toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object, toView })
             
             path.shift()
 
@@ -5572,17 +5511,17 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
             while (path[0] && path[0].includes("elif()")) { path.shift() }
             
             // empty path
-            if (!path[0]) return _object
+            if (!path[0]) return data
         }
 
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
     }
 
     // while()
     else if (path0 === "while()") {
 
-        while (toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object })) {
-            toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
+        while (toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, dots, req, res, object })) {
+            toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object, toView })
         }
         // path = path.slice(1)
         return global.return = false
@@ -5591,34 +5530,41 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // global:()
     else if (path0 && args[1] === "()" && !args[2]) {
 
-        var globalVariable = toValue({ req, res, _window, id, e, data: args[0], __, stack, lookupActions })
+        var globalVariable = toValue({ req, res, _window, id, e, data: args[0], __, dots, stack, lookupActions })
         if (path.length === 1 && key && globalVariable) return global[globalVariable] = value
 
         path.splice(0, 1, globalVariable)
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object: global, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: global, path, value, key, object, pathJoined } })
     }
 
     // view => ():id
     else if (path0 === "()" && args[1]) {
 
         // id
-        var _id = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object })
+        var customID = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots, object })
         path.shift()
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object: views[_id || args[1] || id], path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: views[customID || args[1] || id], path, value, key, object, pathJoined } })
     }
 
     // .keyName => [object||view].keyName
     else if (path[0] === "" && path.length > 1) {
+
         if (isNaN(path[1].charAt(0)) || path[1].includes("()")) {
+
             path.shift()
-            _object = object || _object || view
-            return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined } })
+            return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: object || view, path, value, key, object, pathJoined } })
+
         } else return path.join(".")
     }
 
     // @coded
     else if (path0.charAt(0) === "@" && path[0].length === 6) {
-        var data = lineInterpreter({ _window, req, res, lookupActions, stack, object, id, data: { string: path[0] }, __, e }).data
+
+        var data
+
+        // text in square bracket
+        if (global.__refs__[path[0]].type === "text") return global.__refs__[path[0]].data
+        else data = lineInterpreter({ _window, req, res, lookupActions, stack, object, id, data: { string: global.__refs__[path[0]].data }, __, dots, e }).data
 
         if (path[1] === "flat()") {
 
@@ -5628,8 +5574,8 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
                 return data.flat()
 
             } else {
-
-                if (typeof object === "object") Object.entries(data || {}).map(([key, value]) => object[key] = value)
+                
+                if (typeof object === "object") return override(object, data)
                 return object
             }
 
@@ -5642,9 +5588,8 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
 
             } else if (path[1]) {
 
-                _object = data
                 path.splice(0, 1)
-                return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined } })
+                return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
 
             } else return data
         }
@@ -5653,18 +5598,18 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // action()
     else if (path0.slice(-2) === "()") {
 
-        var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, path: [path[0]], path0, condition, mount, toView, object })
+        var action = toAction({ _window, lookupActions, stack, id, req, res, __, dots, e, path: [path[0]], path0, condition, toView, object })
         if (action !== "__continue__") {
                 
             path.shift()
-            return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object: action, path, value, key, object, pathJoined } })
+            return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: action, path, value, key, object, pathJoined } })
         }
     }
 
     if (!view) view = views[id]
 
     if (path0 === "className()") {
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object: views.document, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: views.document, path, value, key, object, pathJoined } })
     } else {
         var __o = ((typeof object === "object" && object.__view__) ? object : views[id]) || {}
         if (__o.__labeled__ && (path0.toLowerCase().includes("prev") || path0.toLowerCase().includes("next") || path0.toLowerCase().includes("parent"))) {
@@ -5698,45 +5643,41 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
         "math()": Math
     }
 
-    // assign _object
+    // assign
     var underScored = path0 && path0.charAt(0) === "_" && !path0.split("_").find(i => i !== "_" && i !== "")
     if (reservedVars.keys.includes(path0) || underScored) {
 
-        if (reservedVars.keys.includes(path0)) _object = reservedVars[path0]
-        else _object = __[path0.split("_").length - 2]
+        var data
+        if (reservedVars.keys.includes(path0)) data = reservedVars[path0]
+        else data = __[path0.split("_").length - 2]
 
         path.shift()
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
 
-    } else _object = _object !== undefined ? _object : object
+    } else if (object) return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: object, path, value, key, object, pathJoined } })
 
-    // still no _object
-    if (_object === undefined) {
+    // still no data
+    if ((path[0] && object && object.__view__) || (path0 && path0.includes("()"))) {
 
-        if ((path[0] && mount) || (path0 && path0.includes("()"))) {
+        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: view, path, value, key, object, pathJoined } })
 
-            return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object: view, path, value, key, object, pathJoined } })
+    } else if (path[1] && path[1].toString().includes("()")) {
 
-        } else if (path[1] && path[1].toString().includes("()")) {
+        var data = toValue({ req, res, _window, lookupActions, stack, id, __, dots, e, data: path[0] }) || {}
+        path.shift()
+        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
 
-            _object = toValue({ req, res, _window, lookupActions, stack, id, __, e, data: path[0] }) || {}
-            path.shift()
-            return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined }})
-
-        } else return pathJoined
-    }
-
-    return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined }})
+    } else return pathJoined
 }
 module.exports = { reducer }
-},{"./addresser":3,"./decode":14,"./isCalc":33,"./isParam":37,"./kernel":39,"./lineInterpreter":41,"./toAction":62,"./toApproval":63,"./toAwait":65,"./toParam":75,"./toValue":79}],49:[function(require,module,exports){
+},{"./addresser":3,"./clone":5,"./decode":14,"./isCalc":33,"./isParam":37,"./kernel":39,"./lineInterpreter":41,"./merge":43,"./toAction":61,"./toApproval":62,"./toAwait":64,"./toParam":74,"./toValue":78}],48:[function(require,module,exports){
 const { removeView } = require("./view")
 const { clone } = require("./clone")
 const { closePublicViews } = require("./closePublicViews")
 const { lineInterpreter } = require("./lineInterpreter")
 const { isNumber } = require("./toValue")
 
-const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
+const remove = ({ _window, stack, data = {}, id, __, dots, lookupActions }) => {
 
   var views = window.views
   var view = window.views[id]
@@ -5755,17 +5696,17 @@ const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
     if (Array.isArray(parentData) && parentData.length === 0) {
 
       var string = `${view.doc}:().` + __dataPath__.join(".").slice(0, -1) + "=:"
-      lineInterpreter({ id, data: {string}, __, lookupActions })
+      lineInterpreter({ id, data: {string}, __, dots, lookupActions })
 
     } else {
 
       var string = `${view.doc}:().` + __dataPath__.join(".") + ".del()"
-      lineInterpreter({ id, data: {string}, __, lookupActions })
+      lineInterpreter({ id, data: {string}, __, dots, lookupActions })
     }
   }
 
   // close publics
-  closePublicViews({ _window, id, __, stack, lookupActions })
+  closePublicViews({ _window, id, __, dots, stack, lookupActions })
   
   // no data
   if (__dataPath__.length === 0) return removeView({ id, stack, main: true }).remove()
@@ -5795,7 +5736,7 @@ const updateDataPath = ({ id, index, decrement, increment }) => {
 
 module.exports = { remove, updateDataPath }
 
-},{"./clone":5,"./closePublicViews":6,"./lineInterpreter":41,"./toValue":79,"./view":84}],50:[function(require,module,exports){
+},{"./clone":5,"./closePublicViews":6,"./lineInterpreter":41,"./toValue":78,"./view":83}],49:[function(require,module,exports){
 const replaceNbsps = (str) => {
   if (typeof str !== "string") return str
     var re = new RegExp(String.fromCharCode(160), "g");
@@ -5803,7 +5744,7 @@ const replaceNbsps = (str) => {
   }
 
   module.exports = { replaceNbsps }
-},{}],51:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -5906,12 +5847,12 @@ var lengthConverter = (length) => {
 
 module.exports = {resize, dimensions, lengthConverter}
 
-},{}],52:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 const { clone } = require("./clone")
 const { update } = require("./update")
 
 module.exports = {
-  route: ({ id, _window, route = {}, stack, lookupActions, address, req, res, __ }) => {
+  route: ({ id, _window, route = {}, stack, lookupActions, address, req, res, __, dots }) => {
 
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
@@ -5937,15 +5878,15 @@ module.exports = {
     route.path = path
     route.page = page
 
-    update({ _window, id, req, res, stack, lookupActions, address, data: { route, id: "root" }, __ })
+    update({ _window, id, req, res, stack, lookupActions, address, data: { route, id: "root" }, __, dots })
   }
 }
-},{"./clone":5,"./update":81}],53:[function(require,module,exports){
+},{"./clone":5,"./update":80}],52:[function(require,module,exports){
 const axios = require('axios')
 const { postData } = require('./database')
 
 module.exports = {
-  save: async ({ _window, lookupActions, stack, address, id, req, res, e, __, save = {} }) => {
+  save: async ({ _window, lookupActions, stack, address, id, req, res, e, __, dots, save = {} }) => {
       
     var global = _window ? _window.global : window.global
 
@@ -5978,16 +5919,16 @@ module.exports = {
     // console.log("SAVE", (new Date()).getTime() - headers.timestamp, save.collection, data)
     
     // await
-    require("./toAwait").toAwait({ _window, lookupActions, stack, id, address, e, req, res, _: data, __ })
+    require("./toAwait").toAwait({ _window, lookupActions, stack, id, address, e, req, res, _: data, __, dots })
   }
 }
-},{"./database":13,"./toAwait":65,"axios":93}],54:[function(require,module,exports){
+},{"./database":13,"./toAwait":64,"axios":92}],53:[function(require,module,exports){
 const axios = require('axios')
 const { jsonToBracket } = require('./jsonToBracket')
 const { getData } = require('./database')
 
 module.exports = {
-  search: async ({ _window, lookupActions, stack, id, req, res, e, __, data: search = {}, address }) => {
+  search: async ({ _window, lookupActions, stack, id, req, res, e, __, dots, data: search = {}, address }) => {
       
     var global = _window ? _window.global : window.global
     var store = search.store || "database", data
@@ -6018,36 +5959,79 @@ module.exports = {
     // console.log("SEARCH", (new Date()).getTime() - headers.timestamp, search.collection, data)
 
     // await params
-    require("./toAwait").toAwait({ _window, lookupActions, stack, id, e, address, req, res, _: data, __ })
+    require("./toAwait").toAwait({ _window, lookupActions, stack, id, e, address, req, res, _: data, __, dots })
   }
 }
-},{"./database":13,"./jsonToBracket":38,"./toAwait":65,"axios":93}],55:[function(require,module,exports){
-const { isArabic } = require("./isArabic")
+},{"./database":13,"./jsonToBracket":38,"./toAwait":64,"axios":92}],54:[function(require,module,exports){
+const { decode } = require("./decode")
+const { lineInterpreter } = require("./lineInterpreter")
+const { toCode } = require("./toCode")
 
-const setContent = ({ id, content = {} }) => {
+const searchParams = ({ _window, lookupActions, stack, req, res, id, e, __, string, object }) => {
 
-  var view = window.views[id]
-  var value = content.value !== undefined ? content.value : ""
+    var global = _window ? _window.global : window.global
 
-  if (typeof value !== "string" && typeof value !== "number") return
+    if (string.charAt(0) === "@" && string.length === 6) string = global.__refs__[string].data
 
-  // not loaded yet
-  if (!view.__element__) return
+    string = decode({ _window, string })
+    string = string.replaceAll("field:", "field=")
+    
+    // case: collection=value;field:[key1=value1;key2>=value2;key3<=value3;key4.in():[value4];key5.inc():[value6]]
 
-  if (view.input && view.input.type === "radio" && value) view.__element__.checked = "checked"
-  else if (view.__name__ === "Input") view.__element__.value = value || ""
-  else if (view.__name__ === "Text") view.__element__.innerHTML = value || ""
+    var i = 1, stringList = string.split("field=")
+    while (stringList[i]) {
 
-  isArabic({ id, value })
+        stringList[i] = toCode({ _window, string: stringList[i] })
+        var code = stringList[i].slice(0, 6)
+        global.__refs__[code].type = "text"
+        i++
+    }
+
+    string = stringList.join("field=")
+    
+    var data = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: { string }, object }).data
+
+    if (!data.field || typeof data.field !== "string") return data
+
+    // convert operators to texts
+    var fields = data.field
+    
+    fields = fields.replaceAll("<=", ".lessorequal=")
+    fields = fields.replaceAll(">=", ".greaterorequal=")
+    fields = fields.replaceAll("!=", ".notequal=")
+    fields = fields.replaceAll("<", ".less=")
+    fields = fields.replaceAll(">", ".greater=")
+    fields = fields.replaceAll("in():", "in=")
+    fields = fields.replaceAll("inc():", "contains=")
+
+    var string = ""
+    fields.split(";").map(field => {
+        if (field.charAt(0) === "!" && field.includes(".in=")) {
+
+            field = field.slice(1)
+            field = fields.replace(".in=", ".not-in=")
+
+        } else if (field.charAt(0) === "!") {
+
+            field = field.slice(1)
+            field = field + "=null"
+        }
+        string += field + ";"
+    })
+
+    string = string.slice(0, -1)
+
+    data.field = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: { string, action: "toParam" }, object }).data
+
+    return data
 }
 
-module.exports = {setContent}
-
-},{"./isArabic":32}],56:[function(require,module,exports){
+module.exports = { searchParams }
+},{"./decode":14,"./lineInterpreter":41,"./toCode":67}],55:[function(require,module,exports){
 const {clone} = require("./clone")
 const { kernel } = require("./kernel")
 
-const setData = ({ id, data, __, stack = {} }) => {
+const setData = ({ id, data, __, dots, stack = {} }) => {
 
   var view = window.views[id]
   var global = window.global
@@ -6074,12 +6058,12 @@ const setData = ({ id, data, __, stack = {} }) => {
   var keys = [...__dataPath__, ...path]
   
   // set value
-  kernel({ id, data: { _object: global[view.doc], path: keys, value: defValue, key: true }, stack, __ })
+  kernel({ id, data: { data: global[view.doc], path: keys, value: defValue, key: true }, stack, __, dots })
 }
 
 module.exports = { setData }
 
-},{"./clone":5,"./kernel":39}],57:[function(require,module,exports){
+},{"./clone":5,"./kernel":39}],56:[function(require,module,exports){
 const setPosition = ({ position = {}, id, e }) => {
 
   var views = window.views
@@ -6264,13 +6248,13 @@ const setPosition = ({ position = {}, id, e }) => {
 
 module.exports = {setPosition}
 
-},{}],58:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 (function (global){(function (){
 const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
 
-const sort = ({ _window, sort = {}, id, e, lookupActions, __, stack }) => {
+const sort = ({ _window, sort = {}, id, e, lookupActions, __, dots, stack }) => {
 
   var view = _window ? _window.views[id] : window.views[id]
   if (!view) return
@@ -6296,11 +6280,11 @@ const sort = ({ _window, sort = {}, id, e, lookupActions, __, stack }) => {
 
   data.sort((a, b) => {
     
-    a = reducer({ _window, id, data: { path, object: a }, e, lookupActions, __, stack }) || "!"
+    a = reducer({ _window, id, data: { path, object: a }, e, lookupActions, __, dots, stack }) || "!"
     
     if (a !== undefined) a = a.toString()
 
-    b = reducer({ _window, id, data: { path, object: b }, e, lookupActions, __, stack }) || "!"
+    b = reducer({ _window, id, data: { path, object: b }, e, lookupActions, __, dots, stack }) || "!"
 
     if (b !== undefined) b = b.toString()
 
@@ -6367,7 +6351,7 @@ const sort = ({ _window, sort = {}, id, e, lookupActions, __, stack }) => {
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./reducer":48,"./toArray":64,"./toCode":68}],59:[function(require,module,exports){
+},{"./reducer":47,"./toArray":63,"./toCode":67}],58:[function(require,module,exports){
 const { decode } = require("./decode")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
@@ -6415,7 +6399,7 @@ const printStack = ({ stack, end }) => {
 }
 
 module.exports = { stacker, clearStack, printStack }
-},{"./decode":14,"./generate":24,"./toArray":64}],60:[function(require,module,exports){
+},{"./decode":14,"./generate":24,"./toArray":63}],59:[function(require,module,exports){
 const { defaultInputHandler } = require("./defaultInputHandler")
 const { addEventListener } = require("./event")
 const { toArray } = require("./toArray")
@@ -6452,7 +6436,7 @@ const starter = ({ id }) => {
 }
 
 module.exports = { starter }
-},{"../event/event":88,"./defaultInputHandler":16,"./event":19,"./toArray":64}],61:[function(require,module,exports){
+},{"../event/event":87,"./defaultInputHandler":16,"./event":19,"./toArray":63}],60:[function(require,module,exports){
 (function (Buffer){(function (){
 const fs = require("fs")
 const { generate } = require("./generate")
@@ -6562,14 +6546,14 @@ const deleteFile = async ({ req, res }) => {
 
 module.exports = { getFile, postFile, storeFile, deleteFile }
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./generate":24,"./toArray":64,"buffer":124,"fs":123}],62:[function(require,module,exports){
+},{"./generate":24,"./toArray":63,"buffer":123,"fs":122}],61:[function(require,module,exports){
 const { clone } = require("./clone")
 const { toArray } = require("./toArray")
 const { addresser } = require("./addresser")
 const actions = require("./actions.json")
 const { toAwait } = require("./toAwait")
 
-const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount, toView, object, lookupActions = {}, stack }) => {
+const toAction = ({ _window, id, req, res, __, dots, e, path, path0, condition, mount, toView, object, lookupActions = {}, stack }) => {
 
   var global = _window ? _window.global : window.global
   var views = _window ? _window.views : window.views
@@ -6644,7 +6628,7 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
     
     if (actionFound) {
 
-      var address = addresser({ _window, req, res, stack, status: "Wait", args: path[0].split(":"), newLookupActions: newLookupActions || lookupActions, asynchronous, e, id, data: { string: !asynchronous ? actionFound : "" }, action: path0, __, id, object, mount, toView, condition, lookupActions })
+      var address = addresser({ _window, req, res, stack, status: "Wait", args: path[0].split(":"), newLookupActions: newLookupActions || lookupActions, asynchronous, e, id, data: { string: !asynchronous ? actionFound : "" }, action: path0, __, dots, id, object, mount, toView, condition, lookupActions })
       var { address, data } = address
       
       // lookupActions
@@ -6654,10 +6638,10 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 
         address.status = "Start"
         var action = { name: actionFound, __: data !== undefined ? [data] : [], lookupActions: [], stack: [], condition, object }
-        return require("./action").action({ _window, req, res, id, e, action, __, stack, lookupActions, address })
+        return require("./action").action({ _window, req, res, id, e, action, __, dots, stack, lookupActions, address })
       }
 
-      return toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: data }).data
+      return toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, dots, _: data }).data
     }
   }
 
@@ -6665,11 +6649,11 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 }
 
 module.exports = { toAction }
-},{"./action":1,"./actions.json":2,"./addresser":3,"./clone":5,"./toArray":64,"./toAwait":65}],63:[function(require,module,exports){
+},{"./action":1,"./actions.json":2,"./addresser":3,"./clone":5,"./toArray":63,"./toAwait":64}],62:[function(require,module,exports){
 const { decode } = require("./decode")
 const { isEqual } = require("./isEqual")
 
-const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, req, res, object }) => {
+const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, dots, req, res, object }) => {
 
   const { toAction } = require("./toAction")
   const { toValue } = require("./toValue")
@@ -6712,7 +6696,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
 
       while (!approval && conditions[i] !== undefined) {
         if (conditions[i].charAt(0) === "=" || conditions[i].slice(0, 2) === "!=") conditions[i] = key + conditions[i]
-        approval = toApproval({ _window, lookupActions, stack, e, data: conditions[i], id, __, req, res, object })
+        approval = toApproval({ _window, lookupActions, stack, e, data: conditions[i], id, __, dots, req, res, object })
         i += 1
       }
 
@@ -6737,7 +6721,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
     var notEqual
 
     // get value
-    if (value) value = toValue({ _window, lookupActions, stack, id, data: value, e, __, req, res, condition: true })
+    if (value) value = toValue({ _window, lookupActions, stack, id, data: value, e, __, dots, req, res, condition: true })
 
     // encoded
     if (key.charAt(0) === "@" && key.length == 6 && global.__refs__[key].type === "text") {
@@ -6767,13 +6751,13 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
 
     // action
     if (path0.slice(-2) === "()") {
-      var isAction = toAction({ _window, lookupActions, stack, id, req, res, __, e, path, path0, condition: true });
+      var isAction = toAction({ _window, lookupActions, stack, id, req, res, __, dots, e, path, path0, condition: true });
       if (isAction !== "__continue__") return approval = notEqual ? !isAction : isAction
     }
 
     // get key
-    if (object || key.includes("()")) key = toValue({ _window, lookupActions, stack, id, data: key, e, __, req, res, object, condition: true })
-    else key = toValue({ _window, lookupActions, stack, id, data: key, e, __, req, res, object: object !== undefined ? object : view, condition: true })
+    if (object || key.includes("()")) key = toValue({ _window, lookupActions, stack, id, data: key, e, __, dots, req, res, object, condition: true })
+    else key = toValue({ _window, lookupActions, stack, id, data: key, e, __, dots, req, res, object: object !== undefined ? object : view, condition: true })
 
     // evaluate
     if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !key : (key === 0 ? true : key)
@@ -6789,20 +6773,20 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
 
 module.exports = { toApproval }
 
-},{"./decode":14,"./isEqual":35,"./toAction":62,"./toValue":79}],64:[function(require,module,exports){
+},{"./decode":14,"./isEqual":35,"./toAction":61,"./toValue":78}],63:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? data : [data]) : [];
 }
 
 module.exports = {toArray}
 
-},{}],65:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 const { printAddress } = require("./addresser")
 const { clone } = require("./clone")
 const { lineInterpreter } = require("./lineInterpreter")
 const { printStack } = require("./stack")
 
-const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, stack, id, e, _, __ }) => {
+const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, stack, id, e, _, __, dots, action }) => {
 
   if (addressID && !address.id) address = stack.addresses.find(address => address.id === addressID)
   if (stack.terminated || address.hold) return
@@ -6840,8 +6824,8 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
 
     stack.interpretingAddressID = address.id
     
-    if (address.function) return addressFunctionExecuter({ _window, lookupActions, stack, id, e, req, res, address, headAddress, __: my__ })
-    else if (address.type === "line" || address.type === "action") return lineInterpreter({ _window, lookupActions, address, stack, id, e, req, res, ...(address.params || {}), data: address.data, __: my__ })
+    if (address.function) return addressFunctionExecuter({ _window, lookupActions, stack, id, e, req, res, address, headAddress, __: my__, dots, action })
+    else if (address.type === "line" || address.type === "action") return lineInterpreter({ _window, lookupActions, address, stack, id, e, req, res, ...(address.params || {}), data: address.data, __: my__, action })
   }
 
   if (stack.terminated) return
@@ -6854,14 +6838,14 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
     if (otherWaiting === -1 || (otherWaiting > -1 && otherWaiting.blocked)) {
       
       headAddress.hold = false
-      return toAwait({ _window, lookupActions, stack, address: headAddress, id, e, req, res, __ })
+      return toAwait({ _window, lookupActions, stack, address: headAddress, id, e, req, res, __, dots, action })
     }
   }
 
   printStack({ stack, end: true })
 }
 
-const addressFunctionExecuter = ({ _window, lookupActions, stack, id, e, req, res, address, __ }) => {
+const addressFunctionExecuter = ({ _window, lookupActions, stack, id, e, req, res, address, __, dots, action }) => {
 
   require("./toView")
   require("./toHTML")
@@ -6871,15 +6855,15 @@ const addressFunctionExecuter = ({ _window, lookupActions, stack, id, e, req, re
   var method = address.function || "lineInterpreter"
   var file = address.file || method
   
-  require(`./${file}`)[method]({ _window, lookupActions, stack, id, e, req, res, address, ...(address.params || {}), data: address.data, __ })
+  require(`./${file}`)[method]({ _window, lookupActions, stack, id, e, req, res, address, ...(address.params || {}), data: address.data, __, action })
   
   address.interpreting = false
   
-  !address.asynchronous && toAwait({ _window, lookupActions, stack, address, id, e, req, res, __ })
+  !address.asynchronous && toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, dots, action })
 }
 
 module.exports = { toAwait, addressFunctionExecuter }
-},{"./addresser":3,"./clone":5,"./lineInterpreter":41,"./reducer":48,"./stack":59,"./toHTML":73,"./toView":80,"./update":81}],66:[function(require,module,exports){
+},{"./addresser":3,"./clone":5,"./lineInterpreter":41,"./reducer":47,"./stack":58,"./toHTML":72,"./toView":79,"./update":80}],65:[function(require,module,exports){
 module.exports = {
     toCSV: (file = {}) => {
 
@@ -6954,7 +6938,7 @@ module.exports = {
         }
     }
 }
-},{}],67:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 module.exports = {
     toClock: ({ timestamp, day, hr, min, sec }) => {
 
@@ -6975,7 +6959,7 @@ module.exports = {
         return (day ? days_ + ":" : "") + (hr ? hrs_ + ":" : "") + (min ? mins_ : "") + (sec ? ":" + secs_ : "")
     }
 }
-},{}],68:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 const { generate } = require("./generate")
 
 const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) => {
@@ -7039,7 +7023,7 @@ const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) =
 }
 
 module.exports = { toCode }
-},{"./generate":24}],69:[function(require,module,exports){
+},{"./generate":24}],68:[function(require,module,exports){
 const {generate} = require("./generate")
 const {toArray} = require("./toArray")
 
@@ -7071,19 +7055,19 @@ const toComponent = (obj) => {
 
 module.exports = {toComponent}
 
-},{"./generate":24,"./toArray":64}],70:[function(require,module,exports){
+},{"./generate":24,"./toArray":63}],69:[function(require,module,exports){
 const { toArray } = require("./toArray")
 
-const toEvent = ({ _window, id, string, __, lookupActions }) => {
+const toEvent = ({ _window, id, string, __, dots, lookupActions }) => {
 
   var view = _window ? _window.views[id] : window.views[id]
-  toArray(view.__controls__).push({ event: string, __, lookupActions })
+  toArray(view.__controls__).push({ event: string, __, dots, lookupActions })
   
   return "__event__"
 }
 
 module.exports = { toEvent }
-},{"./toArray":64}],71:[function(require,module,exports){
+},{"./toArray":63}],70:[function(require,module,exports){
 // const XLSX = require("xlsx")
 
 module.exports = {
@@ -7108,7 +7092,7 @@ module.exports = {
         XLSX.writeFile(myWorkBook, myFile)
     }
 }
-},{}],72:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 module.exports = {
     toFirebaseOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -7123,7 +7107,7 @@ module.exports = {
         else return string
     }
 }
-},{}],73:[function(require,module,exports){
+},{}],72:[function(require,module,exports){
 const { toStyle } = require("./toStyle")
 const { toArray } = require("./toArray")
 const { labelHandler } = require("./labelHandler")
@@ -7134,7 +7118,7 @@ const { colorize } = require("./colorize")
 const cssStyleKeyNames = require("./cssStyleKeyNames")
 const { clone } = require("./clone")
 
-const toHTML = ({ _window, id, stack, __ }) => {
+const toHTML = ({ _window, id, stack, __, dots }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -7143,7 +7127,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
   var name = view.__name__, html = ""
 
   // linkable
-  //if (view.link && !view.__linked__) return link({ _window, id, stack, __ })
+  //if (view.link && !view.__linked__) return link({ _window, id, stack, __, dots })
 
   // text
   var text = typeof view.text !== "object" && view.text !== undefined ? view.text : ((view.editable || view.__name__ === "Input" || view.__name__ === "Text") && typeof view.data !== "object" && view.data !== undefined) ? view.data : ""
@@ -7261,7 +7245,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
   view.__idList__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
 }
 
-const link = ({ _window, id, stack, __ }) => {
+const link = ({ _window, id, stack, __, dots }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -7273,12 +7257,12 @@ const link = ({ _window, id, stack, __ }) => {
 
   // link
   var { view: linkView, id: linkID } = initView({ views, global, parent: view.__parent__, ...linkView, __, __controls__: [{ event: `click?route():'${view.link.path}'?${view.link.path || "false"};${view.link.preventDafault ? "false" : "true"}` }] })
-  toHTML({ _window, id: linkID, stack, __ })
+  toHTML({ _window, id: linkID, stack, __, dots })
   
   // view
   view.__parent__ = linkID
   view.__linked__ = true
-  toHTML({ _window, id, stack, __ })
+  toHTML({ _window, id, stack, __, dots })
 }
 
 const indexing = ({ id, views, view, parent }) => {
@@ -7310,7 +7294,7 @@ const indexing = ({ id, views, view, parent }) => {
 }
 
 module.exports = { toHTML }
-},{"./clone":5,"./colorize":7,"./cssStyleKeyNames":10,"./labelHandler":40,"./replaceNbsps":50,"./toArray":64,"./toCode":68,"./toStyle":78,"./view":84}],74:[function(require,module,exports){
+},{"./clone":5,"./colorize":7,"./cssStyleKeyNames":10,"./labelHandler":40,"./replaceNbsps":49,"./toArray":63,"./toCode":67,"./toStyle":77,"./view":83}],73:[function(require,module,exports){
 const { isNumber } = require("./toValue")
 const toNumber = (string) => {
 
@@ -7322,7 +7306,7 @@ const toNumber = (string) => {
 
 module.exports = { toNumber }
 
-},{"./toValue":79}],75:[function(require,module,exports){
+},{"./toValue":78}],74:[function(require,module,exports){
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
@@ -7335,8 +7319,9 @@ const { isEvent } = require("./isEvent")
 const { override } = require("./merge")
 const { toEvent } = require("./toEvent")
 const { kernel } = require("./kernel")
+const { decode } = require("./decode")
 
-const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req, res, mount, object, __, toView, condition }) => {
+const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req, res, mount, object, __, dots, toView, condition }) => {
 
   const { toAction } = require("./toAction")
   const { toApproval } = require("./toApproval")
@@ -7358,14 +7343,14 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
   if (string.split("?").length > 1) {
 
     // check if event
-    if (isEvent({ _window, string })) return toEvent({ _window, string, id, __, lookupActions })
+    if (isEvent({ _window, string })) return toEvent({ _window, string, id, __, dots, lookupActions })
 
     // line interpreter
-    return lineInterpreter({ _window, lookupActions, stack, id, e, data: { string, action: "toParam" }, req, res, mount, __, condition, object, toView }).data
+    return lineInterpreter({ _window, lookupActions, stack, id, e, data: { string }, req, res, mount, __, dots, condition, object, toView, action: "toParam" }).data
   }
 
   // conditions
-  if (condition || isCondition({ _window, string })) return toApproval({ id, lookupActions, stack, e, data: string, req, res, _window, __, object })
+  if (condition || isCondition({ _window, string })) return toApproval({ id, lookupActions, stack, e, data: string, req, res, _window, __, dots, object })
 
   string.split(";").map(param => {
 
@@ -7391,19 +7376,19 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
       var newParam = key + "=" + value
       param.split("=").slice(1).map(key => { newParam += ";" + key + "=" + value })
-      return params = { ...params, ...toParam({ _window, lookupActions, stack, data: param, e, id, req, res, mount, object, __, toView, condition }) }
+      return params = { ...params, ...toParam({ _window, lookupActions, stack, data: param, e, id, req, res, mount, object, __, dots, toView, condition }) }
     }
 
     // increment
     if (key && value === undefined && key.slice(-2) === "++") {
       key = key.slice(0, -2)
-      value = parseFloat(toValue({ _window, lookupActions, stack, req, res, id, e, data: key, __, condition, object }) || 0) + 1
+      value = parseFloat(toValue({ _window, lookupActions, stack, req, res, id, e, data: key, __, dots, condition, object }) || 0) + 1
     }
 
     // decrement
     else if (key && value === undefined && key.slice(-2) === "--") {
       key = key.slice(0, -2)
-      value = parseFloat(toValue({ _window, lookupActions, stack, req, res, id, e, data: key, __, condition, object }) || 0) - 1
+      value = parseFloat(toValue({ _window, lookupActions, stack, req, res, id, e, data: key, __, dots, condition, object }) || 0) - 1
     }
 
     // ||=
@@ -7417,7 +7402,8 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
       key = key.slice(0, -1)
       var myVal = key.split(".")[0].includes("()") || key.includes("_") || key.split(".")[0] === "" ? key : (`().` + key)
-      var data = toCode({ _window, id, string: toCode({ _window, id, string: `[${myVal}||[if():[type():[${value}]=number]:0.elif():[type():[${value}]=map]:[].elif():[type():[${value}]=list]:[:]:'']]`, start: "'" }) })
+      var data = `[${myVal}||[if():[type():[${value}]=number]:0.elif():[type():[${value}]=map]:[].elif():[type():[${value}]=list]:[:]:'']]`
+      data = toCode({ _window, id, string: toCode({ _window, id, string: data, start: "'" }) })
       value = `${data}+${value}`
     }
 
@@ -7469,7 +7455,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     // interpret value
     if (typeof value === "string") {
 
-      value = toValue({ _window, lookupActions, stack, req, res, id, e, data: value, __, condition, object: inheritObject ? object : undefined, isValue: true, key, param })
+      value = toValue({ _window, lookupActions, stack, req, res, id, e, data: value, __, dots, condition, object: inheritObject ? object : undefined, isValue: true, key, param })
       if (value && typeof value === "string") value = replaceNbsps(value)
 
     } else if (value === undefined) value = generate()
@@ -7479,7 +7465,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
     // action()
     if (path0.slice(-2) === "()") {
-      var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, path, path0, condition, mount, toView, object })
+      var action = toAction({ _window, lookupActions, stack, id, req, res, __, dots, e, path, path0, condition, mount, toView, object })
       if (action !== "__continue__") {
         if (typeof action === "object") override(params, action)
         return action
@@ -7490,13 +7476,13 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     if (path0 === "if()") {
 
       var data = {}
-      var approved = toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object })
+      var approved = toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, dots, req, res, object })
 
       if (!approved) {
 
         if (args[3]) {
 
-          data = toParam({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object, mount, toView })
+          data = toParam({ req, res, _window, lookupActions, stack, id, data: args[3], __, dots, e, object, mount, toView })
           path.shift()
 
         } else if (path[1] && path[1].includes("elif()")) {
@@ -7510,7 +7496,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
       } else {
 
-        data = toParam({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
+        data = toParam({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object, mount, toView })
 
         path.shift()
 
@@ -7521,28 +7507,28 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
         if (!path[0]) return params = override(params, data)
       }
 
-      return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object: data, path, value, key, object, pathJoined: param } })
+      return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { data, path, value, key, object, pathJoined: param } })
     }
 
     // interpret key
-    if (path.length > 1 || path[0].includes("()") || object || path[0].includes("@")) {
+    if (path.length > 1 || path[0].includes("()") || object || path[0].includes("@") || path[0].includes("_")) {
 
       var dataPath
       if (toView && params.path) {
         dataPath = clone(params.path)
         delete params.path
       }
-
+      
       // interpret key
       if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()" || path[0].includes("_") || object) {
 
-        reducer({ _window, lookupActions, stack, id, data: { path, value, key, object }, e, req, res, __, mount, toView, condition })
+        reducer({ _window, lookupActions, stack, id, data: { path, value, key, object }, e, req, res, __, dots, mount, toView, condition, action: "toParam" })
 
       } else {
 
         mount
-          ? reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: view }, e, req, res, __, mount, toView, condition })
-          : reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: params }, e, req, res, __, mount, toView, condition })
+          ? reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: view }, e, req, res, __, dots, mount, toView, condition, action: "toParam" })
+          : reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: params }, e, req, res, __, dots, mount, toView, condition, action: "toParam" })
       }
 
       if (!params.path && dataPath !== undefined) params.path = dataPath
@@ -7583,7 +7569,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
         // push path to __dataPath__
         view.__dataPath__.push(...myPath)
-        view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, _object: global[view.doc], value: view.data, key: true } })
+        view.data = kernel({ _window, id, stack, __, dots, lookupActions, data: { path: view.__dataPath__, data: global[view.doc], value: view.data, key: true } })
       }
     }
   })
@@ -7592,6 +7578,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 }
 
 const sleep = (milliseconds) => {
+
   const date = Date.now();
   let currentDate = null;
   do {
@@ -7600,7 +7587,7 @@ const sleep = (milliseconds) => {
 }
 
 module.exports = { toParam }
-},{"./clone":5,"./generate":24,"./isCondition":34,"./isEvent":36,"./kernel":39,"./lineInterpreter":41,"./merge":43,"./reducer":48,"./replaceNbsps":50,"./toAction":62,"./toApproval":63,"./toCode":68,"./toEvent":70,"./toValue":79}],76:[function(require,module,exports){
+},{"./clone":5,"./decode":14,"./generate":24,"./isCondition":34,"./isEvent":36,"./kernel":39,"./lineInterpreter":41,"./merge":43,"./reducer":47,"./replaceNbsps":49,"./toAction":61,"./toApproval":62,"./toCode":67,"./toEvent":69,"./toValue":78}],75:[function(require,module,exports){
 module.exports = {
     toPdf: async (options) => {
 
@@ -7629,7 +7616,7 @@ module.exports = {
         }
     }
 }
-},{}],77:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -7677,30 +7664,28 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],78:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 const cssStyleKeyNames = require("./cssStyleKeyNames")
 
 module.exports = {
-  toStyle: ({ _window, id }) => {
+    toStyle: ({ _window, id }) => {
 
-    var view = _window ? _window.views[id] : window.views[id]
-    var styles = ""
+        var view = _window ? _window.views[id] : window.views[id]
+        var styles = ""
 
-    if (view.style) {
-      Object.entries(view.style).map(([style, value]) => {
-        if (style === "after" || style.includes(">>")) return;
-        styles += `${cssStyleKeyNames[style] || style}:${value}; `
-      })
+        if (view.style) {
+            Object.entries(view.style).map(([style, value]) => {
+                styles += `${cssStyleKeyNames[style] || style}:${value}; `
+            })
 
-      styles = styles.slice(0, -2)
+            styles = styles.slice(0, -2)
+        }
+
+        view.__htmlStyles__ = styles
+        return styles
     }
-    
-    view.__htmlStyles__ = styles
-    return styles
-  }
 }
-
-},{"./cssStyleKeyNames":10}],79:[function(require,module,exports){
+},{"./cssStyleKeyNames":10}],78:[function(require,module,exports){
 const { executable } = require("./executable");
 const { generate } = require("./generate")
 const { isParam } = require("./isParam");
@@ -7714,7 +7699,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id, e, req, res, object, _object, mount, toView, condition, isValue, key, param }) => {
+const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, dots, id, e, req, res, object, mount, toView, condition, isValue, key, param }) => {
 
   const { reducer } = require("./reducer")
   const { toParam } = require("./toParam")
@@ -7731,10 +7716,10 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
   if (value.charAt(0) === "@" && value.length == 6) value = global.__refs__[value].data
 
   // value is a param it has key=value
-  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, stack, e, data: value, _object, __, object, mount: !isValue && mount, toView, condition })
+  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, stack, e, data: value, __, dots, object, mount: !isValue && mount, toView, condition })
 
   // value?condition?value
-  if (value.split("?").length > 1) return lineInterpreter({ _window, lookupActions, stack, id, e, data: {string: value, action: "toValue"}, req, res, mount, __, condition, object, toView }).data
+  if (value.split("?").length > 1) return lineInterpreter({ _window, lookupActions, stack, id, e, data: {string: value}, req, res, mount, __, dots, condition, object, toView, action: "toValue" }).data
 
   // no value
   if (value === "()") return view
@@ -7756,7 +7741,7 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
   else if (value === ":[]") return ([{}])
   else if (value === " ") return value
   else if (value === ":") return ([])
-  else if (value.charAt(0) === ":") return value.split(":").slice(1).map(item =>  toValue({ req, res, _window, id, stack, lookupActions, __, e, data: item })) // :item1:item2
+  else if (value.charAt(0) === ":") return value.split(":").slice(1).map(item =>  toValue({ req, res, _window, id, stack, lookupActions, __, dots, e, data: item })) // :item1:item2
 
   // show loader
   if (value === "loader.show") {
@@ -7774,7 +7759,7 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
     var answer
     value.split("||").map(value => {
       if (!answer) {
-        answer = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount, condition })
+        answer = toValue({ _window, lookupActions, stack, data: value, __, dots, id, e, req, res, object, mount, condition })
       }
     })
     return answer
@@ -7790,15 +7775,15 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
         
         value = value.slice(0, -2)
         value = `${value}=${value}+1`
-        toParam({ req, res, _window, lookupActions, id, e, data: value, __, object, mount, toView, condition })
-        return (toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount, condition }) - 1)
+        toParam({ req, res, _window, lookupActions, id, e, data: value, __, dots, object, mount, toView, condition })
+        return (toValue({ _window, lookupActions, stack, data: value, __, dots, id, e, req, res, object, mount, condition }) - 1)
 
       } else {
 
         var allAreNumbers = true, allAreArrays = true, allAreObjects = true
         var values = value.split("+").map(value => {
           
-          var _value = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount })
+          var _value = toValue({ _window, lookupActions, stack, data: value, __, dots, id, e, req, res, object, mount })
           
           if (allAreNumbers) {
 
@@ -7854,13 +7839,13 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
     
     if (value.includes("-")) { // subtraction
 
-      var _value = calcSubs({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition })
+      var _value = calcSubs({ _window, lookupActions, stack, value, __, dots, id, e, req, res, object, condition })
       if (_value !== value) return _value
     }
     
     if (value.includes("*") && value.split("*")[1] !== "") { // multiplication
 
-      var values = value.split("*").map(value => toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount, condition }))
+      var values = value.split("*").map(value => toValue({ _window, lookupActions, stack, data: value, __, dots, id, e, req, res, object, mount, condition }))
       var newVal = values[0]
       values.slice(1).map(val => {
         if (!isNaN(newVal) && !isNaN(val)) newVal *= val
@@ -7883,13 +7868,13 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
     
     if (value.includes("/") && value.split("/")[1] !== "") { // division
 
-      var _value = calcDivision({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition })
+      var _value = calcDivision({ _window, lookupActions, stack, value, __, dots, id, e, req, res, object, condition })
       if (_value !== value && _value !== undefined) return _value
     }
     
     if (value.includes("%") && value.split("%")[1] !== "") { // modulo
 
-      var _value = calcModulo({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition })
+      var _value = calcModulo({ _window, lookupActions, stack, value, __, dots, id, e, req, res, object, condition })
       if (_value !== value && _value !== undefined) return _value
     }
   }
@@ -7899,7 +7884,7 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
   /* value */
   if (isNumber(value)) value = parseFloat(value)
   else if (object || path[0].includes(":") || path[0].includes("()") || path[0].includes("@") || path[1])
-    value = reducer({ _window, lookupActions, stack, id, data: { path, value, object }, __, e, req, res, mount, toView })
+    value = reducer({ _window, lookupActions, stack, id, data: { path, value, object }, __, dots, e, req, res, mount, toView })
 
   return value
 }
@@ -7922,7 +7907,7 @@ const emptySpaces = (string) => {
   return false
 }
 
-const calcSubs = ({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition, index = 1 }) => {
+const calcSubs = ({ _window, lookupActions, stack, value, __, dots, id, e, req, res, object, condition, index = 1 }) => {
   
   var allAreNumbers = true, test = value, global = _window ? _window.global : window.global
   if (value.split("-").length > index) {
@@ -7938,7 +7923,7 @@ const calcSubs = ({ _window, lookupActions, stack, value, __, id, e, req, res, o
 
       if (allAreNumbers) {
 
-        var num = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, condition })
+        var num = toValue({ _window, lookupActions, stack, data: value, __, dots, id, e, req, res, object, condition })
         if (!isNaN(num) && num !== " " && num !== "") return num
         else allAreNumbers = false
       }
@@ -7950,7 +7935,7 @@ const calcSubs = ({ _window, lookupActions, stack, value, __, id, e, req, res, o
       values.slice(1).map(val => value -= parseFloat(val))
       global.__calcTests__[test] = true
 
-    } else value = calcSubs({ _window, lookupActions, stack, value, __, id, e, req, res, object: value.charAt(0) === "." && object, condition, index: index + 1 })
+    } else value = calcSubs({ _window, lookupActions, stack, value, __, dots, id, e, req, res, object: value.charAt(0) === "." && object, condition, index: index + 1 })
     
   } else return value
   
@@ -7958,7 +7943,7 @@ const calcSubs = ({ _window, lookupActions, stack, value, __, id, e, req, res, o
   return value
 }
 
-const calcDivision = ({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition, index = 1 }) => {
+const calcDivision = ({ _window, lookupActions, stack, value, __, dots, id, e, req, res, object, condition, index = 1 }) => {
   
   var allAreNumbers = true, test = value, global = _window ? _window.global : window.global
   if (value.split("/").length > index) {
@@ -7974,7 +7959,7 @@ const calcDivision = ({ _window, lookupActions, stack, value, __, id, e, req, re
 
       if (allAreNumbers) {
         
-        var num = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object: value.charAt(0) === "." && object, condition })
+        var num = toValue({ _window, lookupActions, stack, data: value, __, dots, id, e, req, res, object: value.charAt(0) === "." && object, condition })
         if (!isNaN(num) && num !== " " && num !== "") return num
         else allAreNumbers = false
       }
@@ -7990,14 +7975,14 @@ const calcDivision = ({ _window, lookupActions, stack, value, __, id, e, req, re
       // push 
       global.__calcTests__[test] = true
 
-    } else calcDivision({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition, index: index + 1 })
+    } else calcDivision({ _window, lookupActions, stack, value, __, dots, id, e, req, res, object, condition, index: index + 1 })
   }
   
   if (value === test) global.__calcTests__[test] = false
   return value
 }
 
-const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition, index = 1 }) => {
+const calcModulo = ({ _window, lookupActions, stack, value, __, dots, id, e, req, res, object, condition, index = 1 }) => {
   
   var allAreNumbers = true, test = value, global = _window ? _window.global : window.global
   if (value.split("%").length > index) {
@@ -8012,7 +7997,7 @@ const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res,
 
       if (allAreNumbers) {
         
-        var num = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object: value.charAt(0) === "." ? object : undefined, condition })
+        var num = toValue({ _window, lookupActions, stack, data: value, __, dots, id, e, req, res, object: value.charAt(0) === "." ? object : undefined, condition })
 
         if (!isNaN(num) && num !== " " && num !== "") return num
         else allAreNumbers = false
@@ -8026,7 +8011,7 @@ const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res,
 
       global.__calcTests__[test] = true
 
-    } else value = calcModulo({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition, index: index + 1 })
+    } else value = calcModulo({ _window, lookupActions, stack, value, __, dots, id, e, req, res, object, condition, index: index + 1 })
   }
   
   if (value === test) global.__calcTests__[test] = false
@@ -8035,7 +8020,7 @@ const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res,
 
 module.exports = { toValue, calcSubs, calcDivision, calcModulo, emptySpaces, isNumber }
 
-},{"./executable":21,"./generate":24,"./isParam":37,"./lineInterpreter":41,"./reducer":48,"./toParam":75}],80:[function(require,module,exports){
+},{"./executable":21,"./generate":24,"./isParam":37,"./lineInterpreter":41,"./reducer":47,"./toParam":74}],79:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
@@ -8052,13 +8037,13 @@ const builtInViews = require("../view/views")
 const { kernel } = require("./kernel")
 const { isParam } = require("./isParam")
 
-const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data = {} }) => {
+const toView = ({ _window, lookupActions, stack, address, req, res, __, id, dots, data = {} }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
 
   // init view
-  var { id, view } = initView({ views, global, id, parent: data.parent, ...(data.view || {}), __lookupActions__: lookupActions, __ })
+  var { id, view } = initView({ views, global, id, parent: data.parent, ...(data.view || {}), __lookupActions__: lookupActions, __, dots })
 
   // no view
   if (!view.view) return removeView({ _window, lookupActions, stack, id, address, __ })
@@ -8092,7 +8077,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
   var loop = view.__name__ === "Action" ? false : view.__name__.charAt(0) === "@" && view.__name__.length == 6
 
   // view name
-  view.__name__ = toValue({ _window, id, req, res, data: view.__name__, __, stack })
+  view.__name__ = toValue({ _window, id, req, res, data: view.__name__, __, stack, dots })
 
   // no view
   if (!view.__name__ || view.__name__.charAt(0) === "#") return removeView({ _window, id, stack })
@@ -8101,14 +8086,14 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
   // sub params
   if (subParams) {
 
-    var { data = {}, conditionsNotApplied } = lineInterpreter({ _window, lookupActions, stack, id, data: { string: subParams }, req, res, __ })
+    var { data = {}, conditionsNotApplied } = lineInterpreter({ _window, lookupActions, stack, id, data: { string: subParams }, req, res, __, dots })
 
     if (conditionsNotApplied) return removeView({ _window, id, stack })
     else subParams = data
   }
 
   // [View]
-  if (loop) return loopOverView({ _window, id, stack, lookupActions, __, address, data: subParams || {}, req, res })
+  if (loop) return loopOverView({ _window, id, stack, lookupActions, __, dots, address, data: subParams || {}, req, res })
 
   // subparam is params or id
   if (typeof subParams === "object") {
@@ -8128,13 +8113,13 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
   }
 
   // conditions
-  var approved = toApproval({ _window, lookupActions, stack, data: conditions, id, req, res, __ })
+  var approved = toApproval({ _window, lookupActions, stack, data: conditions, id, req, res, __, dots })
   if (!approved) return removeView({ _window, id, stack })
   
   // params
   if (params) {
 
-    lineInterpreter({ _window, lookupActions, stack, data: { string: params, action: "toParam" }, id, req, res, mount: true, toView: true, __ }).data
+    lineInterpreter({ _window, lookupActions, stack, data: { string: params }, id, req, res, mount: true, toView: true, __, dots, action: "toParam" }).data
 
     if (view.id !== id) {
       
@@ -8151,33 +8136,33 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
   if (stack.addresses[0].asynchronous) {
     
     // address toHTML
-    var headAddress = addresser({ _window, id, stack, renderer: true, headAddressID: address.headAddressID, type: "render", status: "Wait", action: "continue()", function: "continueToView", file: "toView", __, lookupActions, stack }).address
+    var headAddress = addresser({ _window, id, stack, renderer: true, headAddressID: address.headAddressID, type: "render", status: "Wait", action: "continue()", function: "continueToView", file: "toView", __, dots, lookupActions, stack }).address
     return address.headAddressID = headAddress.id
   }
 
-  continueToView({ _window, id, stack, __, address, lookupActions, req, res })
+  continueToView({ _window, id, stack, __, dots, address, lookupActions, req, res })
 }
 
-const continueToView = ({ _window, id, stack, __, address, lookupActions, req, res }) => {
+const continueToView = ({ _window, id, stack, __, dots, address, lookupActions, req, res }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
   var view = views[id]
 
   // custom View
-  if (global.data.view[view.__name__]) return customView({ _window, id, lookupActions, address, stack, __, req, res })
+  if (global.data.view[view.__name__]) return customView({ _window, id, lookupActions, address, stack, __, dots, req, res })
   
   // data
-  view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, _object: global[view.doc] || {}, value: view.data, key: true }, __ })
+  view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, data: global[view.doc] || {}, value: view.data, key: true }, __, dots })
   
   // components
   componentModifier({ _window, id })
 
   // build-in view
-  if (builtInViews[view.__name__] && !view.__templated__) var { id, view } = builtInViewHandler({ _window, lookupActions, stack, id, req, res, __ })
+  if (builtInViews[view.__name__] && !view.__templated__) var { id, view } = builtInViewHandler({ _window, lookupActions, stack, id, req, res, __, dots })
 
   // address toHTML
-  var address = addresser({ _window, id, stack, headAddress: address, type: "render", status: "Wait", action: "html()", function: "toHTML", __, lookupActions, stack }).address
+  var address = addresser({ _window, id, stack, headAddress: address, type: "render", status: "Wait", action: "html()", function: "toHTML", __, dots, lookupActions, stack }).address
   var lastIndex = view.children.length - 1;
 
   ([...toArray(view.children)]).reverse().map(async (child, index) => {
@@ -8186,11 +8171,11 @@ const continueToView = ({ _window, id, stack, __, address, lookupActions, req, r
     views[childID] = { ...clone(child), id: childID, __view__: true, __parent__: id, __viewPath__: [...view.__viewPath__, "children", lastIndex - index], __childIndex__: lastIndex - index }
 
     // address
-    address = addresser({ _window, id: childID, stack, type: "render", status: "Wait", action: "view()", function: "toView", headAddress: address, __, lookupActions, data: { view: views[childID] } }).address
+    address = addresser({ _window, id: childID, stack, type: "render", status: "Wait", action: "view()", function: "toView", headAddress: address, __, dots, lookupActions, data: { view: views[childID] } }).address
   })
   
   // awaits
-  toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+  toAwait({ _window, id, lookupActions, stack, address, __, dots, req, res })
 }
 
 const sortAndArrange = ({ data, sort, arrange }) => {
@@ -8288,7 +8273,7 @@ const componentModifier = ({ _window, id }) => {
   }
 }
 
-const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {}, req, res }) => {
+const loopOverView = ({ _window, id, stack, lookupActions, __, dots, address, data = {}, req, res }) => {
 
   var global = _window ? _window.global : window.global
   var views = _window ? _window.views : window.views
@@ -8322,7 +8307,7 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
   var { doc, data = {}, __dataPath__ = [], mount, path, keys, preventDefault, ...myparams } = data
   
   // data
-  data = reducer({ _window, lookupActions, stack, id, data: { path: __dataPath__, object: global[doc] }, req, res, __ })
+  data = kernel({ _window, lookupActions, stack, id, data: { path: __dataPath__, data: global[doc] }, req, res, __, dots })
 
   var loopData = []
   var isObj = !Array.isArray(data) && typeof data === "object"
@@ -8347,20 +8332,20 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
 
     views[params.id] = { __view__: true, __loop__: true, __mount__: mount, ...clone(view), ...myparams, ...params }
     
-    address = addresser({ _window, id: params.id, stack, type: "render", status: "Wait", function: "toView", renderer: true, blockable: false, action: "view()", __: [values[key], ...__], lookupActions, data: { view: views[params.id] } }).address
+    address = addresser({ _window, id: params.id, stack, type: "render", status: "Wait", function: "toView", renderer: true, blockable: false, action: "view()", __: [values[key], ...__], dots, lookupActions, data: { view: views[params.id] } }).address
   })
   
   // 
   removeView({ _window, id, stack });
 
   // awaits
-  toAwait({ _window, id: address.viewID, lookupActions, stack, address, __, req, res })
+  toAwait({ _window, id: address.viewID, lookupActions, stack, address, __, dots, req, res })
 
   // log loop
   stack.logs.push([stack.logs.length, "LOOP end", (new Date()).getTime() - timer, loopID].join(" ")); 
 }
 
-const customView = ({ _window, id, lookupActions, stack, __, address, req, res }) => {
+const customView = ({ _window, id, lookupActions, stack, __, dots, address, req, res }) => {
   
   var global = _window ? _window.global : window.global
   var views = _window ? _window.views : window.views
@@ -8380,10 +8365,10 @@ const customView = ({ _window, id, lookupActions, stack, __, address, req, res }
 
   var data = getViewParams({ view })
 
-  toView({ _window, lookupActions, stack, address, req, res, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: views[child.id], parent: view.__parent__ } })
+  toView({ _window, lookupActions, stack, address, req, res, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], dots, data: { view: views[child.id], parent: view.__parent__ } })
 }
 
-const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ }) => {
+const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __, dots }) => {
   
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -8392,7 +8377,7 @@ const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ })
   views[id] = builtInViews[view.__name__](view)
   var { id, view } = initView({ views, global, parent: views[id].__parent__, ...views[id] })
 
-  lineInterpreter({ _window, lookupActions, stack, data: { string: view.view, id, index: 1}, req, res, mount: true, toView: true, __ })
+  lineInterpreter({ _window, lookupActions, stack, data: { string: view.view, id, index: 1}, req, res, mount: true, toView: true, __, dots })
   view.__name__ = view.view.split("?")[0]
 
   if (view.id !== id) {
@@ -8407,7 +8392,7 @@ const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ })
 }
 
 module.exports = { toView, continueToView }
-},{"../view/views":166,"./addresser":3,"./clone":5,"./generate":24,"./isParam":37,"./kernel":39,"./lineInterpreter":41,"./merge":43,"./reducer":48,"./toApproval":63,"./toArray":64,"./toAwait":65,"./toCode":68,"./toValue":79,"./view":84}],81:[function(require,module,exports){
+},{"../view/views":165,"./addresser":3,"./clone":5,"./generate":24,"./isParam":37,"./kernel":39,"./lineInterpreter":41,"./merge":43,"./reducer":47,"./toApproval":62,"./toArray":63,"./toAwait":64,"./toCode":67,"./toValue":78,"./view":83}],80:[function(require,module,exports){
 const { starter } = require("./starter")
 const { toView } = require("./toView")
 const { clone } = require("./clone")
@@ -8417,7 +8402,7 @@ const { removeView } = require("./view")
 const { generate } = require("./generate")
 const { addresser } = require("./addresser")
 
-const update = ({ _window, id, lookupActions, stack, address, req, res, __, data = {} }) => {
+const update = ({ _window, id, lookupActions, stack, address, req, res, __, dots, data = {} }) => {
 
   // address.blockable = false
   var views = _window ? _window.views : window.views
@@ -8439,7 +8424,7 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
   if (!view) return
   
   // close publics
-  closePublicViews({ _window, id: data.id, __, stack, lookupActions })
+  closePublicViews({ _window, id: data.id, __, dots, stack, lookupActions })
 
   // get view to be rendered
   var reducedView = { ...(data.view ? data.view : clone(__viewPath__.reduce((o, k) => o[k], global.data.view))), __index__, __childIndex__, __view__: true, __viewPath__, __customViewPath__ }
@@ -8465,19 +8450,19 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
   else if (!parent.__rendered__) { removeView({ _window, id: data.id, stack, main: true }) }
 
   // address for postUpdate
-  var address = addresser({ _window, id, stack, headAddress: address, status: "Wait", action: "postUpdate()", function: "postUpdate", file: "update", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent, address } }).address
+  var address = addresser({ _window, id, stack, headAddress: address, status: "Wait", action: "postUpdate()", function: "postUpdate", file: "update", __, dots, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent, address } }).address
 
   // render
-  toView({ _window, lookupActions: myLookupActions, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
+  toView({ _window, lookupActions: myLookupActions, stack, req, res, address, __: my__, dots, data: { view: reducedView, parent: parent.id } })
 }
 
-const postUpdate = ({ _window, lookupActions, stack, __, req, res, id, data: { childIndex, elements, route, timer, parent, address, ...data } }) => {
+const postUpdate = ({ _window, lookupActions, stack, __, dots, req, res, id, data: { childIndex, elements, route, timer, parent, address, ...data } }) => {
   
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
 
   // tohtml parent
-  toHTML({ _window, lookupActions, stack, __, id: parent.id })
+  toHTML({ _window, lookupActions, stack, __, dots, id: parent.id })
 
   var renderedRefView = parent.__childrenRef__.filter(({ id, childIndex: chdIndex }) => chdIndex === childIndex && !views[id].__rendered__ && views[id])
 
@@ -8550,11 +8535,11 @@ const postUpdate = ({ _window, lookupActions, stack, __, req, res, id, data: { c
   console.log(data.action || (updatedViews[0].id === "root" ? "ROUTE" : "UPDATE"), (new Date()).getTime() - timer, updatedViews[0].id)
 
   // await params
-  address && require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id: views[id] ? id : updatedViews[0].id, __, _: data })
+  address && require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id: views[id] ? id : updatedViews[0].id, __, dots, _: data })
 }
 
 module.exports = { update, postUpdate }
-},{"./addresser":3,"./clone":5,"./closePublicViews":6,"./generate":24,"./starter":60,"./toAwait":65,"./toHTML":73,"./toView":80,"./view":84}],82:[function(require,module,exports){
+},{"./addresser":3,"./clone":5,"./closePublicViews":6,"./generate":24,"./starter":59,"./toAwait":64,"./toHTML":72,"./toView":79,"./view":83}],81:[function(require,module,exports){
 const axios = require("axios")
 const { clone } = require("./clone")
 const { generate } = require("./generate")
@@ -8562,7 +8547,7 @@ const readFile = require("./readFile")
 const { toArray } = require("./toArray")
 const { storeFile } = require("./storage")
 
-module.exports = async ({ _window, lookupActions, stack, address, id, req, res, e, __, upload, ...params }) => {
+module.exports = async ({ _window, lookupActions, stack, address, id, req, res, e, __, dots, upload, ...params }) => {
         
   var promises = []
   var global = _window ? _window.global : window.global
@@ -8622,9 +8607,9 @@ module.exports = async ({ _window, lookupActions, stack, address, id, req, res, 
   await Promise.all(promises)
   
   // await
-  require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __, _: uploads.length === 1 ? uploads[0] : uploads, ...params })
+  require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __, dots, _: uploads.length === 1 ? uploads[0] : uploads, ...params })
 }
-},{"./clone":5,"./generate":24,"./readFile":47,"./storage":61,"./toArray":64,"./toAwait":65,"axios":93}],83:[function(require,module,exports){
+},{"./clone":5,"./generate":24,"./readFile":46,"./storage":60,"./toArray":63,"./toAwait":64,"axios":92}],82:[function(require,module,exports){
 'use strict';
 
 const downloadToFile = (content, filename, contentType) => {
@@ -8697,12 +8682,12 @@ const vcardServer = ({ res, data }) => {
 }
 
 module.exports = { vcard }
-},{"vcards-js":158}],84:[function(require,module,exports){
+},{"vcards-js":157}],83:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const initView = ({ views, global, id = generate(), doc, children = [], parent, __parent__, __status__ = "Loading", __dataPath__, __lookupActions__ = [], __controls__ = [], ...data }) => {
+const initView = ({ views, global, id = generate(), doc, children = [], dots, parent, __parent__, __status__ = "Loading", __dataPath__, __lookupActions__ = [], __controls__ = [], ...data }) => {
 
     var parentView = (parent || __parent__ ? views[parent || __parent__] : {}) || {}
 
@@ -8712,6 +8697,7 @@ const initView = ({ views, global, id = generate(), doc, children = [], parent, 
         children: toArray(children),
         doc: doc || parentView.doc,
         __lookupActions__,
+        __dots__: dots,
         __status__,
         __view__: true,
         __parent__: parent || __parent__,
@@ -8736,7 +8722,7 @@ const getViewParams = ({ view }) => {
     
     var { id, doc, data, view, children, __lookupActions__, __element__, __dataPath__, __childrenRef__, __index__,
         __viewPath__, __customViewPath__, __indexing__, __childIndex__, __initialIndex__, __customView__, __htmlStyles__, 
-        __parent__, __controls__, __status__, __rendered__, __timers__, __view__, __name__, __, ...params } = view
+        __parent__, __controls__, __status__, __rendered__, __timers__, __view__, __name__, __, __dots__, ...params } = view
         
     return params
 }
@@ -8810,7 +8796,7 @@ const blockRelatedAddressesByViewID = ({ stack, id }) => {
 }
 
 module.exports = { initView, getViewParams, removeView }
-},{"./clone":5,"./generate":24,"./toArray":64}],85:[function(require,module,exports){
+},{"./clone":5,"./generate":24,"./toArray":63}],84:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
@@ -8819,20 +8805,20 @@ const { isEqual } = require("./isEqual")
 const { toCode } = require("./toCode")
 const { generate } = require("./generate")
 
-const watch = ({ lookupActions, __, string, id }) => {
+const watch = ({ lookupActions, __, dots, string, id }) => {
 
     var view = window.views[id]
     if (!view) return
 
     var watch = toCode({ _window, id, string: toCode({ _window, id, string, start: "'" }) })
 
-    var approved = toApproval({ id, lookupActions, stack, data: watch.split('?')[2] })
+    var approved = toApproval({ id, lookupActions, stack, __, dots, data: watch.split('?')[2] })
     if (!approved || !watch) return
 
     watch.split('?')[0].split(';').map(_watch => {
 
         var timer = 500, watchAddress = { id: generate() }
-        view[`${_watch}-watch`] = clone(toValue({ id, lookupActions, stack, data: _watch }))
+        view[`${_watch}-watch`] = clone(toValue({ id, lookupActions, stack, __, dots, data: _watch }))
         
         const myFn = async () => {
             
@@ -8843,14 +8829,14 @@ const watch = ({ lookupActions, __, string, id }) => {
             view[`${_watch}-watch`] = clone(value)
             
             // params
-            toParam({ id, lookupActions, stack, data: watch.split('?')[1], mount: true, __ })
+            toParam({ id, lookupActions, stack, data: watch.split('?')[1], mount: true, __, dots })
             
             // approval
-            var approved = toApproval({ id, lookupActions, stack, data: watch.split('?')[2] })
+            var approved = toApproval({ id, lookupActions, stack, data: watch.split('?')[2], __, dots })
             if (!approved) return
                 
             // params
-            if (view.await) toParam({ id, lookupActions, stack, data: view.await.join(';') })
+            if (view.await) toParam({ id, lookupActions, stack, data: view.await.join(';'), __, dots })
         }
 
         view.__timers__.push(setInterval(myFn, timer))
@@ -8858,7 +8844,7 @@ const watch = ({ lookupActions, __, string, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":5,"./generate":24,"./isEqual":35,"./toApproval":63,"./toCode":68,"./toParam":75,"./toValue":79}],86:[function(require,module,exports){
+},{"./clone":5,"./generate":24,"./isEqual":35,"./toApproval":62,"./toCode":67,"./toParam":74,"./toValue":78}],85:[function(require,module,exports){
 const { generate } = require("../action/generate");
 
 module.exports = ({ data, id }) => {
@@ -8891,7 +8877,7 @@ module.exports = ({ data, id }) => {
     }
   ]
 }
-},{"../action/generate":24}],87:[function(require,module,exports){
+},{"../action/generate":24}],86:[function(require,module,exports){
 module.exports = () => {
   
   return [{ // close droplist
@@ -8910,7 +8896,7 @@ module.exports = () => {
     event: `keyup:input()?():droplist.children().[__keyupIndex__:()||0].mouseleave();__keyupIndex__:()=if():[e().keyCode=40]:[__keyupIndex__:()+1]:[__keyupIndex__:()-1];():droplist.children().[__keyupIndex__:()].mouseenter()?!droplist.preventDefault;e().keyCode=40||e().keyCode=38;__droplistPositioner__:();if():[e().keyCode=38]:[__keyupIndex__:()>0].elif():[e().keyCode=40]:[__keyupIndex__:()<():droplist.children.lastIndex()]`
   }]
 }
-},{}],88:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 module.exports = {
   popup: require("./popup"),
   droplist: require("./droplist"),
@@ -8919,7 +8905,7 @@ module.exports = {
   hover: require("./hover"),
   clicked: require("./clicked"),
 }
-},{"./clicked":86,"./droplist":87,"./hover":89,"./mininote":90,"./popup":91,"./tooltip":92}],89:[function(require,module,exports){
+},{"./clicked":85,"./droplist":86,"./hover":88,"./mininote":89,"./popup":90,"./tooltip":91}],88:[function(require,module,exports){
 module.exports = ({ data, id }) => {
 
     var view = window.views[id]
@@ -8940,14 +8926,14 @@ module.exports = ({ data, id }) => {
         "event": `mouseleave:${_id}?hover.default.style.keys()._():[style().[_]=.hover.default.style.[_]]?!clicked.disable;!clicked.mount;!hover.disable`
     }]
 }
-},{}],90:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 module.exports = () => {
   
   return [{
     event: `click?():mininote-text.txt()=[.mininote.text||.mininote.note||''];clearTimeout():[mininote-timer:()];():mininote.style():[opacity=1;transform='scale(1)'];mininote-timer:()=():root.timer():[():mininote.style():[opacity=0;transform=scale(0)]]:[.mininote.timer||3000]`
   }]
 }
-},{}],91:[function(require,module,exports){
+},{}],90:[function(require,module,exports){
 module.exports = ({ data, id }) => {
   
   var view = window.views[id]
@@ -8962,7 +8948,7 @@ module.exports = ({ data, id }) => {
     event: `click?clearTimer():[popup-timer:()];if():[__popupPositioner__:()=${id}]:[timer():[().popup.style.keys()._():[():popup.style().[_]=():popup.style._||null];():popup.():[if():[():${id}.popup.model=model1]:[child().style().transform='scale(0.5)'];style():[opacity=0;pointerEvents=none]];__popupPositioner__:().del()]:0].elif():[__popupPositioner__:()!=${id}]:[__popupPositioner__:()=${id};update():popup;timer():[if():[():${id}.popup.model=model1]:[():popup.position():[positioner=${data.positioner || id};placement=${data.placement || "left"};distance=${data.distance};align=${data.align}]];():popup.():[if():[():${id}.popup.model=model1]:[child().style().transform='scale(1)'];style():[opacity=1;pointerEvents=auto]];().popup.style():[().popup.style]]:50]`
   }]
 }
-},{}],92:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[a-zA-Z]/
 
@@ -8979,9 +8965,9 @@ module.exports = ({ data, id }) => {
     event: "mouseenter?mouseentered=true"
   }]
 }
-},{}],93:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":95}],94:[function(require,module,exports){
+},{"./lib/axios":94}],93:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9172,7 +9158,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":101,"../core/createError":102,"./../core/settle":106,"./../helpers/buildURL":110,"./../helpers/cookies":112,"./../helpers/isURLSameOrigin":115,"./../helpers/parseHeaders":117,"./../utils":120}],95:[function(require,module,exports){
+},{"../core/buildFullPath":100,"../core/createError":101,"./../core/settle":105,"./../helpers/buildURL":109,"./../helpers/cookies":111,"./../helpers/isURLSameOrigin":114,"./../helpers/parseHeaders":116,"./../utils":119}],94:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -9230,7 +9216,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":96,"./cancel/CancelToken":97,"./cancel/isCancel":98,"./core/Axios":99,"./core/mergeConfig":105,"./defaults":108,"./helpers/bind":109,"./helpers/isAxiosError":114,"./helpers/spread":118,"./utils":120}],96:[function(require,module,exports){
+},{"./cancel/Cancel":95,"./cancel/CancelToken":96,"./cancel/isCancel":97,"./core/Axios":98,"./core/mergeConfig":104,"./defaults":107,"./helpers/bind":108,"./helpers/isAxiosError":113,"./helpers/spread":117,"./utils":119}],95:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9251,7 +9237,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],97:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -9310,14 +9296,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":96}],98:[function(require,module,exports){
+},{"./Cancel":95}],97:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],99:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9467,7 +9453,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":110,"../helpers/validator":119,"./../utils":120,"./InterceptorManager":100,"./dispatchRequest":103,"./mergeConfig":105}],100:[function(require,module,exports){
+},{"../helpers/buildURL":109,"../helpers/validator":118,"./../utils":119,"./InterceptorManager":99,"./dispatchRequest":102,"./mergeConfig":104}],99:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9523,7 +9509,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":120}],101:[function(require,module,exports){
+},{"./../utils":119}],100:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -9545,7 +9531,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":111,"../helpers/isAbsoluteURL":113}],102:[function(require,module,exports){
+},{"../helpers/combineURLs":110,"../helpers/isAbsoluteURL":112}],101:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -9565,7 +9551,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":104}],103:[function(require,module,exports){
+},{"./enhanceError":103}],102:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9649,7 +9635,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":98,"../defaults":108,"./../utils":120,"./transformData":107}],104:[function(require,module,exports){
+},{"../cancel/isCancel":97,"../defaults":107,"./../utils":119,"./transformData":106}],103:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9693,7 +9679,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],105:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -9782,7 +9768,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":120}],106:[function(require,module,exports){
+},{"../utils":119}],105:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -9809,7 +9795,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":102}],107:[function(require,module,exports){
+},{"./createError":101}],106:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9833,7 +9819,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":108,"./../utils":120}],108:[function(require,module,exports){
+},{"./../defaults":107,"./../utils":119}],107:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -9971,7 +9957,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":94,"./adapters/xhr":94,"./core/enhanceError":104,"./helpers/normalizeHeaderName":116,"./utils":120,"_process":130}],109:[function(require,module,exports){
+},{"./adapters/http":93,"./adapters/xhr":93,"./core/enhanceError":103,"./helpers/normalizeHeaderName":115,"./utils":119,"_process":129}],108:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -9984,7 +9970,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],110:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10056,7 +10042,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":120}],111:[function(require,module,exports){
+},{"./../utils":119}],110:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10072,7 +10058,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],112:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10127,7 +10113,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":120}],113:[function(require,module,exports){
+},{"./../utils":119}],112:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10143,7 +10129,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],114:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10156,7 +10142,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],115:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10226,7 +10212,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":120}],116:[function(require,module,exports){
+},{"./../utils":119}],115:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -10240,7 +10226,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":120}],117:[function(require,module,exports){
+},{"../utils":119}],116:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10295,7 +10281,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":120}],118:[function(require,module,exports){
+},{"./../utils":119}],117:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10324,7 +10310,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],119:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -10431,7 +10417,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":121}],120:[function(require,module,exports){
+},{"./../../package.json":120}],119:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -10782,7 +10768,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":109}],121:[function(require,module,exports){
+},{"./helpers/bind":108}],120:[function(require,module,exports){
 module.exports={
   "name": "axios",
   "version": "0.21.4",
@@ -10868,7 +10854,7 @@ module.exports={
   ]
 }
 
-},{}],122:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -11020,9 +11006,9 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],123:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 
-},{}],124:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 (function (Buffer){(function (){
 /*!
  * The buffer module from node.js, for the browser.
@@ -12803,7 +12789,7 @@ function numberIsNaN (obj) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"base64-js":122,"buffer":124,"ieee754":128}],125:[function(require,module,exports){
+},{"base64-js":121,"buffer":123,"ieee754":127}],124:[function(require,module,exports){
 'use strict';
 
 /******************************************************************************
@@ -12970,7 +12956,7 @@ if (typeof module !== 'undefined') {
   module.exports = dijkstra;
 }
 
-},{}],126:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 (function (global){(function (){
 /**
  * EasyQRCodeJS
@@ -12994,7 +12980,7 @@ if (typeof module !== 'undefined') {
 !function(){"use strict";function a(a,b){var c,d=Object.keys(b);for(c=0;c<d.length;c++)a=a.replace(new RegExp("\\{"+d[c]+"\\}","gi"),b[d[c]]);return a}function b(a){var b,c,d;if(!a)throw new Error("cannot create a random attribute name for an undefined object");b="ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz",c="";do{for(c="",d=0;d<12;d++)c+=b[Math.floor(Math.random()*b.length)]}while(a[c]);return c}function c(a){var b={left:"start",right:"end",center:"middle",start:"start",end:"end"};return b[a]||b.start}function d(a){var b={alphabetic:"alphabetic",hanging:"hanging",top:"text-before-edge",bottom:"text-after-edge",middle:"central"};return b[a]||b.alphabetic}var e,f,g,h,i;i=function(a,b){var c,d,e,f={};for(a=a.split(","),b=b||10,c=0;c<a.length;c+=2)d="&"+a[c+1]+";",e=parseInt(a[c],b),f[d]="&#"+e+";";return f["\\xa0"]="&#160;",f}("50,nbsp,51,iexcl,52,cent,53,pound,54,curren,55,yen,56,brvbar,57,sect,58,uml,59,copy,5a,ordf,5b,laquo,5c,not,5d,shy,5e,reg,5f,macr,5g,deg,5h,plusmn,5i,sup2,5j,sup3,5k,acute,5l,micro,5m,para,5n,middot,5o,cedil,5p,sup1,5q,ordm,5r,raquo,5s,frac14,5t,frac12,5u,frac34,5v,iquest,60,Agrave,61,Aacute,62,Acirc,63,Atilde,64,Auml,65,Aring,66,AElig,67,Ccedil,68,Egrave,69,Eacute,6a,Ecirc,6b,Euml,6c,Igrave,6d,Iacute,6e,Icirc,6f,Iuml,6g,ETH,6h,Ntilde,6i,Ograve,6j,Oacute,6k,Ocirc,6l,Otilde,6m,Ouml,6n,times,6o,Oslash,6p,Ugrave,6q,Uacute,6r,Ucirc,6s,Uuml,6t,Yacute,6u,THORN,6v,szlig,70,agrave,71,aacute,72,acirc,73,atilde,74,auml,75,aring,76,aelig,77,ccedil,78,egrave,79,eacute,7a,ecirc,7b,euml,7c,igrave,7d,iacute,7e,icirc,7f,iuml,7g,eth,7h,ntilde,7i,ograve,7j,oacute,7k,ocirc,7l,otilde,7m,ouml,7n,divide,7o,oslash,7p,ugrave,7q,uacute,7r,ucirc,7s,uuml,7t,yacute,7u,thorn,7v,yuml,ci,fnof,sh,Alpha,si,Beta,sj,Gamma,sk,Delta,sl,Epsilon,sm,Zeta,sn,Eta,so,Theta,sp,Iota,sq,Kappa,sr,Lambda,ss,Mu,st,Nu,su,Xi,sv,Omicron,t0,Pi,t1,Rho,t3,Sigma,t4,Tau,t5,Upsilon,t6,Phi,t7,Chi,t8,Psi,t9,Omega,th,alpha,ti,beta,tj,gamma,tk,delta,tl,epsilon,tm,zeta,tn,eta,to,theta,tp,iota,tq,kappa,tr,lambda,ts,mu,tt,nu,tu,xi,tv,omicron,u0,pi,u1,rho,u2,sigmaf,u3,sigma,u4,tau,u5,upsilon,u6,phi,u7,chi,u8,psi,u9,omega,uh,thetasym,ui,upsih,um,piv,812,bull,816,hellip,81i,prime,81j,Prime,81u,oline,824,frasl,88o,weierp,88h,image,88s,real,892,trade,89l,alefsym,8cg,larr,8ch,uarr,8ci,rarr,8cj,darr,8ck,harr,8dl,crarr,8eg,lArr,8eh,uArr,8ei,rArr,8ej,dArr,8ek,hArr,8g0,forall,8g2,part,8g3,exist,8g5,empty,8g7,nabla,8g8,isin,8g9,notin,8gb,ni,8gf,prod,8gh,sum,8gi,minus,8gn,lowast,8gq,radic,8gt,prop,8gu,infin,8h0,ang,8h7,and,8h8,or,8h9,cap,8ha,cup,8hb,int,8hk,there4,8hs,sim,8i5,cong,8i8,asymp,8j0,ne,8j1,equiv,8j4,le,8j5,ge,8k2,sub,8k3,sup,8k4,nsub,8k6,sube,8k7,supe,8kl,oplus,8kn,otimes,8l5,perp,8m5,sdot,8o8,lceil,8o9,rceil,8oa,lfloor,8ob,rfloor,8p9,lang,8pa,rang,9ea,loz,9j0,spades,9j3,clubs,9j5,hearts,9j6,diams,ai,OElig,aj,oelig,b0,Scaron,b1,scaron,bo,Yuml,m6,circ,ms,tilde,802,ensp,803,emsp,809,thinsp,80c,zwnj,80d,zwj,80e,lrm,80f,rlm,80j,ndash,80k,mdash,80o,lsquo,80p,rsquo,80q,sbquo,80s,ldquo,80t,rdquo,80u,bdquo,810,dagger,811,Dagger,81g,permil,81p,lsaquo,81q,rsaquo,85c,euro",32),e={strokeStyle:{svgAttr:"stroke",canvas:"#000000",svg:"none",apply:"stroke"},fillStyle:{svgAttr:"fill",canvas:"#000000",svg:null,apply:"fill"},lineCap:{svgAttr:"stroke-linecap",canvas:"butt",svg:"butt",apply:"stroke"},lineJoin:{svgAttr:"stroke-linejoin",canvas:"miter",svg:"miter",apply:"stroke"},miterLimit:{svgAttr:"stroke-miterlimit",canvas:10,svg:4,apply:"stroke"},lineWidth:{svgAttr:"stroke-width",canvas:1,svg:1,apply:"stroke"},globalAlpha:{svgAttr:"opacity",canvas:1,svg:1,apply:"fill stroke"},font:{canvas:"10px sans-serif"},shadowColor:{canvas:"#000000"},shadowOffsetX:{canvas:0},shadowOffsetY:{canvas:0},shadowBlur:{canvas:0},textAlign:{canvas:"start"},textBaseline:{canvas:"alphabetic"},lineDash:{svgAttr:"stroke-dasharray",canvas:[],svg:null,apply:"stroke"}},g=function(a,b){this.__root=a,this.__ctx=b},g.prototype.addColorStop=function(b,c){var d,e,f=this.__ctx.__createElement("stop");f.setAttribute("offset",b),-1!==c.indexOf("rgba")?(d=/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d?\.?\d*)\s*\)/gi,e=d.exec(c),f.setAttribute("stop-color",a("rgb({r},{g},{b})",{r:e[1],g:e[2],b:e[3]})),f.setAttribute("stop-opacity",e[4])):f.setAttribute("stop-color",c),this.__root.appendChild(f)},h=function(a,b){this.__root=a,this.__ctx=b},f=function(a){var b,c={width:500,height:500,enableMirroring:!1};if(arguments.length>1?(b=c,b.width=arguments[0],b.height=arguments[1]):b=a||c,!(this instanceof f))return new f(b);this.width=b.width||c.width,this.height=b.height||c.height,this.enableMirroring=void 0!==b.enableMirroring?b.enableMirroring:c.enableMirroring,this.canvas=this,this.__document=b.document||document,b.ctx?this.__ctx=b.ctx:(this.__canvas=this.__document.createElement("canvas"),this.__ctx=this.__canvas.getContext("2d")),this.__setDefaultStyles(),this.__stack=[this.__getStyleState()],this.__groupStack=[],this.__root=this.__document.createElementNS("http://www.w3.org/2000/svg","svg"),this.__root.setAttribute("version",1.1),this.__root.setAttribute("xmlns","http://www.w3.org/2000/svg"),this.__root.setAttributeNS("http://www.w3.org/2000/xmlns/","xmlns:xlink","http://www.w3.org/1999/xlink"),this.__root.setAttribute("width",this.width),this.__root.setAttribute("height",this.height),this.__ids={},this.__defs=this.__document.createElementNS("http://www.w3.org/2000/svg","defs"),this.__root.appendChild(this.__defs),this.__currentElement=this.__document.createElementNS("http://www.w3.org/2000/svg","g"),this.__root.appendChild(this.__currentElement)},f.prototype.__createElement=function(a,b,c){void 0===b&&(b={});var d,e,f=this.__document.createElementNS("http://www.w3.org/2000/svg",a),g=Object.keys(b);for(c&&(f.setAttribute("fill","none"),f.setAttribute("stroke","none")),d=0;d<g.length;d++)e=g[d],f.setAttribute(e,b[e]);return f},f.prototype.__setDefaultStyles=function(){var a,b,c=Object.keys(e);for(a=0;a<c.length;a++)b=c[a],this[b]=e[b].canvas},f.prototype.__applyStyleState=function(a){var b,c,d=Object.keys(a);for(b=0;b<d.length;b++)c=d[b],this[c]=a[c]},f.prototype.__getStyleState=function(){var a,b,c={},d=Object.keys(e);for(a=0;a<d.length;a++)b=d[a],c[b]=this[b];return c},f.prototype.__applyStyleToCurrentElement=function(b){var c=this.__currentElement,d=this.__currentElementsToStyle;d&&(c.setAttribute(b,""),c=d.element,d.children.forEach(function(a){a.setAttribute(b,"")}));var f,i,j,k,l,m,n=Object.keys(e);for(f=0;f<n.length;f++)if(i=e[n[f]],j=this[n[f]],i.apply)if(j instanceof h){if(j.__ctx)for(;j.__ctx.__defs.childNodes.length;)k=j.__ctx.__defs.childNodes[0].getAttribute("id"),this.__ids[k]=k,this.__defs.appendChild(j.__ctx.__defs.childNodes[0]);c.setAttribute(i.apply,a("url(#{id})",{id:j.__root.getAttribute("id")}))}else if(j instanceof g)c.setAttribute(i.apply,a("url(#{id})",{id:j.__root.getAttribute("id")}));else if(-1!==i.apply.indexOf(b)&&i.svg!==j)if("stroke"!==i.svgAttr&&"fill"!==i.svgAttr||-1===j.indexOf("rgba")){var o=i.svgAttr;if("globalAlpha"===n[f]&&(o=b+"-"+i.svgAttr,c.getAttribute(o)))continue;c.setAttribute(o,j)}else{l=/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d?\.?\d*)\s*\)/gi,m=l.exec(j),c.setAttribute(i.svgAttr,a("rgb({r},{g},{b})",{r:m[1],g:m[2],b:m[3]}));var p=m[4],q=this.globalAlpha;null!=q&&(p*=q),c.setAttribute(i.svgAttr+"-opacity",p)}},f.prototype.__closestGroupOrSvg=function(a){return a=a||this.__currentElement,"g"===a.nodeName||"svg"===a.nodeName?a:this.__closestGroupOrSvg(a.parentNode)},f.prototype.getSerializedSvg=function(a){var b,c,d,e,f,g,h=(new XMLSerializer).serializeToString(this.__root);if(g=/xmlns="http:\/\/www\.w3\.org\/2000\/svg".+xmlns="http:\/\/www\.w3\.org\/2000\/svg/gi,g.test(h)&&(h=h.replace('xmlns="http://www.w3.org/2000/svg','xmlns:xlink="http://www.w3.org/1999/xlink')),a)for(b=Object.keys(i),c=0;c<b.length;c++)d=b[c],e=i[d],f=new RegExp(d,"gi"),f.test(h)&&(h=h.replace(f,e));return h},f.prototype.getSvg=function(){return this.__root},f.prototype.save=function(){var a=this.__createElement("g"),b=this.__closestGroupOrSvg();this.__groupStack.push(b),b.appendChild(a),this.__currentElement=a,this.__stack.push(this.__getStyleState())},f.prototype.restore=function(){this.__currentElement=this.__groupStack.pop(),this.__currentElementsToStyle=null,this.__currentElement||(this.__currentElement=this.__root.childNodes[1]);var a=this.__stack.pop();this.__applyStyleState(a)},f.prototype.__addTransform=function(a){var b=this.__closestGroupOrSvg();if(b.childNodes.length>0){"path"===this.__currentElement.nodeName&&(this.__currentElementsToStyle||(this.__currentElementsToStyle={element:b,children:[]}),this.__currentElementsToStyle.children.push(this.__currentElement),this.__applyCurrentDefaultPath());var c=this.__createElement("g");b.appendChild(c),this.__currentElement=c}var d=this.__currentElement.getAttribute("transform");d?d+=" ":d="",d+=a,this.__currentElement.setAttribute("transform",d)},f.prototype.scale=function(b,c){void 0===c&&(c=b),this.__addTransform(a("scale({x},{y})",{x:b,y:c}))},f.prototype.rotate=function(b){var c=180*b/Math.PI;this.__addTransform(a("rotate({angle},{cx},{cy})",{angle:c,cx:0,cy:0}))},f.prototype.translate=function(b,c){this.__addTransform(a("translate({x},{y})",{x:b,y:c}))},f.prototype.transform=function(b,c,d,e,f,g){this.__addTransform(a("matrix({a},{b},{c},{d},{e},{f})",{a:b,b:c,c:d,d:e,e:f,f:g}))},f.prototype.beginPath=function(){var a,b;this.__currentDefaultPath="",this.__currentPosition={},a=this.__createElement("path",{},!0),b=this.__closestGroupOrSvg(),b.appendChild(a),this.__currentElement=a},f.prototype.__applyCurrentDefaultPath=function(){var a=this.__currentElement;"path"===a.nodeName?a.setAttribute("d",this.__currentDefaultPath):console.error("Attempted to apply path command to node",a.nodeName)},f.prototype.__addPathCommand=function(a){this.__currentDefaultPath+=" ",this.__currentDefaultPath+=a},f.prototype.moveTo=function(b,c){"path"!==this.__currentElement.nodeName&&this.beginPath(),this.__currentPosition={x:b,y:c},this.__addPathCommand(a("M {x} {y}",{x:b,y:c}))},f.prototype.closePath=function(){this.__currentDefaultPath&&this.__addPathCommand("Z")},f.prototype.lineTo=function(b,c){this.__currentPosition={x:b,y:c},this.__currentDefaultPath.indexOf("M")>-1?this.__addPathCommand(a("L {x} {y}",{x:b,y:c})):this.__addPathCommand(a("M {x} {y}",{x:b,y:c}))},f.prototype.bezierCurveTo=function(b,c,d,e,f,g){this.__currentPosition={x:f,y:g},this.__addPathCommand(a("C {cp1x} {cp1y} {cp2x} {cp2y} {x} {y}",{cp1x:b,cp1y:c,cp2x:d,cp2y:e,x:f,y:g}))},f.prototype.quadraticCurveTo=function(b,c,d,e){this.__currentPosition={x:d,y:e},this.__addPathCommand(a("Q {cpx} {cpy} {x} {y}",{cpx:b,cpy:c,x:d,y:e}))};var j=function(a){var b=Math.sqrt(a[0]*a[0]+a[1]*a[1]);return[a[0]/b,a[1]/b]};f.prototype.arcTo=function(a,b,c,d,e){var f=this.__currentPosition&&this.__currentPosition.x,g=this.__currentPosition&&this.__currentPosition.y;if(void 0!==f&&void 0!==g){if(e<0)throw new Error("IndexSizeError: The radius provided ("+e+") is negative.");if(f===a&&g===b||a===c&&b===d||0===e)return void this.lineTo(a,b);var h=j([f-a,g-b]),i=j([c-a,d-b]);if(h[0]*i[1]==h[1]*i[0])return void this.lineTo(a,b);var k=h[0]*i[0]+h[1]*i[1],l=Math.acos(Math.abs(k)),m=j([h[0]+i[0],h[1]+i[1]]),n=e/Math.sin(l/2),o=a+n*m[0],p=b+n*m[1],q=[-h[1],h[0]],r=[i[1],-i[0]],s=function(a){var b=a[0];return a[1]>=0?Math.acos(b):-Math.acos(b)},t=s(q),u=s(r);this.lineTo(o+q[0]*e,p+q[1]*e),this.arc(o,p,e,t,u)}},f.prototype.stroke=function(){"path"===this.__currentElement.nodeName&&this.__currentElement.setAttribute("paint-order","fill stroke markers"),this.__applyCurrentDefaultPath(),this.__applyStyleToCurrentElement("stroke")},f.prototype.fill=function(){"path"===this.__currentElement.nodeName&&this.__currentElement.setAttribute("paint-order","stroke fill markers"),this.__applyCurrentDefaultPath(),this.__applyStyleToCurrentElement("fill")},f.prototype.rect=function(a,b,c,d){"path"!==this.__currentElement.nodeName&&this.beginPath(),this.moveTo(a,b),this.lineTo(a+c,b),this.lineTo(a+c,b+d),this.lineTo(a,b+d),this.lineTo(a,b),this.closePath()},f.prototype.fillRect=function(a,b,c,d){var e,f;e=this.__createElement("rect",{x:a,y:b,width:c,height:d,"shape-rendering":"crispEdges"},!0),f=this.__closestGroupOrSvg(),f.appendChild(e),this.__currentElement=e,this.__applyStyleToCurrentElement("fill")},f.prototype.strokeRect=function(a,b,c,d){var e,f;e=this.__createElement("rect",{x:a,y:b,width:c,height:d},!0),f=this.__closestGroupOrSvg(),f.appendChild(e),this.__currentElement=e,this.__applyStyleToCurrentElement("stroke")},f.prototype.__clearCanvas=function(){for(var a=this.__closestGroupOrSvg(),b=a.getAttribute("transform"),c=this.__root.childNodes[1],d=c.childNodes,e=d.length-1;e>=0;e--)d[e]&&c.removeChild(d[e]);this.__currentElement=c,this.__groupStack=[],b&&this.__addTransform(b)},f.prototype.clearRect=function(a,b,c,d){if(0===a&&0===b&&c===this.width&&d===this.height)return void this.__clearCanvas();var e,f=this.__closestGroupOrSvg();e=this.__createElement("rect",{x:a,y:b,width:c,height:d,fill:"#FFFFFF"},!0),f.appendChild(e)},f.prototype.createLinearGradient=function(a,c,d,e){var f=this.__createElement("linearGradient",{id:b(this.__ids),x1:a+"px",x2:d+"px",y1:c+"px",y2:e+"px",gradientUnits:"userSpaceOnUse"},!1);return this.__defs.appendChild(f),new g(f,this)},f.prototype.createRadialGradient=function(a,c,d,e,f,h){var i=this.__createElement("radialGradient",{id:b(this.__ids),cx:e+"px",cy:f+"px",r:h+"px",fx:a+"px",fy:c+"px",gradientUnits:"userSpaceOnUse"},!1);return this.__defs.appendChild(i),new g(i,this)},f.prototype.__parseFont=function(){var a=/^\s*(?=(?:(?:[-a-z]+\s*){0,2}(italic|oblique))?)(?=(?:(?:[-a-z]+\s*){0,2}(small-caps))?)(?=(?:(?:[-a-z]+\s*){0,2}(bold(?:er)?|lighter|[1-9]00))?)(?:(?:normal|\1|\2|\3)\s*){0,3}((?:xx?-)?(?:small|large)|medium|smaller|larger|[.\d]+(?:\%|in|[cem]m|ex|p[ctx]))(?:\s*\/\s*(normal|[.\d]+(?:\%|in|[cem]m|ex|p[ctx])))?\s*([-,\'\"\sa-z0-9]+?)\s*$/i,b=a.exec(this.font),c={style:b[1]||"normal",size:b[4]||"10px",family:b[6]||"sans-serif",weight:b[3]||"normal",decoration:b[2]||"normal",href:null};return"underline"===this.__fontUnderline&&(c.decoration="underline"),this.__fontHref&&(c.href=this.__fontHref),c},f.prototype.__wrapTextLink=function(a,b){if(a.href){var c=this.__createElement("a");return c.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href",a.href),c.appendChild(b),c}return b},f.prototype.__applyText=function(a,b,e,f){var g=this.__parseFont(),h=this.__closestGroupOrSvg(),i=this.__createElement("text",{"font-family":g.family,"font-size":g.size,"font-style":g.style,"font-weight":g.weight,"text-decoration":g.decoration,x:b,y:e,"text-anchor":c(this.textAlign),"dominant-baseline":d(this.textBaseline)},!0);i.appendChild(this.__document.createTextNode(a)),this.__currentElement=i,this.__applyStyleToCurrentElement(f),h.appendChild(this.__wrapTextLink(g,i))},f.prototype.fillText=function(a,b,c){this.__applyText(a,b,c,"fill")},f.prototype.strokeText=function(a,b,c){this.__applyText(a,b,c,"stroke")},f.prototype.measureText=function(a){return this.__ctx.font=this.font,this.__ctx.measureText(a)},f.prototype.arc=function(b,c,d,e,f,g){if(e!==f){e%=2*Math.PI,f%=2*Math.PI,e===f&&(f=(f+2*Math.PI-.001*(g?-1:1))%(2*Math.PI));var h=b+d*Math.cos(f),i=c+d*Math.sin(f),j=b+d*Math.cos(e),k=c+d*Math.sin(e),l=g?0:1,m=0,n=f-e;n<0&&(n+=2*Math.PI),m=g?n>Math.PI?0:1:n>Math.PI?1:0,this.lineTo(j,k),this.__addPathCommand(a("A {rx} {ry} {xAxisRotation} {largeArcFlag} {sweepFlag} {endX} {endY}",{rx:d,ry:d,xAxisRotation:0,largeArcFlag:m,sweepFlag:l,endX:h,endY:i})),this.__currentPosition={x:h,y:i}}},f.prototype.clip=function(){var c=this.__closestGroupOrSvg(),d=this.__createElement("clipPath"),e=b(this.__ids),f=this.__createElement("g");this.__applyCurrentDefaultPath(),c.removeChild(this.__currentElement),d.setAttribute("id",e),d.appendChild(this.__currentElement),this.__defs.appendChild(d),c.setAttribute("clip-path",a("url(#{id})",{id:e})),c.appendChild(f),this.__currentElement=f},f.prototype.drawImage=function(){var a,b,c,d,e,g,h,i,j,k,l,m,n,o,p=Array.prototype.slice.call(arguments),q=p[0],r=0,s=0;if(3===p.length)a=p[1],b=p[2],e=q.width,g=q.height,c=e,d=g;else if(5===p.length)a=p[1],b=p[2],c=p[3],d=p[4],e=q.width,g=q.height;else{if(9!==p.length)throw new Error("Invalid number of arguments passed to drawImage: "+arguments.length);r=p[1],s=p[2],e=p[3],g=p[4],a=p[5],b=p[6],c=p[7],d=p[8]}h=this.__closestGroupOrSvg(),this.__currentElement;var t="translate("+a+", "+b+")";if(q instanceof f){if(i=q.getSvg().cloneNode(!0),i.childNodes&&i.childNodes.length>1){for(j=i.childNodes[0];j.childNodes.length;)o=j.childNodes[0].getAttribute("id"),this.__ids[o]=o,this.__defs.appendChild(j.childNodes[0]);if(k=i.childNodes[1]){var u,v=k.getAttribute("transform");u=v?v+" "+t:t,k.setAttribute("transform",u),h.appendChild(k)}}}else"CANVAS"!==q.nodeName&&"IMG"!==q.nodeName||(l=this.__createElement("image"),l.setAttribute("width",c),l.setAttribute("height",d),l.setAttribute("preserveAspectRatio","none"),l.setAttribute("opacity",this.globalAlpha),(r||s||e!==q.width||g!==q.height)&&(m=this.__document.createElement("canvas"),m.width=c,m.height=d,n=m.getContext("2d"),n.drawImage(q,r,s,e,g,0,0,c,d),q=m),l.setAttribute("transform",t),l.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href","CANVAS"===q.nodeName?q.toDataURL():q.originalSrc),h.appendChild(l))},f.prototype.createPattern=function(a,c){var d,e=this.__document.createElementNS("http://www.w3.org/2000/svg","pattern"),g=b(this.__ids);return e.setAttribute("id",g),e.setAttribute("width",a.width),e.setAttribute("height",a.height),"CANVAS"===a.nodeName||"IMG"===a.nodeName?(d=this.__document.createElementNS("http://www.w3.org/2000/svg","image"),d.setAttribute("width",a.width),d.setAttribute("height",a.height),d.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href","CANVAS"===a.nodeName?a.toDataURL():a.getAttribute("src")),e.appendChild(d),this.__defs.appendChild(e)):a instanceof f&&(e.appendChild(a.__root.childNodes[1]),this.__defs.appendChild(e)),new h(e,this)},f.prototype.setLineDash=function(a){a&&a.length>0?this.lineDash=a.join(","):this.lineDash=null},f.prototype.drawFocusRing=function(){},f.prototype.createImageData=function(){},f.prototype.getImageData=function(){},f.prototype.putImageData=function(){},f.prototype.globalCompositeOperation=function(){},f.prototype.setTransform=function(){},"object"==typeof window&&(window.C2S=f),"object"==typeof module&&"object"==typeof module.exports&&(module.exports=f)}(),function(){"use strict";function a(a,b,c){if(this.mode=q.MODE_8BIT_BYTE,this.data=a,this.parsedData=[],b){for(var d=0,e=this.data.length;d<e;d++){var f=[],g=this.data.charCodeAt(d);f[0]=g,this.parsedData.push(f)}this.parsedData=Array.prototype.concat.apply([],this.parsedData)}else this.parsedData=function(a){for(var b=[],c=0;c<a.length;c++){var d=a.charCodeAt(c);d<128?b.push(d):d<2048?b.push(192|d>>6,128|63&d):d<55296||d>=57344?b.push(224|d>>12,128|d>>6&63,128|63&d):(c++,d=65536+((1023&d)<<10|1023&a.charCodeAt(c)),b.push(240|d>>18,128|d>>12&63,128|d>>6&63,128|63&d))}return b}(a);this.parsedData=Array.prototype.concat.apply([],this.parsedData),c||this.parsedData.length==this.data.length||(this.parsedData.unshift(191),this.parsedData.unshift(187),this.parsedData.unshift(239))}function b(a,b){this.typeNumber=a,this.errorCorrectLevel=b,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[]}function c(a,b){if(a.length==i)throw new Error(a.length+"/"+b);for(var c=0;c<a.length&&0==a[c];)c++;this.num=new Array(a.length-c+b);for(var d=0;d<a.length-c;d++)this.num[d]=a[d+c]}function d(a,b){this.totalCount=a,this.dataCount=b}function e(){this.buffer=[],this.length=0}function f(){var a=!1,b=navigator.userAgent;if(/android/i.test(b)){a=!0;var c=b.toString().match(/android ([0-9]\.[0-9])/i);c&&c[1]&&(a=parseFloat(c[1]))}return a}function g(a,b){for(var c=b.correctLevel,d=1,e=h(a),f=0,g=w.length;f<g;f++){var i=0;switch(c){case r.L:i=w[f][0];break;case r.M:i=w[f][1];break;case r.Q:i=w[f][2];break;case r.H:i=w[f][3]}if(e<=i)break;d++}if(d>w.length)throw new Error("Too long data. the CorrectLevel."+["M","L","H","Q"][c]+" limit length is "+i);return 0!=b.version&&(d<=b.version?(d=b.version,b.runVersion=d):(console.warn("QR Code version "+b.version+" too small, run version use "+d),b.runVersion=d)),d}function h(a){return encodeURI(a).toString().replace(/\%[0-9a-fA-F]{2}/g,"a").length}var i,j,k="object"==typeof global&&global&&global.Object===Object&&global,l="object"==typeof self&&self&&self.Object===Object&&self,m=k||l||Function("return this")(),n="object"==typeof exports&&exports&&!exports.nodeType&&exports,o=n&&"object"==typeof module&&module&&!module.nodeType&&module,p=m.QRCode;a.prototype={getLength:function(a){return this.parsedData.length},write:function(a){for(var b=0,c=this.parsedData.length;b<c;b++)a.put(this.parsedData[b],8)}},b.prototype={addData:function(b,c,d){var e=new a(b,c,d);this.dataList.push(e),this.dataCache=null},isDark:function(a,b){if(a<0||this.moduleCount<=a||b<0||this.moduleCount<=b)throw new Error(a+","+b);return this.modules[a][b][0]},getEye:function(a,b){if(a<0||this.moduleCount<=a||b<0||this.moduleCount<=b)throw new Error(a+","+b);var c=this.modules[a][b];if(c[1]){var d="P"+c[1]+"_"+c[2];return"A"==c[2]&&(d="A"+c[1]),{isDark:c[0],type:d}}return null},getModuleCount:function(){return this.moduleCount},make:function(){this.makeImpl(!1,this.getBestMaskPattern())},makeImpl:function(a,c){this.moduleCount=4*this.typeNumber+17,this.modules=new Array(this.moduleCount);for(var d=0;d<this.moduleCount;d++){this.modules[d]=new Array(this.moduleCount);for(var e=0;e<this.moduleCount;e++)this.modules[d][e]=[]}this.setupPositionProbePattern(0,0,"TL"),this.setupPositionProbePattern(this.moduleCount-7,0,"BL"),this.setupPositionProbePattern(0,this.moduleCount-7,"TR"),this.setupPositionAdjustPattern("A"),this.setupTimingPattern(),this.setupTypeInfo(a,c),this.typeNumber>=7&&this.setupTypeNumber(a),null==this.dataCache&&(this.dataCache=b.createData(this.typeNumber,this.errorCorrectLevel,this.dataList)),this.mapData(this.dataCache,c)},setupPositionProbePattern:function(a,b,c){for(var d=-1;d<=7;d++)if(!(a+d<=-1||this.moduleCount<=a+d))for(var e=-1;e<=7;e++)b+e<=-1||this.moduleCount<=b+e||(0<=d&&d<=6&&(0==e||6==e)||0<=e&&e<=6&&(0==d||6==d)||2<=d&&d<=4&&2<=e&&e<=4?(this.modules[a+d][b+e][0]=!0,this.modules[a+d][b+e][2]=c,this.modules[a+d][b+e][1]=-0==d||-0==e||6==d||6==e?"O":"I"):this.modules[a+d][b+e][0]=!1)},getBestMaskPattern:function(){for(var a=0,b=0,c=0;c<8;c++){this.makeImpl(!0,c);var d=t.getLostPoint(this);(0==c||a>d)&&(a=d,b=c)}return b},createMovieClip:function(a,b,c){var d=a.createEmptyMovieClip(b,c);this.make();for(var e=0;e<this.modules.length;e++)for(var f=1*e,g=0;g<this.modules[e].length;g++){var h=1*g,i=this.modules[e][g][0];i&&(d.beginFill(0,100),d.moveTo(h,f),d.lineTo(h+1,f),d.lineTo(h+1,f+1),d.lineTo(h,f+1),d.endFill())}return d},setupTimingPattern:function(){for(var a=8;a<this.moduleCount-8;a++)null==this.modules[a][6][0]&&(this.modules[a][6][0]=a%2==0);for(var b=8;b<this.moduleCount-8;b++)null==this.modules[6][b][0]&&(this.modules[6][b][0]=b%2==0)},setupPositionAdjustPattern:function(a){for(var b=t.getPatternPosition(this.typeNumber),c=0;c<b.length;c++)for(var d=0;d<b.length;d++){var e=b[c],f=b[d];if(null==this.modules[e][f][0])for(var g=-2;g<=2;g++)for(var h=-2;h<=2;h++)-2==g||2==g||-2==h||2==h||0==g&&0==h?(this.modules[e+g][f+h][0]=!0,this.modules[e+g][f+h][2]=a,this.modules[e+g][f+h][1]=-2==g||-2==h||2==g||2==h?"O":"I"):this.modules[e+g][f+h][0]=!1}},setupTypeNumber:function(a){for(var b=t.getBCHTypeNumber(this.typeNumber),c=0;c<18;c++){var d=!a&&1==(b>>c&1);this.modules[Math.floor(c/3)][c%3+this.moduleCount-8-3][0]=d}for(var c=0;c<18;c++){var d=!a&&1==(b>>c&1);this.modules[c%3+this.moduleCount-8-3][Math.floor(c/3)][0]=d}},setupTypeInfo:function(a,b){for(var c=this.errorCorrectLevel<<3|b,d=t.getBCHTypeInfo(c),e=0;e<15;e++){var f=!a&&1==(d>>e&1);e<6?this.modules[e][8][0]=f:e<8?this.modules[e+1][8][0]=f:this.modules[this.moduleCount-15+e][8][0]=f}for(var e=0;e<15;e++){var f=!a&&1==(d>>e&1);e<8?this.modules[8][this.moduleCount-e-1][0]=f:e<9?this.modules[8][15-e-1+1][0]=f:this.modules[8][15-e-1][0]=f}this.modules[this.moduleCount-8][8][0]=!a},mapData:function(a,b){for(var c=-1,d=this.moduleCount-1,e=7,f=0,g=this.moduleCount-1;g>0;g-=2)for(6==g&&g--;;){for(var h=0;h<2;h++)if(null==this.modules[d][g-h][0]){var i=!1;f<a.length&&(i=1==(a[f]>>>e&1));var j=t.getMask(b,d,g-h);j&&(i=!i),this.modules[d][g-h][0]=i,e--,-1==e&&(f++,e=7)}if((d+=c)<0||this.moduleCount<=d){d-=c,c=-c;break}}}},b.PAD0=236,b.PAD1=17,b.createData=function(a,c,f){for(var g=d.getRSBlocks(a,c),h=new e,i=0;i<f.length;i++){var j=f[i];h.put(j.mode,4),h.put(j.getLength(),t.getLengthInBits(j.mode,a)),j.write(h)}for(var k=0,i=0;i<g.length;i++)k+=g[i].dataCount;if(h.getLengthInBits()>8*k)throw new Error("code length overflow. ("+h.getLengthInBits()+">"+8*k+")");for(h.getLengthInBits()+4<=8*k&&h.put(0,4);h.getLengthInBits()%8!=0;)h.putBit(!1);for(;;){if(h.getLengthInBits()>=8*k)break;if(h.put(b.PAD0,8),h.getLengthInBits()>=8*k)break;h.put(b.PAD1,8)}return b.createBytes(h,g)},b.createBytes=function(a,b){for(var d=0,e=0,f=0,g=new Array(b.length),h=new Array(b.length),i=0;i<b.length;i++){var j=b[i].dataCount,k=b[i].totalCount-j;e=Math.max(e,j),f=Math.max(f,k),g[i]=new Array(j);for(var l=0;l<g[i].length;l++)g[i][l]=255&a.buffer[l+d];d+=j;var m=t.getErrorCorrectPolynomial(k),n=new c(g[i],m.getLength()-1),o=n.mod(m);h[i]=new Array(m.getLength()-1);for(var l=0;l<h[i].length;l++){var p=l+o.getLength()-h[i].length;h[i][l]=p>=0?o.get(p):0}}for(var q=0,l=0;l<b.length;l++)q+=b[l].totalCount;for(var r=new Array(q),s=0,l=0;l<e;l++)for(var i=0;i<b.length;i++)l<g[i].length&&(r[s++]=g[i][l]);for(var l=0;l<f;l++)for(var i=0;i<b.length;i++)l<h[i].length&&(r[s++]=h[i][l]);return r};for(var q={MODE_NUMBER:1,MODE_ALPHA_NUM:2,MODE_8BIT_BYTE:4,MODE_KANJI:8},r={L:1,M:0,Q:3,H:2},s={PATTERN000:0,PATTERN001:1,PATTERN010:2,PATTERN011:3,PATTERN100:4,PATTERN101:5,PATTERN110:6,PATTERN111:7},t={PATTERN_POSITION_TABLE:[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],G15:1335,G18:7973,G15_MASK:21522,getBCHTypeInfo:function(a){for(var b=a<<10;t.getBCHDigit(b)-t.getBCHDigit(t.G15)>=0;)b^=t.G15<<t.getBCHDigit(b)-t.getBCHDigit(t.G15);return(a<<10|b)^t.G15_MASK},getBCHTypeNumber:function(a){for(var b=a<<12;t.getBCHDigit(b)-t.getBCHDigit(t.G18)>=0;)b^=t.G18<<t.getBCHDigit(b)-t.getBCHDigit(t.G18);return a<<12|b},getBCHDigit:function(a){for(var b=0;0!=a;)b++,a>>>=1;return b},getPatternPosition:function(a){return t.PATTERN_POSITION_TABLE[a-1]},getMask:function(a,b,c){switch(a){case s.PATTERN000:return(b+c)%2==0;case s.PATTERN001:return b%2==0;case s.PATTERN010:return c%3==0;case s.PATTERN011:return(b+c)%3==0;case s.PATTERN100:return(Math.floor(b/2)+Math.floor(c/3))%2==0;case s.PATTERN101:return b*c%2+b*c%3==0;case s.PATTERN110:return(b*c%2+b*c%3)%2==0;case s.PATTERN111:return(b*c%3+(b+c)%2)%2==0;default:throw new Error("bad maskPattern:"+a)}},getErrorCorrectPolynomial:function(a){for(var b=new c([1],0),d=0;d<a;d++)b=b.multiply(new c([1,u.gexp(d)],0));return b},getLengthInBits:function(a,b){if(1<=b&&b<10)switch(a){case q.MODE_NUMBER:return 10;case q.MODE_ALPHA_NUM:return 9;case q.MODE_8BIT_BYTE:case q.MODE_KANJI:return 8;default:throw new Error("mode:"+a)}else if(b<27)switch(a){case q.MODE_NUMBER:return 12;case q.MODE_ALPHA_NUM:return 11;case q.MODE_8BIT_BYTE:return 16;case q.MODE_KANJI:return 10;default:throw new Error("mode:"+a)}else{if(!(b<41))throw new Error("type:"+b);switch(a){case q.MODE_NUMBER:return 14;case q.MODE_ALPHA_NUM:return 13;case q.MODE_8BIT_BYTE:return 16;case q.MODE_KANJI:return 12;default:throw new Error("mode:"+a)}}},getLostPoint:function(a){for(var b=a.getModuleCount(),c=0,d=0;d<b;d++)for(var e=0;e<b;e++){for(var f=0,g=a.isDark(d,e),h=-1;h<=1;h++)if(!(d+h<0||b<=d+h))for(var i=-1;i<=1;i++)e+i<0||b<=e+i||0==h&&0==i||g==a.isDark(d+h,e+i)&&f++;f>5&&(c+=3+f-5)}for(var d=0;d<b-1;d++)for(var e=0;e<b-1;e++){var j=0;a.isDark(d,e)&&j++,a.isDark(d+1,e)&&j++,a.isDark(d,e+1)&&j++,a.isDark(d+1,e+1)&&j++,0!=j&&4!=j||(c+=3)}for(var d=0;d<b;d++)for(var e=0;e<b-6;e++)a.isDark(d,e)&&!a.isDark(d,e+1)&&a.isDark(d,e+2)&&a.isDark(d,e+3)&&a.isDark(d,e+4)&&!a.isDark(d,e+5)&&a.isDark(d,e+6)&&(c+=40);for(var e=0;e<b;e++)for(var d=0;d<b-6;d++)a.isDark(d,e)&&!a.isDark(d+1,e)&&a.isDark(d+2,e)&&a.isDark(d+3,e)&&a.isDark(d+4,e)&&!a.isDark(d+5,e)&&a.isDark(d+6,e)&&(c+=40);for(var k=0,e=0;e<b;e++)for(var d=0;d<b;d++)a.isDark(d,e)&&k++;return c+=Math.abs(100*k/b/b-50)/5*10}},u={glog:function(a){if(a<1)throw new Error("glog("+a+")");return u.LOG_TABLE[a]},gexp:function(a){for(;a<0;)a+=255;for(;a>=256;)a-=255;return u.EXP_TABLE[a]},EXP_TABLE:new Array(256),LOG_TABLE:new Array(256)},v=0;v<8;v++)u.EXP_TABLE[v]=1<<v;for(var v=8;v<256;v++)u.EXP_TABLE[v]=u.EXP_TABLE[v-4]^u.EXP_TABLE[v-5]^u.EXP_TABLE[v-6]^u.EXP_TABLE[v-8];for(var v=0;v<255;v++)u.LOG_TABLE[u.EXP_TABLE[v]]=v;c.prototype={get:function(a){return this.num[a]},getLength:function(){return this.num.length},multiply:function(a){for(var b=new Array(this.getLength()+a.getLength()-1),d=0;d<this.getLength();d++)for(var e=0;e<a.getLength();e++)b[d+e]^=u.gexp(u.glog(this.get(d))+u.glog(a.get(e)));return new c(b,0)},mod:function(a){if(this.getLength()-a.getLength()<0)return this;for(var b=u.glog(this.get(0))-u.glog(a.get(0)),d=new Array(this.getLength()),e=0;e<this.getLength();e++)d[e]=this.get(e);for(var e=0;e<a.getLength();e++)d[e]^=u.gexp(u.glog(a.get(e))+b);return new c(d,0).mod(a)}},
 d.RS_BLOCK_TABLE=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12,7,37,13],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],d.getRSBlocks=function(a,b){var c=d.getRsBlockTable(a,b);if(c==i)throw new Error("bad rs block @ typeNumber:"+a+"/errorCorrectLevel:"+b);for(var e=c.length/3,f=[],g=0;g<e;g++)for(var h=c[3*g+0],j=c[3*g+1],k=c[3*g+2],l=0;l<h;l++)f.push(new d(j,k));return f},d.getRsBlockTable=function(a,b){switch(b){case r.L:return d.RS_BLOCK_TABLE[4*(a-1)+0];case r.M:return d.RS_BLOCK_TABLE[4*(a-1)+1];case r.Q:return d.RS_BLOCK_TABLE[4*(a-1)+2];case r.H:return d.RS_BLOCK_TABLE[4*(a-1)+3];default:return i}},e.prototype={get:function(a){var b=Math.floor(a/8);return 1==(this.buffer[b]>>>7-a%8&1)},put:function(a,b){for(var c=0;c<b;c++)this.putBit(1==(a>>>b-c-1&1))},getLengthInBits:function(){return this.length},putBit:function(a){var b=Math.floor(this.length/8);this.buffer.length<=b&&this.buffer.push(0),a&&(this.buffer[b]|=128>>>this.length%8),this.length++}};var w=[[17,14,11,7],[32,26,20,14],[53,42,32,24],[78,62,46,34],[106,84,60,44],[134,106,74,58],[154,122,86,64],[192,152,108,84],[230,180,130,98],[271,213,151,119],[321,251,177,137],[367,287,203,155],[425,331,241,177],[458,362,258,194],[520,412,292,220],[586,450,322,250],[644,504,364,280],[718,560,394,310],[792,624,442,338],[858,666,482,382],[929,711,509,403],[1003,779,565,439],[1091,857,611,461],[1171,911,661,511],[1273,997,715,535],[1367,1059,751,593],[1465,1125,805,625],[1528,1190,868,658],[1628,1264,908,698],[1732,1370,982,742],[1840,1452,1030,790],[1952,1538,1112,842],[2068,1628,1168,898],[2188,1722,1228,958],[2303,1809,1283,983],[2431,1911,1351,1051],[2563,1989,1423,1093],[2699,2099,1499,1139],[2809,2213,1579,1219],[2953,2331,1663,1273]],x=function(){return"undefined"!=typeof CanvasRenderingContext2D}()?function(){function a(){if("svg"==this._htOption.drawer){var a=this._oContext.getSerializedSvg(!0);this.dataURL=a,this._el.innerHTML=a}else try{var b=this._elCanvas.toDataURL("image/png");this.dataURL=b}catch(a){console.error(a)}this._htOption.onRenderingEnd&&(this.dataURL||console.error("Can not get base64 data, please check: 1. Published the page and image to the server 2. The image request support CORS 3. Configured `crossOrigin:'anonymous'` option"),this._htOption.onRenderingEnd(this._htOption,this.dataURL))}function b(a,b){var c=this;if(c._fFail=b,c._fSuccess=a,null===c._bSupportDataURI){var d=document.createElement("img"),e=function(){c._bSupportDataURI=!1,c._fFail&&c._fFail.call(c)},f=function(){c._bSupportDataURI=!0,c._fSuccess&&c._fSuccess.call(c)};d.onabort=e,d.onerror=e,d.onload=f,d.src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="}else!0===c._bSupportDataURI&&c._fSuccess?c._fSuccess.call(c):!1===c._bSupportDataURI&&c._fFail&&c._fFail.call(c)}if(m._android&&m._android<=2.1){var c=1/window.devicePixelRatio,d=CanvasRenderingContext2D.prototype.drawImage;CanvasRenderingContext2D.prototype.drawImage=function(a,b,e,f,g,h,i,j,k){if("nodeName"in a&&/img/i.test(a.nodeName))for(var l=arguments.length-1;l>=1;l--)arguments[l]=arguments[l]*c;else void 0===j&&(arguments[1]*=c,arguments[2]*=c,arguments[3]*=c,arguments[4]*=c);d.apply(this,arguments)}}var e=function(a,b){this._bIsPainted=!1,this._android=f(),this._el=a,this._htOption=b,"svg"==this._htOption.drawer?(this._oContext={},this._elCanvas={}):(this._elCanvas=document.createElement("canvas"),this._el.appendChild(this._elCanvas),this._oContext=this._elCanvas.getContext("2d")),this._bSupportDataURI=null,this.dataURL=null};return e.prototype.draw=function(a){function b(){d.quietZone>0&&d.quietZoneColor&&(j.lineWidth=0,j.fillStyle=d.quietZoneColor,j.fillRect(0,0,k._elCanvas.width,d.quietZone),j.fillRect(0,d.quietZone,d.quietZone,k._elCanvas.height-2*d.quietZone),j.fillRect(k._elCanvas.width-d.quietZone,d.quietZone,d.quietZone,k._elCanvas.height-2*d.quietZone),j.fillRect(0,k._elCanvas.height-d.quietZone,k._elCanvas.width,d.quietZone))}function c(a){function c(a){var c=Math.round(d.width/3.5),e=Math.round(d.height/3.5);c!==e&&(c=e),d.logoMaxWidth?c=Math.round(d.logoMaxWidth):d.logoWidth&&(c=Math.round(d.logoWidth)),d.logoMaxHeight?e=Math.round(d.logoMaxHeight):d.logoHeight&&(e=Math.round(d.logoHeight));var f,g;void 0===a.naturalWidth?(f=a.width,g=a.height):(f=a.naturalWidth,g=a.naturalHeight),(d.logoMaxWidth||d.logoMaxHeight)&&(d.logoMaxWidth&&f<=c&&(c=f),d.logoMaxHeight&&g<=e&&(e=g),f<=c&&g<=e&&(c=f,e=g));var h=(d.realWidth-c)/2,i=(d.realHeight-e)/2,k=Math.min(c/f,e/g),l=f*k,m=g*k;(d.logoMaxWidth||d.logoMaxHeight)&&(c=l,e=m,h=(d.realWidth-c)/2,i=(d.realHeight-e)/2),d.logoBackgroundTransparent||(j.fillStyle=d.logoBackgroundColor,j.fillRect(h,i,c,e));var n=j.imageSmoothingQuality,o=j.imageSmoothingEnabled;j.imageSmoothingEnabled=!0,j.imageSmoothingQuality="high",j.drawImage(a,h+(c-l)/2,i+(e-m)/2,l,m),j.imageSmoothingEnabled=o,j.imageSmoothingQuality=n,b(),s._bIsPainted=!0,s.makeImage()}d.onRenderingStart&&d.onRenderingStart(d);for(var h=0;h<e;h++)for(var i=0;i<e;i++){var k=i*f+d.quietZone,l=h*g+d.quietZone,m=a.isDark(h,i),n=a.getEye(h,i),o=d.dotScale;j.lineWidth=0;var p,q;n?(p=d[n.type]||d[n.type.substring(0,2)]||d.colorDark,q=d.colorLight):d.backgroundImage?(q="rgba(0,0,0,0)",6==h?d.autoColor?(p=d.timing_H||d.timing||d.autoColorDark,q=d.autoColorLight):p=d.timing_H||d.timing||d.colorDark:6==i?d.autoColor?(p=d.timing_V||d.timing||d.autoColorDark,q=d.autoColorLight):p=d.timing_V||d.timing||d.colorDark:d.autoColor?(p=d.autoColorDark,q=d.autoColorLight):p=d.colorDark):(p=6==h?d.timing_H||d.timing||d.colorDark:6==i?d.timing_V||d.timing||d.colorDark:d.colorDark,q=d.colorLight),j.strokeStyle=m?p:q,j.fillStyle=m?p:q,n?(o="AO"==n.type?d.dotScaleAO:"AI"==n.type?d.dotScaleAI:1,d.backgroundImage&&d.autoColor?(p=("AO"==n.type?d.AI:d.AO)||d.autoColorDark,q=d.autoColorLight):p=("AO"==n.type?d.AI:d.AO)||p,m=n.isDark,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))):6==h?(o=d.dotScaleTiming_H,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))):6==i?(o=d.dotScaleTiming_V,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))):(d.backgroundImage,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))),1==d.dotScale||n||(j.strokeStyle=d.colorLight)}if(d.title&&(j.fillStyle=d.titleBackgroundColor,j.fillRect(d.quietZone,d.quietZone,d.width,d.titleHeight),j.font=d.titleFont,j.fillStyle=d.titleColor,j.textAlign="center",j.fillText(d.title,this._elCanvas.width/2,+d.quietZone+d.titleTop)),d.subTitle&&(j.font=d.subTitleFont,j.fillStyle=d.subTitleColor,j.fillText(d.subTitle,this._elCanvas.width/2,+d.quietZone+d.subTitleTop)),d.logo){var r=new Image,s=this;r.onload=function(){c(r)},r.onerror=function(a){console.error(a)},null!=d.crossOrigin&&(r.crossOrigin=d.crossOrigin),r.originalSrc=d.logo,r.src=d.logo}else b(),this._bIsPainted=!0,this.makeImage()}var d=this._htOption,e=a.getModuleCount(),f=d.width/e,g=d.height/e;f<=1&&(f=1),g<=1&&(g=1);var h=f*e,i=g*e;d.heightWithTitle=i+d.titleHeight,d.realHeight=d.heightWithTitle+2*d.quietZone,d.realWidth=h+2*d.quietZone,this._elCanvas.width=d.realWidth,this._elCanvas.height=d.realHeight,"canvas"!=d.drawer&&(this._oContext=new C2S(this._elCanvas.width,this._elCanvas.height)),this.clear();var j=this._oContext;j.lineWidth=0,j.fillStyle=d.colorLight,j.fillRect(0,0,this._elCanvas.width,this._elCanvas.height),j.clearRect(d.quietZone,d.quietZone,d.width,d.titleHeight);var k=this;if(d.backgroundImage){var l=new Image;l.onload=function(){j.globalAlpha=1,j.globalAlpha=d.backgroundImageAlpha;var b=j.imageSmoothingQuality,e=j.imageSmoothingEnabled;j.imageSmoothingEnabled=!0,j.imageSmoothingQuality="high",(d.title||d.subTitle)&&d.titleHeight?j.drawImage(l,d.quietZone,d.quietZone+d.titleHeight,d.width,d.height):j.drawImage(l,0,0,d.realWidth,d.realHeight),j.imageSmoothingEnabled=e,j.imageSmoothingQuality=b,j.globalAlpha=1,c.call(k,a)},null!=d.crossOrigin&&(l.crossOrigin=d.crossOrigin),l.originalSrc=d.backgroundImage,l.src=d.backgroundImage}else c.call(k,a)},e.prototype.makeImage=function(){this._bIsPainted&&b.call(this,a)},e.prototype.isPainted=function(){return this._bIsPainted},e.prototype.clear=function(){this._oContext.clearRect(0,0,this._elCanvas.width,this._elCanvas.height),this._bIsPainted=!1},e.prototype.remove=function(){this._oContext.clearRect(0,0,this._elCanvas.width,this._elCanvas.height),this._bIsPainted=!1,this._el.innerHTML=""},e.prototype.round=function(a){return a?Math.floor(1e3*a)/1e3:a},e}():function(){var a=function(a,b){this._el=a,this._htOption=b};return a.prototype.draw=function(a){var b=this._htOption,c=this._el,d=a.getModuleCount(),e=b.width/d,f=b.height/d;e<=1&&(e=1),f<=1&&(f=1);var g=e*d,h=f*d;b.heightWithTitle=h+b.titleHeight,b.realHeight=b.heightWithTitle+2*b.quietZone,b.realWidth=g+2*b.quietZone;var i=[],j="",k=Math.round(e*b.dotScale),l=Math.round(f*b.dotScale);k<4&&(k=4,l=4);var m=b.colorDark,n=b.colorLight;if(b.backgroundImage){b.autoColor?(b.colorDark="rgba(0, 0, 0, .6);filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#99000000', EndColorStr='#99000000');",b.colorLight="rgba(255, 255, 255, .7);filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#B2FFFFFF', EndColorStr='#B2FFFFFF');"):b.colorLight="rgba(0,0,0,0)";var o='<div style="display:inline-block; z-index:-10;position:absolute;"><img src="'+b.backgroundImage+'" width="'+(b.width+2*b.quietZone)+'" height="'+b.realHeight+'" style="opacity:'+b.backgroundImageAlpha+";filter:alpha(opacity="+100*b.backgroundImageAlpha+'); "/></div>';i.push(o)}if(b.quietZone&&(j="display:inline-block; width:"+(b.width+2*b.quietZone)+"px; height:"+(b.width+2*b.quietZone)+"px;background:"+b.quietZoneColor+"; text-align:center;"),i.push('<div style="font-size:0;'+j+'">'),i.push('<table  style="font-size:0;border:0;border-collapse:collapse; margin-top:'+b.quietZone+'px;" border="0" cellspacing="0" cellspadding="0" align="center" valign="middle">'),i.push('<tr height="'+b.titleHeight+'" align="center"><td style="border:0;border-collapse:collapse;margin:0;padding:0" colspan="'+d+'">'),b.title){var p=b.titleColor,q=b.titleFont;i.push('<div style="width:100%;margin-top:'+b.titleTop+"px;color:"+p+";font:"+q+";background:"+b.titleBackgroundColor+'">'+b.title+"</div>")}b.subTitle&&i.push('<div style="width:100%;margin-top:'+(b.subTitleTop-b.titleTop)+"px;color:"+b.subTitleColor+"; font:"+b.subTitleFont+'">'+b.subTitle+"</div>"),i.push("</td></tr>");for(var r=0;r<d;r++){i.push('<tr style="border:0; padding:0; margin:0;" height="7">');for(var s=0;s<d;s++){var t=a.isDark(r,s),u=a.getEye(r,s);if(u){t=u.isDark;var v=u.type,w=b[v]||b[v.substring(0,2)]||m;i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+'px;"><span style="width:'+e+"px;height:"+f+"px;background-color:"+(t?w:n)+';display:inline-block"></span></td>')}else{var x=b.colorDark;6==r?(x=b.timing_H||b.timing||m,i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+"px;background-color:"+(t?x:n)+';"></td>')):6==s?(x=b.timing_V||b.timing||m,i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+"px;background-color:"+(t?x:n)+';"></td>')):i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+'px;"><div style="display:inline-block;width:'+k+"px;height:"+l+"px;background-color:"+(t?x:b.colorLight)+';"></div></td>')}}i.push("</tr>")}if(i.push("</table>"),i.push("</div>"),b.logo){var y=new Image;null!=b.crossOrigin&&(y.crossOrigin=b.crossOrigin),y.src=b.logo;var z=b.width/3.5,A=b.height/3.5;z!=A&&(z=A),b.logoWidth&&(z=b.logoWidth),b.logoHeight&&(A=b.logoHeight);var B="position:relative; z-index:1;display:table-cell;top:-"+(b.height/2+A/2+b.quietZone)+"px;text-align:center; width:"+z+"px; height:"+A+"px;line-height:"+z+"px; vertical-align: middle;";b.logoBackgroundTransparent||(B+="background:"+b.logoBackgroundColor),i.push('<div style="'+B+'"><img  src="'+b.logo+'"  style="max-width: '+z+"px; max-height: "+A+'px;" /> <div style=" display: none; width:1px;margin-left: -1px;"></div></div>')}b.onRenderingStart&&b.onRenderingStart(b),c.innerHTML=i.join("");var C=c.childNodes[0],D=(b.width-C.offsetWidth)/2,E=(b.heightWithTitle-C.offsetHeight)/2;D>0&&E>0&&(C.style.margin=E+"px "+D+"px"),this._htOption.onRenderingEnd&&this._htOption.onRenderingEnd(this._htOption,null)},a.prototype.clear=function(){this._el.innerHTML=""},a}();j=function(a,b){if(this._htOption={width:256,height:256,typeNumber:4,colorDark:"#000000",colorLight:"#ffffff",correctLevel:r.H,dotScale:1,dotScaleTiming:1,dotScaleTiming_H:i,dotScaleTiming_V:i,dotScaleA:1,dotScaleAO:i,dotScaleAI:i,quietZone:0,quietZoneColor:"rgba(0,0,0,0)",title:"",titleFont:"normal normal bold 16px Arial",titleColor:"#000000",titleBackgroundColor:"#ffffff",titleHeight:0,titleTop:30,subTitle:"",subTitleFont:"normal normal normal 14px Arial",subTitleColor:"#4F4F4F",subTitleTop:60,logo:i,logoWidth:i,logoHeight:i,logoMaxWidth:i,logoMaxHeight:i,logoBackgroundColor:"#ffffff",logoBackgroundTransparent:!1,PO:i,PI:i,PO_TL:i,PI_TL:i,PO_TR:i,PI_TR:i,PO_BL:i,PI_BL:i,AO:i,AI:i,timing:i,timing_H:i,timing_V:i,backgroundImage:i,backgroundImageAlpha:1,autoColor:!1,autoColorDark:"rgba(0, 0, 0, .6)",autoColorLight:"rgba(255, 255, 255, .7)",onRenderingStart:i,onRenderingEnd:i,version:0,tooltip:!1,binary:!1,drawer:"canvas",crossOrigin:null,utf8WithoutBOM:!0},"string"==typeof b&&(b={text:b}),b)for(var c in b)this._htOption[c]=b[c];this._htOption.title||this._htOption.subTitle||(this._htOption.titleHeight=0),(this._htOption.version<0||this._htOption.version>40)&&(console.warn("QR Code version '"+this._htOption.version+"' is invalidate, reset to 0"),this._htOption.version=0),(this._htOption.dotScale<0||this._htOption.dotScale>1)&&(console.warn(this._htOption.dotScale+" , is invalidate, dotScale must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScale=1),(this._htOption.dotScaleTiming<0||this._htOption.dotScaleTiming>1)&&(console.warn(this._htOption.dotScaleTiming+" , is invalidate, dotScaleTiming must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleTiming=1),this._htOption.dotScaleTiming_H?(this._htOption.dotScaleTiming_H<0||this._htOption.dotScaleTiming_H>1)&&(console.warn(this._htOption.dotScaleTiming_H+" , is invalidate, dotScaleTiming_H must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleTiming_H=1):this._htOption.dotScaleTiming_H=this._htOption.dotScaleTiming,this._htOption.dotScaleTiming_V?(this._htOption.dotScaleTiming_V<0||this._htOption.dotScaleTiming_V>1)&&(console.warn(this._htOption.dotScaleTiming_V+" , is invalidate, dotScaleTiming_V must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleTiming_V=1):this._htOption.dotScaleTiming_V=this._htOption.dotScaleTiming,(this._htOption.dotScaleA<0||this._htOption.dotScaleA>1)&&(console.warn(this._htOption.dotScaleA+" , is invalidate, dotScaleA must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleA=1),this._htOption.dotScaleAO?(this._htOption.dotScaleAO<0||this._htOption.dotScaleAO>1)&&(console.warn(this._htOption.dotScaleAO+" , is invalidate, dotScaleAO must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleAO=1):this._htOption.dotScaleAO=this._htOption.dotScaleA,this._htOption.dotScaleAI?(this._htOption.dotScaleAI<0||this._htOption.dotScaleAI>1)&&(console.warn(this._htOption.dotScaleAI+" , is invalidate, dotScaleAI must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleAI=1):this._htOption.dotScaleAI=this._htOption.dotScaleA,(this._htOption.backgroundImageAlpha<0||this._htOption.backgroundImageAlpha>1)&&(console.warn(this._htOption.backgroundImageAlpha+" , is invalidate, backgroundImageAlpha must between 0 and 1, now reset to 1. "),this._htOption.backgroundImageAlpha=1),this._htOption.quietZone||(this._htOption.quietZone=0),this._htOption.titleHeight||(this._htOption.titleHeight=0),this._htOption.width=Math.round(this._htOption.width),this._htOption.height=Math.round(this._htOption.height),this._htOption.quietZone=Math.round(this._htOption.quietZone),this._htOption.titleHeight=Math.round(this._htOption.titleHeight),"string"==typeof a&&(a=document.getElementById(a)),(!this._htOption.drawer||"svg"!=this._htOption.drawer&&"canvas"!=this._htOption.drawer)&&(this._htOption.drawer="canvas"),this._android=f(),this._el=a,this._oQRCode=null,this._htOption._element=a;var d={};for(var c in this._htOption)d[c]=this._htOption[c];this._oDrawing=new x(this._el,d),this._htOption.text&&this.makeCode(this._htOption.text)},j.prototype.makeCode=function(a){this._oQRCode=new b(g(a,this._htOption),this._htOption.correctLevel),this._oQRCode.addData(a,this._htOption.binary,this._htOption.utf8WithoutBOM),this._oQRCode.make(),this._htOption.tooltip&&(this._el.title=a),this._oDrawing.draw(this._oQRCode)},j.prototype.makeImage=function(){"function"==typeof this._oDrawing.makeImage&&(!this._android||this._android>=3)&&this._oDrawing.makeImage()},j.prototype.clear=function(){this._oDrawing.remove()},j.prototype.resize=function(a,b){this._oDrawing._htOption.width=a,this._oDrawing._htOption.height=b,this._oDrawing.draw(this._oQRCode)},j.prototype.download=function(a){var b=this._oDrawing.dataURL,c=document.createElement("a");if("svg"==this._htOption.drawer){a+=".svg";var d=new Blob([b],{type:"text/plain"});if(navigator.msSaveBlob)navigator.msSaveBlob(d,a);else{c.download=a;var e=new FileReader;e.onload=function(){c.href=e.result,c.click()},e.readAsDataURL(d)}}else if(a+=".png",navigator.msSaveBlob){var f=function(a){var b=atob(a.split(",")[1]),c=a.split(",")[0].split(":")[1].split(";")[0],d=new ArrayBuffer(b.length),e=new Uint8Array(d);for(v=0;v<b.length;v++)e[v]=b.charCodeAt(v);return new Blob([d],{type:c})}(b);navigator.msSaveBlob(f,a)}else c.download=a,c.href=b,c.click()},j.prototype.noConflict=function(){return m.QRCode===this&&(m.QRCode=p),j},j.CorrectLevel=r,"function"==typeof define&&(define.amd||define.cmd)?define([],function(){return j}):o?((o.exports=j).QRCode=j,n.QRCode=j):m.QRCode=j}.call(this);
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],127:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 'use strict'
 
 module.exports = function encodeUtf8 (input) {
@@ -13051,7 +13037,7 @@ module.exports = function encodeUtf8 (input) {
   return new Uint8Array(result).buffer
 }
 
-},{}],128:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
@@ -13138,7 +13124,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],129:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 (function (process){(function (){
 // 'path' module extracted from Node.js v8.11.1 (only the posix part)
 // transplited with Babel
@@ -13671,7 +13657,7 @@ posix.posix = posix;
 module.exports = posix;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":130}],130:[function(require,module,exports){
+},{"_process":129}],129:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -13857,7 +13843,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],131:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 
 const canPromise = require('./can-promise')
 
@@ -13935,7 +13921,7 @@ exports.toString = renderCanvas.bind(null, function (data, _, opts) {
   return SvgRenderer.render(data, opts)
 })
 
-},{"./can-promise":132,"./core/qrcode":148,"./renderer/canvas":155,"./renderer/svg-tag.js":156}],132:[function(require,module,exports){
+},{"./can-promise":131,"./core/qrcode":147,"./renderer/canvas":154,"./renderer/svg-tag.js":155}],131:[function(require,module,exports){
 // can-promise has a crash in some versions of react native that dont have
 // standard global objects
 // https://github.com/soldair/node-qrcode/issues/157
@@ -13944,7 +13930,7 @@ module.exports = function () {
   return typeof Promise === 'function' && Promise.prototype && Promise.prototype.then
 }
 
-},{}],133:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 /**
  * Alignment pattern are fixed reference pattern in defined positions
  * in a matrix symbology, which enables the decode software to re-synchronise
@@ -14029,7 +14015,7 @@ exports.getPositions = function getPositions (version) {
   return coords
 }
 
-},{"./utils":152}],134:[function(require,module,exports){
+},{"./utils":151}],133:[function(require,module,exports){
 const Mode = require('./mode')
 
 /**
@@ -14090,7 +14076,7 @@ AlphanumericData.prototype.write = function write (bitBuffer) {
 
 module.exports = AlphanumericData
 
-},{"./mode":145}],135:[function(require,module,exports){
+},{"./mode":144}],134:[function(require,module,exports){
 function BitBuffer () {
   this.buffer = []
   this.length = 0
@@ -14129,7 +14115,7 @@ BitBuffer.prototype = {
 
 module.exports = BitBuffer
 
-},{}],136:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 /**
  * Helper class to handle QR Code symbol modules
  *
@@ -14196,7 +14182,7 @@ BitMatrix.prototype.isReserved = function (row, col) {
 
 module.exports = BitMatrix
 
-},{}],137:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 const encodeUtf8 = require('encode-utf8')
 const Mode = require('./mode')
 
@@ -14228,7 +14214,7 @@ ByteData.prototype.write = function (bitBuffer) {
 
 module.exports = ByteData
 
-},{"./mode":145,"encode-utf8":127}],138:[function(require,module,exports){
+},{"./mode":144,"encode-utf8":126}],137:[function(require,module,exports){
 const ECLevel = require('./error-correction-level')
 
 const EC_BLOCKS_TABLE = [
@@ -14365,7 +14351,7 @@ exports.getTotalCodewordsCount = function getTotalCodewordsCount (version, error
   }
 }
 
-},{"./error-correction-level":139}],139:[function(require,module,exports){
+},{"./error-correction-level":138}],138:[function(require,module,exports){
 exports.L = { bit: 1 }
 exports.M = { bit: 0 }
 exports.Q = { bit: 3 }
@@ -14417,7 +14403,7 @@ exports.from = function from (value, defaultValue) {
   }
 }
 
-},{}],140:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 const getSymbolSize = require('./utils').getSymbolSize
 const FINDER_PATTERN_SIZE = 7
 
@@ -14441,7 +14427,7 @@ exports.getPositions = function getPositions (version) {
   ]
 }
 
-},{"./utils":152}],141:[function(require,module,exports){
+},{"./utils":151}],140:[function(require,module,exports){
 const Utils = require('./utils')
 
 const G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0)
@@ -14472,7 +14458,7 @@ exports.getEncodedBits = function getEncodedBits (errorCorrectionLevel, mask) {
   return ((data << 10) | d) ^ G15_MASK
 }
 
-},{"./utils":152}],142:[function(require,module,exports){
+},{"./utils":151}],141:[function(require,module,exports){
 const EXP_TABLE = new Uint8Array(512)
 const LOG_TABLE = new Uint8Array(256)
 /**
@@ -14543,7 +14529,7 @@ exports.mul = function mul (x, y) {
   return EXP_TABLE[LOG_TABLE[x] + LOG_TABLE[y]]
 }
 
-},{}],143:[function(require,module,exports){
+},{}],142:[function(require,module,exports){
 const Mode = require('./mode')
 const Utils = require('./utils')
 
@@ -14599,7 +14585,7 @@ KanjiData.prototype.write = function (bitBuffer) {
 
 module.exports = KanjiData
 
-},{"./mode":145,"./utils":152}],144:[function(require,module,exports){
+},{"./mode":144,"./utils":151}],143:[function(require,module,exports){
 /**
  * Data mask pattern reference
  * @type {Object}
@@ -14835,7 +14821,7 @@ exports.getBestMask = function getBestMask (data, setupFormatFunc) {
   return bestPattern
 }
 
-},{}],145:[function(require,module,exports){
+},{}],144:[function(require,module,exports){
 const VersionCheck = require('./version-check')
 const Regex = require('./regex')
 
@@ -15004,7 +14990,7 @@ exports.from = function from (value, defaultValue) {
   }
 }
 
-},{"./regex":150,"./version-check":153}],146:[function(require,module,exports){
+},{"./regex":149,"./version-check":152}],145:[function(require,module,exports){
 const Mode = require('./mode')
 
 function NumericData (data) {
@@ -15049,7 +15035,7 @@ NumericData.prototype.write = function write (bitBuffer) {
 
 module.exports = NumericData
 
-},{"./mode":145}],147:[function(require,module,exports){
+},{"./mode":144}],146:[function(require,module,exports){
 const GF = require('./galois-field')
 
 /**
@@ -15113,7 +15099,7 @@ exports.generateECPolynomial = function generateECPolynomial (degree) {
   return poly
 }
 
-},{"./galois-field":142}],148:[function(require,module,exports){
+},{"./galois-field":141}],147:[function(require,module,exports){
 const Utils = require('./utils')
 const ECLevel = require('./error-correction-level')
 const BitBuffer = require('./bit-buffer')
@@ -15610,7 +15596,7 @@ exports.create = function create (data, options) {
   return createSymbol(data, version, errorCorrectionLevel, mask)
 }
 
-},{"./alignment-pattern":133,"./bit-buffer":135,"./bit-matrix":136,"./error-correction-code":138,"./error-correction-level":139,"./finder-pattern":140,"./format-info":141,"./mask-pattern":144,"./mode":145,"./reed-solomon-encoder":149,"./segments":151,"./utils":152,"./version":154}],149:[function(require,module,exports){
+},{"./alignment-pattern":132,"./bit-buffer":134,"./bit-matrix":135,"./error-correction-code":137,"./error-correction-level":138,"./finder-pattern":139,"./format-info":140,"./mask-pattern":143,"./mode":144,"./reed-solomon-encoder":148,"./segments":150,"./utils":151,"./version":153}],148:[function(require,module,exports){
 const Polynomial = require('./polynomial')
 
 function ReedSolomonEncoder (degree) {
@@ -15668,7 +15654,7 @@ ReedSolomonEncoder.prototype.encode = function encode (data) {
 
 module.exports = ReedSolomonEncoder
 
-},{"./polynomial":147}],150:[function(require,module,exports){
+},{"./polynomial":146}],149:[function(require,module,exports){
 const numeric = '[0-9]+'
 const alphanumeric = '[A-Z $%*+\\-./:]+'
 let kanji = '(?:[u3000-u303F]|[u3040-u309F]|[u30A0-u30FF]|' +
@@ -15701,7 +15687,7 @@ exports.testAlphanumeric = function testAlphanumeric (str) {
   return TEST_ALPHANUMERIC.test(str)
 }
 
-},{}],151:[function(require,module,exports){
+},{}],150:[function(require,module,exports){
 const Mode = require('./mode')
 const NumericData = require('./numeric-data')
 const AlphanumericData = require('./alphanumeric-data')
@@ -16033,7 +16019,7 @@ exports.rawSplit = function rawSplit (data) {
   )
 }
 
-},{"./alphanumeric-data":134,"./byte-data":137,"./kanji-data":143,"./mode":145,"./numeric-data":146,"./regex":150,"./utils":152,"dijkstrajs":125}],152:[function(require,module,exports){
+},{"./alphanumeric-data":133,"./byte-data":136,"./kanji-data":142,"./mode":144,"./numeric-data":145,"./regex":149,"./utils":151,"dijkstrajs":124}],151:[function(require,module,exports){
 let toSJISFunction
 const CODEWORDS_COUNT = [
   0, // Not used
@@ -16098,7 +16084,7 @@ exports.toSJIS = function toSJIS (kanji) {
   return toSJISFunction(kanji)
 }
 
-},{}],153:[function(require,module,exports){
+},{}],152:[function(require,module,exports){
 /**
  * Check if QR Code version is valid
  *
@@ -16109,7 +16095,7 @@ exports.isValid = function isValid (version) {
   return !isNaN(version) && version >= 1 && version <= 40
 }
 
-},{}],154:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 const Utils = require('./utils')
 const ECCode = require('./error-correction-code')
 const ECLevel = require('./error-correction-level')
@@ -16274,7 +16260,7 @@ exports.getEncodedBits = function getEncodedBits (version) {
   return (version << 12) | d
 }
 
-},{"./error-correction-code":138,"./error-correction-level":139,"./mode":145,"./utils":152,"./version-check":153}],155:[function(require,module,exports){
+},{"./error-correction-code":137,"./error-correction-level":138,"./mode":144,"./utils":151,"./version-check":152}],154:[function(require,module,exports){
 const Utils = require('./utils')
 
 function clearCanvas (ctx, canvas, size) {
@@ -16339,7 +16325,7 @@ exports.renderToDataURL = function renderToDataURL (qrData, canvas, options) {
   return canvasEl.toDataURL(type, rendererOpts.quality)
 }
 
-},{"./utils":157}],156:[function(require,module,exports){
+},{"./utils":156}],155:[function(require,module,exports){
 const Utils = require('./utils')
 
 function getColorAttrib (color, attrib) {
@@ -16422,7 +16408,7 @@ exports.render = function render (qrData, options, cb) {
   return svgTag
 }
 
-},{"./utils":157}],157:[function(require,module,exports){
+},{"./utils":156}],156:[function(require,module,exports){
 function hex2rgba (hex) {
   if (typeof hex === 'number') {
     hex = hex.toString()
@@ -16523,7 +16509,7 @@ exports.qrToImageData = function qrToImageData (imgData, qr, opts) {
   }
 }
 
-},{}],158:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 /********************************************************************************
     vCards-js, Eric J Nesser, November 2014
 ********************************************************************************/
@@ -16863,7 +16849,7 @@ var vCard = (function () {
 
 module.exports = vCard;
 
-},{"./lib/vCardFormatter":159,"fs":123,"path":129}],159:[function(require,module,exports){
+},{"./lib/vCardFormatter":158,"fs":122,"path":128}],158:[function(require,module,exports){
 /********************************************************************************
  vCards-js, Eric J Nesser, November 2014,
  ********************************************************************************/
@@ -17261,7 +17247,7 @@ module.exports = vCard;
 		}
 	};
 })();
-},{}],160:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 const { starter } = require("../action/starter")
 const { initView } = require("../action/view")
 const { defaultAppEvents } = require("../action/defaultAppEvents")
@@ -17292,7 +17278,7 @@ arDiv.classList.add("ar")
 arDiv.style.position = "absolute"
 arDiv.style.top = "-1000px"
 views.body.__element__.appendChild(arDiv)
-},{"../action/defaultAppEvents":15,"../action/starter":60,"../action/view":84}],161:[function(require,module,exports){
+},{"../action/defaultAppEvents":15,"../action/starter":59,"../action/view":83}],160:[function(require,module,exports){
 module.exports = (view) => {
   var scrollWidth = `[px():[().swiper.scroll]||100]`
   var clickLeft = `():[().swiper.id]._():[clearTimer():[_.mytimer];_.scroll+=[${scrollWidth}-_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll>_.scrollable]:[_.scroll=0];_.style().transform='translateX('+_.scroll+'px)';if():[_.autorun]:[_.mytimer=interval():[_.scroll+=[${scrollWidth}-_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll>_.scrollable]:[_.scroll=0];_.style().transform='translateX('+_.scroll+'px)']:[_.autorun.timer||100]]]`
@@ -17302,7 +17288,7 @@ module.exports = (view) => {
     view: `Icon?class='flexbox pointer '+[().class||];name=if():[direction=right]:'bi-chevron-right'.elif():[direction=left]:'bi-chevron-left';style:[fontSize=[().style.fontSize||2.5rem];if():[().direction=left]:[left=[().style.left||0]].elif():[().direction=right]:[right=[().style.right||0]]];click:[if():[direction=left;swiper.id]:[${clickLeft}].elif():[direction=right;swiper.id]:[${clickRight}]]`
   }
 }
-},{}],162:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 const { toComponent } = require('../action/toComponent')
 const { jsonToBracket } = require('../action/jsonToBracket')
 const { override } = require('../action/merge')
@@ -17621,7 +17607,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../action/clone":5,"../action/generate":24,"../action/jsonToBracket":38,"../action/merge":43,"../action/toComponent":69}],163:[function(require,module,exports){
+},{"../action/clone":5,"../action/generate":24,"../action/jsonToBracket":38,"../action/merge":43,"../action/toComponent":68}],162:[function(require,module,exports){
 module.exports = (view) => {
 
   var AutorunScrollInPixel = `[px():[().autorun.scroll]||100]`
@@ -17641,14 +17627,14 @@ module.exports = (view) => {
     view: `View?style:[display=flex;alignItems=if():[().style.alignItems]:[().style.alignItems]:center;if():[vertical]:[flexDirection=column]];scrollLeft=0;scroll=0;${loadedActions};if():[autorun]:[${mouseenterActions};${mouseleaveActions}];${mousedownActions};${bodyMousemoveActions};${bodyMouseupActions};${touchstartActions};${touchmoveActions};${touchendActions}`,
   }
 }
-},{}],164:[function(require,module,exports){
+},{}],163:[function(require,module,exports){
 module.exports = (view) => {
   return {
     ...view,
     view: `View?class='hide-scrollbar '+if():[().class]:[().class]:'';style:[display=if():[().style.display]:[().style.display]:flex;alignItems=if():[().style.alignItems]:[().style.alignItems]:center;position=if():[().style.position]:[().style.position]:relative;overflowX=if():[().style.overflowX]:[().style.overflowX]:hidden]`,
   }
 }
-},{}],165:[function(require,module,exports){
+},{}],164:[function(require,module,exports){
 const { jsonToBracket } = require("../action/jsonToBracket")
 
 module.exports = (component) => {
@@ -17679,7 +17665,7 @@ module.exports = (component) => {
   }
 }
 
-},{"../action/jsonToBracket":38}],166:[function(require,module,exports){
+},{"../action/jsonToBracket":38}],165:[function(require,module,exports){
 module.exports = {
   Input : require("./Input"),
   Switch : require("./Switch"),
@@ -17687,4 +17673,4 @@ module.exports = {
   Chevron : require("./Chevron"),
   SwiperWrapper : require("./SwiperWrapper")
 }
-},{"./Chevron":161,"./Input":162,"./Swiper":163,"./SwiperWrapper":164,"./Switch":165}]},{},[160]);
+},{"./Chevron":160,"./Input":161,"./Swiper":162,"./SwiperWrapper":163,"./Switch":164}]},{},[159]);

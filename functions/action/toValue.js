@@ -11,7 +11,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, dots, id, e, req, res, object, _object, mount, toView, condition, isValue, key, param }) => {
+const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, dots, id, e, req, res, object, mount, toView, condition, isValue, key, param }) => {
 
   const { reducer } = require("./reducer")
   const { toParam } = require("./toParam")
@@ -28,10 +28,10 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, dot
   if (value.charAt(0) === "@" && value.length == 6) value = global.__refs__[value].data
 
   // value is a param it has key=value
-  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, stack, e, data: value, _object, __, dots, object, mount: !isValue && mount, toView, condition })
+  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, stack, e, data: value, __, dots, object, mount: !isValue && mount, toView, condition })
 
   // value?condition?value
-  if (value.split("?").length > 1) return lineInterpreter({ _window, lookupActions, stack, id, e, data: {string: value, action: "toValue"}, req, res, mount, __, dots, condition, object, toView }).data
+  if (value.split("?").length > 1) return lineInterpreter({ _window, lookupActions, stack, id, e, data: {string: value}, req, res, mount, __, dots, condition, object, toView, action: "toValue" }).data
 
   // no value
   if (value === "()") return view

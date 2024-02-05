@@ -5,8 +5,10 @@ const { isCalc } = require("./isCalc")
 const { kernel } = require("./kernel")
 const { decode } = require("./decode")
 const { toAwait } = require("./toAwait")
+const { override } = require("./merge")
+const { clone } = require("./clone")
 
-const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, value, key, object, _object }, __, dots, e, req, res, mount, condition, toView }) => {
+const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, value, key, object }, __, dots, e, req, res, condition, toView, action }) => {
 
     const { toValue } = require("./toValue")
     const { toParam } = require("./toParam")
@@ -31,15 +33,15 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     if (path[0] !== undefined) args = path[0].toString().split(":")
 
     // toParam
-    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, stack, id, e, data: pathJoined, __, dots, object, mount, toView })
+    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, stack, id, e, data: pathJoined, __, dots, object, toView })
 
     // toValue
-    if (isCalc({ _window, string: pathJoined }) && !key) return toValue({ _window, lookupActions, stack, data: pathJoined, __, dots, id, e, req, res, object, _object, mount, toView, condition })
+    if (isCalc({ _window, string: pathJoined }) && !key) return toValue({ _window, lookupActions, stack, data: pathJoined, __, dots, id, e, req, res, object, toView, condition })
 
     // [actions?conditions?elseActions]():[params]:[waits]
     else if (path0.length === 8 && path0.slice(-2) === "()" && path0.charAt(0) === "@") {
         
-        var { address, data } = addresser({ _window, stack, args, id, status: "Wait", type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, dots, lookupActions, id, _object, object })
+        var { address, data } = addresser({ _window, stack, args, id, status: "Wait", type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, dots, lookupActions, id, object })
 
         return toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, dots, _: data }).data
     }
@@ -47,6 +49,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // if()
     else if (path0 === "if()") {
 
+        var data
         var approved = toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, dots, req, res, object })
 
         if (!approved) {
@@ -54,24 +57,21 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
             if (args[3]) {
 
                 if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[3], id, __, dots, req, res, object })
-                if (path[1]) _object = toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, dots, e, object, mount, toView })
-                else return toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, dots, e, object, mount, toView })
-
-                path.shift()
+                else return toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, dots, e, object, toView })
 
             } else if (path[1] && path[1].includes("elif()")) {
 
                 path.shift()
                 path[0] = path[0].slice(2)
-                return reducer({ _window, lookupActions, stack, id, data: { path, object, value, key }, __, dots, e, req, res, mount, condition })
+                return reducer({ _window, lookupActions, stack, id, data: { path, object, value, key }, __, dots, e, req, res, condition })
 
-            } else return
+            } else return data
 
         } else {
 
             if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[2], id, __, dots, req, res, object, toView })
-            if (path[1]) _object = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object, mount, toView })
-            else return toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object, mount, toView })
+            if (path[1]) data = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object, toView })
+            else return toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object, toView })
             
             path.shift()
 
@@ -79,17 +79,17 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
             while (path[0] && path[0].includes("elif()")) { path.shift() }
             
             // empty path
-            if (!path[0]) return _object
+            if (!path[0]) return data
         }
 
-        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
     }
 
     // while()
     else if (path0 === "while()") {
 
         while (toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, dots, req, res, object })) {
-            toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object, mount, toView })
+            toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object, toView })
         }
         // path = path.slice(1)
         return global.return = false
@@ -102,30 +102,37 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
         if (path.length === 1 && key && globalVariable) return global[globalVariable] = value
 
         path.splice(0, 1, globalVariable)
-        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { _object: global, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: global, path, value, key, object, pathJoined } })
     }
 
     // view => ():id
     else if (path0 === "()" && args[1]) {
 
         // id
-        var _id = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots, object })
+        var customID = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots, object })
         path.shift()
-        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { _object: views[_id || args[1] || id], path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: views[customID || args[1] || id], path, value, key, object, pathJoined } })
     }
 
     // .keyName => [object||view].keyName
     else if (path[0] === "" && path.length > 1) {
+
         if (isNaN(path[1].charAt(0)) || path[1].includes("()")) {
+
             path.shift()
-            _object = object || _object || view
-            return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined } })
+            return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: object || view, path, value, key, object, pathJoined } })
+
         } else return path.join(".")
     }
 
     // @coded
     else if (path0.charAt(0) === "@" && path[0].length === 6) {
-        var data = lineInterpreter({ _window, req, res, lookupActions, stack, object, id, data: { string: path[0] }, __, dots, e }).data
+
+        var data
+
+        // text in square bracket
+        if (global.__refs__[path[0]].type === "text") return global.__refs__[path[0]].data
+        else data = lineInterpreter({ _window, req, res, lookupActions, stack, object, id, data: { string: global.__refs__[path[0]].data }, __, dots, e }).data
 
         if (path[1] === "flat()") {
 
@@ -135,8 +142,8 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
                 return data.flat()
 
             } else {
-
-                if (typeof object === "object") Object.entries(data || {}).map(([key, value]) => object[key] = value)
+                
+                if (typeof object === "object") return override(object, data)
                 return object
             }
 
@@ -149,9 +156,8 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
 
             } else if (path[1]) {
 
-                _object = data
                 path.splice(0, 1)
-                return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined } })
+                return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
 
             } else return data
         }
@@ -160,18 +166,18 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // action()
     else if (path0.slice(-2) === "()") {
 
-        var action = toAction({ _window, lookupActions, stack, id, req, res, __, dots, e, path: [path[0]], path0, condition, mount, toView, object })
+        var action = toAction({ _window, lookupActions, stack, id, req, res, __, dots, e, path: [path[0]], path0, condition, toView, object })
         if (action !== "__continue__") {
                 
             path.shift()
-            return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { _object: action, path, value, key, object, pathJoined } })
+            return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: action, path, value, key, object, pathJoined } })
         }
     }
 
     if (!view) view = views[id]
 
     if (path0 === "className()") {
-        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { _object: views.document, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: views.document, path, value, key, object, pathJoined } })
     } else {
         var __o = ((typeof object === "object" && object.__view__) ? object : views[id]) || {}
         if (__o.__labeled__ && (path0.toLowerCase().includes("prev") || path0.toLowerCase().includes("next") || path0.toLowerCase().includes("parent"))) {
@@ -205,34 +211,30 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
         "math()": Math
     }
 
-    // assign _object
+    // assign
     var underScored = path0 && path0.charAt(0) === "_" && !path0.split("_").find(i => i !== "_" && i !== "")
     if (reservedVars.keys.includes(path0) || underScored) {
 
-        if (reservedVars.keys.includes(path0)) _object = reservedVars[path0]
-        else _object = __[path0.split("_").length - 2]
+        var data
+        if (reservedVars.keys.includes(path0)) data = reservedVars[path0]
+        else data = __[path0.split("_").length - 2]
 
         path.shift()
-        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
 
-    } else _object = _object !== undefined ? _object : object
+    } else if (object) return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: object, path, value, key, object, pathJoined } })
 
-    // still no _object
-    if (_object === undefined) {
+    // still no data
+    if ((path[0] && object && object.__view__) || (path0 && path0.includes("()"))) {
 
-        if ((path[0] && mount) || (path0 && path0.includes("()"))) {
+        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: view, path, value, key, object, pathJoined } })
 
-            return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { _object: view, path, value, key, object, pathJoined } })
+    } else if (path[1] && path[1].toString().includes("()")) {
 
-        } else if (path[1] && path[1].toString().includes("()")) {
+        var data = toValue({ req, res, _window, lookupActions, stack, id, __, dots, e, data: path[0] }) || {}
+        path.shift()
+        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
 
-            _object = toValue({ req, res, _window, lookupActions, stack, id, __, dots, e, data: path[0] }) || {}
-            path.shift()
-            return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined }})
-
-        } else return pathJoined
-    }
-
-    return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { _object, path, value, key, object, pathJoined }})
+    } else return pathJoined
 }
 module.exports = { reducer }

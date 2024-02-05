@@ -28,7 +28,7 @@ const setData = ({ id, data, __, dots, stack = {} }) => {
   var keys = [...__dataPath__, ...path]
   
   // set value
-  kernel({ id, data: { _object: global[view.doc], path: keys, value: defValue, key: true }, stack, __, dots })
+  kernel({ id, data: { data: global[view.doc], path: keys, value: defValue, key: true }, stack, __, dots })
 }
 
 module.exports = { setData }

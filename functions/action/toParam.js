@@ -10,6 +10,7 @@ const { isEvent } = require("./isEvent")
 const { override } = require("./merge")
 const { toEvent } = require("./toEvent")
 const { kernel } = require("./kernel")
+const { decode } = require("./decode")
 
 const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req, res, mount, object, __, dots, toView, condition }) => {
 
@@ -36,7 +37,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     if (isEvent({ _window, string })) return toEvent({ _window, string, id, __, dots, lookupActions })
 
     // line interpreter
-    return lineInterpreter({ _window, lookupActions, stack, id, e, data: { string, action: "toParam" }, req, res, mount, __, dots, condition, object, toView }).data
+    return lineInterpreter({ _window, lookupActions, stack, id, e, data: { string }, req, res, mount, __, dots, condition, object, toView, action: "toParam" }).data
   }
 
   // conditions
@@ -197,28 +198,28 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
         if (!path[0]) return params = override(params, data)
       }
 
-      return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { _object: data, path, value, key, object, pathJoined: param } })
+      return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { data, path, value, key, object, pathJoined: param } })
     }
 
     // interpret key
-    if (path.length > 1 || path[0].includes("()") || object || path[0].includes("@")) {
+    if (path.length > 1 || path[0].includes("()") || object || path[0].includes("@") || path[0].includes("_")) {
 
       var dataPath
       if (toView && params.path) {
         dataPath = clone(params.path)
         delete params.path
       }
-
+      
       // interpret key
       if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()" || path[0].includes("_") || object) {
 
-        reducer({ _window, lookupActions, stack, id, data: { path, value, key, object }, e, req, res, __, dots, mount, toView, condition })
+        reducer({ _window, lookupActions, stack, id, data: { path, value, key, object }, e, req, res, __, dots, mount, toView, condition, action: "toParam" })
 
       } else {
 
         mount
-          ? reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: view }, e, req, res, __, dots, mount, toView, condition })
-          : reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: params }, e, req, res, __, dots, mount, toView, condition })
+          ? reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: view }, e, req, res, __, dots, mount, toView, condition, action: "toParam" })
+          : reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: params }, e, req, res, __, dots, mount, toView, condition, action: "toParam" })
       }
 
       if (!params.path && dataPath !== undefined) params.path = dataPath
@@ -259,7 +260,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
         // push path to __dataPath__
         view.__dataPath__.push(...myPath)
-        view.data = kernel({ _window, id, stack, __, dots, lookupActions, data: { path: view.__dataPath__, _object: global[view.doc], value: view.data, key: true } })
+        view.data = kernel({ _window, id, stack, __, dots, lookupActions, data: { path: view.__dataPath__, data: global[view.doc], value: view.data, key: true } })
       }
     }
   })
@@ -268,6 +269,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 }
 
 const sleep = (milliseconds) => {
+
   const date = Date.now();
   let currentDate = null;
   do {

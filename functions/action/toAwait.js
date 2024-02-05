@@ -3,7 +3,7 @@ const { clone } = require("./clone")
 const { lineInterpreter } = require("./lineInterpreter")
 const { printStack } = require("./stack")
 
-const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, stack, id, e, _, __, dots }) => {
+const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, stack, id, e, _, __, dots, action }) => {
 
   if (addressID && !address.id) address = stack.addresses.find(address => address.id === addressID)
   if (stack.terminated || address.hold) return
@@ -41,8 +41,8 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
 
     stack.interpretingAddressID = address.id
     
-    if (address.function) return addressFunctionExecuter({ _window, lookupActions, stack, id, e, req, res, address, headAddress, __: my__, dots })
-    else if (address.type === "line" || address.type === "action") return lineInterpreter({ _window, lookupActions, address, stack, id, e, req, res, ...(address.params || {}), data: address.data, __: my__ })
+    if (address.function) return addressFunctionExecuter({ _window, lookupActions, stack, id, e, req, res, address, headAddress, __: my__, dots, action })
+    else if (address.type === "line" || address.type === "action") return lineInterpreter({ _window, lookupActions, address, stack, id, e, req, res, ...(address.params || {}), data: address.data, __: my__, action })
   }
 
   if (stack.terminated) return
@@ -55,14 +55,14 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
     if (otherWaiting === -1 || (otherWaiting > -1 && otherWaiting.blocked)) {
       
       headAddress.hold = false
-      return toAwait({ _window, lookupActions, stack, address: headAddress, id, e, req, res, __, dots })
+      return toAwait({ _window, lookupActions, stack, address: headAddress, id, e, req, res, __, dots, action })
     }
   }
 
   printStack({ stack, end: true })
 }
 
-const addressFunctionExecuter = ({ _window, lookupActions, stack, id, e, req, res, address, __, dots }) => {
+const addressFunctionExecuter = ({ _window, lookupActions, stack, id, e, req, res, address, __, dots, action }) => {
 
   require("./toView")
   require("./toHTML")
@@ -72,11 +72,11 @@ const addressFunctionExecuter = ({ _window, lookupActions, stack, id, e, req, re
   var method = address.function || "lineInterpreter"
   var file = address.file || method
   
-  require(`./${file}`)[method]({ _window, lookupActions, stack, id, e, req, res, address, ...(address.params || {}), data: address.data, __ })
+  require(`./${file}`)[method]({ _window, lookupActions, stack, id, e, req, res, address, ...(address.params || {}), data: address.data, __, action })
   
   address.interpreting = false
   
-  !address.asynchronous && toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, dots })
+  !address.asynchronous && toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, dots, action })
 }
 
 module.exports = { toAwait, addressFunctionExecuter }
