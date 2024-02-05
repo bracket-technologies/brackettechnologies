@@ -2,7 +2,7 @@ const { toArray } = require("./toArray")
 const readFile = require("./readFile");
 
 module.exports = {
-    mail: async ({ _window, req, res, id, data, __, ...params }) => {
+    mail: async ({ _window, req, res, id, data, __, dots, ...params }) => {
 
         var { subject, content, text, html, recipient, attachments, recipients = [] } = data
         
@@ -49,9 +49,8 @@ module.exports = {
             global.mail = { success: true, message: `Email sent successfully!` }
 
         } else global.mail = { success: false, message: `No mail api exists!` }
-        console.log(global.mail)
 
         // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, id, ...params, req, res, __: [global.mail, ...__] })
+        if (params.asyncer) require("./toAwait").toAwait({ _window, id, ...params, req, res, __, _: global.mail, dots })
     }
 }

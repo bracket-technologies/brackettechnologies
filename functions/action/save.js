@@ -2,7 +2,7 @@ const axios = require('axios')
 const { postData } = require('./database')
 
 module.exports = {
-  save: async ({ _window, lookupActions, stack, address, id, req, res, e, __, save = {} }) => {
+  save: async ({ _window, lookupActions, stack, address, id, req, res, e, __, dots, save = {} }) => {
       
     var global = _window ? _window.global : window.global
 
@@ -35,6 +35,6 @@ module.exports = {
     // console.log("SAVE", (new Date()).getTime() - headers.timestamp, save.collection, data)
     
     // await
-    require("./toAwait").toAwait({ _window, lookupActions, stack, id, address, e, req, res, _: data, __ })
+    require("./toAwait").toAwait({ _window, lookupActions, stack, id, address, e, req, res, _: data, __, dots })
   }
 }

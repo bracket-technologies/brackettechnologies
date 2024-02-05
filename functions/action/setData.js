@@ -1,7 +1,7 @@
 const {clone} = require("./clone")
 const { kernel } = require("./kernel")
 
-const setData = ({ id, data, __, stack = {} }) => {
+const setData = ({ id, data, __, dots, stack = {} }) => {
 
   var view = window.views[id]
   var global = window.global
@@ -28,7 +28,7 @@ const setData = ({ id, data, __, stack = {} }) => {
   var keys = [...__dataPath__, ...path]
   
   // set value
-  kernel({ id, data: { _object: global[view.doc], path: keys, value: defValue, key: true }, stack, __ })
+  kernel({ id, data: { _object: global[view.doc], path: keys, value: defValue, key: true }, stack, __, dots })
 }
 
 module.exports = { setData }

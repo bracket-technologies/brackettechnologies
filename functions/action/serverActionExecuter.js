@@ -3,13 +3,13 @@ const { addresser } = require("./addresser")
 const { printStack } = require("./stack")
 const { toAwait } = require("./toAwait")
 
-const serverActionExecuter = async ({ _window, stack, req, res, id, __ }) => {
+const serverActionExecuter = async ({ _window, stack, req, res, id, __, dots }) => {
   
   var global = _window.global
   var path = global.manifest.path
 
   // action request as get request
-  if (req.method === "GET") req.body.action = { name: path[2], __ }
+  if (req.method === "GET") req.body.action = { name: path[2], __, dots }
 
   // action
   var action = req.body.action
@@ -20,7 +20,7 @@ const serverActionExecuter = async ({ _window, stack, req, res, id, __ }) => {
   // cookies
   if (Object.keys(req.cookies).length === 0 && req.body.cookies) req.cookies = req.body.cookies || {}
 
-  var data = executeServerAction({ _window, stack, id, action, req, res, __: action.__ })
+  var data = executeServerAction({ _window, stack, id, action, req, res, __: action.__, dots })
 
   printStack({ stack, end: true })
 
@@ -31,7 +31,7 @@ const serverActionExecuter = async ({ _window, stack, req, res, id, __ }) => {
   setTimeout(() => { if (!res.headersSent) return res.send({ success: false, message: `Action request timeout!`, executionDuration: 10000, logs: stack.logs }) }, 40000)
 }
 
-const executeServerAction = ({ _window, lookupActions = [], stack, action, id, req, res, __ }) => {
+const executeServerAction = ({ _window, lookupActions = [], stack, action, id, req, res, __, dots }) => {
 
   var global = _window.global
   var project = global.data.project
@@ -49,10 +49,10 @@ const executeServerAction = ({ _window, lookupActions = [], stack, action, id, r
     lookupActions.unshift({ view: "_project_", actionPath: [name] })
   }
 
-  var address = addresser({ _window, stack, status: "Wait", action: name + "()", __, id, lookupActions, mount: true, data: { string } }).address
+  var address = addresser({ _window, stack, status: "Wait", action: name + "()", __, dots, id, lookupActions, mount: true, data: { string } }).address
 
   // interpret line
-  return toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
+  return toAwait({ _window, lookupActions, stack, address, id, req, res, __, dots })
 }
 
 module.exports = { serverActionExecuter, executeServerAction }

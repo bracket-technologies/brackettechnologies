@@ -1,6 +1,6 @@
-const qr = async ({ _window, id, req, res, data, __, e, stack, lookupActions, address }) => {
+const qr = async ({ _window, id, req, res, data, __, dots, e, stack, lookupActions, address }) => {
 
-    if (res && !res.headersSent) return qrServer({ _window, id, req, res, data, __, e, stack, lookupActions, address })
+    if (res && !res.headersSent) return qrServer({ _window, id, req, res, data, __, dots, e, stack, lookupActions, address })
     
     var QRCode = require("easyqrcodejs")
 
@@ -13,18 +13,18 @@ const qr = async ({ _window, id, req, res, data, __, e, stack, lookupActions, ad
 
     console.log("QR", data)
 
-    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, req, res, __: [data, ...__] })
+    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, req, res, __, dots, _: data })
 }
 
-const qrServer = async ({ _window, id, req, res, data, __, e, stack, lookupActions, address }) => {
+const qrServer = async ({ _window, id, req, res, data, __, dots, e, stack, lookupActions, address }) => {
 
     var text = data.text || data.url
     if (data.wifi) text = wifiQrText({ data })
 
     var qrcode = await require('qrcode').toDataURL(text)
-    
     var data = { message: "QR generated successfully!", data: qrcode, success: true }
-    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, req, res, __: [data, ...__] })
+
+    require("./toAwait").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, req, res, __, dots, _: data })
 }
 
 const wifiQrText = ({ data }) => {

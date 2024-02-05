@@ -11,7 +11,7 @@ const { override } = require("./merge")
 const { toEvent } = require("./toEvent")
 const { kernel } = require("./kernel")
 
-const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req, res, mount, object, __, toView, condition }) => {
+const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req, res, mount, object, __, dots, toView, condition }) => {
 
   const { toAction } = require("./toAction")
   const { toApproval } = require("./toApproval")
@@ -33,14 +33,14 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
   if (string.split("?").length > 1) {
 
     // check if event
-    if (isEvent({ _window, string })) return toEvent({ _window, string, id, __, lookupActions })
+    if (isEvent({ _window, string })) return toEvent({ _window, string, id, __, dots, lookupActions })
 
     // line interpreter
-    return lineInterpreter({ _window, lookupActions, stack, id, e, data: { string, action: "toParam" }, req, res, mount, __, condition, object, toView }).data
+    return lineInterpreter({ _window, lookupActions, stack, id, e, data: { string, action: "toParam" }, req, res, mount, __, dots, condition, object, toView }).data
   }
 
   // conditions
-  if (condition || isCondition({ _window, string })) return toApproval({ id, lookupActions, stack, e, data: string, req, res, _window, __, object })
+  if (condition || isCondition({ _window, string })) return toApproval({ id, lookupActions, stack, e, data: string, req, res, _window, __, dots, object })
 
   string.split(";").map(param => {
 
@@ -66,19 +66,19 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
       var newParam = key + "=" + value
       param.split("=").slice(1).map(key => { newParam += ";" + key + "=" + value })
-      return params = { ...params, ...toParam({ _window, lookupActions, stack, data: param, e, id, req, res, mount, object, __, toView, condition }) }
+      return params = { ...params, ...toParam({ _window, lookupActions, stack, data: param, e, id, req, res, mount, object, __, dots, toView, condition }) }
     }
 
     // increment
     if (key && value === undefined && key.slice(-2) === "++") {
       key = key.slice(0, -2)
-      value = parseFloat(toValue({ _window, lookupActions, stack, req, res, id, e, data: key, __, condition, object }) || 0) + 1
+      value = parseFloat(toValue({ _window, lookupActions, stack, req, res, id, e, data: key, __, dots, condition, object }) || 0) + 1
     }
 
     // decrement
     else if (key && value === undefined && key.slice(-2) === "--") {
       key = key.slice(0, -2)
-      value = parseFloat(toValue({ _window, lookupActions, stack, req, res, id, e, data: key, __, condition, object }) || 0) - 1
+      value = parseFloat(toValue({ _window, lookupActions, stack, req, res, id, e, data: key, __, dots, condition, object }) || 0) - 1
     }
 
     // ||=
@@ -92,7 +92,8 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
       key = key.slice(0, -1)
       var myVal = key.split(".")[0].includes("()") || key.includes("_") || key.split(".")[0] === "" ? key : (`().` + key)
-      var data = toCode({ _window, id, string: toCode({ _window, id, string: `[${myVal}||[if():[type():[${value}]=number]:0.elif():[type():[${value}]=map]:[].elif():[type():[${value}]=list]:[:]:'']]`, start: "'" }) })
+      var data = `[${myVal}||[if():[type():[${value}]=number]:0.elif():[type():[${value}]=map]:[].elif():[type():[${value}]=list]:[:]:'']]`
+      data = toCode({ _window, id, string: toCode({ _window, id, string: data, start: "'" }) })
       value = `${data}+${value}`
     }
 
@@ -144,7 +145,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     // interpret value
     if (typeof value === "string") {
 
-      value = toValue({ _window, lookupActions, stack, req, res, id, e, data: value, __, condition, object: inheritObject ? object : undefined, isValue: true, key, param })
+      value = toValue({ _window, lookupActions, stack, req, res, id, e, data: value, __, dots, condition, object: inheritObject ? object : undefined, isValue: true, key, param })
       if (value && typeof value === "string") value = replaceNbsps(value)
 
     } else if (value === undefined) value = generate()
@@ -154,7 +155,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
     // action()
     if (path0.slice(-2) === "()") {
-      var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, path, path0, condition, mount, toView, object })
+      var action = toAction({ _window, lookupActions, stack, id, req, res, __, dots, e, path, path0, condition, mount, toView, object })
       if (action !== "__continue__") {
         if (typeof action === "object") override(params, action)
         return action
@@ -165,13 +166,13 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     if (path0 === "if()") {
 
       var data = {}
-      var approved = toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object })
+      var approved = toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, dots, req, res, object })
 
       if (!approved) {
 
         if (args[3]) {
 
-          data = toParam({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object, mount, toView })
+          data = toParam({ req, res, _window, lookupActions, stack, id, data: args[3], __, dots, e, object, mount, toView })
           path.shift()
 
         } else if (path[1] && path[1].includes("elif()")) {
@@ -185,7 +186,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
       } else {
 
-        data = toParam({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount, toView })
+        data = toParam({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object, mount, toView })
 
         path.shift()
 
@@ -196,7 +197,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
         if (!path[0]) return params = override(params, data)
       }
 
-      return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object: data, path, value, key, object, pathJoined: param } })
+      return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { _object: data, path, value, key, object, pathJoined: param } })
     }
 
     // interpret key
@@ -211,13 +212,13 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
       // interpret key
       if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()" || path[0].includes("_") || object) {
 
-        reducer({ _window, lookupActions, stack, id, data: { path, value, key, object }, e, req, res, __, mount, toView, condition })
+        reducer({ _window, lookupActions, stack, id, data: { path, value, key, object }, e, req, res, __, dots, mount, toView, condition })
 
       } else {
 
         mount
-          ? reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: view }, e, req, res, __, mount, toView, condition })
-          : reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: params }, e, req, res, __, mount, toView, condition })
+          ? reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: view }, e, req, res, __, dots, mount, toView, condition })
+          : reducer({ _window, lookupActions, stack, id, data: { path, value, key, object: params }, e, req, res, __, dots, mount, toView, condition })
       }
 
       if (!params.path && dataPath !== undefined) params.path = dataPath
@@ -258,7 +259,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
         // push path to __dataPath__
         view.__dataPath__.push(...myPath)
-        view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, _object: global[view.doc], value: view.data, key: true } })
+        view.data = kernel({ _window, id, stack, __, dots, lookupActions, data: { path: view.__dataPath__, _object: global[view.doc], value: view.data, key: true } })
       }
     }
   })

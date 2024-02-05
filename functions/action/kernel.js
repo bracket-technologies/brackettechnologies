@@ -28,9 +28,9 @@ const { remove } = require("./remove")
 const events = require("./events.json")
 const { decode } = require("./decode")
 const { toAwait } = require("./toAwait")
-const { operatorToText } = require("./operatorToText")
+const { searchParams } = require("./searchParams")
 
-const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, toView, data: { _object, path, pathJoined, value, key, object } }) => {
+const kernel = ({ _window, lookupActions, stack, id, __, dots, e, req, res, mount, condition, toView, data: { _object, path, pathJoined, value, key, object } }) => {
 
     const { toValue, isNumber } = require("./toValue")
     const { toParam } = require("./toParam")
@@ -80,7 +80,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         if (k0 === "log()") { // log
             
-            var logs = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: underScored ? [o, ...__] : __, data: arg, object: underScored ? object : (o.__view__ && o.id !== id && o || undefined) }))
+            var logs = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: underScored ? [o, ...__] : __, dots, data: arg, object: underScored ? object : (o.__view__ && o.id !== id && o || undefined) }))
             if (args.slice(1).length === 0 && pathJoined !== "log()") logs = [o]
             
             console.log("LOG", decode({ _window, string: pathJoined }), ...logs)
@@ -90,7 +90,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 !== "data()" && k0 !== "doc()" && path[i + 1] === "del()") {
 
             breakRequest = i + 1
-            if (k.charAt(0) === "@" && k.length === 6) k = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: k, object })
+            if (k.charAt(0) === "@" && k.length === 6) k = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: k, object })
 
             if (Array.isArray(o)) {
                 if (!isNumber(k)) {
@@ -106,8 +106,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "while()") {
 
-            while (toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })) {
-                toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e })
+            while (toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e })) {
+                toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e })
             }
 
         } else if (underScored && !k0) { // _
@@ -133,7 +133,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             var data
             if (k0.charAt(0) === "@" && global.__refs__[k0].type === "text") data = global.__refs__[k0].data
-            else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: global.__refs__[k0].data, __, object })
+            else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: global.__refs__[k0].data, __, dots, object })
 
             if (typeof data !== "object") {
 
@@ -149,7 +149,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
                 } else if (i === lastIndex && key && value !== undefined) answer = o[data] = value
                 else if (i !== lastIndex && key && value !== undefined && o[data] === undefined) {
 
-                    if (isNumber(toValue({ req, res, _window, lookupActions, stack, id, data: path[i + 1], __, e, object }))) answer = o[data] = []
+                    if (isNumber(toValue({ req, res, _window, lookupActions, stack, id, data: path[i + 1], __, dots, e, object }))) answer = o[data] = []
                     else answer = o[data] = {}
                 }
                 else answer = o[data]
@@ -161,13 +161,13 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             breakRequest = true
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] || "" })
 
-            if (data.path) return answer = kernel({ req, res, _window, lookupActions, stack, id, e, data: { _object: data.data || global[data.doc || o.doc], value, key, path: data.path, object }, __ })
+            if (data.path) return answer = kernel({ req, res, _window, lookupActions, stack, id, e, data: { _object: data.data || global[data.doc || o.doc], value, key, path: data.path, object }, __, dots })
 
             if (!o.doc) return
 
-            answer = kernel({ req, res, _window, lookupActions, stack, id, data: { path: [...o.__dataPath__, ...path.slice(i + 1)], object, _object: global[o.doc], value, key }, __, e })
+            answer = kernel({ req, res, _window, lookupActions, stack, id, data: { path: [...o.__dataPath__, ...path.slice(i + 1)], object, _object: global[o.doc], value, key }, __, dots, e })
 
         } else if (k0 === "doc()") {
 
@@ -178,24 +178,24 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
                 if (isParam({ _window, string: args[1] })) {
 
-                    data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                    data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
                     args[1] = data.path || data.__dataPath__ || []
                     if (typeof args[1] === "string") args[1] = args[1].split(".")
 
-                    return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
+                    return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __, dots })
                 }
 
                 if (args[1].charAt(0) === "@") args[1] = global.__refs__[args[1]].data
-                args[1] = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+                args[1] = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e })
                 if (typeof args[1] === "string") args[1] = args[1].split(".")
 
-                return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
+                return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __, dots })
             }
 
             if (path[i + 1] !== undefined) {
 
-                if (path[i + 1] && path[i + 1].charAt(0) === "@") path[i + 1] = toValue({ req, res, _window, lookupActions, stack, id, data: global.__refs__[path[i + 1]].data, __, e })
-                answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...path.slice(i + 1)], object }, __ })
+                if (path[i + 1] && path[i + 1].charAt(0) === "@") path[i + 1] = toValue({ req, res, _window, lookupActions, stack, id, data: global.__refs__[path[i + 1]].data, __, dots, e })
+                answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...path.slice(i + 1)], object }, __, dots })
 
             } else if (key && value !== undefined) {
                 answer = global[doc] = value
@@ -216,7 +216,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "nthParent()") {
 
             if (!o.__view__) return
-            var nth = toValue({ _window, id, e, lookupActions, stack, __, data: args[1] })
+            var nth = toValue({ _window, id, e, lookupActions, stack, __, dots, data: args[1] })
             return nthParent({ _window, nth, o })
 
         } else if (k0 === "prevSiblings()") {
@@ -251,7 +251,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "nthNext()") {
 
             if (!o.__view__) return
-            var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
+            var nth = toValue({ _window, __, dots, value: args[1], e, id, lookupActions, stack })
             return nthNext({ _window, nth, o })
 
         } else if (k0 === "last()") {
@@ -272,7 +272,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "nthLast()") {
 
             if (!o.__view__) return
-            var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
+            var nth = toValue({ _window, __, dots, value: args[1], e, id, lookupActions, stack })
             if (!isNumber(nth)) return
             return views[views[o.__parent__].__childrenRef__.slice(-1 * nth)[0].id]
 
@@ -294,7 +294,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "nthSibling()") {
             
             if (!o.__view__) return o
-            var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
+            var nth = toValue({ _window, id, e, __, dots, value: args[1], lookupActions, stack })
             return views[views[o.__parent__].__childrenRef__[nth - 1].id]
 
         } else if (k0 === "grandChild()") {
@@ -322,7 +322,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "nthPrev()") {
 
             if (!o.__view__) return
-            var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
+            var nth = toValue({ _window, id, e, __, dots, value: args[1], lookupActions, stack })
             return nthPrev({ _window, nth, o })
 
         } else if (k0 === "1stChild()" || k0 === "child()") {
@@ -343,7 +343,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "nthChild()") {
 
             if (!o.__view__) return
-            var nth = toValue({ _window, __, value: args[1], e, id, stack, lookupActions })
+            var nth = toValue({ _window, __, dots, value: args[1], e, id, stack, lookupActions })
             if (!isNumber(nth)) return
             if (!o.__childrenRef__[nth - 1]) return
             return views[o.__childrenRef__[nth - 1].id]
@@ -366,7 +366,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "nthLastChild()") {
             
             if (!o.__view__) return
-            var nth = toValue({ _window, __, value: args[1], e, id })
+            var nth = toValue({ _window, __, dots, value: args[1], e, id })
             if (!isNumber(nth)) return
             return views[o.__childrenRef__.slice(-1 * nth)[0].id]
 
@@ -382,18 +382,18 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "3rdLastEl()") {
             return o[o.length - 3]
         } else if (k0 === "nthLastEl()") {
-            var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
+            var nth = toValue({ _window, __, dots, value: args[1], e, id, lookupActions, stack })
             return o[o.length - nth]
         } else if (k0 === "name()") {
 
-            var name = toValue({ _window, id, e, object, value: args[1], __ })
+            var name = toValue({ _window, id, e, object, value: args[1], __, dots })
             if (name === o.__name__) return o
             var children = getDeepChildren({ _window, id: o.id })
             return children.find(view => view.__name__ === name)
 
         } else if (k0 === "names()") {
 
-            var name = toValue({ _window, id, e, object, value: args[1], __ })
+            var name = toValue({ _window, id, e, object, value: args[1], __, dots })
             var children = getDeepChildren({ _window, id: o.id })
             return children.filter(view => view.__name__ === name)
 
@@ -415,7 +415,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
                 return o.__element__.style
             }
 
-            var styles = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var styles = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
 
             if (Object.keys(styles).length > 0) {
 
@@ -430,16 +430,16 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "qr()") {
 
             // wait address
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "qr()", object, toView, _object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, action: "qr()", object, toView, _object, lookupActions, __, dots, id })
 
-            qr({ _window, id, req, res, data, e, __, stack, address, lookupActions })
+            qr({ _window, id, req, res, data, e, __, dots, stack, address, lookupActions })
 
         } else if (k0 === "contact()") {
 
-            var data = toValue({ req, res, _window, id, e, __, data: args[1] })
+            var data = toValue({ req, res, _window, id, e, __, dots, data: args[1] })
             if (typeof data !== "obejct") return o
 
-            vcard({ _window, id, req, res, data, e, __ })
+            vcard({ _window, id, req, res, data, e, __, dots })
 
         } else if (k0 === "bracket()") {
 
@@ -472,7 +472,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "px()") {
 
-            if (args[1]) return lengthConverter(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
+            if (args[1]) return lengthConverter(toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] }))
             return lengthConverter(o)
 
         } else if (k0 === "touchable()") {
@@ -483,7 +483,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "className()") {
 
             if (!o.__view__) return
-            var className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var className = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
 
             answer = [...o.__element__.getElementsByClassName(className)]
             answer = answer.map(o => window.views[o.id])
@@ -611,17 +611,17 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "interval()") {
 
             if (!o.__view__) return
-            if (!isNaN(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))) { // interval():params:timer
+            if (!isNaN(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e }))) { // interval():params:timer
 
-                var timer = parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))
-                var myFn = () => toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], mount: true })
+                var timer = parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e }))
+                var myFn = () => toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1], mount: true })
                 answer = setInterval(myFn, timer)
             }
 
         } else if (k0 === "repeat()") {
 
-            var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
-            var times = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
+            var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e, object })
+            var times = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object })
             var loop = []
             for (var i = 0; i < times; i++) {
                 loop.push(item)
@@ -630,9 +630,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "timer()") { // timer():params:timer:repeats
 
-            var timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })) : 0
-            var repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object })) : false
-            var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object, toView, mount }) }
+            var timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object })) : 0
+            var repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, dots, e, object })) : false
+            var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e, object, toView, mount }) }
 
             if (typeof repeats === "boolean") {
 
@@ -656,8 +656,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             if (!Array.isArray(o) && typeof o !== "string" && typeof o !== "number") return
 
-            var start = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object })
-            var end = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[2], __, object })
+            var start = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots, object })
+            var end = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[2], __, dots, object })
 
             if (end !== undefined) {
 
@@ -682,9 +682,10 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
                 else answer = o.split(start)[1]
             }
 
-        } else if (k0 === "reduce()") {
+        } else if (k0 === "reduce()") { // o.reduce():[path=]
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots })
+            if (Array.isArray(data)) data = { path: data }
             answer = reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.value !== undefined ? true : key, value: data.value !== undefined ? data.value : value }, e, req, res, __, mount })
 
         } else if (k0 === "path()") {
@@ -694,9 +695,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
                 if (isParam({ _window, string: args[1] })) {
 
-                    data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                    data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], dots })
 
-                } else data.path = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+                } else data.path = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots })
             }
 
             if ((key && value !== undefined && lastIndex) || data.value !== undefined) {
@@ -720,7 +721,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "contains()") {
 
-            var first = o, next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            var first = o, next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e })
             if (!first || !next) return
             
             if (typeof first === "string") first = views[first]
@@ -738,7 +739,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "in()") {
 
-            var next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            var next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e })
             
             if (next) {
                 if (typeof o === "string" || Array.isArray(o) || typeof o === "number") return answer = next.includes(o)
@@ -748,7 +749,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "is()") {
 
-            var b = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            var b = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e })
             answer = isEqual(o, b)
 
         } else if (k0 === "opp()") {
@@ -796,12 +797,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
             var notify = () => {
                 if (isParam({ _window, string: args[1] })) {
 
-                    var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                    var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
                     new Notification(_params.title || "", _params)
 
                 } else {
 
-                    var title = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                    var title = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
                     new Notification(title || "")
                 }
             }
@@ -828,7 +829,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "alert()") {
 
-            var text = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            var text = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e })
             alert(text)
 
         } else if (k0 === "clone()") {
@@ -837,7 +838,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "override()") {
 
-            var obj1 = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            var obj1 = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e })
             override(o, obj1)
 
         } else if (k0 === "txt()") {
@@ -897,10 +898,10 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "push()") {
 
-            if (!Array.isArray(o)) o = kernel({ req, res, _window, id, data: { path: path.slice(0, i), value: [], key: true, object, _object }, __, e })
+            if (!Array.isArray(o)) o = kernel({ req, res, _window, id, data: { path: path.slice(0, i), value: [], key: true, object, _object }, __, dots, e })
 
-            var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
-            var index = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
+            var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, dots, e, object })
+            var index = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object })
 
             if (index === undefined) index = o.length || 0
             
@@ -926,12 +927,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             // if no index pull the last element
             var lastIndex = 1, firstIndex
-            if (!isParam({ _window, id, string: args[1] })) firstIndex = args[1] !== undefined ? toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack }) : 0
-            if (args[2]) lastIndex = toValue({ _window, id, data: args[2], __, e, object, lookupActions, stack })
+            if (!isParam({ _window, id, string: args[1] })) firstIndex = args[1] !== undefined ? toValue({ _window, id, data: args[1], __, dots, e, object, lookupActions, stack }) : 0
+            if (args[2]) lastIndex = toValue({ _window, id, data: args[2], __, dots, e, object, lookupActions, stack })
 
             if (typeof firstIndex !== "number") { // first is a condition
 
-                var items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __, lookupActions, stack }))
+                var items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __, dots, lookupActions, stack }))
 
                 items.filter(data => data !== undefined && data !== null).map(_item => {
                     var _index = o.findIndex(item => isEqual(item, _item))
@@ -946,7 +947,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "pullItem()") { // pull by item
 
-            var item = toValue({ _window, id, data: args[1], __, e, object })
+            var item = toValue({ _window, id, data: args[1], __, dots, e, object })
             var index = o.findIndex(_item => isEqual(_item, item))
             if (index !== -1) o.splice(index, 1)
             answer = o
@@ -985,14 +986,14 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
             if (isParam({ _window, string: args[1] })) {
 
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] })
                 data.length = data.length || data.len || 5
                 data.number = data.number || data.num
                 answer = generate(data)
 
             } else {
 
-                var length = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 5
+                var length = toValue({ req, res, _window, lookupActions, stack, id, e, __, dots, data: args[1] }) || 5
                 answer = generate({ length })
             }
 
@@ -1005,7 +1006,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
 
         } else if (k0 === "incAny()") {
 
-            var items = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+            var items = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots })
             answer = false
 
             if (typeof o === "string") {
@@ -2443,7 +2444,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, mount, con
         } else if (k0 === "search()") {
 
             var { address, data } = addresser({ _window, stack, args, req, res, asynchronous: true, id: o.id, type: "async", action: "search()", mount, object, toView, _object, lookupActions, __, id })
-            // var data = operatorToText({ _window, lookupActions, stack, address, id, e, __, req, res, string: args[1], object })
+            // var data = searchParams({ _window, lookupActions, stack, address, id, e, __, req, res, string: args[1], object })
 
             address.action += " " + data.collection
             require("./search").search({ _window, lookupActions, stack, address, id, e, __, req, res, data })

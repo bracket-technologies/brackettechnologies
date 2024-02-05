@@ -2,7 +2,7 @@ const { decode } = require("./decode")
 const { lineInterpreter } = require("./lineInterpreter")
 const { toCode } = require("./toCode")
 
-const operatorToText = ({ _window, lookupActions, stack, req, res, id, e, __, string, _object, object }) => {
+const searchParams = ({ _window, lookupActions, stack, req, res, id, e, __, string, _object, object }) => {
 
     var global = _window ? _window.global : window.global
 
@@ -61,4 +61,4 @@ const operatorToText = ({ _window, lookupActions, stack, req, res, id, e, __, st
     return data
 }
 
-module.exports = { operatorToText }
+module.exports = { searchParams }

@@ -18,7 +18,7 @@ module.exports = (data) => {
     var stack = stacker({ event: req.method.toLowerCase(), server: true })
 
     var _window = initializer({ req, res, data, stack })
-    var { manifest: { path, id }, __ } = _window.global
+    var { manifest: { path, id }, __, dots } = _window.global
 
     // headers sent
     if (res.headersSent) return
@@ -34,21 +34,21 @@ module.exports = (data) => {
 
     if (req.method === "GET") {
 
-      if (path[1] === "database") return getdb({ _window, req, res, id, __ })
+      if (path[1] === "database") return getdb({ _window, req, res, id, __, dots })
 
     } else if (req.method === "POST") {
 
-      if (path[1] === "database") return postdb({ _window, req, res, id, __ })
+      if (path[1] === "database") return postdb({ _window, req, res, id, __, dots })
 
     } else if (req.method === "DELETE") {
   
-      if (path[1] === "database") return deletedb({ _window, req, res, id, __ })
+      if (path[1] === "database") return deletedb({ _window, req, res, id, __, dots })
     }
 
     // action
-    if (path[1] === "action") return serverActionExecuter({ _window, req, res, id, stack, __ })
+    if (path[1] === "action") return serverActionExecuter({ _window, req, res, id, stack, __, dots })
 
     // document
-    return projector({ _window, req, res, id, stack, __ })
+    return projector({ _window, req, res, id, stack, __, dots })
   })
 }

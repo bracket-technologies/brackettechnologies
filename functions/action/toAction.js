@@ -4,7 +4,7 @@ const { addresser } = require("./addresser")
 const actions = require("./actions.json")
 const { toAwait } = require("./toAwait")
 
-const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount, toView, object, lookupActions = {}, stack }) => {
+const toAction = ({ _window, id, req, res, __, dots, e, path, path0, condition, mount, toView, object, lookupActions = {}, stack }) => {
 
   var global = _window ? _window.global : window.global
   var views = _window ? _window.views : window.views
@@ -79,7 +79,7 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
     
     if (actionFound) {
 
-      var address = addresser({ _window, req, res, stack, status: "Wait", args: path[0].split(":"), newLookupActions: newLookupActions || lookupActions, asynchronous, e, id, data: { string: !asynchronous ? actionFound : "" }, action: path0, __, id, object, mount, toView, condition, lookupActions })
+      var address = addresser({ _window, req, res, stack, status: "Wait", args: path[0].split(":"), newLookupActions: newLookupActions || lookupActions, asynchronous, e, id, data: { string: !asynchronous ? actionFound : "" }, action: path0, __, dots, id, object, mount, toView, condition, lookupActions })
       var { address, data } = address
       
       // lookupActions
@@ -89,10 +89,10 @@ const toAction = ({ _window, id, req, res, __, e, path, path0, condition, mount,
 
         address.status = "Start"
         var action = { name: actionFound, __: data !== undefined ? [data] : [], lookupActions: [], stack: [], condition, object }
-        return require("./action").action({ _window, req, res, id, e, action, __, stack, lookupActions, address })
+        return require("./action").action({ _window, req, res, id, e, action, __, dots, stack, lookupActions, address })
       }
 
-      return toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: data }).data
+      return toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, dots, _: data }).data
     }
   }
 

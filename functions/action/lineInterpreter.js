@@ -4,7 +4,7 @@ const { isCondition } = require("./isCondition")
 const { executable } = require("./executable")
 const { clone } = require("./clone")
 
-const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, data: { string, dblExecute, index: i = 0, splitter = "?", action }, req, res, __, mount, condition, toView, object, _object }) => {
+const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, data: { string, dblExecute, index: i = 0, splitter = "?", action }, req, res, __, dots, mount, condition, toView, object, _object }) => {
 
     require("./toParam")
     require("./toValue")
@@ -16,6 +16,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
     // missing stack or __
     if (!stack) stack = { addresses: [], returns: [] }
     if (!__) __ = view.__
+    if (!dots) dots = view.__dots__
 
     var startTime = (new Date()).getTime(), success = true, data, returnForWaitActionExists = false
 
@@ -29,7 +30,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         address.interpreting = false
         
         // execute waits
-        require("./toAwait").toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: returnForWaitActionExists ? data.data : undefined })
+        require("./toAwait").toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, dots, _: returnForWaitActionExists ? data.data : undefined })
         return data
     }
 
@@ -63,7 +64,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         // name has subparams => interpret
         if (substring.includes("?")) {
 
-            var data = lineInterpreter({ lookupActions, stack, id, e, data: { string: substring, i: 1 }, req, res, __, mount, condition, toView, object, _object })
+            var data = lineInterpreter({ lookupActions, stack, id, e, data: { string: substring, i: 1 }, req, res, __, dots, mount, condition, toView, object, _object })
             if (data.conditionsNotApplied) return terminator({ data, order: 4 })
         }
     }
@@ -109,10 +110,10 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
             else if (!dblExecute && mount) action = "toParam"
         }
         
-        data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object, _object, toView })
+        data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, dots, mount, object, _object, toView })
 
         if (dblExecute && executable({ _window, string: data }))
-            data = lineInterpreter({ _window, lookupActions, stack, id, e, data: { string: data }, req, res, __, mount, condition, toView, object, _object }).data
+            data = lineInterpreter({ _window, lookupActions, stack, id, e, data: { string: data }, req, res, __, dots, mount, condition, toView, object, _object }).data
 
         if (stack.returns && stack.returns[0].returned) {
             returnForWaitActionExists = true
@@ -125,7 +126,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         return ({ success, message, data, conditionsNotApplied, executionDuration: (new Date()).getTime() - startTime })
     }
 
-    var approved = require("./toApproval").toApproval({ _window, data: conditions || "", id, e, req, res, __, stack, lookupActions, object, _object })
+    var approved = require("./toApproval").toApproval({ _window, data: conditions || "", id, e, req, res, __, dots, stack, lookupActions, object, _object })
 
     if (!approved && elseParams) data = execute({ success, string: elseParams, message: "Else actions executed!", conditionsNotApplied: true })
     else if (!approved) data = ({ success, message: `Conditions not applied!`, conditionsNotApplied: true, executionDuration: (new Date()).getTime() - startTime })

@@ -6,22 +6,26 @@ const { timerLogger } = require("./logger");
 
 require("dotenv").config();
 
-const initViews = ({ _window }) => {
+const initViews = ({ _window, __, dots }) => {
 
     _window.views = {
         document: {
             id: "document",
+            __,
             __indexing__: 0,
             __childrenRef__: [],
-            __viewPath__: []
+            __viewPath__: [],
+            __dots__: dots
         },
         body: {
             id: "body",
             view: "View",
+            __,
             __parent__: "document",
             __indexing__: 0,
             __childrenRef__: [],
             __viewPath__: [],
+            __dots__: dots,
             children: [...toArray((_window.global.data.project.browser || {}).children), { view: "root" }]
         }
     }
@@ -67,9 +71,9 @@ const getProject = async ({ _window, req }) => {
     })
 }
 
-const renderer = ({ _window, req, res, stack, __ }) => {
+const renderer = ({ _window, req, res, stack, __, dots }) => {
 
-    var { global, views } = _window, page = global.manifest.page, dots = global.__dots__
+    var { global, views } = _window, page = global.manifest.page
 
     timerLogger({ _window, data: { key: "render", start: true } })
 
@@ -181,15 +185,15 @@ const documenter = async ({ _window, res, stack }) => {
     )
 }
 
-const projector = async ({ _window, req, res, stack, __ }) => {
+const projector = async ({ _window, req, res, stack, __, dots }) => {
     
     timerLogger({ _window, data: { key: "documentation", start: true } })
     
     initViews({ _window })
-    await getProject({ _window, req, res, stack, __ })
+    await getProject({ _window, req, res, stack, __, dots })
     
     if (res.headersSent) return
-    renderer({ _window, req, res, stack, __ })
+    renderer({ _window, req, res, stack, __, dots })
 }
 
 module.exports = { getProject, initViews, renderer, projector, documenter }

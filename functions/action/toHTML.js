@@ -8,7 +8,7 @@ const { colorize } = require("./colorize")
 const cssStyleKeyNames = require("./cssStyleKeyNames")
 const { clone } = require("./clone")
 
-const toHTML = ({ _window, id, stack, __ }) => {
+const toHTML = ({ _window, id, stack, __, dots }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -17,7 +17,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
   var name = view.__name__, html = ""
 
   // linkable
-  //if (view.link && !view.__linked__) return link({ _window, id, stack, __ })
+  //if (view.link && !view.__linked__) return link({ _window, id, stack, __, dots })
 
   // text
   var text = typeof view.text !== "object" && view.text !== undefined ? view.text : ((view.editable || view.__name__ === "Input" || view.__name__ === "Text") && typeof view.data !== "object" && view.data !== undefined) ? view.data : ""
@@ -135,7 +135,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
   view.__idList__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
 }
 
-const link = ({ _window, id, stack, __ }) => {
+const link = ({ _window, id, stack, __, dots }) => {
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
@@ -147,12 +147,12 @@ const link = ({ _window, id, stack, __ }) => {
 
   // link
   var { view: linkView, id: linkID } = initView({ views, global, parent: view.__parent__, ...linkView, __, __controls__: [{ event: `click?route():'${view.link.path}'?${view.link.path || "false"};${view.link.preventDafault ? "false" : "true"}` }] })
-  toHTML({ _window, id: linkID, stack, __ })
+  toHTML({ _window, id: linkID, stack, __, dots })
   
   // view
   view.__parent__ = linkID
   view.__linked__ = true
-  toHTML({ _window, id, stack, __ })
+  toHTML({ _window, id, stack, __, dots })
 }
 
 const indexing = ({ id, views, view, parent }) => {
