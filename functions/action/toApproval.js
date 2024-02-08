@@ -1,7 +1,7 @@
 const { decode } = require("./decode")
 const { isEqual } = require("./isEqual")
 
-const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, dots, req, res, object }) => {
+const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, req, res, object }) => {
 
   const { toAction } = require("./toAction")
   const { toValue } = require("./toValue")
@@ -44,7 +44,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, do
 
       while (!approval && conditions[i] !== undefined) {
         if (conditions[i].charAt(0) === "=" || conditions[i].slice(0, 2) === "!=") conditions[i] = key + conditions[i]
-        approval = toApproval({ _window, lookupActions, stack, e, data: conditions[i], id, __, dots, req, res, object })
+        approval = toApproval({ _window, lookupActions, stack, e, data: conditions[i], id, __, req, res, object })
         i += 1
       }
 
@@ -69,7 +69,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, do
     var notEqual
 
     // get value
-    if (value) value = toValue({ _window, lookupActions, stack, id, data: value, e, __, dots, req, res, condition: true })
+    if (value) value = toValue({ _window, lookupActions, stack, id, data: value, e, __, req, res, condition: true })
 
     // encoded
     if (key.charAt(0) === "@" && key.length == 6 && global.__refs__[key].type === "text") {
@@ -99,13 +99,13 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, do
 
     // action
     if (path0.slice(-2) === "()") {
-      var isAction = toAction({ _window, lookupActions, stack, id, req, res, __, dots, e, path, path0, condition: true });
+      var isAction = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: path[0] }, condition: true });
       if (isAction !== "__continue__") return approval = notEqual ? !isAction : isAction
     }
 
     // get key
-    if (object || key.includes("()")) key = toValue({ _window, lookupActions, stack, id, data: key, e, __, dots, req, res, object, condition: true })
-    else key = toValue({ _window, lookupActions, stack, id, data: key, e, __, dots, req, res, object: object !== undefined ? object : view, condition: true })
+    if (object || key.includes("()")) key = toValue({ _window, lookupActions, stack, id, data: key, e, __, req, res, object, condition: true })
+    else key = toValue({ _window, lookupActions, stack, id, data: key, e, __, req, res, object: object !== undefined ? object : view, condition: true })
 
     // evaluate
     if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !key : (key === 0 ? true : key)

@@ -3,7 +3,7 @@ const { clone } = require("./clone")
 const { lineInterpreter } = require("./lineInterpreter")
 const { printStack } = require("./stack")
 
-const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, stack, id, e, _, __, dots, action }) => {
+const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, stack, id, e, _, __, action }) => {
 
   if (addressID && !address.id) address = stack.addresses.find(address => address.id === addressID)
   if (stack.terminated || address.hold) return
@@ -41,7 +41,7 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
 
     stack.interpretingAddressID = address.id
     
-    if (address.function) return addressFunctionExecuter({ _window, lookupActions, stack, id, e, req, res, address, headAddress, __: my__, dots, action })
+    if (address.function) return addressFunctionExecuter({ _window, lookupActions, stack, id, e, req, res, address, headAddress, __: my__, action })
     else if (address.type === "line" || address.type === "action") return lineInterpreter({ _window, lookupActions, address, stack, id, e, req, res, ...(address.params || {}), data: address.data, __: my__, action })
   }
 
@@ -55,14 +55,14 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
     if (otherWaiting === -1 || (otherWaiting > -1 && otherWaiting.blocked)) {
       
       headAddress.hold = false
-      return toAwait({ _window, lookupActions, stack, address: headAddress, id, e, req, res, __, dots, action })
+      return toAwait({ _window, lookupActions, stack, address: headAddress, id, e, req, res, __, action })
     }
   }
 
   printStack({ stack, end: true })
 }
 
-const addressFunctionExecuter = ({ _window, lookupActions, stack, id, e, req, res, address, __, dots, action }) => {
+const addressFunctionExecuter = ({ _window, lookupActions, stack, id, e, req, res, address, __, action }) => {
 
   require("./toView")
   require("./toHTML")
@@ -76,7 +76,7 @@ const addressFunctionExecuter = ({ _window, lookupActions, stack, id, e, req, re
   
   address.interpreting = false
   
-  !address.asynchronous && toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, dots, action })
+  !address.asynchronous && toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, action })
 }
 
 module.exports = { toAwait, addressFunctionExecuter }

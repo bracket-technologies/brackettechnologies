@@ -7,11 +7,14 @@ const { replaceNbsps } = require("./replaceNbsps")
 
 const defaultInputHandler = ({ id }) => {
 
-  var view = window.views[id]
+  var views = window.views
   var global = window.global
+  var view = views[id]
 
   if (!view) return
   if (view.__name__ !== "Input" && !view.editable) return
+
+  view.__element__.addEventListener("focus", (e) => { if (view) global.__focused__ = view })
 
   if (view.preventDefault) return
 

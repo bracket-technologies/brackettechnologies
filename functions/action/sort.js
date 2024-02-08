@@ -2,7 +2,7 @@ const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
 
-const sort = ({ _window, sort = {}, id, e, lookupActions, __, dots, stack }) => {
+const sort = ({ _window, sort = {}, id, e, lookupActions, __, stack }) => {
 
   var view = _window ? _window.views[id] : window.views[id]
   if (!view) return
@@ -28,11 +28,11 @@ const sort = ({ _window, sort = {}, id, e, lookupActions, __, dots, stack }) => 
 
   data.sort((a, b) => {
     
-    a = reducer({ _window, id, data: { path, object: a }, e, lookupActions, __, dots, stack }) || "!"
+    a = reducer({ _window, id, data: { path, object: a }, e, lookupActions, __, stack }) || "!"
     
     if (a !== undefined) a = a.toString()
 
-    b = reducer({ _window, id, data: { path, object: b }, e, lookupActions, __, dots, stack }) || "!"
+    b = reducer({ _window, id, data: { path, object: b }, e, lookupActions, __, stack }) || "!"
 
     if (b !== undefined) b = b.toString()
 

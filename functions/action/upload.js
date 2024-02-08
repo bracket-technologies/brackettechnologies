@@ -5,7 +5,7 @@ const readFile = require("./readFile")
 const { toArray } = require("./toArray")
 const { storeFile } = require("./storage")
 
-module.exports = async ({ _window, lookupActions, stack, address, id, req, res, e, __, dots, upload, ...params }) => {
+module.exports = async ({ _window, lookupActions, stack, address, id, req, res, e, __, upload, ...params }) => {
         
   var promises = []
   var global = _window ? _window.global : window.global
@@ -65,5 +65,5 @@ module.exports = async ({ _window, lookupActions, stack, address, id, req, res, 
   await Promise.all(promises)
   
   // await
-  require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __, dots, _: uploads.length === 1 ? uploads[0] : uploads, ...params })
+  require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __, _: uploads.length === 1 ? uploads[0] : uploads, ...params })
 }

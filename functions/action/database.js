@@ -49,7 +49,7 @@ const getData = async ({ _window, req, res, search }) => {
 
   var doc = search.doc,
     docs = search.docs,
-    field = search.field,
+    field = search.field || {},
     limit = search.limit || 1000,
     data = {}, success, message,
     ref = collection && db.collection(collection),
@@ -69,11 +69,7 @@ const getData = async ({ _window, req, res, search }) => {
         .then(res => res.doesNotExist.throwAnError)
         .catch(err => err)
 
-      data = data.data
-      if (typeof data === "string") {
-        data = `{ ${data.split("{").slice(1).join("{")}`
-        data = JSON.parse(data)
-      }
+      data = JSON.parse(data.data)
       success = true
       message = `Document/s mounted successfuly!`
 
@@ -137,7 +133,7 @@ const getData = async ({ _window, req, res, search }) => {
     return ({ data, success, message })
   }
 
-  else if (!("field" in search)) {
+  else if (Object.keys(field).length === 0) {
 
     if (search.orderBy || search.skip) ref = ref.orderBy(...toArray(search.orderBy || "id"))
     if (search.skip) ref = ref.offset(search.skip)
@@ -169,8 +165,6 @@ const getData = async ({ _window, req, res, search }) => {
 
     return ({ data, success, message })
   }
-
-  if (Object.values(field).length === 0) return ({ data: {}, success: false, message: "Missing Field!" })
 
   const myPromise = () => new Promise(async (resolve) => {
     try {

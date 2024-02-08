@@ -3,7 +3,7 @@ const { jsonToBracket } = require('./jsonToBracket')
 const { getData } = require('./database')
 
 module.exports = {
-  search: async ({ _window, lookupActions, stack, id, req, res, e, __, dots, data: search = {}, address }) => {
+  search: async ({ _window, lookupActions, stack, id, req, res, e, __, data: search = {}, address }) => {
       
     var global = _window ? _window.global : window.global
     var store = search.store || "database", data
@@ -31,9 +31,7 @@ module.exports = {
       data = response.data
     }
 
-    // console.log("SEARCH", (new Date()).getTime() - headers.timestamp, search.collection, data)
-
     // await params
-    require("./toAwait").toAwait({ _window, lookupActions, stack, id, e, address, req, res, _: data, __, dots })
+    require("./toAwait").toAwait({ _window, lookupActions, stack, id, e, address, req, res, _: data, __ })
   }
 }

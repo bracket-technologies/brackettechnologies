@@ -1,6 +1,5 @@
 const { toValue } = require('./toValue');
 const { toCode } = require('./toCode');
-const { generate } = require('./generate');
 
 const detector = new (require('node-device-detector'))({
     clientIndexes: true,
@@ -8,7 +7,7 @@ const detector = new (require('node-device-detector'))({
     deviceAliasCode: false,
 });
 
-const initializer = ({ req, res, stack, data: { db, storage, rdb } }) => {
+const initializer = ({ id, req, res, stack, path, data: { db, storage, rdb } }) => {
 
     console.log(req.method, req.url, req.body.action ? req.body.action.name + "()" : "");
 
@@ -18,14 +17,11 @@ const initializer = ({ req, res, stack, data: { db, storage, rdb } }) => {
     req.cookies = JSON.parse(req.cookies.__session || "{}")
 
     // 
-    var id = generate()
-    var path = decodeURI(req.url).split("/")
     var page = path[1] || "main"
     var host = req.headers['x-forwarded-host'] || req.headers.host || req.headers.referer
 
     var global = {
         __: [],
-        __dots__: [],
         __refs__: {},
         __events__: {},
         __calcTests__: {},

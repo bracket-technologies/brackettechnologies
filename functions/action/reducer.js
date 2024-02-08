@@ -8,7 +8,7 @@ const { toAwait } = require("./toAwait")
 const { override } = require("./merge")
 const { clone } = require("./clone")
 
-const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, value, key, object }, __, dots, e, req, res, condition, toView, action }) => {
+const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, value, key, object }, __, e, req, res, condition, toView, action }) => {
 
     const { toValue } = require("./toValue")
     const { toParam } = require("./toParam")
@@ -33,45 +33,45 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     if (path[0] !== undefined) args = path[0].toString().split(":")
 
     // toParam
-    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, stack, id, e, data: pathJoined, __, dots, object, toView })
+    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, stack, id, e, data: pathJoined, __, object, toView })
 
     // toValue
-    if (isCalc({ _window, string: pathJoined }) && !key) return toValue({ _window, lookupActions, stack, data: pathJoined, __, dots, id, e, req, res, object, toView, condition })
+    if (isCalc({ _window, string: pathJoined }) && !key) return toValue({ _window, lookupActions, stack, data: pathJoined, __, id, e, req, res, object, toView, condition })
 
     // [actions?conditions?elseActions]():[params]:[waits]
     else if (path0.length === 8 && path0.slice(-2) === "()" && path0.charAt(0) === "@") {
         
-        var { address, data } = addresser({ _window, stack, args, id, status: "Wait", type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, dots, lookupActions, id, object })
+        var { address, data } = addresser({ _window, stack, args, id, type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, lookupActions, id, object })
 
-        return toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, dots, _: data }).data
+        return toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: data }).data
     }
 
     // if()
     else if (path0 === "if()") {
 
         var data
-        var approved = toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, dots, req, res, object })
+        var approved = toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object })
 
         if (!approved) {
 
             if (args[3]) {
 
-                if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[3], id, __, dots, req, res, object })
-                else return toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, dots, e, object, toView })
+                if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[3], id, __, req, res, object })
+                else return toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object, toView })
 
             } else if (path[1] && path[1].includes("elif()")) {
 
                 path.shift()
                 path[0] = path[0].slice(2)
-                return reducer({ _window, lookupActions, stack, id, data: { path, object, value, key }, __, dots, e, req, res, condition })
+                return reducer({ _window, lookupActions, stack, id, data: { path, object, value, key }, __, e, req, res, condition })
 
             } else return data
 
         } else {
 
-            if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[2], id, __, dots, req, res, object, toView })
-            if (path[1]) data = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object, toView })
-            else return toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object, toView })
+            if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[2], id, __, req, res, object, toView })
+            if (path[1]) data = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, toView })
+            else return toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, toView })
             
             path.shift()
 
@@ -82,14 +82,14 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
             if (!path[0]) return data
         }
 
-        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
     }
 
     // while()
     else if (path0 === "while()") {
 
-        while (toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, dots, req, res, object })) {
-            toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, dots, e, object, toView })
+        while (toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object })) {
+            toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, toView })
         }
         // path = path.slice(1)
         return global.return = false
@@ -98,20 +98,20 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // global:()
     else if (path0 && args[1] === "()" && !args[2]) {
 
-        var globalVariable = toValue({ req, res, _window, id, e, data: args[0], __, dots, stack, lookupActions })
+        var globalVariable = toValue({ req, res, _window, id, e, data: args[0], __, stack, lookupActions })
         if (path.length === 1 && key && globalVariable) return global[globalVariable] = value
 
         path.splice(0, 1, globalVariable)
-        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: global, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data: global, path, value, key, object, pathJoined } })
     }
 
     // view => ():id
     else if (path0 === "()" && args[1]) {
 
         // id
-        var customID = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, dots, object })
+        var customID = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object })
         path.shift()
-        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: views[customID || args[1] || id], path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data: views[customID || args[1] || id], path, value, key, object, pathJoined } })
     }
 
     // .keyName => [object||view].keyName
@@ -120,7 +120,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
         if (isNaN(path[1].charAt(0)) || path[1].includes("()")) {
 
             path.shift()
-            return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: object || view, path, value, key, object, pathJoined } })
+            return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data: object || view, path, value, key, object, pathJoined } })
 
         } else return path.join(".")
     }
@@ -132,7 +132,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
 
         // text in square bracket
         if (global.__refs__[path[0]].type === "text") return global.__refs__[path[0]].data
-        else data = lineInterpreter({ _window, req, res, lookupActions, stack, object, id, data: { string: global.__refs__[path[0]].data }, __, dots, e }).data
+        else data = lineInterpreter({ _window, req, res, lookupActions, stack, object, id, data: { string: global.__refs__[path[0]].data }, __, e }).data
 
         if (path[1] === "flat()") {
 
@@ -157,7 +157,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
             } else if (path[1]) {
 
                 path.splice(0, 1)
-                return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
+                return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
 
             } else return data
         }
@@ -166,18 +166,18 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // action()
     else if (path0.slice(-2) === "()") {
 
-        var action = toAction({ _window, lookupActions, stack, id, req, res, __, dots, e, path: [path[0]], path0, condition, toView, object })
+        var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: path[0] }, condition, toView, object })
         if (action !== "__continue__") {
                 
             path.shift()
-            return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: action, path, value, key, object, pathJoined } })
+            return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data: action, path, value, key, object, pathJoined } })
         }
     }
 
     if (!view) view = views[id]
 
     if (path0 === "className()") {
-        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: views.document, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data: views.document, path, value, key, object, pathJoined } })
     } else {
         var __o = ((typeof object === "object" && object.__view__) ? object : views[id]) || {}
         if (__o.__labeled__ && (path0.toLowerCase().includes("prev") || path0.toLowerCase().includes("next") || path0.toLowerCase().includes("parent"))) {
@@ -220,20 +220,20 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
         else data = __[path0.split("_").length - 2]
 
         path.shift()
-        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
 
-    } else if (object) return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: object, path, value, key, object, pathJoined } })
+    } else if (object) return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data: object, path, value, key, object, pathJoined } })
 
     // still no data
     if ((path[0] && object && object.__view__) || (path0 && path0.includes("()"))) {
 
-        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data: view, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data: view, path, value, key, object, pathJoined } })
 
     } else if (path[1] && path[1].toString().includes("()")) {
 
-        var data = toValue({ req, res, _window, lookupActions, stack, id, __, dots, e, data: path[0] }) || {}
+        var data = toValue({ req, res, _window, lookupActions, stack, id, __, e, data: path[0] }) || {}
         path.shift()
-        return kernel({ _window, lookupActions, stack, id, __, dots, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
 
     } else return pathJoined
 }

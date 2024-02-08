@@ -2,7 +2,7 @@ const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const initView = ({ views, global, id = generate(), doc, children = [], dots, parent, __parent__, __status__ = "Loading", __dataPath__, __lookupActions__ = [], __controls__ = [], ...data }) => {
+const initView = ({ views, global, id = generate(), doc, children = [], parent, __parent__, __status__ = "Loading", __dataPath__, __lookupActions__ = [], __controls__ = [], ...data }) => {
 
     var parentView = (parent || __parent__ ? views[parent || __parent__] : {}) || {}
 
@@ -12,7 +12,6 @@ const initView = ({ views, global, id = generate(), doc, children = [], dots, pa
         children: toArray(children),
         doc: doc || parentView.doc,
         __lookupActions__,
-        __dots__: dots,
         __status__,
         __view__: true,
         __parent__: parent || __parent__,
@@ -37,7 +36,7 @@ const getViewParams = ({ view }) => {
     
     var { id, doc, data, view, children, __lookupActions__, __element__, __dataPath__, __childrenRef__, __index__,
         __viewPath__, __customViewPath__, __indexing__, __childIndex__, __initialIndex__, __customView__, __htmlStyles__, 
-        __parent__, __controls__, __status__, __rendered__, __timers__, __view__, __name__, __, __dots__, ...params } = view
+        __parent__, __controls__, __status__, __rendered__, __timers__, __view__, __name__, __, ...params } = view
         
     return params
 }

@@ -1,9 +1,7 @@
 const setPosition = ({ position = {}, id, e }) => {
 
   var views = window.views
-  var leftDeviation = position.left
-  var topDeviation = position.top
-  var align = position.align
+  var align = position.align || "center"
   var element = views[position.id || id].__element__
   var mousePos = position.positioner === "mouse"
   var fin = element.getElementsByClassName("fin")[0]
@@ -55,13 +53,13 @@ const setPosition = ({ position = {}, id, e }) => {
     element.style.height = height + "px"
   }
   
-  placement = element.placement || position.placement || "right"
+  placement = position.placement || "bottom"
   distance = parseFloat(element.distance || position.distance || 10)
   
   if (placement === "right") {
 
-    left = rightPos + distance
-    top = topPos + heightPos / 2 - height / 2
+    left = rightPos + distance + (position.gapX || 0)
+    top = topPos + heightPos / 2 - height / 2 + (position.gapY || 0)
       
     if (fin) {
       fin.style.right = "unset"
@@ -73,8 +71,8 @@ const setPosition = ({ position = {}, id, e }) => {
 
   } else if (placement === "left") {
     
-    left = leftPos - distance - width
-    top = topPos + heightPos / 2 - height / 2
+    left = leftPos - distance - width + (position.gapX || 0)
+    top = topPos + heightPos / 2 - height / 2 + (position.gapY || 0)
     
     if (fin) {
       fin.style.right = "-0.5rem"
@@ -86,8 +84,8 @@ const setPosition = ({ position = {}, id, e }) => {
 
   } else if (placement === "top") {
 
-    top = topPos - height - distance
-    left = leftPos + widthPos / 2 - width / 2
+    top = topPos - height - distance + (position.gapY || 0)
+    left = leftPos + widthPos / 2 - width / 2 + (position.gapX || 0)
 
     if (fin) {
       fin.style.right = "unset"
@@ -99,9 +97,9 @@ const setPosition = ({ position = {}, id, e }) => {
 
   } else if (placement === "bottom") {
 
-    top = topPos + heightPos + distance
-    left = leftPos + widthPos / 2 - width / 2
-
+    top = topPos + heightPos + distance + (position.gapY || 0)
+    left = leftPos + widthPos / 2 - width / 2 + (position.gapX || 0)
+    
     if (fin) {
       fin.style.right = "unset"
       fin.style.left = "unset"
@@ -110,10 +108,6 @@ const setPosition = ({ position = {}, id, e }) => {
       fin.style.borderRadius = "0 0.4rem 0 0"
     }
   }
-  
-  // deviation
-  if (topDeviation) top = top + topDeviation
-  if (leftDeviation) left = left + leftDeviation
 
   // fix height overflow
   bottom = top + height
@@ -172,10 +166,10 @@ const setPosition = ({ position = {}, id, e }) => {
   } else element.style.left = left + 'px'
   
   // align
-  if (align === "left") element.style.left = leftPos + "px"
-  else if (align === "top") element.style.top = topPos - height + heightPos + "px"
-  else if (align === "bottom") element.style.bottom = bottomPos + "px"
-  else if (align === "right") element.style.left = leftPos - width + widthPos + "px"
+  if (align === "left") element.style.left = leftPos + (position.gapX || 0) + "px"
+  else if (align === "top") element.style.top = topPos - height + heightPos + (position.gapY || 0) + "px"
+  else if (align === "bottom") element.style.bottom = bottomPos + (position.gapY || 0) + "px"
+  else if (align === "right") element.style.left = leftPos - width + widthPos + (position.gapX || 0) + "px"
   
   if (fin) fin.style.left = "unset"
 }

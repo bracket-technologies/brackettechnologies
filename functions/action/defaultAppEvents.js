@@ -11,8 +11,6 @@ const defaultAppEvents = () => {
     // clicked element
     document.addEventListener('click', e => {
 
-        global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
-
         // droplist
         if (global.__clicked__ && views.droplist.__element__.contains(global.__clicked__.__element__)) global["droplist-txt"] = global.__clicked__.__element__.innerHTML
 
@@ -29,6 +27,24 @@ const defaultAppEvents = () => {
         Object.entries(global.__events__).map(([id, event]) => views[id] && event.mousemove && event.mousemove.map(data => (global.__mousemoved__ && (global.__mousemoved__.id === data.eventID || views[data.eventID].__element__.contains(global.__mousemoved__.__element__))) && eventExecuter({ ...data, e })))
     })
 
+    document.addEventListener("mouseenter", (e) => {
+
+        global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
+        global.__mouseentered__ = views[((e || window.event).target || e.currentTarget).id]
+
+        // body mouseenter events
+        Object.entries(global.__events__).map(([id, event]) => views[id] && event.mouseenter && event.mouseenter.map(data => (global.__mouseentered__ && (global.__mouseentered__.id === data.eventID || views[data.eventID].__element__.contains(global.__mouseentered__.__element__))) && eventExecuter({ ...data, e })))
+    })
+
+    document.addEventListener("mouseleave", (e) => {
+
+        global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
+        global.__mouseleaved__ = views[((e || window.event).target || e.currentTarget).id]
+
+        // body mouseleav events
+        Object.entries(global.__events__).map(([id, event]) => views[id] && event.mouseleave && event.mouseleave.map(data => (global.__mouseleaved__ && (global.__mouseleaved__.id === data.eventID || views[data.eventID].__element__.contains(global.__mouseleaved__.__element__))) && eventExecuter({ ...data, e })))
+    })
+
     document.addEventListener("mousedown", (e) => {
 
         global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
@@ -40,6 +56,7 @@ const defaultAppEvents = () => {
 
     document.addEventListener("mouseup", (e) => {
 
+        global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
         global.__mouseuped__ = views[((e || window.event).target || e.currentTarget).id]
 
         // body mouseup events

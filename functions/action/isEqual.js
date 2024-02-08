@@ -3,11 +3,12 @@ const isEqual = function(value, other) {
 
   if ((value && !other) || (other && !value)) return false
 
-  // string || boolean || number
-  if (typeof value !== "object" && typeof other !== "object") {
-    return value === other;
-  }
+  // string
+  if (typeof value === "string" && typeof other === "string") return value.replace(/\s+/g, ",") === other.replace(/\s+/g, ",");
 
+  // boolean || number
+  if ((typeof value !== "object") && (typeof other !== "object")) return value === other
+  
   var type = Object.prototype.toString.call(value)
   // If the two objects are not the same type, return false
   if (type !== Object.prototype.toString.call(other)) return false

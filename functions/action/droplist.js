@@ -1,8 +1,8 @@
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { jsonToBracket } = require("./jsonToBracket")
-const { reducer } = require("./reducer")
 const { lineInterpreter } = require("./lineInterpreter")
+const { kernel } = require("./kernel")
 
 const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   
@@ -25,9 +25,6 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   // init droplist
   var droplistView = { ...global.data.view.droplist, children: [], __dataPath__, doc, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["droplist"] }
 
-  // remove prev droplist
-  // clearTimeout(global.__droplistTimer__)
-
   // input id
   var { data: inputID } = lineInterpreter({ id, data: { string: "input().id||().id" } })
   var text = views[inputID].__element__.value || views[inputID].__element__.innerHTML
@@ -49,35 +46,6 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
     }
   }
   
-  // title
-  if (view.droplist.title) {
-
-    var Title
-    if (typeof view.droplist.title === "string" || typeof view.droplist.title === "number") Title = clone({ text: view.droplist.title })
-    else Title = clone(view.droplist.title)
-
-    if (Title.icon) {
-
-      if (typeof Title.icon === "string") Title.icon = { name: Title.icon }
-      var title = clone(Title)
-
-      droplistView.children.push({
-        view: `View?style:[minHeight=3rem;height=100%;gap=1rem;cursor=default];${jsonToBracket({ style: view.droplist.item && view.droplist.item.style || {} })};${jsonToBracket(view.droplist.item && view.droplist.item.container || {})};${jsonToBracket(Title.container || {})};class=flex align-items pointer ${(Title.container || {}).class || ""}`,
-        children: [{
-          view: `View?style:[height=100%;width=fit-content];${jsonToBracket(Title.icon.container || {})};class=flexbox ${(Title.icon.container || {}).class || ""}`,
-          children: [{
-            view: `Icon?style:[color=#888;fontSize=1.8rem];${jsonToBracket(view.droplist.icon || {})};${jsonToBracket(Title.icon || {})};class=flexbox ${(Title.icon || {}).class || ""}`
-          }]
-        }, {
-          view: `Text?style:[padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%;fontWeight=bold];${jsonToBracket(title)};class=flex align-center ${(title || {}).class || ""}`,
-        }]
-      })
-
-    } else droplistView.children.push({
-      view: `Text?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%;fontWeight=bold;cursor=default];${jsonToBracket(view.droplist.item || {})};${jsonToBracket(Title)};class=flex align-center ${(Title || {}).class || ""}`,
-    })
-  }
-  
   // children
   if (items && items.length > 0) {
     
@@ -93,7 +61,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
         if (typeof item.text === "string") item.text = { text: item.text }
         
         return ({
-          view: `View?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;gap=1rem];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item || {})};${jsonToBracket(item || {})};class=flex align-items pointer ${item.class || ""}`,
+          view: `View?style:[minHeight=3rem;padding=0 1rem;gap=1rem];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item || {})};${jsonToBracket(item || {})};class=flex align-items pointer ${item.class || ""}`,
           children: [{
             view: `View?style:[height=inherit;width=fit-content];${jsonToBracket(item.icon.container || {})};class=flexbox ${(item.icon.container || {}).class || ""}`,
             children: [{
@@ -107,7 +75,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
       } else {
         
         return ({
-          view: `Text?style:[minHeight=3rem;padding=0 1rem;borderRadius=.5rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item)};class=flex align-center pointer ${item.class || ""};click:[():[__droplistPositioner__:()].():[txt()=txt();data()=txt()]?!():${id}.droplist.preventDefault]`,
+          view: `Text?style:[minHeight=3rem;padding=0 1rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item)};class=flex align-center pointer ${item.class || ""};click:[():[__droplistPositioner__:()].():[txt()=txt();data()=txt()]?!():${id}.droplist.preventDefault]`,
         })
       }
     }))
@@ -171,7 +139,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
             }
           }
 
-          reducer({ id, data: { path: droplistView.__dataPath__, object: global[droplistView.doc], key: true, value: items[_index] }, __ })
+          kernel({ id, data: { path: droplistView.__dataPath__, object: global[droplistView.doc], key: true, value: items[_index] }, __ })
           global.__keyupIndex__ = _index
         }
       }
@@ -181,7 +149,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
     droplistView.__element__.children[view.droplist.title ? global.__keyupIndex__ + 1 : global.__keyupIndex__].dispatchEvent(new Event("mouseenter"))
   }
 
-  /*if (!view.droplist.preventDefault) */global.__droplistTimer__ = setTimeout(mouseEnterItem, 100)
+  global.__droplistTimer__ = setTimeout(mouseEnterItem, 100)
 }
 
 module.exports = { droplist }

@@ -7,7 +7,7 @@ const { removeView } = require("./view")
 const { generate } = require("./generate")
 const { addresser } = require("./addresser")
 
-const update = ({ _window, id, lookupActions, stack, address, req, res, __, dots, data = {} }) => {
+const update = ({ _window, id, lookupActions, stack, address, req, res, __, data = {} }) => {
 
   // address.blockable = false
   var views = _window ? _window.views : window.views
@@ -29,7 +29,7 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, dots
   if (!view) return
   
   // close publics
-  closePublicViews({ _window, id: data.id, __, dots, stack, lookupActions })
+  closePublicViews({ _window, id: data.id, __, stack, lookupActions })
 
   // get view to be rendered
   var reducedView = { ...(data.view ? data.view : clone(__viewPath__.reduce((o, k) => o[k], global.data.view))), __index__, __childIndex__, __view__: true, __viewPath__, __customViewPath__ }
@@ -55,19 +55,19 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, dots
   else if (!parent.__rendered__) { removeView({ _window, id: data.id, stack, main: true }) }
 
   // address for postUpdate
-  var address = addresser({ _window, id, stack, headAddress: address, status: "Wait", action: "postUpdate()", function: "postUpdate", file: "update", __, dots, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent, address } }).address
+  var address = addresser({ _window, id, stack, headAddress: address, action: "postUpdate()", function: "postUpdate", file: "update", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent, address } }).address
 
   // render
-  toView({ _window, lookupActions: myLookupActions, stack, req, res, address, __: my__, dots, data: { view: reducedView, parent: parent.id } })
+  toView({ _window, lookupActions: myLookupActions, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
 }
 
-const postUpdate = ({ _window, lookupActions, stack, __, dots, req, res, id, data: { childIndex, elements, route, timer, parent, address, ...data } }) => {
+const postUpdate = ({ _window, lookupActions, stack, __, req, res, id, data: { childIndex, elements, route, timer, parent, address, ...data } }) => {
   
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
 
   // tohtml parent
-  toHTML({ _window, lookupActions, stack, __, dots, id: parent.id })
+  toHTML({ _window, lookupActions, stack, __, id: parent.id })
 
   var renderedRefView = parent.__childrenRef__.filter(({ id, childIndex: chdIndex }) => chdIndex === childIndex && !views[id].__rendered__ && views[id])
 
@@ -140,7 +140,7 @@ const postUpdate = ({ _window, lookupActions, stack, __, dots, req, res, id, dat
   console.log(data.action || (updatedViews[0].id === "root" ? "ROUTE" : "UPDATE"), (new Date()).getTime() - timer, updatedViews[0].id)
 
   // await params
-  address && require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id: views[id] ? id : updatedViews[0].id, __, dots, _: data })
+  address && require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id: views[id] ? id : updatedViews[0].id, __, _: data })
 }
 
 module.exports = { update, postUpdate }

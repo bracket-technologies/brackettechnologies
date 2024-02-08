@@ -1,18 +1,18 @@
 module.exports = () => {
   
   return [{ // close droplist
-    event: "[keyup:input()??e().key=Escape];[blur:input()??clicked().id!=droplist;!():droplist.contains():[clicked()]]?clearTimer():[__droplistTimer__:()];():[__droplistPositioner__:()].droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]];():droplist.():[#children().():[style().pointerEvents=none];style():[opacity=0;transform=scale(0.5);pointerEvents=none]];__droplistPositioner__:().del()"
+    event: `[keyup:input()??e().key=Escape];[blur:input()??!():droplist.contains():[clicked()]||focused().id!=().id]?__droplistMouseleaveTimer__:()=0;():droplist.mouseleave()`
   }, { // open droplist on click
-    event: `click;[focus:input()??clicked().id!=().id;!clicked().contains():[input().id]]?clearTimer():[__droplistTimer__:()];if():[__droplistPositioner__:()!=().id]:[__keyupIndex__:()=0;__droplistPositioner__:()=().id;droplist()::[():droplist.():[#children().():[style().pointerEvents=auto];style():[transition='opacity .1s, transform .1s';opacity=1;transform='scale(1)';pointerEvents=auto]];droplist.style.keys()._():[():droplist.style().[_]=().droplist.style.[_]];():droplist.position():[positioner=().id;placement=[.droplist.placement||bottom];distance=[.droplist.distance||0];align=[.droplist.align||left]]]]:[droplist.style.keys()._():[():droplist.style().[_]=():droplist.style.[_]||null];():droplist.():[style():[opacity=0;transform=scale(.5)]]]`,
+    event: `[click:input()??__droplistPositioner__:()!=().id];[focus:input()??__droplistPositioner__:()!=().id]?clearTimer():[__droplistTimer__:()];if():[__droplistPositioner__:()!=().id]:[__keyupIndex__:()=0;__droplistPositioner__:()=().id;droplist()::[().droplist.style.keys()._():[():droplist.style().[_]=().droplist.style.[_]];():droplist.position():[positioner=().id;[().droplist].flat()];():droplist.style():[opacity=1;transform='scale(1)';pointerEvents=auto];]]:[__droplistMouseleaveTimer__:()=0;():droplist.mouseleave()]`,
+  }, { // choose item on enter
+    event: `keyup:input()?():droplist.children().[__keyupIndex__:()].click()?e().key=Enter`
   }, { // open on hoverin
     event: `mouseenter?clearTimer():[.droplistLeaved];if():[__droplistMouseenterer__:()!=().id]:[click();__droplistMouseenterer__:()=().id]?droplist.hoverable`
   }, { // close on hoverout
-    event: `mouseleave?droplistLeaved=timer():[if():[!():droplist.mouseentered;__droplistMouseenterer__:()=().id;():droplist.style().opacity='1']:[click();__droplistMouseenterer__:().del()]]:400?droplist.hoverable`
+    event: `mouseleave?__droplistMouseleaveTimer__:()=0;():droplist.mouseleave()?droplist.hoverable`
   }, { // search droplist
-    event: `input:input()?__droplistSearchTxt__:()=input().txt();droplist()?input();droplist.searchable`
-  }, { // open droplist on enter
-    event: `keyup:input()?():droplist.children().[__keyupIndex__:()].click()?!droplist.preventDefault;e().key=Enter`
-  }, { // move up/down
-    event: `keyup:input()?():droplist.children().[__keyupIndex__:()||0].mouseleave();__keyupIndex__:()=if():[e().keyCode=40]:[__keyupIndex__:()+1]:[__keyupIndex__:()-1];():droplist.children().[__keyupIndex__:()].mouseenter()?!droplist.preventDefault;e().keyCode=40||e().keyCode=38;__droplistPositioner__:();if():[e().keyCode=38]:[__keyupIndex__:()>0].elif():[e().keyCode=40]:[__keyupIndex__:()<():droplist.children.lastIndex()]`
+    event: `input:input()?droplist()?input();droplist.searchable`
+  }, { // move up/down items
+    event: `keyup:input()?():droplist.children().[__keyupIndex__:()||0].mouseleave();__keyupIndex__:()=if():[e().keyCode=40]:[__keyupIndex__:()+1]:[__keyupIndex__:()-1];():droplist.children().[__keyupIndex__:()].mouseenter()?e().keyCode=40||=38;__droplistPositioner__:();if():[e().keyCode=38]:[__keyupIndex__:()>0].elif():[e().keyCode=40]:[__keyupIndex__:()<():droplist.children.lastIndex()]`
   }]
 }

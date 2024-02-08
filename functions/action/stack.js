@@ -2,7 +2,7 @@ const { decode } = require("./decode")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const stacker = ({ _window, id: viewID, string = "", address = [], ...data }) => {
+const stacker = ({ _window, id: viewID, path = [], string = "", address = [], ...data }) => {
 
   var stack = {
     ...data,
@@ -17,17 +17,19 @@ const stacker = ({ _window, id: viewID, string = "", address = [], ...data }) =>
     executionStartTime: (new Date()).getTime(),
     addresses: toArray(address),
     logs: [],
-    returns: []
+    returns: [],
+    type: path[1] || ""
   }
 
-  stack.logs.push(`0 Start STACK ${stack.id} ${stack.event} ${stack.string}`)
+  stack.logs.push(`# Status (Duration) Type ID Index Action => HeadID HeadIndex HeadAction`)
+  stack.logs.push(`0 Start STACK ${stack.id} ${stack.event.toUpperCase()} ${stack.string}`)
 
   return stack
 }
 
 const clearStack = ({ stack }) => {
 
-  console.log("STACK", (new Date()).getTime() - stack.executionStartTime, stack.event)
+  console.log("STACK", (new Date()).getTime() - stack.executionStartTime, stack.event.toUpperCase())
 
   stack.terminated = true
   stack.addresses = []

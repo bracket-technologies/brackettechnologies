@@ -1,30 +1,28 @@
 const { getdb, postdb, deletedb } = require("./database")
 const { serverActionExecuter } = require("./serverActionExecuter")
 const { authorizer } = require("./authorizer")
-const { projector } = require('./projector')
+const { render } = require('./render')
 const { getLocalFile } = require("./storageLocal")
 const { initializer } = require("./initializer")
 const { stacker } = require("./stack")
+const { generate } = require("./generate")
 
 require("dotenv").config();
 
 module.exports = (data) => {
   
   data.server.all("*", async (req, res) => {
-    
-    if (req.url === "/favicon.ico") return res.send()
 
-    // stack
-    var stack = stacker({ event: req.method.toLowerCase(), server: true })
-
-    var _window = initializer({ req, res, data, stack })
-    var { manifest: { path, id }, __, dots } = _window.global
-
-    // headers sent
-    if (res.headersSent) return
+    var path = decodeURI(req.url).split("/"), id = generate()
 
     // resource
-    if (path[1] === "resource") return getLocalFile({ req, res, id })
+    if (path[1] === "resource") return getLocalFile({ req, res })
+
+    // stack
+    var stack = stacker({ id, path, event: req.method.toLowerCase(), server: true })
+
+    // initialize
+    var _window = initializer({ id, req, res, path, data, stack })
 
     // authorize
     var { success, message, error } = await authorizer({ _window, req })
@@ -32,23 +30,27 @@ module.exports = (data) => {
     // not authorized
     if (!success) return res.send({ success, message, error })
 
-    if (req.method === "GET") {
+    // database
+    if (path[1] === "database") {
 
-      if (path[1] === "database") return getdb({ _window, req, res, id, __, dots })
+      if (req.method === "GET") {
 
-    } else if (req.method === "POST") {
+        return getdb({ _window, req, res, id })
 
-      if (path[1] === "database") return postdb({ _window, req, res, id, __, dots })
+      } else if (req.method === "POST") {
 
-    } else if (req.method === "DELETE") {
-  
-      if (path[1] === "database") return deletedb({ _window, req, res, id, __, dots })
+        return postdb({ _window, req, res, id })
+
+      } else if (req.method === "DELETE") {
+    
+        return deletedb({ _window, req, res, id })
+      }
     }
 
     // action
-    if (path[1] === "action") return serverActionExecuter({ _window, req, res, id, stack, __, dots })
+    if (path[1] === "action") return serverActionExecuter({ _window, req, res, id, stack })
 
-    // document
-    return projector({ _window, req, res, id, stack, __, dots })
+    // render
+    return render({ _window, req, res, id, stack })
   })
 }

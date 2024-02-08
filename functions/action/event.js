@@ -64,7 +64,7 @@ const eventExecuter = ({ event, eventID, id, lookupActions, e, string, __ }) => 
   var timerID = setTimeout(() => {
     
     // unlunch unrelated droplists
-    if (id !== "droplist" && eventID === "droplist" && (!global.__droplistPositioner__ || ( views[global.__droplistPositioner__] && !views[global.__droplistPositioner__].__element__.contains(view.__element__)))) return
+    if (id !== "droplist" && eventID === "droplist" && (!global.__droplistPositioner__ || !views[global.__droplistPositioner__] || (views[global.__droplistPositioner__] && !views[global.__droplistPositioner__].__element__.contains(view.__element__)))) return
     
     var stack = stacker({ event, id, eventID, string })
 

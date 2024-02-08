@@ -2,7 +2,7 @@ const { clone } = require("./clone")
 const { update } = require("./update")
 
 module.exports = {
-  route: ({ id, _window, route = {}, stack, lookupActions, address, req, res, __, dots }) => {
+  route: ({ id, _window, route = {}, stack, lookupActions, address, req, res, __ }) => {
 
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
@@ -28,6 +28,6 @@ module.exports = {
     route.path = path
     route.page = page
 
-    update({ _window, id, req, res, stack, lookupActions, address, data: { route, id: "root" }, __, dots })
+    update({ _window, id, req, res, stack, lookupActions, address, data: { route, id: "root" }, __ })
   }
 }

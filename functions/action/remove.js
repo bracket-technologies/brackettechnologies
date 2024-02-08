@@ -4,7 +4,7 @@ const { closePublicViews } = require("./closePublicViews")
 const { lineInterpreter } = require("./lineInterpreter")
 const { isNumber } = require("./toValue")
 
-const remove = ({ _window, stack, data = {}, id, __, dots, lookupActions }) => {
+const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
 
   var views = window.views
   var view = window.views[id]
@@ -23,17 +23,17 @@ const remove = ({ _window, stack, data = {}, id, __, dots, lookupActions }) => {
     if (Array.isArray(parentData) && parentData.length === 0) {
 
       var string = `${view.doc}:().` + __dataPath__.join(".").slice(0, -1) + "=:"
-      lineInterpreter({ id, data: {string}, __, dots, lookupActions })
+      lineInterpreter({ id, data: {string}, __, lookupActions })
 
     } else {
 
       var string = `${view.doc}:().` + __dataPath__.join(".") + ".del()"
-      lineInterpreter({ id, data: {string}, __, dots, lookupActions })
+      lineInterpreter({ id, data: {string}, __, lookupActions })
     }
   }
 
   // close publics
-  closePublicViews({ _window, id, __, dots, stack, lookupActions })
+  closePublicViews({ _window, id, __, stack, lookupActions })
   
   // no data
   if (__dataPath__.length === 0) return removeView({ id, stack, main: true }).remove()
