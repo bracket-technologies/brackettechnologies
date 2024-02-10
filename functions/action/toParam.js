@@ -23,7 +23,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
   var params = object || {}
 
   // returned
-  if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.broke || stack.returned) return
+  if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.broke || stack.blocked) return
 
   if (typeof string !== "string" || !string) return string || {}
 
@@ -47,10 +47,9 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
   string.split(";").map(param => {
 
     // no param || returned || comment
-    if (!param || (stack.returns && stack.returns[0] || {}).returned || param.charAt(0) === "#" || stack.terminated || stack.broke || stack.returned) return
+    if (!param || (stack.returns && stack.returns[0] || {}).returned || param.charAt(0) === "#" || stack.terminated || stack.broke || stack.blocked) return
 
     var key, value
-    var view = views[id]
 
     // =
     if (param.includes("=")) {
@@ -204,14 +203,16 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     }
 
     // reduce
-    if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()" || path[0].includes("_") || object)
+    if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()" || path[0].slice(0, 3) === "():" || path[0].includes("_") || object)
       reducer({ _window, lookupActions, stack, id, data: { path, value, key, object }, e, req, res, __, mount, condition, action: "toParam" })
-    else kernel({ _window, lookupActions, stack, id, data: { path, value, key, data: (mount ? (view || {}) : params) }, e, req, res, __, mount, condition, action: "toParam" })
+    else kernel({ _window, lookupActions, stack, id, data: { path, value, key, data: (mount ? (views[id] || {__view__:true}) : params) }, e, req, res, __, mount, condition, action: "toParam" })
 
     /////////////////////////////////////////// path & data & doc ///////////////////////////////////////////////
 
     if (mount) {
       
+      var view = views[id]
+
       // mount data directly when found
       if (key === "doc" || key === "data") {
 

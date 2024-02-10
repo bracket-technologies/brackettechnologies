@@ -45,7 +45,7 @@ const defaultInputHandler = ({ id }) => {
   }
 
   if ((view.input || view).type === "number")
-  view.__element__.addEventListener("mousewheel", (e) => e.target.blur())
+    view.__element__.addEventListener("mousewheel", (e) => e.target.blur())
 
   // readonly
   if (view.readonly) return
@@ -55,29 +55,29 @@ const defaultInputHandler = ({ id }) => {
   })*/
 
   if (view.__name__ === "Input") view.prevValue = view.__element__.value
-  else if (view.editable) view.prevValue = (view.__element__.textContent===undefined) ? view.__element__.innerText : view.__element__.textContent
-  
+  else if (view.editable) view.prevValue = (view.__element__.textContent === undefined) ? view.__element__.innerText : view.__element__.textContent
+
   var inputEventHandler = async (e) => {
-    
+
     e.preventDefault()
 
-    var value 
+    var value
     if (view.__name__ === "Input") value = e.target.value
-    else if (view.editable) value = (e.target.textContent===undefined) ? e.target.innerText : e.target.textContent
+    else if (view.editable) value = (e.target.textContent === undefined) ? e.target.innerText : e.target.textContent
 
     // views[id] doesnot exist
     if (!window.views[id]) {
       if (e.target) e.target.removeEventListener("input", myFn)
-      return 
+      return
     }
 
     // contentfull
     if ((view.input || view).type === "text") {
 
-      value = replaceNbsps(value.replace('&amp;','&'))
+      value = replaceNbsps(value.replace('&amp;', '&'))
       e.target.value = value
     }
-      
+
     if (view.__name__ === "Input") {
 
       if (view.input.type === "number") {
@@ -94,12 +94,6 @@ const defaultInputHandler = ({ id }) => {
 
         } else value = parseFloat(value + ".0")
       }
-
-      // for uploads
-      if (view.input.type === "file") {
-        global.file = e.target.files[0]
-        return global.files = [...e.target.files]
-      }
     }
 
     if (view.doc) setData({ id, data: { value }, __: view.__ })
@@ -109,7 +103,7 @@ const defaultInputHandler = ({ id }) => {
 
     // arabic values
     // isArabic({ id, value })
-    
+
     console.log(value, global[view.doc], view.__dataPath__)
 
     view.prevValue = value
@@ -119,15 +113,15 @@ const defaultInputHandler = ({ id }) => {
 
     var value
     if (view.__name__ === "Input") value = view.__element__.value
-    else if (view.editable) value = (view.__element__.textContent===undefined) ? view.__element__.innerText : view.__element__.textContent
-    
+    else if (view.editable) value = (view.__element__.textContent === undefined) ? view.__element__.innerText : view.__element__.textContent
+
     // colorize
     if (view.colorize) {
-      
+
       var _value = toCode({ id, string: toCode({ id, string: value, start: "'" }) })
       if (view.__name__ === "Input") e.target.value = colorize({ string: _value, ...(typeof view.colorize === "object" ? view.colorize : {}) })
       else e.target.innerHTML = colorize({ string: _value, ...(typeof view.colorize === "object" ? view.colorize : {}) })
-      
+
       /*
       var sel = window.getSelection()
       var selected_node = sel.anchorNode
@@ -153,17 +147,24 @@ const defaultInputHandler = ({ id }) => {
   }
 
   var focusEventHandler = (e) => {
-    
+
     var value = ""
     if (view.__name__ === "Input") value = view.__element__.value
-    else if (view.editable) value = (view.__element__.textContent===undefined) ? view.__element__.innerText : view.__element__.textContent
+    else if (view.editable) value = (view.__element__.textContent === undefined) ? view.__element__.innerText : view.__element__.textContent
 
     view.prevContent = value
   }
 
-  view.__element__.addEventListener("input", inputEventHandler)
+  var fileEventHandler = (e) => {
+
+    view.__file__ = e.target.files[0]
+    return view.__files__ = [...e.target.files]
+  }
+
+  (view.input ? view.input.type !== "file" : true) && view.__element__.addEventListener("input", inputEventHandler)
   view.__element__.addEventListener("blur", blurEventHandler)
   view.__element__.addEventListener("focus", focusEventHandler)
+  view.input && view.input.type === "file" && view.__element__.addEventListener("change", fileEventHandler)
 }
 
 const getCaretIndex = (element) => {

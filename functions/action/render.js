@@ -3,6 +3,7 @@ const { getJsonFiles } = require("./jsonFiles");
 const { toArray } = require("./toArray");
 const { addresser } = require("./addresser");
 const { timerLogger } = require("./logger");
+const { toAwait } = require("./toAwait");
 
 require("dotenv").config();
 
@@ -86,7 +87,7 @@ const renderer = ({ _window, req, res, stack, __ }) => {
     toView({ _window, req, res, stack, __, address, data: { view: views.body, parent: "document" } })
 }
 
-const documenter = async ({ _window, res, stack }) => {
+const documenter = async ({ _window, res, stack, address }) => {
 
     var { global, views } = _window
     var page = global.manifest.page
@@ -115,6 +116,8 @@ const documenter = async ({ _window, res, stack }) => {
     global.__server__.logs = stack.logs
 
     timerLogger({ _window, data: { key: "documentation", end: true } })
+
+    toAwait({ _window, stack, address })
 
     res.send(
         `<!DOCTYPE html>

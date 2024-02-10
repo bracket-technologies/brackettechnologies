@@ -1,12 +1,14 @@
 const { printAddress } = require("./addresser")
 const { clone } = require("./clone")
 const { lineInterpreter } = require("./lineInterpreter")
-const { printStack } = require("./stack")
+const { endStack } = require("./stack")
 
 const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, stack, id, e, _, __, action }) => {
 
+  var global = _window ? _window.global : window.global
+
   if (addressID && !address.id) address = stack.addresses.find(address => address.id === addressID)
-  if (stack.terminated || address.hold) return
+  if (stack.terminated || address.hold || address.starter) return
 
   // params
   address.params = address.params || {}
@@ -17,10 +19,10 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
   // address
   var headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
   
-  // unbreak action
-  stack.returned = false
-
-  if (address.blocked || address.status === "Start") {
+  // unblocck stack
+  if (stack.blocked && !address.blocked) stack.blocked = false
+  
+  if (address.blocked || address.status === "Start" || address.status === "End") {
 
     address.status = address.blocked ? "Block" : "End"
     address.interpreting = false
@@ -46,9 +48,9 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
   }
 
   if (stack.terminated) return
-
+  
   // asynchronous unholds headAddresses
-  if (address.headAddressID && !headAddress.interpreting && (headAddress.hold || headAddress.status === "Wait")) {
+  if (address.headAddressID && !headAddress.interpreting && (headAddress.stackID || headAddress.hold || headAddress.status === "Wait")) {
     
     var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.headAddressID === address.headAddressID)
     
@@ -59,7 +61,10 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
     }
   }
 
-  printStack({ stack, end: true })
+  endStack({ _window, stack, end: true })
+
+  // address is for another stack
+  address.stackID !== stack.id && global.__stacks__[address.stackID] && toAwait({ _window, lookupActions, stack: global.__stacks__[address.stackID], address, id, e, req, res, __, action })
 }
 
 const addressFunctionExecuter = ({ _window, lookupActions, stack, id, e, req, res, address, __, action }) => {

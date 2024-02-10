@@ -16,7 +16,7 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
   const { reducer } = require("./reducer")
   const { toParam } = require("./toParam")
   
-  var view = _window ? _window.views[id] : window.views[id]
+  var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
   
   if (!value) return value
@@ -32,8 +32,8 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
   if (value.split("?").length > 1) return lineInterpreter({ _window, lookupActions, stack, id, e, data: {string: value}, req, res, mount, __, condition, object, toView, action: "toValue" }).data
 
   // no value
-  if (value === "()") return view
-  else if (value === ".") return object !== undefined ? object : view
+  if (value === "()") return views[id]
+  else if (value === ".") return object !== undefined ? object : views[id]
   else if (value === undefined) return generate()
   else if (value === "undefined") return undefined
   else if (value === "false") return false

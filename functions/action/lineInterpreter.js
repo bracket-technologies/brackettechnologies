@@ -5,6 +5,7 @@ const { executable } = require("./executable")
 const { clone } = require("./clone")
 const { isEvent } = require("./isEvent")
 const { toEvent } = require("./toEvent")
+const { isParam } = require("./isParam")
 
 const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, data: { string, dblExecute, index: i = 0, splitter = "?" }, req, res, __, mount, condition, toView, object, action }) => {
 
@@ -35,7 +36,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         return data
     }
 
-    if (stack.terminated || stack.broke || stack.returned) return terminator({ data: { success: false, message: `Action terminated!`, executionDuration: 0 }, order: 0 })
+    if (stack.terminated || stack.broke || stack.blocked) return terminator({ data: { success: false, message: `Action terminated!`, executionDuration: 0 }, order: 0 })
     if (!string) return terminator({ data: { success: true, message: `No action to execute!`, executionDuration: 0 }, order: 1 })
 
     // encode
@@ -109,9 +110,15 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         if (!string) message = "No actions to execute!"
 
         if (!action) {
+
             action = "toValue"
             if (!dblExecute && (condition || isCondition({ _window, string: data }))) action = "toApproval"
             else if (!dblExecute && mount) action = "toParam"
+
+        } else if (action === "conditional") {
+
+            if (isParam({ _window, string })) action = "toParam"
+            else action = "toValue"
         }
         
         data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object, toView })
@@ -127,7 +134,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         // remove return address
         stack.returns.splice(stack.returns.findIndex(ret => ret.id === actionReturnID), 1)
 
-        return ({ success, message, data, conditionsNotApplied, executionDuration: (new Date()).getTime() - startTime })
+        return ({ success, message, data, action, conditionsNotApplied, executionDuration: (new Date()).getTime() - startTime })
     }
 
     var approved = require("./toApproval").toApproval({ _window, data: conditions || "", id, e, req, res, __, stack, lookupActions, object })

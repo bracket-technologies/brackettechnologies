@@ -1,10 +1,12 @@
 const { toCode } = require("./toCode")
-const { stacker, printStack } = require("./stack")
+const { stacker, endStack } = require("./stack")
 const { lineInterpreter } = require("./lineInterpreter")
 const { watch } = require("./watch")
 const { clone } = require("./clone")
+const { decode } = require("./decode")
+const { addresser } = require("./addresser")
 
-const addEventListener = ({ event, id, __, lookupActions, eventID: mainEventID }) => {
+const addEventListener = ({ event, id, __, stack, lookupActions, address, eventID: mainEventID }) => {
 
   var views = window.views
   var global = window.global
@@ -22,7 +24,7 @@ const addEventListener = ({ event, id, __, lookupActions, eventID: mainEventID }
     
     // decode
     if (substring.charAt(0) === "@" && substring.length === 6) substring = global.__refs__[substring].data
-
+    
     // event:id
     var { data: eventID } = lineInterpreter({ id, data: { string: substring.split("?")[0].split(":")[1] } })
     if (typeof eventID === "object" && eventID.__view__) eventID = eventID.id
@@ -30,15 +32,15 @@ const addEventListener = ({ event, id, __, lookupActions, eventID: mainEventID }
 
     // modify
     var { event, string } = modifyEvent({ eventID, event: substring, string: mainString })
-
+    
     // watch
-    if (event === "watch") return watch({ lookupActions, __, string, id })
+    if (event === "watch") return watch({ lookupActions, __, stack, address, string, id })
     
     // view doesnot exist
     if (!event || !views[eventID] || !views[id]) return
 
     // loaded event
-    if (event === "loaded") return setTimeout(eventExecuter({ string, event, eventID, id, lookupActions, __ }), 0)
+    if (event === "loaded") return setTimeout(eventExecuter({ string, event, eventID, id, address, stack, lookupActions, __ }), 0)
     
     //
     if (id !== eventID) {
@@ -47,34 +49,35 @@ const addEventListener = ({ event, id, __, lookupActions, eventID: mainEventID }
       global.__events__[id][event] = global.__events__[id][event] || []
       global.__events__[id][event].push({ string, event, eventID, id, lookupActions, __ })
       
-    } else views[eventID].__element__.addEventListener(event, (e) => eventExecuter({ string, event, eventID, id, lookupActions, __, e }))
+    } else views[eventID].__element__.addEventListener(event, (e) => eventExecuter({ string, event, eventID, id, stack, lookupActions, __, address, e }))
   })
 }
 
-const eventExecuter = ({ event, eventID, id, lookupActions, e, string, __ }) => {
+const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: headStack, address: headAddress, __ }) => {
 
   var views = window.views
   var global = window.global
 
   var view = views[id]
-    
+  
   // view doesnot exist
   if (!view || !views[eventID]) return
 
   var timerID = setTimeout(() => {
     
     // unlunch unrelated droplists
-    if (id !== "droplist" && eventID === "droplist" && (!global.__droplistPositioner__ || !views[global.__droplistPositioner__] || (views[global.__droplistPositioner__] && !views[global.__droplistPositioner__].__element__.contains(view.__element__)))) return
+    if (id !== "droplist" && eventID === "droplist" && (!global.__droplistPositioner__ || !views[global.__droplistPositioner__] || !views[global.__droplistPositioner__].__element__.contains(view.__element__))) return
     
-    var stack = stacker({ event, id, eventID, string })
+    // init stack
+    var stack = stacker({ event, id, eventID, string, headStack, headAddress })
+
+    // address line
+    var address = addresser({ stack, id, status: "Start", type: "LINE", event: "click", interpreting: true, lookupActions, __, headAddress: address }).address
 
     // main params
-    var data = lineInterpreter({ lookupActions, stack, id, e, data: {string, action: "toParam"}, __, mount: true })
-    
-    // line interpreting ended
-    stack.interpreting = false
+    var data = lineInterpreter({ lookupActions, stack, id, e, address, data: { string, action: "toParam" }, __, mount: true })
 
-    printStack({ stack, end: true })
+    endStack({ stack, end: true })
 
     // conditions not applied
     if (data.conditionsNotApplied) return data
@@ -127,7 +130,7 @@ const modifyEvent = ({ eventID, string, event }) => {
   var view = window.views[eventID]
   var subparams = event.split("?")[1] || ""
   var subconditions = event.split("?")[2] || ""
-  event = event.split(":")[0]
+  event = event.split("?")[0].split(":")[0]
 
   string = string.split("?").slice(1)
   var conditions = string[1] || ""

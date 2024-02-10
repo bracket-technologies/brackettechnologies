@@ -50,19 +50,19 @@ module.exports=[
  , "send()", "removeDuplicates()", "stopWatchers()", "getGeoLocation()", "display()", "hide()", "scrollTo()", "colorize()"
 ]
 },{}],3:[function(require,module,exports){
+const { clone } = require("./clone");
 const { generate } = require("./generate");
 const { lineInterpreter } = require("./lineInterpreter");
-//const { stacker } = require("./stack");
 
-const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", function: func, newLookupActions, headAddressID, headAddress = {}, blockable = true, interpretByValue = false, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, toView, lookupActions, condition }) => {
-
+const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", function: func, newLookupActions, headAddressID, headAddress = {}, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition }) => {
+    
     // find headAddress by headAddressID
     if (headAddressID && !headAddress.id) headAddress = stack.addresses.find(headAddress => headAddress.id === headAddressID)
 
     // address waits
-    if (args[2]) headAddress = addresser({ _window, stack, req, res, e, type: "line", action: action + "::[...]", data: { string: args[2] }, headAddress, blockable, interpretByValue, __, id, object, mount, toView, lookupActions, condition }).address
+    if (args[2]) headAddress = addresser({ _window, stack, req, res, e, type: "line", action: action + "::[...]", data: { string: args[2] }, headAddress, blockable, __, id, object, mount, lookupActions, condition }).address
 
-    var address = { id: generate(), viewID: id, type, data, status, file, function: func, hasWaits: args[2] ? true : false, headAddressID: headAddress.id, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
+    var address = { id: generate(), stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: args[2] ? true : false, headAddressID: headAddress.id, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
     var stackLength = stack.addresses.length
 
     // find and lock the head address
@@ -72,7 +72,7 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
         
         // headAddress is interpreting or renderer
         while (headAddressIndex < stackLength && (!stack.addresses[headAddressIndex].interpreting && !stack.addresses[headAddressIndex].renderer)) { headAddressIndex += 1 }
-
+        
         // there exist a head address
         if (headAddressIndex < stackLength) {
             
@@ -86,21 +86,21 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
     // set all head addresses asynchronous
     if (asynchronous) {
 
-        var headAddressID = address.headAddressID
+        var headAddressID = address.stackID === stack.id && address.headAddressID
         while (headAddressID) {
             
             var holdHeadAddress = stack.addresses.find(headAddress => headAddress.id === headAddressID)
             holdHeadAddress.hold = true
-            headAddressID = holdHeadAddress.headAddressID
+            headAddressID = holdHeadAddress.stackID === stack.id && holdHeadAddress.headAddressID
         }
     }
 
     // data
-    var { data, executionDuration } = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: { string: args[1] }, action: interpretByValue && "toValue" })
+    var { data, executionDuration, action: interpretAction } = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: { string: args[1] }, action: dataInterpretAction })
     address.paramsExecutionDuration = executionDuration
 
     // pass params
-    address.params = { __, id, object, mount, toView, action, lookupActions: newLookupActions || lookupActions, condition }
+    address.params = { __, id, object, mount, lookupActions: newLookupActions || lookupActions, condition }
 
     // push to stack
     stack.addresses.unshift(address)
@@ -110,15 +110,91 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
     // log
     if (!newLookupActions) stack.logs.push(`${stack.logs.length} ${address.status} ${type.toUpperCase()} ${address.id} ${address.index} ${address.action} => ${headAddress.id || ""} ${headAddress.index || 0} ${headAddress.action || ""}`)
 
-    return { address, data, __: [...(data !== undefined ? [data] : []), ...__] }
+    return { address, data, action: interpretAction, __: [...(data !== undefined ? [data] : []), ...__] }
+}
+
+const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }) => {
+    
+    const { toAwait } = require("./toAwait");
+    var global = _window ? _window.global : window.global
+
+    var executionDuration = (new Date()).getTime() - stack.executionStartTime
+            
+    data.success = data.success !== undefined ? data.success : true
+    data.message = data.message || data.msg || "Action ended successfully!"
+    data.executionDuration = executionDuration
+    delete data.msg
+
+    var starter = false, headAddressID = stack.interpretingAddressID, currentStackID = stack.id
+    var address = stack.addresses.find(address => address.id === headAddressID)
+
+    var endStarterAddress = ({ address, stack }) => {
+        
+        address.starter = false
+
+        // get start headAddress to push data to its underscores
+        var starterHeadAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID)
+        if (starterHeadAddress) {
+
+            // start again from the current interpreting address to reach headAddress to set blocked
+            var stack = global.__stacks__[currentStackID]
+            headAddressID = stack.interpretingAddressID
+
+            while (headAddressID && headAddressID !== starterHeadAddress.id) {
+
+                blockedAddress = stack.addresses.find(address => address.id === headAddressID)
+                blockedAddress.blocked = true
+                headAddressID = blockedAddress.headAddressID
+
+                stack.blocked = true
+
+                // address coming from different stack
+                if (blockedAddress.stackID !== stack.id) stack = global.__stacks__[blockedAddress.stackID]
+            }
+
+            toAwait({ req, res, _window, lookupActions, stack, address, id, e, __, _: data })
+        }
+    }
+
+    if (data.id) {
+
+        if (!global.__startAddresses__[data.id]) return
+        var stack = global.__stacks__[global.__startAddresses__[data.id].address.stackID]
+        var address = global.__startAddresses__[data.id].address
+
+        delete data.id
+        delete global.__startAddresses__[data.id]
+
+        endStarterAddress({ address, stack })
+
+    } else {
+
+        while (!starter && headAddressID && stack) {
+
+            // start from self address (by interpretingAddressID) to reach the start head address
+            var address = stack.addresses.find(address => address.id === headAddressID)
+            
+            if (address.starter) {
+
+                starter = true
+                endStarterAddress({ address, stack })
+            }
+
+            // move to head address
+            headAddressID = address.headAddressID
+
+            // reached index 0 address => check stack if it has headAddress
+            if (address.stackID !== stack.id) stack = global.__stacks__[address.stackID]
+        }
+    }
 }
 
 const printAddress = ({ stack, address, headAddress }) => {
     stack.logs.push(`${stack.logs.length} ${address.status}${address.status === "End" ? (" (" + ((new Date()).getTime() - address.executionStartTime) + ") ") : " "}${address.type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action} => ${headAddress.id || ""} ${headAddress.index || 0} ${headAddress.action || ""}`)
 }
 
-module.exports = { addresser, printAddress }
-},{"./generate":24,"./lineInterpreter":41}],4:[function(require,module,exports){
+module.exports = { addresser, printAddress, endAddress }
+},{"./clone":5,"./generate":25,"./lineInterpreter":41,"./toAwait":64}],4:[function(require,module,exports){
 const capitalize = (string, minimize) => {
   if (typeof string !== "string") return string
 
@@ -843,7 +919,7 @@ module.exports = {
   deletedb,
   deleteData
 }
-},{"./generate":24,"./lineInterpreter":41,"./toArray":63,"./toCode":67,"./toFirebaseOperator":71,"axios":92}],14:[function(require,module,exports){
+},{"./generate":25,"./lineInterpreter":41,"./toArray":63,"./toCode":67,"./toFirebaseOperator":71,"axios":92}],14:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   var global = _window ? _window.global : window.global
@@ -1075,7 +1151,7 @@ const defaultInputHandler = ({ id }) => {
   }
 
   if ((view.input || view).type === "number")
-  view.__element__.addEventListener("mousewheel", (e) => e.target.blur())
+    view.__element__.addEventListener("mousewheel", (e) => e.target.blur())
 
   // readonly
   if (view.readonly) return
@@ -1085,29 +1161,29 @@ const defaultInputHandler = ({ id }) => {
   })*/
 
   if (view.__name__ === "Input") view.prevValue = view.__element__.value
-  else if (view.editable) view.prevValue = (view.__element__.textContent===undefined) ? view.__element__.innerText : view.__element__.textContent
-  
+  else if (view.editable) view.prevValue = (view.__element__.textContent === undefined) ? view.__element__.innerText : view.__element__.textContent
+
   var inputEventHandler = async (e) => {
-    
+
     e.preventDefault()
 
-    var value 
+    var value
     if (view.__name__ === "Input") value = e.target.value
-    else if (view.editable) value = (e.target.textContent===undefined) ? e.target.innerText : e.target.textContent
+    else if (view.editable) value = (e.target.textContent === undefined) ? e.target.innerText : e.target.textContent
 
     // views[id] doesnot exist
     if (!window.views[id]) {
       if (e.target) e.target.removeEventListener("input", myFn)
-      return 
+      return
     }
 
     // contentfull
     if ((view.input || view).type === "text") {
 
-      value = replaceNbsps(value.replace('&amp;','&'))
+      value = replaceNbsps(value.replace('&amp;', '&'))
       e.target.value = value
     }
-      
+
     if (view.__name__ === "Input") {
 
       if (view.input.type === "number") {
@@ -1124,12 +1200,6 @@ const defaultInputHandler = ({ id }) => {
 
         } else value = parseFloat(value + ".0")
       }
-
-      // for uploads
-      if (view.input.type === "file") {
-        global.file = e.target.files[0]
-        return global.files = [...e.target.files]
-      }
     }
 
     if (view.doc) setData({ id, data: { value }, __: view.__ })
@@ -1139,7 +1209,7 @@ const defaultInputHandler = ({ id }) => {
 
     // arabic values
     // isArabic({ id, value })
-    
+
     console.log(value, global[view.doc], view.__dataPath__)
 
     view.prevValue = value
@@ -1149,15 +1219,15 @@ const defaultInputHandler = ({ id }) => {
 
     var value
     if (view.__name__ === "Input") value = view.__element__.value
-    else if (view.editable) value = (view.__element__.textContent===undefined) ? view.__element__.innerText : view.__element__.textContent
-    
+    else if (view.editable) value = (view.__element__.textContent === undefined) ? view.__element__.innerText : view.__element__.textContent
+
     // colorize
     if (view.colorize) {
-      
+
       var _value = toCode({ id, string: toCode({ id, string: value, start: "'" }) })
       if (view.__name__ === "Input") e.target.value = colorize({ string: _value, ...(typeof view.colorize === "object" ? view.colorize : {}) })
       else e.target.innerHTML = colorize({ string: _value, ...(typeof view.colorize === "object" ? view.colorize : {}) })
-      
+
       /*
       var sel = window.getSelection()
       var selected_node = sel.anchorNode
@@ -1183,17 +1253,24 @@ const defaultInputHandler = ({ id }) => {
   }
 
   var focusEventHandler = (e) => {
-    
+
     var value = ""
     if (view.__name__ === "Input") value = view.__element__.value
-    else if (view.editable) value = (view.__element__.textContent===undefined) ? view.__element__.innerText : view.__element__.textContent
+    else if (view.editable) value = (view.__element__.textContent === undefined) ? view.__element__.innerText : view.__element__.textContent
 
     view.prevContent = value
   }
 
-  view.__element__.addEventListener("input", inputEventHandler)
+  var fileEventHandler = (e) => {
+
+    view.__file__ = e.target.files[0]
+    return view.__files__ = [...e.target.files]
+  }
+
+  (view.input ? view.input.type !== "file" : true) && view.__element__.addEventListener("input", inputEventHandler)
   view.__element__.addEventListener("blur", blurEventHandler)
   view.__element__.addEventListener("focus", focusEventHandler)
+  view.input && view.input.type === "file" && view.__element__.addEventListener("change", fileEventHandler)
 }
 
 const getCaretIndex = (element) => {
@@ -1289,7 +1366,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   // input id
   var { data: inputID } = lineInterpreter({ id, data: { string: "input().id||().id" } })
   var text = views[inputID].__element__.value || views[inputID].__element__.innerHTML
-  
+
   // items
   if (typeof items === "string") items = lineInterpreter({ id, data: { string: items }, lookupActions, __: view.__ }).data
 
@@ -1458,12 +1535,14 @@ const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase
 module.exports = { erase }
 },{"./database":13,"./jsonToBracket":38,"./toAwait":64,"axios":92}],19:[function(require,module,exports){
 const { toCode } = require("./toCode")
-const { stacker, printStack } = require("./stack")
+const { stacker, endStack } = require("./stack")
 const { lineInterpreter } = require("./lineInterpreter")
 const { watch } = require("./watch")
 const { clone } = require("./clone")
+const { decode } = require("./decode")
+const { addresser } = require("./addresser")
 
-const addEventListener = ({ event, id, __, lookupActions, eventID: mainEventID }) => {
+const addEventListener = ({ event, id, __, stack, lookupActions, address, eventID: mainEventID }) => {
 
   var views = window.views
   var global = window.global
@@ -1481,7 +1560,7 @@ const addEventListener = ({ event, id, __, lookupActions, eventID: mainEventID }
     
     // decode
     if (substring.charAt(0) === "@" && substring.length === 6) substring = global.__refs__[substring].data
-
+    
     // event:id
     var { data: eventID } = lineInterpreter({ id, data: { string: substring.split("?")[0].split(":")[1] } })
     if (typeof eventID === "object" && eventID.__view__) eventID = eventID.id
@@ -1489,15 +1568,15 @@ const addEventListener = ({ event, id, __, lookupActions, eventID: mainEventID }
 
     // modify
     var { event, string } = modifyEvent({ eventID, event: substring, string: mainString })
-
+    
     // watch
-    if (event === "watch") return watch({ lookupActions, __, string, id })
+    if (event === "watch") return watch({ lookupActions, __, stack, address, string, id })
     
     // view doesnot exist
     if (!event || !views[eventID] || !views[id]) return
 
     // loaded event
-    if (event === "loaded") return setTimeout(eventExecuter({ string, event, eventID, id, lookupActions, __ }), 0)
+    if (event === "loaded") return setTimeout(eventExecuter({ string, event, eventID, id, address, stack, lookupActions, __ }), 0)
     
     //
     if (id !== eventID) {
@@ -1506,34 +1585,35 @@ const addEventListener = ({ event, id, __, lookupActions, eventID: mainEventID }
       global.__events__[id][event] = global.__events__[id][event] || []
       global.__events__[id][event].push({ string, event, eventID, id, lookupActions, __ })
       
-    } else views[eventID].__element__.addEventListener(event, (e) => eventExecuter({ string, event, eventID, id, lookupActions, __, e }))
+    } else views[eventID].__element__.addEventListener(event, (e) => eventExecuter({ string, event, eventID, id, stack, lookupActions, __, address, e }))
   })
 }
 
-const eventExecuter = ({ event, eventID, id, lookupActions, e, string, __ }) => {
+const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: headStack, address: headAddress, __ }) => {
 
   var views = window.views
   var global = window.global
 
   var view = views[id]
-    
+  
   // view doesnot exist
   if (!view || !views[eventID]) return
 
   var timerID = setTimeout(() => {
     
     // unlunch unrelated droplists
-    if (id !== "droplist" && eventID === "droplist" && (!global.__droplistPositioner__ || !views[global.__droplistPositioner__] || (views[global.__droplistPositioner__] && !views[global.__droplistPositioner__].__element__.contains(view.__element__)))) return
+    if (id !== "droplist" && eventID === "droplist" && (!global.__droplistPositioner__ || !views[global.__droplistPositioner__] || !views[global.__droplistPositioner__].__element__.contains(view.__element__))) return
     
-    var stack = stacker({ event, id, eventID, string })
+    // init stack
+    var stack = stacker({ event, id, eventID, string, headStack, headAddress })
+
+    // address line
+    var address = addresser({ stack, id, status: "Start", type: "LINE", event: "click", interpreting: true, lookupActions, __, headAddress: address }).address
 
     // main params
-    var data = lineInterpreter({ lookupActions, stack, id, e, data: {string, action: "toParam"}, __, mount: true })
-    
-    // line interpreting ended
-    stack.interpreting = false
+    var data = lineInterpreter({ lookupActions, stack, id, e, address, data: { string, action: "toParam" }, __, mount: true })
 
-    printStack({ stack, end: true })
+    endStack({ stack, end: true })
 
     // conditions not applied
     if (data.conditionsNotApplied) return data
@@ -1586,7 +1666,7 @@ const modifyEvent = ({ eventID, string, event }) => {
   var view = window.views[eventID]
   var subparams = event.split("?")[1] || ""
   var subconditions = event.split("?")[2] || ""
-  event = event.split(":")[0]
+  event = event.split("?")[0].split(":")[0]
 
   string = string.split("?").slice(1)
   var conditions = string[1] || ""
@@ -1617,7 +1697,7 @@ const modifyEvent = ({ eventID, string, event }) => {
 
 module.exports = { addEventListener, defaultEventHandler, eventExecuter }
 
-},{"./clone":5,"./lineInterpreter":41,"./stack":58,"./toCode":67,"./watch":84}],20:[function(require,module,exports){
+},{"./addresser":3,"./clone":5,"./decode":14,"./lineInterpreter":41,"./stack":58,"./toCode":67,"./watch":84}],20:[function(require,module,exports){
 module.exports=[
   "mouseenter", "mouseleave",  "mouseover", "mousemove", "mousedown", "mouseup", "touchstart", 
   "touchend", "touchmove", "touchcancel", "click", "change", "focus", "blur", "keypress", "keyup", 
@@ -1651,6 +1731,76 @@ module.exports = {
     }
 }
 },{}],23:[function(require,module,exports){
+(function (global){(function (){
+const { toArray } = require("./toArray")
+const { toAwait } = require("./toAwait")
+
+module.exports = {
+    fileReader: ({ req, res, _window, lookupActions, stack, address, id, e, __, data }) => {
+
+        // files to read
+        data.files = (data.file ? toArray(data.file) : data.files) || []
+
+        // read type
+        var type = data.type
+        if (!type && data.url) type = "url"
+        else if (!type && data.json) type = "json"
+        else if (!type && data.text) type = "text"
+        else if (!type && data.buffer) type = "buffer"
+        else if (!type && data.binary) type = "binary"
+        else if (!type) type = "url"
+
+        // init
+        global.__fileReader__ = {
+            files: [],
+            length: data.files.length,
+            count: 0
+        };
+
+        ([...data.files]).map(file => {
+
+            var reader = new FileReader()
+            reader.onload = (e) => {
+
+                global.__fileReader__.count++;
+
+                global.__fileReader__.files.push({
+                    type: file.type,
+                    lastModified: file.lastModified,
+                    name: file.name,
+                    size: file.size,
+                    url: e.target.result,
+                    data: e.target.result
+                })
+
+                if (global.__fileReader__.count === global.__fileReader__.length) {
+
+                    var files = global.__fileReader__.files
+
+                    // parse JSON
+                    if (type === "json") files.map(file => file.data = JSON.parse(file.data))
+
+                    var data = { success: true, message: "File read successfully!", data: files.length === 1 ? files[0] : files }
+
+                    toAwait({ req, res, _window, lookupActions, stack, address, id, e, __, _: data })
+                }
+            }
+
+            try {
+
+                if (type === "url") reader.readAsDataURL(file)
+                else if (type === "text" || type === "json") reader.readAsText(file)
+                else if (type === "binary") reader.readAsBinaryString(file)
+                else if (type === "buffer") reader.readAsArrayBuffer(file)
+
+            } catch (er) {
+                document.getElementById("loader-container").style.display = "none"
+            }
+        })
+    }
+}
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"./toArray":63,"./toAwait":64}],24:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var view = window.views[id]
@@ -1686,7 +1836,7 @@ const focus = ({ id }) => {
 
 module.exports = {focus}
 
-},{}],24:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 const numbers = "1234567890"
 
@@ -1707,7 +1857,7 @@ const generate = (params = {}) => {
 
 module.exports = {generate}
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = ({ el, id }) => {
   var view = window.views[id]
   el = el || view.__element__
@@ -1733,7 +1883,7 @@ module.exports = ({ el, id }) => {
 
   return { top: Math.round(top), left: Math.round(left), right: Math.round(right), bottom: Math.round(bottom), height: Math.round(height), width: Math.round(width) };
 }
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 module.exports = {
     getDateTime: (time, format) => {
         
@@ -1754,13 +1904,13 @@ module.exports = {
         return format === "yyyy-mm-ddThh-mm-ss" && `${year}-${month}-${day}T${hrs}:${min}:${sec}`
     }
 }
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 module.exports = {
     getDaysInMonth: (stampTime) => {
         return new Date(stampTime.getFullYear(), stampTime.getMonth() + 1, 0).getDate()
     }
 }
-},{}],28:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 const getType = (value) => {
   const { emptySpaces, isNumber } = require("./toValue")
 
@@ -1781,104 +1931,65 @@ const getType = (value) => {
   if (typeof value === "string") return "string"
 }
 module.exports = { getType }
-},{"./toValue":78}],29:[function(require,module,exports){
+},{"./toValue":78}],30:[function(require,module,exports){
 const nthParent = ({ _window, nth, o }) => {
 
-    if (!o.__view__) return o
-    var views = _window ? _window.views : window.views
-      
-    var n = 0, parent = o.id
-    while (n < nth) {
-      if (views[parent]) parent = views[parent].__parent__
-      n++
-    }
-    
-    return views[parent]
+  if (!o.__view__) return o
+  var views = _window ? _window.views : window.views
+
+  var n = 0, parent = o.id
+  while (n < nth) {
+    if (views[parent]) parent = views[parent].__parent__
+    n++
+  }
+
+  return views[parent]
 }
 
 const nthNext = ({ _window, nth, o }) => {
 
-    if (!o.__view__) return o
-    var views = _window ? _window.views : window.views
-      
-    var n = 0, next = o.id
-    while (n < nth) {
-      if (views[next]) next = (views[views[next].__parent__].__childrenRef__[views[next].__index__ + 1] || {}).id
-      n++
-    }
-    
-    return views[next]
+  if (!o.__view__) return o
+  var views = _window ? _window.views : window.views
+
+  var n = 0, next = o.id
+  while (n < nth) {
+    if (views[next]) next = (views[views[next].__parent__].__childrenRef__[views[next].__index__ + 1] || {}).id
+    n++
+  }
+
+  return views[next]
 }
 
 const nthPrev = ({ _window, nth, o }) => {
 
-    if (!o.__view__) return o
-    var views = _window ? _window.views : window.views
-      
-    var n = 0, prev = o.id
-    while (n < nth) {
-      if (views[prev]) prev = (views[views[prev].__parent__].__childrenRef__[views[prev].__index__ - 1] || {}).id
-      n++
-    }
-    
-    return views[prev]
+  if (!o.__view__) return o
+  var views = _window ? _window.views : window.views
+
+  var n = 0, prev = o.id
+  while (n < nth) {
+    if (views[prev]) prev = (views[views[prev].__parent__].__childrenRef__[views[prev].__index__ - 1] || {}).id
+    n++
+  }
+
+  return views[prev]
 }
 
 const getAllParents = ({ _window, id }) => {
 
-    var views = _window ? _window.views : window.views
-    var view = views[id]
-    if (!view.__parent__) return []
+  var views = _window ? _window.views : window.views
+  var view = views[id]
+  if (!view.__parent__) return []
 
-    var parentId = view.__parent__
-    var all = [views[parentId]]
-    
-    all.push(...getAllParents({ _window, id: parentId }))
+  var parentId = view.__parent__
+  var all = [views[parentId]]
 
-    return all
+  all.push(...getAllParents({ _window, id: parentId }))
+
+  return all
 }
 
 module.exports = { nthParent, getAllParents, nthNext, nthPrev }
-},{}],30:[function(require,module,exports){
-const { clone } = require("./clone")
-
-const getJson = (url) => {
-
-    var Httpreq = new XMLHttpRequest()
-    Httpreq.open("GET", url, false)
-    Httpreq.send(null)
-    return Httpreq.responseText
-}
-
-const importFile = ({ _window, id, e, __, address, ...params }) => {
-
-    var inputEl = document.createElement('input')
-    inputEl.style.position = "absolute"
-    inputEl.style.top = "-1000px"
-    inputEl.style.left = "-1000px"
-    inputEl.type = "file"
-    inputEl.accept = "application/JSON"
-    document.body.appendChild(inputEl)
-
-    /*inputEl.addEventListener("change", (event) => {
-
-        var reader = new FileReader()
-        reader.onload = (e) => {
-
-            var data = { data: e.target.result, success: true, message: "Data imported successfully!", file: [...event.target.files][0], files: [...event.target.files] }
-            if (params.data.type === "json") data.data = JSON.parse(data.data)
-
-            require("./toAwait").toAwait({ _window, id, e, address, ...params, __, _: data })
-        }
-
-        reader.readAsText(event.target.files[0])
-    })*/
-
-    inputEl.click()
-}
-
-module.exports = { importFile, getJson }
-},{"./clone":5}],31:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 const { clone } = require("./clone")
 const { decode } = require("./decode")
 const { generate } = require("./generate")
@@ -1980,7 +2091,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 }
 
 module.exports = { insert }
-},{"./clone":5,"./decode":14,"./generate":24,"./kernel":39,"./remove":48,"./toCode":67,"./toValue":78,"./update":80}],32:[function(require,module,exports){
+},{"./clone":5,"./decode":14,"./generate":25,"./kernel":39,"./remove":48,"./toCode":67,"./toValue":78,"./update":80}],32:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -2239,7 +2350,6 @@ const { getDateTime } = require("./getDateTime")
 const { getDaysInMonth } = require("./getDaysInMonth")
 const { getType } = require("./getType")
 const { exportJson } = require("./exportJson")
-const { importFile } = require("./importJson")
 const { setCookie, getCookie, eraseCookie } = require("./cookie")
 const { focus } = require("./focus")
 const { toSimplifiedDate } = require("./toSimplifiedDate")
@@ -2249,7 +2359,7 @@ const { isParam } = require("./isParam")
 const { lengthConverter } = require("./resize")
 const { qr } = require("./qr")
 const { replaceNbsps } = require("./replaceNbsps")
-const { addresser } = require("./addresser")
+const { addresser, endAddress } = require("./addresser")
 const { vcard } = require("./vcard")
 const { lineInterpreter } = require("./lineInterpreter")
 const { colorize } = require("./colorize")
@@ -2260,8 +2370,9 @@ const events = require("./events.json")
 const { decode } = require("./decode")
 const { toAwait } = require("./toAwait")
 const { searchParams } = require("./searchParams")
+const { fileReader } = require("./fileReader")
 
-const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data: _object, path, pathJoined, value, key, object } }) => {
+const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: _object, path, pathJoined, value, key, object } }) => {
 
     const { toValue, isNumber } = require("./toValue")
     const { toParam } = require("./toParam")
@@ -2663,7 +2774,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
         } else if (k0 === "qr()") {
 
             // wait address
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "qr()", object, toView, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "qr()", object, lookupActions, __, id })
 
             qr({ _window, id, req, res, data, e, __, stack, address, lookupActions })
 
@@ -2887,7 +2998,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             var timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })) : 0
             var repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object })) : false
-            var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object, toView }) }
+            var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object }) }
 
             if (typeof repeats === "boolean") {
 
@@ -4051,16 +4162,6 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             else if (data.type === "excel") require("./toExcel").toExcel(data)
             else if (data.type === "pdf") require("./toPdf").toPdf(data)
 
-        } else if (k0 === "import()") {
-
-            var address = addresser({ _window, stack, args, status: "Start", action: "import()", object, lookupActions, __, id })
-            var { address, data } = address
-            
-            if (data.json) data.type = "json"
-            importFile({ req, res, _window, lookupActions, stack, address, id, e, __, data })
-
-            return true
-
         } else if (k0 === "flat()") {
 
             if (typeof o === "object") {
@@ -4143,12 +4244,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             if (args[1] && underScored) {
 
-                toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object, value }, __: [o, ...__], e, toView }))
+                toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object, value }, __: [o, ...__], e }))
                 answer = o
 
             } else if (args[1]) {
 
-                answer = toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object: o, value }, __, e, toView }))
+                answer = toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object: o, value }, __, e }))
             
             } else if (args[2] && underScored) {
 
@@ -4182,7 +4283,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "html2pdf()") {
 
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, status: "Start", action: "html2pdf()", object, toView, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, status: "Start", action: "html2pdf()", object, lookupActions, __, id })
 
             var options = {
                 margin: .25,
@@ -4418,8 +4519,10 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             answer = o.__element__
 
         } else if (k0 === "index()") {
-
-            answer = o.__index__
+            
+            if (!o.__indexed__ && o.__loop__) answer = o.__loopIndex__
+            else if (!o.__indexed__) answer = o.__childIndex__
+            else answer = o.__index__
 
         } else if (k0 === "checked()") {
 
@@ -4586,7 +4689,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             if (!o.__view__) return
             
-            var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "render", interpreting: true, renderer: true, id: o.id, action: "view()", object, toView, lookupActions, __, id })
+            var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "render", interpreting: true, renderer: true, id: o.id, action: "view()", object, lookupActions, __, id })
             data.view = data.view || o
             
             require("./toView").toView({ _window, id: o.id, e, __, stack, address, lookupActions, data, req, res })
@@ -4599,12 +4702,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "droplist()") {
 
-            var { address, data } = addresser({ _window, stack, args, id: o.id, status: "Start", action: "droplist()", object, toView, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, id: o.id, status: "Start", action: "droplist()", object, lookupActions, __, id })
             require("./droplist").droplist({ id, e, data, __, stack, lookupActions, address })
 
         } else if (k0 === "route()") {
 
-            var { address, data } = addresser({ _window, stack, args, status: "Start", type: "action", interpretByValue: true, blockable: false, renderer: true, id: o.id, action: "route()", object, toView, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id: o.id, action: "route()", object, lookupActions, __, id })
             if (typeof data === "string") data = { page: data }
             require("./route").route({ _window, lookupActions, stack, address, id, req, res, route: data, __ })
 
@@ -4612,7 +4715,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             if (!o.__view__) return o
 
-            var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "action", interpretByValue: true, renderer: true, blockable: false, id: o.id, action: "update()", object, toView, lookupActions, __, id })
+            var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "action", dataInterpretAction: "toValue", renderer: true, blockable: false, id: o.id, action: "update()", object, lookupActions, __, id })
             require("./update").update({ _window, lookupActions, stack, req, res, id, address, __, data: { id: data.id || o.id, ...data } })
 
         } else if (k0 === "insert()") {
@@ -4620,7 +4723,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             if (!o.__view__) return o
 
             // wait address
-            var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "action", renderer: true, id: o.id, action: "insert()", toView, lookupActions, __, id })
+            var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "action", renderer: true, id: o.id, action: "insert()", lookupActions, __, id })
             if (data.__view__) data = { view: data }
             data.parent = o.id
 
@@ -4628,7 +4731,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "confirmEmail()") {
 
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "confirmEmail()", object, toView, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "confirmEmail()", object, lookupActions, __, id })
             data.store = "confirmEmail"
             require("./save").save({ id, lookupActions, stack, address, e, __, save: data })
 
@@ -4637,144 +4740,70 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             if (!o.__view__) return o
 
             // wait address
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "mail()", object, toView, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "mail()", object, lookupActions, __, id })
 
             require("./mail").mail({ req, res, _window, lookupActions, stack, address, id, e, __, data })
             return true
 
         } else if (k0 === "print()") {
 
+        } else if (k0 === "file()") {
+
+            return o.__file__
+
+        } else if (k0 === "files()") {
+
+            return o.__files__
+
         } else if (k0 === "read()") {
 
-            var data = {}
-            if (isParam({ _window, string: args[1] }))
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            else data.file = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            // wait address
+            var { address, data, action } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "mail()", object, lookupActions, __, id, dataInterpretAction: "conditional" })
+            
+            if (!data) return
+            if (action === "toValue") data.file = data
 
-            data.files = (data.file ? toArray(data.file) : data.files) || []
-
-            //data.files = [...data.files]
-            global.fileReader = []
-            var __key = generate()
-            global.__COUNTER__ = global.__COUNTER__ || {}
-            global.__COUNTER__[__key] = {
-                length: data.files.length,
-                count: 0
-            };
-
-            ([...data.files]).map(file => {
-
-                var reader = new FileReader()
-                reader.onload = (e) => {
-
-                    global.__COUNTER__[__key].count++;
-                    global.fileReader.push({
-                        type: file.type,
-                        lastModified: file.lastModified,
-                        name: file.name,
-                        size: file.size,
-                        url: e.target.result
-                    })
-
-                    if (global.__COUNTER__[__key].count === global.__COUNTER__[__key].length) {
-
-                        global.file = global.fileReader[0]
-                        global.files = global.fileReader
-                        console.log(global.files, global.file);
-                        var my_ = { success: true, data: global.files.length === 1 ? global.files[0] : global.files }
-                        toParam({ req, res, _window, lookupActions, stack, id, e, __: [my_, ...__], data: args[2] })
-                    }
-                }
-
-                try {
-                    reader.readAsDataURL(file)
-                } catch (er) {
-                    document.getElementById("loader-container").style.display = "none"
-                }
-            })
+            fileReader({ req, res, _window, lookupActions, stack, address, id, e, __, data })
 
         } else if (k0 === "upload()") {
 
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "upload()", object, toView, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "upload()", object, lookupActions, __, id })
             require("./upload")({ _window, lookupActions, stack, address, req, res, id, e, upload: data, __ })
                 
         } else if (k0 === "search()") {
 
-            var { address, data } = addresser({ _window, stack, args, req, res, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "search()", object, toView, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, req, res, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "search()", object, lookupActions, __, id })
             // var data = searchParams({ _window, lookupActions, stack, address, id, e, __, req, res, string: args[1], object })
             require("./search").search({ _window, lookupActions, stack, address, id, e, __, req, res, data })
             return true
 
         } else if (k0 === "erase()") {
 
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "erase()", object, toView, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "erase()", object, lookupActions, __, id })
             require("./erase").erase({ _window, lookupActions, stack, address, id, e, __, req, res, erase: data })
             return true
 
         } else if (k0 === "save()") {
 
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "save()", object, toView, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "save()", object, lookupActions, __, id })
             require("./save").save({ _window, lookupActions, stack, address, id, e, __, req, res, save: data })
             return true
 
         } else if (k0 === "start()") {
 
-            stack.addresses.find(address => address.id === stack.interpretingAddressID).start = true
+            var address = stack.addresses.find(address => address.id === stack.interpretingAddressID)
+            address.starter = true
+            var startID = generate()
+            global.__startAddresses__[startID] = { id: startID, address }
+
+            stack.logs.push(`${stack.logs.length} Starter STACK ${stack.id} ${stack.event.toUpperCase()} ${stack.string}`)
+
+            return startID
 
         } else if (k0 === "end()") {
 
-            var executionDuration = (new Date()).getTime() - stack.executionStartTime, response
-
-            if (isParam({ _window, string: args[1] })) {
-
-                response = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                response.success = response.success !== undefined ? response.success : true
-                response.message = response.message || response.msg || "Action executed successfully!"
-                response.executionDuration = executionDuration
-                delete response.msg
-
-            } else {
-
-                var data = toValue({ req, res, _window, lookupActions, id, e, __, data: args[1] })
-                response = { success: true, message: "Action executed successfully!", data, executionDuration }
-            }
-
-            var start = false, headAddressID = stack.interpretingAddressID
-            var address = stack.addresses.find(address => address.id === headAddressID)
-            if (!address) headAddressID = (stack.addresses.find(address => address.interpreting) || {}).id
-
-            while (!start && headAddressID) {
-
-                // start from self address (by interpretingAddressID) to reach the start head address
-                var address = stack.addresses.find(address => address.id === headAddressID)
-                
-                if (address.start) {
-
-                    start = true
-
-                    // get start headAddress to push response to its underscores
-                    var headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID)
-                    if (headAddress) {
-
-                        // push response to underscores
-                        address.params.__ = [response, ...address.params.__]
-
-                        // block self address and headAddresses
-                        headAddressID = stack.interpretingAddressID
-
-                        while (headAddressID !== headAddress.id) {
-
-                            address = stack.addresses.find(address => address.id === headAddressID)
-                            address.blocked = true
-                            headAddressID = address.headAddressID
-                        }
-                        
-                    }
-                }
-
-                // move to head address
-                headAddressID = address.headAddressID
-            }
+            var { data = {} } = lineInterpreter({ req, res, _window, lookupActions, stack, id, e, __, data: { string: args[1] }, action: "toParam" })
+            endAddress({ req, res, _window, lookupActions, stack, id, e, __, data })
 
         } else if (k0 === "send()") {
 
@@ -4875,9 +4904,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             if (k0.charAt(0) === "@" && k0.length == 6) k0 = toValue({ req, res, _window, id, e, __, data: k0, object })
 
             if (underScored) {
-                answer = toAction({ _window, lookupActions, stack, id, req, res, __: [o, ...__], e, data: { action: k }, condition, toView, object })
+                answer = toAction({ _window, lookupActions, stack, id, req, res, __: [o, ...__], e, data: { action: k }, condition, object })
             } else {
-                answer = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: k }, condition, toView, object: object || o })
+                answer = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: k }, condition, object: object || o })
             }
 
         } else if (k.includes(":@")) {
@@ -5055,7 +5084,7 @@ var formatter = new Intl.NumberFormat('en-US', {
 })
 
 module.exports = { kernel, getDeepChildren, getDeepChildrenId }
-},{"./addresser":3,"./capitalize":4,"./clone":5,"./colorize":7,"./cookie":8,"./counter":9,"./csvToJson":11,"./decode":14,"./droplist":17,"./erase":18,"./event":19,"./events.json":20,"./exportJson":22,"./focus":23,"./generate":24,"./getCoords":25,"./getDateTime":26,"./getDaysInMonth":27,"./getType":28,"./getView":29,"./importJson":30,"./insert":31,"./isEqual":35,"./isParam":37,"./jsonToBracket":38,"./lineInterpreter":41,"./mail":42,"./merge":43,"./note":44,"./qr":45,"./reducer":47,"./remove":48,"./replaceNbsps":49,"./resize":50,"./route":51,"./save":52,"./search":53,"./searchParams":54,"./setPosition":56,"./sort":57,"./toAction":61,"./toApproval":62,"./toArray":63,"./toAwait":64,"./toCSV":65,"./toClock":66,"./toExcel":70,"./toHTML":72,"./toNumber":73,"./toParam":74,"./toPdf":75,"./toSimplifiedDate":76,"./toValue":78,"./toView":79,"./update":80,"./upload":81,"./vcard":82}],40:[function(require,module,exports){
+},{"./addresser":3,"./capitalize":4,"./clone":5,"./colorize":7,"./cookie":8,"./counter":9,"./csvToJson":11,"./decode":14,"./droplist":17,"./erase":18,"./event":19,"./events.json":20,"./exportJson":22,"./fileReader":23,"./focus":24,"./generate":25,"./getCoords":26,"./getDateTime":27,"./getDaysInMonth":28,"./getType":29,"./getView":30,"./insert":31,"./isEqual":35,"./isParam":37,"./jsonToBracket":38,"./lineInterpreter":41,"./mail":42,"./merge":43,"./note":44,"./qr":45,"./reducer":47,"./remove":48,"./replaceNbsps":49,"./resize":50,"./route":51,"./save":52,"./search":53,"./searchParams":54,"./setPosition":56,"./sort":57,"./toAction":61,"./toApproval":62,"./toArray":63,"./toAwait":64,"./toCSV":65,"./toClock":66,"./toExcel":70,"./toHTML":72,"./toNumber":73,"./toParam":74,"./toPdf":75,"./toSimplifiedDate":76,"./toValue":78,"./toView":79,"./update":80,"./upload":81,"./vcard":82}],40:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toStyle } = require("./toStyle")
 
@@ -5088,7 +5117,7 @@ module.exports = {
     return `<div ${containerAtts} ${container.draggable !== undefined ? `draggable='${container.draggable}'` : ''} spellcheck='false' ${container.editable && !container.readonly ? 'contenteditable' : ''} class='${container.class}' id='${containerId}' style='${containerStyle}' index='${container.__index__ || 0}'>${labelTag}${tag}</div>`
   }
 }
-},{"./generate":24,"./toStyle":77}],41:[function(require,module,exports){
+},{"./generate":25,"./toStyle":77}],41:[function(require,module,exports){
 const { toCode } = require("./toCode")
 const { generate } = require("./generate")
 const { isCondition } = require("./isCondition")
@@ -5096,6 +5125,7 @@ const { executable } = require("./executable")
 const { clone } = require("./clone")
 const { isEvent } = require("./isEvent")
 const { toEvent } = require("./toEvent")
+const { isParam } = require("./isParam")
 
 const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, data: { string, dblExecute, index: i = 0, splitter = "?" }, req, res, __, mount, condition, toView, object, action }) => {
 
@@ -5126,7 +5156,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         return data
     }
 
-    if (stack.terminated || stack.broke || stack.returned) return terminator({ data: { success: false, message: `Action terminated!`, executionDuration: 0 }, order: 0 })
+    if (stack.terminated || stack.broke || stack.blocked) return terminator({ data: { success: false, message: `Action terminated!`, executionDuration: 0 }, order: 0 })
     if (!string) return terminator({ data: { success: true, message: `No action to execute!`, executionDuration: 0 }, order: 1 })
 
     // encode
@@ -5200,9 +5230,15 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         if (!string) message = "No actions to execute!"
 
         if (!action) {
+
             action = "toValue"
             if (!dblExecute && (condition || isCondition({ _window, string: data }))) action = "toApproval"
             else if (!dblExecute && mount) action = "toParam"
+
+        } else if (action === "conditional") {
+
+            if (isParam({ _window, string })) action = "toParam"
+            else action = "toValue"
         }
         
         data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object, toView })
@@ -5218,7 +5254,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         // remove return address
         stack.returns.splice(stack.returns.findIndex(ret => ret.id === actionReturnID), 1)
 
-        return ({ success, message, data, conditionsNotApplied, executionDuration: (new Date()).getTime() - startTime })
+        return ({ success, message, data, action, conditionsNotApplied, executionDuration: (new Date()).getTime() - startTime })
     }
 
     var approved = require("./toApproval").toApproval({ _window, data: conditions || "", id, e, req, res, __, stack, lookupActions, object })
@@ -5231,7 +5267,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
 }
 
 module.exports = { lineInterpreter }
-},{"./clone":5,"./executable":21,"./generate":24,"./isCondition":34,"./isEvent":36,"./toApproval":62,"./toAwait":64,"./toCode":67,"./toEvent":69,"./toParam":74,"./toValue":78}],42:[function(require,module,exports){
+},{"./clone":5,"./executable":21,"./generate":25,"./isCondition":34,"./isEvent":36,"./isParam":37,"./toApproval":62,"./toAwait":64,"./toCode":67,"./toEvent":69,"./toParam":74,"./toValue":78}],42:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const readFile = require("./readFile");
 
@@ -5454,14 +5490,14 @@ const { toAwait } = require("./toAwait")
 const { override } = require("./merge")
 const { clone } = require("./clone")
 
-const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, value, key, object }, __, e, req, res, condition, toView, action }) => {
+const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, value, key, object }, __, e, req, res, condition, action }) => {
 
     const { toValue } = require("./toValue")
     const { toParam } = require("./toParam")
     const { toAction } = require("./toAction")
     const { toApproval } = require("./toApproval")
 
-    if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.returned || stack.broke) return
+    if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.blocked || stack.broke) return
 
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
@@ -5479,10 +5515,10 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     if (path[0] !== undefined) args = path[0].toString().split(":")
 
     // toParam
-    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, stack, id, e, data: pathJoined, __, object, toView })
+    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, stack, id, e, data: pathJoined, __, object })
 
     // toValue
-    if (isCalc({ _window, string: pathJoined }) && !key) return toValue({ _window, lookupActions, stack, data: pathJoined, __, id, e, req, res, object, toView, condition })
+    if (isCalc({ _window, string: pathJoined }) && !key) return toValue({ _window, lookupActions, stack, data: pathJoined, __, id, e, req, res, object, condition })
 
     // [actions?conditions?elseActions]():[params]:[waits]
     else if (path0.length === 8 && path0.slice(-2) === "()" && path0.charAt(0) === "@") {
@@ -5503,7 +5539,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
             if (args[3]) {
 
                 if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[3], id, __, req, res, object })
-                else return toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object, toView })
+                else return toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object })
 
             } else if (path[1] && path[1].includes("elif()")) {
 
@@ -5515,9 +5551,9 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
 
         } else {
 
-            if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[2], id, __, req, res, object, toView })
-            if (path[1]) data = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, toView })
-            else return toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, toView })
+            if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[2], id, __, req, res, object })
+            if (path[1]) data = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
+            else return toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
             
             path.shift()
 
@@ -5528,14 +5564,14 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
             if (!path[0]) return data
         }
 
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data, path, value, key, object, pathJoined } })
     }
 
     // while()
     else if (path0 === "while()") {
 
         while (toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object })) {
-            toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, toView })
+            toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
         }
         // path = path.slice(1)
         return global.return = false
@@ -5548,7 +5584,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
         if (path.length === 1 && key && globalVariable) return global[globalVariable] = value
 
         path.splice(0, 1, globalVariable)
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data: global, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: global, path, value, key, object, pathJoined } })
     }
 
     // view => ():id
@@ -5557,7 +5593,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
         // id
         var customID = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object })
         path.shift()
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data: views[customID || args[1] || id], path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: views[customID || args[1] || id], path, value, key, object, pathJoined } })
     }
 
     // .keyName => [object||view].keyName
@@ -5566,7 +5602,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
         if (isNaN(path[1].charAt(0)) || path[1].includes("()")) {
 
             path.shift()
-            return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data: object || view, path, value, key, object, pathJoined } })
+            return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: object || view, path, value, key, object, pathJoined } })
 
         } else return path.join(".")
     }
@@ -5603,7 +5639,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
             } else if (path[1]) {
 
                 path.splice(0, 1)
-                return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
+                return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data, path, value, key, object, pathJoined } })
 
             } else return data
         }
@@ -5612,18 +5648,16 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // action()
     else if (path0.slice(-2) === "()") {
 
-        var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: path[0] }, condition, toView, object })
+        var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: path[0] }, condition, object })
         if (action !== "__continue__") {
                 
             path.shift()
-            return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data: action, path, value, key, object, pathJoined } })
+            return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: action, path, value, key, object, pathJoined } })
         }
     }
 
-    if (!view) view = views[id]
-
     if (path0 === "className()") {
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data: views.document, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: views.document, path, value, key, object, pathJoined } })
     } else {
         var __o = ((typeof object === "object" && object.__view__) ? object : views[id]) || {}
         if (__o.__labeled__ && (path0.toLowerCase().includes("prev") || path0.toLowerCase().includes("next") || path0.toLowerCase().includes("parent"))) {
@@ -5637,7 +5671,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // assign reserved vars
     var reservedVars = {
         keys: ["()", "global()", "e()", "console()", "string()", "object()", "array()", "document()", "window()", "win()", "history()", "navigator()", "nav()", "request()", "response()", "req()", "res()", "math()"],
-        "()": view || views[id],
+        "()": views[id],
         "global()": _window ? _window.global : window.global,
         "e()": e,
         "console()": console,
@@ -5666,20 +5700,20 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
         else data = __[path0.split("_").length - 2]
 
         path.shift()
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data, path, value, key, object, pathJoined } })
 
-    } else if (object) return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data: object, path, value, key, object, pathJoined } })
+    } else if (object) return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: object, path, value, key, object, pathJoined } })
 
     // still no data
     if ((path[0] && object && object.__view__) || (path0 && path0.includes("()"))) {
 
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data: view, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: views[id], path, value, key, object, pathJoined } })
 
     } else if (path[1] && path[1].toString().includes("()")) {
 
         var data = toValue({ req, res, _window, lookupActions, stack, id, __, e, data: path[0] }) || {}
         path.shift()
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, toView, data: { data, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data, path, value, key, object, pathJoined } })
 
     } else return pathJoined
 }
@@ -6362,7 +6396,7 @@ const { decode } = require("./decode")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const stacker = ({ _window, id: viewID, path = [], string = "", address = [], ...data }) => {
+const stacker = ({ _window, id: viewID, path = [], string = "", headAddress, headStack, ...data }) => {
 
   var stack = {
     ...data,
@@ -6375,14 +6409,19 @@ const stacker = ({ _window, id: viewID, path = [], string = "", address = [], ..
     interpreting: true,
     string: string ? decode({ _window, string }) : "",
     executionStartTime: (new Date()).getTime(),
-    addresses: toArray(address),
+    addresses: toArray(headAddress),
     logs: [],
     returns: [],
     type: path[1] || ""
   }
 
-  stack.logs.push(`# Status (Duration) Type ID Index Action => HeadID HeadIndex HeadAction`)
-  stack.logs.push(`0 Start STACK ${stack.id} ${stack.event.toUpperCase()} ${stack.string}`)
+  if (headStack) stack.headStackID = headStack.id
+
+  stack.logs.push(`# Status TYPE ID Index Action => HeadID HeadIndex HeadAction`)
+  stack.logs.push(`1 Start STACK ${stack.id} ${stack.event.toUpperCase()} ${stack.string}`)
+
+  var global = _window ? _window.global : window.global
+  global.__stacks__[stack.id] = stack
 
   return stack
 }
@@ -6395,24 +6434,29 @@ const clearStack = ({ stack }) => {
   stack.addresses = []
 }
 
-const printStack = ({ stack, end }) => {
+const endStack = ({ _window, stack, end }) => {
 
-  if (end && stack.print && !stack.interpreting && !stack.printed && stack.addresses.length === 0) {
+  if (end && stack.addresses.length === 0) {
 
-    stack.printed = true
     var logs = `%cSTACK ${(new Date()).getTime() - stack.executionStartTime} ${stack.event}`
     stack.logs.push(`${stack.logs.length} End STACK ${(new Date()).getTime() - stack.executionStartTime} ${stack.id} ${stack.event}`)
-    console.log(logs, "color: blue", stack.logs)
+
+    // remove stack
+    delete (_window ? _window.global : window.global).__stacks__[stack.id]
+
+    // print stack
+    stack.print && !stack.printed && console.log(logs, "color: blue", stack.logs)
+    stack.printed = true
   }
 }
 
-module.exports = { stacker, clearStack, printStack }
-},{"./decode":14,"./generate":24,"./toArray":63}],59:[function(require,module,exports){
+module.exports = { stacker, clearStack, endStack }
+},{"./decode":14,"./generate":25,"./toArray":63}],59:[function(require,module,exports){
 const { defaultInputHandler } = require("./defaultInputHandler")
 const { addEventListener } = require("./event")
 const { toArray } = require("./toArray")
 
-const starter = ({ id }) => {
+const starter = ({ lookupActions, stack, __, address, id }) => {
   
   var view = window.views[id]
   if (!view) return
@@ -6438,7 +6482,7 @@ const starter = ({ id }) => {
   })
   
   // events
-  toArray(view.__controls__).map(data => addEventListener({ ...data, event: data.event, id }))
+  toArray(view.__controls__).map(data => addEventListener({ lookupActions, stack, __, id, address, ...data, event: data.event }))
 
   view.__status__ = "Mounted"
 }
@@ -6554,7 +6598,7 @@ const deleteFile = async ({ req, res }) => {
 
 module.exports = { getFile, postFile, storeFile, deleteFile }
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./generate":24,"./toArray":63,"buffer":123,"fs":122}],61:[function(require,module,exports){
+},{"./generate":25,"./toArray":63,"buffer":123,"fs":122}],61:[function(require,module,exports){
 const { clone } = require("./clone")
 const { toArray } = require("./toArray")
 const { addresser } = require("./addresser")
@@ -6821,12 +6865,14 @@ module.exports = {toArray}
 const { printAddress } = require("./addresser")
 const { clone } = require("./clone")
 const { lineInterpreter } = require("./lineInterpreter")
-const { printStack } = require("./stack")
+const { endStack } = require("./stack")
 
 const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, stack, id, e, _, __, action }) => {
 
+  var global = _window ? _window.global : window.global
+
   if (addressID && !address.id) address = stack.addresses.find(address => address.id === addressID)
-  if (stack.terminated || address.hold) return
+  if (stack.terminated || address.hold || address.starter) return
 
   // params
   address.params = address.params || {}
@@ -6837,10 +6883,10 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
   // address
   var headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
   
-  // unbreak action
-  stack.returned = false
-
-  if (address.blocked || address.status === "Start") {
+  // unblocck stack
+  if (stack.blocked && !address.blocked) stack.blocked = false
+  
+  if (address.blocked || address.status === "Start" || address.status === "End") {
 
     address.status = address.blocked ? "Block" : "End"
     address.interpreting = false
@@ -6866,9 +6912,9 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
   }
 
   if (stack.terminated) return
-
+  
   // asynchronous unholds headAddresses
-  if (address.headAddressID && !headAddress.interpreting && (headAddress.hold || headAddress.status === "Wait")) {
+  if (address.headAddressID && !headAddress.interpreting && (headAddress.stackID || headAddress.hold || headAddress.status === "Wait")) {
     
     var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.headAddressID === address.headAddressID)
     
@@ -6879,7 +6925,10 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
     }
   }
 
-  printStack({ stack, end: true })
+  endStack({ _window, stack, end: true })
+
+  // address is for another stack
+  address.stackID !== stack.id && global.__stacks__[address.stackID] && toAwait({ _window, lookupActions, stack: global.__stacks__[address.stackID], address, id, e, req, res, __, action })
 }
 
 const addressFunctionExecuter = ({ _window, lookupActions, stack, id, e, req, res, address, __, action }) => {
@@ -7060,7 +7109,7 @@ const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) =
 }
 
 module.exports = { toCode }
-},{"./generate":24}],68:[function(require,module,exports){
+},{"./generate":25}],68:[function(require,module,exports){
 const {generate} = require("./generate")
 const {toArray} = require("./toArray")
 
@@ -7092,7 +7141,7 @@ const toComponent = (obj) => {
 
 module.exports = {toComponent}
 
-},{"./generate":24,"./toArray":63}],69:[function(require,module,exports){
+},{"./generate":25,"./toArray":63}],69:[function(require,module,exports){
 const { toArray } = require("./toArray")
 
 const toEvent = ({ _window, id, string, __, lookupActions }) => {
@@ -7369,7 +7418,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
   var params = object || {}
 
   // returned
-  if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.broke || stack.returned) return
+  if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.broke || stack.blocked) return
 
   if (typeof string !== "string" || !string) return string || {}
 
@@ -7393,10 +7442,9 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
   string.split(";").map(param => {
 
     // no param || returned || comment
-    if (!param || (stack.returns && stack.returns[0] || {}).returned || param.charAt(0) === "#" || stack.terminated || stack.broke || stack.returned) return
+    if (!param || (stack.returns && stack.returns[0] || {}).returned || param.charAt(0) === "#" || stack.terminated || stack.broke || stack.blocked) return
 
     var key, value
-    var view = views[id]
 
     // =
     if (param.includes("=")) {
@@ -7550,14 +7598,16 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     }
 
     // reduce
-    if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()" || path[0].includes("_") || object)
+    if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()" || path[0].slice(0, 3) === "():" || path[0].includes("_") || object)
       reducer({ _window, lookupActions, stack, id, data: { path, value, key, object }, e, req, res, __, mount, condition, action: "toParam" })
-    else kernel({ _window, lookupActions, stack, id, data: { path, value, key, data: (mount ? (view || {}) : params) }, e, req, res, __, mount, condition, action: "toParam" })
+    else kernel({ _window, lookupActions, stack, id, data: { path, value, key, data: (mount ? (views[id] || {__view__:true}) : params) }, e, req, res, __, mount, condition, action: "toParam" })
 
     /////////////////////////////////////////// path & data & doc ///////////////////////////////////////////////
 
     if (mount) {
       
+      var view = views[id]
+
       // mount data directly when found
       if (key === "doc" || key === "data") {
 
@@ -7601,7 +7651,7 @@ const sleep = (milliseconds) => {
 }
 
 module.exports = { toParam }
-},{"./clone":5,"./decode":14,"./executable":21,"./generate":24,"./isCondition":34,"./isEvent":36,"./kernel":39,"./lineInterpreter":41,"./merge":43,"./reducer":47,"./replaceNbsps":49,"./toAction":61,"./toApproval":62,"./toCode":67,"./toEvent":69,"./toValue":78}],75:[function(require,module,exports){
+},{"./clone":5,"./decode":14,"./executable":21,"./generate":25,"./isCondition":34,"./isEvent":36,"./kernel":39,"./lineInterpreter":41,"./merge":43,"./reducer":47,"./replaceNbsps":49,"./toAction":61,"./toApproval":62,"./toCode":67,"./toEvent":69,"./toValue":78}],75:[function(require,module,exports){
 module.exports = {
     toPdf: async (options) => {
 
@@ -7718,7 +7768,7 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
   const { reducer } = require("./reducer")
   const { toParam } = require("./toParam")
   
-  var view = _window ? _window.views[id] : window.views[id]
+  var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
   
   if (!value) return value
@@ -7734,8 +7784,8 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
   if (value.split("?").length > 1) return lineInterpreter({ _window, lookupActions, stack, id, e, data: {string: value}, req, res, mount, __, condition, object, toView, action: "toValue" }).data
 
   // no value
-  if (value === "()") return view
-  else if (value === ".") return object !== undefined ? object : view
+  if (value === "()") return views[id]
+  else if (value === ".") return object !== undefined ? object : views[id]
   else if (value === undefined) return generate()
   else if (value === "undefined") return undefined
   else if (value === "false") return false
@@ -8035,7 +8085,7 @@ const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res,
 
 module.exports = { toValue, calcSubs, calcDivision, calcModulo, emptySpaces, isNumber }
 
-},{"./executable":21,"./generate":24,"./isParam":37,"./lineInterpreter":41,"./reducer":47,"./toParam":74}],79:[function(require,module,exports){
+},{"./executable":21,"./generate":25,"./isParam":37,"./lineInterpreter":41,"./reducer":47,"./toParam":74}],79:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
@@ -8340,8 +8390,9 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
   ([...loopData]).reverse().map(async (key, index) => {
 
     view.__looped__ = true
+    index = lastIndex - index
 
-    var params = { i: lastIndex - index, view: view.__name__ + "?" + view.view.split("?").slice(1).join("?"), id: `${view.id}_${lastIndex - index}` }
+    var params = { i: index, __loopIndex__: index, view: view.__name__ + "?" + view.view.split("?").slice(1).join("?"), id: `${view.id}_${index}` }
     key = isNumber(key) ? parseInt(key) : key
     if (!preventDefault && mount) params = { ...params, doc, __dataPath__: [...__dataPath__, key] }
 
@@ -8407,7 +8458,7 @@ const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ })
 }
 
 module.exports = { toView, continueToView }
-},{"../view/views":165,"./addresser":3,"./clone":5,"./generate":24,"./isParam":37,"./kernel":39,"./lineInterpreter":41,"./merge":43,"./reducer":47,"./toApproval":62,"./toArray":63,"./toAwait":64,"./toCode":67,"./toValue":78,"./view":83}],80:[function(require,module,exports){
+},{"../view/views":165,"./addresser":3,"./clone":5,"./generate":25,"./isParam":37,"./kernel":39,"./lineInterpreter":41,"./merge":43,"./reducer":47,"./toApproval":62,"./toArray":63,"./toAwait":64,"./toCode":67,"./toValue":78,"./view":83}],80:[function(require,module,exports){
 const { starter } = require("./starter")
 const { toView } = require("./toView")
 const { clone } = require("./clone")
@@ -8520,7 +8571,7 @@ const postUpdate = ({ _window, lookupActions, stack, __, req, res, id, data: { c
       else parent.__element__.insertBefore(lDiv.children[0], parent.__element__.children[index])
     })
 
-    idLists.map(id => starter({ _window, lookupActions, stack, id }))
+    idLists.map(id => starter({ _window, lookupActions, stack, __, address, id }))
     
     // display
     updatedViews.map(({ id }) => views[id].__element__.style.opacity = "1")
@@ -8554,7 +8605,7 @@ const postUpdate = ({ _window, lookupActions, stack, __, req, res, id, data: { c
 }
 
 module.exports = { update, postUpdate }
-},{"./addresser":3,"./clone":5,"./closePublicViews":6,"./generate":24,"./starter":59,"./toAwait":64,"./toHTML":72,"./toView":79,"./view":83}],81:[function(require,module,exports){
+},{"./addresser":3,"./clone":5,"./closePublicViews":6,"./generate":25,"./starter":59,"./toAwait":64,"./toHTML":72,"./toView":79,"./view":83}],81:[function(require,module,exports){
 const axios = require("axios")
 const { clone } = require("./clone")
 const { generate } = require("./generate")
@@ -8624,7 +8675,7 @@ module.exports = async ({ _window, lookupActions, stack, address, id, req, res, 
   // await
   require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __, _: uploads.length === 1 ? uploads[0] : uploads, ...params })
 }
-},{"./clone":5,"./generate":24,"./readFile":46,"./storage":60,"./toArray":63,"./toAwait":64,"axios":92}],82:[function(require,module,exports){
+},{"./clone":5,"./generate":25,"./readFile":46,"./storage":60,"./toArray":63,"./toAwait":64,"axios":92}],82:[function(require,module,exports){
 'use strict';
 
 const downloadToFile = (content, filename, contentType) => {
@@ -8810,7 +8861,7 @@ const blockRelatedAddressesByViewID = ({ stack, id }) => {
 }
 
 module.exports = { initView, getViewParams, removeView }
-},{"./clone":5,"./generate":24,"./toArray":63}],84:[function(require,module,exports){
+},{"./clone":5,"./generate":25,"./toArray":63}],84:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
@@ -8858,7 +8909,7 @@ const watch = ({ lookupActions, __, string, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":5,"./generate":24,"./isEqual":35,"./toApproval":62,"./toCode":67,"./toParam":74,"./toValue":78}],85:[function(require,module,exports){
+},{"./clone":5,"./generate":25,"./isEqual":35,"./toApproval":62,"./toCode":67,"./toParam":74,"./toValue":78}],85:[function(require,module,exports){
 const { generate } = require("../action/generate");
 
 module.exports = ({ data, id }) => {
@@ -8891,13 +8942,13 @@ module.exports = ({ data, id }) => {
     }
   ]
 }
-},{"../action/generate":24}],86:[function(require,module,exports){
+},{"../action/generate":25}],86:[function(require,module,exports){
 module.exports = () => {
   
   return [{ // close droplist
     event: `[keyup:input()??e().key=Escape];[blur:input()??!():droplist.contains():[clicked()]||focused().id!=().id]?__droplistMouseleaveTimer__:()=0;():droplist.mouseleave()`
   }, { // open droplist on click
-    event: `[click:input()??__droplistPositioner__:()!=().id];[focus:input()??__droplistPositioner__:()!=().id]?clearTimer():[__droplistTimer__:()];if():[__droplistPositioner__:()!=().id]:[__keyupIndex__:()=0;__droplistPositioner__:()=().id;droplist()::[().droplist.style.keys()._():[():droplist.style().[_]=().droplist.style.[_]];():droplist.position():[positioner=().id;[().droplist].flat()];():droplist.style():[opacity=1;transform='scale(1)';pointerEvents=auto];]]:[__droplistMouseleaveTimer__:()=0;():droplist.mouseleave()]`,
+    event: `[click??__droplistPositioner__:()!=().id];[focus:input()??__droplistPositioner__:()!=().id]?clearTimer():[__droplistTimer__:()];if():[__droplistPositioner__:()!=().id]:[__keyupIndex__:()=0;__droplistPositioner__:()=().id;droplist()::[().droplist.style.keys()._():[():droplist.style().[_]=().droplist.style.[_]];():droplist.position():[positioner=().id;[().droplist].flat()];():droplist.style():[opacity=1;transform='scale(1)';pointerEvents=auto];]]:[__droplistMouseleaveTimer__:()=0;():droplist.mouseleave()]`,
   }, { // choose item on enter
     event: `keyup:input()?():droplist.children().[__keyupIndex__:()].click()?e().key=Enter`
   }, { // open on hoverin
@@ -17621,7 +17672,7 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../action/clone":5,"../action/generate":24,"../action/jsonToBracket":38,"../action/merge":43,"../action/toComponent":68}],162:[function(require,module,exports){
+},{"../action/clone":5,"../action/generate":25,"../action/jsonToBracket":38,"../action/merge":43,"../action/toComponent":68}],162:[function(require,module,exports){
 module.exports = (view) => {
 
   var AutorunScrollInPixel = `[px():[().autorun.scroll]||100]`

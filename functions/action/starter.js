@@ -2,7 +2,7 @@ const { defaultInputHandler } = require("./defaultInputHandler")
 const { addEventListener } = require("./event")
 const { toArray } = require("./toArray")
 
-const starter = ({ id }) => {
+const starter = ({ lookupActions, stack, __, address, id }) => {
   
   var view = window.views[id]
   if (!view) return
@@ -28,7 +28,7 @@ const starter = ({ id }) => {
   })
   
   // events
-  toArray(view.__controls__).map(data => addEventListener({ ...data, event: data.event, id }))
+  toArray(view.__controls__).map(data => addEventListener({ lookupActions, stack, __, id, address, ...data, event: data.event }))
 
   view.__status__ = "Mounted"
 }

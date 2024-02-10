@@ -110,7 +110,7 @@ const postUpdate = ({ _window, lookupActions, stack, __, req, res, id, data: { c
       else parent.__element__.insertBefore(lDiv.children[0], parent.__element__.children[index])
     })
 
-    idLists.map(id => starter({ _window, lookupActions, stack, id }))
+    idLists.map(id => starter({ _window, lookupActions, stack, __, address, id }))
     
     // display
     updatedViews.map(({ id }) => views[id].__element__.style.opacity = "1")

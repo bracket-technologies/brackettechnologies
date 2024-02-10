@@ -18,11 +18,8 @@ module.exports = (data) => {
     // resource
     if (path[1] === "resource") return getLocalFile({ req, res })
 
-    // stack
-    var stack = stacker({ id, path, event: req.method.toLowerCase(), server: true })
-
     // initialize
-    var _window = initializer({ id, req, res, path, data, stack })
+    var _window = initializer({ id, req, res, path, data })
 
     // authorize
     var { success, message, error } = await authorizer({ _window, req })
@@ -47,8 +44,14 @@ module.exports = (data) => {
       }
     }
 
+    // stack
+    var stack = stacker({ _window, id, path, event: req.method.toLowerCase(), server: true })
+
     // action
     if (path[1] === "action") return serverActionExecuter({ _window, req, res, id, stack })
+
+    // set stack type
+    stack.type = "render"
 
     // render
     return render({ _window, req, res, id, stack })

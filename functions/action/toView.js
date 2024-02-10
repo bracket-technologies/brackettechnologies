@@ -302,8 +302,9 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
   ([...loopData]).reverse().map(async (key, index) => {
 
     view.__looped__ = true
+    index = lastIndex - index
 
-    var params = { i: lastIndex - index, view: view.__name__ + "?" + view.view.split("?").slice(1).join("?"), id: `${view.id}_${lastIndex - index}` }
+    var params = { i: index, __loopIndex__: index, view: view.__name__ + "?" + view.view.split("?").slice(1).join("?"), id: `${view.id}_${index}` }
     key = isNumber(key) ? parseInt(key) : key
     if (!preventDefault && mount) params = { ...params, doc, __dataPath__: [...__dataPath__, key] }
 

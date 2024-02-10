@@ -28,7 +28,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   // input id
   var { data: inputID } = lineInterpreter({ id, data: { string: "input().id||().id" } })
   var text = views[inputID].__element__.value || views[inputID].__element__.innerHTML
-  
+
   // items
   if (typeof items === "string") items = lineInterpreter({ id, data: { string: items }, lookupActions, __: view.__ }).data
 

@@ -22,11 +22,12 @@ const initializer = ({ id, req, res, stack, path, data: { db, storage, rdb } }) 
 
     var global = {
         __: [],
+        __stacks__: {},
         __refs__: {},
         __events__: {},
         __calcTests__: {},
         __serverActions__: {},
-        __frequentLogs__: {},
+        __startAddresses__: {},
         __prevPage__: ["main"],
         __page__: page,
         __prevPath__: ["/"],

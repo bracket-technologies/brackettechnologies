@@ -1,6 +1,6 @@
 const { clone } = require("./clone")
 const { addresser } = require("./addresser")
-const { printStack } = require("./stack")
+const { endStack } = require("./stack")
 const { lineInterpreter } = require("./lineInterpreter")
 
 const serverActionExecuter = async ({ _window, stack, req, res, id }) => {
@@ -23,7 +23,7 @@ const serverActionExecuter = async ({ _window, stack, req, res, id }) => {
 
   var data = executeServerAction({ _window, stack, id, action, req, res, __: action.__ })
 
-  printStack({ stack, end: true })
+  endStack({ _window, stack, end: true })
 
   // respond
   if (stack.addresses.length === 0) return res.send({ ...data, logs: stack.logs })
