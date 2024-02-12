@@ -305,12 +305,7 @@ const Input = (component) => {
         transition: "border .1s",
         ...input.style,
         ...style,
-      },
-      __controls__: [...__controls__, {
-        event: `focus?clicked.mount;clicked.style.keys()._():[().style().[_]=().clicked.style.[_]];state:().[().clicked.state]=().id`
-      }, {
-        event: `blur?if():[state:().[().clicked.state]]:[():[state:().[().clicked.state]]._():[_.clicked.mount.del();_.clicked.style.keys()._():[__.style().[_]=[__.style._||null]]]]`
-      }]
+      }
     }
   }
 }

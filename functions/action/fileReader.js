@@ -5,7 +5,8 @@ module.exports = {
     fileReader: ({ req, res, _window, lookupActions, stack, address, id, e, __, data }) => {
 
         // files to read
-        data.files = (data.file ? toArray(data.file) : data.files) || []
+        data.data = toArray(data.data)
+        if (!data.data) return console.log("No data to read!")
 
         // read type
         var type = data.type
@@ -19,11 +20,11 @@ module.exports = {
         // init
         global.__fileReader__ = {
             files: [],
-            length: data.files.length,
+            length: data.data.length,
             count: 0
         };
 
-        ([...data.files]).map(file => {
+        data.data.map(file => {
 
             var reader = new FileReader()
             reader.onload = (e) => {
@@ -54,7 +55,7 @@ module.exports = {
 
             try {
 
-                if (type === "url") reader.readAsDataURL(file)
+                if (type === "url" || type === "file") reader.readAsDataURL(file)
                 else if (type === "text" || type === "json") reader.readAsText(file)
                 else if (type === "binary") reader.readAsBinaryString(file)
                 else if (type === "buffer") reader.readAsArrayBuffer(file)

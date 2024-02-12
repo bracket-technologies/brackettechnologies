@@ -9,10 +9,10 @@ const decode = ({ _window, string }) => {
 
     var code = state.slice(0, 5)
     var after = state.slice(5)
-    var statement = global.__refs__[`@${code}`].data
+    var statement = (global.__refs__[`@${code}`] || {}).data
 
     var prev, next
-    if (global.__refs__[`@${code}`].type === "text") {
+    if ((global.__refs__[`@${code}`] || {}).type === "text") {
       prev = "'"
       next = "'"
     } else {

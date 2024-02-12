@@ -19,7 +19,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
 
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
-    var view = views[id]
+    var view = views[id] || { id, __view__:true }
 
     // path is a string
     if (typeof path === "string") path = path.split(".")
@@ -177,7 +177,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     if (path0 === "className()") {
         return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: views.document, path, value, key, object, pathJoined } })
     } else {
-        var __o = ((typeof object === "object" && object.__view__) ? object : views[id]) || {}
+        var __o = ((typeof object === "object" && object.__view__) ? object : view) || {}
         if (__o.__labeled__ && (path0.toLowerCase().includes("prev") || path0.toLowerCase().includes("next") || path0.toLowerCase().includes("parent"))) {
 
             if (__o.__featured__) path = ["2ndParent()", ...path]
@@ -189,7 +189,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // assign reserved vars
     var reservedVars = {
         keys: ["()", "global()", "e()", "console()", "string()", "object()", "array()", "document()", "window()", "win()", "history()", "navigator()", "nav()", "request()", "response()", "req()", "res()", "math()"],
-        "()": views[id],
+        "()": view,
         "global()": _window ? _window.global : window.global,
         "e()": e,
         "console()": console,
@@ -224,8 +224,8 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
 
     // still no data
     if ((path[0] && object && object.__view__) || (path0 && path0.includes("()"))) {
-
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: views[id], path, value, key, object, pathJoined } })
+        
+        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: view, path, value, key, object, pathJoined } })
 
     } else if (path[1] && path[1].toString().includes("()")) {
 
@@ -235,4 +235,5 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
 
     } else return pathJoined
 }
+
 module.exports = { reducer }

@@ -231,8 +231,19 @@ const postData = async ({ _window, req, res, save }) => {
 
   // collection
   var db = req.db
+  var doc = save.doc
   var data = save.data
+  var field = save.field || {}
   var collection = save.collection
+
+  // save specific fields in by doc
+  if (Object.keys(field).length > 0 && doc) {
+    var { data: rawData, success, message } = await getData({ _window, req, res, search: { collection, doc } })
+    if (!success) return ({ success, message })
+    Object.entries(field).map(([key, value]) => rawData[key] = value)
+    data = rawData
+  }
+
   if (((_window.global.data.project.datastore || {}).collections || []).includes(collection)) collection = 'collection-' + collection
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
 
@@ -245,7 +256,7 @@ const postData = async ({ _window, req, res, save }) => {
 
     if (!data["creation-date"] && req.headers.timestamp) data["creation-date"] = parseInt(req.headers.timestamp)
 
-    return await ref.doc(data.id.toString()).set(data).then(() => {
+    return await ref.doc((doc && doc.toString()) || data.id.toString()).set(data).then(() => {
 
       success = true
       message = `Document saved successfuly!`
@@ -256,7 +267,6 @@ const postData = async ({ _window, req, res, save }) => {
       message = error
     })
   })
-  //}
 
   await Promise.all(promises)
 

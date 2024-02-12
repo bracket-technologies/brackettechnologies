@@ -38,8 +38,10 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
         while (headAddressID) {
             
             var holdHeadAddress = stack.addresses.find(headAddress => headAddress.id === headAddressID)
-            holdHeadAddress.hold = true
-            headAddressID = holdHeadAddress.stackID === stack.id && holdHeadAddress.headAddressID
+            if (holdHeadAddress) {
+                holdHeadAddress.hold = true
+                headAddressID = holdHeadAddress.stackID === stack.id && holdHeadAddress.headAddressID
+            } else headAddressID = false
         }
     }
 
@@ -85,22 +87,24 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
         if (starterHeadAddress) {
 
             // start again from the current interpreting address to reach headAddress to set blocked
-            var stack = global.__stacks__[currentStackID]
+            var stack = global.__stacks__[currentStackID], blockedAddress = true
             headAddressID = stack.interpretingAddressID
 
-            while (headAddressID && headAddressID !== starterHeadAddress.id) {
+            while (blockedAddress && headAddressID && headAddressID !== starterHeadAddress.id) {
 
                 blockedAddress = stack.addresses.find(address => address.id === headAddressID)
-                blockedAddress.blocked = true
-                headAddressID = blockedAddress.headAddressID
+                if (blockedAddress) {
+                    blockedAddress.blocked = true
+                    headAddressID = blockedAddress.headAddressID
 
-                stack.blocked = true
+                    stack.blocked = true
 
-                // address coming from different stack
-                if (blockedAddress.stackID !== stack.id) stack = global.__stacks__[blockedAddress.stackID]
+                    // address coming from different stack
+                    if (blockedAddress.stackID !== stack.id) stack = global.__stacks__[blockedAddress.stackID]
+                }
             }
-
-            toAwait({ req, res, _window, lookupActions, stack, address, id, e, __, _: data })
+            
+            toAwait({ req, res, _window, lookupActions, stack: global.__stacks__[starterHeadAddress.stackID], address, id, e, __, _: data })
         }
     }
 

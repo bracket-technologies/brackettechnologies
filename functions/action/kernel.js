@@ -80,7 +80,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         if (k0 === "log()") { // log
             
-            var logs = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: underScored ? [o, ...__] : __, data: arg, object: underScored ? object : (o.__view__ && o.id !== id && o || undefined) }))
+            var logs = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: underScored ? [o, ...__] : __, data: arg, object: underScored ? object : (i === 0 ? ((pathJoined || "").split(".")[0] !== k ? o : undefined) : o) }))
             if (args.slice(1).length === 0 && pathJoined !== "log()") logs = [o]
             
             console.log("LOG:" + (o.id || id), decode({ _window, string: pathJoined }), ...logs)
@@ -204,7 +204,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             } else answer = global[doc]
 
         } else if (k0 === "parent()") {
-
+            
             return nthParent({ _window, nth: 1, o })
 
         } else if (k0 === "2ndParent()") {
@@ -413,8 +413,10 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             if (!o.__view__) return
             if (!args[1]) {
-                if (!o.__element__) return o.style
-                return o.__element__.style
+                if (!o.__element__) {
+                    o.style = o.style || {}
+                    return o.style
+                } return o.__element__.style
             }
 
             var styles = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
@@ -1765,7 +1767,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 var _path = _params.path, _data = _params.data.filter(data => data !== undefined && data !== null)
                 toArray(_data).map(_data => {
 
-                    var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], value, data: item }, __: [o, ...__], e }), reducer({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], value, data: _data }, __: [o, ...__], e })))
+                    var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], data: item }, __: [o, ...__], e }), kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], data: _data }, __: [o, ...__], e })))
                     if (_index >= 0) o[_index] = _data
                     else o.push(_data)
                 })
@@ -1902,12 +1904,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             if (args[1] && underScored) {
 
-                toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object, value }, __: [o, ...__], e }))
+                toArray(o).map(o => toValue({ req, res, _window, lookupActions, stack, id, data: args[1] || "", object, __: [o, ...__], e }))
                 answer = o
 
             } else if (args[1]) {
 
-                answer = toArray(o).map(o => reducer({ req, res, _window, lookupActions, stack, id, data: { path: args[1] || [], object: o, value }, __, e }))
+                answer = toArray(o).map(o => toValue({ req, res, _window, lookupActions, stack, id, data: args[1] || "", object: o, __, e }))
             
             } else if (args[2] && underScored) {
 
@@ -1915,7 +1917,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 var address;
                 ([...toArray(o)]).reverse().map(o => {
                     // address
-                    address = addresser({ _window, id, stack, headAddress: address, type: "function", function: "reducer", __: [o, ...__], lookupActions, data: { path: args[2] || [], value, object } }).address
+                    address = addresser({ _window, id, stack, headAddress: address, __: [o, ...__], lookupActions, data: { string: args[2] }, object }).address
                 })
                 
                 // address
@@ -1927,7 +1929,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 var address;
                 ([...toArray(o)]).reverse().map(o => {
                     // address
-                    address = addresser({ _window, id, stack, headAddress: address, type: "function", function: "reducer", __, lookupActions, data: { path: args[2] || [], value, object: o } }).address
+                    address = addresser({ _window, id, stack, headAddress: address, __, lookupActions, data: { string: args[2] }, object: o }).address
                 })
 
                 // address
@@ -2405,13 +2407,13 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "print()") {
 
-        } else if (k0 === "file()") {
-
-            return o.__file__
-
         } else if (k0 === "files()") {
 
-            return o.__files__
+            return [...(o.__element__.files || [])]
+
+        } else if (k0 === "file()") {
+
+            return (o.__element__.files || [])[0]
 
         } else if (k0 === "read()") {
 
@@ -2587,7 +2589,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             }
 
             args[1] = (global.__refs__[args[1]].data || "").split(".")
-            if (args[1]) answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { path: [...args.slice(1).flat(), ...path.slice(i + 1)], object: o[k0], key }, __ })
+            if (args[1]) answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { path: [...args.slice(1).flat(), ...path.slice(i + 1)], object: o[k0] }, __ })
             else return
 
         } else if (key && value !== undefined && i === lastIndex) {

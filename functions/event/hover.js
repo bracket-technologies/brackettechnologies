@@ -11,10 +11,10 @@ module.exports = ({ data, id }) => {
     )
     
     return [{
-        //"event": `loaded:${_id}?mouseenter()?hover.mount;!clicked.mount`
+        //"event": `loaded:${_id}?mouseenter()?hover.mount`
     }, {
-        "event": `mouseenter:${_id}?hover.style.keys()._():[style().[_]=.hover.style.[_]]?!clicked.disable;!clicked.mount;!hover.disable`
+        "event": `mouseenter:${_id}?hover.style.keys()._():[style().[_]=.hover.style.[_]]?!hover.disable`
     }, {
-        "event": `mouseleave:${_id}?hover.default.style.keys()._():[style().[_]=.hover.default.style.[_]]?!clicked.disable;!clicked.mount;!hover.disable`
+        "event": `mouseleave:${_id}?hover.default.style.keys()._():[style().[_]=.hover.default.style.[_]]?!hover.disable`
     }]
 }

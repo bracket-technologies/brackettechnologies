@@ -109,7 +109,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         // no params
         if (!string) message = "No actions to execute!"
 
-        if (!action) {
+        if (!action || condition) {
 
             action = "toValue"
             if (!dblExecute && (condition || isCondition({ _window, string: data }))) action = "toApproval"

@@ -1,3 +1,4 @@
+const { decode } = require("./decode");
 const { executable } = require("./executable");
 const { generate } = require("./generate")
 const { isParam } = require("./isParam");
@@ -11,7 +12,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id, e, req, res, object, mount, toView, condition, isValue, key, param }) => {
+const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id, e, req, res, object, mount, toView, condition, isValue }) => {
 
   const { reducer } = require("./reducer")
   const { toParam } = require("./toParam")

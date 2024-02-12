@@ -4,11 +4,12 @@ const nthParent = ({ _window, nth, o }) => {
   var views = _window ? _window.views : window.views
 
   var n = 0, parent = o.id
+  
   while (n < nth) {
     if (views[parent]) parent = views[parent].__parent__
     n++
   }
-
+  
   return views[parent]
 }
 

@@ -11,7 +11,6 @@ const { override } = require("./merge")
 const { toEvent } = require("./toEvent")
 const { kernel } = require("./kernel")
 const { decode } = require("./decode")
-const { executable } = require("./executable")
 
 const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req, res, mount, object, __, condition }) => {
 
@@ -20,6 +19,8 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
   var views = _window ? _window.views : window.views
   var global = _window ? _window.global : window.global
+  var view = views[id] || { id, __view__:true }
+
   var params = object || {}
 
   // returned
@@ -45,6 +46,9 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
   if (condition || isCondition({ _window, string })) return toApproval({ id, lookupActions, stack, e, data: string, req, res, _window, __, object })
 
   string.split(";").map(param => {
+
+    // case id was changed during rendering
+    id = view.id
 
     // no param || returned || comment
     if (!param || (stack.returns && stack.returns[0] || {}).returned || param.charAt(0) === "#" || stack.terminated || stack.broke || stack.blocked) return
@@ -203,16 +207,14 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     }
 
     // reduce
-    if ((path[0].includes("()") && (path0.slice(-2) === "()")) || path[0].slice(-3) === ":()" || path[0].slice(0, 3) === "():" || path[0].includes("_") || object)
+    if (path0.slice(-2) === "()" || path[0].slice(-3) === ":()" || path[0].slice(0, 3) === "():" || path[0].includes("_") || object)
       reducer({ _window, lookupActions, stack, id, data: { path, value, key, object }, e, req, res, __, mount, condition, action: "toParam" })
-    else kernel({ _window, lookupActions, stack, id, data: { path, value, key, data: (mount ? (views[id] || {__view__:true}) : params) }, e, req, res, __, mount, condition, action: "toParam" })
+    else kernel({ _window, lookupActions, stack, id, data: { path, value, key, data: (mount ? view : params) }, e, req, res, __, mount, condition, action: "toParam" })
 
     /////////////////////////////////////////// path & data & doc ///////////////////////////////////////////////
 
     if (mount) {
       
-      var view = views[id]
-
       // mount data directly when found
       if (key === "doc" || key === "data") {
 
@@ -239,6 +241,12 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
         // push path to __dataPath__
         view.__dataPath__.push(...myPath)
         view.data = kernel({ _window, id, stack, __, lookupActions, data: { path: view.__dataPath__, data: global[view.doc], value: view.data, key: true } })
+      
+      } else if (view.id !== id) {
+        
+        if (views[view.id]) views[view.id] += "_" + generate()
+        Object.assign(views, { [view.id]: views[id] })
+        id = view.id
       }
     }
   })

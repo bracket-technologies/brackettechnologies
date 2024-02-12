@@ -80,8 +80,8 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
     if (key.charAt(0) === "@" && key.length == 6) key = global.__refs__[key].data
 
     // operator has !
-    if (key.includes("!")) {
-      if (key.split("!")[0]) {
+    if (key.at(0) === "!" || key.at(-1) === "!") {
+      if (key.at(-1) === "!") {
 
         if (condition[1]) {
           notEqual = true

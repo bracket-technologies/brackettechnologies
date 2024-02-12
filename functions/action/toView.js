@@ -100,8 +100,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
     if (view.id !== id) {
       
-      if (views[view.id]) view.id += "_" + generate()
-      delete Object.assign(views, { [view.id]: views[id] })[id]
+      delete views[id]
       id = view.id
     }
   }

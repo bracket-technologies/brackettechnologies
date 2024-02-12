@@ -5,6 +5,7 @@ const { watch } = require("./watch")
 const { clone } = require("./clone")
 const { decode } = require("./decode")
 const { addresser } = require("./addresser")
+const { toArray } = require("./toArray")
 
 const addEventListener = ({ event, id, __, stack, lookupActions, address, eventID: mainEventID }) => {
 
@@ -27,29 +28,33 @@ const addEventListener = ({ event, id, __, stack, lookupActions, address, eventI
     
     // event:id
     var { data: eventID } = lineInterpreter({ id, data: { string: substring.split("?")[0].split(":")[1] } })
-    if (typeof eventID === "object" && eventID.__view__) eventID = eventID.id
-    else eventID = eventID || mainEventID || id
+    eventID = eventID || mainEventID || id
 
-    // modify
-    var { event, string } = modifyEvent({ eventID, event: substring, string: mainString })
-    
-    // watch
-    if (event === "watch") return watch({ lookupActions, __, stack, address, string, id })
-    
-    // view doesnot exist
-    if (!event || !views[eventID] || !views[id]) return
+    toArray(eventID).map(eventID => {
 
-    // loaded event
-    if (event === "loaded") return setTimeout(eventExecuter({ string, event, eventID, id, address, stack, lookupActions, __ }), 0)
-    
-    //
-    if (id !== eventID) {
+      if (typeof eventID === "object" && eventID.__view__) eventID = eventID.id
+  
+      // modify
+      var { event, string } = modifyEvent({ eventID, event: substring, string: mainString })
       
-      global.__events__[id] = global.__events__[id] || {}
-      global.__events__[id][event] = global.__events__[id][event] || []
-      global.__events__[id][event].push({ string, event, eventID, id, lookupActions, __ })
+      // watch
+      if (event === "watch") return watch({ lookupActions, __, stack, address, string, id })
       
-    } else views[eventID].__element__.addEventListener(event, (e) => eventExecuter({ string, event, eventID, id, stack, lookupActions, __, address, e }))
+      // view doesnot exist
+      if (!event || !views[eventID] || !views[id]) return
+  
+      // loaded event
+      if (event === "loaded") return setTimeout(eventExecuter({ string, event, eventID, id, address, stack, lookupActions, __ }), 0)
+      
+      //
+      if (id !== eventID) {
+        
+        global.__events__[id] = global.__events__[id] || {}
+        global.__events__[id][event] = global.__events__[id][event] || []
+        global.__events__[id][event].push({ string, event, eventID, id, lookupActions, __ })
+        
+      } else views[eventID].__element__.addEventListener(event, (e) => eventExecuter({ string, event, eventID, id, stack, lookupActions, __, address, e }))
+    })
   })
 }
 

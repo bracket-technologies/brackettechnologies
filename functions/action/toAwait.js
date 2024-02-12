@@ -19,7 +19,7 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
   // address
   var headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
   
-  // unblocck stack
+  // unblock stack
   if (stack.blocked && !address.blocked) stack.blocked = false
   
   if (address.blocked || address.status === "Start" || address.status === "End") {
@@ -31,7 +31,7 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
     // get await index for splicing
     var index = stack.addresses.findIndex(waitingAddress => waitingAddress.id === address.id)
     if (index !== -1) stack.addresses.splice(index, 1)
-
+    
     // pass underscores to waits
     if (address.hasWaits && headAddress.params) headAddress.params.__ = my__
     
