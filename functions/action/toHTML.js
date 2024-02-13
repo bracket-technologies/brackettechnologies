@@ -120,7 +120,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
   } else return removeView({ _window, stack, id })
 
   // indexing
-  var index = indexing({ views, id, view, parent })
+  var index = parent ? indexing({ views, id, view, parent }) : 0
 
   // init element
   view.__element__ = view.__element__ || { text, id, innerHTML, index }

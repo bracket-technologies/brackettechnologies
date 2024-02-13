@@ -7,21 +7,13 @@ const { toAwait } = require("./toAwait");
 
 require("dotenv").config();
 
-const initViews = ({ _window, __ }) => {
+const initDocument = ({ _window, __ }) => {
 
     _window.views = {
         document: {
+            __,
             id: "document",
-            __,
-            __indexing__: 0,
-            __childrenRef__: [],
-            __viewPath__: []
-        },
-        body: {
-            id: "body",
             view: "View",
-            __,
-            __parent__: "document",
             __indexing__: 0,
             __childrenRef__: [],
             __viewPath__: [],
@@ -30,7 +22,7 @@ const initViews = ({ _window, __ }) => {
     }
 }
 
-const getProject = async ({ _window, req }) => {
+const getViews = async ({ _window, req }) => {
 
     var { global } = _window
     var promises = []
@@ -79,12 +71,13 @@ const renderer = ({ _window, req, res, stack, __ }) => {
     if (!global.data.view[page]) return res.send("Page not found!")
 
     // documenter
-    addresser({ _window, id: "document", type: "function", file: "render", function: "documenter", stack, renderer: true, __ }).address
+    var address = addresser({ _window, id: "document", type: "function", file: "render", function: "documenter", stack, renderer: true, __ }).address
 
-    var address = addresser({ _window, id: "document", type: "function", file: "logger", function: "timerLogger", stack, __, data: { key: "render", end: true } }).address
+    address = addresser({ _window, id: "document", type: "function", file: "logger", function: "timerLogger", headAddress: address, stack, __, data: { key: "render", end: true } }).address
+
+    address = addresser({ _window, status: "Start", id: "document", type: "function", function: "toView", headAddress: address, stack, renderer: true, __ }).address
     
-    // render
-    toView({ _window, req, res, stack, __, address, data: { view: views.body, parent: "document" } })
+    toView({ _window, req, res, stack, __, address, data: { view: views.document } })
 }
 
 const documenter = async ({ _window, res, stack, address }) => {
@@ -186,20 +179,22 @@ const documenter = async ({ _window, res, stack, address }) => {
     )
 }
 
-const render = async ({ _window, req, res, stack }) => {
-    
-    var __ = _window.global.__
+const render = async ({ _window, req, res, stack, data = { view: "document" } }) => {
 
-    timerLogger({ _window, data: { key: "documentation", start: true } })
+    if (view === "document") {
     
-    initViews({ _window })
-    await getProject({ _window, req, res, stack, __ })
-    
-    if (res.headersSent) return
-    renderer({ _window, req, res, stack, __ })
+        var __ = _window.global.__
+        timerLogger({ _window, data: { key: "documentation", start: true } })
+        
+        initDocument({ _window })
+        await getViews({ _window, req, res, stack, __ })
+        
+        if (res.headersSent) return
+        renderer({ _window, req, res, stack, __ })
+    }
 }
 
-module.exports = { getProject, initViews, renderer, render, documenter }
+module.exports = { getViews, initDocument, renderer, render, documenter }
 
 /* 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js"></script>

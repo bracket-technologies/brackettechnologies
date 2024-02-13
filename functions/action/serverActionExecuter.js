@@ -47,7 +47,7 @@ const executeServerAction = ({ _window, lookupActions = [], stack, action, id, r
   // map action
   if (typeof string === "object") {
     string = string._ || ""
-    lookupActions.unshift({ view: "_project_", actionPath: [name] })
+    lookupActions.unshift({ view: "_project_", path: [name] })
   }
 
   var address = addresser({ _window, stack, status: "Start", interpreting: true, action: name + "()", __, id, lookupActions }).address

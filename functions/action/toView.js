@@ -20,7 +20,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
   var global = _window ? _window.global : window.global
 
   // init view
-  var { id, view } = initView({ views, global, id, parent: data.parent, ...(data.view || {}), __lookupActions__: lookupActions, __ })
+  var { id, view } = initView({ views, global, id, parent: data.parent, ...(data.view || {}), __ })
 
   // no view
   if (!view.view) return removeView({ _window, lookupActions, stack, id, address, __ })

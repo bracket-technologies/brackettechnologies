@@ -1838,7 +1838,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
         } else if (k0 === "action()") {
 
             var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { path: data.action.split("."), view: data.view, data: data.data }, condition, object })
+            if (typeof data.path === "string") data.path = data.path.split(".")
+            toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { path: data.path || data.action.split("."), view: data.view, data: data.data }, condition, object })
 
         } else if (k0 === "getDeepChildrenId()") {
 
@@ -2345,6 +2346,14 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             if (lang === "ar") range = range.map(num => num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
             answer = range
 
+        } else if (k0 === "render()") {
+
+            if (!o.__view__) return
+            
+            var { address, data } = addresser({ _window, stack, args, status: "Start", type: "render", dataInterpretAction: "toValue", interpreting: true, renderer: true, id: o.id, action: "render()", object, lookupActions, __, id })
+            
+            require('./render').render({ _window, req, res, id, stack, data: { view: data || "document" } })
+
         } else if (k0 === "view()") {
 
             if (!o.__view__) return
@@ -2559,7 +2568,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             answer = o[k0.slice(0, -2)](...data)
 
-        } else if (k0.slice(-2) === "()") { // action()
+        } else if (k0.slice(-2) === "()") { // action_name()
 
             if (k0.charAt(0) === "@" && k0.length == 6) k0 = toValue({ req, res, _window, id, e, __, data: k0, object })
 

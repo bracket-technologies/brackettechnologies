@@ -2,7 +2,7 @@ const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const initView = ({ views, global, id = generate(), doc, children = [], parent, __parent__, __status__ = "Loading", __dataPath__, __lookupActions__ = [], __controls__ = [], ...data }) => {
+const initView = ({ views, global, id = generate(), doc, children = [], parent, __parent__, __status__ = "Loading", __dataPath__, __controls__ = [], ...data }) => {
 
     var parentView = (parent || __parent__ ? views[parent || __parent__] : {}) || {}
 
@@ -11,7 +11,6 @@ const initView = ({ views, global, id = generate(), doc, children = [], parent, 
         id,
         children: toArray(children),
         doc: doc || parentView.doc,
-        __lookupActions__,
         __status__,
         __view__: true,
         __parent__: parent || __parent__,
@@ -24,10 +23,11 @@ const initView = ({ views, global, id = generate(), doc, children = [], parent, 
         __rendered__: false,
         __initialIndex__: parentView.__indexing__ || 0,
         __viewPath__: [...(data.__viewPath__ || [])],
+        __lookupActions__: [...(data.__lookupActions__ || parentView.__lookupActions__ || [])],
         __customViewPath__: [...(data.__customViewPath__ || parentView.__customViewPath__ || [])]
     }
 
-    parentView.__indexing__ += 1
+    if (parentView.__indexing__ > -1) parentView.__indexing__ += 1
 
     return { id, view: views[id] }
 }

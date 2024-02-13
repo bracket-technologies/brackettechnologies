@@ -124,7 +124,7 @@ const Input = (component) => {
         }]
       }],
       "__controls__": [{
-        "event": "click:body?style().border=if():[clicked().outside():[().el()]]:[1px solid #ccc]:[2px solid #008060]?!contains():[clicked()];!droplist.contains():[clicked()]"
+        "event": "click:document?style().border=if():[clicked().outside():[().el()]]:[1px solid #ccc]:[2px solid #008060]?!contains():[clicked()];!droplist.contains():[clicked()]"
       }, {
         "event": "click?getInput().focus()?!getInput().focus"
       }]
@@ -254,7 +254,7 @@ const Input = (component) => {
         __controls__: [...__controls__, {
           event: `focus?if():[__labeled__]:[if():[!():${__labeled__}.contains():[clicked()]]:[if():${duplicatable ? true : false}:[parent().click()]:[2ndChild().click()]]]:[if():[!():${id}.contains():[clicked()]]:[click():[__droplistPositioner__:().del();]]]?!preventDefault`
         }, {
-          event: `blur?():body.click()`
+          event: `blur?():document.click()`
         }, {
           event: "select;mousedown?preventDefault()"
         }, {

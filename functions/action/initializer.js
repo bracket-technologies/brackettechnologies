@@ -47,16 +47,10 @@ const initializer = ({ id, req, res, stack, path, data: { db, storage, rdb } }) 
         },
         data: {
             view: {
-                root: {
-                    view: "View:root",
+                route: {
+                    view: "Action:route",
                     children: [{
-                        view: "manifest:().page"
-                    }]
-                },
-                middleware: {
-                    view: "View:middleware",
-                    children: [{
-                        view: "manifest:().action"
+                        view: "[manifest:().action]()"
                     }]
                 }
             },

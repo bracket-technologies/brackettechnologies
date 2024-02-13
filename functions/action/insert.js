@@ -68,7 +68,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
     }
     
     // inserted view params
-    passData = { __: view.__, lookupActions: view.__lookupActions__, __viewPath__: [...view.__viewPath__], __customViewPath__: [...view.__customViewPath__] }
+    passData = { __: view.__, lookupActions: view.__lookupActions__, __viewPath__: [...view.__viewPath__], __customViewPath__: [...view.__customViewPath__], __lookupActions__: [...view.__lookupActions__] }
     
     // loop
     if (view.__loop__ && view.__mount__) passData.__ = [insert.data, ...passData.__.slice(1)]
@@ -81,7 +81,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
     // we need it for nowing path for update
     var genView = generate()
     global.data.view[genView] = clone(view)
-    passData = { __viewPath__: [genView], __customViewPath__: [...parent.__customViewPath__, genView] }
+    passData = { __viewPath__: [genView], __customViewPath__: [...parent.__customViewPath__, genView], __lookupActions__: [...parent.__lookupActions__] }
   }
 
   if (typeof view !== "object") return console.log("Missing View!")

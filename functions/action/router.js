@@ -50,9 +50,6 @@ module.exports = (data) => {
     // action
     if (path[1] === "action") return serverActionExecuter({ _window, req, res, id, stack })
 
-    // set stack type
-    stack.type = "render"
-
     // render
     return render({ _window, req, res, id, stack })
   })

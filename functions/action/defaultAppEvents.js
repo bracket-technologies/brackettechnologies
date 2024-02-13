@@ -6,7 +6,7 @@ const defaultAppEvents = () => {
     var views = window.views
     var global = window.global
 
-    // body default event listeners
+    // document default event listeners
 
     // clicked element
     document.addEventListener('click', e => {
@@ -14,7 +14,7 @@ const defaultAppEvents = () => {
         // droplist
         if (global.__clicked__ && views.droplist.__element__.contains(global.__clicked__.__element__)) global["droplist-txt"] = global.__clicked__.__element__.innerHTML
 
-        // body click events
+        // document click events
         Object.entries(global.__events__).map(([id, event]) => { views[id] && event.click && event.click.map(data => (global.__clicked__ && (global.__clicked__.id === data.eventID || views[data.eventID].__element__.contains(global.__clicked__.__element__))) && eventExecuter({ ...data, e }) ) })
     })
 
@@ -23,7 +23,7 @@ const defaultAppEvents = () => {
 
         global.__mousemoved__ = views[((e || window.event).target || e.currentTarget).id]
 
-        // body mousemove events
+        // document mousemove events
         Object.entries(global.__events__).map(([id, event]) => views[id] && event.mousemove && event.mousemove.map(data => (global.__mousemoved__ && (global.__mousemoved__.id === data.eventID || views[data.eventID].__element__.contains(global.__mousemoved__.__element__))) && eventExecuter({ ...data, e })))
     })
 
@@ -32,7 +32,7 @@ const defaultAppEvents = () => {
         global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
         global.__mouseentered__ = views[((e || window.event).target || e.currentTarget).id]
 
-        // body mouseenter events
+        // document mouseenter events
         Object.entries(global.__events__).map(([id, event]) => views[id] && event.mouseenter && event.mouseenter.map(data => (global.__mouseentered__ && (global.__mouseentered__.id === data.eventID || views[data.eventID].__element__.contains(global.__mouseentered__.__element__))) && eventExecuter({ ...data, e })))
     })
 
@@ -41,7 +41,7 @@ const defaultAppEvents = () => {
         global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
         global.__mouseleaved__ = views[((e || window.event).target || e.currentTarget).id]
 
-        // body mouseleav events
+        // document mouseleav events
         Object.entries(global.__events__).map(([id, event]) => views[id] && event.mouseleave && event.mouseleave.map(data => (global.__mouseleaved__ && (global.__mouseleaved__.id === data.eventID || views[data.eventID].__element__.contains(global.__mouseleaved__.__element__))) && eventExecuter({ ...data, e })))
     })
 
@@ -50,7 +50,7 @@ const defaultAppEvents = () => {
         global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
         global.__mousedowned__ = views[((e || window.event).target || e.currentTarget).id]
 
-        // body mousedown events
+        // document mousedown events
         Object.entries(global.__events__).map(([id, event]) => views[id] && event.mousedown && event.mousedown.map(data => (global.__mousedowned__ && (global.__mousedowned__.id === data.eventID || views[data.eventID].__element__.contains(global.__mousedowned__.__element__))) && eventExecuter({ ...data, e })))
     })
 
@@ -59,7 +59,7 @@ const defaultAppEvents = () => {
         global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
         global.__mouseuped__ = views[((e || window.event).target || e.currentTarget).id]
 
-        // body mouseup events
+        // document mouseup events
         Object.entries(global.__events__).map(([id, event]) => views[id] && event.mouseup && event.mouseup.map(data => (global.__mouseuped__ && (global.__mouseuped__.id === data.eventID || views[data.eventID].__element__.contains(global.__mouseuped__.__element__))) && eventExecuter({ ...data, e })))
     })
 
@@ -90,7 +90,7 @@ const defaultAppEvents = () => {
         if (views.droplist.__element__.style.pointerEvents === "auto") {
 
             var string = "():droplist.mouseleave()?!():droplist.mouseentered"
-            lineInterpreter({ id: "body", e, data: {string} })
+            lineInterpreter({ id: "document", e, data: {string} })
         }
 
         Object.entries(global.__events__).map(([id, event]) => views[id] && event.scroll && event.scroll.map(data => (global.__scrolled__ && (global.__scrolled__.id === data.eventID || views[data.eventID].__element__.contains(global.__scrolled__.__element__))) && eventExecuter({ ...data, e })))
@@ -115,7 +115,7 @@ const defaultAppEvents = () => {
     // show icons
     window.addEventListener("load", () => {
 
-        var icons = views.body.__html__.split("id='").slice(1).map((id) => id.split("'")[0]).filter(id => views[id] && views[id].__name__ === "Icon").map(id => views[id])
+        var icons = views.document.__html__.split("id='").slice(1).map((id) => id.split("'")[0]).filter(id => views[id] && views[id].__name__ === "Icon").map(id => views[id])
 
         icons.map(view => {
             if (view.__element__) {

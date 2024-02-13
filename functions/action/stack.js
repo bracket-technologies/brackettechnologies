@@ -18,7 +18,7 @@ const stacker = ({ _window, id: viewID, path = [], string = "", headAddress, hea
     addresses: toArray(headAddress),
     logs: [],
     returns: [],
-    type: path[1] || ""
+    type: path[1] === "action" ? "action" : "render"
   }
 
   if (headStack) stack.headStackID = headStack.id

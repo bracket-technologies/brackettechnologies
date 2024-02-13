@@ -4,62 +4,68 @@ const { addresser } = require("./addresser")
 // const actions = require("./actions.json")
 const { toAwait } = require("./toAwait")
 
-const toAction = ({ _window, id, req, res, __, e, data: { action, path: actionPath, view: actionView, data: passedData }, condition, mount, toView, object, lookupActions = {}, stack }) => {
+const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: actionView, data: passedData }, condition, mount, toView, object, lookupActions = {}, stack }) => {
 
   var global = _window ? _window.global : window.global
   var views = _window ? _window.views : window.views
   var view = views[id], asynchronous = false, actionFound = false
-  var action0 = actionPath ? (actionPath.at(-1) + "()") : action.split(":")[0]
+  var action0 = path ? (path.at(-1) + "()") : action.split(":")[0]
 
-  if (actionPath || (action0.slice(-2) === "()" && action0 !== "()" && action0 !== "_()" && !require("./actions.json").includes(action0) && action0.charAt(0) !== "@")) {
+  if (path || (action0.slice(-2) === "()" && action0 !== "()" && action0 !== "_()" && !require("./actions.json").includes(action0) && action0.charAt(0) !== "@")) {
     
     var newLookupActions
-    var myCustomViews = (view || {}).__customViewPath__ || []
 
-    if (actionPath) {
+    // call by action():[path;view;data]
+    if (path) {
 
-      actionView = actionView || view.__customViewPath__.at(-1)
+      var viewLookUpActions = [...view.__lookupActions__, { type: "view", name: actionView }]
 
-      var actions = (actionView === "_project_" ? global.data.project.functions : (global.data.view[actionView] || {}).functions) || {}
-      actionFound = clone(actionPath).reduce((o, k) => o && o[k], actions)
+      clone(viewLookUpActions).reverse().map((viewAction, i) => {
 
-      if (actionFound) {
+        var actions = {}
+        if (viewAction.type === "view") actions = (global.data.view[viewAction.name] || {}).__props__
+        else if (viewAction.type === "action") actions = views[viewAction.name]
 
-        if (typeof actionFound === "object" && actionFound._) {
+        actionFound = clone(path).reduce((o, k) => o && o[k], actions)
 
-          actionFound = actionFound._ || ""
-          newLookupActions = { view: actionView, actionPath }
+        if (actionFound) {
 
-        } else if (actionPath.length > 1) newLookupActions = { view: actionView, actionPath: actionPath.slice(0, -1) }
-        
-        if (toArray(lookupActions).length > 1 && newLookupActions) newLookupActions = [newLookupActions, ...toArray(lookupActions)]
+          if (typeof actionFound === "object" && actionFound._) {
 
-        action = action0
+            actionFound = actionFound._ || ""
+            newLookupActions = { view: viewAction, path }
 
-      } else return
+          } else if (path.length > 1) newLookupActions = { view: viewAction, path: path.slice(0, -1) }
+          
+          if (toArray(lookupActions).length > 1 && newLookupActions) newLookupActions = [newLookupActions, ...toArray(lookupActions)]
+
+          action = action0
+
+        } else return
+      })
     }
 
     // lookup through parent map actions
     if (!actionFound) {
       toArray(lookupActions).map((lookupActions, indexx) => {
 
-        if (lookupActions.actionPath) {
+        if (lookupActions.path) {
           
-          var actionPath = lookupActions.actionPath
-          clone(actionPath).reverse().map((x, i) => {
+          var path = lookupActions.path
+          clone(path).reverse().map((x, i) => {
 
             if (!actionFound) {
               
               var actions = (lookupActions.view === "_project_" ? global.data.project.functions : global.data.view[lookupActions.view].functions) || {}
-              actionFound = Object.keys(clone(actionPath).slice(0, actionPath.length - i).reduce((o, k) => o && o[k], actions) || {}).find(actionPath => actionPath === action0.slice(0, -2))
+              actionFound = Object.keys(clone(path).slice(0, path.length - i).reduce((o, k) => o && o[k], actions) || {}).find(path => path === action0.slice(0, -2))
 
               if (actionFound) {
 
-                actionFound = actionPath.slice(0, actionPath.length - i).reduce((o, k) => o[k], actions)[actionFound]
+                actionFound = path.slice(0, path.length - i).reduce((o, k) => o[k], actions)[actionFound]
                 if (typeof actionFound === "object" && actionFound._) {
 
                   actionFound = actionFound._ || ""
-                  newLookupActions = { view: lookupActions.view, actionPath: [...actionPath, action0.slice(0, -2)] }
+                  newLookupActions = { view: lookupActions.view, path: [...path, action0.slice(0, -2)] }
                   if (toArray(lookupActions).length > 1) newLookupActions = [newLookupActions, ...toArray(lookupActions).slice(indexx)]
 
                 } else if (toArray(lookupActions).length > 1) toArray(lookupActions).slice(indexx)
@@ -70,9 +76,10 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path: actionPa
       })
     }
 
-    // lookup through parent views actions => server actions
+    // lookup through head customView actions => server actions
     if (!actionFound) {
 
+      var viewLookUpActions = view.__lookupActions__ || []
       clone(["_project_", ...myCustomViews]).reverse().map((myview, i) => {
 
         if (!actionFound) {
@@ -94,7 +101,7 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path: actionPa
               if (typeof actions[actionFound] === "object") {
 
                 actionFound = actions[actionFound]._ || ""
-                newLookupActions = { view: myview, actionPath: [action0.slice(0, -2)] }
+                newLookupActions = { view: myview, path: [action0.slice(0, -2)] }
 
               } else actionFound = actions[actionFound]
             }
