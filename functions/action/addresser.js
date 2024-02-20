@@ -2,15 +2,18 @@ const { clone } = require("./clone");
 const { generate } = require("./generate");
 const { lineInterpreter } = require("./lineInterpreter");
 
-const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", function: func, newLookupActions, headAddressID, headAddress = {}, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition }) => {
+const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, params, function: func, newLookupActions, headAddressID, headAddress = {}, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition }) => {
     
     // find headAddress by headAddressID
     if (headAddressID && !headAddress.id) headAddress = stack.addresses.find(headAddress => headAddress.id === headAddressID)
 
-    // address waits
-    if (args[2]) headAddress = addresser({ _window, stack, req, res, e, type: "line", action: action + "::[...]", data: { string: args[2] }, headAddress, blockable, __, id, object, mount, lookupActions, condition }).address
+    // waits
+    waits = waits || args[2], params = params || args[1] || ""
 
-    var address = { id: generate(), stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: args[2] ? true : false, headAddressID: headAddress.id, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
+    // address waits
+    if (waits) headAddress = addresser({ _window, stack, req, res, e, type: "waits", action: action + "::[...]", data: { string: waits }, headAddress, blockable, __, id, object, mount, lookupActions, condition }).address
+
+    var address = { id: generate(), stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: waits ? true : false, headAddressID: headAddress.id, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
     var stackLength = stack.addresses.length
 
     // find and lock the head address
@@ -46,7 +49,7 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
     }
 
     // data
-    var { data, executionDuration, action: interpretAction } = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: { string: args[1] }, action: dataInterpretAction })
+    var { data, executionDuration, action: interpretAction } = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: { string: params }, action: dataInterpretAction })
     address.paramsExecutionDuration = executionDuration
 
     // pass params
@@ -58,7 +61,7 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
     if (action === "search()" || action === "erase()" || action === "save()") address.action += ":" + data.collection
     
     // log
-    if (!newLookupActions) stack.logs.push(`${stack.logs.length} ${address.status} ${type.toUpperCase()} ${address.id} ${address.index} ${address.action} => ${headAddress.id || ""} ${headAddress.index || 0} ${headAddress.action || ""}`)
+    if (!newLookupActions) stack.logs.push(`${stack.logs.length} ${address.status} ${type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action}${headAddress.id ? ` => ${headAddress.id || ""} ${headAddress.index !== undefined ? headAddress.index : ""} ${headAddress.type === "function" ? headAddress.function : headAddress.action || ""}` : ""}`)
 
     return { address, data, action: interpretAction, __: [...(data !== undefined ? [data] : []), ...__] }
 }
@@ -142,7 +145,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
 }
 
 const printAddress = ({ stack, address, headAddress }) => {
-    stack.logs.push(`${stack.logs.length} ${address.status}${address.status === "End" ? (" (" + ((new Date()).getTime() - address.executionStartTime) + ") ") : " "}${address.type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action} => ${headAddress.id || ""} ${headAddress.index || 0} ${headAddress.action || ""}`)
+    stack.logs.push(`${stack.logs.length} ${address.status}${address.status === "End" ? (" (" + ((new Date()).getTime() - address.executionStartTime) + ") ") : " "}${address.type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action}${headAddress.id ? ` => ${headAddress.id || ""} ${headAddress.index !== undefined ? headAddress.index : ""} ${headAddress.type === "function" ? headAddress.function : headAddress.action || ""}` : ""}`)
 }
 
 module.exports = { addresser, printAddress, endAddress }

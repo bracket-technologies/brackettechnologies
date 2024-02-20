@@ -6,9 +6,9 @@ var getJsonFiles = ({ search = {} }) => {
   
   var data = {},
   collection = search.collection, 
-  doc = search.document || search.doc, 
-  docs = search.documents || search.docs, 
-  fields = search.fields || search.field, 
+  doc = search.doc, 
+  docs = search.docs, 
+  fields = search.field, 
   limit = search.limit || 100,
   path = `database/${collection}`
   
@@ -131,7 +131,7 @@ const postJsonFiles = ({ save = {} }) => {
   
   var data = save.data,
   collection = save.collection, 
-  doc = save.document || save.doc, 
+  doc = save.doc, 
   path = `database/${collection}`
   
   // create folder if it doesnot exist

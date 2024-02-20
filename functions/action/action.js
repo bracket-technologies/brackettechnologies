@@ -4,7 +4,7 @@ const action = async ({ _window, lookupActions, stack, address, id, req, __, res
 
   // headers
   var headers = action.headers || {}
-  var store = action.store || "action"
+  var store = action.store || "route/action"
   headers.project = headers.project || global.manifest.projectID
 
   // headers

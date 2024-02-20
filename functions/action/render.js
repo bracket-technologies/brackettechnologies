@@ -1,86 +1,48 @@
 const { toView } = require("./toView");
-const { getJsonFiles } = require("./jsonFiles");
-const { toArray } = require("./toArray");
 const { addresser } = require("./addresser");
-const { timerLogger } = require("./logger");
+const { logger } = require("./logger");
 const { toAwait } = require("./toAwait");
+const { getData } = require("./database");
 
 require("dotenv").config();
 
-const initDocument = ({ _window, __ }) => {
+const render = async ({ _window, id, req, res, stack, address, lookupAction, data }) => {
 
-    _window.views = {
-        document: {
-            __,
-            id: "document",
-            view: "View",
-            __indexing__: 0,
-            __childrenRef__: [],
-            __viewPath__: [],
-            children: [...toArray((_window.global.data.project.browser || {}).children), { view: "root" }]
-        }
+    var global = _window.global
+    var __ = global.__
+
+    // get route view from database
+    if (data.view === "route") {
+
+        // views
+        var { data: view } = await getData({ _window, req, res, search: { collection: "view", doc: "route" } })
+        global.data.view[view.id] = view
     }
-}
-
-const getViews = async ({ _window, req }) => {
-
-    var { global } = _window
-    var promises = []
-    timerLogger({ _window, data: { key: "view", start: true } })
-    timerLogger({ _window, data: { key: "collection", start: true } })
-
-    // views
-    promises.push(req.db
-        .collection(`view-${global.data.project.id}`)
-        .get()
-        .then(q => {
-            q.forEach(doc => {
-                global.data.view[doc.id] = { ...doc.data(), id: doc.id }
-            })
-            timerLogger({ _window, data: { key: "view", end: true } })
-        }))
-
-    // collections
-    promises.push(req.db
-        .collection(`collection-${global.data.project.id}`)
-        .get()
-        .then(q => {
-            q.forEach(doc => {
-                global.data.collection[doc.id] = { ...doc.data(), id: doc.id }
-            })
-            timerLogger({ _window, data: { key: "collection", end: true } })
-        }))
-
-    await Promise.all(promises)
-
-    // get shared public views
-    Object.entries(getJsonFiles({ search: { collection: "public" } })).map(([doc, data]) => {
-        
-        if (global.data.view[doc]) return
-        global.data.view[doc] = { ...data, id: doc }
-        global.data.view.root.children.unshift({ view: doc })
-    })
-}
-
-const renderer = ({ _window, req, res, stack, __ }) => {
-
-    var { global, views } = _window, page = global.manifest.page
-
-    timerLogger({ _window, data: { key: "render", start: true } })
-
-    if (!global.data.view[page]) return res.send("Page not found!")
-
-    // documenter
-    var address = addresser({ _window, id: "document", type: "function", file: "render", function: "documenter", stack, renderer: true, __ }).address
-
-    address = addresser({ _window, id: "document", type: "function", file: "logger", function: "timerLogger", headAddress: address, stack, __, data: { key: "render", end: true } }).address
-
-    address = addresser({ _window, status: "Start", id: "document", type: "function", function: "toView", headAddress: address, stack, renderer: true, __ }).address
     
-    toView({ _window, req, res, stack, __, address, data: { view: views.document } })
+    // view does not exist
+    if (!data.view || !global.data.view[data.view]) return res.send("Page not found!")
+
+    // view
+    var view = global.data.view[data.view]
+
+    // log start render
+    if (data.view === "route") {
+
+        logger({ _window, data: { key: "render", start: true } })
+
+        // address: log end render
+        address = addresser({ _window, id, type: "function", file: "logger", function: "logger", headAddress: address, stack, __, data: { key: "render", end: true } }).address
+
+        view = { ...view, __customView__: "route", __viewPath__: ["route"], __customViewPath__: ["route"], __lookupViewActions__: [{ type: "customView", view: "route" }] }
+    }
+
+    // address: start toView
+    address = addresser({ _window, id, type: "function", status: "Start", function: "toView", headAddress: address, stack, renderer: true, __ }).address
+
+    toView({ _window, req, res, stack, __, address, lookupAction, data: { view, parent: data.parent } })
 }
 
-const documenter = async ({ _window, res, stack, address }) => {
+const document = async ({ _window, res, stack, address, __ }) => {
 
     var { global, views } = _window
     var page = global.manifest.page
@@ -108,17 +70,25 @@ const documenter = async ({ _window, res, stack, address }) => {
     // logs
     global.__server__.logs = stack.logs
 
-    timerLogger({ _window, data: { key: "documentation", end: true } })
+    logger({ _window, data: { key: "document", end: true } })
 
     toAwait({ _window, stack, address })
+
+    // clear secure view actions
+    Object.values(global.data.view).map(view => {
+        if (view._secure_) {
+            view.view = ""
+            view.children = []
+            clearActions(view.functions)
+        }
+    })
 
     res.send(
         `<!DOCTYPE html>
         <html lang="${language}" dir="${direction}" class="html">
             <head>
                 <!-- css -->
-                <link rel="stylesheet" href="/resource/index.css"/>
-                <link rel="manifest" href="/resource/manifest.json" mimeType="application/json; charset=UTF-8"/>
+                <link rel="stylesheet" href="/route/resource/index.css"/>
                 
                 <!-- Font -->
                 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -150,17 +120,17 @@ const documenter = async ({ _window, res, stack, address }) => {
                 ${global.__updateLocation__ ? `<script defer>window.history.replaceState({}, "${title}", "/${page === "main" ? "" : page}")</script>` : ""}
                 
                 <!-- head tags -->
-                ${global.__html__.head || ""}
+                ${global.__document__.head || ""}
             </head>
             <body>
                 <!-- body tags -->
-                ${global.__html__.body || ""}
+                ${global.__document__.body || ""}
 
                 <!-- html -->
-                ${views.root.__html__ || ""}
+                ${views.body.__html__ || ""}
 
                 <!-- engine -->
-                <script src="/resource/engine.js"></script>
+                <script src="/route/resource/engine.js"></script>
 
                 <!-- google icons -->
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"/>
@@ -179,22 +149,15 @@ const documenter = async ({ _window, res, stack, address }) => {
     )
 }
 
-const render = async ({ _window, req, res, stack, data = { view: "document" } }) => {
-
-    if (view === "document") {
-    
-        var __ = _window.global.__
-        timerLogger({ _window, data: { key: "documentation", start: true } })
-        
-        initDocument({ _window })
-        await getViews({ _window, req, res, stack, __ })
-        
-        if (res.headersSent) return
-        renderer({ _window, req, res, stack, __ })
-    }
+const clearActions = (data) => {
+    if (typeof data !== "object") return
+    Object.entries(data || {}).map(([action, mapAction]) => {
+        if (typeof mapAction === "object") return clearActions(mapAction)
+        data[action] = ""
+    })
 }
 
-module.exports = { getViews, initDocument, renderer, render, documenter }
+module.exports = { render, document, clearActions }
 
 /* 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js"></script>

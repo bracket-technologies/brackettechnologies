@@ -2,7 +2,7 @@ const { decode } = require("./decode")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const stacker = ({ _window, id: viewID, path = [], string = "", headAddress, headStack, ...data }) => {
+const openStack = ({ _window, id: viewID, string = "", headAddress, headStack, ...data }) => {
 
   var stack = {
     ...data,
@@ -17,8 +17,7 @@ const stacker = ({ _window, id: viewID, path = [], string = "", headAddress, hea
     executionStartTime: (new Date()).getTime(),
     addresses: toArray(headAddress),
     logs: [],
-    returns: [],
-    type: path[1] === "action" ? "action" : "render"
+    returns: []
   }
 
   if (headStack) stack.headStackID = headStack.id
@@ -56,4 +55,4 @@ const endStack = ({ _window, stack, end }) => {
   }
 }
 
-module.exports = { stacker, clearStack, endStack }
+module.exports = { openStack, clearStack, endStack }

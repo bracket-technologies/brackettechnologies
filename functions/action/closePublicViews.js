@@ -12,7 +12,7 @@ const closePublicViews = ({ _window, id, __, lookupActions }) => {
     lineInterpreter({ id: "tooltip", data: { string: "clearTimer():[__tooltipTimer__:()];__tooltipTimer__:().del();():tooltip.style().opacity=0" }, __, lookupActions })
 
     // close mininote
-    lineInterpreter({ id: "root", data: { string: "():mininote.style():[opacity=0;transform=scale(0)]" }, __, lookupActions })
+    lineInterpreter({ id: "mininote", data: { string: "():mininote.style():[opacity=0;transform=scale(0)]" }, __, lookupActions })
 }
 
 module.exports = { closePublicViews }

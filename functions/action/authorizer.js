@@ -1,4 +1,4 @@
-const { timerLogger } = require("./logger")
+const { logger } = require("./logger")
 
 module.exports = {
   authorizer: async ({ _window, req }) => {
@@ -7,7 +7,7 @@ module.exports = {
     success, message, error,
     global = _window.global
 
-    timerLogger({ _window, data: { key: "authorization", start: true } })
+    logger({ _window, data: { key: "authorization", start: true } })
     
     await ref.where("domains", "array-contains", global.manifest.host).get().then(doc => {
       
@@ -15,15 +15,16 @@ module.exports = {
   
         success = true
         global.data.project = { ...doc.docs[0].data(), id: doc.docs[0].id }
-        global.__serverActions__ = Object.keys(global.data.project.functions || {})
+        global.data.views = global.data.project.datastore.views
+        global.data.collections = global.data.project.datastore.collections
         global.manifest.projectID = global.data.project.id
-        message = "Project found successfully!"
+        message = "You are authorized!"
 
       } else {
 
         success = false
         message = req.headers['x-forwarded-host'] + " project does not exist!"
-        error = "Project was not found!"
+        error = "You are not authorized!"
       }
   
     }).catch(err => {
@@ -34,7 +35,7 @@ module.exports = {
         console.log(err);
     })
     
-    timerLogger({ _window, data: { key: "authorization", end: true } })
+    logger({ _window, data: { key: "authorization", end: true } })
     
     return { success, message, error }
   }

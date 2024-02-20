@@ -23,7 +23,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   var doc = view.droplist.doc || view.doc
 
   // init droplist
-  var droplistView = { ...global.data.view.droplist, children: [], __dataPath__, doc, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["droplist"], __lookupActions__: [...view.__lookupActions__] }
+  var droplistView = { ...global.data.view.droplist, children: [], __dataPath__, doc, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["route", "document", "root", "droplist"], __lookupViewActions__: [...view.__lookupViewActions__] }
 
   // input id
   var { data: inputID } = lineInterpreter({ id, data: { string: "input().id||().id" } })

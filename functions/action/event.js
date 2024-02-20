@@ -1,5 +1,5 @@
 const { toCode } = require("./toCode")
-const { stacker, endStack } = require("./stack")
+const { openStack, endStack } = require("./stack")
 const { lineInterpreter } = require("./lineInterpreter")
 const { watch } = require("./watch")
 const { clone } = require("./clone")
@@ -17,7 +17,7 @@ const addEventListener = ({ event, id, __, stack, lookupActions, address, eventI
 
   // inherit from view
   if (!__) __ = view.__
-  if (!lookupActions) lookupActions = view.__lookupActions__
+  if (!lookupActions) lookupActions = view.__lookupViewActions__
 
   var mainString = toCode({ id, string: toCode({ id, string: event, start: "'" }) })
 
@@ -42,7 +42,7 @@ const addEventListener = ({ event, id, __, stack, lookupActions, address, eventI
       
       // view doesnot exist
       if (!event || !views[eventID] || !views[id]) return
-  
+
       // loaded event
       if (event === "loaded") return setTimeout(eventExecuter({ string, event, eventID, id, address, stack, lookupActions, __ }), 0)
       
@@ -74,10 +74,10 @@ const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: he
     if (id !== "droplist" && eventID === "droplist" && (!global.__droplistPositioner__ || !views[global.__droplistPositioner__] || !views[global.__droplistPositioner__].__element__.contains(view.__element__))) return
     
     // init stack
-    var stack = stacker({ event, id, eventID, string, headStack, headAddress })
+    var stack = openStack({ event, id, eventID, string, headStack, headAddress })
 
     // address line
-    var address = addresser({ stack, id, status: "Start", type: "LINE", event: "click", interpreting: true, lookupActions, __, headAddress: address }).address
+    var address = addresser({ stack, id, status: "Start", type: "line", event: "click", interpreting: true, lookupActions, __, headAddress: address }).address
 
     // main params
     var data = lineInterpreter({ lookupActions, stack, id, e, address, data: { string, action: "toParam" }, __, mount: true })

@@ -29,6 +29,7 @@ const { decode } = require("./decode")
 const { toAwait } = require("./toAwait")
 const { searchParams } = require("./searchParams")
 const { fileReader } = require("./fileReader")
+const { database } = require("./database")
 
 const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: _object, path, pathJoined, value, key, object } }) => {
 
@@ -521,7 +522,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "click()") {
  
-            if (!o.__view__) return
+            if (!o.__view__ || !o.__rendered__) return
 
             if (_window) return view.__controls__.push({
                 event: `loaded?${pathJoined}`
@@ -950,27 +951,26 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 o.splice(o.length, 0, arg)
             })
 
-        } else if (k0 === "pull()") { // pull by index or by conditions
+        } else if (k0 === "pullIndex()") { // pull by index
 
             // if no index pull the last element
-            var lastIndex = 1, firstIndex
-            if (!isParam({ _window, id, string: args[1] })) firstIndex = args[1] !== undefined ? toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack }) : 0
+            var lastIndex = 1, firstIndex = 0
+            if (args[1]) firstIndex = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack })
             if (args[2]) lastIndex = toValue({ _window, id, data: args[2], __, e, object, lookupActions, stack })
-
-            if (typeof firstIndex !== "number") { // first is a condition
-
-                var items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __, lookupActions, stack }))
-
-                items.filter(data => data !== undefined && data !== null).map(_item => {
-                    var _index = o.findIndex(item => isEqual(item, _item))
-                    if (_index !== -1) o.splice(_index, 1)
-                })
-
-                return answer = o
-            }
 
             o.splice(firstIndex, lastIndex || 1)
             answer = o
+
+        } else if (k0 === "pull()") { // pull by conditions
+
+            var items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __, lookupActions, stack }))
+
+            items.filter(data => data !== undefined && data !== null).map(_item => {
+                var _index = o.findIndex(item => isEqual(item, _item))
+                if (_index !== -1) o.splice(_index, 1)
+            })
+
+            return answer = o
 
         } else if (k0 === "pullItem()") { // pull by item
 
@@ -2066,7 +2066,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             var _o
             if (data.id) _o = views[data.id]
-            else if (data.window) _o = views["root"]
+            else if (data.window) _o = views.body
             else _o = o
 
             if (typeof _o !== "object") return
@@ -2082,7 +2082,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 document.body.appendChild(lDiv)
                 lDiv.classList.add("loader-container")
                 lDiv.setAttribute("id", _o.id + "-loader")
-                if (_o.id !== "root") {
+                if (_o.id !== "body") {
 
                     lDiv.style.position = "absolute"
                     var coords = require("./getCoords")({ id: _o.id || id })
@@ -2132,8 +2132,16 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "price()") {
 
-            answer = parseFloat(o)
-            answer = formatter.format(answer).slice(1)
+            if (!isNumber(o)) return
+
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            if (!data.decimal) data.decimal = 2
+            var formatter = new Intl.NumberFormat("en", {
+                style: 'decimal',
+                decimal: data.decimal,
+            })
+
+            answer = formatter.format(parseFloat(o))
 
         } else if (k0 === "bool()") {
 
@@ -2346,28 +2354,26 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             if (lang === "ar") range = range.map(num => num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
             answer = range
 
+        } else if (k0 === "database()") {
+
+            return database({ _window, req, res, id })
+
         } else if (k0 === "render()") {
 
             if (!o.__view__) return
             
-            var { address, data } = addresser({ _window, stack, args, status: "Start", type: "render", dataInterpretAction: "toValue", interpreting: true, renderer: true, id: o.id, action: "render()", object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, status: "Start", type: "function", interpreting: true, renderer: true, id: o.id, action: "render()", object, lookupActions, __, id })
             
-            require('./render').render({ _window, req, res, id, stack, data: { view: data || "document" } })
+            require('./render').render({ _window, req, res, id, stack, data })
 
         } else if (k0 === "view()") {
 
             if (!o.__view__) return
             
-            var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "render", interpreting: true, renderer: true, id: o.id, action: "view()", object, lookupActions, __, id })
+            var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "function", interpreting: true, renderer: true, id: o.id, action: "view()", object, lookupActions, __, id })
             data.view = data.view || o
             
             require("./toView").toView({ _window, id: o.id, e, __, stack, address, lookupActions, data, req, res })
-
-        } else if (k0 === "html()") {
-            
-            if (!o.__view__) return
-            
-            require("./toHTML").toHTML({ _window, id: o.id, type: "render", e, __, stack, lookupActions, data })
 
         } else if (k0 === "droplist()") {
 
@@ -2378,6 +2384,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             var { address, data } = addresser({ _window, stack, args, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id: o.id, action: "route()", object, lookupActions, __, id })
             if (typeof data === "string") data = { page: data }
+            
             require("./route").route({ _window, lookupActions, stack, address, id, req, res, route: data, __ })
 
         } else if (k0 === "update()") {
@@ -2498,8 +2505,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             stack.terminated = true
 
             // logs
-            console.log("Send " + stack.action + "() (" + executionDuration + ")")
-            stack.logs.push(stack.logs.length + " Send " + stack.action + "() (" + executionDuration + ")")
+            console.log("Send " + stack.action + " (" + executionDuration + ")")
+            stack.logs.push(stack.logs.length + " Send " + stack.action + " (" + executionDuration + ")")
             response.logs = stack.logs
 
             // respond
@@ -2746,10 +2753,5 @@ const toDataURL = url => fetch(url)
         reader.onerror = reject
         reader.readAsDataURL(blob)
     }))
-
-var formatter = new Intl.NumberFormat('en-US', {
-    style: 'currency',
-    currency: 'USD',
-})
 
 module.exports = { kernel, getDeepChildren, getDeepChildrenId }

@@ -8,7 +8,6 @@ module.exports = {
 
     var data
     var headers = save.headers || {}
-    var store = save.store || "database"
     headers.project = headers.project || global.manifest.projectID
 
     if (!save.collection) return console.log("No collection!")
@@ -22,7 +21,7 @@ module.exports = {
 
     } else {
 
-      var response = await axios.post(save.url || `/${store}`, { save }, {
+      var response = await axios.post(save.url || `/route/database`, { save }, {
         headers: {
           "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
           ...headers

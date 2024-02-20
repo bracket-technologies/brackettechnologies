@@ -44,7 +44,7 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
     stack.interpretingAddressID = address.id
     
     if (address.function) return addressFunctionExecuter({ _window, lookupActions, stack, id, e, req, res, address, headAddress, __: my__, action })
-    else if (address.type === "line" || address.type === "action") return lineInterpreter({ _window, lookupActions, address, stack, id, e, req, res, ...(address.params || {}), data: address.data, __: my__, action })
+    else if (address.type === "line" || address.type === "waits" || address.type === "action") return lineInterpreter({ _window, lookupActions, address, stack, id, e, req, res, ...(address.params || {}), data: address.data, __: my__, action })
   }
 
   if (stack.terminated) return
@@ -53,7 +53,7 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
   if (address.headAddressID && !headAddress.interpreting && (headAddress.stackID || headAddress.hold || headAddress.status === "Wait")) {
     
     var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.headAddressID === address.headAddressID)
-    
+
     if (otherWaiting === -1 || (otherWaiting > -1 && otherWaiting.blocked)) {
       
       headAddress.hold = false
@@ -70,14 +70,13 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
 const addressFunctionExecuter = ({ _window, lookupActions, stack, id, e, req, res, address, __, action }) => {
 
   require("./toView")
-  require("./toHTML")
   require("./reducer")
   require("./update")
 
-  var method = address.function || "lineInterpreter"
-  var file = address.file || method
+  var func = address.function || "lineInterpreter"
+  var file = address.file || func
   
-  require(`./${file}`)[method]({ _window, lookupActions, stack, id, e, req, res, address, ...(address.params || {}), data: address.data, __, action })
+  require(`./${file}`)[func]({ _window, lookupActions, stack, id, e, req, res, address, ...(address.params || {}), data: address.data, __, action })
   
   address.interpreting = false
   

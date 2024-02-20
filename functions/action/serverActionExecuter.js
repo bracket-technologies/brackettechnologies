@@ -4,13 +4,6 @@ const { endStack } = require("./stack")
 const { lineInterpreter } = require("./lineInterpreter")
 
 const serverActionExecuter = async ({ _window, stack, req, res, id }) => {
-  
-  var global = _window.global
-  var path = global.manifest.path
-  var __ = global.__
-
-  // action request as get request
-  if (req.method === "GET") req.body.action = { name: path[2], __ }
 
   // action
   var action = req.body.action
@@ -29,7 +22,7 @@ const serverActionExecuter = async ({ _window, stack, req, res, id }) => {
   if (stack.addresses.length === 0) return res.send({ ...data, logs: stack.logs })
 
   // request timeout
-  setTimeout(() => { if (!res.headersSent) return res.send({ success: false, message: `Action request timeout!`, executionDuration: 10000, logs: stack.logs }) }, 40000)
+  setTimeout(() => { if (!res.headersSent) return res.send({ success: false, message: `Action request timeout!`, executionDuration: 40000, logs: stack.logs }) }, 40000)
 }
 
 const executeServerAction = ({ _window, lookupActions = [], stack, action, id, req, res, __ }) => {
@@ -37,6 +30,7 @@ const executeServerAction = ({ _window, lookupActions = [], stack, action, id, r
   var global = _window.global
   var project = global.data.project
   var { name, actions } = action
+  name = name.slice(0, -2)
 
   // action does not exist
   if (!project.functions[name] && !actions) return ({ success: false, message: "No action found to execute!" })
@@ -50,7 +44,7 @@ const executeServerAction = ({ _window, lookupActions = [], stack, action, id, r
     lookupActions.unshift({ view: "_project_", path: [name] })
   }
 
-  var address = addresser({ _window, stack, status: "Start", interpreting: true, action: name + "()", __, id, lookupActions }).address
+  var address = addresser({ _window, stack, status: "Start", interpreting: true, action: name, __, id, lookupActions }).address
 
   // interpret line
   lineInterpreter({ _window, lookupActions, __, address, stack, id, req, res, data: { string }, mount: true })

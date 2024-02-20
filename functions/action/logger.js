@@ -1,4 +1,4 @@
-const timerLogger = ({ _window: { global }, data: { key, start, end } }) => {
+const logger = ({ _window: { global }, data: { key, start, end } }) => {
     
     if (!key) return
     if (start) global.__server__[`${key}StartTime`] = (new Date()).getTime()
@@ -9,4 +9,4 @@ const timerLogger = ({ _window: { global }, data: { key, start, end } }) => {
         console.log(key.toUpperCase(), global.__server__[`${key}Duration`])
     }
 }
-module.exports = { timerLogger }
+module.exports = { logger }

@@ -23,7 +23,7 @@ const initView = ({ views, global, id = generate(), doc, children = [], parent, 
         __rendered__: false,
         __initialIndex__: parentView.__indexing__ || 0,
         __viewPath__: [...(data.__viewPath__ || [])],
-        __lookupActions__: [...(data.__lookupActions__ || parentView.__lookupActions__ || [])],
+        __lookupViewActions__: [...(data.__lookupViewActions__ || parentView.__lookupViewActions__ || [])],
         __customViewPath__: [...(data.__customViewPath__ || parentView.__customViewPath__ || [])]
     }
 
@@ -34,9 +34,9 @@ const initView = ({ views, global, id = generate(), doc, children = [], parent, 
 
 const getViewParams = ({ view }) => {
     
-    var { id, doc, data, view, children, __lookupActions__, __element__, __dataPath__, __childrenRef__, __index__,
+    var { id, doc, data, view, children, __lookupViewActions__, __element__, __dataPath__, __childrenRef__, __index__,
         __viewPath__, __customViewPath__, __indexing__, __childIndex__, __initialIndex__, __customView__, __htmlStyles__, 
-        __parent__, __controls__, __status__, __rendered__, __timers__, __view__, __name__, __, ...params } = view
+        __parent__, __controls__, __status__, __rendered__, __timers__, __view__, __name__, __customID__, __, ...params } = view
         
     return params
 }

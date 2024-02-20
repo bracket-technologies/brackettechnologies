@@ -17,8 +17,9 @@ const mime = {
 
 var getLocalFile = ({ req, res }) => {
   
-  var folder = req.url.split("/")[1]
-  var path = req.url.split(folder)[1]
+  var folder = req.url.split("/")[2]
+  var path = req.url.split(`${folder}/`)[1]
+  
   var docType = path.split(".").slice(-1)[0].split("?")[0]
   var type = mime[docType]
   var file = fs.createReadStream(`${folder}/${path}`)

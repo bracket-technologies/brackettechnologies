@@ -6,7 +6,7 @@ module.exports = {
   search: async ({ _window, lookupActions, stack, id, req, res, e, __, data: search = {}, address }) => {
       
     var global = _window ? _window.global : window.global
-    var store = search.store || "database", data
+    var data
 
     if (!search.collection) return console.log("No collection!")
 
@@ -21,7 +21,7 @@ module.exports = {
 
     } else {
 
-      var response = await axios.get(search.url || `/${store}`, {
+      var response = await axios.get(search.url || `/route/database`, {
         headers: {
           "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
           ...headers

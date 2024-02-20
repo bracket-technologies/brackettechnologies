@@ -52,12 +52,6 @@ const {setCookie, getCookie} = require("./cookie")
 const {getDaysInMonth} = require("./getDaysInMonth")
 const {fileReader} = require("./fileReader")
 const {position, getPadding} = require("./position")
-const {
-  setStyle,
-  resetStyles,
-  toggleStyles,
-  mountAfterStyles,
-} = require("./style")
 const {resize, dimensions, lengthConverter} = require("./resize")
 const {createData, clearData} = require("./data")
 

@@ -129,7 +129,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
     // show loader
     if (param === "loader.show") {
-      if (_window || !document.getElementById("loader-container")) return
+      if (_window || !document.getElementById("loader-container") || document.getElementById("loader-container").style.display === "flex") return
       document.getElementById("loader-container").style.display = "flex"
       return sleep(30)
     }
@@ -138,7 +138,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     if (param === "loader.hide") {
       if (_window || !document.getElementById("loader-container")) return
       document.getElementById("loader-container").style.display = "none"
-      return sleep(20)
+      return 
     }
 
     var path = typeof key === "string" ? key.split(".") : [], args = path[0].split(":"), path0 = path[0].split(":")[0]

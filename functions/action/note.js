@@ -3,9 +3,9 @@ const { isArabic } = require("./isArabic")
 const note = ({ note: data }) => {
 
   var views = window.views
-  var note = views["action-note"]
+  var note = views["note"]
   var type = (data.type || (data.danger && "danger") || (data.info && "info") || (data.warning && "warning") || "success").toLowerCase()
-  var noteText = views["action-note-text"]
+  var noteText = views["note-text"]
   var backgroundColor = type === "success" 
   ? "#2FB886" : type === "danger" 
   ? "#F66358" : type === "info"
@@ -17,7 +17,7 @@ const note = ({ note: data }) => {
   clearTimeout(note["note-timer"])
 
   noteText.__element__.innerHTML = data.text
-  isArabic({ id: "action-note-text" })
+  isArabic({ id: "note-text" })
 
   var width = note.__element__.offsetWidth
   note.__element__.style.backgroundColor = backgroundColor

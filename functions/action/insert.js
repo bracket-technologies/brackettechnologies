@@ -9,7 +9,7 @@ const { update } = require("./update")
 
 const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
-  var { index, view, path, data, doc, parent, preventDefault } = insert
+  var { index, view, path, data, doc, viewPath = [], parent, preventDefault } = insert
 
   var views = window.views
   var global = window.global
@@ -25,9 +25,8 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
     else view = views[parent.__childrenRef__[0].id]
     
     id = view.id
-    index = (index || view.__index__) + 1
+    index = (index !== undefined ? index : view.__index__) + 1
     path = [...(path || view.__dataPath__)]
-    doc = doc || view.doc
     __childIndex__ = view.__childIndex__
 
   } else if (insert.__view__) {
@@ -47,6 +46,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
       // path
       path = path || []
+      doc = doc || view.doc
 
       // increment data index
       if (isNumber(path[path.length - 1])) path[path.length - 1] += 1
@@ -68,20 +68,30 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
     }
     
     // inserted view params
-    passData = { __: view.__, lookupActions: view.__lookupActions__, __viewPath__: [...view.__viewPath__], __customViewPath__: [...view.__customViewPath__], __lookupActions__: [...view.__lookupActions__] }
+    passData = {
+      __: view.__,
+      __viewPath__: [...view.__viewPath__, ...viewPath], 
+      __customViewPath__: [...view.__customViewPath__], 
+      __lookupViewActions__: [...view.__lookupViewActions__] 
+    }
     
     // loop
     if (view.__loop__ && view.__mount__) passData.__ = [insert.data, ...passData.__.slice(1)]
 
-    // inserted view
-    view = { view: view.view, children: view.children }
+    // get raw view
+    view = clone(([...view.__viewPath__, ...viewPath]).reduce((o, k) => o[k], global.data.view))
 
   } else { // new View
 
-    // we need it for nowing path for update
     var genView = generate()
-    global.data.view[genView] = clone(view)
-    passData = { __viewPath__: [genView], __customViewPath__: [...parent.__customViewPath__, genView], __lookupActions__: [...parent.__lookupActions__] }
+    if (typeof view !== "string") global.data.view[genView] = clone(view)
+    else genView = clone((viewPath).reduce((o, k) => o[k], view))
+    
+    passData = {
+      __viewPath__: [genView, ...viewPath], 
+      __customViewPath__: [...parent.__customViewPath__, genView], 
+      __lookupViewActions__: [...parent.__lookupViewActions__, { type: "customView", view: genView }] 
+    }
   }
 
   if (typeof view !== "object") return console.log("Missing View!")

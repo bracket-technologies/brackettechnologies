@@ -8,7 +8,7 @@ const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase
 
   var data
   var headers = erase.headers || {}
-  var store = erase.store || "database"
+  var store = erase.store || "route/database"
   headers.project = headers.project || global.manifest.projectID
 
   if (!erase.collection) return console.log("No collection!")

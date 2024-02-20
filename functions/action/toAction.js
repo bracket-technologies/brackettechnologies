@@ -4,71 +4,79 @@ const { addresser } = require("./addresser")
 // const actions = require("./actions.json")
 const { toAwait } = require("./toAwait")
 
-const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: actionView, data: passedData }, condition, mount, toView, object, lookupActions = {}, stack }) => {
+const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: customViewName, data: passedData }, condition, mount, toView, object, lookupActions = {}, stack }) => {
 
   var global = _window ? _window.global : window.global
   var views = _window ? _window.views : window.views
-  var view = views[id], asynchronous = false, actionFound = false
-  var action0 = path ? (path.at(-1) + "()") : action.split(":")[0]
+  var view = views[id]
+
+  var serverAction = false, actionFound = false, serverActionView
+  var action0 = path ? (path.at(-1) + "()") : action.split(":")[0], name = action0.slice(0, -2)
 
   if (path || (action0.slice(-2) === "()" && action0 !== "()" && action0 !== "_()" && !require("./actions.json").includes(action0) && action0.charAt(0) !== "@")) {
-    
+
+    if (!view) return
     var newLookupActions
 
     // call by action():[path;view;data]
     if (path) {
 
-      var viewLookUpActions = [...view.__lookupActions__, { type: "view", name: actionView }]
+      // no view name
+      if (!customViewName || global.data.view[customViewName]) return
 
-      clone(viewLookUpActions).reverse().map((viewAction, i) => {
+      if (!global.data.view[customViewName].__secure__) {
 
-        var actions = {}
-        if (viewAction.type === "view") actions = (global.data.view[viewAction.name] || {}).__props__
-        else if (viewAction.type === "action") actions = views[viewAction.name]
-
+        var actions = (global.data.view[customViewName] || {}).functions
         actionFound = clone(path).reduce((o, k) => o && o[k], actions)
 
-        if (actionFound) {
+        // action doesnot exist
+        if (actionFound === undefined) return
 
-          if (typeof actionFound === "object" && actionFound._) {
+        if (typeof actionFound === "object" && actionFound._) {
 
-            actionFound = actionFound._ || ""
-            newLookupActions = { view: viewAction, path }
+          actionFound = actionFound._ || ""
+          newLookupActions = [{ type: "customView", view: viewAction, path }]
 
-          } else if (path.length > 1) newLookupActions = { view: viewAction, path: path.slice(0, -1) }
-          
-          if (toArray(lookupActions).length > 1 && newLookupActions) newLookupActions = [newLookupActions, ...toArray(lookupActions)]
+        } else if (path.length > 1) newLookupActions = [{ type: "customView", view: viewAction, path: path.slice(0, -1) }]
 
-          action = action0
+        if (toArray(lookupActions).length > 1) newLookupActions = [...newLookupActions, ...toArray(lookupActions)]
 
-        } else return
-      })
+        //
+        action = action0
+
+      } else {
+
+        // server action
+        serverAction = true
+        serverActionView = customViewName
+        newLookupActions = []
+      }
     }
-
+    
     // lookup through parent map actions
     if (!actionFound) {
       toArray(lookupActions).map((lookupActions, indexx) => {
 
         if (lookupActions.path) {
-          
+
           var path = lookupActions.path
           clone(path).reverse().map((x, i) => {
-
+            
             if (!actionFound) {
-              
-              var actions = (lookupActions.view === "_project_" ? global.data.project.functions : global.data.view[lookupActions.view].functions) || {}
-              actionFound = Object.keys(clone(path).slice(0, path.length - i).reduce((o, k) => o && o[k], actions) || {}).find(path => path === action0.slice(0, -2))
+
+              var actions = global.data.view[lookupActions.view].functions || {}
+              actionFound = clone(path.slice(0, path.length - i).reduce((o, k) => o[k], actions)[name])
 
               if (actionFound) {
 
-                actionFound = path.slice(0, path.length - i).reduce((o, k) => o[k], actions)[actionFound]
                 if (typeof actionFound === "object" && actionFound._) {
 
                   actionFound = actionFound._ || ""
-                  newLookupActions = { view: lookupActions.view, path: [...path, action0.slice(0, -2)] }
-                  if (toArray(lookupActions).length > 1) newLookupActions = [newLookupActions, ...toArray(lookupActions).slice(indexx)]
+                  newLookupActions = [{ type: "customView", view: lookupActions.view, path: [...path.slice(0, path.length - i), name] }]
+                  if (toArray(lookupActions).length > 1) newLookupActions = [...newLookupActions, ...toArray(lookupActions).slice(indexx)]
 
                 } else if (toArray(lookupActions).length > 1) toArray(lookupActions).slice(indexx)
+
               }
             }
           })
@@ -78,53 +86,56 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: ac
 
     // lookup through head customView actions => server actions
     if (!actionFound) {
-
-      var viewLookUpActions = view.__lookupActions__ || []
-      clone(["_project_", ...myCustomViews]).reverse().map((myview, i) => {
-
+      clone(view.__lookupViewActions__).reverse().map(lookupViewActions => {
+        
         if (!actionFound) {
 
-          if (myview !== "_project_" && !global.data.view[myview]) return
-          var actions =( myview === "_project_" ? (stack.server ? global.data.project.functions : global.__serverActions__) : (global.data.view[myview].functions)) || {}
-          actionFound = (Array.isArray(actions) ? actions : Object.keys(actions)).find(action => action === action0.slice(0, -2))
-          
-          if (actionFound) {
+          var actions = {}
+          if (lookupViewActions.type === "customView") {
+
+            var customView = global.data.view[lookupViewActions.view]
+
+            actions = customView.functions || {}
             
-            if (myview === "_project_" && !stack.server) {
+            if (name in actions) {
               
-              // server action & now we are not on server
-              asynchronous = true
-              newLookupActions = []
+              if (customView._secure_ && !stack.server) {
 
-            } else {
+                // server action
+                actionFound = true
+                serverAction = true
+                serverActionView = lookupViewActions.view
+                newLookupActions = []
 
-              if (typeof actions[actionFound] === "object") {
+              } else {
 
-                actionFound = actions[actionFound]._ || ""
-                newLookupActions = { view: myview, path: [action0.slice(0, -2)] }
+                actionFound = clone(actions[name])
 
-              } else actionFound = actions[actionFound]
+                if (typeof actionFound === "object") {
+
+                  actionFound = actionFound._ || ""
+                  newLookupActions = [{ type: lookupViewActions.type, view: lookupViewActions.view, path: [name] }]
+                }
+              }
             }
-          }
+
+          } else if (lookupViewActions.type === "view") { }
         }
       })
     }
-    
-    if (actionFound) {
 
-      var address = addresser({ _window, req, res, stack, args: action.split(":"), newLookupActions: newLookupActions || lookupActions, asynchronous, e, id, data: { string: !asynchronous ? actionFound : "" }, action: action0, __, id, object, mount, toView, condition, lookupActions })
-      var { address, data } = address
+    if (actionFound) {
       
+      var { address, data } = addresser({ _window, req, res, stack, args: action.split(":"), newLookupActions: newLookupActions || lookupActions, asynchronous: serverAction, e, id, data: { string: serverAction ? "" : actionFound }, action: action0, __, id, object, mount, toView, condition, lookupActions })
+
       // data passed from action():[action;path;data]
       if (passedData !== undefined) data = passedData
 
-      // lookupActions
-      newLookupActions = newLookupActions || lookupActions
-
-      if (asynchronous) {
+      // server action
+      if (serverAction) {
 
         address.status = "Start"
-        var action = { name: actionFound, __: data !== undefined ? [data] : [], lookupActions: [], stack: [], condition, object }
+        var action = { name: action0, customView: serverActionView, __: data !== undefined ? [data] : [], lookupActions: [], stack: [], condition, object }
         return require("./action").action({ _window, req, res, id, e, action, __, stack, lookupActions, address })
       }
 

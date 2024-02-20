@@ -1,0 +1,9 @@
+{
+    "id": "document",
+    "view": "View:document",
+    "children": [
+        {
+            "view": "root"
+        }
+    ]
+}
