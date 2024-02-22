@@ -62,10 +62,10 @@ const vcardServer = ({ res, data }) => {
             vCard[key] = value
         })
 
-        res.set('Content-Type', `text/vcard; name="${(data.firstName || "") + " " + (data.lastName || "")}.vcf"`);
-        res.set('Content-Disposition', `inline; filename="${(data.firstName || "") + " " + (data.lastName || "")}.vcf"`);
+        res.setHeader('Content-Type', `text/vcard; name="${(data.firstName || "") + " " + (data.lastName || "")}.vcf"`);
+        res.setHeader('Content-Disposition', `inline; filename="${(data.firstName || "") + " " + (data.lastName || "")}.vcf"`);
 
-        res.send(vCard.getFormattedString())
+        res.end(vCard.getFormattedString())
     }
 }
 

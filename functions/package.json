@@ -34,6 +34,7 @@
     "firebase-functions": "^4.6.0",
     "googleapis": "^112.0.0",
     "html2pdf.js": "^0.10.1",
+    "mongodb": "^6.3.0",
     "node-device-detector": "^2.0.12",
     "nodemailer": "^6.9.1",
     "nodemon": "^3.0.3",

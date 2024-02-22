@@ -8,6 +8,6 @@ module.exports = {
           })
           .catch(err => err.response.data)
           console.log(data);
-          res.send(data)
+          res.end(data)
     }
 }

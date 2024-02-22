@@ -3,6 +3,7 @@ const { addresser } = require("./addresser");
 const { logger } = require("./logger");
 const { toAwait } = require("./toAwait");
 const { getData } = require("./database");
+const cssStyleKeyNames = require("./cssStyleKeyNames")
 
 require("dotenv").config();
 
@@ -20,7 +21,7 @@ const render = async ({ _window, id, req, res, stack, address, lookupAction, dat
     }
     
     // view does not exist
-    if (!data.view || !global.data.view[data.view]) return res.send("Page not found!")
+    if (!data.view || !global.data.view[data.view]) return res.end("Page not found!")
 
     // view
     var view = global.data.view[data.view]
@@ -49,11 +50,13 @@ const document = async ({ _window, res, stack, address, __ }) => {
     var view = views[global.manifest.page] || {}
 
     // head tags
-    var favicon = global.data.project.favicon
-    var faviconType = global.data.project.faviconType
     var language = global.language = view.language || view.lang || "en"
     var direction = view.direction || view.dir || (language === "ar" || language === "fa" ? "rtl" : "ltr")
     var title = view.title || "Bracket App Title"
+
+    // favicon
+    var favicon = views.document.favicon && views.document.favicon.url
+    var faviconType = favicon && views.document.favicon.type
 
     // meta
     view.meta = view.meta || {}
@@ -82,13 +85,22 @@ const document = async ({ _window, res, stack, address, __ }) => {
             clearActions(view.functions)
         }
     })
-
-    res.send(
+    
+    res.end(
         `<!DOCTYPE html>
         <html lang="${language}" dir="${direction}" class="html">
             <head>
                 <!-- css -->
                 <link rel="stylesheet" href="/route/resource/index.css"/>
+                ${views.document.stylesheet ? `
+                    <style>
+                    ${Object.entries(views.document.stylesheet).map(([key, value]) => typeof value === "object" && !Array.isArray(value)
+                    ? `${key}{
+                        ${Object.entries(value).map(([key, value]) => `${cssStyleKeyNames[key] || key}: ${value.toString().replace(/\\/g, '')}`).join(`;
+                        `)};
+                    }` : "").filter(style => style).join(`
+                    `)}
+                    </style>` : ""}
                 
                 <!-- Font -->
                 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -116,15 +128,13 @@ const document = async ({ _window, res, stack, address, __ }) => {
                 <script id="views" type="application/json">${JSON.stringify(views)}</script>
                 <script id="global" type="application/json">${JSON.stringify(global)}</script>
                 
-                <!-- Location -->
-                ${global.__updateLocation__ ? `<script defer>window.history.replaceState({}, "${title}", "/${page === "main" ? "" : page}")</script>` : ""}
-                
                 <!-- head tags -->
-                ${global.__document__.head || ""}
+                ${(views.document.links || []).map(link => !link.body ? `<link ${link.rel ? `rel="${link.rel}"` : ""} ${link.type ? `type="${link.type}"` : ""} href="${link.href}" />` : "").join("")}
+
             </head>
             <body>
                 <!-- body tags -->
-                ${global.__document__.body || ""}
+                ${(views.document.links || []).map(link => link.body ? `<link ${link.rel ? `rel="${link.rel}"` : ""} ${link.type ? `type="${link.type}"` : ""} href="${link.href}" />` : "").join("")}
 
                 <!-- html -->
                 ${views.body.__html__ || ""}

@@ -1,17 +1,18 @@
-const functions = require("firebase-functions")
-const device = require('express-device')
 const firebase = require("firebase-admin")
-const express = require("express")
-const cookieParser = require('cookie-parser')
-const { postJsonFiles, getJsonFiles } = require("./action/jsonFiles")
+const functions = require("firebase-functions")
+const { MongoClient, ServerApiVersion } = require('mongodb')
+const http = require('node:http')
 require("firebase/firestore")
 
 // config
 require('dotenv').config()
 
-// database
+// main
+var data = {}
+
+// firebase
 firebase.initializeApp({
-  credential: firebase.credential.cert(JSON.parse(process.env.FBSA)), 
+  credential: firebase.credential.cert(JSON.parse(process.env.FBSA)),
   databaseURL: process.env.DBU,
   apiKey: process.env.AK,
   authDomain: process.env.AD,
@@ -21,30 +22,44 @@ firebase.initializeApp({
   appId: process.env.AI
 })
 
-const db = firebase.firestore()
-const rdb = firebase.database()
-const storage = firebase.storage()
-db.settings({ ignoreUndefinedProperties: true })
+data.firebaseDB = firebase.firestore()
+data.firebaseDB.settings({ ignoreUndefinedProperties: true })
+data.firebaseStorage = firebase.storage()
 
-// server
-const server = express()
+// mongodb
+const uri = `mongodb+srv://${process.env.MONGODBUSER}:${encodeURIComponent(process.env.MONGODBPASS)}@brackettechnologies.xbtdjdj.mongodb.net/?retryWrites=true&w=majority`
+data.mongoDB = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true
+  }
+})
 
-server.use(device.capture())
-server.use(express.static("browser", { redirect: false }))
-server.use(cookieParser())
-server.use(express.urlencoded({ extended: true, limit: "50mb" }))
-server.use(express.json({ limit: '50mb' }))
+const server = (req, res) => {
 
-server.listen(80, () => console.log("Server Listening to Port 80"))
-exports.app = functions.https.onRequest(server)
+  // parse body
+  res.statusCode = 200
+  req.body = []
+  req
+  .on('data', chunk => req.body.push(chunk))
+  .on('end', () => {
+    req.body = JSON.parse(Buffer.concat(req.body).toString() || "{}")
+    require("./action/router")({ req, res, data })
+  })
+}
 
-require("./action/router")({ server, db, storage, rdb })
+http.createServer(server).listen(80, "localhost", () => console.log("Server Listening to Port 80"))
+
+exports.app = functions.https.onRequest((req, res) => require("./action/router")({ req, res, data }))
+
+//require("./action/router")(data)
 
 // db.collection(`_project_`).where("id", "==", "brackettechnologies").get().then(query => query.forEach(doc => postJsonFiles({ save: { data: doc.data(), collection: "test1", doc: doc.id } })))
 /*var project = getJsonFiles({ search: { collection: "test1", doc: "brackettechnologies" } })
-db.collection(`view-brackettechnologies`).get().then(query => query.forEach(doc => { 
-  project.datastore.views.push(doc.id); 
-  postJsonFiles({ save: { data: project, collection: "test1", doc: "brackettechnologies" } }) 
+db.collection(`view-brackettechnologies`).get().then(query => query.forEach(doc => {
+  project.datastore.views.push(doc.id);
+  postJsonFiles({ save: { data: project, collection: "test1", doc: "brackettechnologies" } })
 
   db.collection(`view-brackettechnologies`).doc("route").set(getJsonFiles({ search: { collection: "test1", doc: "route" } }))
   db.collection(`view-brackettechnologies`).doc("document").set(getJsonFiles({ search: { collection: "test1", doc: "document" } }))

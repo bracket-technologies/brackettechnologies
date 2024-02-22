@@ -1,5 +1,4 @@
 {
-  "_secure_": true,
   "id": "route",
   "view": "Action:route",
   "children": [

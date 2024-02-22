@@ -3,12 +3,9 @@ const { postData } = require('./database')
 
 module.exports = {
   save: async ({ _window, lookupActions, stack, address, id, req, res, e, __, save = {} }) => {
-      
-    var global = _window ? _window.global : window.global
 
     var data
     var headers = save.headers || {}
-    headers.project = headers.project || global.manifest.projectID
 
     if (!save.collection) return console.log("No collection!")
 

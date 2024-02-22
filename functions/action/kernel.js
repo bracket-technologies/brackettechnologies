@@ -29,7 +29,6 @@ const { decode } = require("./decode")
 const { toAwait } = require("./toAwait")
 const { searchParams } = require("./searchParams")
 const { fileReader } = require("./fileReader")
-const { database } = require("./database")
 
 const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: _object, path, pathJoined, value, key, object } }) => {
 
@@ -85,7 +84,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             if (args.slice(1).length === 0 && pathJoined !== "log()") logs = [o]
             
             console.log("LOG:" + (o.id || id), decode({ _window, string: pathJoined }), ...logs)
-            stack.logs.push(stack.logs.length + " LOG " + logs.join(" "))
+            stack.logs.push(stack.logs.length + " LOG:" + (o.id || id) + " " + logs.join(" "))
 
             return o
 
@@ -218,23 +217,23 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             
         } else if (k0 === "nthParent()") {
 
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             var nth = toValue({ _window, id, e, lookupActions, stack, __, data: args[1] })
             return nthParent({ _window, nth, o })
 
         } else if (k0 === "prevSiblings()") {
             
-            if (!o.__view__) return o
+            if (!o.__view__ || !o.id) return o
             return views[o.__parent__].__childrenRef__.slice(0, o.__index__ + 1).map(({ id }) => views[id])
 
         } else if (k0 === "nextSiblings()") {
             
-            if (!o.__view__) return o
+            if (!o.__view__ || !o.id) return o
             return views[o.__parent__].__childrenRef__.slice(o.__index__ + 1).map(({ id }) => views[id])
 
         } else if (k0 === "siblings()") {
             
-            if (!o.__view__) return o
+            if (!o.__view__ || !o.id) return o
             var children = clone(views[o.__parent__].__childrenRef__)
             children.splice(o.__index__, 1)
             return children.map(({ id }) => views[id])
@@ -253,61 +252,61 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "nthNext()") {
 
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
             return nthNext({ _window, nth, o })
 
         } else if (k0 === "last()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[views[o.__parent__].__childrenRef__.slice(-1)[0].id]
 
         } else if (k0 === "2ndLast()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[views[o.__parent__].__childrenRef__.slice(-2)[0].id]
 
         } else if (k0 === "3rdLast()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[views[o.__parent__].__childrenRef__.slice(-3)[0].id]
 
         } else if (k0 === "nthLast()") {
 
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
             if (!isNumber(nth)) return
             return views[views[o.__parent__].__childrenRef__.slice(-1 * nth)[0].id]
 
         } else if (k0 === "1stSibling()") {
             
-            if (!o.__view__) return o
+            if (!o.__view__ || !o.id) return o
             return views[views[o.__parent__].__childrenRef__[0].id]
 
         } else if (k0 === "2ndSibling()") {
             
-            if (!o.__view__) return o
+            if (!o.__view__ || !o.id) return o
             return views[views[o.__parent__].__childrenRef__[1].id]
 
         } else if (k0 === "3rdSibling()") {
             
-            if (!o.__view__) return o
+            if (!o.__view__ || !o.id) return o
             return views[views[o.__parent__].__childrenRef__[2].id]
 
         } else if (k0 === "nthSibling()") {
             
-            if (!o.__view__) return o
+            if (!o.__view__ || !o.id) return o
             var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
             return views[views[o.__parent__].__childrenRef__[nth - 1].id]
 
         } else if (k0 === "grandChild()") {
               
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[views[o.__childrenRef__[0].id].__childrenRef__[0].id]
             
         } else if (k0 === "grandChildren()") {
               
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[o.__childrenRef__[0].id].__childrenRef__.map(({ id }) => views[id])
           
         } else if (k0 === "prev()") {
@@ -324,28 +323,28 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "nthPrev()") {
 
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
             return nthPrev({ _window, nth, o })
 
         } else if (k0 === "1stChild()" || k0 === "child()") {
-            
-            if (!o.__view__ || !o.__childrenRef__[0]) return
+
+            if (!o.__view__ || !o.id || !o.__childrenRef__[0]) return
             return views[o.__childrenRef__[0].id]
 
         } else if (k0 === "2ndChild()") {
             
-            if (!o.__view__ || !o.__childrenRef__[1]) return
+            if (!o.__view__ || !o.id || !o.__childrenRef__[1]) return
             return views[o.__childrenRef__[1].id]
 
         } else if (k0 === "3rdChild()") {
             
-            if (!o.__view__ || !o.__childrenRef__[2]) return
+            if (!o.__view__ || !o.id || !o.__childrenRef__[2]) return
             return views[o.__childrenRef__[2].id]
 
         } else if (k0 === "nthChild()") {
 
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             var nth = toValue({ _window, __, value: args[1], e, id, stack, lookupActions })
             if (!isNumber(nth)) return
             if (!o.__childrenRef__[nth - 1]) return
@@ -353,29 +352,29 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "3rdLastChild()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[o.__childrenRef__.slice(-3)[0].id]
 
         } else if (k0 === "2ndLastChild()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[o.__childrenRef__.slice(-2)[0].id]
 
         } else if (k0 === "lastChild()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[o.__childrenRef__.slice(-1)[0].id]
 
         } else if (k0 === "nthLastChild()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             var nth = toValue({ _window, __, value: args[1], e, id })
             if (!isNumber(nth)) return
             return views[o.__childrenRef__.slice(-1 * nth)[0].id]
 
         } else if (k0 === "children()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return o.__childrenRef__.map(({ id }) => views[id])
 
         } else if (k0 === "lastEl()") {
@@ -1692,22 +1691,44 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             answer = new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
-        } else if (k0 === "removeDuplicates()") {
+        } else if (k0 === "removeDuplicates()") { // without condition and by condition. ex: removeDuplicates():number (it will remove items that has the same number value)
 
-            if (!Array.isArray(o)) return o
-            var removeDuplicates = (array) => {
-                for (let i = 0; i < array.length; i++) {
-                    if (array.filter(el => isEqual(el, array[i])).length > 1) {
+            if (args[1]) {
 
-                        array.splice(i, 1);
-                        removeDuplicates(array);
-                        break;
+                var keys = toValue({ _window, e, data: args[1], id, __, lookupActions, stack })
+                var list = []
+
+                toArray(keys).map(key => {
+
+                    var seen = new Set()
+                    
+                    o.map(item => {
+                        if (!seen.has(item[key])) {
+                            seen.add(item[key])
+                            list.push(item)
+                        }
+                    })
+                })
+
+                return answer = o = list
+
+            } else {
+
+                if (!Array.isArray(o)) return o
+                var removeDuplicates = (array) => {
+                    for (let i = 0; i < array.length; i++) {
+                        if (array.filter(el => isEqual(el, array[i])).length > 1) {
+
+                            array.splice(i, 1);
+                            removeDuplicates(array);
+                            break;
+                        }
                     }
                 }
-            }
 
-            removeDuplicates(o);
-            return o
+                removeDuplicates(o);
+                return o
+            }
 
         } else if (k0 === "replace()") { // replace():prev:new
 
@@ -2356,7 +2377,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "database()") {
 
-            return database({ _window, req, res, id })
+            return require("./database").database({ _window, req, res, id })
+
+        } else if (k0 === "storage()") {
+
+            return require("./storage").storage({ _window, req, res, id })
 
         } else if (k0 === "render()") {
 
@@ -2400,10 +2425,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             // wait address
             var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "action", renderer: true, id: o.id, action: "insert()", lookupActions, __, id })
-            if (data.__view__) data = { view: data }
-            data.parent = o.id
-
-            require("./insert").insert({ id, insert: data, lookupActions, stack, address, __ })
+            require("./insert").insert({ id, insert: { ...data, parent: o.id }, lookupActions, stack, address, __ })
 
         } else if (k0 === "confirmEmail()") {
 
@@ -2510,7 +2532,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             response.logs = stack.logs
 
             // respond
-            res.send(response)
+            res.setHeader('Content-Type', 'application/json')
+            res.write(JSON.stringify(response));
+            res.end()
 
         } else if (k0 === "sent()") {
 

@@ -4,7 +4,7 @@ const { addresser } = require("./addresser")
 // const actions = require("./actions.json")
 const { toAwait } = require("./toAwait")
 
-const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: customViewName, data: passedData }, condition, mount, toView, object, lookupActions = {}, stack }) => {
+const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: customViewName, data: passedData }, condition, mount, object, lookupActions = {}, stack }) => {
 
   var global = _window ? _window.global : window.global
   var views = _window ? _window.views : window.views
@@ -94,7 +94,7 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
           if (lookupViewActions.type === "customView") {
 
             var customView = global.data.view[lookupViewActions.view]
-
+            
             actions = customView.functions || {}
             
             if (name in actions) {
@@ -126,7 +126,7 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
 
     if (actionFound) {
       
-      var { address, data } = addresser({ _window, req, res, stack, args: action.split(":"), newLookupActions: newLookupActions || lookupActions, asynchronous: serverAction, e, id, data: { string: serverAction ? "" : actionFound }, action: action0, __, id, object, mount, toView, condition, lookupActions })
+      var { address, data } = addresser({ _window, req, res, stack, args: action.split(":"), newLookupActions: newLookupActions || lookupActions, asynchronous: serverAction, e, id, data: { string: serverAction ? "" : actionFound }, action: action0, __, id, object, mount, condition, lookupActions })
 
       // data passed from action():[action;path;data]
       if (passedData !== undefined) data = passedData

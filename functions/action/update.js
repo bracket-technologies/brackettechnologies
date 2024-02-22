@@ -95,7 +95,7 @@ const postUpdate = ({ _window, lookupActions, stack, __, req, res, id, data: { c
     // start
     idLists.push(...[id, ...__idList__])
   })
-  
+
   // browser actions
   if (!_window) {
 

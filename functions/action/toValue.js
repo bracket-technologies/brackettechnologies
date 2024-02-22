@@ -12,7 +12,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id, e, req, res, object, mount, toView, condition, isValue }) => {
+const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id, e, req, res, object, mount, condition, isValue }) => {
 
   const { reducer } = require("./reducer")
   const { toParam } = require("./toParam")
@@ -27,10 +27,10 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
   if (value.charAt(0) === "@" && value.length == 6) value = global.__refs__[value].data
 
   // value is a param it has key=value
-  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, stack, e, data: value, __, object, mount: !isValue && mount, toView, condition })
+  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, stack, e, data: value, __, object, mount: !isValue && mount, condition })
 
   // value?condition?value
-  if (value.split("?").length > 1) return lineInterpreter({ _window, lookupActions, stack, id, e, data: {string: value}, req, res, mount, __, condition, object, toView, action: "toValue" }).data
+  if (value.split("?").length > 1) return lineInterpreter({ _window, lookupActions, stack, id, e, data: {string: value}, req, res, mount, __, condition, object, action: "toValue" }).data
 
   // no value
   if (value === "()") return views[id]
@@ -89,7 +89,7 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
         
         value = value.slice(0, -2)
         value = `${value}=${value}+1`
-        toParam({ req, res, _window, lookupActions, id, e, data: value, __, object, mount, toView, condition })
+        toParam({ req, res, _window, lookupActions, id, e, data: value, __, object, mount, condition })
         return (toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount, condition }) - 1)
 
       } else {
@@ -198,7 +198,7 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
   /* value */
   if (isNumber(value)) value = parseFloat(value)
   else if (object || path[0].includes(":") || path[0].includes("()") || path[0].includes("@") || path[1])
-    value = reducer({ _window, lookupActions, stack, id, data: { path, value, object }, __, e, req, res, mount, toView })
+    value = reducer({ _window, lookupActions, stack, id, data: { path, value, object }, __, e, req, res, mount })
 
   return value
 }

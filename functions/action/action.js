@@ -1,11 +1,8 @@
 const action = async ({ _window, lookupActions, stack, address, id, req, __, res, e, action = {} }) => {
 
-  var global = _window ? _window.global : window.global
-
   // headers
   var headers = action.headers || {}
   var store = action.store || "route/action"
-  headers.project = headers.project || global.manifest.projectID
 
   // headers
   headers = { ...headers, timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()) }

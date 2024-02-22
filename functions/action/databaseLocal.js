@@ -56,7 +56,10 @@ var getdb = async ({ req, res }) => {
   success = true
   message = `File/s mounted successfuly!`
   
-  return res.send({ data, success, message })
+  // respond
+  res.setHeader('Content-Type', 'application/json')
+  res.write(JSON.stringify({ data, success, message }))
+  res.end()
 }
 
 var postdb = async ({ req, res }) => {
@@ -74,7 +77,11 @@ var postdb = async ({ req, res }) => {
   success = true
   message = `File/s saved successfuly!`
     
-  return res.send({ data, success, message })
+
+  // respond
+  res.setHeader('Content-Type', 'application/json')
+  res.write(JSON.stringify({ data, success, message }))
+  res.end()
 }
 
 var deletedb = async ({ _window, req, res }) => {
@@ -93,7 +100,11 @@ var deletedb = async ({ _window, req, res }) => {
   success = true
   message = `File/s erased successfuly!`
 
-  return res.send({ success, message })
+
+  // respond
+  res.setHeader('Content-Type', 'application/json')
+  res.write(JSON.stringify({ success, message }))
+  res.end()
 }
 
 module.exports = { getdb, postdb, deletedb }

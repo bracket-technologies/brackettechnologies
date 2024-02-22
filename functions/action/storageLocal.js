@@ -25,7 +25,7 @@ var getLocalFile = ({ req, res }) => {
   var file = fs.createReadStream(`${folder}/${path}`)
   
   file.on("open", () => {
-    res.set("Content-Type", type)
+    res.setHeader("Content-Type", type)
     file.pipe(res)
   })
 }

@@ -69,7 +69,7 @@ const defaultAppEvents = () => {
 
         global.__keydowned__ = views[((e || window.event).target || e.currentTarget).id]
 
-        if (global.manifest.projectID === "brackettechnologies" && e.ctrlKey && e.key === "s") e.preventDefault()
+        if (global.manifest.session.projectID === "brackettechnologies" && e.ctrlKey && e.key === "s") e.preventDefault()
         
         Object.entries(global.__events__).map(([id, event]) => views[id] && event.keydown && event.keydown.map(data => (data.eventID === "document" || (global.__keydowned__ && (global.__keydowned__.id === data.eventID || views[data.eventID].__element__.contains(global.__keydowned__.__element__)))) && eventExecuter({ ...data, e })))
     })

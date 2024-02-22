@@ -16,36 +16,35 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
   var parent = views[parent]
   var passData = {}
   var __childIndex__
+  
+  if (insert.__view__) {
 
-  if (!view) {
+    view = insert
+    
+  } else if (!view) {
 
     var childrenRef = parent.__childrenRef__.find(({ id: viewID }) => viewID === id || getDeepChildrenId({ id: viewID }).includes(id))
 
     if (childrenRef) view = views[childrenRef.id]
-    else view = views[parent.__childrenRef__[0].id]
-    
-    id = view.id
-    index = (index !== undefined ? index : view.__index__) + 1
-    path = [...(path || view.__dataPath__)]
-    __childIndex__ = view.__childIndex__
-
-  } else if (insert.__view__) {
-
-    index += 1
-    delete insert.data
-    view = insert
-    id = view.id
-    path = [...__dataPath__]
-    __childIndex__ = view.__childIndex__
+    else view = insert = views[parent.__childrenRef__[0].id]
   }
 
   // clone
   if (view.__view__) {
 
-    if (!preventDefault) {
+    // id
+    id = view.id
 
+    // childIndex
+    __childIndex__ = view.__childIndex__
+
+    // index
+    index = (index !== undefined ? index : view.__index__) + 1
+
+    if (!preventDefault) {
+      
       // path
-      path = path || []
+      path = [...(path || view.__dataPath__)]
       doc = doc || view.doc
 
       // increment data index
@@ -57,10 +56,11 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
         parent.__childrenRef__.slice(index).map(viewRef => updateDataPath({ id: viewRef.id, index: itemIndex, increment: true }))
       
       // data
-      insert.data = insert.data || (typeof view.data === "object" ? {} : "")
+      data = insert.__view__ ? (typeof insert.data === "object" ? {} : "") : (insert.view && data !== undefined ? data : undefined)
+
       path.reduce((o, k, i) => {
 
-        if (i === itemIndex - 1) o[k].splice(path[itemIndex], 0, insert.data)
+        if (i === itemIndex - 1) o[k].splice(path[itemIndex], 0, data)
         else if (i >= itemIndex) return
         else return o[k]
 
@@ -69,14 +69,11 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
     
     // inserted view params
     passData = {
-      __: view.__,
+      __: view.__loop__ ? [data, ...view.__.slice(1)] : view.__,
       __viewPath__: [...view.__viewPath__, ...viewPath], 
       __customViewPath__: [...view.__customViewPath__], 
       __lookupViewActions__: [...view.__lookupViewActions__] 
     }
-    
-    // loop
-    if (view.__loop__ && view.__mount__) passData.__ = [insert.data, ...passData.__.slice(1)]
 
     // get raw view
     view = clone(([...view.__viewPath__, ...viewPath]).reduce((o, k) => o[k], global.data.view))

@@ -30,7 +30,7 @@ module.exports = {
     // params
     if (params) {
       
-      params = toParam({ _window, lookupActions, stack, data: params, id, mount: true, toView: true, __ })
+      params = toParam({ _window, lookupActions, stack, data: params, id, mount: true, __ })
 
       if (params.id) {
         

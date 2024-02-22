@@ -45,6 +45,7 @@ const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
   // update data path
   parent.__childrenRef__.slice(view.__index__ + 1).map(({ id }) => updateDataPath({ id, index: itemIndex, decrement: true }))
   removeView({ id, stack, main: true }).remove()
+  console.log("REMOVE:" + id)
 }
 
 const updateDataPath = ({ id, index, decrement, increment }) => {

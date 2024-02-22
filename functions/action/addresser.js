@@ -2,7 +2,7 @@ const { clone } = require("./clone");
 const { generate } = require("./generate");
 const { lineInterpreter } = require("./lineInterpreter");
 
-const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, params, function: func, newLookupActions, headAddressID, headAddress = {}, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition }) => {
+const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, params, function: func, newLookupActions, headAddressID, headAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition }) => {
     
     // find headAddress by headAddressID
     if (headAddressID && !headAddress.id) headAddress = stack.addresses.find(headAddress => headAddress.id === headAddressID)
@@ -13,7 +13,7 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
     // address waits
     if (waits) headAddress = addresser({ _window, stack, req, res, e, type: "waits", action: action + "::[...]", data: { string: waits }, headAddress, blockable, __, id, object, mount, lookupActions, condition }).address
 
-    var address = { id: generate(), stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: waits ? true : false, headAddressID: headAddress.id, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
+    var address = { id: generate(), stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: waits ? true : false, headAddressID: headAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
     var stackLength = stack.addresses.length
 
     // find and lock the head address
@@ -22,7 +22,7 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
         var headAddressIndex = 0
         
         // headAddress is interpreting or renderer
-        while (headAddressIndex < stackLength && (!stack.addresses[headAddressIndex].interpreting && !stack.addresses[headAddressIndex].renderer)) { headAddressIndex += 1 }
+        while (headAddressIndex < stackLength && !stack.addresses[headAddressIndex].interpreting && !stack.addresses[headAddressIndex].renderer) { headAddressIndex += 1 }
         
         // there exist a head address
         if (headAddressIndex < stackLength) {

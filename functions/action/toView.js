@@ -17,7 +17,6 @@ const { toStyle } = require("./toStyle")
 const { replaceNbsps } = require("./replaceNbsps")
 const { colorize } = require("./colorize")
 const builtInViews = require("../view/views")
-const cssStyleKeyNames = require("./cssStyleKeyNames")
 const { getJsonFiles } = require("./jsonFiles")
 
 const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data = {} }) => {
@@ -42,11 +41,11 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
   view.__name__ = name.split(":")[0]
 
   // global:()
-  if (subParams.includes("()")) {
+  if (subParams.includes("()") || view.__name__.includes("()")) {
     view.__name__ = view.__name__ + ":" + subParams
     subParams = ""
   }
-  
+
   // action view
   if (isParam({ _window, string: view.__name__ })) {
 
@@ -63,7 +62,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
   view.__name__ = toValue({ _window, id, req, res, data: view.__name__, __, stack })
 
   // no view
-  if (!view.__name__ || view.__name__.charAt(0) === "#") return removeView({ _window, id, stack })
+  if (!view.__name__ || typeof view.__name__ !== "string" || view.__name__.charAt(0) === "#") return removeView({ _window, id, stack, address })
   else views[id] = view
 
   // executable view name
@@ -77,7 +76,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
     var { data = {}, conditionsNotApplied } = lineInterpreter({ _window, lookupActions, stack, id, data: { string: subParams }, req, res, __ })
 
-    if (conditionsNotApplied) return removeView({ _window, id, stack })
+    if (conditionsNotApplied) return removeView({ _window, id, stack, address })
     else subParams = data
   }
 
@@ -104,12 +103,11 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
   // conditions
   var approved = toApproval({ _window, lookupActions, stack, data: conditions, id, req, res, __ })
-  if (!approved) return removeView({ _window, id, stack })
+  if (!approved) return removeView({ _window, id, stack, address })
 
   // params
   if (params) {
-
-    lineInterpreter({ _window, lookupActions, stack, data: { string: params }, id, req, res, mount: true, toView: true, __, action: "toParam" }).data
+    lineInterpreter({ _window, lookupActions, stack, data: { string: params }, id, req, res, mount: true, __, action: "toParam" }).data
 
     if (view.id !== id) {
 
@@ -142,7 +140,7 @@ const continueToView = ({ _window, id, stack, __, address, lookupActions, req, r
   if (global.data.views.includes(view.__name__)) {
 
     // query custom view
-    if (!global.__queries__.views.includes(view.__name__)) {
+    if (!global.__queries__.views.includes(view.__name__) && !global.data.view[view.__name__]) {
 
       address = addresser({ _window, id, stack, headAddress: address, type: "function", function: "customView", file: "toView", __, lookupActions, stack }).address
       var { address, data } = addresser({ _window, id, stack, headAddress: address, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${view.__name__}`, waits: `loader.hide;__queries__:().views.push():[${view.__name__}];data:().view.${view.__name__}=_.data`, __, lookupActions, stack })
@@ -164,10 +162,10 @@ const continueToView = ({ _window, id, stack, __, address, lookupActions, req, r
   if (builtInViews[view.__name__] && !view.__templated__) var { id, view } = builtInViewHandler({ _window, lookupActions, stack, id, req, res, __ })
 
   // address toHTML
-  if (view.__name__ !== "Action") address = addresser({ _window, id, stack, headAddress: address, type: "function", function: "toHTML", file: "toView", __, lookupActions, stack }).address
+  address = addresser({ _window, id, stack, headAddress: address, blocked: view.__name__ === "Action", type: "function", function: "toHTML", file: "toView", hold: true, __, lookupActions, stack }).address
 
   // push action view id to lookup actions
-  else if (view.__customID__) view.__lookupViewActions__.unshift({ type: "view", id })
+  if (view.__customID__) view.__lookupViewActions__.unshift({ type: "view", id })
 
   // 
   var lastIndex = view.children.length - 1;
@@ -178,7 +176,7 @@ const continueToView = ({ _window, id, stack, __, address, lookupActions, req, r
     views[childID] = { ...clone(child), id: childID, __view__: true, __parent__: id, __viewPath__: [...view.__viewPath__, "children", lastIndex - index], __childIndex__: lastIndex - index }
 
     // address
-    address = addresser({ _window, id: childID, stack, type: "function", action: "view()", function: "toView", headAddress: address, __, lookupActions, data: { view: views[childID] } }).address
+    address = addresser({ _window, id: childID, stack, type: "function", function: "toView", headAddress: address, __, lookupActions, data: { view: views[childID] } }).address
   })
 
   delete view.view
@@ -344,7 +342,7 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
 
     views[params.id] = { __view__: true, __loop__: true, __mount__: mount, ...clone(view), ...myparams, ...params }
 
-    address = addresser({ _window, id: params.id, stack, type: "function", function: "toView", renderer: true, blockable: false, action: "view()", __: [values[key], ...__], lookupActions, data: { view: views[params.id] } }).address
+    address = addresser({ _window, id: params.id, stack, type: "function", function: "toView", renderer: true, blockable: false, __: [values[key], ...__], lookupActions, data: { view: views[params.id] } }).address
   })
 
   // 
@@ -388,8 +386,8 @@ const customView = ({ _window, id, lookupActions, stack, __, address, req, res }
     logger({ _window, data: { key: "document", start: true } })
 
     // address: document
-    address = addresser({ _window, headAddress: address, type: "function", file: "render", function: "document", stack, renderer: true, __ }).address
-    
+    address = addresser({ _window, id: child.id, headAddress: address, type: "function", file: "render", function: "document", stack, __ }).address
+
     // get shared public views
     Object.entries(getJsonFiles({ search: { collection: "public" } })).map(([doc, data]) => {
 
@@ -399,7 +397,11 @@ const customView = ({ _window, id, lookupActions, stack, __, address, req, res }
     })
   }
 
-  toView({ _window, lookupActions, stack, address, req, res, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: views[child.id], parent: view.__parent__ } })
+  // address: document
+  address = addresser({ _window, stack, type: "function", function: "toView", headAddress: address, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], lookupActions, data: { view: child, parent: view.__parent__ } }).address
+
+  // awaits
+  toAwait({ _window, id, lookupActions, stack, address, __, req, res })
 }
 
 const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ }) => {
@@ -411,7 +413,7 @@ const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ })
   views[id] = builtInViews[view.__name__](view)
   var { id, view } = initView({ views, global, parent: views[id].__parent__, ...views[id] })
 
-  lineInterpreter({ _window, lookupActions, stack, data: { string: view.view, id, index: 1 }, req, res, mount: true, toView: true, __ })
+  lineInterpreter({ _window, lookupActions, stack, data: { string: view.view, id, index: 1 }, req, res, mount: true, __ })
   view.__name__ = view.view.split("?")[0]
 
   if (view.id !== id) {
@@ -502,7 +504,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
       ${toArray(view.src).map(src => typeof src === "string" ? `<source src=${src}>` : typeof src === "object" ? `<source src=${src.src} type=${src.type}>` : "")}
       ${view.alt || view.message || ""}
     </video>`
-  } else if (name === "Link" || name === "Meta") {
+  }/* else if (name === "Link" || name === "Meta") {
 
     name = name.toLowerCase()
     view = getViewParams({ view })
@@ -534,7 +536,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
 
   } else if (name === "A") {
     html = `<a ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} id='${id}' href=${view.link} style='${view.__htmlStyles__}'>${innerHTML}</a>`
-  } else return removeView({ _window, stack, id })
+  }*/ else return removeView({ _window, stack, id })
 
   // indexing
   var index = parent ? indexing({ views, id, view, parent }) : 0

@@ -7,7 +7,7 @@ const { isEvent } = require("./isEvent")
 const { toEvent } = require("./toEvent")
 const { isParam } = require("./isParam")
 
-const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, data: { string, dblExecute, index: i = 0, splitter = "?" }, req, res, __, mount, condition, toView, object, action }) => {
+const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, data: { string, dblExecute, index: i = 0, splitter = "?" }, req, res, __, mount, condition, object, action }) => {
 
     require("./toParam")
     require("./toValue")
@@ -69,7 +69,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         // name has subparams => interpret
         if (substring.includes("?")) {
 
-            var data = lineInterpreter({ lookupActions, stack, id, e, data: { string: substring, i: 1 }, req, res, __, mount, condition, toView, object })
+            var data = lineInterpreter({ lookupActions, stack, id, e, data: { string: substring, i: 1 }, req, res, __, mount, condition, object })
             if (data.conditionsNotApplied) return terminator({ data, order: 4 })
         }
     }
@@ -121,10 +121,10 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
             else action = "toValue"
         }
         
-        data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object, toView })
+        data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object })
 
         if (dblExecute && executable({ _window, string: data }))
-            data = lineInterpreter({ _window, lookupActions, stack, id, e, data: { string: data }, req, res, __, mount, condition, toView, object }).data
+            data = lineInterpreter({ _window, lookupActions, stack, id, e, data: { string: data }, req, res, __, mount, condition, object }).data
 
         if (stack.returns && stack.returns[0].returned) {
             returnForWaitActionExists = true

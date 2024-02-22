@@ -128,15 +128,15 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     }
 
     // show loader
-    if (param === "loader.show") {
-      if (_window || !document.getElementById("loader-container") || document.getElementById("loader-container").style.display === "flex") return
+    if (param === "loader.show" && !_window) {
+      if (!document.getElementById("loader-container") || document.getElementById("loader-container").style.display === "flex") return
       document.getElementById("loader-container").style.display = "flex"
       return sleep(30)
     }
 
     // hide loader
-    if (param === "loader.hide") {
-      if (_window || !document.getElementById("loader-container")) return
+    if (param === "loader.hide" && !_window) {
+      if (!document.getElementById("loader-container")) return
       document.getElementById("loader-container").style.display = "none"
       return 
     }
@@ -204,7 +204,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
       }
 
       return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, data: { data, path, value, key, object, pathJoined: param } })
-    }
+    } 
 
     // reduce
     if (path0.slice(-2) === "()" || path[0].slice(-3) === ":()" || path[0].slice(0, 3) === "():" || path[0].includes("_") || object)

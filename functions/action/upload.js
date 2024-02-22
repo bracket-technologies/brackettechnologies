@@ -8,15 +8,13 @@ const { storeFile } = require("./storage")
 module.exports = async ({ _window, lookupActions, stack, address, id, req, res, e, __, upload, ...params }) => {
         
   var promises = []
-  var global = _window ? _window.global : window.global
   var alldata = toArray(upload.data || []), uploads = []
   var files = toArray(upload.file || upload.files)
   var docs = toArray(upload.doc || upload.docs || [])
-  var storage = upload.storage || "storage"
+  var storage = "route/storage"
   
   // headers
   var headers = upload.headers || {}
-  headers.project = headers.project || global.manifest.projectID
   headers = { ...headers, timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()) }
   
   promises.push(...([...files]).map(async (f, i) => {

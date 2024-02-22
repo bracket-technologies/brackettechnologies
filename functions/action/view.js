@@ -45,11 +45,11 @@ const removeView = ({ _window, id, stack, self = true, main, insert }) => {
     
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
-    var view = views[id], parent = views[view.__parent__], element = {}
+    var view = views[id] || {}, parent = views[view.__parent__], element = {}
     
     toArray(view.__childrenRef__).map(({ id }) => id).map(id => removeView({ _window, id, stack, insert }))
 
-    if (self) {
+    if (self && view.id) {
 
         view.__timers__.map(timerID => clearTimeout(timerID))
 

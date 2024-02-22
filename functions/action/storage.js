@@ -18,12 +18,7 @@ const mime = {
   ico: "image/x-icon"
 }
 
-var getFile = ({ req, res, storage }) => {
-
-  //
-}
-
-const postFile = async ({ req, res }) => {
+const storage = async ({ req, res }) => {
 
   var upload = req.body.upload
   var data = await storeFile({ req, upload })
@@ -32,8 +27,8 @@ const postFile = async ({ req, res }) => {
 
 const storeFile = async ({ req, upload }) => {
 
-  var db = req.db
-  var storage = req.storage
+  var db = req.db.firebaseDB
+  var storage = req.storage.firebaseStorage
   var file = upload.file
   var data = upload.data, url
   
@@ -78,8 +73,8 @@ const storeFile = async ({ req, upload }) => {
 
 const deleteFile = async ({ req, res }) => {
   
-  var db = req.db
-  var storage = req.storage
+  var db = req.db.firebaseDB
+  var storage = req.storage.firebaseStorage
   var string = decodeURI(req.headers.erase), params = {}
   string = toCode({ _window, string })
   
@@ -104,4 +99,4 @@ const deleteFile = async ({ req, res }) => {
   return res.send({ success, message })
 }
 
-module.exports = { getFile, postFile, storeFile, deleteFile }
+module.exports = { storeFile, deleteFile, storage }

@@ -1,12 +1,9 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 const action = async ({ _window, lookupActions, stack, address, id, req, __, res, e, action = {} }) => {
 
-  var global = _window ? _window.global : window.global
-
   // headers
   var headers = action.headers || {}
   var store = action.store || "route/action"
-  headers.project = headers.project || global.manifest.projectID
 
   // headers
   headers = { ...headers, timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()) }
@@ -54,7 +51,7 @@ const { clone } = require("./clone");
 const { generate } = require("./generate");
 const { lineInterpreter } = require("./lineInterpreter");
 
-const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, params, function: func, newLookupActions, headAddressID, headAddress = {}, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition }) => {
+const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, params, function: func, newLookupActions, headAddressID, headAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition }) => {
     
     // find headAddress by headAddressID
     if (headAddressID && !headAddress.id) headAddress = stack.addresses.find(headAddress => headAddress.id === headAddressID)
@@ -65,7 +62,7 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
     // address waits
     if (waits) headAddress = addresser({ _window, stack, req, res, e, type: "waits", action: action + "::[...]", data: { string: waits }, headAddress, blockable, __, id, object, mount, lookupActions, condition }).address
 
-    var address = { id: generate(), stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: waits ? true : false, headAddressID: headAddress.id, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
+    var address = { id: generate(), stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: waits ? true : false, headAddressID: headAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
     var stackLength = stack.addresses.length
 
     // find and lock the head address
@@ -74,7 +71,7 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
         var headAddressIndex = 0
         
         // headAddress is interpreting or renderer
-        while (headAddressIndex < stackLength && (!stack.addresses[headAddressIndex].interpreting && !stack.addresses[headAddressIndex].renderer)) { headAddressIndex += 1 }
+        while (headAddressIndex < stackLength && !stack.addresses[headAddressIndex].interpreting && !stack.addresses[headAddressIndex].renderer) { headAddressIndex += 1 }
         
         // there exist a head address
         if (headAddressIndex < stackLength) {
@@ -413,7 +410,25 @@ const eraseCookie = ({ _window, name }) => {
   document.cookie = `__session=${JSON.stringify(__session)}`
 }
 
-module.exports = {setCookie, getCookie, eraseCookie}
+function parseCookies (request) {
+  const list = {};
+  const cookieHeader = request.headers?.cookie;
+  
+  if (!cookieHeader) return request.cookies = list;
+
+  cookieHeader.split(`;`).forEach(function(cookie) {
+      let [ name, ...rest] = cookie.split(`=`);
+      name = name?.trim();
+      if (!name) return;
+      const value = rest.join(`=`).trim();
+      if (!value) return;
+      list[name] = decodeURIComponent(value);
+  });
+
+  request.cookies = list
+}
+
+module.exports = {setCookie, getCookie, eraseCookie, parseCookies}
 },{}],9:[function(require,module,exports){
 module.exports = {
   counter: ({ length = 0, counter = 0, end, reset = "daily", timer = 0 }) => {
@@ -603,16 +618,17 @@ module.exports = { createData, setData, clearData }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./clone":5,"./reducer":48,"./setData":57}],13:[function(require,module,exports){
-const { toFirebaseOperator } = require("./toFirebaseOperator")
+(function (global){(function (){
 const { toCode } = require("./toCode")
-const { toArray } = require("./toArray")
 const { lineInterpreter } = require("./lineInterpreter")
+const { toArray } = require("./toArray")
 const { generate } = require("./generate")
+const { toFirebaseOperator } = require("./toFirebaseOperator")
 
 var database = ({ _window, req, res, id }) => {
 
   if (req.method === "GET") {
-    
+
     getdb({ _window, req, res, id })
 
   } else if (req.method === "POST") {
@@ -628,17 +644,15 @@ var database = ({ _window, req, res, id }) => {
 var getdb = async ({ _window, req, res, id }) => {
 
   const { clearActions } = require("./render")
-  var string = decodeURI(req.headers.search), data = {}, timer = (new Date()).getTime()
+  var string = decodeURI(req.headers.search), data = {}
   string = toCode({ _window, string })
 
   if (string) data = lineInterpreter({ _window, data: { string }, id }).data
   var search = data.search || {}
   var { data, success, message, searchType } = await getData({ _window, req, res, search })
 
-  console.log("SEARCH", search.collection, (new Date()).getTime() - timer);
-
   // hide secure view
-  if (search.collection === "view") {
+  /*if (search.collection === "view") {
 
     if (searchType === "byDoc" && data._secure_) {
 
@@ -657,9 +671,12 @@ var getdb = async ({ _window, req, res, id }) => {
         }
       })
     }
-  }
+  }*/
 
-  return res.send({ data, success, message })
+  // respond
+  res.setHeader('Content-Type', 'application/json')
+  res.write(JSON.stringify({ data, success, message }))
+  res.end()
 }
 
 var postdb = async ({ _window, req, res }) => {
@@ -668,7 +685,11 @@ var postdb = async ({ _window, req, res }) => {
   var { data, success, message } = await postData({ _window, req, res, save })
 
   console.log("SAVE", save.collection, (new Date()).getTime() - timer);
-  return res.send({ data, success, message })
+
+  // respond
+  res.setHeader('Content-Type', 'application/json')
+  res.write(JSON.stringify({ data, success, message }))
+  res.end()
 }
 
 var deletedb = async ({ _window, req, res, id }) => {
@@ -682,295 +703,391 @@ var deletedb = async ({ _window, req, res, id }) => {
   var { success, message } = await deleteData({ _window, req, res, erase })
 
   console.log("ERASE", erase.collection, (new Date()).getTime() - timer);
-  return res.send({ success, message })
+
+  // respond
+  res.setHeader('Content-Type', 'application/json')
+  res.write(JSON.stringify({ data, success, message }))
+  res.end()
 }
 
 const getData = async ({ _window, req, res, search }) => {
 
-  var db = req.db
+  var timer = (new Date()).getTime()
   var collection = search.collection
-  if (((_window.global.data.project.datastore || {}).collections || []).includes(collection)) collection = 'collection-' + collection
-  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${req.headers.project || _window.global.manifest.projectID}`
+  var project = (search.headers || {}).project || _window.global.manifest.session.projectID
+  var response = { success: false, message: "Something went wrong!" }
+
+  // no collection
+  if (!collection) {
+    console.log("SEARCH", search.collection, (new Date()).getTime() - timer);
+    return response
+  }
 
   var doc = search.doc,
     docs = search.docs,
     field = search.field || {},
     limit = search.limit || 1000,
-    data = {}, success, message,
-    ref = collection && db.collection(collection),
-    promises = [], response = { success: false, message: "Something went wrong!" }
+    data = {}, success, message
+
+  if (_window.global.__provider__ === "firebase" || true) {
     
-  if ("url" in search) {
+    if (_window.global.data.project.datastore.collections.includes(collection)) collection = 'collection-' + collection
+    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${project}`
 
-    if (!search.url) return ({ data: {}, success: false, message: "Missing Url!" })
+    var ref = req.db.firebaseDB.collection(collection), promises = []
 
-    var url = search.url
-    delete search.url
+    if ("url" in search) {
 
-    if (url.slice(-1) === "/") url = url.slice(0, -1)
+      if (!search.url) return ({ data: {}, success: false, message: "Missing Url!" })
 
-    try {
-      data = await require("axios").get(url, { timeout: 1000 * 40 })
-        .then(res => res.doesNotExist.throwAnError)
-        .catch(err => err)
+      var url = search.url
+      delete search.url
 
-      data = JSON.parse(data.data)
-      success = true
-      message = `Document/s mounted successfuly!`
+      if (url.slice(-1) === "/") url = url.slice(0, -1)
 
-    } catch (err) {
-      data = {}
-      success = false
-      message = `Error!`
+      try {
+        data = await require("axios").get(url, { timeout: 1000 * 40 })
+          .then(res => res.doesNotExist.throwAnError)
+          .catch(err => err)
+
+        data = JSON.parse(data.data)
+        success = true
+        message = `Document/s mounted successfuly!`
+
+      } catch (err) {
+        data = {}
+        success = false
+        message = `Error!`
+      }
+
+      response = { data, success, message, searchType: "byURL" }
     }
 
-    response = { data, success, message, searchType: "byURL" }
-  }
+    else if ("docs" in search) {
 
-  else if ("docs" in search) {
+      if (!docs) return ({ data: {}, success: false, message: "Missing Docs!" })
 
-    if (!docs) return ({ data: {}, success: false, message: "Missing Docs!" })
+      var _docs = [], index = 1, length = Math.floor(search.docs.length / 10) + (search.docs.length % 10 > 0 ? 1 : 0), promises = []
+      while (index <= length) {
+        _docs.push(search.docs.slice((index - 1) * 10, index * 10))
+        index += 1
+      }
 
-    var _docs = [], index = 1, length = Math.floor(search.docs.length / 10) + (search.docs.length % 10 > 0 ? 1 : 0), promises = []
-    while (index <= length) {
-      _docs.push(search.docs.slice((index - 1) * 10, index * 10))
-      index += 1
+      _docs.map(docList => {
+        promises.push(ref.where("id", "in", docList).get().then(docs => {
+
+          success = true
+          docs.forEach(doc => data[doc.id] = doc.data())
+          message = `Documents mounted successfuly!`
+
+        }).catch(error => {
+
+          success = false
+          message = `An error Occured!`
+
+        }))
+      })
+
+      await Promise.all(promises)
+
+      response = { data, success, message, searchType: "byDocs" }
     }
 
-    _docs.map(docList => {
-      promises.push(ref.where("id", "in", docList).get().then(docs => {
+    else if ("doc" in search) {
+
+      if (!doc) return ({ data: {}, success: false, message: "Missing Doc!" })
+
+      await ref.doc(doc.toString()).get().then(doc => {
 
         success = true
-        docs.forEach(doc => data[doc.id] = doc.data())
+        data = doc.data()
+        message = `Document mounted successfuly!`
+
+      }).catch(error => {
+
+        success = false
+        message = `An error Occured!`
+      })
+
+      await Promise.all(promises)
+
+      response = { data, success, message, searchType: "byDoc" }
+    }
+
+    else if (Object.keys(field).length === 0) {
+
+      if (search.orderBy || search.skip) ref = ref.orderBy(...toArray(search.orderBy || "id"))
+      if (search.skip) ref = ref.offset(search.skip)
+      if (search.orderBy) ref = ref.orderBy(search.orderBy)
+      if (search.offset) ref = ref.endAt(search.offset)
+      if (search.limitToLast) ref = ref.limitToLast(search.limitToLast)
+
+      if (search.startAt) ref = ref.startAt(search.startAt)
+      if (search.startAfter) ref = ref.startAfter(search.startAfter)
+
+      if (search.endAt) ref = ref.endAt(search.endAt)
+      if (search.endBefore) ref = ref.endBefore(search.endBefore)
+      if (limit) ref = ref.limit(limit)
+
+      await ref.get().then(q => {
+
+        q.forEach(doc => data[doc.id] = doc.data())
+
+        success = true
         message = `Documents mounted successfuly!`
 
       }).catch(error => {
 
         success = false
         message = `An error Occured!`
+      })
 
-      }))
-    })
+      await Promise.all(promises)
 
-    await Promise.all(promises)
+      response = { data, success, message, searchType: "byField" }
+    }
 
-    response = { data, success, message, searchType: "byDocs" }
-  }
+    // search by field
+    else {
 
-  else if ("doc" in search) {
+      const myPromise = () => new Promise(async (resolve) => {
+        try {
+          // search field
+          var multiIN = false, _ref = ref
+          if (field) Object.entries(field).map(([key, value]) => {
 
-    if (!doc) return ({ data: {}, success: false, message: "Missing Doc!" })
+            if (typeof value !== "object") value = { equal: value }
+            var operator = toFirebaseOperator(Object.keys(value)[0])
+            var _value = value[Object.keys(value)[0]]
+            if (operator === "in" && _value.length > 10) {
 
-    await ref.doc(doc.toString()).get().then(doc => {
+              field[key][Object.keys(value)[0]] = [..._value.slice(10)]
+              _value = [..._value.slice(0, 10)]
+              multiIN = true
+            }
 
-      success = true
-      data = doc.data()
-      message = `Document mounted successfuly!`
+            _ref = _ref.where(key, operator, _value)
+          })
 
-    }).catch(error => {
+          if (search.orderBy || search.skip) _ref = _ref.orderBy(...toArray(search.orderBy || "id"))
+          if (search.skip) _ref = _ref.offset(search.skip)
+          if (search.limitToLast) _ref = _ref.limitToLast(search.limitToLast)
 
-      success = false
-      message = `An error Occured!`
-    })
+          if (search.startAt) _ref = _ref.startAt(search.startAt)
+          if (search.startAfter) _ref = _ref.startAfter(search.startAfter)
 
-    await Promise.all(promises)
+          if (search.endAt) _ref = _ref.endAt(search.endAt)
+          if (search.endBefore) _ref = _ref.endBefore(search.endBefore)
+          if (limit || 100) _ref = _ref.limit(limit || 100)
 
-    response = { data, success, message, searchType: "byDoc" }
-  }
+          // retrieve data
+          await _ref.get().then(query => {
 
-  else if (Object.keys(field).length === 0) {
+            success = true
+            query.docs.forEach(doc => data[doc.id] = doc.data())
+            message = `Documents mounted successfuly!`
 
-    if (search.orderBy || search.skip) ref = ref.orderBy(...toArray(search.orderBy || "id"))
-    if (search.skip) ref = ref.offset(search.skip)
-    if (search.orderBy) ref = ref.orderBy(search.orderBy)
-    if (search.offset) ref = ref.endAt(search.offset)
-    if (search.limitToLast) ref = ref.limitToLast(search.limitToLast)
+          }).catch(error => {
 
-    if (search.startAt) ref = ref.startAt(search.startAt)
-    if (search.startAfter) ref = ref.startAfter(search.startAfter)
+            success = false
+            message = error
+          })
 
-    if (search.endAt) ref = ref.endAt(search.endAt)
-    if (search.endBefore) ref = ref.endBefore(search.endBefore)
-    if (limit) ref = ref.limit(limit)
+          if (multiIN) {
 
-    await ref.get().then(q => {
-
-      q.forEach(doc => data[doc.id] = doc.data())
-
-      success = true
-      message = `Documents mounted successfuly!`
-
-    }).catch(error => {
-
-      success = false
-      message = `An error Occured!`
-    })
-
-    await Promise.all(promises)
-
-    response = { data, success, message, searchType: "byField" }
-  }
-
-  // search by field
-  else {
-
-    const myPromise = () => new Promise(async (resolve) => {
-      try {
-        // search field
-        var multiIN = false, _ref = ref
-        if (field) Object.entries(field).map(([key, value]) => {
-
-          if (typeof value !== "object") value = { equal: value }
-          var operator = toFirebaseOperator(Object.keys(value)[0])
-          var _value = value[Object.keys(value)[0]]
-          if (operator === "in" && _value.length > 10) {
-
-            field[key][Object.keys(value)[0]] = [..._value.slice(10)]
-            _value = [..._value.slice(0, 10)]
-            multiIN = true
+            var { data: _data } = await myPromise()
+            data = { ...data, ..._data }
           }
 
-          _ref = _ref.where(key, operator, _value)
-        })
+          resolve({ data, success, message, searchType: "byField" })
 
-        if (search.orderBy || search.skip) _ref = _ref.orderBy(...toArray(search.orderBy || "id"))
-        if (search.skip) _ref = _ref.offset(search.skip)
-        if (search.limitToLast) _ref = _ref.limitToLast(search.limitToLast)
+        } catch (error) {
 
-        if (search.startAt) _ref = _ref.startAt(search.startAt)
-        if (search.startAfter) _ref = _ref.startAfter(search.startAfter)
-
-        if (search.endAt) _ref = _ref.endAt(search.endAt)
-        if (search.endBefore) _ref = _ref.endBefore(search.endBefore)
-        if (limit || 100) _ref = _ref.limit(limit || 100)
-
-        // retrieve data
-        await _ref.get().then(query => {
-
-          success = true
-          query.docs.forEach(doc => data[doc.id] = doc.data())
-          message = `Documents mounted successfuly!`
-
-        }).catch(error => {
-
-          success = false
-          message = error
-        })
-
-        if (multiIN) {
-
-          var { data: _data } = await myPromise()
-          data = { ...data, ..._data }
+          resolve({ data, success: false, message: error, searchType: "byField" })
         }
+      })
 
-        resolve({ data, success, message, searchType: "byField" })
+      response = await myPromise()
+    }
 
-      } catch (error) {
+  } else if (_window.global.__provider__ === "mongoDB") {
 
-        resolve({ data, success: false, message: error, searchType: "byField" })
-      }
-    })
+    var collection = search.collection
+    var project = _window.global.manifest.session.projectID
+    var response = { success: false, message: "Something went wrong!" }
 
-    response = await myPromise()
+    // no collection
+    if (!collection || !project) return response
+
+    var doc = search.doc,
+      docs = search.docs,
+      field = search.field || {},
+      limit = search.limit || 1000,
+      data = {}, success, message,
+      ref = req.db.mongodb.db(project).collection(collection),
+      promises = []
+
+    var db = _window.__db__.mongodb.db.db(project)
+    if (!docs && !fields) {
+      data = await db.collection(collection).find().limit(limit)
+    }
+    else if (docs) {
+      data = docs.map(async doc => await db.collection(collection).findOne({ id: doc }))
+      await Promise.all(data)
+    }
+    else {
+
+      var searchFields = [], searchOptions = {}, ors = []
+      if (fields) Object.entries(fields).map(([key, value]) => {
+
+        if (key === "or") {
+          Object.entries(value).map(([key, value]) => {
+            mountSearchFields({ searchFields: ors, key, value })
+          })
+        } else {
+          mountSearchFields({ searchFields, key, value })
+        }
+      })
+
+      if (searchFields.length === 1) searchOptions = searchFields[0]
+      else searchOptions = { "$and": searchFields }
+      if (ors.length > 0) searchOptions["$or"] = ors
+
+      data = await db.collection(collection).find().limit(limit).skip(search.skip || 0)
+    }
+
+    console.log("Documents mounted successfuly!", (new Date()).getTime() - global.timer)
+
+    // select fields
+    if (search.select) {
+      search.select = toArray(search.select)
+      var newData = []
+      data.map((data, i) => {
+        newData[i] = {}
+        search.select.map(key => newData[i][key] = data[key])
+      })
+      data = newData
+    }
+
+    // populate
+    if (search.populate) {
+      var promises = toArray(search.populate).map(key => {
+
+        return getData({ _window, search })
+      })
+
+      await Promise.all(promises)
+    }
+
+    if (doc) data = data[0]
+    return ({ data, success: true, message: `Documents mounted successfuly!` })
   }
 
+  console.log("SEARCH", search.collection, (new Date()).getTime() - timer);
   return response
 }
 
 const postData = async ({ _window, req, res, save }) => {
 
-  // collection
-  var db = req.db
-  var doc = save.doc
-  var data = save.data
-  var field = save.field || {}
-  var collection = save.collection
+  if (_window.global.__provider__ === "firebase" || true) {
 
-  // save specific fields in by doc
-  if (Object.keys(field).length > 0 && doc) {
-    var { data: rawData, success, message } = await getData({ _window, req, res, search: { collection, doc } })
-    if (!success) return ({ success, message })
-    Object.entries(field).map(([key, value]) => rawData[key] = value)
-    data = rawData
-  }
+    // collection
+    var doc = save.doc
+    var data = save.data
+    var field = save.field || {}
+    var collection = save.collection
+    var project = (save.headers || {}).project || _window.global.manifest.session.projectID
 
-  if (((_window.global.data.project.datastore || {}).collections || []).includes(collection)) collection = 'collection-' + collection
-  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers.project || _window.global.manifest.projectID}`
+    // save specific fields in by doc
+    if (Object.keys(field).length > 0 && doc) {
+      var { data: rawData, success, message } = await getData({ _window, req, res, search: { collection, doc } })
+      if (!success) return ({ success, message })
+      Object.entries(field).map(([key, value]) => rawData[key] = value)
+      data = rawData
+    }
 
-  var ref = db.collection(collection)
-  var success = false, message = "Missing data!"
+    if (_window.global.data.project.datastore.collections.includes(collection)) collection = 'collection-' + collection
+    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${project}`
 
-  var promises = toArray(data).map(async (data, i) => {
+    var ref = req.db.firebaseDB.collection(collection)
+    var success = false, message = "Missing data!"
 
-    data.id = data.id || (i === 0 && save.doc) || generate({ length: 60, timestamp: true })
+    var promises = toArray(data).map(async (data, i) => {
 
-    if (!data["creation-date"] && req.headers.timestamp) data["creation-date"] = parseInt(req.headers.timestamp)
+      data.id = data.id || (i === 0 && save.doc) || generate({ length: 60, timestamp: true })
 
-    return await ref.doc((doc && doc.toString()) || data.id.toString()).set(data).then(() => {
+      if (!data["creation-date"] && req.headers.timestamp) data["creation-date"] = parseInt(req.headers.timestamp)
 
-      success = true
-      message = `Document saved successfuly!`
+      return await ref.doc((doc && doc.toString()) || data.id.toString()).set(data).then(() => {
 
-    }).catch(error => {
+        success = true
+        message = `Document saved successfuly!`
 
-      success = false
-      message = error
+      }).catch(error => {
+
+        success = false
+        message = error
+      })
     })
-  })
 
-  await Promise.all(promises)
+    await Promise.all(promises)
 
-  return ({ data, success, message })
+    return ({ data, success, message })
+
+  } else if (_window.global.__provider__ === "mongoDB") { }
 }
 
 const deleteData = async ({ _window, req, res, erase }) => {
 
-  var db = req.db, docs
-  var storage = req.storage
-  var collection = erase.collection, data
-  if (((_window.global.data.project.datastore || {}).collections || []).includes(collection)) collection = 'collection-' + collection
-  if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers.project || _window.global.manifest.projectID}`
+  var project = (erase.headers || {}).project || _window.global.manifest.session.projectID
 
-  var ref = db.collection(collection)
-  var success, message
+  if (_window.global.__provider__ === "firebase" || true) {
 
-  docs = erase.docs || [erase.doc]
-  var promises = docs.map(async doc => {
+    var collection = erase.collection, data
+    if (_window.global.data.project.datastore.collections.includes(collection)) collection = 'collection-' + collection
+    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${project}`
 
-    await ref.doc(doc.toString()).delete().then(() => {
+    var success, message
+    var docs = erase.docs || [erase.doc]
 
-      success = true,
-        message = `Document erased successfuly!`
+    var promises = docs.map(async doc => {
 
-    }).catch(error => {
+      await req.db.firebaseDB.collection(collection).doc(doc.toString()).delete().then(() => {
 
-      success = false
-      message = error
+        success = true,
+          message = `Document erased successfuly!`
+
+      }).catch(error => {
+
+        success = false
+        message = error
+      })
+
+      if (erase.storage && erase.storage.doc) {
+
+        var exists = await req.storage.firebaseStorage.bucket().file(`storage-${req.headers["project"]}/${erase.storage.doc}`).exists()
+        if (exists) {
+
+          await req.storage.firebaseStorage.bucket().file(`storage-${req.headers["project"]}/${erase.storage.doc}`).delete()
+
+          await req.db.firebaseDB.collection(`storage-${req.headers["project"]}`).doc(erase.storage.doc.toString()).delete().then(() => {
+
+            success = true,
+              message = `Document erased successfuly!`
+
+          }).catch(error => {
+
+            success = false
+            message = error
+          })
+        }
+      }
     })
 
-    if (erase.storage && erase.storage.doc) {
+    Promise.all(promises)
+    return ({ data, success, message })
 
-      var exists = await storage.bucket().file(`storage-${req.headers["project"]}/${erase.storage.doc}`).exists()
-      if (exists) {
-
-        await storage.bucket().file(`storage-${req.headers["project"]}/${erase.storage.doc}`).delete()
-
-        await db.collection(`storage-${req.headers["project"]}`).doc(erase.storage.doc.toString()).delete().then(() => {
-
-          success = true,
-            message = `Document erased successfuly!`
-
-        }).catch(error => {
-
-          success = false
-          message = error
-        })
-      }
-    }
-  })
-
-  Promise.all(promises)
-  return ({ data, success, message })
+  } else if (_window.global.__provider__ === "mongoDB") { }
 }
 
 module.exports = {
@@ -982,6 +1099,7 @@ module.exports = {
   deletedb,
   deleteData
 }
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./generate":25,"./lineInterpreter":41,"./render":50,"./toArray":65,"./toCode":69,"./toFirebaseOperator":73,"axios":92}],14:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
@@ -1086,7 +1204,7 @@ const defaultAppEvents = () => {
 
         global.__keydowned__ = views[((e || window.event).target || e.currentTarget).id]
 
-        if (global.manifest.projectID === "brackettechnologies" && e.ctrlKey && e.key === "s") e.preventDefault()
+        if (global.manifest.session.projectID === "brackettechnologies" && e.ctrlKey && e.key === "s") e.preventDefault()
         
         Object.entries(global.__events__).map(([id, event]) => views[id] && event.keydown && event.keydown.map(data => (data.eventID === "document" || (global.__keydowned__ && (global.__keydowned__.id === data.eventID || views[data.eventID].__element__.contains(global.__keydowned__.__element__)))) && eventExecuter({ ...data, e })))
     })
@@ -1561,12 +1679,9 @@ const { jsonToBracket } = require("./jsonToBracket")
 
 const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase = {}, ...params }) => {
 
-  var global = _window ? _window.global : window.global
-
   var data
   var headers = erase.headers || {}
   var store = erase.store || "route/database"
-  headers.project = headers.project || global.manifest.projectID
 
   if (!erase.collection) return console.log("No collection!")
 
@@ -2078,36 +2193,35 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
   var parent = views[parent]
   var passData = {}
   var __childIndex__
+  
+  if (insert.__view__) {
 
-  if (!view) {
+    view = insert
+    
+  } else if (!view) {
 
     var childrenRef = parent.__childrenRef__.find(({ id: viewID }) => viewID === id || getDeepChildrenId({ id: viewID }).includes(id))
 
     if (childrenRef) view = views[childrenRef.id]
-    else view = views[parent.__childrenRef__[0].id]
-    
-    id = view.id
-    index = (index !== undefined ? index : view.__index__) + 1
-    path = [...(path || view.__dataPath__)]
-    __childIndex__ = view.__childIndex__
-
-  } else if (insert.__view__) {
-
-    index += 1
-    delete insert.data
-    view = insert
-    id = view.id
-    path = [...__dataPath__]
-    __childIndex__ = view.__childIndex__
+    else view = insert = views[parent.__childrenRef__[0].id]
   }
 
   // clone
   if (view.__view__) {
 
-    if (!preventDefault) {
+    // id
+    id = view.id
 
+    // childIndex
+    __childIndex__ = view.__childIndex__
+
+    // index
+    index = (index !== undefined ? index : view.__index__) + 1
+
+    if (!preventDefault) {
+      
       // path
-      path = path || []
+      path = [...(path || view.__dataPath__)]
       doc = doc || view.doc
 
       // increment data index
@@ -2119,10 +2233,11 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
         parent.__childrenRef__.slice(index).map(viewRef => updateDataPath({ id: viewRef.id, index: itemIndex, increment: true }))
       
       // data
-      insert.data = insert.data || (typeof view.data === "object" ? {} : "")
+      data = insert.__view__ ? (typeof insert.data === "object" ? {} : "") : (insert.view && data !== undefined ? data : undefined)
+
       path.reduce((o, k, i) => {
 
-        if (i === itemIndex - 1) o[k].splice(path[itemIndex], 0, insert.data)
+        if (i === itemIndex - 1) o[k].splice(path[itemIndex], 0, data)
         else if (i >= itemIndex) return
         else return o[k]
 
@@ -2131,14 +2246,11 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
     
     // inserted view params
     passData = {
-      __: view.__,
+      __: view.__loop__ ? [data, ...view.__.slice(1)] : view.__,
       __viewPath__: [...view.__viewPath__, ...viewPath], 
       __customViewPath__: [...view.__customViewPath__], 
       __lookupViewActions__: [...view.__lookupViewActions__] 
     }
-    
-    // loop
-    if (view.__loop__ && view.__mount__) passData.__ = [insert.data, ...passData.__.slice(1)]
 
     // get raw view
     view = clone(([...view.__viewPath__, ...viewPath]).reduce((o, k) => o[k], global.data.view))
@@ -2625,7 +2737,6 @@ const { decode } = require("./decode")
 const { toAwait } = require("./toAwait")
 const { searchParams } = require("./searchParams")
 const { fileReader } = require("./fileReader")
-const { database } = require("./database")
 
 const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: _object, path, pathJoined, value, key, object } }) => {
 
@@ -2681,7 +2792,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             if (args.slice(1).length === 0 && pathJoined !== "log()") logs = [o]
             
             console.log("LOG:" + (o.id || id), decode({ _window, string: pathJoined }), ...logs)
-            stack.logs.push(stack.logs.length + " LOG " + logs.join(" "))
+            stack.logs.push(stack.logs.length + " LOG:" + (o.id || id) + " " + logs.join(" "))
 
             return o
 
@@ -2814,23 +2925,23 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             
         } else if (k0 === "nthParent()") {
 
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             var nth = toValue({ _window, id, e, lookupActions, stack, __, data: args[1] })
             return nthParent({ _window, nth, o })
 
         } else if (k0 === "prevSiblings()") {
             
-            if (!o.__view__) return o
+            if (!o.__view__ || !o.id) return o
             return views[o.__parent__].__childrenRef__.slice(0, o.__index__ + 1).map(({ id }) => views[id])
 
         } else if (k0 === "nextSiblings()") {
             
-            if (!o.__view__) return o
+            if (!o.__view__ || !o.id) return o
             return views[o.__parent__].__childrenRef__.slice(o.__index__ + 1).map(({ id }) => views[id])
 
         } else if (k0 === "siblings()") {
             
-            if (!o.__view__) return o
+            if (!o.__view__ || !o.id) return o
             var children = clone(views[o.__parent__].__childrenRef__)
             children.splice(o.__index__, 1)
             return children.map(({ id }) => views[id])
@@ -2849,61 +2960,61 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "nthNext()") {
 
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
             return nthNext({ _window, nth, o })
 
         } else if (k0 === "last()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[views[o.__parent__].__childrenRef__.slice(-1)[0].id]
 
         } else if (k0 === "2ndLast()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[views[o.__parent__].__childrenRef__.slice(-2)[0].id]
 
         } else if (k0 === "3rdLast()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[views[o.__parent__].__childrenRef__.slice(-3)[0].id]
 
         } else if (k0 === "nthLast()") {
 
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
             if (!isNumber(nth)) return
             return views[views[o.__parent__].__childrenRef__.slice(-1 * nth)[0].id]
 
         } else if (k0 === "1stSibling()") {
             
-            if (!o.__view__) return o
+            if (!o.__view__ || !o.id) return o
             return views[views[o.__parent__].__childrenRef__[0].id]
 
         } else if (k0 === "2ndSibling()") {
             
-            if (!o.__view__) return o
+            if (!o.__view__ || !o.id) return o
             return views[views[o.__parent__].__childrenRef__[1].id]
 
         } else if (k0 === "3rdSibling()") {
             
-            if (!o.__view__) return o
+            if (!o.__view__ || !o.id) return o
             return views[views[o.__parent__].__childrenRef__[2].id]
 
         } else if (k0 === "nthSibling()") {
             
-            if (!o.__view__) return o
+            if (!o.__view__ || !o.id) return o
             var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
             return views[views[o.__parent__].__childrenRef__[nth - 1].id]
 
         } else if (k0 === "grandChild()") {
               
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[views[o.__childrenRef__[0].id].__childrenRef__[0].id]
             
         } else if (k0 === "grandChildren()") {
               
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[o.__childrenRef__[0].id].__childrenRef__.map(({ id }) => views[id])
           
         } else if (k0 === "prev()") {
@@ -2920,28 +3031,28 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "nthPrev()") {
 
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
             return nthPrev({ _window, nth, o })
 
         } else if (k0 === "1stChild()" || k0 === "child()") {
-            
-            if (!o.__view__ || !o.__childrenRef__[0]) return
+
+            if (!o.__view__ || !o.id || !o.__childrenRef__[0]) return
             return views[o.__childrenRef__[0].id]
 
         } else if (k0 === "2ndChild()") {
             
-            if (!o.__view__ || !o.__childrenRef__[1]) return
+            if (!o.__view__ || !o.id || !o.__childrenRef__[1]) return
             return views[o.__childrenRef__[1].id]
 
         } else if (k0 === "3rdChild()") {
             
-            if (!o.__view__ || !o.__childrenRef__[2]) return
+            if (!o.__view__ || !o.id || !o.__childrenRef__[2]) return
             return views[o.__childrenRef__[2].id]
 
         } else if (k0 === "nthChild()") {
 
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             var nth = toValue({ _window, __, value: args[1], e, id, stack, lookupActions })
             if (!isNumber(nth)) return
             if (!o.__childrenRef__[nth - 1]) return
@@ -2949,29 +3060,29 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "3rdLastChild()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[o.__childrenRef__.slice(-3)[0].id]
 
         } else if (k0 === "2ndLastChild()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[o.__childrenRef__.slice(-2)[0].id]
 
         } else if (k0 === "lastChild()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return views[o.__childrenRef__.slice(-1)[0].id]
 
         } else if (k0 === "nthLastChild()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             var nth = toValue({ _window, __, value: args[1], e, id })
             if (!isNumber(nth)) return
             return views[o.__childrenRef__.slice(-1 * nth)[0].id]
 
         } else if (k0 === "children()") {
             
-            if (!o.__view__) return
+            if (!o.__view__ || !o.id) return
             return o.__childrenRef__.map(({ id }) => views[id])
 
         } else if (k0 === "lastEl()") {
@@ -4288,22 +4399,44 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             answer = new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
-        } else if (k0 === "removeDuplicates()") {
+        } else if (k0 === "removeDuplicates()") { // without condition and by condition. ex: removeDuplicates():number (it will remove items that has the same number value)
 
-            if (!Array.isArray(o)) return o
-            var removeDuplicates = (array) => {
-                for (let i = 0; i < array.length; i++) {
-                    if (array.filter(el => isEqual(el, array[i])).length > 1) {
+            if (args[1]) {
 
-                        array.splice(i, 1);
-                        removeDuplicates(array);
-                        break;
+                var keys = toValue({ _window, e, data: args[1], id, __, lookupActions, stack })
+                var list = []
+
+                toArray(keys).map(key => {
+
+                    var seen = new Set()
+                    
+                    o.map(item => {
+                        if (!seen.has(item[key])) {
+                            seen.add(item[key])
+                            list.push(item)
+                        }
+                    })
+                })
+
+                return answer = o = list
+
+            } else {
+
+                if (!Array.isArray(o)) return o
+                var removeDuplicates = (array) => {
+                    for (let i = 0; i < array.length; i++) {
+                        if (array.filter(el => isEqual(el, array[i])).length > 1) {
+
+                            array.splice(i, 1);
+                            removeDuplicates(array);
+                            break;
+                        }
                     }
                 }
-            }
 
-            removeDuplicates(o);
-            return o
+                removeDuplicates(o);
+                return o
+            }
 
         } else if (k0 === "replace()") { // replace():prev:new
 
@@ -4952,7 +5085,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "database()") {
 
-            return database({ _window, req, res, id })
+            return require("./database").database({ _window, req, res, id })
+
+        } else if (k0 === "storage()") {
+
+            return require("./storage").storage({ _window, req, res, id })
 
         } else if (k0 === "render()") {
 
@@ -4996,10 +5133,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             // wait address
             var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "action", renderer: true, id: o.id, action: "insert()", lookupActions, __, id })
-            if (data.__view__) data = { view: data }
-            data.parent = o.id
-
-            require("./insert").insert({ id, insert: data, lookupActions, stack, address, __ })
+            require("./insert").insert({ id, insert: { ...data, parent: o.id }, lookupActions, stack, address, __ })
 
         } else if (k0 === "confirmEmail()") {
 
@@ -5106,7 +5240,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             response.logs = stack.logs
 
             // respond
-            res.send(response)
+            res.setHeader('Content-Type', 'application/json')
+            res.write(JSON.stringify(response));
+            res.end()
 
         } else if (k0 === "sent()") {
 
@@ -5351,7 +5487,7 @@ const toDataURL = url => fetch(url)
     }))
 
 module.exports = { kernel, getDeepChildren, getDeepChildrenId }
-},{"./addresser":3,"./capitalize":4,"./clone":5,"./colorize":7,"./cookie":8,"./counter":9,"./csvToJson":11,"./database":13,"./decode":14,"./droplist":17,"./erase":18,"./event":19,"./events.json":20,"./exportJson":22,"./fileReader":23,"./focus":24,"./generate":25,"./getCoords":26,"./getDateTime":27,"./getDaysInMonth":28,"./getType":29,"./getView":30,"./insert":31,"./isEqual":35,"./isParam":37,"./jsonToBracket":39,"./lineInterpreter":41,"./mail":43,"./merge":44,"./note":45,"./qr":46,"./reducer":48,"./remove":49,"./render":50,"./replaceNbsps":51,"./resize":52,"./route":53,"./save":54,"./search":55,"./searchParams":56,"./setPosition":58,"./sort":59,"./toAction":63,"./toApproval":64,"./toArray":65,"./toAwait":66,"./toCSV":67,"./toClock":68,"./toExcel":72,"./toNumber":74,"./toParam":76,"./toPdf":77,"./toSimplifiedDate":78,"./toValue":80,"./toView":81,"./update":82,"./upload":83,"./vcard":84}],41:[function(require,module,exports){
+},{"./addresser":3,"./capitalize":4,"./clone":5,"./colorize":7,"./cookie":8,"./counter":9,"./csvToJson":11,"./database":13,"./decode":14,"./droplist":17,"./erase":18,"./event":19,"./events.json":20,"./exportJson":22,"./fileReader":23,"./focus":24,"./generate":25,"./getCoords":26,"./getDateTime":27,"./getDaysInMonth":28,"./getType":29,"./getView":30,"./insert":31,"./isEqual":35,"./isParam":37,"./jsonToBracket":39,"./lineInterpreter":41,"./mail":43,"./merge":44,"./note":45,"./qr":46,"./reducer":48,"./remove":49,"./render":50,"./replaceNbsps":51,"./resize":52,"./route":53,"./save":54,"./search":55,"./searchParams":56,"./setPosition":58,"./sort":59,"./storage":62,"./toAction":63,"./toApproval":64,"./toArray":65,"./toAwait":66,"./toCSV":67,"./toClock":68,"./toExcel":72,"./toNumber":74,"./toParam":76,"./toPdf":77,"./toSimplifiedDate":78,"./toValue":80,"./toView":81,"./update":82,"./upload":83,"./vcard":84}],41:[function(require,module,exports){
 const { toCode } = require("./toCode")
 const { generate } = require("./generate")
 const { isCondition } = require("./isCondition")
@@ -5361,7 +5497,7 @@ const { isEvent } = require("./isEvent")
 const { toEvent } = require("./toEvent")
 const { isParam } = require("./isParam")
 
-const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, data: { string, dblExecute, index: i = 0, splitter = "?" }, req, res, __, mount, condition, toView, object, action }) => {
+const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, data: { string, dblExecute, index: i = 0, splitter = "?" }, req, res, __, mount, condition, object, action }) => {
 
     require("./toParam")
     require("./toValue")
@@ -5423,7 +5559,7 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
         // name has subparams => interpret
         if (substring.includes("?")) {
 
-            var data = lineInterpreter({ lookupActions, stack, id, e, data: { string: substring, i: 1 }, req, res, __, mount, condition, toView, object })
+            var data = lineInterpreter({ lookupActions, stack, id, e, data: { string: substring, i: 1 }, req, res, __, mount, condition, object })
             if (data.conditionsNotApplied) return terminator({ data, order: 4 })
         }
     }
@@ -5475,10 +5611,10 @@ const lineInterpreter = ({ _window, lookupActions, stack, address = {}, id, e, d
             else action = "toValue"
         }
         
-        data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object, toView })
+        data = require(`./${action}`)[action]({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object })
 
         if (dblExecute && executable({ _window, string: data }))
-            data = lineInterpreter({ _window, lookupActions, stack, id, e, data: { string: data }, req, res, __, mount, condition, toView, object }).data
+            data = lineInterpreter({ _window, lookupActions, stack, id, e, data: { string: data }, req, res, __, mount, condition, object }).data
 
         if (stack.returns && stack.returns[0].returned) {
             returnForWaitActionExists = true
@@ -6014,6 +6150,7 @@ const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
   // update data path
   parent.__childrenRef__.slice(view.__index__ + 1).map(({ id }) => updateDataPath({ id, index: itemIndex, decrement: true }))
   removeView({ id, stack, main: true }).remove()
+  console.log("REMOVE:" + id)
 }
 
 const updateDataPath = ({ id, index, decrement, increment }) => {
@@ -6038,6 +6175,7 @@ const { addresser } = require("./addresser");
 const { logger } = require("./logger");
 const { toAwait } = require("./toAwait");
 const { getData } = require("./database");
+const cssStyleKeyNames = require("./cssStyleKeyNames")
 
 require("dotenv").config();
 
@@ -6055,7 +6193,7 @@ const render = async ({ _window, id, req, res, stack, address, lookupAction, dat
     }
     
     // view does not exist
-    if (!data.view || !global.data.view[data.view]) return res.send("Page not found!")
+    if (!data.view || !global.data.view[data.view]) return res.end("Page not found!")
 
     // view
     var view = global.data.view[data.view]
@@ -6084,11 +6222,13 @@ const document = async ({ _window, res, stack, address, __ }) => {
     var view = views[global.manifest.page] || {}
 
     // head tags
-    var favicon = global.data.project.favicon
-    var faviconType = global.data.project.faviconType
     var language = global.language = view.language || view.lang || "en"
     var direction = view.direction || view.dir || (language === "ar" || language === "fa" ? "rtl" : "ltr")
     var title = view.title || "Bracket App Title"
+
+    // favicon
+    var favicon = views.document.favicon && views.document.favicon.url
+    var faviconType = favicon && views.document.favicon.type
 
     // meta
     view.meta = view.meta || {}
@@ -6117,13 +6257,22 @@ const document = async ({ _window, res, stack, address, __ }) => {
             clearActions(view.functions)
         }
     })
-
-    res.send(
+    
+    res.end(
         `<!DOCTYPE html>
         <html lang="${language}" dir="${direction}" class="html">
             <head>
                 <!-- css -->
                 <link rel="stylesheet" href="/route/resource/index.css"/>
+                ${views.document.stylesheet ? `
+                    <style>
+                    ${Object.entries(views.document.stylesheet).map(([key, value]) => typeof value === "object" && !Array.isArray(value)
+                    ? `${key}{
+                        ${Object.entries(value).map(([key, value]) => `${cssStyleKeyNames[key] || key}: ${value.toString().replace(/\\/g, '')}`).join(`;
+                        `)};
+                    }` : "").filter(style => style).join(`
+                    `)}
+                    </style>` : ""}
                 
                 <!-- Font -->
                 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -6151,15 +6300,13 @@ const document = async ({ _window, res, stack, address, __ }) => {
                 <script id="views" type="application/json">${JSON.stringify(views)}</script>
                 <script id="global" type="application/json">${JSON.stringify(global)}</script>
                 
-                <!-- Location -->
-                ${global.__updateLocation__ ? `<script defer>window.history.replaceState({}, "${title}", "/${page === "main" ? "" : page}")</script>` : ""}
-                
                 <!-- head tags -->
-                ${global.__document__.head || ""}
+                ${(views.document.links || []).map(link => !link.body ? `<link ${link.rel ? `rel="${link.rel}"` : ""} ${link.type ? `type="${link.type}"` : ""} href="${link.href}" />` : "").join("")}
+
             </head>
             <body>
                 <!-- body tags -->
-                ${global.__document__.body || ""}
+                ${(views.document.links || []).map(link => link.body ? `<link ${link.rel ? `rel="${link.rel}"` : ""} ${link.type ? `type="${link.type}"` : ""} href="${link.href}" />` : "").join("")}
 
                 <!-- html -->
                 ${views.body.__html__ || ""}
@@ -6200,7 +6347,7 @@ module.exports = { render, document, clearActions }
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.min.js"></script>
 */
-},{"./addresser":3,"./database":13,"./logger":42,"./toAwait":66,"./toView":81,"dotenv":125}],51:[function(require,module,exports){
+},{"./addresser":3,"./cssStyleKeyNames":10,"./database":13,"./logger":42,"./toAwait":66,"./toView":81,"dotenv":125}],51:[function(require,module,exports){
 const replaceNbsps = (str) => {
   if (typeof str !== "string") return str
     var re = new RegExp(String.fromCharCode(160), "g");
@@ -6351,12 +6498,9 @@ const { postData } = require('./database')
 
 module.exports = {
   save: async ({ _window, lookupActions, stack, address, id, req, res, e, __, save = {} }) => {
-      
-    var global = _window ? _window.global : window.global
 
     var data
     var headers = save.headers || {}
-    headers.project = headers.project || global.manifest.projectID
 
     if (!save.collection) return console.log("No collection!")
 
@@ -6388,24 +6532,21 @@ module.exports = {
 },{"./database":13,"./toAwait":66,"axios":92}],55:[function(require,module,exports){
 const axios = require('axios')
 const { jsonToBracket } = require('./jsonToBracket')
-const { getData } = require('./database')
 
 module.exports = {
   search: async ({ _window, lookupActions, stack, id, req, res, e, __, data: search = {}, address }) => {
-      
-    var global = _window ? _window.global : window.global
+    
     var data
 
     if (!search.collection) return console.log("No collection!")
 
     // headers
     var headers = search.headers || {}
-    headers.project = headers.project || global.manifest.projectID
     headers = { ...headers, search: encodeURI(jsonToBracket({ search })), timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()) }
     
     if (_window) {
 
-      data = await getData({ _window, req, res, search })
+      data = await require('./database').getData({ _window, req, res, search })
 
     } else {
 
@@ -6924,12 +7065,7 @@ const mime = {
   ico: "image/x-icon"
 }
 
-var getFile = ({ req, res, storage }) => {
-
-  //
-}
-
-const postFile = async ({ req, res }) => {
+const storage = async ({ req, res }) => {
 
   var upload = req.body.upload
   var data = await storeFile({ req, upload })
@@ -6938,8 +7074,8 @@ const postFile = async ({ req, res }) => {
 
 const storeFile = async ({ req, upload }) => {
 
-  var db = req.db
-  var storage = req.storage
+  var db = req.db.firebaseDB
+  var storage = req.storage.firebaseStorage
   var file = upload.file
   var data = upload.data, url
   
@@ -6984,8 +7120,8 @@ const storeFile = async ({ req, upload }) => {
 
 const deleteFile = async ({ req, res }) => {
   
-  var db = req.db
-  var storage = req.storage
+  var db = req.db.firebaseDB
+  var storage = req.storage.firebaseStorage
   var string = decodeURI(req.headers.erase), params = {}
   string = toCode({ _window, string })
   
@@ -7010,7 +7146,7 @@ const deleteFile = async ({ req, res }) => {
   return res.send({ success, message })
 }
 
-module.exports = { getFile, postFile, storeFile, deleteFile }
+module.exports = { storeFile, deleteFile, storage }
 }).call(this)}).call(this,require("buffer").Buffer)
 },{"./generate":25,"./toArray":65,"buffer":123,"fs":122}],63:[function(require,module,exports){
 const { clone } = require("./clone")
@@ -7019,7 +7155,7 @@ const { addresser } = require("./addresser")
 // const actions = require("./actions.json")
 const { toAwait } = require("./toAwait")
 
-const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: customViewName, data: passedData }, condition, mount, toView, object, lookupActions = {}, stack }) => {
+const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: customViewName, data: passedData }, condition, mount, object, lookupActions = {}, stack }) => {
 
   var global = _window ? _window.global : window.global
   var views = _window ? _window.views : window.views
@@ -7109,7 +7245,7 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
           if (lookupViewActions.type === "customView") {
 
             var customView = global.data.view[lookupViewActions.view]
-
+            
             actions = customView.functions || {}
             
             if (name in actions) {
@@ -7141,7 +7277,7 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
 
     if (actionFound) {
       
-      var { address, data } = addresser({ _window, req, res, stack, args: action.split(":"), newLookupActions: newLookupActions || lookupActions, asynchronous: serverAction, e, id, data: { string: serverAction ? "" : actionFound }, action: action0, __, id, object, mount, toView, condition, lookupActions })
+      var { address, data } = addresser({ _window, req, res, stack, args: action.split(":"), newLookupActions: newLookupActions || lookupActions, asynchronous: serverAction, e, id, data: { string: serverAction ? "" : actionFound }, action: action0, __, id, object, mount, condition, lookupActions })
 
       // data passed from action():[action;path;data]
       if (passedData !== undefined) data = passedData
@@ -7304,7 +7440,7 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
   var global = _window ? _window.global : window.global
 
   if (addressID && !address.id) address = stack.addresses.find(address => address.id === addressID)
-  if (stack.terminated || address.hold || address.starter) return
+  if (!address.id || stack.terminated || address.hold || address.starter) return
 
   // params
   address.params = address.params || {}
@@ -7350,7 +7486,7 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
     
     var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.headAddressID === address.headAddressID)
 
-    if (otherWaiting === -1 || (otherWaiting > -1 && otherWaiting.blocked)) {
+    if (otherWaiting === -1 || (otherWaiting > -1 && !stack.addresses.find(waitingAddress => waitingAddress.headAddressID === address.headAddressID && !address.blocked))) {
       
       headAddress.hold = false
       return toAwait({ _window, lookupActions, stack, address: headAddress, id, e, req, res, __, action })
@@ -7783,15 +7919,15 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     }
 
     // show loader
-    if (param === "loader.show") {
-      if (_window || !document.getElementById("loader-container") || document.getElementById("loader-container").style.display === "flex") return
+    if (param === "loader.show" && !_window) {
+      if (!document.getElementById("loader-container") || document.getElementById("loader-container").style.display === "flex") return
       document.getElementById("loader-container").style.display = "flex"
       return sleep(30)
     }
 
     // hide loader
-    if (param === "loader.hide") {
-      if (_window || !document.getElementById("loader-container")) return
+    if (param === "loader.hide" && !_window) {
+      if (!document.getElementById("loader-container")) return
       document.getElementById("loader-container").style.display = "none"
       return 
     }
@@ -7859,7 +7995,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
       }
 
       return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, data: { data, path, value, key, object, pathJoined: param } })
-    }
+    } 
 
     // reduce
     if (path0.slice(-2) === "()" || path[0].slice(-3) === ":()" || path[0].slice(0, 3) === "():" || path[0].includes("_") || object)
@@ -8032,7 +8168,7 @@ function sleep(milliseconds) {
   } while (currentDate - date < milliseconds);
 }
 
-const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id, e, req, res, object, mount, toView, condition, isValue }) => {
+const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id, e, req, res, object, mount, condition, isValue }) => {
 
   const { reducer } = require("./reducer")
   const { toParam } = require("./toParam")
@@ -8047,10 +8183,10 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
   if (value.charAt(0) === "@" && value.length == 6) value = global.__refs__[value].data
 
   // value is a param it has key=value
-  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, stack, e, data: value, __, object, mount: !isValue && mount, toView, condition })
+  if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, stack, e, data: value, __, object, mount: !isValue && mount, condition })
 
   // value?condition?value
-  if (value.split("?").length > 1) return lineInterpreter({ _window, lookupActions, stack, id, e, data: {string: value}, req, res, mount, __, condition, object, toView, action: "toValue" }).data
+  if (value.split("?").length > 1) return lineInterpreter({ _window, lookupActions, stack, id, e, data: {string: value}, req, res, mount, __, condition, object, action: "toValue" }).data
 
   // no value
   if (value === "()") return views[id]
@@ -8109,7 +8245,7 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
         
         value = value.slice(0, -2)
         value = `${value}=${value}+1`
-        toParam({ req, res, _window, lookupActions, id, e, data: value, __, object, mount, toView, condition })
+        toParam({ req, res, _window, lookupActions, id, e, data: value, __, object, mount, condition })
         return (toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount, condition }) - 1)
 
       } else {
@@ -8218,7 +8354,7 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
   /* value */
   if (isNumber(value)) value = parseFloat(value)
   else if (object || path[0].includes(":") || path[0].includes("()") || path[0].includes("@") || path[1])
-    value = reducer({ _window, lookupActions, stack, id, data: { path, value, object }, __, e, req, res, mount, toView })
+    value = reducer({ _window, lookupActions, stack, id, data: { path, value, object }, __, e, req, res, mount })
 
   return value
 }
@@ -8374,7 +8510,6 @@ const { toStyle } = require("./toStyle")
 const { replaceNbsps } = require("./replaceNbsps")
 const { colorize } = require("./colorize")
 const builtInViews = require("../view/views")
-const cssStyleKeyNames = require("./cssStyleKeyNames")
 const { getJsonFiles } = require("./jsonFiles")
 
 const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data = {} }) => {
@@ -8399,11 +8534,11 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
   view.__name__ = name.split(":")[0]
 
   // global:()
-  if (subParams.includes("()")) {
+  if (subParams.includes("()") || view.__name__.includes("()")) {
     view.__name__ = view.__name__ + ":" + subParams
     subParams = ""
   }
-  
+
   // action view
   if (isParam({ _window, string: view.__name__ })) {
 
@@ -8420,7 +8555,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
   view.__name__ = toValue({ _window, id, req, res, data: view.__name__, __, stack })
 
   // no view
-  if (!view.__name__ || view.__name__.charAt(0) === "#") return removeView({ _window, id, stack })
+  if (!view.__name__ || typeof view.__name__ !== "string" || view.__name__.charAt(0) === "#") return removeView({ _window, id, stack, address })
   else views[id] = view
 
   // executable view name
@@ -8434,7 +8569,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
     var { data = {}, conditionsNotApplied } = lineInterpreter({ _window, lookupActions, stack, id, data: { string: subParams }, req, res, __ })
 
-    if (conditionsNotApplied) return removeView({ _window, id, stack })
+    if (conditionsNotApplied) return removeView({ _window, id, stack, address })
     else subParams = data
   }
 
@@ -8461,12 +8596,11 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
   // conditions
   var approved = toApproval({ _window, lookupActions, stack, data: conditions, id, req, res, __ })
-  if (!approved) return removeView({ _window, id, stack })
+  if (!approved) return removeView({ _window, id, stack, address })
 
   // params
   if (params) {
-
-    lineInterpreter({ _window, lookupActions, stack, data: { string: params }, id, req, res, mount: true, toView: true, __, action: "toParam" }).data
+    lineInterpreter({ _window, lookupActions, stack, data: { string: params }, id, req, res, mount: true, __, action: "toParam" }).data
 
     if (view.id !== id) {
 
@@ -8499,7 +8633,7 @@ const continueToView = ({ _window, id, stack, __, address, lookupActions, req, r
   if (global.data.views.includes(view.__name__)) {
 
     // query custom view
-    if (!global.__queries__.views.includes(view.__name__)) {
+    if (!global.__queries__.views.includes(view.__name__) && !global.data.view[view.__name__]) {
 
       address = addresser({ _window, id, stack, headAddress: address, type: "function", function: "customView", file: "toView", __, lookupActions, stack }).address
       var { address, data } = addresser({ _window, id, stack, headAddress: address, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${view.__name__}`, waits: `loader.hide;__queries__:().views.push():[${view.__name__}];data:().view.${view.__name__}=_.data`, __, lookupActions, stack })
@@ -8521,10 +8655,10 @@ const continueToView = ({ _window, id, stack, __, address, lookupActions, req, r
   if (builtInViews[view.__name__] && !view.__templated__) var { id, view } = builtInViewHandler({ _window, lookupActions, stack, id, req, res, __ })
 
   // address toHTML
-  if (view.__name__ !== "Action") address = addresser({ _window, id, stack, headAddress: address, type: "function", function: "toHTML", file: "toView", __, lookupActions, stack }).address
+  address = addresser({ _window, id, stack, headAddress: address, blocked: view.__name__ === "Action", type: "function", function: "toHTML", file: "toView", hold: true, __, lookupActions, stack }).address
 
   // push action view id to lookup actions
-  else if (view.__customID__) view.__lookupViewActions__.unshift({ type: "view", id })
+  if (view.__customID__) view.__lookupViewActions__.unshift({ type: "view", id })
 
   // 
   var lastIndex = view.children.length - 1;
@@ -8535,7 +8669,7 @@ const continueToView = ({ _window, id, stack, __, address, lookupActions, req, r
     views[childID] = { ...clone(child), id: childID, __view__: true, __parent__: id, __viewPath__: [...view.__viewPath__, "children", lastIndex - index], __childIndex__: lastIndex - index }
 
     // address
-    address = addresser({ _window, id: childID, stack, type: "function", action: "view()", function: "toView", headAddress: address, __, lookupActions, data: { view: views[childID] } }).address
+    address = addresser({ _window, id: childID, stack, type: "function", function: "toView", headAddress: address, __, lookupActions, data: { view: views[childID] } }).address
   })
 
   delete view.view
@@ -8701,7 +8835,7 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
 
     views[params.id] = { __view__: true, __loop__: true, __mount__: mount, ...clone(view), ...myparams, ...params }
 
-    address = addresser({ _window, id: params.id, stack, type: "function", function: "toView", renderer: true, blockable: false, action: "view()", __: [values[key], ...__], lookupActions, data: { view: views[params.id] } }).address
+    address = addresser({ _window, id: params.id, stack, type: "function", function: "toView", renderer: true, blockable: false, __: [values[key], ...__], lookupActions, data: { view: views[params.id] } }).address
   })
 
   // 
@@ -8745,8 +8879,8 @@ const customView = ({ _window, id, lookupActions, stack, __, address, req, res }
     logger({ _window, data: { key: "document", start: true } })
 
     // address: document
-    address = addresser({ _window, headAddress: address, type: "function", file: "render", function: "document", stack, renderer: true, __ }).address
-    
+    address = addresser({ _window, id: child.id, headAddress: address, type: "function", file: "render", function: "document", stack, __ }).address
+
     // get shared public views
     Object.entries(getJsonFiles({ search: { collection: "public" } })).map(([doc, data]) => {
 
@@ -8756,7 +8890,11 @@ const customView = ({ _window, id, lookupActions, stack, __, address, req, res }
     })
   }
 
-  toView({ _window, lookupActions, stack, address, req, res, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: views[child.id], parent: view.__parent__ } })
+  // address: document
+  address = addresser({ _window, stack, type: "function", function: "toView", headAddress: address, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], lookupActions, data: { view: child, parent: view.__parent__ } }).address
+
+  // awaits
+  toAwait({ _window, id, lookupActions, stack, address, __, req, res })
 }
 
 const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ }) => {
@@ -8768,7 +8906,7 @@ const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ })
   views[id] = builtInViews[view.__name__](view)
   var { id, view } = initView({ views, global, parent: views[id].__parent__, ...views[id] })
 
-  lineInterpreter({ _window, lookupActions, stack, data: { string: view.view, id, index: 1 }, req, res, mount: true, toView: true, __ })
+  lineInterpreter({ _window, lookupActions, stack, data: { string: view.view, id, index: 1 }, req, res, mount: true, __ })
   view.__name__ = view.view.split("?")[0]
 
   if (view.id !== id) {
@@ -8859,7 +8997,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
       ${toArray(view.src).map(src => typeof src === "string" ? `<source src=${src}>` : typeof src === "object" ? `<source src=${src.src} type=${src.type}>` : "")}
       ${view.alt || view.message || ""}
     </video>`
-  } else if (name === "Link" || name === "Meta") {
+  }/* else if (name === "Link" || name === "Meta") {
 
     name = name.toLowerCase()
     view = getViewParams({ view })
@@ -8891,7 +9029,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
 
   } else if (name === "A") {
     html = `<a ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} id='${id}' href=${view.link} style='${view.__htmlStyles__}'>${innerHTML}</a>`
-  } else return removeView({ _window, stack, id })
+  }*/ else return removeView({ _window, stack, id })
 
   // indexing
   var index = parent ? indexing({ views, id, view, parent }) : 0
@@ -8958,7 +9096,7 @@ const indexing = ({ id, views, view, parent }) => {
 }
 
 module.exports = { toView, continueToView, toHTML, customView }
-},{"../view/views":168,"./addresser":3,"./clone":5,"./colorize":7,"./cssStyleKeyNames":10,"./executable":21,"./generate":25,"./isParam":37,"./jsonFiles":38,"./kernel":40,"./lineInterpreter":41,"./logger":42,"./merge":44,"./replaceNbsps":51,"./search":55,"./toApproval":64,"./toArray":65,"./toAwait":66,"./toCode":69,"./toStyle":79,"./toValue":80,"./view":85}],82:[function(require,module,exports){
+},{"../view/views":168,"./addresser":3,"./clone":5,"./colorize":7,"./executable":21,"./generate":25,"./isParam":37,"./jsonFiles":38,"./kernel":40,"./lineInterpreter":41,"./logger":42,"./merge":44,"./replaceNbsps":51,"./search":55,"./toApproval":64,"./toArray":65,"./toAwait":66,"./toCode":69,"./toStyle":79,"./toValue":80,"./view":85}],82:[function(require,module,exports){
 const { starter } = require("./starter")
 const { toView, toHTML } = require("./toView")
 const { clone } = require("./clone")
@@ -9056,7 +9194,7 @@ const postUpdate = ({ _window, lookupActions, stack, __, req, res, id, data: { c
     // start
     idLists.push(...[id, ...__idList__])
   })
-  
+
   // browser actions
   if (!_window) {
 
@@ -9124,15 +9262,13 @@ const { storeFile } = require("./storage")
 module.exports = async ({ _window, lookupActions, stack, address, id, req, res, e, __, upload, ...params }) => {
         
   var promises = []
-  var global = _window ? _window.global : window.global
   var alldata = toArray(upload.data || []), uploads = []
   var files = toArray(upload.file || upload.files)
   var docs = toArray(upload.doc || upload.docs || [])
-  var storage = upload.storage || "storage"
+  var storage = "route/storage"
   
   // headers
   var headers = upload.headers || {}
-  headers.project = headers.project || global.manifest.projectID
   headers = { ...headers, timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()) }
   
   promises.push(...([...files]).map(async (f, i) => {
@@ -9248,10 +9384,10 @@ const vcardServer = ({ res, data }) => {
             vCard[key] = value
         })
 
-        res.set('Content-Type', `text/vcard; name="${(data.firstName || "") + " " + (data.lastName || "")}.vcf"`);
-        res.set('Content-Disposition', `inline; filename="${(data.firstName || "") + " " + (data.lastName || "")}.vcf"`);
+        res.setHeader('Content-Type', `text/vcard; name="${(data.firstName || "") + " " + (data.lastName || "")}.vcf"`);
+        res.setHeader('Content-Disposition', `inline; filename="${(data.firstName || "") + " " + (data.lastName || "")}.vcf"`);
 
-        res.send(vCard.getFormattedString())
+        res.end(vCard.getFormattedString())
     }
 }
 
@@ -9304,11 +9440,11 @@ const removeView = ({ _window, id, stack, self = true, main, insert }) => {
     
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
-    var view = views[id], parent = views[view.__parent__], element = {}
+    var view = views[id] || {}, parent = views[view.__parent__], element = {}
     
     toArray(view.__childrenRef__).map(({ id }) => id).map(id => removeView({ _window, id, stack, insert }))
 
-    if (self) {
+    if (self && view.id) {
 
         view.__timers__.map(timerID => clearTimeout(timerID))
 

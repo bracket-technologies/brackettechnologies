@@ -8,7 +8,7 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
   var global = _window ? _window.global : window.global
 
   if (addressID && !address.id) address = stack.addresses.find(address => address.id === addressID)
-  if (stack.terminated || address.hold || address.starter) return
+  if (!address.id || stack.terminated || address.hold || address.starter) return
 
   // params
   address.params = address.params || {}
@@ -54,7 +54,7 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
     
     var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.headAddressID === address.headAddressID)
 
-    if (otherWaiting === -1 || (otherWaiting > -1 && otherWaiting.blocked)) {
+    if (otherWaiting === -1 || (otherWaiting > -1 && !stack.addresses.find(waitingAddress => waitingAddress.headAddressID === address.headAddressID && !address.blocked))) {
       
       headAddress.hold = false
       return toAwait({ _window, lookupActions, stack, address: headAddress, id, e, req, res, __, action })

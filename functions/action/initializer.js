@@ -1,5 +1,4 @@
-const { toValue } = require('./toValue');
-const { toCode } = require('./toCode');
+const { parseCookies } = require('./cookie');
 
 const detector = new (require('node-device-detector'))({
     clientIndexes: true,
@@ -7,12 +6,16 @@ const detector = new (require('node-device-detector'))({
     deviceAliasCode: false,
 });
 
-const initializer = ({ id, req, res, path, data: { db, storage, rdb } }) => {
+const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, mongoDB } }) => {
 
-    req.db = db
-    req.storage = storage
-    req.rdb = rdb
+    req.db = { firebaseDB, mongoDB }
+    req.storage = { firebaseStorage }
+
+    // parse cookies
+    parseCookies(req)
     req.cookies = JSON.parse(req.cookies.__session || "{}")
+
+    // action
     req.body.action = req.body.action || {}
 
     // path
@@ -26,6 +29,9 @@ const initializer = ({ id, req, res, path, data: { db, storage, rdb } }) => {
 
         // action is database()
         ? (path[2] === "database" ? "database()"  
+
+        // action is storage()
+        : path[2] === "storage" ? "storage()"  
         
         // action is action_name()
         : path[2] === "action" ? req.body.action.name

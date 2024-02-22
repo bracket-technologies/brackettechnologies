@@ -6,31 +6,33 @@ const { openStack, endStack } = require("./stack")
 
 require("dotenv").config();
 
-module.exports = (data) => {
+module.exports = async ({ req, res, data }) => {
+
+  var path = decodeURI(req.url).split("/"), id = "route"
   
-  data.server.all("*", async (req, res) => {
+  // resource
+  if (path[2] === "resource") return getLocalFile({ req, res })
 
-    var path = decodeURI(req.url).split("/"), id = "route"
+  // initialize
+  var _window = initializer({ id, req, res, path, data })
 
-    // resource
-    if (path[2] === "resource") return getLocalFile({ req, res })
+  // authorize
+  var { success, message, error } = await authorizer({ _window, req })
 
-    // initialize
-    var _window = initializer({ id, req, res, path, data })
+  // not authorized
+  if (!success) {
+    // respond
+    res.setHeader('Content-Type', 'application/json')
+    res.write(JSON.stringify({ success, message, error }))
+    return res.end()
+  }
 
-    // authorize
-    var { success, message, error } = await authorizer({ _window, req })
+  // open stack
+  var stack = openStack({ _window, id, event: req.method.toLowerCase(), server: true, action: _window.global.manifest.action })
 
-    // not authorized
-    if (!success) return res.send({ success, message, error })
+  // render
+  await render({ _window, req, res, stack, id, data: { view: "route" } })
 
-    // open stack
-    var stack = openStack({ _window, id, event: req.method.toLowerCase(), server: true, action: _window.global.manifest.action })
-
-    // render
-    await render({ _window, req, res, stack, id, data: { view: "route" } })
-
-    // end stack
-    endStack({ _window, stack, end: true })
-  })
+  // end stack
+  endStack({ _window, stack, end: true })
 }
