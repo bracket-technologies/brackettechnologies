@@ -12,7 +12,6 @@ const Input = (component) => {
   component.hover = component.hover || {}
   component.style = component.style || {}
   component.hover.style = component.hover.style || {}
-  component.style.after = component.style.after || {}
 
   // container
   component.container = component.container || {}
@@ -22,7 +21,6 @@ const Input = (component) => {
   component.icon.style = component.icon.style || {}
   component.icon.hover = component.icon.hover || {}
   component.icon.hover.style = component.icon.hover.style || {}
-  component.icon.style.after = component.icon.style.after || {}
 
   // input
   component.input = component.input || {}
@@ -30,7 +28,6 @@ const Input = (component) => {
   component.input.type = component.password && "password" || component.input.type || 'text'
   component.input.style = component.input.style || {}
   component.input.hover.style = component.input.hover.style || {}
-  component.input.style.after = component.input.style.after || {}
 
   // required
   if (component.required) component.required = typeof component.required === "object" ? component.required : {}
@@ -255,8 +252,6 @@ const Input = (component) => {
           event: `focus?if():[__labeled__]:[if():[!():${__labeled__}.contains():[clicked()]]:[if():${duplicatable ? true : false}:[parent().click()]:[2ndChild().click()]]]:[if():[!():${id}.contains():[clicked()]]:[click():[__droplistPositioner__:().del();]]]?!preventDefault`
         }, {
           event: `blur?():document.click()`
-        }, {
-          event: "select;mousedown?preventDefault()"
         }, {
           event: `keyup?():'${id}-duplicate'.click()?duplicatable;e().key=Enter`
         }]

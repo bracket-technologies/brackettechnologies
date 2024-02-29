@@ -8694,7 +8694,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
   // asynchronous actions within view params
   if (stack.addresses[0].asynchronous) {
 
-    var headAddress = addresser({ _window, id, stack, headAddressID: address.headAddressID, hold: true, type: "function", function: "continueToView", file: "toView", __, lookupActions, stack }).address
+    var headAddress = addresser({ _window, id, stack, headAddressID: address.headAddressID, type: "function", function: "continueToView", file: "toView", __, lookupActions, stack }).address
     return address.headAddressID = headAddress.id
   }
 
@@ -8748,62 +8748,7 @@ const continueToView = ({ _window, id, stack, __, address, lookupActions, req, r
   view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, data: global[view.doc] || {}, value: view.data, key: true }, __ })
 
   // components
-  if (view.__name__ === "Icon") {
-
-    view.icon = view.icon || {}
-    view.icon.name = view.name || view.icon.name || (typeof view.data === "string" && view.data) || ""
-    if ((view.icon.google || view.google) && (!view.google.symbol && !view.symbol)) {
-
-      view.symbol = {}
-      view.google.symbol = {}
-      if (view.google.outlined) view.outlined = true
-      else if (view.google.filled) view.filled = true
-      else if (view.google.rounded) view.rounded = true
-      else if (view.google.sharp) view.sharp = true
-      else if (view.google.twoTone) view.twoTone = true
-      else view.google = {}
-
-    } else if ((view.icon.google || view.google) && (view.symbol || view.google.symbol)) {
-
-      view.symbol = view.google.symbol = {}
-      if (view.google.symbol) view.symbol.outlined = true
-      else if (view.google.symbol.filled) view.symbol.filled = true
-      else if (view.google.symbol.rounded) view.symbol.rounded = true
-      else if (view.google.symbol.sharp) view.symbol.sharp = true
-      else if (view.google.symbol.twoTone) view.symbol.twoTone = true
-      else view.google = {}
-
-    } else {
-
-      view.symbol = {}
-    }
-  } else if (view.textarea && !view.__templated__) {
-
-    view.style = view.style || {}
-    view.input = view.input || {}
-    view.input.style = view.input.style || {}
-    view.input.style.height = "fit-content"
-  } else if (view.__name__ === "Input") {
-
-    view.input = view.input || {}
-    if (view.value) view.input.value = view.input.value || view.value
-    if (view.checked !== undefined) view.input.checked = view.checked
-    if (view.max !== undefined) view.input.max = view.max
-    if (view.min !== undefined) view.input.min = view.min
-    if (view.name !== undefined) view.input.name = view.name
-    if (view.accept !== undefined) view.input.accept = view.input.accept
-    if (view.multiple !== undefined) view.input.multiple = true
-    if (view.input.placeholder) view.placeholder = view.input.placeholder
-    view.text = view.input.value
-
-  } else if (view.__name__ === "Image") {
-
-    view.src = view.src || (typeof view.data === "string" && view.data) || ""
-
-  } else if (view.__name__ === "Text") {
-
-    view.text = view.text !== undefined ? view.text : ((typeof view.data === "string" && view.data) || "")
-  }
+  componentModifier({ _window, id })
 
   // built-in view
   if (builtInViews[view.__name__] && !view.__templated__) var { id, view } = builtInViewHandler({ _window, lookupActions, stack, id, req, res, __ })
@@ -8858,6 +8803,75 @@ const sortAndArrange = ({ data, sort, arrange }) => {
   })
 
   return data
+}
+
+const componentModifier = ({ _window, id }) => {
+
+  var view = _window ? _window.views[id] : window.views[id]
+
+  // icon
+  if (view.__name__ === "Icon") {
+
+    view.icon = view.icon || {}
+    view.icon.name = view.name || view.icon.name || (typeof view.data === "string" && view.data) || ""
+    if ((view.icon.google || view.google) && (!view.google.symbol && !view.symbol)) {
+
+      view.symbol = {}
+      view.google.symbol = {}
+      if (view.google.outlined) view.outlined = true
+      else if (view.google.filled) view.filled = true
+      else if (view.google.rounded) view.rounded = true
+      else if (view.google.sharp) view.sharp = true
+      else if (view.google.twoTone) view.twoTone = true
+      else view.google = {}
+
+    } else if ((view.icon.google || view.google) && (view.symbol || view.google.symbol)) {
+
+      view.symbol = view.google.symbol = {}
+      if (view.google.symbol) view.symbol.outlined = true
+      else if (view.google.symbol.filled) view.symbol.filled = true
+      else if (view.google.symbol.rounded) view.symbol.rounded = true
+      else if (view.google.symbol.sharp) view.symbol.sharp = true
+      else if (view.google.symbol.twoTone) view.symbol.twoTone = true
+      else view.google = {}
+
+    } else {
+
+      view.symbol = {}
+    }
+  }
+
+  // textarea
+  else if (view.textarea && !view.__templated__) {
+
+    view.style = view.style || {}
+    view.input = view.input || {}
+    view.input.style = view.input.style || {}
+    view.input.style.height = "fit-content"
+  }
+
+  // input
+  else if (view.__name__ === "Input") {
+
+    view.input = view.input || {}
+    if (view.value) view.input.value = view.input.value || view.value
+    if (view.checked !== undefined) view.input.checked = view.checked
+    if (view.max !== undefined) view.input.max = view.max
+    if (view.min !== undefined) view.input.min = view.min
+    if (view.name !== undefined) view.input.name = view.name
+    if (view.accept !== undefined) view.input.accept = view.input.accept
+    if (view.multiple !== undefined) view.input.multiple = true
+    if (view.input.placeholder) view.placeholder = view.input.placeholder
+    view.text = view.input.value
+
+  } else if (view.__name__ === "Image") {
+
+    view.src = view.src || (typeof view.data === "string" && view.data) || ""
+
+  } else if (view.__name__ === "Text") {
+
+    view.text = view.text !== undefined ? view.text : ((typeof view.data === "string" && view.data) || "")
+  }
 }
 
 const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {}, req, res }) => {
@@ -8999,63 +9013,7 @@ const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ })
     id = view.id
   }
 
-  // icon
-  if (view.__name__ === "Icon") {
-
-    view.icon = view.icon || {}
-    view.icon.name = view.name || view.icon.name || (typeof view.data === "string" && view.data) || ""
-    if ((view.icon.google || view.google) && (!view.google.symbol && !view.symbol)) {
-
-      view.symbol = {}
-      view.google.symbol = {}
-      if (view.google.outlined) view.outlined = true
-      else if (view.google.filled) view.filled = true
-      else if (view.google.rounded) view.rounded = true
-      else if (view.google.sharp) view.sharp = true
-      else if (view.google.twoTone) view.twoTone = true
-      else view.google = {}
-
-    } else if ((view.icon.google || view.google) && (view.symbol || view.google.symbol)) {
-
-      view.symbol = view.google.symbol = {}
-      if (view.google.symbol) view.symbol.outlined = true
-      else if (view.google.symbol.filled) view.symbol.filled = true
-      else if (view.google.symbol.rounded) view.symbol.rounded = true
-      else if (view.google.symbol.sharp) view.symbol.sharp = true
-      else if (view.google.symbol.twoTone) view.symbol.twoTone = true
-      else view.google = {}
-
-    } else {
-
-      view.symbol = {}
-    }
-  } else if (view.textarea && !view.__templated__) {
-
-    view.style = view.style || {}
-    view.input = view.input || {}
-    view.input.style = view.input.style || {}
-    view.input.style.height = "fit-content"
-  } else if (view.__name__ === "Input") {
-
-    view.input = view.input || {}
-    if (view.value) view.input.value = view.input.value || view.value
-    if (view.checked !== undefined) view.input.checked = view.checked
-    if (view.max !== undefined) view.input.max = view.max
-    if (view.min !== undefined) view.input.min = view.min
-    if (view.name !== undefined) view.input.name = view.name
-    if (view.accept !== undefined) view.input.accept = view.input.accept
-    if (view.multiple !== undefined) view.input.multiple = true
-    if (view.input.placeholder) view.placeholder = view.input.placeholder
-    view.text = view.input.value
-
-  } else if (view.__name__ === "Image") {
-
-    view.src = view.src || (typeof view.data === "string" && view.data) || ""
-
-  } else if (view.__name__ === "Text") {
-
-    view.text = view.text !== undefined ? view.text : ((typeof view.data === "string" && view.data) || "")
-  }
+  componentModifier({ _window, id })
 
   return { id, view }
 }
@@ -18306,7 +18264,6 @@ const Input = (component) => {
   component.hover = component.hover || {}
   component.style = component.style || {}
   component.hover.style = component.hover.style || {}
-  component.style.after = component.style.after || {}
 
   // container
   component.container = component.container || {}
@@ -18316,7 +18273,6 @@ const Input = (component) => {
   component.icon.style = component.icon.style || {}
   component.icon.hover = component.icon.hover || {}
   component.icon.hover.style = component.icon.hover.style || {}
-  component.icon.style.after = component.icon.style.after || {}
 
   // input
   component.input = component.input || {}
@@ -18324,7 +18280,6 @@ const Input = (component) => {
   component.input.type = component.password && "password" || component.input.type || 'text'
   component.input.style = component.input.style || {}
   component.input.hover.style = component.input.hover.style || {}
-  component.input.style.after = component.input.style.after || {}
 
   // required
   if (component.required) component.required = typeof component.required === "object" ? component.required : {}
@@ -18549,8 +18504,6 @@ const Input = (component) => {
           event: `focus?if():[__labeled__]:[if():[!():${__labeled__}.contains():[clicked()]]:[if():${duplicatable ? true : false}:[parent().click()]:[2ndChild().click()]]]:[if():[!():${id}.contains():[clicked()]]:[click():[__droplistPositioner__:().del();]]]?!preventDefault`
         }, {
           event: `blur?():document.click()`
-        }, {
-          event: "select;mousedown?preventDefault()"
         }, {
           event: `keyup?():'${id}-duplicate'.click()?duplicatable;e().key=Enter`
         }]
