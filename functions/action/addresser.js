@@ -145,6 +145,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
 }
 
 const printAddress = ({ stack, address, headAddress }) => {
+    if (!headAddress) headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
     stack.logs.push(`${stack.logs.length} ${address.status}${address.status === "End" ? (" (" + ((new Date()).getTime() - address.executionStartTime) + ") ") : " "}${address.type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action}${headAddress.id ? ` => ${headAddress.id || ""} ${headAddress.index !== undefined ? headAddress.index : ""} ${headAddress.type === "function" ? headAddress.function : headAddress.action || ""}` : ""}`)
 }
 

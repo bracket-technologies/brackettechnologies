@@ -20,11 +20,11 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
   // modify underscores
   var my__ = _ !== undefined ? [_, ...(address.params.__ || __)] : (address.params.__ || __)
 
-  // address
-  var headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
-
   // unblock stack
   if (stack.blocked && !address.blocked) stack.blocked = false
+
+  // address
+  var headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
 
   if (address.blocked || address.status === "Start" || address.status === "End") {
 

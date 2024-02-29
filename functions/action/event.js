@@ -7,6 +7,7 @@ const { decode } = require("./decode")
 const { addresser } = require("./addresser")
 const { toArray } = require("./toArray")
 const { generate } = require("./generate")
+const { toParam } = require("./toParam")
 
 const addEventListener = ({ event, id, __, stack, lookupActions, address, eventID: mainEventID }) => {
 
@@ -86,12 +87,9 @@ const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: he
   var address = addresser({ stack, id, status: "Start", type: "line", event: "click", interpreting: true, lookupActions, __, headAddress: address }).address
 
   // main params
-  var data = toLine({ lookupActions, stack, id, e, address, data: { string, action: "toParam" }, __, mount: true })
+  toParam({ lookupActions, stack, id, e, address, data: string, __, mount: true })
 
   endStack({ stack, end: true })
-
-  // conditions not applied
-  if (data.conditionsNotApplied) return data
 }
 
 const defaultEventHandler = ({ id }) => {

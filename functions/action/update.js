@@ -7,6 +7,7 @@ const { generate } = require("./generate")
 const { addresser } = require("./addresser")
 const { toParam } = require("./toParam")
 const { decode } = require("./decode")
+const { toAwait } = require("./toAwait")
 
 const update = ({ _window, id, lookupActions, stack, address, req, res, __, data = {} }) => {
 
@@ -61,13 +62,13 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
 
   // remove views
   if (!data.insert && parent.__rendered__) parent.__childrenRef__.filter(({ childIndex }) => childIndex === __childIndex__).map(({ id }) => elements.push(removeView({ _window, id, stack, main: true, insert: data.insert })))
-  else if (!parent.__rendered__) { removeView({ _window, id: data.id, stack, main: true }) }
+  else if (!parent.__rendered__) removeView({ _window, id: data.id, stack, main: true })
 
   // address for postUpdate
   var headAddress = addresser({ _window, id, stack, headAddressID: address.headAddressID, hasWaits: address.hasWaits, type: "function", function: "postUpdate", file: "update", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent } }).address
   address.headAddressID = headAddress.id
   address.hasWaits = false
-  
+ 
   // render
   toView({ _window, lookupActions: __lookupViewActions__, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
 }

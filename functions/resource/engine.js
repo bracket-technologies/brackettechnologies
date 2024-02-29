@@ -172,6 +172,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
 }
 
 const printAddress = ({ stack, address, headAddress }) => {
+    if (!headAddress) headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
     stack.logs.push(`${stack.logs.length} ${address.status}${address.status === "End" ? (" (" + ((new Date()).getTime() - address.executionStartTime) + ") ") : " "}${address.type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action}${headAddress.id ? ` => ${headAddress.id || ""} ${headAddress.index !== undefined ? headAddress.index : ""} ${headAddress.type === "function" ? headAddress.function : headAddress.action || ""}` : ""}`)
 }
 
@@ -1807,6 +1808,7 @@ const { decode } = require("./decode")
 const { addresser } = require("./addresser")
 const { toArray } = require("./toArray")
 const { generate } = require("./generate")
+const { toParam } = require("./toParam")
 
 const addEventListener = ({ event, id, __, stack, lookupActions, address, eventID: mainEventID }) => {
 
@@ -1886,12 +1888,9 @@ const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: he
   var address = addresser({ stack, id, status: "Start", type: "line", event: "click", interpreting: true, lookupActions, __, headAddress: address }).address
 
   // main params
-  var data = toLine({ lookupActions, stack, id, e, address, data: { string, action: "toParam" }, __, mount: true })
+  toParam({ lookupActions, stack, id, e, address, data: string, __, mount: true })
 
   endStack({ stack, end: true })
-
-  // conditions not applied
-  if (data.conditionsNotApplied) return data
 }
 
 const defaultEventHandler = ({ id }) => {
@@ -1968,7 +1967,7 @@ const modifyEvent = ({ eventID, string, event }) => {
 
 module.exports = { addEventListener, defaultEventHandler, eventExecuter }
 
-},{"./addresser":2,"./clone":4,"./decode":13,"./generate":24,"./stack":58,"./toArray":63,"./toCode":67,"./toLine":72,"./watch":84}],19:[function(require,module,exports){
+},{"./addresser":2,"./clone":4,"./decode":13,"./generate":24,"./stack":58,"./toArray":63,"./toCode":67,"./toLine":72,"./toParam":75,"./watch":84}],19:[function(require,module,exports){
 module.exports=[
   "mouseenter", "mouseleave",  "mouseover", "mousemove", "mousedown", "mouseup", "touchstart", 
   "touchend", "touchmove", "touchcancel", "click", "change", "focus", "blur", "keypress", "keyup", 
@@ -7400,11 +7399,11 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
   // modify underscores
   var my__ = _ !== undefined ? [_, ...(address.params.__ || __)] : (address.params.__ || __)
 
-  // address
-  var headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
-
   // unblock stack
   if (stack.blocked && !address.blocked) stack.blocked = false
+
+  // address
+  var headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
 
   if (address.blocked || address.status === "Start" || address.status === "End") {
 
@@ -8572,7 +8571,7 @@ const { toArray } = require("./toArray")
 const { override } = require("./merge")
 const { toLine } = require("./toLine")
 const { initView, removeView, getViewParams } = require("./view")
-const { addresser } = require("./addresser")
+const { addresser, printAddress } = require("./addresser")
 const { toAwait } = require("./toAwait")
 const { kernel } = require("./kernel")
 const { isParam } = require("./isParam")
@@ -8589,126 +8588,137 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
   const views = _window ? _window.views : window.views
   const global = _window ? _window.global : window.global
+  var view = data.view
 
-  // init view
-  var { id, view } = initView({ views, global, id, parent: data.parent, ...(data.view || {}), __ })
+  if (!view.__interpreted__) {
 
-  // no view
-  if (!view.view) return removeView({ _window, lookupActions, stack, id, address, __ })
+    // init view
+    var details = initView({ views, global, id, parent: data.parent, ...(data.view || {}), __ })
+    view = details.view
+    id = details.id
 
-  // encode
-  view.__name__ = toCode({ _window, id, string: toCode({ _window, id, string: view.__name__, start: "'" }) })
+    // no view
+    if (!view.view) return removeView({ _window, lookupActions, stack, id, address, __ })
 
-  // 
-  var name = view.__name__.split("?")[0]
-  var params = view.__name__.split("?")[1]
-  var conditions = view.__name__.split("?")[2]
-  var subParams = name.split(":").slice(1).join(":") || ""
-  view.__name__ = name.split(":")[0]
+    // encode
+    view.__name__ = toCode({ _window, id, string: toCode({ _window, id, string: view.__name__, start: "'" }) })
 
-  // global:()
-  if (subParams.includes("()") || view.__name__.includes("()")) {
-    view.__name__ = view.__name__ + ":" + subParams
-    subParams = ""
-  }
+    // 
+    var name = view.__name__.split("?")[0]
+    var params = view.__name__.split("?")[1]
+    var conditions = view.__name__.split("?")[2]
+    var subParams = name.split(":").slice(1).join(":") || ""
+    view.__name__ = name.split(":")[0]
 
-  // action view
-  if (isParam({ _window, string: view.__name__ })) {
+    // global:()
+    if (subParams.includes("()") || view.__name__.includes("()")) {
+      view.__name__ = view.__name__ + ":" + subParams
+      subParams = ""
+    }
 
-    view.__name__ = "Action"
-    conditions = params
-    params = subParams
-    subParams = ""
-  }
+    // action view
+    if (isParam({ _window, string: view.__name__ })) {
 
-  // loop over view
-  var loop = view.__name__.charAt(0) === "@" && view.__name__.length == 6
+      view.__name__ = "Action"
+      conditions = params
+      params = subParams
+      subParams = ""
+    }
 
-  // view name
-  view.__name__ = toValue({ _window, id, req, res, data: view.__name__, __, stack })
+    // loop over view
+    var loop = view.__name__.charAt(0) === "@" && view.__name__.length == 6
 
-  // no view
-  if (!view.__name__ || typeof view.__name__ !== "string" || view.__name__.charAt(0) === "#") return removeView({ _window, id, stack, address })
-  else views[id] = view
+    // view name
+    view.__name__ = toValue({ _window, id, req, res, data: view.__name__, __, stack })
 
-  // executable view name
-  if (executable({ _window, string: view.__name__ })) {
-    toValue({ _window, id, req, res, data: view.__name__, lookupActions, __, stack })
-    view.__name__ = "Action"
-  }
+    // no view
+    if (!view.__name__ || typeof view.__name__ !== "string" || view.__name__.charAt(0) === "#") return removeView({ _window, id, stack, address })
+    else views[id] = view
 
-  // interpret subparams
-  if (subParams) {
+    // executable view name
+    if (executable({ _window, string: view.__name__ })) {
+      toValue({ _window, id, req, res, data: view.__name__, lookupActions, __, stack })
+      view.__name__ = "Action"
+    }
 
-    address.interpreting = true
-    var { data = {}, conditionsNotApplied } = toLine({ _window, lookupActions, stack, id, data: { string: subParams }, req, res, __ })
-    address.interpreting = false
+    // interpret subparams
+    if (subParams) {
 
-    if (conditionsNotApplied) return removeView({ _window, id, stack, address })
-    else subParams = data
-  }
+      address.interpreting = true
+      var { data = {}, conditionsNotApplied } = toLine({ _window, lookupActions, stack, id, data: { string: subParams }, req, res, __ })
+      address.interpreting = false
 
-  // [View]
-  if (loop) return loopOverView({ _window, id, stack, lookupActions, __, address, data: subParams || {}, req, res })
+      if (conditionsNotApplied) return removeView({ _window, id, stack, address })
+      else subParams = data
+    }
 
-  // subparam is params or id
-  if (typeof subParams === "object") {
+    // [View]
+    if (loop) return loopOverView({ _window, id, stack, lookupActions, __, address, data: subParams || {}, req, res })
 
-    my__ = [subParams, ...__]
-    override(view, subParams)
+    // subparam is params or id
+    if (typeof subParams === "object") {
 
-  } else if (subParams && typeof subParams === "string" && subParams !== id) {
+      my__ = [subParams, ...__]
+      override(view, subParams)
 
-    var newID = subParams
-    if (views[newID] && view.id !== newID) newID += "_" + generate()
+    } else if (subParams && typeof subParams === "string" && subParams !== id) {
 
-    delete Object.assign(views, { [newID]: views[id] })[id]
-    id = newID
-    views[id].id = id
-    view = views[id]
-    view.__customID__ = true
-  }
+      var newID = subParams
+      if (views[newID] && view.id !== newID) newID += "_" + generate()
 
-  // conditions
-  var approved = toApproval({ _window, lookupActions, stack, data: conditions, id, req, res, __ })
-  if (!approved) return removeView({ _window, id, stack, address })
-
-  // params
-  if (params) {
-    
-    address.interpreting = true
-    toParam({ _window, lookupActions, stack, data: params, id, req, res, mount: true, __ })
-    address.interpreting = false
-
-    if (view.id !== id) {
-
+      delete Object.assign(views, { [newID]: views[id] })[id]
+      id = newID
+      views[id].id = id
+      view = views[id]
       view.__customID__ = true
-      delete views[id]
-      id = view.id
+    }
+
+    // conditions
+    var approved = toApproval({ _window, lookupActions, stack, data: conditions, id, req, res, __ })
+    if (!approved) return removeView({ _window, id, stack, address })
+
+    // params
+    if (params) {
+
+      address.interpreting = true
+      toParam({ _window, lookupActions, stack, data: params, id, req, res, mount: true, __ })
+      address.interpreting = false
+
+      if (view.id !== id) {
+
+        view.__customID__ = true
+        delete views[id]
+        id = view.id
+      }
+    }
+
+    // data
+    view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, data: global[view.doc] || {}, value: view.data, key: true }, __ })
+
+    // prepare for toHTML
+    componentModifier({ _window, id })
+
+    // built-in view
+    if (view.__name__ === "Input" && !view.__templated__) var { id, view } = builtInViewHandler({ _window, lookupActions, stack, id, req, res, __ })
+
+    // set interpreted
+    view.__interpreted__ = true
+
+    // maybe update in params or root
+    if (address.blocked) return
+
+    // asynchronous actions within view params
+    if (stack.addresses[0].asynchronous) {
+
+      var headAddress = addresser({ _window, id, stack, headAddressID: address.headAddressID, type: "function", function: "toView", __, lookupActions, stack, data: { view } }).address
+      return address.headAddressID = headAddress.id
     }
   }
 
-  // maybe update in params or root
-  if (address.blocked) return
-
-  // asynchronous actions within view params
-  if (stack.addresses[0].asynchronous) {
-
-    var headAddress = addresser({ _window, id, stack, headAddressID: address.headAddressID, type: "function", function: "continueToView", file: "toView", __, lookupActions, stack }).address
-    return address.headAddressID = headAddress.id
-  }
-
-  continueToView({ _window, id, stack, __, address, lookupActions, req, res })
-}
-
-const continueToView = ({ _window, id, stack, __, address, lookupActions, req, res }) => {
-
-  const views = _window ? _window.views : window.views
-  const global = _window ? _window.global : window.global
-  var view = views[id]
-
-  // customView
+  // custom View
   if (global.data.views.includes(view.__name__)) {
+
+    view.__interpreted__ = false
 
     // query custom view
     if (!global.__queries__.views.includes(view.__name__) && !global.data.view[view.__name__]) {
@@ -8720,7 +8730,7 @@ const continueToView = ({ _window, id, stack, __, address, lookupActions, req, r
 
     // continue to custom view
     else {
-      
+
       var newView = {
         ...global.data.view[view.__name__],
         __customView__: view.__name__,
@@ -8728,36 +8738,24 @@ const continueToView = ({ _window, id, stack, __, address, lookupActions, req, r
         __customViewPath__: [...view.__customViewPath__, view.__name__],
         __lookupViewActions__: [...view.__lookupViewActions__, { type: "customView", view: view.__name__ }]
       }
-    
+
       // id
       if (newView.id && views[newView.id] && newView.id !== id) newView.id += "_" + generate()
       else if (newView.id) newView.__customID__ = true
       else if (!newView.id) newView.id = id
-    
+
       var child = { ...view, ...newView }
       views[child.id] = child
-    
+
       var data = getViewParams({ view })
-      
+
       // address
       return toView({ _window, stack, address, req, res, lookupActions, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
     }
   }
 
-  // data
-  view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, data: global[view.doc] || {}, value: view.data, key: true }, __ })
-
-  // components
-  componentModifier({ _window, id })
-
-  // built-in view
-  if (builtInViews[view.__name__] && !view.__templated__) var { id, view } = builtInViewHandler({ _window, lookupActions, stack, id, req, res, __ })
-
   // address toHTML
-  address = addresser({ _window, id, stack, headAddress: address, blocked: view.__name__ === "Action", type: "function", function: "toHTML", file: "toView", hold: true, __, lookupActions, stack }).address
-
-  // push action view id to lookup actions
-  if (view.__customID__) view.__lookupViewActions__.unshift({ type: "view", id })
+  address = addresser({ _window, id, stack, headAddress: address, blocked: view.__name__ === "Action", type: "function", function: "toHTML", file: "toView", __, lookupActions, stack }).address
 
   // 
   var lastIndex = view.children.length - 1;
@@ -8775,8 +8773,19 @@ const continueToView = ({ _window, id, stack, __, address, lookupActions, req, r
   delete view.children
   delete view.functions
 
-  // awaits
-  toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+  // address
+  address.status = "Start"
+  address.interpreting = true
+  printAddress({ stack, address, headAddress })
+
+  stack.interpretingAddressID = address.id
+
+  if (address.function === "toHTML") toHTML({ _window, lookupActions, stack, id, req, res, address, ...(address.params || {}), data: address.data, __ })
+  else if (address.function === "toView") toView({ _window, lookupActions, stack, id, req, res, address, ...(address.params || {}), data: address.data, __ })
+  
+  address.interpreting = false
+
+  return !address.asynchronous && toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
 }
 
 const sortAndArrange = ({ data, sort, arrange }) => {
@@ -8952,7 +8961,7 @@ const customView = ({ _window, id, lookupActions, stack, __, address, req, res }
   const global = _window ? _window.global : window.global
   const views = _window ? _window.views : window.views
   var view = views[id]
-  
+
   var newView = {
     ...global.data.view[view.__name__],
     __customView__: view.__name__,
@@ -8990,7 +8999,7 @@ const customView = ({ _window, id, lookupActions, stack, __, address, req, res }
 
     address = addresser({ _window, stack, status: "Start", type: "function", function: "toView", headAddress: address, lookupActions, __ }).address
   }
-  
+
   // address
   toView({ _window, stack, address, req, res, lookupActions, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
 }
@@ -9161,7 +9170,7 @@ const link = ({ _window, id, stack, __ }) => {
   toHTML({ _window, id, stack, __ })
 }
 
-module.exports = { toView, continueToView, toHTML, customView }
+module.exports = { toView, toHTML, customView }
 },{"../view/views":166,"./addresser":2,"./clone":4,"./colorize":6,"./cssStyleKeyNames":9,"./executable":20,"./generate":24,"./isParam":36,"./jsonFiles":37,"./kernel":39,"./logger":40,"./merge":42,"./replaceNbsps":48,"./search":53,"./toApproval":62,"./toArray":63,"./toAwait":64,"./toCode":67,"./toLine":72,"./toParam":75,"./toValue":78,"./view":83}],80:[function(require,module,exports){
 const { starter } = require("./starter")
 const { toView, toHTML } = require("./toView")
@@ -9172,6 +9181,7 @@ const { generate } = require("./generate")
 const { addresser } = require("./addresser")
 const { toParam } = require("./toParam")
 const { decode } = require("./decode")
+const { toAwait } = require("./toAwait")
 
 const update = ({ _window, id, lookupActions, stack, address, req, res, __, data = {} }) => {
 
@@ -9226,13 +9236,13 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
 
   // remove views
   if (!data.insert && parent.__rendered__) parent.__childrenRef__.filter(({ childIndex }) => childIndex === __childIndex__).map(({ id }) => elements.push(removeView({ _window, id, stack, main: true, insert: data.insert })))
-  else if (!parent.__rendered__) { removeView({ _window, id: data.id, stack, main: true }) }
+  else if (!parent.__rendered__) removeView({ _window, id: data.id, stack, main: true })
 
   // address for postUpdate
   var headAddress = addresser({ _window, id, stack, headAddressID: address.headAddressID, hasWaits: address.hasWaits, type: "function", function: "postUpdate", file: "update", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent } }).address
   address.headAddressID = headAddress.id
   address.hasWaits = false
-  
+ 
   // render
   toView({ _window, lookupActions: __lookupViewActions__, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
 }
@@ -9323,7 +9333,7 @@ const postUpdate = ({ _window, lookupActions, stack, __, id, address, data: { ch
 }
 
 module.exports = { update, postUpdate }
-},{"./addresser":2,"./clone":4,"./closePublicViews":5,"./decode":13,"./generate":24,"./starter":59,"./toParam":75,"./toView":79,"./view":83}],81:[function(require,module,exports){
+},{"./addresser":2,"./clone":4,"./closePublicViews":5,"./decode":13,"./generate":24,"./starter":59,"./toAwait":64,"./toParam":75,"./toView":79,"./view":83}],81:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
@@ -9505,7 +9515,7 @@ const getViewParams = ({ view }) => {
     
     var { id, doc, data, view, children, __lookupViewActions__, __element__, __dataPath__, __childrenRef__, __index__,
         __viewPath__, __customViewPath__, __indexing__, __childIndex__, __initialIndex__, __customView__, __htmlStyles__,
-        __parent__, __controls__, __status__, __rendered__, __timers__, __view__, __name__, __customID__, __, ...params } = view
+        __parent__, __controls__, __status__, __rendered__, __timers__, __view__, __name__, __customID__, __interpreted__, __, ...params } = view
         
     return params
 }

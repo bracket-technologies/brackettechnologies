@@ -35,7 +35,7 @@ const getViewParams = ({ view }) => {
     
     var { id, doc, data, view, children, __lookupViewActions__, __element__, __dataPath__, __childrenRef__, __index__,
         __viewPath__, __customViewPath__, __indexing__, __childIndex__, __initialIndex__, __customView__, __htmlStyles__,
-        __parent__, __controls__, __status__, __rendered__, __timers__, __view__, __name__, __customID__, __, ...params } = view
+        __parent__, __controls__, __status__, __rendered__, __timers__, __view__, __name__, __customID__, __interpreted__, __, ...params } = view
         
     return params
 }
