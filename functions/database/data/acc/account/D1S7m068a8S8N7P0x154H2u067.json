@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687879075,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "7tAvzWgt4BnyXtsnZ3sKhUIddPnmR0X4yQvaOQpFbXS12aJsfffnvlf6BDni-1708687879075",
+  "ref": "ACC-00000035",
+  "ledgerAccount": "6010/1/1",
+  "blockAccount": "No",
+  "name": "Purchases",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "60",
+    "601",
+    "6010"
+  ],
+  "__props__": {
+    "id": "D1S7m068a8S8N7P0x154H2u067",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "D7gzpYCbtxBZcMqEa0JXIC1P6VkPjFpUenl9I9XnCnKgdnMu4XWmpLfNPKjZ-1708687879075",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

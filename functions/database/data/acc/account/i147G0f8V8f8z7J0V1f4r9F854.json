@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687888473,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "PnXOnJMzjvCO8bgrTRtehHUAXyN52dnvXNCUV1eukGAmRR7ATdTlvl4hhV3C-1708687888473",
+  "ref": "ACC-00000216",
+  "ledgerAccount": "6455/1/1",
+  "blockAccount": "No",
+  "name": "Holding Taxes - on Capital and Services",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "64",
+    "645",
+    "6455"
+  ],
+  "__props__": {
+    "id": "i147G0f8V8f8z7J0V1f4r9F854",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "sintw3DlrrTH5Dp2L7VLSBuoJYoUImS4KlxYxwkPiwCPYzs1BluG6M7oM88D-1708687888473",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687879268,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "KsfypxL25j6c3iU6akBWKfTC5hS7KsSYeIE8fyNKkJDmzMWdyccPgXV6yOco-1708687879267",
+  "ref": "ACC-00000039",
+  "ledgerAccount": "60181/1/1",
+  "blockAccount": "No",
+  "name": "Freight",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "60",
+    "601",
+    "6018",
+    "60181"
+  ],
+  "__props__": {
+    "id": "P1j7V02878q8K7H0e134X9V9X1",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "tXJxYzVLMCI4DVHxVNtRQRpQwt51VLCM7nsCy7Bl8hKhIt8x3kaA6xH5Vzcz-1708687879267",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

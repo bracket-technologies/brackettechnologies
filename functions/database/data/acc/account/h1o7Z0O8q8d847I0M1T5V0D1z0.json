@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687888671,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "95v3Ar7ce32WlPYG6H9UzKmptZwjD2j3jR2wQPV5iuuKtPy3E0SlRQ7zFc1i-1708687888671",
+  "ref": "ACC-00000221",
+  "ledgerAccount": "65111/1/1",
+  "blockAccount": "No",
+  "name": "Amortiz.Alloc.of Formation Expenses",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6511",
+    "65111"
+  ],
+  "__props__": {
+    "id": "h1o7Z0O8q8d847I0M1T5V0D1z0",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "ujShc4IBMDveZMkqSTLmBlufaN9LQzq8EfTIsxtJuY0kel7Tk8xPWWgFEVXH-1708687888671",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

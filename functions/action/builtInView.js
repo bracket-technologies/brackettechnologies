@@ -6,7 +6,7 @@ const builtInViews = require("../view/views")
 module.exports = {
   builtInView: ({ _window, lookupActions, stack, id, __ }) => {
     
-    var views = _window ? _window.views : window.views
+    const views = _window ? _window.views : window.views
     var view = views[id]
     
     views[id] = view = builtInViews[view.__name__](view)

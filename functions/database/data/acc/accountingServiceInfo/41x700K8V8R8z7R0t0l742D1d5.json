@@ -1,0 +1,775 @@
+{
+  "#depreciationFormInputs": {
+    "subInput": [
+      {
+        "input": [
+          {
+            "faded": true,
+            "inputPath": "currentRate",
+            "price": true,
+            "pointerEvents": "none",
+            "inputLabel": "Current Rate",
+            "executeUnitEveryLoad": true,
+            "required": "required",
+            "unitValue": "doc().currency"
+          },
+          {
+            "inputPath": "amount",
+            "price": "true",
+            "inputLabel": "Amount",
+            "executeUnitEveryLoad": "true",
+            "required": "required",
+            "unitValue": "doc().currency"
+          }
+        ],
+        "title": "General Information"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "note",
+            "inputLabel": "Note",
+            "textarea": "textarea",
+            "height": "12rem"
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "textarea": "textarea",
+            "height": "12rem"
+          }
+        ],
+        "grid": "1fr 1fr",
+        "title": "Note & Description"
+      }
+    ],
+    "collection": "account"
+  },
+  "#depreciationInfo": {
+    "docName": "depreciationInfo"
+  },
+  "searchEngineInputs": [
+    {
+      "inputPath": "ledgerAccount",
+      "generalLedger": "true",
+      "inputLabel": "Ledger Account",
+      "allowedLedgers": [
+        "2"
+      ]
+    },
+    {
+      "inputPath": "name",
+      "inputLabel": "Name"
+    },
+    {
+      "clearable": true,
+      "inputPath": "depreciationDate",
+      "inputLabel": "Depreciation Date",
+      "type": "date"
+    }
+  ],
+  "createFormInputs": {
+    "subInput": [
+      {
+        "input": [
+          {
+            "inputPath": "name",
+            "inputLabel": "Name",
+            "required": "required"
+          },
+          {
+            "inputPath": "currency",
+            "readonly": true,
+            "inputLabel": "Currency",
+            "inputValue": "userData:().defaultCurrency.value",
+            "items": "userData:().currency.():code",
+            "droplistClickAction": "updateWrapper()",
+            "required": true
+          },
+          {
+            "inputPath": "autoDepreciation",
+            "readonly": "readonly",
+            "inputLabel": "Auto Depreciation?",
+            "inputValue": "No",
+            "#items": [
+              {
+                "text": "Yes",
+                "pathValue": "true"
+              },
+              {
+                "text": "No",
+                "pathValue": "false"
+              }
+            ],
+            "items": [
+              "Yes",
+              "No"
+            ],
+            "droplistClickAction": "updateWrapper()",
+            "required": true
+          },
+          {
+            "inputPath": "createNewAccount",
+            "readonly": "readonly",
+            "inputLabel": "Create New Account?",
+            "inputValue": "Yes",
+            "items": [
+              "Yes",
+              "No"
+            ],
+            "droplistClickAction": "updateWrapper()",
+            "required": true
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "No"
+                ],
+                "conditionReference": "createNewAccount"
+              }
+            ],
+            "inputPath": "ledgerAccount",
+            "generalLedger": "true",
+            "inputLabel": "Ledger Account",
+            "allowedLedgers": [
+              "2"
+            ],
+            "required": true
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Yes"
+                ],
+                "conditionReference": "createNewAccount"
+              }
+            ],
+            "inputPath": "generalLedger",
+            "inputLabel": "General Ledger",
+            "allowedLedgers": [
+              "2"
+            ],
+            "govInput": "true",
+            "required": true
+          }
+        ],
+        "title": "General Information"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "yearlyRate",
+            "unitPath": "yearlyRateUnit",
+            "#subItemsList": [
+              "doc().currency",
+              "%"
+            ],
+            "price": true,
+            "inputLabel": "Yearly Rate",
+            "executeUnitEveryLoad": true,
+            "required": true,
+            "unitValue": "doc().currency"
+          },
+          {
+            "inputPath": "startDate",
+            "inputLabel": "Start Date",
+            "type": "date",
+            "required": "true"
+          },
+          {
+            "inputPath": "stopDate",
+            "inputLabel": "Stop Date",
+            "type": "date",
+            "required": true
+          },
+          {
+            "inputPath": "notification",
+            "readonly": "readonly",
+            "inputLabel": "Notify Me",
+            "inputValue": "Yes",
+            "#items": [
+              {
+                "text": "Yes",
+                "pathValue": "true"
+              },
+              {
+                "text": "No",
+                "pathValue": "false"
+              }
+            ],
+            "items": [
+              "Yes",
+              "No"
+            ],
+            "required": true
+          }
+        ],
+        "condition": [
+          {
+            "condition": [
+              "Yes"
+            ],
+            "conditionReference": "autoDepreciation"
+          }
+        ],
+        "title": "Depreciation"
+      },
+      {
+        "#input": [
+          {
+            "inputPath": "purchaseDate",
+            "inputLabel": "Purchase Date",
+            "type": "date",
+            "required": true
+          },
+          {
+            "#executeUnitEveryLoad": true,
+            "inputPath": "purchasePrice",
+            "unitPath": "currency",
+            "price": true,
+            "#unitValue": "doc().currency",
+            "inputLabel": "Price",
+            "required": true
+          },
+          {
+            "inputPath": "supplier",
+            "generalLedger": true,
+            "#generalLedger": true,
+            "inputLabel": "Supplier",
+            "allowedLedgers": [
+              "403"
+            ],
+            "required": "true"
+          }
+        ],
+        "#title": "Purchase"
+      },
+      {
+        "#input": [
+          {
+            "inputPath": "soldDate",
+            "inputLabel": "Sold Date",
+            "type": "date",
+            "required": "true"
+          },
+          {
+            "inputPath": "soldPrice",
+            "unitPath": "currency",
+            "price": "true",
+            "inputLabel": "Price",
+            "required": true,
+            "unitValue": "USD"
+          },
+          {
+            "inputPath": "customer",
+            "generalLedger": true,
+            "#generalLedger": "true",
+            "inputLabel": "Customer",
+            "allowedLedgers": [
+              "41"
+            ],
+            "required": "true"
+          }
+        ],
+        "#title": "Sold"
+      },
+      {
+        "#input": [
+          {
+            "inputPath": "termination",
+            "inputLabel": "Termination Date",
+            "type": "date"
+          },
+          {
+            "inputPath": "reason",
+            "inputLabel": "Reason",
+            "textarea": "textarea"
+          }
+        ],
+        "#title": "Termination"
+      },
+      {
+        "input": [
+          {
+            "priceInput": true,
+            "inputPath": "amount",
+            "inputLabel": "Amount",
+            "executeUnitEveryLoad": true,
+            "inputValue": 0,
+            "unitValue": "doc().currency"
+          }
+        ],
+        "condition": [
+          {
+            "condition": [
+              "Yes"
+            ],
+            "conditionReference": "createNewAccount"
+          }
+        ],
+        "#input": [
+          {
+            "inputPath": "credit",
+            "price": true,
+            "inputLabel": "Credit",
+            "inputValue": 0,
+            "executeUnitEveryLoad": true,
+            "blurAction": "doc().balance=[doc().debit||0]-[doc().credit||0];customUpdate():[section=5]",
+            "unitValue": "doc().currency"
+          },
+          {
+            "inputPath": "debit",
+            "inputLabel": "Debit",
+            "inputValue": 0,
+            "executeUnitEveryLoad": "true",
+            "blurAction": "doc().balance=[doc().debit||0]-[doc().credit||0];customUpdate():[section=5]",
+            "unitValue": "doc().currency"
+          },
+          {
+            "faded": true,
+            "inputPath": "balance",
+            "readonly": true,
+            "price": true,
+            "pointerEvents": "none",
+            "inputLabel": "Balance",
+            "inputValue": 0,
+            "executeUnitEveryLoad": "true",
+            "unitValue": "doc().currency"
+          }
+        ],
+        "title": "Opening Balance"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "note",
+            "inputLabel": "Note",
+            "textarea": "textarea",
+            "height": "12rem"
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "textarea": "textarea",
+            "height": "12rem"
+          }
+        ],
+        "grid": "1fr 1fr",
+        "title": "Note & Description"
+      }
+    ],
+    "collection": "asset"
+  },
+  "popupInfo": {
+    "docName": "assetInfo",
+    "title": "Asset Form"
+  },
+  "title": "Asset Manager",
+  "managerName": "asset",
+  "table": [
+    {
+      "collection": "asset",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Asset#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "ledgerAccount",
+          "header": "Ledger",
+          "fraction": ".5fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "type",
+          "header": "Type",
+          "fraction": "1fr"
+        },
+        {
+          "path": "debit",
+          "header": "Debit",
+          "formatCell": "toPrice()",
+          "fraction": "1fr"
+        },
+        {
+          "path": "credit",
+          "header": "Credit",
+          "formatCell": "toPrice()",
+          "fraction": "1fr"
+        },
+        {
+          "path": "balance",
+          "header": "Balance",
+          "formatCell": "toPrice()",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "delete": true,
+          "justifyContent": "end",
+          "depreciation": true,
+          "customIcon": [
+            {
+              "icon": "paid",
+              "tooltip": "transactions",
+              "action": "openTransactionForm()"
+            }
+          ],
+          "fraction": ".5fr"
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "41x700K8V8R8z7R0t0l742D1d5",
+    "creationDate": 1693302129832,
+    "collapsed": [
+      {
+        "path": [
+          "searchEngineInputs",
+          "3",
+          "items"
+        ]
+      },
+      "_map:path:path()",
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4,
+          "#input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          0,
+          "#subItemsList"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "#input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          3,
+          "#items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          6
+        ]
+      },
+      {
+        "path": [
+          "#depreciationFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "#depreciationInfo"
+        ]
+      },
+      {
+        "path": [
+          "popupInfo"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          6,
+          "allowedLedgers"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          7
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          7,
+          "allowedLedgers"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          3,
+          "#items"
+        ]
+      },
+      {
+        "path": [
+          "table"
+        ]
+      },
+      {
+        "path": [
+          "#depreciationFormInputs"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          5,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          5,
+          "#input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "sold section falsed",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3
+        ]
+      },
+      {
+        "note": "termination falsed",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4
+        ]
+      },
+      {
+        "note": "credit",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          5,
+          "#input",
+          0
+        ]
+      },
+      {
+        "note": "debit",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          5,
+          "#input",
+          1
+        ]
+      },
+      {
+        "note": "balance",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          5,
+          "#input",
+          2
+        ]
+      },
+      {
+        "note": "account balance",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          5
+        ]
+      },
+      {
+        "note": "general ",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0
+        ]
+      },
+      {
+        "note": "depreciation",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "note": "purchase false",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2
+        ]
+      },
+      {
+        "note": "note",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          6
+        ]
+      }
+    ],
+    "docName": "assetManager",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

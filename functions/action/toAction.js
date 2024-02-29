@@ -6,8 +6,8 @@ const { toAwait } = require("./toAwait")
 
 const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: customViewName, data: passedData }, condition, mount, object, lookupActions = {}, stack }) => {
 
-  var global = _window ? _window.global : window.global
-  var views = _window ? _window.views : window.views
+  const global = _window ? _window.global : window.global
+  const views = _window ? _window.views : window.views
   var view = views[id]
 
   var serverAction = false, actionFound = false, serverActionView
@@ -135,8 +135,8 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
       if (serverAction) {
 
         address.status = "Start"
-        var action = { name: action0, customView: serverActionView, __: data !== undefined ? [data] : [], lookupActions: [], stack: [], condition, object }
-        return require("./action").action({ _window, req, res, id, e, action, __, stack, lookupActions, address })
+        var route = { action: action0, customView: serverActionView, __: data !== undefined ? [data] : [], lookupActions: [], stack: [], condition, object }
+        return require("./route").route({ _window, req, res, id, e, data: { type: "action", route }, __, stack, lookupActions, address })
       }
 
       return toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: data }).data

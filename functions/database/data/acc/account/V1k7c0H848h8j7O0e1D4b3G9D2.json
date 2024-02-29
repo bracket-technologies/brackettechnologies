@@ -1,0 +1,27 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687881273,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "sn55TS0DzrrXGmoZMhZSG6kKvnI8DJ4Xsx8y0ZKrEqisvnwHFVMtKVn9LtTM-1708687881273",
+  "ref": "ACC-00000073",
+  "ledgerAccount": "62/1/1",
+  "blockAccount": "No",
+  "name": "Other Charges & Disbursements",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "62"
+  ],
+  "__props__": {
+    "id": "V1k7c0H848h8j7O0e1D4b3G9D2",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "OFfiRwyw9sR3Jx5BfLT7j8bkbVFPkCVmiztdZVCuslIZz0yoFkHvyiDA4zyK-1708687881272",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

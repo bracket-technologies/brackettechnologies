@@ -1,56 +1,38 @@
-const { toCode } = require("./toCode")
-const { lineInterpreter } = require("./lineInterpreter")
 const { toArray } = require("./toArray")
 const { generate } = require("./generate")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
+const { clone } = require("./clone")
+const { toOperator } = require("./toOperator")
 
-var database = ({ _window, req, res, id }) => {
+const database = ({ _window, req, res }) => {
 
-  if (req.method === "GET") {
+  if (req.body.type === "search") {
 
-    getdb({ _window, req, res, id })
+    getdb({ _window, req, res })
 
-  } else if (req.method === "POST") {
+  } else if (req.body.type === "save") {
 
-    postdb({ _window, req, res, id })
+    postdb({ _window, req, res })
 
-  } else if (req.method === "DELETE") {
+  } else if (req.body.type === "erase") {
 
-    deletedb({ _window, req, res, id })
+    deletedb({ _window, req, res })
   }
 }
 
-var getdb = async ({ _window, req, res, id }) => {
+const getdb = async ({ _window, req, res }) => {
 
-  const { clearActions } = require("./render")
-  var string = decodeURI(req.headers.search), data = {}
-  string = toCode({ _window, string })
+  var search = req.body.data || {}, timer = (new Date()).getTime()
 
-  if (string) data = lineInterpreter({ _window, data: { string }, id }).data
-  var search = data.search || {}
-  var { data, success, message, searchType } = await getData({ _window, req, res, search })
+  // no collection
+  if (!search.collection) {
+    console.log("SEARCH", "No collection!", 0);
+    return ({ success: false, message: "No collection exists!" })
+  }
 
-  // hide secure view
-  /*if (search.collection === "view") {
+  var { data, success, message } = await getData({ _window, req, res, search })
 
-    if (searchType === "byDoc" && data._secure_) {
-
-      data.view = ""
-      data.children = []
-      clearActions(data.functions)
-
-    } else if (searchType !== "byDoc") {
-
-      Object.values(data).map(data => {
-        if (data._secure_) {
-
-          data.view = ""
-          data.children = []
-          clearActions(data.functions)
-        }
-      })
-    }
-  }*/
+  console.log("SEARCH", search.collection, (new Date()).getTime() - timer);
 
   // respond
   res.setHeader('Content-Type', 'application/json')
@@ -58,9 +40,16 @@ var getdb = async ({ _window, req, res, id }) => {
   res.end()
 }
 
-var postdb = async ({ _window, req, res }) => {
+const postdb = async ({ _window, req, res }) => {
 
-  var save = req.body.save || {}, timer = (new Date()).getTime()
+  var save = req.body.data || {}, timer = (new Date()).getTime()
+
+  // no collection
+  if (!save.collection) {
+    console.log("SAVE", "No collection!", 0);
+    return ({ success: false, message: "No collection exists!" })
+  }
+
   var { data, success, message } = await postData({ _window, req, res, save })
 
   console.log("SAVE", save.collection, (new Date()).getTime() - timer);
@@ -71,13 +60,15 @@ var postdb = async ({ _window, req, res }) => {
   res.end()
 }
 
-var deletedb = async ({ _window, req, res, id }) => {
+const deletedb = async ({ _window, req, res }) => {
 
-  var string = decodeURI(req.headers.erase), data = {}, timer = (new Date()).getTime()
-  string = toCode({ _window, string })
+  var erase = req.body.data || {}, timer = (new Date()).getTime()
 
-  if (string) data = lineInterpreter({ _window, data: { string }, id }).data
-  var erase = data.erase || {}
+  // no collection
+  if (!erase.collection) {
+    console.log("ERASE", "No collection!", 0);
+    return ({ success: false, message: "No collection exists!" })
+  }
 
   var { success, message } = await deleteData({ _window, req, res, erase })
 
@@ -85,33 +76,34 @@ var deletedb = async ({ _window, req, res, id }) => {
 
   // respond
   res.setHeader('Content-Type', 'application/json')
-  res.write(JSON.stringify({ data, success, message }))
+  res.write(JSON.stringify({ success, message }))
   res.end()
 }
 
 const getData = async ({ _window, req, res, search }) => {
 
-  var timer = (new Date()).getTime()
   var collection = search.collection
+  var provider = _window.global.__provider__
   var project = (search.headers || {}).project || _window.global.manifest.session.projectID
   var response = { success: false, message: "Something went wrong!" }
 
-  // no collection
-  if (!collection) {
-    console.log("SEARCH", search.collection, (new Date()).getTime() - timer);
-    return response
-  }
-
   var doc = search.doc,
     docs = search.docs,
-    field = search.field || {},
+    populate = search.populate,
+    select = search.select,
+    deselect = search.deselect,
+    assign = search.assign,
+    find = search.find || search.field || {},
+    findOne = search.findOne,
     limit = search.limit || 1000,
+    skip = search.skip || 0,
     data = {}, success, message
 
-  if (_window.global.__provider__ === "firebase" || true) {
-    
+  if (provider === "bracketDB") {
+  } else if (provider === "firebase") {
+
     if (_window.global.data.project.datastore.collections.includes(collection)) collection = 'collection-' + collection
-    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && collection !== "_public_" && !search.url) collection += `-${project}`
+    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && !search.url) collection += `-${project}`
 
     var ref = req.db.firebaseDB.collection(collection), promises = []
 
@@ -139,7 +131,7 @@ const getData = async ({ _window, req, res, search }) => {
         message = `Error!`
       }
 
-      response = { data, success, message, searchType: "byURL" }
+      response = { data, success, message }
     }
 
     else if ("docs" in search) {
@@ -169,7 +161,7 @@ const getData = async ({ _window, req, res, search }) => {
 
       await Promise.all(promises)
 
-      response = { data, success, message, searchType: "byDocs" }
+      response = { data, success, message }
     }
 
     else if ("doc" in search) {
@@ -190,10 +182,10 @@ const getData = async ({ _window, req, res, search }) => {
 
       await Promise.all(promises)
 
-      response = { data, success, message, searchType: "byDoc" }
+      response = { data, success, message }
     }
 
-    else if (Object.keys(field).length === 0) {
+    else if (Object.keys(find).length === 0) {
 
       if (search.orderBy || search.skip) ref = ref.orderBy(...toArray(search.orderBy || "id"))
       if (search.skip) ref = ref.offset(search.skip)
@@ -223,7 +215,7 @@ const getData = async ({ _window, req, res, search }) => {
 
       await Promise.all(promises)
 
-      response = { data, success, message, searchType: "byField" }
+      response = { data, success, message }
     }
 
     // search by field
@@ -231,16 +223,16 @@ const getData = async ({ _window, req, res, search }) => {
 
       const myPromise = () => new Promise(async (resolve) => {
         try {
-          // search field
+          // search find
           var multiIN = false, _ref = ref
-          if (field) Object.entries(field).map(([key, value]) => {
+          if (find) Object.entries(find).map(([key, value]) => {
 
             if (typeof value !== "object") value = { equal: value }
             var operator = toFirebaseOperator(Object.keys(value)[0])
             var _value = value[Object.keys(value)[0]]
             if (operator === "in" && _value.length > 10) {
 
-              field[key][Object.keys(value)[0]] = [..._value.slice(10)]
+              find[key][Object.keys(value)[0]] = [..._value.slice(10)]
               _value = [..._value.slice(0, 10)]
               multiIN = true
             }
@@ -278,124 +270,98 @@ const getData = async ({ _window, req, res, search }) => {
             data = { ...data, ..._data }
           }
 
-          resolve({ data, success, message, searchType: "byField" })
+          resolve({ data, success, message })
 
         } catch (error) {
 
-          resolve({ data, success: false, message: error, searchType: "byField" })
+          resolve({ data, success: false, message: error })
         }
       })
 
       response = await myPromise()
     }
 
-  } else if (_window.global.__provider__ === "mongoDB") {
+  } else if (provider === "mongoDB") {
 
-    var collection = search.collection
-    var project = _window.global.manifest.session.projectID
-    var response = { success: false, message: "Something went wrong!" }
+    var ref = req.db.mongoDB.db(project).collection(collection)
 
-    // no collection
-    if (!collection || !project) return response
+    // docs
+    if (docs) data = await db.collection(collection).find({ id: { $in: docs } }).limit(limit).skip(skip)
 
-    var doc = search.doc,
-      docs = search.docs,
-      field = search.field || {},
-      limit = search.limit || 1000,
-      data = {}, success, message,
-      ref = req.db.mongodb.db(project).collection(collection),
-      promises = []
+    // doc
+    else if (doc) data = await db.collection(collection).findOne({ id: doc })
 
-    var db = _window.__db__.mongodb.db.db(project)
-    if (!docs && !fields) {
-      data = await db.collection(collection).find().limit(limit)
-    }
-    else if (docs) {
-      data = docs.map(async doc => await db.collection(collection).findOne({ id: doc }))
-      await Promise.all(data)
-    }
-    else {
+    // collection
+    else if (!find && !findOne) data = await db.collection(collection).find().limit(limit).skip(skip)
 
-      var searchFields = [], searchOptions = {}, ors = []
-      if (fields) Object.entries(fields).map(([key, value]) => {
+    // find
+    else data = await db.collection(collection).find(mongoOptions({ find })).limit(limit).skip(skip)
 
-        if (key === "or") {
-          Object.entries(value).map(([key, value]) => {
-            mountSearchFields({ searchFields: ors, key, value })
-          })
-        } else {
-          mountSearchFields({ searchFields, key, value })
-        }
+    // return data as map
+    if (!doc && Object.values(data)[0]) {
+      var mapData = {}
+      data.map(data => {
+        mapData[data.id] = data
       })
-
-      if (searchFields.length === 1) searchOptions = searchFields[0]
-      else searchOptions = { "$and": searchFields }
-      if (ors.length > 0) searchOptions["$or"] = ors
-
-      data = await db.collection(collection).find().limit(limit).skip(search.skip || 0)
+      data = mapData
     }
-
-    console.log("Documents mounted successfuly!", (new Date()).getTime() - global.timer)
-
-    // select fields
-    if (search.select) {
-      search.select = toArray(search.select)
-      var newData = []
-      data.map((data, i) => {
-        newData[i] = {}
-        search.select.map(key => newData[i][key] = data[key])
-      })
-      data = newData
-    }
-
-    // populate
-    if (search.populate) {
-      var promises = toArray(search.populate).map(key => {
-
-        return getData({ _window, search })
-      })
-
-      await Promise.all(promises)
-    }
-
-    if (doc) data = data[0]
-    return ({ data, success: true, message: `Documents mounted successfuly!` })
   }
 
-  console.log("SEARCH", search.collection, (new Date()).getTime() - timer);
+  // ex: search():[collection=product;docs;populate=:[collection;key;field]] (key is keyname in data, field is the fields to return)
+  if ((populate || select || deselect || assign) && success) {
+
+    var data = response.data
+
+    // restructure
+    if (doc) data = { [doc]: data }
+
+    if (populate) await populator({ _window, req, res, data, populate, search })
+    if (select) data = selector({ data, select })
+    else if (deselect) data = deselector({ data, deselect })
+    else if (assign) data = assigner({ data, assign })
+
+    // restructure
+    if (doc) data = data[doc]
+    response.data = data
+  }
+
   return response
 }
 
 const postData = async ({ _window, req, res, save }) => {
 
-  if (_window.global.__provider__ === "firebase" || true) {
+  var collection = save.collection
+  var provider = _window.global.__provider__
+  var project = (save.headers || {}).project || _window.global.manifest.session.projectID
 
-    // collection
-    var doc = save.doc
-    var data = save.data
-    var field = save.field || {}
-    var collection = save.collection
-    var project = (save.headers || {}).project || _window.global.manifest.session.projectID
+  // collection
+  var doc = save.doc
+  var data = save.data
+  var update = save.update || {}
+  var success = false, message = "Missing data!"
 
-    // save specific fields in by doc
-    if (Object.keys(field).length > 0 && doc) {
-      var { data: rawData, success, message } = await getData({ _window, req, res, search: { collection, doc } })
-      if (!success) return ({ success, message })
-      Object.entries(field).map(([key, value]) => rawData[key] = value)
-      data = rawData
-    }
+  // update specific fields. ex: update:[name=Goerge;age=28] (it ignores appended data)
+  if (Object.keys(update).length > 0 && doc) {
+
+    var { data: rawData, success, message } = await getData({ _window, req, res, search: { collection, doc } })
+    if (!success) return ({ success, message })
+    Object.entries(update).map(([key, value]) => rawData[key] = value)
+    data = rawData
+  }
+
+  if (provider === "bracketDB") {
+  } else if (provider === "firebase") {
 
     if (_window.global.data.project.datastore.collections.includes(collection)) collection = 'collection-' + collection
     if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${project}`
 
     var ref = req.db.firebaseDB.collection(collection)
-    var success = false, message = "Missing data!"
 
     var promises = toArray(data).map(async (data, i) => {
 
       data.id = data.id || (i === 0 && save.doc) || generate({ length: 60, timestamp: true })
 
-      if (!data["creation-date"] && req.headers.timestamp) data["creation-date"] = parseInt(req.headers.timestamp)
+      if (!data["creationDate"] && req.headers.timestamp) data["creationDate"] = parseInt(req.headers.timestamp)
 
       return await ref.doc((doc && doc.toString()) || data.id.toString()).set(data).then(() => {
 
@@ -413,21 +379,45 @@ const postData = async ({ _window, req, res, save }) => {
 
     return ({ data, success, message })
 
-  } else if (_window.global.__provider__ === "mongoDB") { }
+  } else if (provider === "mongoDB") {
+
+    var ref = req.db.mongoDB.db(project).collection(collection)
+    promises = toArray(data).map(async data => {
+
+      data.__props__ = data.__props__ || {
+        id: generate({ unique: true }),
+        creationDate: data["creation-date"] || new Date().getTime(),
+        collapsed: [],
+        comments: [],
+        docName: doc.id,
+        folderPath: [],
+        confidential: {
+          projectID: project
+        }
+      }
+
+      if (data.id) return await ref.update({ id }, data, { upsert: true })
+      else return await ref.insertOne(data)
+    })
+  }
+
+  await Promise.all(promises)
 }
 
 const deleteData = async ({ _window, req, res, erase }) => {
 
+  var collection = erase.collection
+  var provider = _window.global.__provider__
   var project = (erase.headers || {}).project || _window.global.manifest.session.projectID
 
-  if (_window.global.__provider__ === "firebase" || true) {
+  var success, message
+  var docs = erase.docs || [erase.doc]
 
-    var collection = erase.collection, data
+  if (provider === "bracketDB") {
+  } else if (provider === "firebase") {
+
     if (_window.global.data.project.datastore.collections.includes(collection)) collection = 'collection-' + collection
     if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${project}`
-
-    var success, message
-    var docs = erase.docs || [erase.doc]
 
     var promises = docs.map(async doc => {
 
@@ -463,10 +453,152 @@ const deleteData = async ({ _window, req, res, erase }) => {
       }
     })
 
-    Promise.all(promises)
-    return ({ data, success, message })
+    await Promise.all(promises)
 
-  } else if (_window.global.__provider__ === "mongoDB") { }
+  } else if (provider === "mongoDB") {
+
+    var ref = req.db.mongoDB.db(project).collection(collection)
+    var promises = docs.map(async doc => await ref.deleteOne({ id: doc }))
+    await Promise.all(promises)
+  }
+
+  return ({ success, message })
+}
+
+const populator = async ({ _window, req, res, data, populate, search }) => {
+
+  var populatedData = {}
+  var populates = toArray(populate)
+
+  // get data by IDs
+  var responses = populates.map(async (populate, i) => {
+
+    if (typeof populate === "string") populates[i] = populate = { collection: populate, find: populate, deselect: [] }
+    if (!populate.collection) populate.collection = populate.find
+
+    var IDSet = new Set()
+    Object.values(data).map(data => IDSet.add(data[populate.find]))
+    var response = await getData({ _window, req, res, search: { collection: populate.collection, docs: Array.from(IDSet), headers: search.headers } })
+    populatedData = { ...populatedData, ...response.data }
+    return response
+  })
+
+  await Promise.all(responses)
+
+  // populate
+  populates.map(populate => {
+
+    // assign a value to key. ex: name instead of ID
+    if (populate.assign) {
+      Object.values(data).map(data => {
+        if (populatedData[data[populate.find]]) data[populate.find] = populatedData[data[populate.find]][populate.assign]
+      })
+    }
+
+    // select. return the doc with specific find. (considering data and populatedData are many docs)
+    else if (populate.select) data = selector({ data, key: populate.find, select: populate.select, populatedData })
+
+    // select. return the doc with specific find. (considering data and populatedData are many docs)
+    else if (populate.deselect) data = deselector({ data, key: populate.find, deselect: populate.deselect, populatedData })
+  })
+
+  return data
+}
+
+const selector = ({ data, key, select, populatedData }) => {
+
+  // select with populate
+  if (key && populatedData) {
+
+    Object.values(data).map(data => {
+      var doc = data[key]
+      if (populatedData[doc]) {
+        data[key] = {}
+        toArray(select).map(select => data[key][select] = populatedData[doc][select])
+      }
+    })
+
+    // select
+  } else {
+
+    var clonedData = clone(data)
+    data = {}
+    Object.keys(clonedData).map(doc => {
+      data[doc] = {}
+      toArray(select).map(select => data[doc][select] = clonedData[doc][select])
+    })
+  }
+
+  return data
+}
+
+const deselector = ({ data, key, deselect, populatedData }) => {
+
+  // deselect with populate
+  if (key && populatedData) {
+
+    Object.values(data).map(data => {
+      var doc = data[key]
+      if (populatedData[doc]) {
+        data[key] = populatedData[data[key]]
+        toArray(deselect).map(deselect => delete data[key][deselect])
+      }
+    })
+
+    // deselect
+  } else {
+
+    Object.keys(data).map(doc => {
+      toArray(deselect).map(deselect => delete data[doc][deselect])
+    })
+  }
+
+  return data
+}
+
+const assigner = ({ data, assign }) => {
+  Object.keys(data).map(doc => data[doc] = data[doc][assign])
+}
+
+const mongoOptions = ({ find }) => {
+
+  var options = {}
+
+  if (Array.isArray(find)) {
+
+    // init
+    options = { $or: [] }
+
+    find.map(find => options["$or"].push(mongoOptions({ find })))
+
+  } else {
+
+    Object.entries(find).map(([key, valueAndOperator]) => {
+
+      if (typeof valueAndOperator !== "object") valueAndOperator = { equal: valueAndOperator }
+
+      var operator = toOperator(Object.keys(value)[0])
+      var value = Object.values(valueAndOperator)[0]
+
+      options[key] = options[key] || {}
+
+      if (operator === "==") options[key]["$eq"] = value
+      else if (operator === "!=") options[key]["$ne"] = value
+      else if (operator === ">") options[key]["$gt"] = value
+      else if (operator === "<") options[key]["$lt"] = value
+      else if (operator === ">=") options[key]["$gte"] = value
+      else if (operator === "<=") options[key]["$lte"] = value
+      else if (operator === "in" && Array.isArray(value)) options[key]["$in"] = value
+      else if (operator === "notin" && Array.isArray(value)) options[key]["$nin"] = value
+      else if (operator === "regex") options[key]["$regex"] = value
+      else if (operator === "inc") options[key] = value
+      else if (operator === "incall") options[key]["$all"] = value
+      else if (operator === "length") options[key]["$size"] = value
+      else if (operator === "find") options[key] = { $elemMatch: mongoOptions({ find: value }) }
+    })
+  }
+
+  return options
 }
 
 module.exports = {

@@ -1,0 +1,32 @@
+{
+  "updateBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+  "difference": [
+    {
+      "new": "qqqqqqqqqqqqqqq",
+      "path": "title"
+    },
+    {
+      "new": true,
+      "path": "updateStatus"
+    },
+    {
+      "new": "lQwphMB5CT5drkq3yjVXpOwoxqNkIaZGjPr74hvT5EwD6Yq4BgNKhBsueLeY1700904253882",
+      "path": "sheetId"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "lQwphMB5CT5drkq3yjVXpOwoxqNkIaZGjPr74hvT5EwD6Yq4BgNKhBsueLeY1700904253882",
+  "creationDay": 1700870400000,
+  "creationDate": 1700904287803,
+  "__props__": {
+    "id": "3177N0z8o8t8K7x0K195Y5t5F5",
+    "creationDate": 1700904189906,
+    "collapsed": [],
+    "comments": [],
+    "docName": "KybjdiesFBlVE5BdMjFaU1jTmU04tiA1qHzLOMeR05McyWTt5xJ1wM4CPMaz1700904287802",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

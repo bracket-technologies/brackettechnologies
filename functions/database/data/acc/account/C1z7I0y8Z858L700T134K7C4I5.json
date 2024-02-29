@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687886371,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "3pDokCJEtLXvGmuhnaKxAVo05uwsGV7jGLeu8oDetIVWdDPycbqdckXRBX4L-1708687886370",
+  "ref": "ACC-00000158",
+  "ledgerAccount": "6791/1/1",
+  "blockAccount": "No",
+  "name": "Amortization & Reinbursement Premiums",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "67",
+    "679",
+    "6791"
+  ],
+  "__props__": {
+    "id": "C1z7I0y8Z858L700T134K7C4I5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "czmVoq3sPoSZECEbDfdmC0kqGJePRZOvlj36Q7M9GlNdaHFF6Sw1uDK9bbU0-1708687886370",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

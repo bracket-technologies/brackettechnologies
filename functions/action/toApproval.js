@@ -14,8 +14,8 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
   // no string
   if (!string || typeof string !== "string") return true
 
-  var views = _window ? _window.views : window.views
-  var global = _window ? _window.global : window.global
+  const views = _window ? _window.views : window.views
+  const global = _window ? _window.global : window.global
   var view = views[id], approval = true
   
   if ((stack.returns && stack.returns[0] || {}).returned) return

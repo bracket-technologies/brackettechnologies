@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687889965,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "kDR2TRJPPqEtGNPVT6Bncbv7UQLtLqFjDJf3FMZgLSZbTexVWMDjUBPXOAh3-1708687889965",
+  "ref": "ACC-00000252",
+  "ledgerAccount": "6550/1/1",
+  "blockAccount": "No",
+  "name": "Provisions Allocations",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "655",
+    "6550"
+  ],
+  "__props__": {
+    "id": "i1Q7l0v8i8d8l7X041s5X0N1w4",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "usMcCLN7WXEljqMOufbEXlg7XNpOhRF6htFYvX8zjK9CSQGpSntYhe22RTmT-1708687889964",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

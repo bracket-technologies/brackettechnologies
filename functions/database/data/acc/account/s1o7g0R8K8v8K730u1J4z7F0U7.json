@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687887873,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "8w3cMRk1Vrhs2rJudgptkafTdI2a80bi4M01tdq3H3nK5TtyyCVdBD3PckVE-1708687887873",
+  "ref": "ACC-00000199",
+  "ledgerAccount": "62694/1/1",
+  "blockAccount": "No",
+  "name": "Stationary & Office Supplies",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "62",
+    "626",
+    "6269",
+    "62694"
+  ],
+  "__props__": {
+    "id": "s1o7g0R8K8v8K730u1J4z7F0U7",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "aIdTI6Uv7vPLJKuqT2RCyKtTnR5FQa852KqXtqOkEi9l50wBEVRFPesIC8Jr-1708687887873",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

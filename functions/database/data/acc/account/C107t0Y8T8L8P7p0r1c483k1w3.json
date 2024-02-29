@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687887170,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "9eY6WkowTzV0OQJPJc5FXUeBk0qk7R6ao1uL6OeytyHTFmUgl6hsPrkv9RHx-1708687887169",
+  "ref": "ACC-00000181",
+  "ledgerAccount": "6892/1/1",
+  "blockAccount": "No",
+  "name": "Prov. Fr Exceptional Dimunition In Price",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "68",
+    "689",
+    "6892"
+  ],
+  "__props__": {
+    "id": "C107t0Y8T8L8P7p0r1c483k1w3",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "JIYJvRk0ZezNmSv5ervXBJynconBYRODIPXI3irdAfOYhnyYiPAWaWXZlOMH-1708687887169",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

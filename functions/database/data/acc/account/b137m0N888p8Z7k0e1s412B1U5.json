@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687882783,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "VBbnII5dy4NCqPXFCprExZLwoGGF7DWxXb1AG7HDRM6v6s7NFTMXvgFFE8Mo-1708687882782",
+  "ref": "ACC-00000096",
+  "ledgerAccount": "62641/1/1",
+  "blockAccount": "No",
+  "name": "Entertainment",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "62",
+    "626",
+    "6264",
+    "62641"
+  ],
+  "__props__": {
+    "id": "b137m0N888p8Z7k0e1s412B1U5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "DHwZN2vCTb1sDFkK9jLNAZU85wBNTggqjPdMhC0fHVMryfiS5lfpb2WFh7aB-1708687882782",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "view": "View?class=flexbox;style.backgroundColor=#F6F6F7;style.width=inherit;style.position=relative;style.minHeight=100vh;style.height=fit-content;style.overflowX=hidden;children=data:().view.account_setup1;style.padding=5rem",
+  "__props__": {
+    "id": "v1g7v028w898a7t0Q0G6z9L340",
+    "creationDate": 1640181333007,
+    "collapsed": [],
+    "comments": [],
+    "actions": {},
+    "docName": "account_setup",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "d17770q8A8Z7l0Q0l031g188q9"
+    }
+  }
+}

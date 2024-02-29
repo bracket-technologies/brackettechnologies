@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687890964,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "GCLVvILrrIitWdhS90ZVqK3ZzBsrJLFKbykgMDd9qeR0qSq6bTIXF2Tu7DfJ-1708687890963",
+  "ref": "ACC-00000278",
+  "ledgerAccount": "7112/1/1",
+  "blockAccount": "No",
+  "name": "Sales Of By Products Items",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "71",
+    "711",
+    "7112"
+  ],
+  "__props__": {
+    "id": "H1L7O0W8d848X7q081e4V440o5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "PCsRe2ifi3iRUnzPppnCGNylFBxgvlANA3h3RdxI6xt6jz8jiFe1MW74N2XR-1708687890963",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

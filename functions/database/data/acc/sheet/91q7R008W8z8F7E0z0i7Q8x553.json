@@ -1,0 +1,2281 @@
+{
+  "headers": [
+    {
+      "text": "Number",
+      "key": "number"
+    },
+    {
+      "text": "Name",
+      "key": "name"
+    }
+  ],
+  "data": [
+    {
+      "number": "1",
+      "name": "Equity & Long Term Debts"
+    },
+    {
+      "number": "10",
+      "name": "Capital"
+    },
+    {
+      "number": "101",
+      "name": "Capital (Company Or Individual)"
+    },
+    {
+      "number": "1011",
+      "name": "Subscribed Capital (Uncalled)"
+    },
+    {
+      "number": "1012",
+      "name": "Subscribed Capital (Called And Unpaid)"
+    },
+    {
+      "number": "1013",
+      "name": "Subscribed Capital (Called And Paid Up)"
+    },
+    {
+      "number": "102",
+      "name": "Premiums Related To The Capital"
+    },
+    {
+      "number": "1021",
+      "name": "Issue Premiumsd"
+    },
+    {
+      "number": "1022",
+      "name": "Merger Premium"
+    },
+    {
+      "number": "1023",
+      "name": "Contributions Premiums"
+    },
+    {
+      "number": "1024",
+      "name": "Prem.Fr Convert. Debenture Loan To"
+    },
+    {
+      "number": "103",
+      "name": "Revaluation Variances"
+    },
+    {
+      "number": "1031",
+      "name": "Revaluat. Variances Of Unamortizable"
+    },
+    {
+      "number": "1035",
+      "name": "Revaluation Variances Of Amortizable"
+    },
+    {
+      "number": "11",
+      "name": "Reserves"
+    },
+    {
+      "number": "111",
+      "name": "Legal Reserve"
+    },
+    {
+      "number": "112",
+      "name": "Statutary And Contractual Reserve"
+    },
+    {
+      "number": "119",
+      "name": "Other Reserves"
+    },
+    {
+      "number": "12",
+      "name": "Brought Forward Results"
+    },
+    {
+      "number": "121",
+      "name": "Profit Brought Forward"
+    },
+    {
+      "number": "125",
+      "name": "Loss Brought Forward"
+    },
+    {
+      "number": "13",
+      "name": "Net Result Of The Finacical Period (P&L)"
+    },
+    {
+      "number": "131",
+      "name": "Gross Trade Margin"
+    },
+    {
+      "number": "132",
+      "name": "Value Added"
+    },
+    {
+      "number": "133",
+      "name": "Gross Trading Operating Margin"
+    },
+    {
+      "number": "134",
+      "name": "Operat.Result(Prior Financ.Income & Exp)"
+    },
+    {
+      "number": "135",
+      "name": "Result Before Taxation"
+    },
+    {
+      "number": "136",
+      "name": "Non-Operating Result"
+    },
+    {
+      "number": "138",
+      "name": "Result Of The Period - Profits"
+    },
+    {
+      "number": "139",
+      "name": "Result Of The Period - Losses"
+    },
+    {
+      "number": "14",
+      "name": "Investment Subsidies"
+    },
+    {
+      "number": "141",
+      "name": "Investment Subsidies Received"
+    },
+    {
+      "number": "145",
+      "name": "Investment Subsidies Transf. To Results"
+    },
+    {
+      "number": "15",
+      "name": "Provisions For Contingencies & Charges"
+    },
+    {
+      "number": "151",
+      "name": "Provisions For Contigencies"
+    },
+    {
+      "number": "1511",
+      "name": "Prov.For Litigation & Sundry"
+    },
+    {
+      "number": "1512",
+      "name": "Prov.In Respect Of Guarant.Given To Cust"
+    },
+    {
+      "number": "1513",
+      "name": "Provisions For Losses On Exchange"
+    },
+    {
+      "number": "1514",
+      "name": "Prov. For Losses On Future Transactions"
+    },
+    {
+      "number": "1515",
+      "name": "Provisions For Fines & Penalties"
+    },
+    {
+      "number": "155",
+      "name": "Provisions For Charges"
+    },
+    {
+      "number": "1551",
+      "name": "Provisions Deferred Charges"
+    },
+    {
+      "number": "1552",
+      "name": "Prov.For Employee End Of Serv.Indemnitie"
+    },
+    {
+      "number": "1553",
+      "name": "Provisions For Taxes"
+    },
+    {
+      "number": "16",
+      "name": "Long & Medium Term Debts"
+    },
+    {
+      "number": "161",
+      "name": "Loans Against Debenture"
+    },
+    {
+      "number": "162",
+      "name": "Loans From Financial Institutions"
+    },
+    {
+      "number": "168",
+      "name": "Sundry Loans & Debts"
+    },
+    {
+      "number": "1681",
+      "name": "Notes Payab.Resul.Fr Purch.Of Enterprise"
+    },
+    {
+      "number": "1682",
+      "name": "Deposits & Guarantees"
+    },
+    {
+      "number": "1683",
+      "name": "Advances From The Government"
+    },
+    {
+      "number": "1684",
+      "name": "Capitalized Life Annuities"
+    },
+    {
+      "number": "1689",
+      "name": "Other Medium & Long Term Debts"
+    },
+    {
+      "number": "18",
+      "name": "Accounts With Affiliated Companies"
+    },
+    {
+      "number": "181",
+      "name": "Branches & Joint Ventures Accounts"
+    },
+    {
+      "number": "1811",
+      "name": "Balance Brought Forward"
+    },
+    {
+      "number": "1815",
+      "name": "Movements Of The Period"
+    },
+    {
+      "number": "186",
+      "name": "Intercompany Charges"
+    },
+    {
+      "number": "187",
+      "name": "Intercompany Income"
+    },
+    {
+      "number": "19",
+      "name": "Accounts For Regrouping Charges &"
+    },
+    {
+      "number": "191",
+      "name": "Determinat Of The Gross Trading Margin"
+    },
+    {
+      "number": "192",
+      "name": "Determination Of Value Added"
+    },
+    {
+      "number": "193",
+      "name": "Determination Of The Gross Oper.Income"
+    },
+    {
+      "number": "194",
+      "name": "Determination Of The Operating Result"
+    },
+    {
+      "number": "195",
+      "name": "Determ.Of The Current Result Before"
+    },
+    {
+      "number": "196",
+      "name": "Determination Of Non-Operating Result"
+    },
+    {
+      "number": "197",
+      "name": "Determinat Of The Period's Result"
+    },
+    {
+      "number": "2",
+      "name": "Accounts Of Fixed Assets"
+    },
+    {
+      "number": "21",
+      "name": "Intangible Fixed Assets"
+    },
+    {
+      "number": "211",
+      "name": "Business Concern (Keymoney, Goodwill...)"
+    },
+    {
+      "number": "212",
+      "name": "Establishment Expenses"
+    },
+    {
+      "number": "213",
+      "name": "Research And Development Expenses"
+    },
+    {
+      "number": "214",
+      "name": "Patents, Licences,Trade Marks & Similars"
+    },
+    {
+      "number": "219",
+      "name": "Other Intangible Fixed Assets"
+    },
+    {
+      "number": "2191",
+      "name": "Other Intangible Fixed Assets"
+    },
+    {
+      "number": "2198",
+      "name": "Adv.&Paym On A/C For Intang.Fixed.Assets"
+    },
+    {
+      "number": "22",
+      "name": "Tangible Fixed Assets"
+    },
+    {
+      "number": "221",
+      "name": "Land"
+    },
+    {
+      "number": "2211",
+      "name": "Naked Land"
+    },
+    {
+      "number": "2212",
+      "name": "Built Lands (Real Estate Complexes)"
+    },
+    {
+      "number": "2213",
+      "name": "Extractive Land Sites (Mines & Quarris)"
+    },
+    {
+      "number": "2214",
+      "name": "Land Development And Reclamation"
+    },
+    {
+      "number": "223",
+      "name": "Construction"
+    },
+    {
+      "number": "2231",
+      "name": "Buildings"
+    },
+    {
+      "number": "2232",
+      "name": "General Installation & Leasehold"
+    },
+    {
+      "number": "2233",
+      "name": "Infrastructure Works (Dams-Airport ...)"
+    },
+    {
+      "number": "2234",
+      "name": "Constrution On Leasehold Land"
+    },
+    {
+      "number": "224",
+      "name": "Technical Installation &Industrial"
+    },
+    {
+      "number": "2241",
+      "name": "Specialized Installations"
+    },
+    {
+      "number": "2242",
+      "name": "Specific Installations"
+    },
+    {
+      "number": "2243",
+      "name": "Industrial Equipment"
+    },
+    {
+      "number": "2244",
+      "name": "Industrial Tools"
+    },
+    {
+      "number": "225",
+      "name": "Transportation Equipment"
+    },
+    {
+      "number": "226",
+      "name": "Other Tangible Fixed Assets"
+    },
+    {
+      "number": "2261",
+      "name": "General Inst.& Other Improvement & Dev."
+    },
+    {
+      "number": "2262",
+      "name": "Office & Computer Equipment"
+    },
+    {
+      "number": "2263",
+      "name": "Furniture"
+    },
+    {
+      "number": "2264",
+      "name": "Agricultural Investments"
+    },
+    {
+      "number": "2265",
+      "name": "Reusable Packing Material"
+    },
+    {
+      "number": "227",
+      "name": "Tangible Fixed Assets In Progress"
+    },
+    {
+      "number": "2271",
+      "name": "Land"
+    },
+    {
+      "number": "2273",
+      "name": "Buildings"
+    },
+    {
+      "number": "2274",
+      "name": "Technical Instal. Indust. Equip. & Tools"
+    },
+    {
+      "number": "2276",
+      "name": "Other Tangible Fixed Assets"
+    },
+    {
+      "number": "228",
+      "name": "Advance Paym.On A/C Of Tangible Fixe.Ass"
+    },
+    {
+      "number": "25",
+      "name": "Financial Fixed Assets"
+    },
+    {
+      "number": "251",
+      "name": "Equity Participations"
+    },
+    {
+      "number": "252",
+      "name": "Receivables Related To Equity Particip."
+    },
+    {
+      "number": "253",
+      "name": "Other Bloked Securities"
+    },
+    {
+      "number": "2531",
+      "name": "Ownership Rights ( Minor Participations)"
+    },
+    {
+      "number": "2535",
+      "name": "Debenture Loans ( Bonds & Debentures)"
+    },
+    {
+      "number": "255",
+      "name": "Long & Medium Term Loans"
+    },
+    {
+      "number": "2551",
+      "name": "Loans To Partners"
+    },
+    {
+      "number": "2552",
+      "name": "Loans To Employees"
+    },
+    {
+      "number": "2558",
+      "name": "Other Loans"
+    },
+    {
+      "number": "259",
+      "name": "Other Blocked Long Term Receivables"
+    },
+    {
+      "number": "28",
+      "name": "Depreciation Of Fixed Assets"
+    },
+    {
+      "number": "280",
+      "name": "Depr. Of Business Concern&Goodwil"
+    },
+    {
+      "number": "28010",
+      "name": "Depr. Of Paid Goodwill &Keymoney"
+    },
+    {
+      "number": "281",
+      "name": "Depr. Of Intangible Fixed Assets"
+    },
+    {
+      "number": "28110",
+      "name": "Depr. Of Establishment Expenses"
+    },
+    {
+      "number": "28120",
+      "name": "Depr. Of Research&Develop Expenses"
+    },
+    {
+      "number": "28130",
+      "name": "Dprr. Of Patents, Licenses, Etc..."
+    },
+    {
+      "number": "28190",
+      "name": "Depr. Of Other Intang.Fixed Asset"
+    },
+    {
+      "number": "282",
+      "name": "Depr. Of Tangible Fixed Assets"
+    },
+    {
+      "number": "28210",
+      "name": "Depreciation Of Land Sites"
+    },
+    {
+      "number": "28220",
+      "name": "Depreciation Of Buildings &  Land"
+    },
+    {
+      "number": "2823",
+      "name": "Depreciatio Of Constructions"
+    },
+    {
+      "number": "28231",
+      "name": "Depreciation Of Buildings"
+    },
+    {
+      "number": "28232",
+      "name": "Depr.Gen.Instal. & Leasehold Imp."
+    },
+    {
+      "number": "28233",
+      "name": "Depr. Of Infra-Structures Works"
+    },
+    {
+      "number": "28234",
+      "name": "Deprciation Of Constructions"
+    },
+    {
+      "number": "28240",
+      "name": "Depr.Technic.Inst. & Indust. Tools"
+    },
+    {
+      "number": "28250",
+      "name": "Depr.Of Transport. Equipment"
+    },
+    {
+      "number": "28260",
+      "name": "Depr.Of Other Tang. Fixed Assets"
+    },
+    {
+      "number": "28261",
+      "name": "Depr.Of Gen. Inst. & Other Improv."
+    },
+    {
+      "number": "28262",
+      "name": "Depriatin Of Office Equipment"
+    },
+    {
+      "number": "28263",
+      "name": "Depr.Of Furnitures & Fixtures"
+    },
+    {
+      "number": "28264",
+      "name": "Depr.Of Agricultural Investments"
+    },
+    {
+      "number": "28265",
+      "name": "Depr.Of Reusable Packing Materials"
+    },
+    {
+      "number": "28269",
+      "name": "Depr.Of Other Tang. Fixed Assets"
+    },
+    {
+      "number": "29",
+      "name": "Prov.Dimunition In Value Of Fixed Assets"
+    },
+    {
+      "number": "290",
+      "name": "Prov.Dimunit.In Value Of Fixed Assets"
+    },
+    {
+      "number": "291",
+      "name": "Prov.Fr Dimunit.Value Of Intangible F/A"
+    },
+    {
+      "number": "2911",
+      "name": "Trade Marks And Similars"
+    },
+    {
+      "number": "2919",
+      "name": "Other Intangible Fixed Assets"
+    },
+    {
+      "number": "292",
+      "name": "Prov.Fr Dimunit. Value Of Tangible F/A"
+    },
+    {
+      "number": "2921",
+      "name": "Land (Other Than Extractive Land Sites)"
+    },
+    {
+      "number": "2926",
+      "name": "Other Tangible Fixed Assets"
+    },
+    {
+      "number": "295",
+      "name": "Prov. Fr Dimunit.In Val.Of Financial F/A"
+    },
+    {
+      "number": "2951",
+      "name": "Equity Participations"
+    },
+    {
+      "number": "2952",
+      "name": "Receiv. Related To Equity Participations"
+    },
+    {
+      "number": "2953",
+      "name": "Other Blocked Securities"
+    },
+    {
+      "number": "2955",
+      "name": "Long And Medium Term Loans"
+    },
+    {
+      "number": "2959",
+      "name": "Other Blocked Long Term Receivables"
+    },
+    {
+      "number": "3",
+      "name": "Inventory & Goods In Process"
+    },
+    {
+      "number": "31",
+      "name": "Raw Materials And Consumable Goods"
+    },
+    {
+      "number": "311",
+      "name": "Raw Materials"
+    },
+    {
+      "number": "315",
+      "name": "Other Consumable Supplies And"
+    },
+    {
+      "number": "33",
+      "name": "Goods In Process (Goods,Works & Service)"
+    },
+    {
+      "number": "331",
+      "name": "Products In Process"
+    },
+    {
+      "number": "332",
+      "name": "Works In Progress"
+    },
+    {
+      "number": "335",
+      "name": "Studies In Progress"
+    },
+    {
+      "number": "336",
+      "name": "Services In Progress"
+    },
+    {
+      "number": "35",
+      "name": "Products"
+    },
+    {
+      "number": "351",
+      "name": "Semi-Finished Goods"
+    },
+    {
+      "number": "355",
+      "name": "Manufactured Goods"
+    },
+    {
+      "number": "358",
+      "name": "Production Scrap"
+    },
+    {
+      "number": "37",
+      "name": "Merchandise For Sale"
+    },
+    {
+      "number": "39",
+      "name": "Prov.For Dimunit.In Value Of Inventory"
+    },
+    {
+      "number": "391",
+      "name": "Prov. Fr Dimunit. In Value Of Raw Mat."
+    },
+    {
+      "number": "393",
+      "name": "Prov.Fr Dimunit.Value Product In Process"
+    },
+    {
+      "number": "395",
+      "name": "Prov.Fr Diminut.Value Product In Process"
+    },
+    {
+      "number": "397",
+      "name": "Prov. For Diminut. In Value Of Inventory"
+    },
+    {
+      "number": "4",
+      "name": "Receivables & Payables"
+    },
+    {
+      "number": "40",
+      "name": "Suppliers"
+    },
+    {
+      "number": "401",
+      "name": "Accounts Payables (Suppliers)"
+    },
+    {
+      "number": "4011",
+      "name": "Suppliers"
+    },
+    {
+      "number": "4015",
+      "name": "Notes Payable"
+    },
+    {
+      "number": "4018",
+      "name": "Invoices Not Received Yet"
+    },
+    {
+      "number": "4019",
+      "name": "Earned Discounts & Allowances"
+    },
+    {
+      "number": "403",
+      "name": "Fixed Assets Suppliers"
+    },
+    {
+      "number": "4031",
+      "name": "Invoices"
+    },
+    {
+      "number": "4035",
+      "name": "Notes Payables"
+    },
+    {
+      "number": "4038",
+      "name": "Invoices Not Received Yet"
+    },
+    {
+      "number": "4039",
+      "name": "Earned Discounts & Allowances"
+    },
+    {
+      "number": "409",
+      "name": "Adv. Pay. On A/C Of Operational Supplies"
+    },
+    {
+      "number": "41",
+      "name": "Customers"
+    },
+    {
+      "number": "4104",
+      "name": "Owners Current Account"
+    },
+    {
+      "number": "411",
+      "name": "Invoices"
+    },
+    {
+      "number": "4110",
+      "name": "Customers"
+    },
+    {
+      "number": "4111",
+      "name": "Ordinary Clients"
+    },
+    {
+      "number": "4115",
+      "name": "Doubtful Clients"
+    },
+    {
+      "number": "4119",
+      "name": "Discounts & Allowances"
+    },
+    {
+      "number": "413",
+      "name": "Notes Receivable ( Clients )"
+    },
+    {
+      "number": "415",
+      "name": "Advances On Works Unbilled"
+    },
+    {
+      "number": "418",
+      "name": "Invoices Under Preparation"
+    },
+    {
+      "number": "419",
+      "name": "Advance &Pay.A/C For Order Under"
+    },
+    {
+      "number": "42",
+      "name": "Personnel"
+    },
+    {
+      "number": "421",
+      "name": "Payments Due To Personnel"
+    },
+    {
+      "number": "428",
+      "name": "Personnel's Accounts Receivable"
+    },
+    {
+      "number": "4281",
+      "name": "Advances & Payments"
+    },
+    {
+      "number": "4282",
+      "name": "Retentions"
+    },
+    {
+      "number": "43",
+      "name": "Social Security"
+    },
+    {
+      "number": "431",
+      "name": "Accounts Payable To Social Security"
+    },
+    {
+      "number": "4310",
+      "name": "Social Security"
+    },
+    {
+      "number": "4311",
+      "name": "Benefits Payable"
+    },
+    {
+      "number": "4315",
+      "name": "Notes Payable - Social Security"
+    },
+    {
+      "number": "4318",
+      "name": "Charge To Be Accrued For(Social"
+    },
+    {
+      "number": "438",
+      "name": "Acc. Receiv. From Social Security Fund"
+    },
+    {
+      "number": "44",
+      "name": "Gov't & Public Institutions"
+    },
+    {
+      "number": "441",
+      "name": "Taxes Due (Operational)"
+    },
+    {
+      "number": "4411",
+      "name": "Taxes Due ( Operational )"
+    },
+    {
+      "number": "4415",
+      "name": "Notes Payable ( Taxes & Rates )"
+    },
+    {
+      "number": "4418",
+      "name": "Other Taxes To Be Accrued For"
+    },
+    {
+      "number": "442",
+      "name": "Value Added Taxes (Vat)"
+    },
+    {
+      "number": "4425",
+      "name": "Vat Amount Due For The Period"
+    },
+    {
+      "number": "44251",
+      "name": "Vat To Be Paid"
+    },
+    {
+      "number": "44259",
+      "name": "Vat Similar Tax To Be Paid"
+    },
+    {
+      "number": "4426",
+      "name": "Vat On Purchases"
+    },
+    {
+      "number": "44262",
+      "name": "Vat/  Assets Purchases"
+    },
+    {
+      "number": "44266",
+      "name": "Vat / Goods & Other Services Purchases"
+    },
+    {
+      "number": "44267",
+      "name": "Vat / Brought Forward To Collect"
+    },
+    {
+      "number": "4427",
+      "name": "Vat On Sales"
+    },
+    {
+      "number": "44271",
+      "name": "Vat Collected / Goods & Services"
+    },
+    {
+      "number": "44272",
+      "name": "Vat / Products"
+    },
+    {
+      "number": "44273",
+      "name": "Vat / Services Sales & Other Works"
+    },
+    {
+      "number": "44281",
+      "name": "Pay. On Acc. ( Minimum Tax System Co.)"
+    },
+    {
+      "number": "44282",
+      "name": "Pay. On Acc. (Estimated Tax System Co.)"
+    },
+    {
+      "number": "44283",
+      "name": "Vat Payment To Be Returned"
+    },
+    {
+      "number": "44284",
+      "name": "Vat Prepaid"
+    },
+    {
+      "number": "44286",
+      "name": "Vat On Invoices Not Received"
+    },
+    {
+      "number": "44287",
+      "name": "Vat On Invoices Under Preparation"
+    },
+    {
+      "number": "4429",
+      "name": "Accrued/Prepaid Vat Amounts"
+    },
+    {
+      "number": "443",
+      "name": "Tax Due ( Non Operational )"
+    },
+    {
+      "number": "4431",
+      "name": "Taxes On Profit"
+    },
+    {
+      "number": "445",
+      "name": "Gov't & Public Institution Other Acc.Pay"
+    },
+    {
+      "number": "449",
+      "name": "Gov't & Public Institution Acc.Receiv."
+    },
+    {
+      "number": "4491",
+      "name": "Subsides Receivalbe"
+    },
+    {
+      "number": "4497",
+      "name": "Other Receiv. (Gov't & Public Institut.)"
+    },
+    {
+      "number": "4498",
+      "name": "Accrued Revenues Not Collected"
+    },
+    {
+      "number": "45",
+      "name": "Partners"
+    },
+    {
+      "number": "451",
+      "name": "Partners Current Account"
+    },
+    {
+      "number": "4510",
+      "name": "Partners Current Account"
+    },
+    {
+      "number": "4511",
+      "name": "Affiliated Companies"
+    },
+    {
+      "number": "45111",
+      "name": "Holding Company"
+    },
+    {
+      "number": "45112",
+      "name": "Subsidiary Companies"
+    },
+    {
+      "number": "45113",
+      "name": "Affiliated Companies"
+    },
+    {
+      "number": "45114",
+      "name": "Multi Group Companies"
+    },
+    {
+      "number": "4515",
+      "name": "Other Partners"
+    },
+    {
+      "number": "4518",
+      "name": "Joint Ventures"
+    },
+    {
+      "number": "453",
+      "name": "Dividends Payable"
+    },
+    {
+      "number": "455",
+      "name": "Other Parteners Payables"
+    },
+    {
+      "number": "4551",
+      "name": "Contribution To The Company's Capital"
+    },
+    {
+      "number": "4552",
+      "name": "Re-Imbursement Of Company's Capital"
+    },
+    {
+      "number": "4557",
+      "name": "Other Payables"
+    },
+    {
+      "number": "459",
+      "name": "Shareholders Receivable"
+    },
+    {
+      "number": "4591",
+      "name": "Subscribed & Uncalled Capital"
+    },
+    {
+      "number": "4592",
+      "name": "Subscribed Capital Called & Unpaid"
+    },
+    {
+      "number": "4597",
+      "name": "Others Receivables"
+    },
+    {
+      "number": "46",
+      "name": "Miscellaneous Accounts Receivable &"
+    },
+    {
+      "number": "461",
+      "name": "Misc. Operating Accounts Payable"
+    },
+    {
+      "number": "4611",
+      "name": "Acc. Payable-For Consignment &"
+    },
+    {
+      "number": "4619",
+      "name": "Others Payables (Operational)"
+    },
+    {
+      "number": "463",
+      "name": "Instalments On Financial Fixed Assets"
+    },
+    {
+      "number": "4631",
+      "name": "Uncalled Equity Participation"
+    },
+    {
+      "number": "4633",
+      "name": "Other Blocked Securities (Uncalled)"
+    },
+    {
+      "number": "465",
+      "name": "Misc. Accounts Payable - Non Operating"
+    },
+    {
+      "number": "4651",
+      "name": "Pay. On Acquisit. Of Security Placements"
+    },
+    {
+      "number": "4652",
+      "name": "Debentures"
+    },
+    {
+      "number": "4653",
+      "name": "Inst. On Acquisit. On Security Placement"
+    },
+    {
+      "number": "4659",
+      "name": "Others Misc. Payables - Non Operating"
+    },
+    {
+      "number": "468",
+      "name": "Misc. Accounts Receivables - Operating"
+    },
+    {
+      "number": "4681",
+      "name": "Acc. Receiv.-For Consignment & Container"
+    },
+    {
+      "number": "4689",
+      "name": "Other Misc.Receivables-Operational"
+    },
+    {
+      "number": "469",
+      "name": "Misc.Receivales-Non Operating"
+    },
+    {
+      "number": "4691",
+      "name": "Acc.Receiv.On F/A & Sales.Place.Security"
+    },
+    {
+      "number": "4699",
+      "name": "Other Misc.Receivables - Non Operational"
+    },
+    {
+      "number": "47",
+      "name": "Pre-Payments & Accruals"
+    },
+    {
+      "number": "471",
+      "name": "Deffered Charges"
+    },
+    {
+      "number": "4711",
+      "name": "Pre-Operating Expenses"
+    },
+    {
+      "number": "4712",
+      "name": "Major Repairs For Amortization"
+    },
+    {
+      "number": "4713",
+      "name": "Debenture & Bonds Premiums"
+    },
+    {
+      "number": "4719",
+      "name": "Other Deferred Charges"
+    },
+    {
+      "number": "472",
+      "name": "Deferred Income"
+    },
+    {
+      "number": "473",
+      "name": "Accrued Income"
+    },
+    {
+      "number": "475",
+      "name": "Exchange Difference - Liabilities"
+    },
+    {
+      "number": "4751",
+      "name": "Increase On Accounts Receivable"
+    },
+    {
+      "number": "4752",
+      "name": "Decrease On Accounts Payable"
+    },
+    {
+      "number": "4758",
+      "name": "Other Exchange Difference"
+    },
+    {
+      "number": "476",
+      "name": "Exchange Difference - Assets"
+    },
+    {
+      "number": "4761",
+      "name": "Decrease  On Accounts Receivable"
+    },
+    {
+      "number": "4762",
+      "name": "Increase On Accounts Payable"
+    },
+    {
+      "number": "4768",
+      "name": "Other Exchange Difference"
+    },
+    {
+      "number": "48",
+      "name": "Transitory Regularization Account"
+    },
+    {
+      "number": "481",
+      "name": "Periodical Allocation Of Expenses"
+    },
+    {
+      "number": "482",
+      "name": "Periodical Allocation Of Income"
+    },
+    {
+      "number": "49",
+      "name": "Prov.For Dimunition In Value(Receiv/Pay)"
+    },
+    {
+      "number": "491",
+      "name": "Prov.For Dimunition Value Receiv.Clients"
+    },
+    {
+      "number": "495",
+      "name": "Prov.For Dimunit.Value Partners"
+    },
+    {
+      "number": "496",
+      "name": "Prov For Dimunit.Value Of Misc. Receiv."
+    },
+    {
+      "number": "4968",
+      "name": "Misc.Receivables - Operational"
+    },
+    {
+      "number": "4969",
+      "name": "Misc. Receivables -  Non Operational"
+    },
+    {
+      "number": "5",
+      "name": "Financial Accounts"
+    },
+    {
+      "number": "50",
+      "name": "Security Placements"
+    },
+    {
+      "number": "501",
+      "name": "Purchases Of The Company Own Shares"
+    },
+    {
+      "number": "502",
+      "name": "Property Rights Related To Notes"
+    },
+    {
+      "number": "505",
+      "name": "Debentures & Bonds"
+    },
+    {
+      "number": "506",
+      "name": "Liabilities Rights Related To Notes"
+    },
+    {
+      "number": "51",
+      "name": "Financial Institutions"
+    },
+    {
+      "number": "511",
+      "name": "Cheques & Coupon For Collection"
+    },
+    {
+      "number": "5110",
+      "name": "Cheque & Coupon For Collection"
+    },
+    {
+      "number": "512",
+      "name": "Banks"
+    },
+    {
+      "number": "5120",
+      "name": "Banks"
+    },
+    {
+      "number": "519",
+      "name": "Financial Institutions"
+    },
+    {
+      "number": "53",
+      "name": "Cash"
+    },
+    {
+      "number": "58",
+      "name": "Intercompany"
+    },
+    {
+      "number": "58",
+      "name": "Intercompany Tansfers"
+    },
+    {
+      "number": "59",
+      "name": "Provision"
+    },
+    {
+      "number": "59",
+      "name": "Prov.For Dimunit.Value Securiy"
+    },
+    {
+      "number": "6",
+      "name": "Expenditure"
+    },
+    {
+      "number": "60",
+      "name": "Purchase & Variation Of Inventory"
+    },
+    {
+      "number": "601",
+      "name": "Purchases"
+    },
+    {
+      "number": "6010",
+      "name": "Purchases"
+    },
+    {
+      "number": "6011",
+      "name": "Goods"
+    },
+    {
+      "number": "6012",
+      "name": "Purchases Containers & Packing"
+    },
+    {
+      "number": "6018",
+      "name": "Expenses Connected To Purch &"
+    },
+    {
+      "number": "60181",
+      "name": "Freight"
+    },
+    {
+      "number": "60182",
+      "name": "Commissions"
+    },
+    {
+      "number": "60183",
+      "name": "Insurance On Freight"
+    },
+    {
+      "number": "60184",
+      "name": "Clearing Expenses"
+    },
+    {
+      "number": "60185",
+      "name": "Customs Charges"
+    },
+    {
+      "number": "6019",
+      "name": "Discount & Allowances Earned"
+    },
+    {
+      "number": "605",
+      "name": "Variation Of Inventory"
+    },
+    {
+      "number": "6051",
+      "name": "Opening Stock"
+    },
+    {
+      "number": "6052",
+      "name": "Closing Stock"
+    },
+    {
+      "number": "61",
+      "name": "Purchases Raw Materials & Consumables"
+    },
+    {
+      "number": "611",
+      "name": "Raw Materials & Consumables Purchases"
+    },
+    {
+      "number": "6111",
+      "name": "Raw Materials Purchases"
+    },
+    {
+      "number": "61111",
+      "name": "A.Raw Materials Purshases"
+    },
+    {
+      "number": "61112",
+      "name": "B.Raw Materials Purchases"
+    },
+    {
+      "number": "6112",
+      "name": "Consumables Purchases"
+    },
+    {
+      "number": "61121",
+      "name": "Fuel & Gaz"
+    },
+    {
+      "number": "61122",
+      "name": "Maintenance Products"
+    },
+    {
+      "number": "61123",
+      "name": "Workshop & Factory Supplies"
+    },
+    {
+      "number": "61124",
+      "name": "Stores Supplies"
+    },
+    {
+      "number": "61125",
+      "name": "Office Supplies"
+    },
+    {
+      "number": "6113",
+      "name": "Containers & Packing Materials"
+    },
+    {
+      "number": "61131",
+      "name": "Unreturnable Containers"
+    },
+    {
+      "number": "61132",
+      "name": "Returnable Containers"
+    },
+    {
+      "number": "61133",
+      "name": "Other Containers"
+    },
+    {
+      "number": "6118",
+      "name": "Expen.Connect.Raw Mat.&Consumable"
+    },
+    {
+      "number": "61181",
+      "name": "Transport & Freight"
+    },
+    {
+      "number": "61182",
+      "name": "Commissions & Brokerage"
+    },
+    {
+      "number": "61183",
+      "name": "Insurance On Freight"
+    },
+    {
+      "number": "61184",
+      "name": "Clearing Charges"
+    },
+    {
+      "number": "61185",
+      "name": "Customs Charges"
+    },
+    {
+      "number": "6119",
+      "name": "Discount & Allowances Earned (Detailed)"
+    },
+    {
+      "number": "615",
+      "name": "Variation Raw Mat.& Consumable"
+    },
+    {
+      "number": "6151",
+      "name": "Opening Stock"
+    },
+    {
+      "number": "6152",
+      "name": "Closing Stock"
+    },
+    {
+      "number": "62",
+      "name": "Other Charges & Disbursements"
+    },
+    {
+      "number": "621",
+      "name": "Costs Related To Sub Contracts"
+    },
+    {
+      "number": "6211",
+      "name": "Sub Contract A"
+    },
+    {
+      "number": "6212",
+      "name": "Sub Contract B"
+    },
+    {
+      "number": "6219",
+      "name": "Disc.&Allowance Purch.Fr"
+    },
+    {
+      "number": "625",
+      "name": "Leasing & Patents Cost"
+    },
+    {
+      "number": "6251",
+      "name": "Leasing On Materials"
+    },
+    {
+      "number": "6252",
+      "name": "Leasing On Property"
+    },
+    {
+      "number": "6253",
+      "name": "Royalties"
+    },
+    {
+      "number": "6254",
+      "name": "Licences"
+    },
+    {
+      "number": "6256",
+      "name": "Trade Marks"
+    },
+    {
+      "number": "6257",
+      "name": "Know How"
+    },
+    {
+      "number": "6258",
+      "name": "Similar Values & Rights"
+    },
+    {
+      "number": "626",
+      "name": "External Services"
+    },
+    {
+      "number": "6261",
+      "name": "Transportation & Communication"
+    },
+    {
+      "number": "62611",
+      "name": "Transportation Of Assets"
+    },
+    {
+      "number": "62612",
+      "name": "Personnel Collective Transportation"
+    },
+    {
+      "number": "62615",
+      "name": "Postage.Telephone &"
+    },
+    {
+      "number": "6262",
+      "name": "Maintenance & Repairs"
+    },
+    {
+      "number": "6263",
+      "name": "Rent & (Building Services)"
+    },
+    {
+      "number": "62631",
+      "name": "Rent"
+    },
+    {
+      "number": "62632",
+      "name": "Other Relatead Charges"
+    },
+    {
+      "number": "6264",
+      "name": "Hotel & Restaurant"
+    },
+    {
+      "number": "62641",
+      "name": "Entertainment"
+    },
+    {
+      "number": "62642",
+      "name": "Travel & Transport"
+    },
+    {
+      "number": "62643",
+      "name": "Personnel Meals"
+    },
+    {
+      "number": "6265",
+      "name": "Personnel Services"
+    },
+    {
+      "number": "62651",
+      "name": "Temperory Personnel"
+    },
+    {
+      "number": "62652",
+      "name": "Agent's Commission"
+    },
+    {
+      "number": "62653",
+      "name": "Fees"
+    },
+    {
+      "number": "6266",
+      "name": "Training"
+    },
+    {
+      "number": "62661",
+      "name": "Training & Development"
+    },
+    {
+      "number": "62662",
+      "name": "Documentations"
+    },
+    {
+      "number": "6267",
+      "name": "Studies & Research"
+    },
+    {
+      "number": "6268",
+      "name": "Insurance Premiums"
+    },
+    {
+      "number": "6269",
+      "name": "Other External Services"
+    },
+    {
+      "number": "62691",
+      "name": "Medical Care"
+    },
+    {
+      "number": "62692",
+      "name": "Financial Fees &Expenses(Security &Note)"
+    },
+    {
+      "number": "63",
+      "name": "Personnel Charges"
+    },
+    {
+      "number": "631",
+      "name": "Salaries & Wages"
+    },
+    {
+      "number": "6311",
+      "name": "Salaries"
+    },
+    {
+      "number": "6312",
+      "name": "Wages"
+    },
+    {
+      "number": "6314",
+      "name": "Fixed Commission"
+    },
+    {
+      "number": "6316",
+      "name": "Manager Remunerations (Voting Rights)"
+    },
+    {
+      "number": "6317",
+      "name": "Directors Remuneration"
+    },
+    {
+      "number": "635",
+      "name": "Social Security"
+    },
+    {
+      "number": "6350",
+      "name": "Social Security"
+    },
+    {
+      "number": "64",
+      "name": "Fees & Taxes"
+    },
+    {
+      "number": "641",
+      "name": "Income Tax On Salaries & Remunerations"
+    },
+    {
+      "number": "6410",
+      "name": "Income Tax On Salaries And"
+    },
+    {
+      "number": "642",
+      "name": "Municipal Tax"
+    },
+    {
+      "number": "643",
+      "name": "Value Added Tax"
+    },
+    {
+      "number": "644",
+      "name": "Registration Fees"
+    },
+    {
+      "number": "645",
+      "name": "Other Taxes"
+    },
+    {
+      "number": "65",
+      "name": "Amortization, Depreciation & Provisions"
+    },
+    {
+      "number": "651",
+      "name": "Depreciation  & Amortization"
+    },
+    {
+      "number": "6511",
+      "name": "Amortization Of Intangible Assets"
+    },
+    {
+      "number": "6512",
+      "name": "Depreciation Of Fixed Assets"
+    },
+    {
+      "number": "6515",
+      "name": "Amortization Of Deffered Charges"
+    },
+    {
+      "number": "655",
+      "name": "Provisions"
+    },
+    {
+      "number": "6551",
+      "name": "Prov.For Dimunit.Value Of Intangible F/A"
+    },
+    {
+      "number": "6552",
+      "name": "Prov.Fr Dimunition Of Tangible Fix.Asset"
+    },
+    {
+      "number": "6553",
+      "name": "Prov.Fr Dimunition In Value Of Inventory"
+    },
+    {
+      "number": "6554",
+      "name": "Provisions For Bad & Doubtful Debts"
+    },
+    {
+      "number": "6555",
+      "name": "Prov. For Risks & Charges (Operational)"
+    },
+    {
+      "number": "66",
+      "name": "Other Operating Charges"
+    },
+    {
+      "number": "661",
+      "name": "Other Operating Charges"
+    },
+    {
+      "number": "6611",
+      "name": "Attendance Fees"
+    },
+    {
+      "number": "6612",
+      "name": "Losses On Irrecoverable Operating"
+    },
+    {
+      "number": "665",
+      "name": "Loss On Joint Venture"
+    },
+    {
+      "number": "67",
+      "name": "Financial Charges"
+    },
+    {
+      "number": "673",
+      "name": "Interest"
+    },
+    {
+      "number": "6730",
+      "name": "Interests"
+    },
+    {
+      "number": "6731",
+      "name": "Interest-Accounts Payable & Loans"
+    },
+    {
+      "number": "6732",
+      "name": "Interest-Overdrafts & Deposits"
+    },
+    {
+      "number": "6733",
+      "name": "Interest-Guaranteed Debenture & Bonds"
+    },
+    {
+      "number": "6734",
+      "name": "Interest - Other Accounts Payable"
+    },
+    {
+      "number": "6735",
+      "name": "Discount Paid"
+    },
+    {
+      "number": "6736",
+      "name": "Interest -Banks & Financial Institutions"
+    },
+    {
+      "number": "675",
+      "name": "Negative Exchange Differences"
+    },
+    {
+      "number": "6750",
+      "name": "Negative Exchange Differences"
+    },
+    {
+      "number": "6751",
+      "name": "Normal Operations"
+    },
+    {
+      "number": "6752",
+      "name": "Capital Operations"
+    },
+    {
+      "number": "676",
+      "name": "Net Charge On Disposal Securities Place."
+    },
+    {
+      "number": "679",
+      "name": "Amortization & Provisions On Fin. Chrg."
+    },
+    {
+      "number": "6791",
+      "name": "Amortization & Reinbursement Premiums"
+    },
+    {
+      "number": "6792",
+      "name": "Prov. For Diminut.In Value Financial F/A"
+    },
+    {
+      "number": "6794",
+      "name": "Prov.For Dimunit.Value Securities Place."
+    },
+    {
+      "number": "6795",
+      "name": "Provision For Risks & Financial Charges"
+    },
+    {
+      "number": "68",
+      "name": "Non Operating Charges"
+    },
+    {
+      "number": "681",
+      "name": "Net Book Value Of Fixed Assets Disposed"
+    },
+    {
+      "number": "6811",
+      "name": "Intangible Fixed Assets"
+    },
+    {
+      "number": "6812",
+      "name": "Tangible Fixed Assets"
+    },
+    {
+      "number": "6815",
+      "name": "Financial Fixed Assets"
+    },
+    {
+      "number": "685",
+      "name": "Other Charges - Non Operating"
+    },
+    {
+      "number": "6851",
+      "name": "Charges On Administrative Operations"
+    },
+    {
+      "number": "68511",
+      "name": "Donations"
+    },
+    {
+      "number": "68512",
+      "name": "Subsidies Granted"
+    },
+    {
+      "number": "68513",
+      "name": "Fines & Penalties"
+    },
+    {
+      "number": "68514",
+      "name": "Penalties On Contracts"
+    },
+    {
+      "number": "68515",
+      "name": "Irrecoverable Receivables"
+    },
+    {
+      "number": "68516",
+      "name": "Other Administrative Operations"
+    },
+    {
+      "number": "6855",
+      "name": "Charges On Capital Operations"
+    },
+    {
+      "number": "68551",
+      "name": "Price Indexing"
+    },
+    {
+      "number": "68552",
+      "name": "Rembursement Allowances"
+    },
+    {
+      "number": "68553",
+      "name": "Purchases Of The Company Own"
+    },
+    {
+      "number": "689",
+      "name": "Depreciation & Provisions Non Operating"
+    },
+    {
+      "number": "6891",
+      "name": "Exceptional Depreciation Of Fixed Assets"
+    },
+    {
+      "number": "6892",
+      "name": "Prov. Fr Exceptional Dimunition In Price"
+    },
+    {
+      "number": "6895",
+      "name": "Prov. Fr Risks &Charges -Non Operational"
+    },
+    {
+      "number": "69",
+      "name": "Income Tax"
+    },
+    {
+      "number": "69",
+      "name": "Income Tax On Profits"
+    },
+    {
+      "number": "7",
+      "name": "Income"
+    },
+    {
+      "number": "70",
+      "name": "Sales Of Goods"
+    },
+    {
+      "number": "701",
+      "name": "Invoices"
+    },
+    {
+      "number": "7010",
+      "name": "Sales"
+    },
+    {
+      "number": "709",
+      "name": "Discount & Allowances Allowed"
+    },
+    {
+      "number": "71",
+      "name": "Sales Of Production"
+    },
+    {
+      "number": "711",
+      "name": "Sales Of Production"
+    },
+    {
+      "number": "7111",
+      "name": "Sales Of Manufactured Goods"
+    },
+    {
+      "number": "7112",
+      "name": "Sales Of By Products Items"
+    },
+    {
+      "number": "7113",
+      "name": "Sales Of Scrap"
+    },
+    {
+      "number": "712",
+      "name": "Works"
+    },
+    {
+      "number": "713",
+      "name": "Services"
+    },
+    {
+      "number": "7130",
+      "name": "Services"
+    },
+    {
+      "number": "717",
+      "name": "Proceeds From Ancillary Activities"
+    },
+    {
+      "number": "719",
+      "name": "Discount & Allowances Allowed"
+    },
+    {
+      "number": "7191",
+      "name": "Production"
+    },
+    {
+      "number": "7192",
+      "name": "Works"
+    },
+    {
+      "number": "7193",
+      "name": "Services"
+    },
+    {
+      "number": "7197",
+      "name": "Ancillary Activities"
+    },
+    {
+      "number": "72",
+      "name": "Production (Variation)"
+    },
+    {
+      "number": "721",
+      "name": "Works In Process (Variation)"
+    },
+    {
+      "number": "7211",
+      "name": "Production In Process"
+    },
+    {
+      "number": "7212",
+      "name": "Work In Process"
+    },
+    {
+      "number": "722",
+      "name": "Studies & Services In Progress (Variat.)"
+    },
+    {
+      "number": "7225",
+      "name": "Studies In Progress"
+    },
+    {
+      "number": "7226",
+      "name": "Services In Progress"
+    },
+    {
+      "number": "725",
+      "name": "Produced Items (Variation)"
+    },
+    {
+      "number": "7251",
+      "name": "By Products Items"
+    },
+    {
+      "number": "7255",
+      "name": "Manufactured Goods"
+    },
+    {
+      "number": "7258",
+      "name": "Scrap"
+    },
+    {
+      "number": "73",
+      "name": "Production Of Fixed Assets"
+    },
+    {
+      "number": "731",
+      "name": "Intangible Fixed Assets"
+    },
+    {
+      "number": "732",
+      "name": "Tangible Fixed Assets"
+    },
+    {
+      "number": "74",
+      "name": "Operating Subsidies"
+    },
+    {
+      "number": "741",
+      "name": "Related To Products"
+    },
+    {
+      "number": "743",
+      "name": "Related To Production"
+    },
+    {
+      "number": "75",
+      "name": "Provisions Write Back"
+    },
+    {
+      "number": "752",
+      "name": "Write-Back Of Prov.For Dimunit.Value F/A"
+    },
+    {
+      "number": "753",
+      "name": "Write-Backof Prov.For Dimunit. Value C/A"
+    },
+    {
+      "number": "76",
+      "name": "Other Operating Income"
+    },
+    {
+      "number": "761",
+      "name": "Ordinary Incomes"
+    },
+    {
+      "number": "7611",
+      "name": "Royalties - Patents - Licences"
+    },
+    {
+      "number": "7612",
+      "name": "Rent Income"
+    },
+    {
+      "number": "7613",
+      "name": "Director's Attendance Fees & Allowances"
+    },
+    {
+      "number": "7619",
+      "name": "Allocation Of Operating Expenses"
+    },
+    {
+      "number": "765",
+      "name": "Joint Venture Income"
+    },
+    {
+      "number": "7651",
+      "name": "Net Transfers Of Allocated Charges"
+    },
+    {
+      "number": "7655",
+      "name": "Net Attributions Of Income"
+    },
+    {
+      "number": "77",
+      "name": "Financial Revenues"
+    },
+    {
+      "number": "771",
+      "name": "Revenues Of Equity Participations"
+    },
+    {
+      "number": "7711",
+      "name": "Dividends"
+    },
+    {
+      "number": "7716",
+      "name": "Revenue From Other Equity"
+    },
+    {
+      "number": "7717",
+      "name": "Revenue From Receivables (Participation)"
+    },
+    {
+      "number": "772",
+      "name": "Revenue From Other Assets"
+    },
+    {
+      "number": "772",
+      "name": "Interest & Similar Revenues"
+    },
+    {
+      "number": "7721",
+      "name": "Revenue From Securities Placements"
+    },
+    {
+      "number": "7723",
+      "name": "Revenue From Blocked Securities"
+    },
+    {
+      "number": "7725",
+      "name": "Revenue From Blocked Receivable"
+    },
+    {
+      "number": "7726",
+      "name": "Revenue From Commercial Receivables"
+    },
+    {
+      "number": "7727",
+      "name": "Revenue Frm Misc. Receivables"
+    },
+    {
+      "number": "7731",
+      "name": "Revenue On Loans Granted"
+    },
+    {
+      "number": "7733",
+      "name": "Earned Discount & Allowances"
+    },
+    {
+      "number": "775",
+      "name": "Foreign Currencies Positive Difference"
+    },
+    {
+      "number": "7750",
+      "name": "Positive Difference On Exchange"
+    },
+    {
+      "number": "7751",
+      "name": "Current Operations"
+    },
+    {
+      "number": "7755",
+      "name": "Capital Operations"
+    },
+    {
+      "number": "778",
+      "name": "Other Financial Income"
+    },
+    {
+      "number": "7781",
+      "name": "Net Income On Sale Of Security"
+    },
+    {
+      "number": "7789",
+      "name": "Allocation Of Financial Charges"
+    },
+    {
+      "number": "779",
+      "name": "Write-Back Of Financial Provisions"
+    },
+    {
+      "number": "7793",
+      "name": "Write-Back Of Prov. For Dimunit.Of Value"
+    },
+    {
+      "number": "7795",
+      "name": "Write-Back Of Prov. For Risks & Charges"
+    },
+    {
+      "number": "78",
+      "name": "Non Operating Revenues"
+    },
+    {
+      "number": "781",
+      "name": "Revenues From Fixed Assets Disposals"
+    },
+    {
+      "number": "7811",
+      "name": "Intangible Fixed Assets"
+    },
+    {
+      "number": "7812",
+      "name": "Tangible Fixed Assets"
+    },
+    {
+      "number": "7815",
+      "name": "Financial Fixed Assets"
+    },
+    {
+      "number": "782",
+      "name": "Investment Subsidies Transferred To P&L"
+    },
+    {
+      "number": "788",
+      "name": "Misc.Income Non-Operating"
+    },
+    {
+      "number": "7881",
+      "name": "Exceptional Revenue .Ordinary"
+    },
+    {
+      "number": "7888",
+      "name": "Other Revenue Except. Capital"
+    },
+    {
+      "number": "7889",
+      "name": "Allocation Of Exceptional Charges"
+    },
+    {
+      "number": "789",
+      "name": "Write-Back Of Non Operating Provisions"
+    },
+    {
+      "number": "7891",
+      "name": "Write-Back Of Prov. For Dimunit.In Value"
+    },
+    {
+      "number": "7895",
+      "name": "Write-Back Of Prov. Of Risks & Charges"
+    }
+  ],
+  "active": "true",
+  "permission": "Editable",
+  "creationDate": 1705411425734,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "name": "tttttttttGovernment Accounts",
+  "style": {
+    "columnWidth": {
+      "A": "210px",
+      "B": "511px"
+    }
+  },
+  "rowCount": 50,
+  "creationDay": 1705411445424,
+  "__props__": {
+    "id": "91q7R008W8z8F7E0z0i7Q8x553",
+    "creationDate": 1696928212047,
+    "collapsed": [
+      {
+        "path": [
+          "list"
+        ]
+      },
+      {
+        "path": [
+          "data"
+        ]
+      }
+    ],
+    "comments": [],
+    "docName": "YNbAYae9WkxE2Ihnhzw6Z8avqI6Pn7Z9bYFhNJR0T6U3iV6E1MkiMzyuHMdj",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

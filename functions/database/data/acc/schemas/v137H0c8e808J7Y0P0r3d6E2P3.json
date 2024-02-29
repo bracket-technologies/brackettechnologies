@@ -1,0 +1,32 @@
+{
+  "create": {
+    "user": {
+      "keyValue": [
+        {
+          "path": "permission",
+          "type": "map",
+          "key": "permission",
+          "required": "true"
+        },
+        {
+          "path": "userId",
+          "type": "string",
+          "key": "user",
+          "required": "true"
+        }
+      ]
+    }
+  },
+  "collection": "permission",
+  "__props__": {
+    "id": "v137H0c8e808J7Y0P0r3d6E2P3",
+    "creationDate": 1700218986144,
+    "collapsed": [],
+    "comments": [],
+    "docName": "LemaLwL3xSDZKs4QklUZ",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

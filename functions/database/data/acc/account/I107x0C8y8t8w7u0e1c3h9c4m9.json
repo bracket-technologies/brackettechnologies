@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687890471,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "OWBAA2m7t4YYBFjgIxFZJDup7U95AI379SpsBfjU0w0OIhxcw51IE4Td3NSQ-1708687890471",
+  "ref": "ACC-00000266",
+  "ledgerAccount": "6880/1/1",
+  "blockAccount": "No",
+  "name": "Charges On Extra-Ordinary Events",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "68",
+    "688",
+    "6880"
+  ],
+  "__props__": {
+    "id": "I107x0C8y8t8w7u0e1c3h9c4m9",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "0Xn2ox5dIB8aIjLhgC0KH0UtU0obowOYcY11pu7KWLsDaEMI78xXnJE97Nc0-1708687890471",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

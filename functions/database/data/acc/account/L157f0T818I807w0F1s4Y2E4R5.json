@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687893074,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "L9jjrdOAnIpYqiHYCsCCWgdKX7C7yAnstNw78mIhy9CKVLS9u3pr22vcnj0D-1708687893073",
+  "ref": "ACC-00000338",
+  "ledgerAccount": "779/1/1",
+  "blockAccount": "No",
+  "name": "Write-Back Of Financial Provisions",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "77",
+    "779"
+  ],
+  "__props__": {
+    "id": "L157f0T818I807w0F1s4Y2E4R5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "FLTvZZDIXeqFJkPGEyIHpWfx6bayvYKVU948iWJKHE7ZkzYPgJDnqTMiK1q8-1708687893073",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

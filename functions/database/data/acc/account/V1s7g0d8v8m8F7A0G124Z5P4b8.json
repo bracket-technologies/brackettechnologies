@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687887970,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "lC6rWIv5jPczVO3BKp3Mk9yh2pKjhwttlrjLY6rkDddZaNDjGFiOkXwnVdrH-1708687887970",
+  "ref": "ACC-00000202",
+  "ledgerAccount": "63191/1/1",
+  "blockAccount": "No",
+  "name": "Personnel Transport Allowances",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "63",
+    "631",
+    "6319",
+    "63191"
+  ],
+  "__props__": {
+    "id": "V1s7g0d8v8m8F7A0G124Z5P4b8",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "ThqnF6lRhv4MOoH62VBZuZctA3Qpze2B2WmVmJYHy89hqwOng3amxQFYFVMw-1708687887970",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

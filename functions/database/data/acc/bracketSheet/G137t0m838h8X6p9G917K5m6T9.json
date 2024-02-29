@@ -1,0 +1,373 @@
+{
+  "identifier": "sheet",
+  "searchEngineInputs": [
+    {
+      "clearable": "true",
+      "inputPath": "ref",
+      "inputLabel": "Sheet#",
+      "hideSearchIcon": true,
+      "collection": "sheet",
+      "searchable": true
+    },
+    {
+      "clearable": true,
+      "inputPath": "name",
+      "inputLabel": "Name"
+    }
+  ],
+  "createFormInputs": {
+    "subInput": [
+      {
+        "input": [
+          {
+            "inputPath": "name",
+            "inputLabel": "Name",
+            "required": true
+          },
+          {
+            "inputPath": "type",
+            "inputLabel": "Type",
+            "inputValue": "Editable",
+            "items": [
+              "Editable",
+              "Readonly"
+            ],
+            "required": "required"
+          }
+        ],
+        "title": "General Information"
+      },
+      {
+        "customSectionView": "sheet"
+      }
+    ],
+    "collection": "sheet"
+  },
+  "managerName": "sheet",
+  "title": "Sheet Manager",
+  "historyTable": [
+    {
+      "collection": "history",
+      "table": [
+        {
+          "path": "creationDate",
+          "header": "Created At",
+          "formatCell": "toCellDate()",
+          "fraction": "1fr"
+        },
+        {
+          "path": "updateBy",
+          "header": "Updated By",
+          "fraction": "1fr"
+        },
+        {
+          "path": "createBy",
+          "header": "Created By",
+          "fraction": "1fr"
+        },
+        {
+          "path": "description",
+          "header": "Description",
+          "fraction": "2fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "balanceSheet": "true",
+          "delete": true,
+          "justifyContent": "end",
+          "fraction": ".5fr"
+        }
+      ]
+    }
+  ],
+  "saveAction": "saveSheet()",
+  "searchResultView": "sheetCards",
+  "sheetTable": {
+    "headers": [
+      {
+        "header": ""
+      },
+      {
+        "header": "A"
+      },
+      {
+        "header": "B"
+      },
+      {
+        "header": "C"
+      },
+      {
+        "header": "D"
+      },
+      {
+        "header": "E"
+      },
+      {
+        "header": "F"
+      },
+      {
+        "header": "G"
+      },
+      {
+        "header": "H"
+      },
+      {
+        "header": "I"
+      },
+      {
+        "header": "J"
+      },
+      {
+        "header": "K"
+      },
+      {
+        "header": "L"
+      },
+      {
+        "header": "M"
+      },
+      {
+        "header": "N"
+      }
+    ]
+  },
+  "searchAction": "getSearchResult()",
+  "popupInfo": {
+    "docName": "sheet",
+    "title": "Sheet Form"
+  },
+  "historySearchEngine": [
+    {
+      "inputPath": "startDate",
+      "inputLabel": "Start Date",
+      "type": "date"
+    },
+    {
+      "inputPath": "endDate",
+      "inputLabel": "End Date",
+      "type": "date"
+    }
+  ],
+  "__props__": {
+    "id": "G137t0m838h8X6p9G917K5m6T9",
+    "creationDate": 1698494223283,
+    "collapsed": [
+      {
+        "path": [
+          "historyTable",
+          0,
+          "table",
+          0
+        ]
+      },
+      {
+        "path": [
+          "historyTable",
+          0,
+          "table",
+          1
+        ]
+      },
+      {
+        "path": [
+          "historyTable",
+          0,
+          "table",
+          2
+        ]
+      },
+      {
+        "path": [
+          "historyTable",
+          0,
+          "table"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          0
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          1
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          0
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          1
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          2
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          3
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          4
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          5
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          6
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          7
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          8
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          9
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          10
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          11
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          12
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          13
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          14
+        ]
+      },
+      {
+        "path": [
+          "historyTable"
+        ]
+      },
+      {
+        "path": [
+          "historySearchEngine"
+        ]
+      },
+      {
+        "path": [
+          "sheetTable"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "popupInfo"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs"
+        ]
+      }
+    ],
+    "comments": [],
+    "docName": "sheetTable",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

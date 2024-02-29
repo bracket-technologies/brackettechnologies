@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687893363,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "grkd3sZU69nbS0QhcXAhQHlwhGsmC6SnBGut6aEPqh7aCZ5CYX4UB4T5ceEs-1708687893363",
+  "ref": "ACC-00000344",
+  "ledgerAccount": "7812/1/1",
+  "blockAccount": "No",
+  "name": "Tangible Fixed Assets",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "78",
+    "781",
+    "7812"
+  ],
+  "__props__": {
+    "id": "R1Q7s0w828F8z7a03164f839u0",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "n0gqM569TvLrOrV0PK8sTkS69Hfmihg4znEeB75V7aV7Q9DiTKBdnlO23JBn-1708687893363",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -6,12 +6,13 @@ const { removeView } = require("./view")
 const { generate } = require("./generate")
 const { addresser } = require("./addresser")
 const { toParam } = require("./toParam")
+const { decode } = require("./decode")
 
 const update = ({ _window, id, lookupActions, stack, address, req, res, __, data = {} }) => {
 
   // address.blockable = false
-  var views = _window ? _window.views : window.views
-  var global = _window ? _window.global : window.global
+  const views = _window ? _window.views : window.views
+  const global = _window ? _window.global : window.global
 
   var view = views[data.id]
   var parent = views[data.__parent__ || view.__parent__]
@@ -63,16 +64,18 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
   else if (!parent.__rendered__) { removeView({ _window, id: data.id, stack, main: true }) }
 
   // address for postUpdate
-  var address = addresser({ _window, id, stack, headAddress: address, type: "function", function: "postUpdate", file: "update", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent, address } }).address
-
+  var headAddress = addresser({ _window, id, stack, headAddressID: address.headAddressID, hasWaits: address.hasWaits, type: "function", function: "postUpdate", file: "update", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent } }).address
+  address.headAddressID = headAddress.id
+  address.hasWaits = false
+  
   // render
   toView({ _window, lookupActions: __lookupViewActions__, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
 }
 
-const postUpdate = ({ _window, lookupActions, stack, __, req, res, id, data: { childIndex, elements, route, timer, address, parent, ...data } }) => {
-  
-  var views = _window ? _window.views : window.views
-  var global = _window ? _window.global : window.global
+const postUpdate = ({ _window, lookupActions, stack, __, id, address, data: { childIndex, elements, root, timer, parent, ...data } }) => {
+
+  const views = _window ? _window.views : window.views
+  const global = _window ? _window.global : window.global
 
   // tohtml parent
   toHTML({ _window, lookupActions, stack, __, id: parent.id })
@@ -127,8 +130,8 @@ const postUpdate = ({ _window, lookupActions, stack, __, req, res, id, data: { c
     if (updatedViews[0].id === "root") {
       
       document.body.scrollTop = document.documentElement.scrollTop = 0
-      var title = route.title || views[global.manifest.page].title
-      var path = route.path || views[global.manifest.page].path
+      var title = root.title || views[global.manifest.page].title
+      var path = root.path || views[global.manifest.page].path
       
       history.pushState(null, title, path)
       document.title = title
@@ -141,14 +144,17 @@ const postUpdate = ({ _window, lookupActions, stack, __, req, res, id, data: { c
     }
   }
 
+  console.log((data.action || "UPDATE") + ":" + updatedViews[0].id, (new Date()).getTime() - timer)
+
   var data = { view: updatedViews.length === 1 ? updatedViews[0] : updatedViews, message: "View updated successfully!", success: true }
 
-  console.log(data.action || (updatedViews[0].id === "root" ? "ROUTE" : "UPDATE"), (new Date()).getTime() - timer, updatedViews[0].id)
-
   toParam({ _window, data: "loader.hide" })
+  
+  if (address) {
 
-  address.params.__ = [data, ...address.params.__]
-  address.params.id = views[address.params.id] ? address.params.id : updatedViews[0].id
+    address.params.__ = [data, ...address.params.__]
+    address.params.id = views[address.params.id] ? address.params.id : updatedViews[0].id
+  }
 }
 
 module.exports = { update, postUpdate }

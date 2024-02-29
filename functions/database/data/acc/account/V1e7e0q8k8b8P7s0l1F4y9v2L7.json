@@ -1,0 +1,27 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687885763,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "5DikndBSs3ILPzSGrhebdAqOWxV44jSqGuLSydLBusNhPoIpbFWirK2c9TLn-1708687885763",
+  "ref": "ACC-00000143",
+  "ledgerAccount": "67/1/1",
+  "blockAccount": "No",
+  "name": "Financial Charges",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "67"
+  ],
+  "__props__": {
+    "id": "V1e7e0q8k8b8P7s0l1F4y9v2L7",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "pX5zxqoYzVXvATej6PJCi7iPOS5aKI5X41UuL6XWCS6ZRu8DmTP0vnr6SNR6-1708687885763",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

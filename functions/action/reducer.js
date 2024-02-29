@@ -1,6 +1,6 @@
 const { isParam } = require("./isParam")
 const { addresser } = require("./addresser")
-const { lineInterpreter } = require("./lineInterpreter")
+const { toLine } = require("./toLine")
 const { isCalc } = require("./isCalc")
 const { kernel } = require("./kernel")
 const { decode } = require("./decode")
@@ -17,8 +17,8 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
 
     if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.blocked || stack.broke) return
 
-    var views = _window ? _window.views : window.views
-    var global = _window ? _window.global : window.global
+    const views = _window ? _window.views : window.views
+    const global = _window ? _window.global : window.global
     var view = views[id] || { id, __view__:true }
 
     // path is a string
@@ -98,7 +98,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // global:()
     else if (path0 && args[1] === "()" && !args[2]) {
 
-        var globalVariable = toValue({ req, res, _window, id, e, data: args[0], __, stack, lookupActions })
+        const globalVariable = toValue({ req, res, _window, id, e, data: args[0], __, stack, lookupActions })
         if (path.length === 1 && key && globalVariable) return global[globalVariable] = value
 
         path.splice(0, 1, globalVariable)
@@ -132,7 +132,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
 
         // text in square bracket
         if (global.__refs__[path[0]].type === "text") return global.__refs__[path[0]].data
-        else data = lineInterpreter({ _window, req, res, lookupActions, stack, object, id, data: { string: global.__refs__[path[0]].data }, __, e }).data
+        else data = toLine({ _window, req, res, lookupActions, stack, object, id, data: { string: global.__refs__[path[0]].data }, __, e }).data
 
         if (path[1] === "flat()") {
 

@@ -1,0 +1,48 @@
+{
+  "headers": [
+    {
+      "text": "Cities",
+      "key": "cities"
+    }
+  ],
+  "data": [
+    {
+      "cities": "fdas"
+    }
+  ],
+  "nameReadOnly": true,
+  "type": "Readonly",
+  "creationDate": 1700463291472,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "ref": "SHT-00000069",
+  "createdBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+  "name": "Algeria Cities",
+  "creationDay": 1700438400000,
+  "__props__": {
+    "id": "x1E7K0f8L8y8d7g0Y007L886a7",
+    "creationDate": 1700463199954,
+    "collapsed": [
+      {
+        "path": [
+          "keys"
+        ]
+      },
+      {
+        "path": [
+          "list"
+        ]
+      },
+      {
+        "path": [
+          "headers"
+        ]
+      }
+    ],
+    "comments": [],
+    "docName": "jfTyEOg79RTDdiYFk1imeCeVaT3LmFmP1oNeP338INuYjghB7Ar0HCeoPEH61700463291472",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

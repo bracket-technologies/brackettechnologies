@@ -1,0 +1,1409 @@
+{
+  "searchEngineInputs": [
+    {
+      "clearable": true,
+      "inputPath": "ref",
+      "inputLabel": "Voucher#",
+      "hideSearchIcon": true,
+      "collection": "voucher",
+      "searchable": true
+    },
+    {
+      "clearable": true,
+      "inputPath": "invoiceRef",
+      "customCondition": "if():[currentOpenManager:().type='Expense Voucher'||currentOpenManager:().type='Journal Voucher']:[parent().displayedInputsCounter--;().display=false]",
+      "inputLabel": "Invoice#",
+      "collection": "invoice",
+      "searchable": true
+    },
+    {
+      "inputPath": "paymentWay",
+      "customConditiossssn": "if():[currentOpenManager:().type='Receipt Voucher'||='Payment Voucher'||='Expense Voucher']::[parent().displayedInputsCounter--;().display=false]",
+      "customCondition": "if():[currentOpenManager:().type='Journal Voucher']:[parent().displayedInputsCounter--;().display=false]",
+      "inputLabel": "Financial Account",
+      "govInput": "true",
+      "includeLegerAccounts": {
+        "startsWith": "5"
+      }
+    },
+    {
+      "inputPath": "expenditureAccount",
+      "customConditiossssn": "if():[currentOpenManager:().type='Receipt Voucher'||='Payment Voucher'||='Expense Voucher']::[parent().displayedInputsCounter--;().display=false]",
+      "customCondition": "if():[currentOpenManager:().type='Journal Voucher']:[parent().displayedInputsCounter--;().display=false]",
+      "inputLabel": "Expenditure Account",
+      "govInput": "true",
+      "includeLegerAccounts": {
+        "startsWith": "6"
+      }
+    },
+    {
+      "inputPath": "fromAccount",
+      "generalLedger": "true",
+      "customCondition": "if():[currentOpenManager:().type!='Journal Voucher']:[parent().displayedInputsCounter--;().display=false]",
+      "inputLabel": "From Account"
+    },
+    {
+      "inputPath": "toAccount",
+      "generalLedger": "true",
+      "customCondition": "if():[currentOpenManager:().type!='Journal Voucher']:[parent().displayedInputsCounter--;().display=false]",
+      "inputLabel": "To Account"
+    },
+    {
+      "inputPath": "creditAccount",
+      "generalLedger": true,
+      "customCondition": "if():[currentOpenManager:().type!='Transfer Voucher']:[parent().displayedInputsCounter--;().display=false]",
+      "inputLabel": "From Account",
+      "#allowedLedgers": [
+        "5"
+      ]
+    },
+    {
+      "inputPath": "debitAccount",
+      "generalLedger": "true",
+      "customCondition": "if():[currentOpenManager:().type!='Transfer Voucher']:[parent().displayedInputsCounter--;().display=false]",
+      "inputLabel": "To Account",
+      "#allowedLedgers": [
+        "5"
+      ]
+    },
+    {
+      "inputPath": "supplierAccount",
+      "customCondition": "if():[currentOpenManager:().type='Debit Note'||currentOpenManager:().type='Expense Voucher']::[parent().displayedInputsCounter--;().display=false]",
+      "inputLabel": "Supplier Account",
+      "govInput": "true",
+      "includeLegerAccounts": {
+        "startsWith": "401"
+      }
+    },
+    {
+      "inputPath": "customerAccount",
+      "customCondition": "if():[currentOpenManager:().type!='Credit Note']:[parent().displayedInputsCounter--;().display=false]",
+      "inputLabel": "Customer Account",
+      "govInput": "true",
+      "includeLegerAccounts": {
+        "startsWith": "41"
+      }
+    },
+    {
+      "clearable": true,
+      "inputPath": "fromDate",
+      "inputLabel": "From Date",
+      "type": "date"
+    },
+    {
+      "clearable": true,
+      "inputPath": "toDate",
+      "inputLabel": "To Date",
+      "type": "date"
+    },
+    {
+      "clearable": true,
+      "inputPath": "status",
+      "readonly": "readonly",
+      "inputLabel": "Status",
+      "items": [
+        "Pending",
+        "Confirmed",
+        "Canceled"
+      ]
+    }
+  ],
+  "#createFormInputs": {
+    "docDefaultValues": {
+      "type": "currentOpenManager:().type"
+    },
+    "subInput": [
+      {
+        "input": [
+          {
+            "inputPath": "voucherDate",
+            "inputLabel": "Receipt Date",
+            "inputValue": "today().timestamp()",
+            "type": "date"
+          },
+          {
+            "inputPath": "status",
+            "readonly": "readonly",
+            "inputLabel": "Status",
+            "inputValue": "Confirmed",
+            "items": [
+              "Pending",
+              "Confirmed",
+              "Canceled"
+            ],
+            "droplistClickAction": "customUpdate():[section=3;input=:1:3]",
+            "required": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Receipt Voucher",
+                  "Payment Voucher"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "invoice",
+            "inputLabel": "Invoice",
+            "collection": "invoice",
+            "searchable": true
+          },
+          {
+            "condition": [
+              {
+                "conditionReference": "invoice"
+              }
+            ],
+            "inputPath": "amount",
+            "inputLabel": "Amount",
+            "inputValue": 0,
+            "blurAction": "calcTotalAmount()",
+            "required": true,
+            "unitValue": "USD"
+          }
+        ],
+        "title": "General Information"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "ledgerAccount",
+            "counterInputBlurAction": "customUpdate():[section=2]",
+            "generalLedger": true,
+            "inputLabel": "Account",
+            "allowedLedgers": {
+              "condition": "path().1<1;doc().type='Payment Voucher'||doc().type='Transfer Voucher'",
+              "allowedLedgers": [
+                "5"
+              ]
+            },
+            "required": true
+          },
+          {
+            "inputPath": "currency",
+            "readonly": true,
+            "inputLabel": "Currency",
+            "inputValue": "userData:().defaultCurrency.value",
+            "items": "userData:().currency.():code",
+            "droplistClickAction": "customUpdate():[section=2]",
+            "required": "true"
+          },
+          {
+            "multiInput": [
+              {
+                "inputPath": "exchangeRate",
+                "inputLabel": "Exchange Rate",
+                "inputValue": 1,
+                "icon": "Equal",
+                "executeUnitEveryLoad": "true",
+                "fr": "1.3fr",
+                "required": "true",
+                "unitValue": "___.accountCurrency"
+              },
+              {
+                "inputPath": "systemRate",
+                "readonly": "readonly",
+                "inputValue": 1,
+                "executeUnitEveryLoad": true,
+                "fr": "1fr",
+                "required": "true",
+                "unitValue": "___.currency"
+              }
+            ],
+            "exchangeRate": true,
+            "#customCondition": "().accountCurrency=userData:().currency.find():[counter=__.ledgerAccount.split():['/'].2.num()].code||false;if():[().accountCurrency]:[__.accountCurrency=().accountCurrency]:[if():[__.ledgerAccount]:[().splittedTxt=__.ledgerAccount.split():['/'];().splittedTxt.pop();().splittedTxt.push():'1';__.ledgerAccount=().splittedTxt.join():['/']];__.accountCurrency=userData:().currency.find():[counter=1].code];if():[!().accountCurrency]:[().display=false;delFromDoc()].elif():[().accountCurrency=__.currency]:[().display=false;delFromDoc()]"
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "required": true,
+            "fraction": "2fr"
+          },
+          {
+            "inputPath": "amount",
+            "price": true,
+            "inputLabel": "Amount",
+            "executeUnitEveryLoad": true,
+            "inputValue": 0,
+            "required": true,
+            "unitValue": "__.currency"
+          }
+        ],
+        "path": "credit",
+        "constantRows": "if():[doc().type='Payment Voucher'||doc().type='Transfer Voucher']:[return():[1]]:[return():[false]]",
+        "title": "Credit"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "paymentWay",
+            "readonly": "true",
+            "inputLabel": "Payment Way",
+            "inputValue": "Cash",
+            "items": [
+              "Cash",
+              "Bank",
+              "Credit Card",
+              "Cheque for Collection",
+              "Cheque under Collection"
+            ],
+            "required": "true"
+          },
+          {
+            "inputPath": "ledgerAccount",
+            "counterInputBlurAction": "customUpdate():[section=3]",
+            "generalLedger": "true",
+            "inputLabel": "Account",
+            "allowedLedgers": {
+              "condition": "path().1<[___.constantRows]();doc().type='Receipt Voucher'||doc().type='Transfer Voucher'",
+              "allowedLedgers": [
+                "5"
+              ]
+            },
+            "required": true
+          },
+          {
+            "inputPath": "currency",
+            "readonly": true,
+            "inputLabel": "Currency",
+            "inputValue": "userData:().defaultCurrency.value",
+            "items": "userData:().currency.():code",
+            "droplistClickAction": "customUpdate():[section=3]",
+            "required": "true"
+          },
+          {
+            "multiInput": [
+              {
+                "inputPath": "exchangeRate",
+                "inputLabel": "Exchange Rate",
+                "inputValue": 1,
+                "icon": "Equal",
+                "executeUnitEveryLoad": "true",
+                "fr": "1.3fr",
+                "required": "true",
+                "unitValue": "___.accountCurrency"
+              },
+              {
+                "inputPath": "systemRate",
+                "readonly": "readonly",
+                "inputValue": 1,
+                "executeUnitEveryLoad": true,
+                "fr": "1fr",
+                "required": "true",
+                "unitValue": "___.currency"
+              }
+            ],
+            "exchangeRate": true,
+            "#customCondition": "().accountCurrency=userData:().currency.find():[counter=__.ledgerAccount.split():['/'].2.num()].code||false;if():[().accountCurrency]:[__.accountCurrency=().accountCurrency]:[if():[__.ledgerAccount]:[().splittedTxt=__.ledgerAccount.split():['/'];().splittedTxt.pop();().splittedTxt.push():'1';__.ledgerAccount=().splittedTxt.join():['/']];__.accountCurrency=userData:().currency.find():[counter=1].code];if():[!().accountCurrency]:[().display=false;delFromDoc()].elif():[().accountCurrency=__.currency]:[().display=false;delFromDoc()]"
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "required": true,
+            "fraction": "2fr"
+          },
+          {
+            "inputPath": "amount",
+            "price": true,
+            "inputLabel": "Amount",
+            "executeUnitEveryLoad": true,
+            "inputValue": 0,
+            "required": true,
+            "unitValue": "__.accountCurrency"
+          }
+        ],
+        "path": "debit",
+        "constantRows": "if():[doc().type='Receipt Voucher'||doc().type='Transfer Voucher']:[return():[1]]:[return():[false]]",
+        "title": "Debit"
+      },
+      {
+        "input": [
+          {
+            "clearable": "true",
+            "inputPath": "note",
+            "inputLabel": "Note",
+            "textarea": "textarea",
+            "height": "12rem"
+          },
+          {
+            "clearable": "true",
+            "inputPath": "terms",
+            "inputLabel": "Terms",
+            "textarea": "textarea",
+            "height": "12rem"
+          }
+        ],
+        "grid": "1fr 1fr",
+        "title": "Note & Terms"
+      }
+    ],
+    "collection": "voucher"
+  },
+  "createFormInputs": {
+    "docDefaultValues": {
+      "type": "currentOpenManager:().type"
+    },
+    "subInput": [
+      {
+        "input": [
+          {
+            "inputPath": "voucherDate",
+            "inputLabel": "Voucher Date",
+            "inputValue": "today().timestamp()",
+            "type": "date"
+          },
+          {
+            "inputPath": "status",
+            "readonly": "readonly",
+            "inputLabel": "Status",
+            "inputValue": "Confirmed",
+            "items": [
+              "Pending",
+              "Confirmed"
+            ],
+            "droplistClickAction": "customUpdate():[section=3;input=:1:3]",
+            "required": "true"
+          },
+          {
+            "inputPath": "currency",
+            "readonly": "true",
+            "inputLabel": "Currency",
+            "inputValue": "userData:().defaultCurrency.value",
+            "items": "userData:().currency.():code",
+            "droplistClickAction": "customUpdate():[:[section=3;input=:2:4:5]:[section=4;input=:2:5:6]:[section=1;input=:4:6:7]:[section=5;input=:2:4:5]:[section=6;input=:2:5:6]:[section=2;input=:6:7]]",
+            "required": "true"
+          },
+          {
+            "condition": [
+              {
+                "conditionReference": "Invoice"
+              }
+            ],
+            "inputPath": "amount",
+            "inputLabel": "Amount",
+            "inputValue": 0,
+            "blurAction": "calcTotalAmount()",
+            "required": true,
+            "unitValue": "USD"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Expense Voucher"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "supplier",
+            "readonly": true,
+            "inputLabel": "Supplier",
+            "inputValue": "No",
+            "items": [
+              "Yes",
+              "No"
+            ],
+            "droplistClickAction": "customUpdate():[input=:5]"
+          },
+          {
+            "orCondition": [
+              {
+                "condition": [
+                  "Yes"
+                ],
+                "conditionReference": "supplier"
+              },
+              {
+                "condition": [
+                  "Debit Note"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "supplierAccount",
+            "inputLabel": "Supplier Account",
+            "govInput": true,
+            "required": "true",
+            "includeLegerAccounts": {
+              "startsWith": "401"
+            }
+          },
+          {
+            "orCondition": [
+              {
+                "condition": [
+                  "Yes"
+                ],
+                "conditionReference": "supplier"
+              },
+              {
+                "condition": [
+                  "Credit Note"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "customerAccount",
+            "inputLabel": "Customer Account",
+            "govInput": true,
+            "required": "true",
+            "includeLegerAccounts": {
+              "startsWith": "41"
+            }
+          }
+        ],
+        "title": "General Information"
+      },
+      {
+        "input": [
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Receipt Voucher"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "ledgerAccount",
+            "inputLabel": "Receivables and Payables Account",
+            "govInput": true,
+            "required": true,
+            "includeLegerAccounts": {
+              "startsWith": "4"
+            }
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Payment Voucher"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "paymentWay",
+            "inputLabel": "Financial Account",
+            "govInput": true,
+            "required": "true",
+            "includeLegerAccounts": {
+              "startsWith": "5"
+            }
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Journal Voucher"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "fromAccount",
+            "generalLedger": "true",
+            "inputLabel": "From Account",
+            "required": true
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "fraction": "2fr"
+          },
+          {
+            "inputPath": "amount",
+            "price": true,
+            "inputLabel": "Amount",
+            "executeUnitEveryLoad": true,
+            "inputValue": 0,
+            "required": true,
+            "unitValue": "doc().currency"
+          }
+        ],
+        "path": "from",
+        "condition": [
+          {
+            "condition": [
+              "Journal Voucher",
+              "Receipt Voucher",
+              "Payment Voucher"
+            ],
+            "conditionReference": "type"
+          }
+        ],
+        "grid": "1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+        "defaultValues": {
+          "exchangeRate": "userData:().currency.find():[code=doc().currency].exchangeRate"
+        },
+        "title": "From (CR)"
+      },
+      {
+        "input": [
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Receipt Voucher"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "paymentWay",
+            "inputLabel": "Financial Account",
+            "govInput": true,
+            "required": "true",
+            "includeLegerAccounts": {
+              "startsWith": "5"
+            }
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Payment Voucher"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "ledgerAccount",
+            "inputLabel": "Receivables and Payables Account",
+            "govInput": true,
+            "required": true,
+            "includeLegerAccounts": {
+              "startsWith": "4"
+            }
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Journal Voucher"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "toAccount",
+            "inputLabel": "To Account",
+            "govInput": "true",
+            "required": true,
+            "includeLegerAccounts": {
+              "startsWith": "all"
+            }
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "fraction": "2fr"
+          },
+          {
+            "inputPath": "financialCharges",
+            "readonly": true,
+            "inputLabel": "Financial Charges",
+            "inputValue": "No",
+            "items": [
+              "Yes",
+              "No"
+            ],
+            "droplistClickAction": "customUpdate():[input=:5:6]",
+            "required": true
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Yes"
+                ],
+                "conditionReference": "financialCharges"
+              }
+            ],
+            "inputPath": "financialChargesAccount",
+            "generalLedger": true,
+            "inputLabel": "Financial Charges Account",
+            "required": true,
+            "includeLegerAccounts": {
+              "startsWith": "6739"
+            }
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Yes"
+                ],
+                "conditionReference": "financialCharges"
+              }
+            ],
+            "inputPath": "financialChargesAmount",
+            "subItemsList": [
+              "doc().currency",
+              "%"
+            ],
+            "unitPath": "chargesFeesUnit",
+            "inputLabel": "Financial Charges Amount",
+            "executeUnitEveryLoad": true,
+            "required": true
+          },
+          {
+            "inputPath": "amount",
+            "price": true,
+            "inputLabel": "Amount",
+            "executeUnitEveryLoad": true,
+            "inputValue": 0,
+            "required": true,
+            "unitValue": "doc().currency"
+          }
+        ],
+        "path": "to",
+        "condition": [
+          {
+            "condition": [
+              "Journal Voucher",
+              "Receipt Voucher",
+              "Payment Voucher"
+            ],
+            "conditionReference": "type"
+          }
+        ],
+        "grid": "1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+        "defaultValues": {
+          "exchangeRate": "userData:().currency.find():[code=doc().currency].exchangeRate"
+        },
+        "title": "To (DR)"
+      },
+      {
+        "path": "expenses",
+        "input": [
+          {
+            "inputPath": "expenditureAccount",
+            "inputLabel": "Expenditure Account",
+            "govInput": true,
+            "required": true,
+            "includeLegerAccounts": {
+              "startsWith": "6"
+            }
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "fraction": "2fr"
+          },
+          {
+            "inputPath": "amount",
+            "inputLabel": "Amount",
+            "executeUnitEveryLoad": true,
+            "required": true,
+            "unitValue": "doc().currency"
+          },
+          {
+            "inputPath": "vat",
+            "readonly": true,
+            "inputLabel": "VAT",
+            "inputValue": "No",
+            "items": [
+              "Yes",
+              "No"
+            ],
+            "droplistClickAction": "customUpdate():[input=:4]"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Yes"
+                ],
+                "conditionReference": "vat"
+              }
+            ],
+            "inputPath": "vatAmount",
+            "inputLabel": "VAT Amount",
+            "executeUnitEveryLoad": true,
+            "required": true,
+            "unitValue": "doc().currency"
+          },
+          {
+            "inputPath": "totalAmount",
+            "inputLabel": "Total Amount",
+            "executeUnitEveryLoad": true,
+            "required": true,
+            "unitValue": "doc().currency"
+          }
+        ],
+        "condition": [
+          {
+            "condition": [
+              "Expense Voucher"
+            ],
+            "conditionReference": "type"
+          }
+        ],
+        "grid": "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+        "title": "Expenses"
+      },
+      {
+        "path": "payments",
+        "input": [
+          {
+            "inputPath": "financialAccount",
+            "inputLabel": "Financial Account",
+            "govInput": true,
+            "required": true,
+            "includeLegerAccounts": {
+              "startsWith": "5"
+            }
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "fraction": "2fr"
+          },
+          {
+            "inputPath": "amount",
+            "inputLabel": "Amount",
+            "executeUnitEveryLoad": true,
+            "required": true,
+            "unitValue": "doc().currency"
+          },
+          {
+            "inputPath": "financialCharges",
+            "readonly": true,
+            "inputLabel": "Financial Charges",
+            "inputValue": "No",
+            "items": [
+              "Yes",
+              "No"
+            ],
+            "droplistClickAction": "customUpdate():[input=:4:5]"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Yes"
+                ],
+                "conditionReference": "financialCharges"
+              }
+            ],
+            "inputPath": "chargesAccount",
+            "inputLabel": "Charges Account",
+            "govInput": true,
+            "required": true,
+            "includeLegerAccounts": {
+              "startsWith": "6739"
+            }
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Yes"
+                ],
+                "conditionReference": "financialCharges"
+              }
+            ],
+            "inputPath": "chargesAmount",
+            "inputLabel": "Charges Amount",
+            "executeUnitEveryLoad": true,
+            "required": true,
+            "unitValue": "doc().currency"
+          },
+          {
+            "inputPath": "totalAmount",
+            "inputLabel": "Total Amount",
+            "executeUnitEveryLoad": true,
+            "required": true,
+            "unitValue": "doc().currency"
+          }
+        ],
+        "condition": [
+          {
+            "condition": [
+              "Expense Voucher"
+            ],
+            "conditionReference": "type"
+          }
+        ],
+        "grid": "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+        "title": "Payments"
+      },
+      {
+        "path": "returns",
+        "input": [
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Debit Note"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "expenditureAccount",
+            "inputLabel": "Expenditure Account",
+            "govInput": true,
+            "required": true,
+            "includeLegerAccounts": {
+              "startsWith": "6"
+            }
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Credit Note"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "incomeAccount",
+            "inputLabel": "Income Account",
+            "govInput": true,
+            "required": true,
+            "includeLegerAccounts": {
+              "startsWith": "7"
+            }
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "fraction": "2fr"
+          },
+          {
+            "inputPath": "amount",
+            "inputLabel": "Amount",
+            "executeUnitEveryLoad": true,
+            "required": true,
+            "unitValue": "doc().currency"
+          },
+          {
+            "inputPath": "vat",
+            "readonly": true,
+            "inputLabel": "VAT",
+            "inputValue": "No",
+            "items": [
+              "Yes",
+              "No"
+            ],
+            "droplistClickAction": "customUpdate():[input=:4]"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Yes"
+                ],
+                "conditionReference": "vat"
+              }
+            ],
+            "inputPath": "vatAmount",
+            "inputLabel": "VAT Amount",
+            "executeUnitEveryLoad": true,
+            "required": true,
+            "unitValue": "doc().currency"
+          },
+          {
+            "inputPath": "totalAmount",
+            "inputLabel": "Total Amount",
+            "executeUnitEveryLoad": true,
+            "required": true,
+            "unitValue": "doc().currency"
+          }
+        ],
+        "condition": [
+          {
+            "condition": [
+              "Debit Note",
+              "Credit Note"
+            ],
+            "conditionReference": "type"
+          }
+        ],
+        "grid": "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+        "title": "Returns"
+      },
+      {
+        "path": "refunds",
+        "input": [
+          {
+            "inputPath": "financialAccount",
+            "inputLabel": "Financial Account",
+            "govInput": true,
+            "required": true,
+            "includeLegerAccounts": {
+              "startsWith": "5"
+            }
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "fraction": "2fr"
+          },
+          {
+            "inputPath": "amount",
+            "inputLabel": "Amount",
+            "executeUnitEveryLoad": true,
+            "required": true,
+            "unitValue": "doc().currency"
+          },
+          {
+            "inputPath": "financialCharges",
+            "readonly": true,
+            "inputLabel": "Financial Charges",
+            "inputValue": "No",
+            "items": [
+              "Yes",
+              "No"
+            ],
+            "droplistClickAction": "customUpdate():[input=:4:5]"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Yes"
+                ],
+                "conditionReference": "financialCharges"
+              }
+            ],
+            "inputPath": "chargesAccount",
+            "inputLabel": "Charges Account",
+            "allowedLedgers": [
+              "6739"
+            ],
+            "govInput": true,
+            "required": true
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Yes"
+                ],
+                "conditionReference": "financialCharges"
+              }
+            ],
+            "inputPath": "chargesAmount",
+            "inputLabel": "Charges Amount",
+            "executeUnitEveryLoad": true,
+            "required": true,
+            "unitValue": "doc().currency"
+          },
+          {
+            "inputPath": "totalAmount",
+            "inputLabel": "Total Amount",
+            "executeUnitEveryLoad": true,
+            "required": true,
+            "unitValue": "doc().currency"
+          }
+        ],
+        "condition": [
+          {
+            "condition": [
+              "Debit Note",
+              "Credit Note"
+            ],
+            "conditionReference": "type"
+          }
+        ],
+        "grid": "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+        "title": "Refunds"
+      },
+      {
+        "input": [
+          {
+            "clearable": "true",
+            "inputPath": "note",
+            "inputLabel": "Note",
+            "textarea": "textarea",
+            "height": "12rem"
+          },
+          {
+            "clearable": "true",
+            "inputPath": "terms",
+            "inputLabel": "Terms",
+            "textarea": "textarea",
+            "height": "12rem"
+          }
+        ],
+        "grid": "1fr 1fr",
+        "title": "Note & Terms"
+      }
+    ],
+    "collection": "voucher"
+  },
+  "__props__": {
+    "id": "j1D770T8x8E8D7w0o0W4Q8H1P5",
+    "creationDate": 1705659836554,
+    "collapsed": [
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          1,
+          "#allowedLedgers"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          3,
+          "#allowedLedgers"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          4,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          1,
+          "allowedLedgers",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          7
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "defaultValues"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          8
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          6
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "defaultValues"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          6
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          6,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          5,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          6
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          5
+        ]
+      },
+      {
+        "path": [
+          "#createFormInputs"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          6
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          0
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "from",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "note": "to",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2
+        ]
+      },
+      {
+        "note": "expenses",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3
+        ]
+      },
+      {
+        "note": "payments",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4
+        ]
+      },
+      {
+        "note": "returns",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          5
+        ]
+      },
+      {
+        "note": "refunds",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          6
+        ]
+      }
+    ],
+    "docName": "voucherSharedInfo",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

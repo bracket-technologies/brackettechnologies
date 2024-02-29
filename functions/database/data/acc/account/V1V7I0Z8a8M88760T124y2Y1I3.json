@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687891462,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "5WE7cvnjBC2SVExFbxKh2ZGmKFl9NmqwVUXMAhAkbIINgmnc2iXaCaEOUVjq-1708687891462",
+  "ref": "ACC-00000292",
+  "ledgerAccount": "7212/1/1",
+  "blockAccount": "No",
+  "name": "Work In Process",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "72",
+    "721",
+    "7212"
+  ],
+  "__props__": {
+    "id": "V1V7I0Z8a8M88760T124y2Y1I3",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "DEonk1NH66j06vntHvOx1VZAU33w57DMrEWzrKu9emgZvXuRVk7NvbasCYwb-1708687891462",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

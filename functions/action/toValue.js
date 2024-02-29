@@ -2,7 +2,7 @@ const { decode } = require("./decode");
 const { executable } = require("./executable");
 const { generate } = require("./generate")
 const { isParam } = require("./isParam");
-const { lineInterpreter } = require("./lineInterpreter");
+const { toLine } = require("./toLine");
 
 function sleep(milliseconds) {
   const date = Date.now();
@@ -17,8 +17,8 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
   const { reducer } = require("./reducer")
   const { toParam } = require("./toParam")
   
-  var views = _window ? _window.views : window.views
-  var global = _window ? _window.global : window.global
+  const views = _window ? _window.views : window.views
+  const global = _window ? _window.global : window.global
   
   if (!value) return value
 
@@ -30,7 +30,7 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
   if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, stack, e, data: value, __, object, mount: !isValue && mount, condition })
 
   // value?condition?value
-  if (value.split("?").length > 1) return lineInterpreter({ _window, lookupActions, stack, id, e, data: {string: value}, req, res, mount, __, condition, object, action: "toValue" }).data
+  if (value.split("?").length > 1) return toLine({ _window, lookupActions, stack, id, e, data: {string: value}, req, res, mount, __, condition, object, action: "toValue" }).data
 
   // no value
   if (value === "()") return views[id]

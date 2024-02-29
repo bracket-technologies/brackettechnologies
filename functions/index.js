@@ -42,11 +42,11 @@ const server = (req, res) => {
   res.statusCode = 200
   req.body = []
   req
-  .on('data', chunk => req.body.push(chunk))
-  .on('end', () => {
-    req.body = JSON.parse(Buffer.concat(req.body).toString() || "{}")
-    require("./action/router")({ req, res, data })
-  })
+    .on('data', chunk => req.body.push(chunk))
+    .on('end', () => {
+      req.body = JSON.parse(Buffer.concat(req.body).toString() || "{}")
+      require("./action/router")({ req, res, data })
+    })
 }
 
 http.createServer(server).listen(80, "localhost", () => console.log("Server Listening to Port 80"))
@@ -69,3 +69,5 @@ db.collection(`view-brackettechnologies`).get().then(query => query.forEach(doc 
 }))*/
 
 // db.collection(`_project_`).doc("brackettechnologies").set(getJsonFiles({ search: { collection: "test1", doc: "brackettechnologies" } }))
+
+// require("./action/moveData")(data)

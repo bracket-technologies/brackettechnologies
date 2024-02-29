@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687879356,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "xsa3xcKhdazVVC7py5AiWKP50I3gfHX4eLyRmRUkCkUYcCDoivGS6PyIPmNm-1708687879356",
+  "ref": "ACC-00000040",
+  "ledgerAccount": "60182/1/1",
+  "blockAccount": "No",
+  "name": "Commissions",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "60",
+    "601",
+    "6018",
+    "60182"
+  ],
+  "__props__": {
+    "id": "N1E7M0c8F8J8E7x061y4s3y9U7",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "ORWfEVllpAjPnt3L1XPvj9tXiQ5zXQ5v7G21Nn1TglsjB27vqHZ3LfhNTxej-1708687879356",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

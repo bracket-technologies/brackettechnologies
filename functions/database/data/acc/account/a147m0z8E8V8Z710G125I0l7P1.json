@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687893769,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "qQhvT3ZP68dl9r02BeQnhCkJLHCo79YCWaBlFL8XkongrmrXlsgD79WJOcht-1708687893766",
+  "ref": "ACC-00000353",
+  "ledgerAccount": "7895/1/1",
+  "blockAccount": "No",
+  "name": "Write-Back Of Prov. Of Risks & Charges",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "78",
+    "789",
+    "7895"
+  ],
+  "__props__": {
+    "id": "a147m0z8E8V8Z710G125I0l7P1",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "ytMyOGULAALfg3xgcwgICpJjHIhZCFTFalP8JTJFfINr9fyH1uSLEXwMuiCu-1708687893766",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

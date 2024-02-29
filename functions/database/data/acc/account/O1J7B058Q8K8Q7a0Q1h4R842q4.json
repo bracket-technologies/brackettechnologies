@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687892869,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "oZbhWiK5cOTLeX2YWgg2qvZOBIlf8TpKkrLa5iVrjtMkCtEHwV9Pr5EPREaR-1708687892869",
+  "ref": "ACC-00000331",
+  "ledgerAccount": "775/1/1",
+  "blockAccount": "No",
+  "name": "Foreign Currencies Positive Difference",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "77",
+    "775"
+  ],
+  "__props__": {
+    "id": "O1J7B058Q8K8Q7a0Q1h4R842q4",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "ja59Do5BJAE5HWJLbqbxXln6VwZtMvQxg08f4VPfdxvKeBNeiAv3uhxIhaWf-1708687892869",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687878865,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "GQjYGwmFApPxDwvw0FCPUeNkqVu2Zy11k3TWVSBgQhUbUQs1pRfAOGyMNYHa-1708687878864",
+  "ref": "ACC-00000030",
+  "ledgerAccount": "5800/1/1",
+  "blockAccount": "No",
+  "name": "INTERNAL TRANSFERS",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "5",
+    "58",
+    "580",
+    "5800"
+  ],
+  "__props__": {
+    "id": "31l7T0r8F8B8c7K0g1t4h5x8P1",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "UXUbBr9VblrlRCRrDWdULO1RUgh48ALJqkkHS5kaAF8K5jWzXmhMQTTCSXw2-1708687878864",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

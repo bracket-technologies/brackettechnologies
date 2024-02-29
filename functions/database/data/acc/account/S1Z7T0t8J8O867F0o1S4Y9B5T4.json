@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687893758,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "PoS8MI8Qkg0QWNk4U2vKkdmSoE3gXhADVtiHMvd27tLMoLkxhWxGtQGpXdVx-1708687893758",
+  "ref": "ACC-00000352",
+  "ledgerAccount": "7891/1/1",
+  "blockAccount": "No",
+  "name": "Write-Back Of Prov. For Dimunit.In Value",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "78",
+    "789",
+    "7891"
+  ],
+  "__props__": {
+    "id": "S1Z7T0t8J8O867F0o1S4Y9B5T4",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "r3BFZUGtKvZ5PGybtmf4beBfbwiilmmUrCkRzY59sHQhWPKBOkw4MME7fsXq-1708687893758",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

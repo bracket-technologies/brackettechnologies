@@ -1,0 +1,27 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687885569,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "LBYAZfNvRjbv6D4OuzKWXLZhLA9yknbPKqGOIAWmPFc0lGVvgXBVy36RKXe1-1708687885568",
+  "ref": "ACC-00000138",
+  "ledgerAccount": "66/1/1",
+  "blockAccount": "No",
+  "name": "Other Operating Charges",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "66"
+  ],
+  "__props__": {
+    "id": "81B7T0n8Q8t8J7l0n1X4w3Y3J0",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "Jp53fBW7nYI8mgcT4ojvfTTWCnZWals9lknE33JVQncGgwwQSUUSNzd70O6r-1708687885568",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

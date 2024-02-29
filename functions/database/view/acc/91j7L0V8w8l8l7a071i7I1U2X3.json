@@ -1,0 +1,64 @@
+{
+  "view": "View:mobileCustomPopup?class=flexbox;style:[height=100vh;width=100vw;position=fixed;top=0;right=0;zIndex=5;opacity=0;transition='opacity .2s';visibility=hidden]",
+  "children": [
+    {
+      "view": "View?style:[height=100%;width=100%;backgroundColor=black;opacity=0.5]"
+    },
+    {
+      "view": "[View]:[data=generalPopup:()]?class=flex column;style:[transition=.2s;position=absolute;top=5vh;bottom=5vh;right=5vw;left=5vw;backgroundColor=#fff;borderRadius=.4rem;padding=1rem;gap=.2rem]",
+      "children": [
+        {
+          "view": "View?class=flexbox;style:[width=100%;height=4.5rem;justifyContent=space-between;backgroundColor=#f3f3f3;borderRadius=.4rem .4rem 0rem 0rem;padding=0rem 1rem]",
+          "children": [
+            {
+              "view": "Text?text=_.title;style:[fontSize=1.6rem;fontWeight=bolder]"
+            },
+            {
+              "view": "View?class=flex;style:[gap=1.3rem]",
+              "children": [
+                {
+                  "view": "Icon:closeGeneralPopup?name=print;google.symbol;style:[fontSize=2.5rem;cursor=pointer];click:[printData()]"
+                },
+                {
+                  "#view": "Icon?name=save_as;google.symbol;style:[fontSize=2.1rem;cursor=pointer;paddingTop=.2rem];click:[saveSheet()]?_.saveAs"
+                },
+                {
+                  "view": "Icon?name=Upload;google.symbol;style:[fontSize=2.5rem;cursor=pointer];click:[exportView()]?_.uploadIcon"
+                },
+                {
+                  "view": "Icon?name=fullscreen;google.symbol;style:[fontSize=2.5rem;cursor=pointer];click:[fullscreen()]"
+                },
+                {
+                  "view": "Icon?name=Fullscreen_Exit;google.symbol;style:[display=none;fontSize=2.5rem;cursor=pointer];click:[exitFullscreen()]"
+                },
+                {
+                  "view": "Icon:closeGeneralPopup?name=Close;google.symbol;style:[fontSize=2.5rem;cursor=pointer];click:[checkIfOpenPrevForm();if():[generalPopup:().popupName=sheet]:[clearSheet()]]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "view": "View?style:[height='calc(100% - 4.5rem)';width=100%;overflowY=auto];if():[_.popupName=sheet]:[addRowsOnScroll()]",
+          "children": [
+            {
+              "view": "_.popupName"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "91j7L0V8w8l8l7a071i7I1U2X3",
+    "creationDate": 1701158100293,
+    "collapsed": [],
+    "comments": [],
+    "actions": {},
+    "docName": "mobileCustomPopup",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

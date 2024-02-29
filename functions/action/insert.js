@@ -11,8 +11,8 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
   var { index, view, path, data, doc, viewPath = [], parent, preventDefault } = insert
 
-  var views = window.views
-  var global = window.global
+  const views = window.views
+  const global = window.global
   var parent = views[parent]
   var passData = {}
   var __childIndex__
@@ -39,7 +39,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
     __childIndex__ = view.__childIndex__
 
     // index
-    index = (index !== undefined ? index : view.__index__) + 1
+    index = index !== undefined ? index : (view.__index__ + 1)
 
     if (!preventDefault) {
       
@@ -93,7 +93,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
   if (typeof view !== "object") return console.log("Missing View!")
 
-  // insert index
+  // index
   if (index === undefined) index = parent.__element__.children.length
 
   // remove loop

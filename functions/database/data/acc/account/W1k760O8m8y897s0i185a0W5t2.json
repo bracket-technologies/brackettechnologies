@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687880568,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "zcocOiJoKD5reMmhvpvz3g9gkMGhddpJA0J4NqtP2wF1s63ucfCtrR24jC9J-1708687880568",
+  "ref": "ACC-00000064",
+  "ledgerAccount": "61181/1/1",
+  "blockAccount": "No",
+  "name": "Transport & Freight",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "61",
+    "611",
+    "6118",
+    "61181"
+  ],
+  "__props__": {
+    "id": "W1k760O8m8y897s0i185a0W5t2",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "xhteEGWWB8cMMge7qWSJx0CiASAo5SjVCgilZM33koenbU8S2amFxn1NUr5w-1708687880568",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

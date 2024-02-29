@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687890866,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "eyKvZ7dS79HwIpOHTC6Cx7VlWW0ufFuYK5Fvuh1GgiD5QWec3PfxYGkNPsxf-1708687890866",
+  "ref": "ACC-00000276",
+  "ledgerAccount": "711/1/1",
+  "blockAccount": "No",
+  "name": "Sales Of Production",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "71",
+    "711"
+  ],
+  "__props__": {
+    "id": "N1s7m0L8o8s837g0Z1S4C3H3I8",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "K5P8xiRp46YUS43zP2gBq2fyQjd3jIJUnW0n5JeXYIyg2Xxqm2YnAd4nMm3U-1708687890866",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

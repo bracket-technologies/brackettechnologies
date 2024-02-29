@@ -5,18 +5,6 @@ const { getJsonFiles, postJsonFiles, removeJsonFiles } = require("./jsonFiles")
 const { jsonToBracket } = require("./jsonToBracket")
 
 var getdb = async ({ req, res }) => {
-  /*
-  var promises = []
-  
-  // verify access key
-  var project, accessKey = req.headers["accesskey"], projectID = req.headers["project"]
-
-  promises.push(
-    db.collection("_project_").doc(projectID).get().then(doc => {
-      if (doc.exists) project = doc.data()
-    })
-  )
-  */
   
   var collection = req.url.split("/")[2]
   if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${req.headers["project"]}`
@@ -76,7 +64,6 @@ var postdb = async ({ req, res }) => {
 
   success = true
   message = `File/s saved successfuly!`
-    
 
   // respond
   res.setHeader('Content-Type', 'application/json')
@@ -95,7 +82,7 @@ var deletedb = async ({ _window, req, res }) => {
   var success, message
 
   erase.collection = collection
-  await removeJsonFiles({ erase })
+  removeJsonFiles({ erase })
   
   success = true
   message = `File/s erased successfuly!`

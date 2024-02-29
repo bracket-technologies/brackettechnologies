@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687888460,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "FJOcPtbzbVLYXZFblLsEjHqsy5i1izgJic9LA147jntGpnBH2YHQq7zEEk4T-1708687888460",
+  "ref": "ACC-00000214",
+  "ledgerAccount": "6451/1/1",
+  "blockAccount": "No",
+  "name": "Tax of Article 51 of law 497/2003",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "64",
+    "645",
+    "6451"
+  ],
+  "__props__": {
+    "id": "11p7j0h8f8k8w750P1t415I0J0",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "QxdpxeExk8IvCVmvTIR2CJhBiqQl0usdas4HF72KnWUbnMcvMzGtUxD90bRg-1708687888459",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

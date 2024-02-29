@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687878565,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "mwTr9k0ZIbqptyFpofM5xsUMdLu0rl13gDegQQSVfIWlh4Kon5ntOhY9XaRA-1708687878565",
+  "ref": "ACC-00000024",
+  "ledgerAccount": "5122/1/1",
+  "blockAccount": "No",
+  "name": "Banks - Facilities Accidentally Debtor",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "5",
+    "51",
+    "512",
+    "5122"
+  ],
+  "__props__": {
+    "id": "x1P720j8U828Z7B0W1G5C0C4I3",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "xKNQO6T21uLoQ9fqHVh4YeLauMeBh9a4zuMQHi7I9R3gOjjmN1uxRziAoGrA-1708687878565",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

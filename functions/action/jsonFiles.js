@@ -131,24 +131,36 @@ const postJsonFiles = ({ save = {} }) => {
   
   var data = save.data,
   collection = save.collection, 
-  doc = save.doc, 
-  path = `database/${collection}`
+  doc = save.doc
   
   // create folder if it doesnot exist
-  if (!fs.existsSync(path)) fs.mkdirSync(path)
+  var path = "database/"
+  collection.split("/").map(dir => {
+    path += dir
+    if (!fs.existsSync(path)) fs.mkdirSync(path)
+    path += "/"
+  })
+  
+  path = `database/${collection}`
   fs.writeFileSync(`${path}/${doc}.json`, JSON.stringify(data, null, 2))
   return data
 }
 
 const removeJsonFiles = ({ erase = {} }) => {
+
+  var db = erase.db, 
+  collection = erase.collection, 
+  docs = toArray(erase.doc || erase.docs), 
+  path = `database`
+
+  if (db) path += `/${db}`
+  if (collection) path += `/${collection}`
   
-  var collection = erase.collection, 
-  docs = toArray(erase.document || erase.doc || erase.docs), 
-  path = `database/${collection}`
   if (!fs.existsSync(path)) return
 
   // create folder if it doesnot exist
-  docs.map(doc => fs.unlinkSync(`${path}/${doc}.json`))
+  if (docs.length === 0) fs.rmSync(`${path}`, { recursive: true, force: true })
+  else docs.map(doc => doc && fs.unlinkSync(`${path}/${doc}.json`))
 }
 
 const uploadJsonFile = ({ upload = {} }) => {

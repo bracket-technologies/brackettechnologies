@@ -1,0 +1,51 @@
+{
+  "navBar": [
+    {
+      "permission": "account",
+      "id": "capitalsManager",
+      "text": "Treasuries"
+    },
+    {
+      "permission": "account",
+      "id": "fixedAssetsManager",
+      "text": "Fixed Assets"
+    },
+    {
+      "permission": "account",
+      "id": "receivablesAndPayablesManager",
+      "text": "Receivables and Payables"
+    },
+    {
+      "permission": "account",
+      "id": "financialAccountManager",
+      "text": "Financial Accounts"
+    },
+    {
+      "permission": "account",
+      "id": "expenditureManager",
+      "text": "Expenditures"
+    },
+    {
+      "permission": "account",
+      "id": "incomeManager",
+      "text": "Incomes"
+    }
+  ],
+  "__props__": {
+    "id": "Z1P7t058r8r8D6B9V9Y9M5k8t4",
+    "creationDate": 1705143495588,
+    "collapsed": [
+      {
+        "path": [
+          "navBar"
+        ]
+      }
+    ],
+    "comments": [],
+    "docName": "navBar",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

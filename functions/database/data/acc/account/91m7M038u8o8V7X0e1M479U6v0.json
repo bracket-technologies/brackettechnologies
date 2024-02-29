@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687888266,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "goLcBdONwHegbJwW7BucL176bvF8zjwB5SxmGBLbRAh6rRDcDOYnXPjj0yfq-1708687888266",
+  "ref": "ACC-00000209",
+  "ledgerAccount": "6355/1/1",
+  "blockAccount": "No",
+  "name": "End of Service Indemnities Provisions",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "63",
+    "635",
+    "6355"
+  ],
+  "__props__": {
+    "id": "91m7M038u8o8V7X0e1M479U6v0",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "rDj8iqd0WYlh7rf1ooDOKb589Cnqh6ErufmoAY8ptreTT9PUFrq0xTdEAN9I-1708687888265",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

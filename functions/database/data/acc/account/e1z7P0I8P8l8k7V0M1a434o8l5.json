@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687888568,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "oIKCSsH3uMLuurGnODS0sdUuWMgSJAsReQC1jfsPxO4a6epXdX5JY8THkE86-1708687888568",
+  "ref": "ACC-00000218",
+  "ledgerAccount": "6459/1/1",
+  "blockAccount": "No",
+  "name": "Other Taxes & Duties",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "64",
+    "645",
+    "6459"
+  ],
+  "__props__": {
+    "id": "e1z7P0I8P8l8k7V0M1a434o8l5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "QUxIYfMO4RSPAK1nmL76gutIudMnjFqpY5N0FWTNCxijQIbSE7cIZ6bTRbja-1708687888568",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

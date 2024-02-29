@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687882674,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "rqwxctscdsHrkdQ0YHDIUGKhXnTM8Ey6OmMa4Rjey3PO9Wt1ANe2N9JzCg94-1708687882674",
+  "ref": "ACC-00000093",
+  "ledgerAccount": "62631/1/1",
+  "blockAccount": "No",
+  "name": "Rent",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "62",
+    "626",
+    "6263",
+    "62631"
+  ],
+  "__props__": {
+    "id": "i1X7T0h8X8q82790f1y4I0V6m5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "6ecsTekARt3BCphiZdeOrDLCBv1S3sEWE5xnjJUITc6wHt7CXsjxT7u2TSa2-1708687882674",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

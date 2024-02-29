@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687894581,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "aXHSpy0iQtICG0akSDRuswiIXayCEynrEKIvHSYWeKP3QGcXZf7qy8LD2a3o-1708687894581",
+  "ref": "ACC-00000370",
+  "ledgerAccount": "7521/1/1",
+  "blockAccount": "No",
+  "name": "Reversal of Deval.Prov. of Intang.Fixed Assets",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "75",
+    "752",
+    "7521"
+  ],
+  "__props__": {
+    "id": "6157a0s8V8Z8E730c1Z408x4k6",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "kheHrQY1TXFKNgkpUsjDoRtxiHt20BmLmNTnwaoRhROXrWnro7fHFJMI9Uc3-1708687894580",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

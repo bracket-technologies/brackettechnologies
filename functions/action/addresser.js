@@ -1,11 +1,11 @@
 const { clone } = require("./clone");
 const { generate } = require("./generate");
-const { lineInterpreter } = require("./lineInterpreter");
+const { toLine } = require("./toLine");
 
-const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, params, function: func, newLookupActions, headAddressID, headAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition }) => {
+const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, noHeadAddress, hasWaits, params, function: func, newLookupActions, headAddressID, headAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition }) => {
     
     // find headAddress by headAddressID
-    if (headAddressID && !headAddress.id) headAddress = stack.addresses.find(headAddress => headAddress.id === headAddressID)
+    if (headAddressID && !headAddress.id && !noHeadAddress) headAddress = stack.addresses.find(headAddress => headAddress.id === headAddressID)
 
     // waits
     waits = waits || args[2], params = params || args[1] || ""
@@ -13,11 +13,11 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
     // address waits
     if (waits) headAddress = addresser({ _window, stack, req, res, e, type: "waits", action: action + "::[...]", data: { string: waits }, headAddress, blockable, __, id, object, mount, lookupActions, condition }).address
 
-    var address = { id: generate(), stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: waits ? true : false, headAddressID: headAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
+    var address = { id: generate(), stackID: stack.id, noHeadAddress, viewID: id, type, data, status, file, function: func, hasWaits: hasWaits || (waits ? true : false), headAddressID: headAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
     var stackLength = stack.addresses.length
 
     // find and lock the head address
-    if (stackLength > 0 && !headAddress.id) {
+    if (stackLength > 0 && !headAddress.id && !noHeadAddress) {
 
         var headAddressIndex = 0
         
@@ -49,7 +49,7 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
     }
 
     // data
-    var { data, executionDuration, action: interpretAction } = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: { string: params }, action: dataInterpretAction })
+    var { data, executionDuration, action: interpretAction } = toLine({ _window, lookupActions, stack, req, res, id, e, __, data: { string: params }, action: dataInterpretAction })
     address.paramsExecutionDuration = executionDuration
 
     // pass params
@@ -63,13 +63,13 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
     // log
     if (!newLookupActions) stack.logs.push(`${stack.logs.length} ${address.status} ${type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action}${headAddress.id ? ` => ${headAddress.id || ""} ${headAddress.index !== undefined ? headAddress.index : ""} ${headAddress.type === "function" ? headAddress.function : headAddress.action || ""}` : ""}`)
 
-    return { address, data, action: interpretAction, __: [...(data !== undefined ? [data] : []), ...__] }
+    return { address, data, stack, action: interpretAction, __: [...(data !== undefined ? [data] : []), ...__] }
 }
 
 const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }) => {
     
     const { toAwait } = require("./toAwait");
-    var global = _window ? _window.global : window.global
+    const global = _window ? _window.global : window.global
 
     var executionDuration = (new Date()).getTime() - stack.executionStartTime
             

@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687880762,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "flpeDhXuANEn8cG3lD8du075EELMn4tA5G6AYzlBfAtAVUTDZCsE4x80yZOD-1708687880762",
+  "ref": "ACC-00000067",
+  "ledgerAccount": "61184/1/1",
+  "blockAccount": "No",
+  "name": "Clearing Charges",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "61",
+    "611",
+    "6118",
+    "61184"
+  ],
+  "__props__": {
+    "id": "l12700q8w8t8r7H041S4E887o0",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "lEbXgqTsfdtJVwf9E2WqBa8ilmT9XpJOynohOaR4PKjqP37bwX76f0Lxl3uO-1708687880762",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

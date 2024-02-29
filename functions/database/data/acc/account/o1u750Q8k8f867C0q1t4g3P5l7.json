@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687884160,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "I9Iipsw1aNukNDhU6GbAVawo7IdmNiuNxeeV55LYOlGM51BU3o0jSZwi4jHr-1708687884159",
+  "ref": "ACC-00000129",
+  "ledgerAccount": "6511/1/1",
+  "blockAccount": "No",
+  "name": "Amortization Of Intangible Assets",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6511"
+  ],
+  "__props__": {
+    "id": "o1u750Q8k8f867C0q1t4g3P5l7",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "Kseb2bUUdJ3IT03on6qjdQ28O83VzcP8l2VwirhyRAV3T3POB4hUUwdaS9kK-1708687884159",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

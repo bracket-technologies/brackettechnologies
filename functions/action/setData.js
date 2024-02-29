@@ -4,7 +4,7 @@ const { kernel } = require("./kernel")
 const setData = ({ id, data, __, stack = {} }) => {
 
   var view = window.views[id]
-  var global = window.global
+  const global = window.global
 
   if (!global[view.doc]) return
 

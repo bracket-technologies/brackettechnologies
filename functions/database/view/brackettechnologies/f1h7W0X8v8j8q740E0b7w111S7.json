@@ -1,0 +1,25 @@
+{
+  "view": "View:storage?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style.minHeight=3rem;style.width=100%;style.position=relative;click:[openStorage()]",
+  "children": [
+    {
+      "view": "Icon?name=bi-chevron-right;style.fontSize=1.3rem;style.width=2.25rem;style.transition=.2s"
+    },
+    {
+      "view": "Text?class=dots;text=storage;style.fontSize=1.3rem"
+    }
+  ],
+  "__props__": {
+    "id": "f1h7W0X8v8j8q740E0b7w111S7",
+    "creationDate": 1696325265828,
+    "collapsed": [],
+    "comments": [],
+    "actions": {
+      "openStorage": "if():[next().style().display=none]:[loader():show;1stChild().style().transform='rotate(90deg)';search():[collection=storage;headers.project=project:()]:[data:().editor.storage=_.data;#next().children().():rem();update():'storage-list';next().style().display=flex;loader():hide]]:[next().style().display=none;1stChild().style().transform='rotate(0)']"
+    },
+    "docName": "storage",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "d17770q8A8Z7l0Q0l031g188q9"
+    }
+  }
+}

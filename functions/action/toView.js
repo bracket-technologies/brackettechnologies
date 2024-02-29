@@ -5,7 +5,7 @@ const { toCode } = require("./toCode")
 const { toValue, isNumber } = require("./toValue")
 const { toArray } = require("./toArray")
 const { override } = require("./merge")
-const { lineInterpreter } = require("./lineInterpreter")
+const { toLine } = require("./toLine")
 const { initView, removeView, getViewParams } = require("./view")
 const { addresser } = require("./addresser")
 const { toAwait } = require("./toAwait")
@@ -13,16 +13,17 @@ const { kernel } = require("./kernel")
 const { isParam } = require("./isParam")
 const { executable } = require("./executable")
 const { logger } = require("./logger")
-const { toStyle } = require("./toStyle")
 const { replaceNbsps } = require("./replaceNbsps")
 const { colorize } = require("./colorize")
 const builtInViews = require("../view/views")
 const { getJsonFiles } = require("./jsonFiles")
+const cssStyleKeyNames = require("./cssStyleKeyNames")
+const { toParam } = require("./toParam")
 
 const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data = {} }) => {
 
-  var views = _window ? _window.views : window.views
-  var global = _window ? _window.global : window.global
+  const views = _window ? _window.views : window.views
+  const global = _window ? _window.global : window.global
 
   // init view
   var { id, view } = initView({ views, global, id, parent: data.parent, ...(data.view || {}), __ })
@@ -74,7 +75,9 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
   // interpret subparams
   if (subParams) {
 
-    var { data = {}, conditionsNotApplied } = lineInterpreter({ _window, lookupActions, stack, id, data: { string: subParams }, req, res, __ })
+    address.interpreting = true
+    var { data = {}, conditionsNotApplied } = toLine({ _window, lookupActions, stack, id, data: { string: subParams }, req, res, __ })
+    address.interpreting = false
 
     if (conditionsNotApplied) return removeView({ _window, id, stack, address })
     else subParams = data
@@ -107,7 +110,10 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
   // params
   if (params) {
-    lineInterpreter({ _window, lookupActions, stack, data: { string: params }, id, req, res, mount: true, __, action: "toParam" }).data
+    
+    address.interpreting = true
+    toParam({ _window, lookupActions, stack, data: params, id, req, res, mount: true, __ })
+    address.interpreting = false
 
     if (view.id !== id) {
 
@@ -117,13 +123,13 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
     }
   }
 
-  // maybe update in params or route
+  // maybe update in params or root
   if (address.blocked) return
 
   // asynchronous actions within view params
   if (stack.addresses[0].asynchronous) {
 
-    var headAddress = addresser({ _window, id, stack, headAddressID: address.headAddressID, type: "function", function: "continueToView", file: "toView", __, lookupActions, stack }).address
+    var headAddress = addresser({ _window, id, stack, headAddressID: address.headAddressID, hold: true, type: "function", function: "continueToView", file: "toView", __, lookupActions, stack }).address
     return address.headAddressID = headAddress.id
   }
 
@@ -132,8 +138,8 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
 const continueToView = ({ _window, id, stack, __, address, lookupActions, req, res }) => {
 
-  var views = _window ? _window.views : window.views
-  var global = _window ? _window.global : window.global
+  const views = _window ? _window.views : window.views
+  const global = _window ? _window.global : window.global
   var view = views[id]
 
   // customView
@@ -144,19 +150,95 @@ const continueToView = ({ _window, id, stack, __, address, lookupActions, req, r
 
       address = addresser({ _window, id, stack, headAddress: address, type: "function", function: "customView", file: "toView", __, lookupActions, stack }).address
       var { address, data } = addresser({ _window, id, stack, headAddress: address, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${view.__name__}`, waits: `loader.hide;__queries__:().views.push():[${view.__name__}];data:().view.${view.__name__}=_.data`, __, lookupActions, stack })
-
       return require("./search").search({ _window, lookupActions, stack, address, id, __, req, res, data })
     }
 
     // continue to custom view
-    return customView({ _window, id, lookupActions, address, stack, __, req, res })
+    else {
+      
+      var newView = {
+        ...global.data.view[view.__name__],
+        __customView__: view.__name__,
+        __viewPath__: [view.__name__],
+        __customViewPath__: [...view.__customViewPath__, view.__name__],
+        __lookupViewActions__: [...view.__lookupViewActions__, { type: "customView", view: view.__name__ }]
+      }
+    
+      // id
+      if (newView.id && views[newView.id] && newView.id !== id) newView.id += "_" + generate()
+      else if (newView.id) newView.__customID__ = true
+      else if (!newView.id) newView.id = id
+    
+      var child = { ...view, ...newView }
+      views[child.id] = child
+    
+      var data = getViewParams({ view })
+      
+      // address
+      return toView({ _window, stack, address, req, res, lookupActions, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
+    }
   }
 
   // data
   view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, data: global[view.doc] || {}, value: view.data, key: true }, __ })
 
   // components
-  componentModifier({ _window, id })
+  if (view.__name__ === "Icon") {
+
+    view.icon = view.icon || {}
+    view.icon.name = view.name || view.icon.name || (typeof view.data === "string" && view.data) || ""
+    if ((view.icon.google || view.google) && (!view.google.symbol && !view.symbol)) {
+
+      view.symbol = {}
+      view.google.symbol = {}
+      if (view.google.outlined) view.outlined = true
+      else if (view.google.filled) view.filled = true
+      else if (view.google.rounded) view.rounded = true
+      else if (view.google.sharp) view.sharp = true
+      else if (view.google.twoTone) view.twoTone = true
+      else view.google = {}
+
+    } else if ((view.icon.google || view.google) && (view.symbol || view.google.symbol)) {
+
+      view.symbol = view.google.symbol = {}
+      if (view.google.symbol) view.symbol.outlined = true
+      else if (view.google.symbol.filled) view.symbol.filled = true
+      else if (view.google.symbol.rounded) view.symbol.rounded = true
+      else if (view.google.symbol.sharp) view.symbol.sharp = true
+      else if (view.google.symbol.twoTone) view.symbol.twoTone = true
+      else view.google = {}
+
+    } else {
+
+      view.symbol = {}
+    }
+  } else if (view.textarea && !view.__templated__) {
+
+    view.style = view.style || {}
+    view.input = view.input || {}
+    view.input.style = view.input.style || {}
+    view.input.style.height = "fit-content"
+  } else if (view.__name__ === "Input") {
+
+    view.input = view.input || {}
+    if (view.value) view.input.value = view.input.value || view.value
+    if (view.checked !== undefined) view.input.checked = view.checked
+    if (view.max !== undefined) view.input.max = view.max
+    if (view.min !== undefined) view.input.min = view.min
+    if (view.name !== undefined) view.input.name = view.name
+    if (view.accept !== undefined) view.input.accept = view.input.accept
+    if (view.multiple !== undefined) view.input.multiple = true
+    if (view.input.placeholder) view.placeholder = view.input.placeholder
+    view.text = view.input.value
+
+  } else if (view.__name__ === "Image") {
+
+    view.src = view.src || (typeof view.data === "string" && view.data) || ""
+
+  } else if (view.__name__ === "Text") {
+
+    view.text = view.text !== undefined ? view.text : ((typeof view.data === "string" && view.data) || "")
+  }
 
   // built-in view
   if (builtInViews[view.__name__] && !view.__templated__) var { id, view } = builtInViewHandler({ _window, lookupActions, stack, id, req, res, __ })
@@ -170,10 +252,10 @@ const continueToView = ({ _window, id, stack, __, address, lookupActions, req, r
   // 
   var lastIndex = view.children.length - 1;
 
-  ([...toArray(view.children)]).reverse().map(async (child, index) => {
+  [...view.children].reverse().map(async (child, index) => {
 
     var childID = child.id || generate()
-    views[childID] = { ...clone(child), id: childID, __view__: true, __parent__: id, __viewPath__: [...view.__viewPath__, "children", lastIndex - index], __childIndex__: lastIndex - index }
+    views[childID] = { ...child, id: childID, __view__: true, __parent__: id, __viewPath__: [...view.__viewPath__, "children", lastIndex - index], __childIndex__: lastIndex - index }
 
     // address
     address = addresser({ _window, id: childID, stack, type: "function", function: "toView", headAddress: address, __, lookupActions, data: { view: views[childID] } }).address
@@ -213,79 +295,10 @@ const sortAndArrange = ({ data, sort, arrange }) => {
   return data
 }
 
-const componentModifier = ({ _window, id }) => {
-
-  var view = _window ? _window.views[id] : window.views[id]
-
-  // icon
-  if (view.__name__ === "Icon") {
-
-    view.icon = view.icon || {}
-    view.icon.name = view.name || view.icon.name || (typeof view.data === "string" && view.data) || ""
-    if ((view.icon.google || view.google) && (!view.google.symbol && !view.symbol)) {
-
-      view.symbol = {}
-      view.google.symbol = {}
-      if (view.google.outlined) view.outlined = true
-      else if (view.google.filled) view.filled = true
-      else if (view.google.rounded) view.rounded = true
-      else if (view.google.sharp) view.sharp = true
-      else if (view.google.twoTone) view.twoTone = true
-      else view.google = {}
-
-    } else if ((view.icon.google || view.google) && (view.symbol || view.google.symbol)) {
-
-      view.symbol = view.google.symbol = {}
-      if (view.google.symbol) view.symbol.outlined = true
-      else if (view.google.symbol.filled) view.symbol.filled = true
-      else if (view.google.symbol.rounded) view.symbol.rounded = true
-      else if (view.google.symbol.sharp) view.symbol.sharp = true
-      else if (view.google.symbol.twoTone) view.symbol.twoTone = true
-      else view.google = {}
-
-    } else {
-
-      view.symbol = {}
-    }
-  }
-
-  // textarea
-  else if (view.textarea && !view.__templated__) {
-
-    view.style = view.style || {}
-    view.input = view.input || {}
-    view.input.style = view.input.style || {}
-    view.input.style.height = "fit-content"
-  }
-
-  // input
-  else if (view.__name__ === "Input") {
-
-    view.input = view.input || {}
-    if (view.value) view.input.value = view.input.value || view.value
-    if (view.checked !== undefined) view.input.checked = view.checked
-    if (view.max !== undefined) view.input.max = view.max
-    if (view.min !== undefined) view.input.min = view.min
-    if (view.name !== undefined) view.input.name = view.name
-    if (view.accept !== undefined) view.input.accept = view.input.accept
-    if (view.multiple !== undefined) view.input.multiple = true
-    if (view.input.placeholder) view.placeholder = view.input.placeholder
-    view.text = view.input.value
-
-  } else if (view.__name__ === "Image") {
-
-    view.src = view.src || (typeof view.data === "string" && view.data) || ""
-
-  } else if (view.__name__ === "Text") {
-
-    view.text = view.text !== undefined ? view.text : ((typeof view.data === "string" && view.data) || "")
-  }
-}
-
 const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {}, req, res }) => {
 
-  var global = _window ? _window.global : window.global
-  var views = _window ? _window.views : window.views
+  const global = _window ? _window.global : window.global
+  const views = _window ? _window.views : window.views
   var view = views[id]
 
   var timer = (new Date()).getTime(), loopID = generate()
@@ -357,12 +370,12 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
 
 const customView = ({ _window, id, lookupActions, stack, __, address, req, res }) => {
 
-  var global = _window ? _window.global : window.global
-  var views = _window ? _window.views : window.views
+  const global = _window ? _window.global : window.global
+  const views = _window ? _window.views : window.views
   var view = views[id]
-
+  
   var newView = {
-    ...clone(global.data.view[view.__name__]),
+    ...global.data.view[view.__name__],
     __customView__: view.__name__,
     __viewPath__: [view.__name__],
     __customViewPath__: [...view.__customViewPath__, view.__name__],
@@ -389,31 +402,30 @@ const customView = ({ _window, id, lookupActions, stack, __, address, req, res }
     address = addresser({ _window, id: child.id, headAddress: address, type: "function", file: "render", function: "document", stack, __ }).address
 
     // get shared public views
-    Object.entries(getJsonFiles({ search: { collection: "public" } })).map(([doc, data]) => {
+    Object.entries(getJsonFiles({ search: { collection: "public/view" } })).map(([doc, data]) => {
 
       global.data.view[doc] = { ...data, id: doc }
       global.data.views.push(doc)
       global.__queries__.views.push(doc)
     })
+
+    address = addresser({ _window, stack, status: "Start", type: "function", function: "toView", headAddress: address, lookupActions, __ }).address
   }
-
-  // address: document
-  address = addresser({ _window, stack, type: "function", function: "toView", headAddress: address, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], lookupActions, data: { view: child, parent: view.__parent__ } }).address
-
-  // awaits
-  toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+  
+  // address
+  toView({ _window, stack, address, req, res, lookupActions, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
 }
 
 const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ }) => {
 
-  var views = _window ? _window.views : window.views
-  var global = _window ? _window.global : window.global
+  const views = _window ? _window.views : window.views
+  const global = _window ? _window.global : window.global
   var view = views[id]
 
   views[id] = builtInViews[view.__name__](view)
   var { id, view } = initView({ views, global, parent: views[id].__parent__, ...views[id] })
 
-  lineInterpreter({ _window, lookupActions, stack, data: { string: view.view, id, index: 1 }, req, res, mount: true, __ })
+  toLine({ _window, lookupActions, stack, data: { string: view.view, id, index: 1 }, req, res, mount: true, __ })
   view.__name__ = view.view.split("?")[0]
 
   if (view.id !== id) {
@@ -422,15 +434,70 @@ const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ })
     id = view.id
   }
 
-  componentModifier({ _window, id })
+  // icon
+  if (view.__name__ === "Icon") {
+
+    view.icon = view.icon || {}
+    view.icon.name = view.name || view.icon.name || (typeof view.data === "string" && view.data) || ""
+    if ((view.icon.google || view.google) && (!view.google.symbol && !view.symbol)) {
+
+      view.symbol = {}
+      view.google.symbol = {}
+      if (view.google.outlined) view.outlined = true
+      else if (view.google.filled) view.filled = true
+      else if (view.google.rounded) view.rounded = true
+      else if (view.google.sharp) view.sharp = true
+      else if (view.google.twoTone) view.twoTone = true
+      else view.google = {}
+
+    } else if ((view.icon.google || view.google) && (view.symbol || view.google.symbol)) {
+
+      view.symbol = view.google.symbol = {}
+      if (view.google.symbol) view.symbol.outlined = true
+      else if (view.google.symbol.filled) view.symbol.filled = true
+      else if (view.google.symbol.rounded) view.symbol.rounded = true
+      else if (view.google.symbol.sharp) view.symbol.sharp = true
+      else if (view.google.symbol.twoTone) view.symbol.twoTone = true
+      else view.google = {}
+
+    } else {
+
+      view.symbol = {}
+    }
+  } else if (view.textarea && !view.__templated__) {
+
+    view.style = view.style || {}
+    view.input = view.input || {}
+    view.input.style = view.input.style || {}
+    view.input.style.height = "fit-content"
+  } else if (view.__name__ === "Input") {
+
+    view.input = view.input || {}
+    if (view.value) view.input.value = view.input.value || view.value
+    if (view.checked !== undefined) view.input.checked = view.checked
+    if (view.max !== undefined) view.input.max = view.max
+    if (view.min !== undefined) view.input.min = view.min
+    if (view.name !== undefined) view.input.name = view.name
+    if (view.accept !== undefined) view.input.accept = view.input.accept
+    if (view.multiple !== undefined) view.input.multiple = true
+    if (view.input.placeholder) view.placeholder = view.input.placeholder
+    view.text = view.input.value
+
+  } else if (view.__name__ === "Image") {
+
+    view.src = view.src || (typeof view.data === "string" && view.data) || ""
+
+  } else if (view.__name__ === "Text") {
+
+    view.text = view.text !== undefined ? view.text : ((typeof view.data === "string" && view.data) || "")
+  }
 
   return { id, view }
 }
 
 const toHTML = ({ _window, id, stack, __ }) => {
 
-  var views = _window ? _window.views : window.views
-  var global = _window ? _window.global : window.global
+  const views = _window ? _window.views : window.views
 
   var view = views[id], parent = views[view.__parent__]
   var name = view.__name__, html = ""
@@ -460,7 +527,14 @@ const toHTML = ({ _window, id, stack, __ }) => {
   var atts = Object.entries(view.attribute || {}).map(([key, value]) => `${key}='${value}'`).join(" ")
 
   // styles
-  toStyle({ _window, id })
+  view.__htmlStyles__ = ""
+  if (view.style) {
+    Object.entries(view.style).map(([style, value]) => {
+      view.__htmlStyles__ += `${cssStyleKeyNames[style] || style}:${value}; `
+    })
+
+    view.__htmlStyles__ = view.__htmlStyles__.slice(0, -2)
+  }
 
   // colorize
   if (view.colorize) {
@@ -504,42 +578,32 @@ const toHTML = ({ _window, id, stack, __ }) => {
       ${toArray(view.src).map(src => typeof src === "string" ? `<source src=${src}>` : typeof src === "object" ? `<source src=${src.src} type=${src.type}>` : "")}
       ${view.alt || view.message || ""}
     </video>`
-  }/* else if (name === "Link" || name === "Meta") {
-
-    name = name.toLowerCase()
-    view = getViewParams({ view })
-
-    html = `<${name} ${Object.entries(view).map(([key, value]) => key !== "head" && key !== "body" && typeof value === "string" ? `${key}="${value.toString().replace(/\\/g, '')}"` : "").filter(i => i).join(" ")}>`
-
-    // push to tags
-    if (view.head) global.__document__.head += html.replace(` head="true"`, "")
-    else global.__document__.body += html.replace(` body="true"`, "")
-
-  } else if (name === "Style") {
-
-    name = name.toLowerCase()
-    view = getViewParams({ view })
-
-    html = `
-      <style>
-        ${Object.entries(view).map(([key, value]) => typeof value === "object" && !Array.isArray(value)
-      ? `${key}{
-          ${Object.entries(value).map(([key, value]) => `${cssStyleKeyNames[key] || key}: ${value.toString().replace(/\\/g, '')}`).join(`;
-          `)};
-        }` : "").filter(style => style).join(`
-        `)}
-      </style>`
-
-    // push to tags
-    if (view.head) global.__document__.head += html.replace(` head="true"`, "")
-    else global.__document__.body += html.replace(` body="true"`, "")
-
-  } else if (name === "A") {
-    html = `<a ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} id='${id}' href=${view.link} style='${view.__htmlStyles__}'>${innerHTML}</a>`
-  }*/ else return removeView({ _window, stack, id })
+  } else return removeView({ _window, stack, id })
 
   // indexing
-  var index = parent ? indexing({ views, id, view, parent }) : 0
+  var index = 0
+  if (!view.__indexed__) {
+
+    // find index
+    if (view.__index__ === undefined) while (parent.__childrenRef__[index] && ((parent.__childrenRef__[index].childIndex < view.__childIndex__) || (!view.__inserted__ && parent.__childrenRef__[index].childIndex === view.__childIndex__ && parent.__childrenRef__[index].initialIndex < view.__initialIndex__))) { index++ }
+    else index = view.__index__
+
+    // set index
+    view.__index__ = index
+
+    // increment next children index
+    parent.__childrenRef__.slice(index).map(viewRef => {
+      viewRef.index++
+      views[viewRef.id].__index__ = viewRef.index
+      views[viewRef.id].__rendered__ && views[viewRef.id].__element__.setAttribute("index", viewRef.index)
+    })
+
+    // push id to parent children ids
+    parent.__childrenRef__.splice(index, 0, { id, index, childIndex: view.__childIndex__, initialIndex: view.__initialIndex__ })
+
+    view.__indexed__ = true
+    // var index = parent ? indexing({ views, id, view, parent }) : 0
+  }
 
   // init element
   view.__element__ = view.__element__ || { text, id, innerHTML, index }
@@ -556,8 +620,8 @@ const toHTML = ({ _window, id, stack, __ }) => {
 
 const link = ({ _window, id, stack, __ }) => {
 
-  var views = _window ? _window.views : window.views
-  var global = _window ? _window.global : window.global
+  const views = _window ? _window.views : window.views
+  const global = _window ? _window.global : window.global
 
   var view = views[id]
 
@@ -565,41 +629,13 @@ const link = ({ _window, id, stack, __ }) => {
   var linkView = typeof view.link === "string" ? { link } : { ...view.link, link, __name__: "A" }
 
   // link
-  var { view: linkView, id: linkID } = initView({ views, global, parent: view.__parent__, ...linkView, __, __controls__: [{ event: `click?route():'${view.link.path}'?${view.link.path || "false"};${view.link.preventDafault ? "false" : "true"}` }] })
+  var { view: linkView, id: linkID } = initView({ views, global, parent: view.__parent__, ...linkView, __, __controls__: [{ event: `click?root():'${view.link.path}'?${view.link.path || "false"};${view.link.preventDafault ? "false" : "true"}` }] })
   toHTML({ _window, id: linkID, stack, __ })
 
   // view
   view.__parent__ = linkID
   view.__linked__ = true
   toHTML({ _window, id, stack, __ })
-}
-
-const indexing = ({ id, views, view, parent }) => {
-
-  if (view.__indexed__) return view.__index__
-
-  var index = 0
-
-  // find index
-  if (!view.__index__) while (parent.__childrenRef__[index] && ((parent.__childrenRef__[index].childIndex < view.__childIndex__) || (!view.__inserted__ && parent.__childrenRef__[index].childIndex === view.__childIndex__ && parent.__childrenRef__[index].initialIndex < view.__initialIndex__))) { index++ }
-  else index = view.__index__
-
-  // set index
-  view.__index__ = index
-
-  // increment next children index
-  parent.__childrenRef__.slice(index).map(viewRef => {
-    viewRef.index++
-    views[viewRef.id].__index__ = viewRef.index
-    views[viewRef.id].__rendered__ && views[viewRef.id].__element__.setAttribute("index", viewRef.index)
-  })
-
-  // push id to parent children ids
-  parent.__childrenRef__.splice(index, 0, { id, index, childIndex: view.__childIndex__, initialIndex: view.__initialIndex__ })
-
-  view.__indexed__ = true
-
-  return index
 }
 
 module.exports = { toView, continueToView, toHTML, customView }

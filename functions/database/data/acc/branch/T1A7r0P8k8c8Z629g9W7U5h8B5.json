@@ -1,0 +1,45 @@
+{
+  "country": "Lebanon",
+  "overview": "hello test",
+  "note": "123",
+  "address": "Hazmyieh",
+  "city": "Beirut",
+  "creationDate": 1699601076880,
+  "ref": "BRN-00000002",
+  "createdBy": "jv8shvHPz8yS6trgQZn9NYB6akJrRQl70WLsSULHkKCOZWADaq5XYObUZ0r61699560101513",
+  "members": [
+    {
+      "gender": "Male",
+      "name": "Mohamad Baker",
+      "contactNumber": "98765432",
+      "position": "CEO",
+      "title": "MR.",
+      "email": "mohamad@gmail.com"
+    }
+  ],
+  "contactNumber": [
+    "123456"
+  ],
+  "name": "Bracket Test Branch",
+  "creationDay": 1699574400000,
+  "email": [
+    "info2@example.com"
+  ],
+  "__props__": {
+    "id": "T1A7r0P8k8c8Z629g9W7U5h8B5",
+    "creationDate": 1699601000727,
+    "collapsed": [
+      {
+        "path": [
+          "contactNumber"
+        ]
+      }
+    ],
+    "comments": [],
+    "docName": "4AzrpuFyqsWkuulmJFATdHPGwkAYyWMAjIfAufDMtfp2OgwXgo95v5RXEMf91699601076880",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

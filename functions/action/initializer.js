@@ -16,7 +16,7 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
     req.cookies = JSON.parse(req.cookies.__session || "{}")
 
     // action
-    req.body.action = req.body.action || {}
+    req.body.route = req.body.route || {}
 
     // path
     path = decodeURI(req.url).split("/")
@@ -24,25 +24,18 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
     // 
     var page = path[1] || "main"
     var host = req.headers['x-forwarded-host'] || req.headers.host || req.headers.referer
-    var __ = req.body.action.__ || []
-    var action = path[1] === "route"
+    var __ = (req.body.data || {}).__ || []
+    var server = req.body.server || "render"
+    var type = req.body.type
+    var route = type === "action" ? req.body.data.action
+        
+        // route to view
+        : type === "route" ? req.body.data.route
 
-        // action is database()
-        ? (path[2] === "database" ? "database()"  
-
-        // action is storage()
-        : path[2] === "storage" ? "storage()"  
-        
-        // action is action_name()
-        : path[2] === "action" ? req.body.action.name
-        
-        // action is render()
-        : path[2] === "render" ? req.body.action.name : "") 
-        
-        // view is document
+        // documenter
         : "document"
 
-    var global = {
+    const global = {
         __,
         __queries__: { views: [] },
         __stacks__: {},
@@ -59,10 +52,13 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
         //
         path: path.join("/"),
         manifest: {
+            type,
+            server,
             host,
             page,
             path,
-            action,
+            route,
+            action: type === "action" && req.body.data.action,
             os: req.headers["sec-ch-ua-platform"],
             browser: req.headers["sec-ch-ua"],
             country: req.headers["x-country-code"],
@@ -73,11 +69,11 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
         data: { view: {} }
     }
 
-    var views = { [id]: { id } }
+    const views = { [id]: { id } }
     var _window = { views, global }
 
     // log
-    console.log(req.method, path.join("/"), req.body.action.name || "");
+    console.log(req.method, path.join("/"), req.body.route.action || "");
 
     return _window
 }

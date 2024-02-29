@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687882479,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "8Zp0ijAlHjDzsfABicQ84YcQKsvWcObzzWgolCm9Vn4cqzuSLUi7AXab65T6-1708687882479",
+  "ref": "ACC-00000089",
+  "ledgerAccount": "62612/1/1",
+  "blockAccount": "No",
+  "name": "Personnel Collective Transportation",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "62",
+    "626",
+    "6261",
+    "62612"
+  ],
+  "__props__": {
+    "id": "H1M7y0h8c8b807R0i1u4k0y786",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "73S0EVjfGFUkD6ZZ5k7fTrRONVkCpWjnZdSwz95QZKvUdCQcPkNJVcLn7rgR-1708687882479",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

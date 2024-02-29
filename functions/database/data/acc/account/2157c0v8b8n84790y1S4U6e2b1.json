@@ -1,0 +1,32 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687888962,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "hjK9V1KJnoLbtuJj1Kh9LQgHf7ii1IXcvixK8grMT1ixx9nbH6jsqePcOFAb-1708687888962",
+  "ref": "ACC-00000228",
+  "ledgerAccount": "6512312/1/1",
+  "blockAccount": "No",
+  "name": "Depr.Alloc. - Concrete Buildings for Industry",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6512",
+    "65123",
+    "651231",
+    "6512312"
+  ],
+  "__props__": {
+    "id": "2157c0v8b8n84790y1S4U6e2b1",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "W5CbZJn3u8zIK8WRiU9QL2rHUhjFmyz6OEpGxb5oiHpv2g1iBDYfWJwov3gL-1708687888962",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

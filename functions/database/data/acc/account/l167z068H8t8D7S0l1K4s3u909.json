@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687892358,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "fLoPhaWNOulC5Qrt724VJ34vwVVDThBNaB0vP0veooparLD4SOa3T1xuvNxq-1708687892356",
+  "ref": "ACC-00000317",
+  "ledgerAccount": "7655/1/1",
+  "blockAccount": "No",
+  "name": "Net Attributions Of Income",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "76",
+    "765",
+    "7655"
+  ],
+  "__props__": {
+    "id": "l167z068H8t8D7S0l1K4s3u909",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "OXZnvLxSxCNbl3qWMtLpn5Jel5TdnqcW7O9sS75gf1QSgPnIA9mKnmHLRVTP-1708687892356",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

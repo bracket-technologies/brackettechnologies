@@ -1,0 +1,27 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687884066,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "59xd25I39n0f4GrvImKOkcSq3oyHXp9PAWXr8ZzvvVrNh0LmqbvMdyxL2NH9-1708687884065",
+  "ref": "ACC-00000127",
+  "ledgerAccount": "65/1/1",
+  "blockAccount": "No",
+  "name": "Amortization, Depreciation & Provisions",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65"
+  ],
+  "__props__": {
+    "id": "i1G7P0S8D8K857g0U1l4z9T2J9",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "pXjZRQWvzk5wB7XdyLU6V5TnTCOtF86RXQBGqtVcXzp5lpKJXuqOlgfgeAyp-1708687884065",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

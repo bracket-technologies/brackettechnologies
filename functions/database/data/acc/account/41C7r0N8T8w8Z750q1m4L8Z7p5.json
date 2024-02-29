@@ -1,0 +1,27 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687878359,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "a9KogrcyQqnAatnXlho1t3RPMfDpxWrkF2r5xWxsGZ421OpYyKU6LlhU5qW8-1708687878358",
+  "ref": "ACC-00000018",
+  "ledgerAccount": "59/1/1",
+  "blockAccount": "No",
+  "name": "Provision",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "5",
+    "59"
+  ],
+  "__props__": {
+    "id": "41C7r0N8T8w8Z750q1m4L8Z7p5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "lUhlDUuZCCjCdYDU2rDq1sINNDlxD7cPq9zZDZnVhjPVXTEkwwSRlQWEAlph-1708687878358",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687891864,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "Qx23efY28SbEW7ZIOQrbnxofQRSo0UchhgY74kaO6mURWzU0nrl6CypKuWET-1708687891863",
+  "ref": "ACC-00000304",
+  "ledgerAccount": "741/1/1",
+  "blockAccount": "No",
+  "name": "Related To Products",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "74",
+    "741"
+  ],
+  "__props__": {
+    "id": "n1p7j0g828R8W720A1N4D267h6",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "HFFZ0vtf7QmUiqB61rHwwb1ou4Cg59gygBFnKUV07RljUF76GwouEUQzMiRB-1708687891863",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

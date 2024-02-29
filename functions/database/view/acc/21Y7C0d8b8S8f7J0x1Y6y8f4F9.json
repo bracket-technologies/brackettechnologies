@@ -1,0 +1,86 @@
+{
+  "view": "View?class=flex;style:[padding=.4rem;textAlign=start;gap=.4rem;justifyContent=space-between]?_.inputLabel",
+  "children": [
+    {
+      "view": "View?class=flex;style:[textAlign=start;gap=.4rem;overflow=hidden]",
+      "children": [
+        {
+          "view": "Icon?name=_.icon;google.symbol;style:[fontSize=1.5rem;color=#555]?false;_.icon"
+        },
+        {
+          "view": "Text?inputLabelHandler();style:[fontSize=1.3rem;color=if():[_.required]:[#e54643]:[#555];textAlign=start;text-overflow=ellipsis;overflow=hidden;whiteSpace=nowrap];tooltip:[text=txt();#if():[_.question]:[_.inputLabel+'？']:[_.inputLabel]]?!_.editableLabel"
+        },
+        {
+          "view": "Input?placeholder=_.inputLabel;path=_.labelPath;style:[fontSize=1.3rem;color=#555;textAlign=start;text-overflow=ellipsis;overflow=hidden;whiteSpace=nowrap;height=2rem;width=80%;padding=0];tooltip:[text=if():[_.question]:[_.inputLabel+'？']:[_.inputLabel]];blur:[next().style().opacity=1];focus:[next().style().opacity=0]?_.editableLabel"
+        },
+        {
+          "view": "Text?text=' *';style:[fontSize=1.3rem;color=#e54643]?_.required;!____.readonly"
+        }
+      ]
+    },
+    {
+      "view": "View?class=flex;style:[textAlign=start;gap=.4rem]",
+      "children": [
+        {
+          "view": "Icon?name=_.icon2;google.symbol;style:[marginTop=.3rem;fontSize=1.5rem;color=#555;cursor=pointer];click:[parent().prev().1stChild().focus();style().opacity=0]?_.icon2"
+        },
+        {
+          "view": "View?class=flexbox;style:[height=2rem;width=2rem;borderRadius=.2rem;border=1px solid #ddd;cursor=pointer];click:[openHotCreateForm()]?_.labelHotCreateable",
+          "children": [
+            {
+              "view": "Icon?name=Add;google.symbol;style:[fontSize=1.5rem]"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "21Y7C0d8b8S8f7J0x1Y6y8f4F9",
+    "creationDate": 1700062969923,
+    "collapsed": [
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": []
+      }
+    ],
+    "comments": [
+      {
+        "note": "false",
+        "path": [
+          "children",
+          0,
+          "children",
+          0
+        ]
+      }
+    ],
+    "actions": {
+      "#handleIfListOfMapww": "log():['mhmd123']:[_];_.allowedLedgers._():[().isTrue=true;if():[customCondition():[data=doc().clone();condition=_.condition]]:[().isTrue=false];if():[().isTrue]:[().allowedLedger=_.allowedLedgers]];().inputText=if():[().allowedLedger]:[_.inputLabel+' ('+().allowedLedger.join():['-']+')']:[_.inputLabel];().text=().inputText",
+      "inputLabelHandler": {
+        "handleNormalLabel": "if():[_.inputLabel.type()=array]:[handleLabelCondition()]:[text=_.inputLabel]",
+        "handleIfMapOrList": "if():[_.allowedLedgers.type()=map]:[if():[[_.allowedLedgers.condition]()]:[text=_.inputLabel+' ('+_.allowedLedgers.allowedLedgers.join():['-']+')']:[text=_.inputLabel]]:[text=_.inputLabel+' ('+_.allowedLedgers.join():['-']+')']",
+        "handleLabelCondition": "_.inputLabel._():[if():[customCondition():[data=doc().clone();condition=_.condition]]:[().text=_.inputLabel]]",
+        "_": "if():[_.allowedLedgers]:[if():[_.allowedLedgers.type()=array;_.allowedLedgers.0.type()=map]:[handleIfListOfMap()]:[handleIfMapOrList()]]:[if():[_.question]:[text=_.inputLabel+'？']:[handleNormalLabel()]]"
+      },
+      "openHotCreateForm": {
+        "fillGeneralPopup": "generalPopup:()=[title=[_.collection].capitalize()+' Form';popupName=customForm;inputInfo=().manager.createFormInputs.clone();docName=().manager.popupInfo.docName];#if():[_.listName]:[generalPopup:().listName=_.listName]:[generalPopup:().varName=_.varName];#if():[_.finalValue]:[activateFinalValueInInputInfo()]",
+        "activateFinalValueInInputInfo": "generalPopup:().inputInfo.subInput._():[_.input.find():[inputPath=__.finalValueReference].finalValue=true;_.input.find():[inputPath=__.finalValueReference].inputValue=__.finalValue]",
+        "_": "createFormStack:().push():[_.collection];group=collectionsInfo:().find():[managers.():collection.inc():[_.collection]];manager=[().group.groupName]:().[().group.managers.find():[collection=_.collection].manager];fillGeneralPopup();():generalPopup.update();():generalPopup.style():[visibility=visible;opacity=1]"
+      },
+      "handleIfListOfMap": "_.allowedLedgers._():[().isTrue=customCondition():[data=doc().clone();condition=_.condition];if():[().isTrue]:[().allowedLedger=_.allowedLedgers]];().inputText=if():[().allowedLedger]:[_.inputLabel+' ('+().allowedLedger.join():['-']+')']:[_.inputLabel];().text=().inputText"
+    },
+    "docName": "customInputLabel",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

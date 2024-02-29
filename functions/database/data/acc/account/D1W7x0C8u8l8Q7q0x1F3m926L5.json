@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687887668,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "NE3xgXXUSnvetfzToN4ghFgVSdFtG9oCYTpJOtFH8Bbol8M9Gaxhz6QXJsxg-1708687887667",
+  "ref": "ACC-00000194",
+  "ledgerAccount": "62635/1/1",
+  "blockAccount": "No",
+  "name": "Building Maintenance Expenses",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "62",
+    "626",
+    "6263",
+    "62635"
+  ],
+  "__props__": {
+    "id": "D1W7x0C8u8l8Q7q0x1F3m926L5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "1W3aI5vJUR5T7Wle8GnY8nWLyvnvi0NYkguAGVW9z1PVbA96ktii2ssRaDBc-1708687887667",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

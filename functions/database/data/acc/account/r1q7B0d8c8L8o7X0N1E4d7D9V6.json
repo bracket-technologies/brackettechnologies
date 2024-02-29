@@ -1,0 +1,32 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687889874,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "RL2P62UIyZLiua1rssMYOlo0AsN8IBm0rVPcG2A4Z70imuq0UlGPwii3tQJU-1708687889874",
+  "ref": "ACC-00000251",
+  "ledgerAccount": "6512652/1/1",
+  "blockAccount": "No",
+  "name": "Depr.Alloc. - Re-usable Containers - Gaz Container",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6512",
+    "65126",
+    "651265",
+    "6512652"
+  ],
+  "__props__": {
+    "id": "r1q7B0d8c8L8o7X0N1E4d7D9V6",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "hAaDB31Pkz44hZrml7Alf0V4UZRTKPFTG6sslMyWca5CBFzn8dQOcpMOAMFh-1708687889874",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

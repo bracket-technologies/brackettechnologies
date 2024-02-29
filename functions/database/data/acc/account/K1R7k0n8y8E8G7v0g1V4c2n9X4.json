@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687884071,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "Xto0L3jG9Om8K2GmN2OCpDUjl9MFiOTNLLDSuuSi6VxAN84AL5HxWkBEfM0Q-1708687884071",
+  "ref": "ACC-00000128",
+  "ledgerAccount": "651/1/1",
+  "blockAccount": "No",
+  "name": "Depreciation  & Amortization",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "651"
+  ],
+  "__props__": {
+    "id": "K1R7k0n8y8E8G7v0g1V4c2n9X4",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "IUUpp5mLLoPc7mvOMK2mdh9TBEHa23qvoVQxEHWcO8v3qXHy6CtBprNlqTnp-1708687884071",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

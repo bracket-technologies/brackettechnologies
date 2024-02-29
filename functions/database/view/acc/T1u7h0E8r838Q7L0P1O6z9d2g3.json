@@ -1,0 +1,309 @@
+{
+  "view": "View?class=flex;style:[width=100%]",
+  "children": [
+    {
+      "view": "View?class=flex;style:[width=100%;borderBottom=1px solid #ddd;padding=.4rem;justifyContent=space-between]?!_.multiSection",
+      "children": [
+        {
+          "view": "View?class=flexbox",
+          "children": [
+            {
+              "view": "View?class=flexbox",
+              "children": [
+                {
+                  "view": "Icon?name=expand_more;google.symbol;style:[if():[_.arrowSize]:[fontSize=_.arrowSize]:[fontSize=2.5rem];cursor=pointer;rotate=0deg;transition=.2s];opened=true;click:[openAndCloseSection()]"
+                }
+              ]
+            },
+            {
+              "view": "Text?text=_.title.capitalize();style:[fontSize=1.5rem;fontWeight=bolder;cursor=pointer];click:[prev().1stChild().click()]"
+            }
+          ]
+        },
+        {
+          "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;borderRadius=.4rem;border=1px solid #ddd;cursor=pointer];click:[if():[_.type=image]:[openGalleryManager()]:[[_.addAction]()]]?_.addAction||_.type=image;!__.read",
+          "children": [
+            {
+              "view": "Icon?name=add;google.symbol;style:[fontSize=2rem]"
+            }
+          ]
+        },
+        {
+          "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;borderRadius=.4rem;border=1px solid #ddd;cursor=pointer];click:[[_.removeAction]()]?_.removeAction;false",
+          "children": [
+            {
+              "view": "Icon?name=Remove;google.symbol;style:[fontSize=2rem]"
+            }
+          ]
+        },
+        {
+          "view": "View?class=flex;style:[gap=.5rem]?_.path;_.clone",
+          "children": [
+            {
+              "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;borderRadius=.4rem;border=1px solid #ddd;cursor=pointer];click:[nthParent():5.insert()]",
+              "children": [
+                {
+                  "view": "Icon?name=content_copy;google.symbol;style:[fontSize=2rem]"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;borderRadius=.4rem;border=1px solid #ddd;cursor=pointer];click:[if():[doc().[___.path].len()>1]:[nthParent():4.rem()]]",
+              "children": [
+                {
+                  "view": "Icon?name=Remove;google.symbol;style:[fontSize=2rem]"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;borderRadius=.4rem;border=1px solid #ddd;cursor=pointer];click:[nthParent():5.insert()]",
+              "children": [
+                {
+                  "view": "Icon?name=add;google.symbol;style:[fontSize=2rem]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "view": "View?class=flex hide-scrollbar;style:[if():[mobile()]:[overflow-x=auto;overflow-y=hidden];width=100%;borderBottom=1px solid #ddd;padding=.4rem;justifyContent=space-between]?_.multiSection",
+      "children": [
+        {
+          "view": "View?class=flexbox;style:[position=relative;if():[____.read||true]:[height=2.3rem]]",
+          "children": [
+            {
+              "view": "View?class=flexbox",
+              "children": [
+                {
+                  "view": "Icon?name=expand_more;google.symbol;style:[if():[_.arrowSize]:[fontSize=_.arrowSize]:[fontSize=2.5rem];cursor=pointer;rotate=0deg;transition=.2s];().opened=true;click:[openAndCloseSection()]"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flex;checkSectionCondition();style:[gap=1rem;if():[!mobile()]:[position=absolute;left=3rem;bottom=-6px]]",
+              "children": [
+                {
+                  "view": "[View]:[data=_.title]?log():[_]:['taha22'];style:[width=max-content;padding=.4rem 1.5rem;cursor=pointer;borderRadius=.4rem .4rem 0 0;border=1px solid transparent];#checkSectionCondition();loaded:[checkOpenedForm();handleRequiredTitle()];click:[navigateSections()]",
+                  "children": [
+                    {
+                      "view": "Text?text=_.capitalize();style:[fontSize=1.5rem;fontWeight=bolder;cursor=pointer]"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "view": "View?class=flex;style:[gap=.5rem]?_.path",
+          "children": [
+            {
+              "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;borderRadius=.4rem;border=1px solid #ddd;cursor=pointer];click:[if():[doc().[___.path].len()>1]:[nthParent():4.rem()]]",
+              "children": [
+                {
+                  "view": "Icon?name=Remove;google.symbol;style:[fontSize=2rem]"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;borderRadius=.4rem;border=1px solid #ddd;cursor=pointer];click:[nthParent():5.insert()]",
+              "children": [
+                {
+                  "view": "Icon?name=add;google.symbol;style:[fontSize=2rem]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "T1u7h0E8r838Q7L0P1O6z9d2g3",
+    "creationDate": 1695646008367,
+    "collapsed": [
+      {
+        "path": [
+          "children",
+          "1"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          2
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "customSubtitle",
+          "openAndCloseSection"
+        ]
+      },
+      {
+        "path": [
+          "openAndCloseSection"
+        ]
+      },
+      {
+        "path": [
+          "#checkSectionCondition11"
+        ]
+      },
+      {
+        "path": [
+          "checkSectionCondition"
+        ]
+      },
+      {
+        "path": [
+          "checkOpenedForm"
+        ]
+      },
+      {
+        "path": [
+          "handleRequiredTitle"
+        ]
+      },
+      {
+        "path": [
+          "navigateSections"
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "plus minus",
+        "path": [
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "expand more arrow ",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "normal section",
+        "path": [
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "multi section",
+        "path": [
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "",
+        "path": [
+          "navigateSections"
+        ]
+      }
+    ],
+    "actions": {
+      "navigateSections": {
+        "_": "if():[__.path]:[selectedSection:().[__.index].[___.index]=_.toLowerCase()]:[selectedSection:().[__.index]=_.toLowerCase()];customUpdate():[section=[__.index]]"
+      },
+      "#remRow": "accountingPopup:().[__.path].pullItem():[_];3rdParent().parent().update()",
+      "checkSectionCondition": {
+        "removeTitle": "___.title.pullItem():[__.id.capitalize()];removeFromDoc()",
+        "checkCondition": "_.condition._():[if():[!doc().[_.conditionReference].in():[_.condition]]:[removeTitle()]]",
+        "checkIfIncSelectedSection": "if():[!selectedSection:().[_____.index].in():[___.title]]:[selectedSection:().[_____.index]=___.title.0.toLowerCase()]",
+        "removeFromDoc": "__.input._():[if():[doc().[_.inputPath]]:[doc().[_.inputPath].del()]];checkIfIncSelectedSection()",
+        "_": "_.input._():[if():[_.condition]:[checkCondition()]]"
+      },
+      "openGalleryManager": "createFormStack:().push():['gallery'];generalPopup:()=[title='Select Images From Gallery';popupName=photosPopup;docName=__.docName;path=_.path;maxSelected=_.maxSelected];():generalPopup.update()::[():generalPopup.style():[visibility=visible;opacity=1]]",
+      "handleRequiredTitle": {
+        "checkCondition": "_.condition._():[if():[doc().[_.conditionReference].in():[_.condition]]:[().requiredTitle=true]]",
+        "checkRequired": "__.input.find():[id=_.toLowerCase()].input._():[if():[_.required;!_.condition]:[().requiredTitle=true].elif():[_.condition]:[checkCondition()]];if():[().requiredTitle]:[1stChild().style().color=#fb3b1e]",
+        "_": "().requiredTitle=false;checkRequired()"
+      },
+      "openAndCloseSection": {
+        "openInputs": "3rdParent().parent().nextSiblings().():[style():[height=fit-content;display=flex]];style():[transform=rotate(0deg)];().opened=true",
+        "closeInputs": "3rdParent().parent().nextSiblings().():[style():[display=none]];style():[transform=rotate(-90deg)];().opened=false",
+        "_": "if():[opened]:[closeInputs()]:[openInputs()]"
+      },
+      "checkOpenedForm": {
+        "searchOpenedSectionInPath": "if():[selectedSection:().[__.index].[___.index]=_.toLowerCase()]:[style():[backgroundColor=#fff;border=1px solid #ddd;borderBottom=none]]",
+        "_": "if():[__.path]:[searchOpenedSectionInPath()]:[searchOpenedSection()]",
+        "searchOpenedSection": "if():[selectedSection:().[__.index]=_.toLowerCase()]:[style():[backgroundColor=#fff;border=1px solid #ddd;borderBottom=none]]"
+      }
+    },
+    "docName": "customTitle",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,308 @@
+{
+  "view": "View?class=flex column;style:[width=100%]",
+  "children": [
+    {
+      "view": "customInputLabel"
+    },
+    {
+      "view": "View?class=flex;style:[width=100%;gap=.2rem]",
+      "children": [
+        {
+          "view": "View?class=flex;style:[inputStyle()];loaded:[filterGovernmentAccountsBySpecificCode()]",
+          "children": [
+            {
+              "view": "View?class=flexbox;style:[width=7rem;height=100%;backgroundColor=#f3f3f3]",
+              "children": [
+                {
+                  "view": "Input?preventDefault;().startingScroll=0;placeholder='#';style:[width=100%;height=100%];generalLedgerEventsHandler()"
+                },
+                {
+                  "view": "Icon?name=expand_more;google.symbol;style:[fontSize=2rem;color=#666;cursor=pointer];click:[prev().click();prev().focus()]?!____.read"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flex;style:[width='calc(100% - 7rem)';position=relative];[mouseenter?2ndChild().style():[opacity=1]?!createFormStack:()||createFormStack:().[-1]=searchbox];[mouseleave?2ndChild().style():[opacity=0]?!createFormStack:()||createFormStack:().[-1]=searchbox]",
+              "children": [
+                {
+                  "view": "Input?preventDefault;ledgerCounterEventsHandler();style:[width=100%;textOverflow=ellipsis;height=100%;paddingRight=0];if():[_.counterInputBlurAction]:[blur:[[_.counterInputBlurAction]()]]"
+                },
+                {
+                  "view": "Icon?name=Close;google.symbol;style:[fontSize=1.8rem;cursor=pointer;color=#666;opacity=0;transition=.2s;paddingRight=.5rem;align-self=center;position=absolute;right=if():[notInSearchEngine()]:[25px]:[0px]];click:[resetLedgerInput()]?!____.read"
+                },
+                {
+                  "view": "Icon?name=Search;google.symbol;style:[fontSize=2rem;color=#666;padding=.5rem;cursor=pointer];tooltip:[text='open search box'];click:[callOpenSearchBox()]?_.generalLedger;notInSearchEngine();!____.read"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "view": "View?class=flexbox;style:[width=3.5rem;border=1px solid #ddd;borderRadius=.4rem;cursor=pointer;backgroundColor=#fff];click:[switchInput()]?_.switchable;!____.read",
+          "children": [
+            {
+              "view": "Icon?name=Swap_Vert;google.symbol;style:[fontSize=2rem;color=#666]"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "_view_": false,
+  "__props__": {
+    "id": "J1z7X0c8p8T8B7b0d1E7K0q522",
+    "creationDate": 1698996264892,
+    "collapsed": [
+      {
+        "path": [
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "#ledgerInputValueHandler"
+        ]
+      },
+      {
+        "path": [
+          "inputValueHandler"
+        ]
+      },
+      {
+        "path": [
+          "#saveAccountInDoc"
+        ]
+      },
+      {
+        "path": [
+          "#keyDownActions"
+        ]
+      },
+      {
+        "path": [
+          "#inputValueHandler"
+        ]
+      },
+      {
+        "path": [
+          "#readFromDoc"
+        ]
+      },
+      {
+        "path": [
+          "generalLedgerEventsHandler",
+          "uuuinputValueHandler"
+        ]
+      },
+      {
+        "path": [
+          "#openSearchBox"
+        ]
+      },
+      {
+        "path": [
+          "generalLedgerEventsHandler",
+          "#keyDownActions"
+        ]
+      },
+      {
+        "path": [
+          "filterGovernmentAccounts"
+        ]
+      },
+      {
+        "path": [
+          "callOpenSearchBox"
+        ]
+      },
+      {
+        "path": [
+          "searchInDoc"
+        ]
+      },
+      {
+        "path": [
+          "generalLedgerEventsHandler",
+          "saveLedgerInData"
+        ]
+      },
+      {
+        "path": [
+          "keyDownActions"
+        ]
+      },
+      {
+        "path": [
+          "getUserAccounts"
+        ]
+      },
+      {
+        "path": [
+          "ledgerCounterEventsHandler"
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "switch",
+        "path": [
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "ledger input (name or counter)",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "ledger number",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "label",
+        "path": [
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "input",
+        "path": [
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "",
+        "path": [
+          "inputValueHandler"
+        ]
+      },
+      {
+        "note": "().allowedLedgers:initialized if condition applied (contains the allowed start ledgers-read from _);    ().ledgersAccounts:contains all allowed ledgers in the droplist",
+        "path": [
+          "filterGovernmentAccountsBySpecificCode"
+        ]
+      },
+      {
+        "note": "openSearchBox in root view",
+        "path": [
+          "callOpenSearchBox"
+        ]
+      },
+      {
+        "note": "if ledger counet : save data and fill account name : save data",
+        "path": [
+          "generalLedgerEventsHandler",
+          "saveLedgerInData"
+        ]
+      }
+    ],
+    "actions": {
+      "keyDownActions": {
+        "[object Object]": "if():[e().keyCode=40]:[checkArrowUp();if():[().startingScroll>=250]:[():customDroplist.1stChild().el().scrollTop+=28]:[().startingScroll+=28]].elif():[e().keyCode=38]:[checkArrowDown();if():[().startingScroll<28]:[():customDroplist.1stChild().el().scrollTop-=28]:[().startingScroll-=28]].elif():[e().key=Enter]:[():governmentDroplistItems.children().[selectedIndex:()].click()]",
+        "checkArrowUp": "if():[selectedIndex:()<():governmentDroplistItems.children().len()-1]:[selectedIndex:()+=1;():governmentDroplistItems.children().[selectedIndex:()].mouseenter()]",
+        "checkArrowDown": "if():[selectedIndex:()>=1]:[selectedIndex:()-=1;():governmentDroplistItems.children().[selectedIndex:()].mouseenter()]",
+        "_": "if():[e().keyCode=8]:[handleDeleteKey()].elif():[e().keyCode=40]:[checkArrowUp();if():[().startingScroll>=250]:[():customDroplist.1stChild().el().scrollTop+=28]:[().startingScroll+=28]].elif():[e().keyCode=38]:[checkArrowDown();if():[().startingScroll<28]:[():customDroplist.1stChild().el().scrollTop-=28]:[().startingScroll-=28]].elif():[e().key=Enter]:[():governmentDroplistItems.children().[selectedIndex:()].click()]",
+        "handleDeleteKey": "e().preventDefault();if():[!txt().in():[2ndParent().ledgerAccounts.():number]]:[txt()=2ndParent().allowedLedgers.0]"
+      },
+      "filterGovernmentAccounts": {
+        "noAccountNote": "if():[governmentAccountsItems:().len()=0]:[note():[text='Ledger does not exist!';type=warning];().txt()=().txt().slice()::-1;filterGovernmentAccounts()]:[openDroplist()]",
+        "filterByName": "2ndParent().ledgerAccounts._():[if():[_.name.toLowerCase().includes():[txt().toLowerCase()]]:[governmentAccountsItems:().push():[_]]]",
+        "fillAccountNameInText": "if():[__.govInput]:[if():[().txt()='']:[parent().next().1stChild().txt()='']:[parent().next().1stChild().txt()=governmentAccountsItems:().find():[number=().txt()].name]]",
+        "filterByNumber": "2ndParent().ledgerAccounts._():[if():[_.number.slice():0:[().txt().len()]=().txt()]:[governmentAccountsItems:().push():[_]]]",
+        "_": "governmentAccountsItems:()=:;if():[_.searchByNum]:[filterByNumber()]:[filterByName()];fillAccountNameInText();noAccountNote()"
+      },
+      "openDroplist": "if():[2ndParent().id!=droplistItems:().identifier;_.generalLedger]:[():customDroplist.style():[opacity=0;height=0px]];droplistItems:()=[viewName=governmentDroplistItems;identifier=2ndParent().id;width=2ndParent().el().clientWidth+'px'];().droplistHeight=if():[governmentAccountsItems:().len()>10]:[30]:[[governmentAccountsItems:().len()]*2.8];():customDroplist.update()::[():customDroplist.position():[positioner=2ndParent().id;placement=bottom];():customDroplist.style():[opacity=1;height=[().droplistHeight+'rem']()]]",
+      "searchInDoc": {
+        "searchInPath": "if():[().__.[_]]:[return():[().__.[_]]]:[return():[false]]",
+        "searchInDoc": "if():[doc().[_]]:[return():[doc().[_]]]:[return():[false]]",
+        "_": "if():[().___.path]:[return():[searchInPath()]]:[return():[searchInDoc()]]"
+      },
+      "callOpenSearchBox": {
+        "setsearchBoxParams": "().searchBoxParams=[docName=generalPopup:().docName;collection=account;allowedLedgers=2ndParent().allowedLedgers;varName=[[_.inputPath]='ledgerAccount']];if():[___.path]:[().searchBoxParams.path=___.path;().searchBoxParams.index=path().1]",
+        "_": "setsearchBoxParams();openSearchBox():[().searchBoxParams]"
+      },
+      "getUserAccounts": {
+        "saveInGovernmentAccounts": "().ledgerAccounts=:;_.data.values()._():[().ledgerAccounts.push():[[number=_.ledger;name=_.name]]]",
+        "_": "().searchFields=[branch=userData:().currentBranch;identifier=account];customSearchEngine():[().searchFields]:[if():[_.success]:[saveInGovernmentAccounts()]:[note():[tex=_.message];danger]]"
+      },
+      "notInSearchEngine": "createFormStack:();createFormStack:().[-1].searchbox;createFormStack:().len()>0",
+      "generalLedgerEventsHandler": {
+        "fillLeftZeros": "if():[txt()!='']:[txt()=setDefaultleftZero():[text=txt();digits=5]]",
+        "saveLedgerInData": {
+          "handelGeneralLedgerInDoc": "if():[parent().next().1stChild().txt()!='']:[;data().[_.inputPath]=txt()+'/'+parent().next().1stChild().txt()]:[data().[_.inputPath]=txt()]",
+          "handelGovInputInDoc": "if():[txt()!='']:[data().[_.inputPath]=txt();parent().next().1stChild().txt()=2ndParent().ledgerAccounts.find():[number=txt()].name]:[parent().next().1stChild().txt()='';data():[_.inputPath].del()]",
+          "_": "().generalLedgerData=txt();if():[_.govInput]:[handelGovInputInDoc()].elif():[_.generalLedger]:[handelGeneralLedgerInDoc()]"
+        },
+        "openDroplist": "if():[!().txt()||().txt().num()=0]:[governmentAccountsItems:()=2ndParent().ledgerAccounts]:[filterGovernmentAccounts():[searchByNum=true]];if():[2ndParent().id!=droplistItems:().identifier;_.generalLedger]:[():customDroplist.style():[opacity=0;height=0px]];droplistItems:()=[viewName=governmentDroplistItems;identifier=2ndParent().id;width=2ndParent().el().clientWidth+'px'];().droplistHeight=if():[governmentAccountsItems:().len()>10]:[30]:[[governmentAccountsItems:().len()]*2.8];():customDroplist.update()::[():customDroplist.position():[positioner=2ndParent().id;placement=bottom];():customDroplist.style():[opacity=1;height=[().droplistHeight+'rem']()]]",
+        "inputValueHandler": {
+          "readValueFromDoc": "if():[()._.generalLedger]:[splitInputPath():[_]]:[txt()=setDefaultleftZero():[text=_.split():'/'.0;digits=5];parent().next().1stChild().txt()=2ndParent().ledgerAccounts.find():[number=_].name]",
+          "splitInputPath": "().accountCounter=[_].split():['/'];txt()=setDefaultleftZero():[text=().accountCounter.0;digits=5];if():[().accountCounter.len()>1]:[parent().next().1stChild().txt()=().accountCounter.1+'/'+if():[().accountCounter.len()=3]:[().accountCounter.2]:['1']]",
+          "checkIfExistValueInDoc": "if():[data().[_.inputPath]]:[checkIfStartWithAllowedLedgers()]:[initializeValue()]",
+          "checkToReadValueFromDoc": "if():[searchInDoc():[_.inputPath]]:[readValueFromDoc():[searchInDoc():[_.inputPath]]]",
+          "_": "if():[2ndParent().allowedLedgers]:[checkIfExistValueInDoc()]:[checkToReadValueFromDoc()]",
+          "checkIfStartWithAllowedLedgers": "().taha=searchInDoc():[_.inputPath];().keepLedger=false;2ndParent().allowedLedgers._():[if():[[().taha.split():'/'.0].startsWith():[_]]:[().keepLedger=true]];if():[().keepLedger;false]:[readValueFromDoc():[().taha]]:[initializeValue()]",
+          "initializeValue": "().generalLedgerData=2ndParent().allowedLedgers.0;data().[_.inputPath]=2ndParent().allowedLedgers.0;txt()=setDefaultleftZero():[text=2ndParent().allowedLedgers.0;digits=5];if():[()._.govInput]:[parent().next().1stChild().txt()=2ndParent().ledgerAccounts.find():[number=2ndParent().allowedLedgers.0].name]"
+        },
+        "readGeneralLedgerFromData": "if():[data().[_.inputPath]]:[txt()=data().[_.inputPath].split():'/'.0]:[txt()='']",
+        "checkToCloseDroplist": "if():[!():customDroplist.contains():[clicked()]]:[():customDroplist.style():[opacity=0;height=0]]",
+        "_": "[focus;click?readGeneralLedgerFromData();openDroplist()];keydown:[keyDownActions()];[change?openDroplist();().startingScroll=0;saveLedgerInData();if():[_.entryAction]:[[_.entryAction]()]?e().keyCode!=40;e().keyCode!=38;e().key!=Enter];blur:[fillLeftZeros();checkToCloseDroplist();if():[_.blurAction]:[[_.blurAction]()]];loaded:[inputValueHandler()]"
+      },
+      "resetLedgerInput": "data().[_.inputPath].del();#delFromDoc():[_.inputPath];2ndParent().update()",
+      "_view_": false,
+      "ledgerCounterEventsHandler": {
+        "saveAccountInDoc": {
+          "handelIfNoLedgerCounter": "if():[[parent().prev().1stChild().txt().num()]!='0']:[saveGeneralLedger()]:[data().[_.inputPath].del();#delFromDoc():[_.inputPath]]",
+          "splitLedgerAndSetFormat": "if():[txt()!='']:[().ledgerList=txt().split():'/';if():[().ledgerList.len()=1]:[txt()=().ledgerList.0+'/1']:[if():[().ledgerList.1='']:[().ledgerList.1='1'];txt()=().ledgerList.0+'/'+().ledgerList.1]]",
+          "saveGeneralLedgerAndLedgerCounter": "data().[_.inputPath]=if():[txt()!='']:[data().[_.inputPath].split():'/'.0+'/'+txt()]:[data().[_.inputPath].split():'/'.0]",
+          "#saveGeneralLedger": "data().[_.inputPath]=parent().prev().1stChild().generalLedgerData;#saveInDoc():[parent().prev().1stChild().txt().num()]",
+          "_": "splitLedgerAndSetFormat();if():[data().[_.inputPath];txt()]:[saveGeneralLedgerAndLedgerCounter()];#:[handelIfNoLedgerCounter()]",
+          "#ledgerCounterWithoutZeros": "().ledgerCounter=txt().split():'/';().ledgerCounter.0+=0;().ledgerCounter.1+=0;return():[().ledgerCounter.join():'/']"
+        },
+        "setLedgerCounter": "if():[txt()!='']:[().ledgerList=txt().split():'/';txt()=[().ledgerList.0.num()]+'/'+[().ledgerList.1||1]]",
+        "_": "if():[_.generalLedger]:[placeholder='----/-';focus:[setLedgerCounter()];entry:[remChar()];blur:[saveAccountInDoc()]]:[keydown:[keyDownActions()];[change;click?filterGovernmentAccounts()?e().keyCode!=38;e().keyCode!=40;e().key!=Enter]]",
+        "remChar": "().checkChar=txt().split():'/';if():[![().checkChar.0.num()].isNum()]:[().checkChar.0=[().checkChar.0.slice()::-1]];if():[().checkChar.len()>1]:[if():[!().checkChar.1.num().isNum()]:[().checkChar.1=().checkChar.1.slice()::-1];txt()=().checkChar.0+'/'+().checkChar.1]:[txt()=().checkChar.0]"
+      },
+      "filterGovernmentAccountsBySpecificCode": {
+        "handleIncludeLegerAccountsConditions": "_.includeLegerAccounts._():[if():[customCondition():[data=doc().clone();condition=_.condition]]:[().appliedStartsWith=_.startsWith]];if():[().appliedStartsWith]:[getDataForDroplist():[collection=account;startsWith=().appliedStartsWith]:[if():[_.success]:[fillLedgerAccountsInDroplist()]]]",
+        "filterByAllowedLedgers": "().ledgerAccounts=:;governmentAccounts:()._():[__.allowedLedgers._():[if():[__.number.slice():0:[_.len()]=_]:[().ledgerAccounts.push():[__]]]]",
+        "handleGeneralCondition": "if():[[_.allowedLedgers.condition]()]:[().allowedLedgers=_.allowedLedgers.allowedLedgers;filterByAllowedLedgers():[allowedLedgers=().allowedLedgers]]:[().ledgerAccounts=governmentAccounts:()]",
+        "fillLedgerAccountsInDroplist": ";_.data.values()._():[().ledgerAccounts.push():[name=_.name;number=_.ledgerAccount.split():['/'].value();ledger=_.ledgerAccount]]",
+        "handleListOfMap": "_.allowedLedgers._():[().isTrue=customCondition():[data=doc().clone();condition=_.condition];if():[().isTrue]:[().allowedLedgers=_.allowedLedgers]];if():[().allowedLedgers]:[filterByAllowedLedgers():[allowedLedgers=().allowedLedgers]]:[().ledgerAccounts=governmentAccounts:()]",
+        "getUserAccounts": "allLedgersAccounts:()._():[if():[_.startsWith.inc():[__.includeLegerAccounts.startsWith]||__.includeLegerAccounts.startsWith='all']:[().ledgerAccounts.push():[name=_.name;number=_.ledgerAccount.split():['/'].value();ledger=_.ledgerAccount]]];#if():[!().ledgerAccounts]:[getDataForDroplist():[collection=account;startsWith=_.includeLegerAccounts.startsWith]:[if():[_.success]:[fillLedgerAccountsInDroplist()]]]",
+        "_": "if():[_.allowedLedgers]:[if():[_.allowedLedgers.type()=map]:[handleGeneralCondition()].elif():[_.allowedLedgers.0.type()=map]:[handleListOfMap()]:[().allowedLedgers=_.allowedLedgers;filterByAllowedLedgers():[allowedLedgers=_.allowedLedgers]]].elif():[_.includeLegerAccounts.type()=array]:[handleIncludeLegerAccountsConditions()].elif():[_.includeLegerAccounts.type()=map]:[getUserAccounts()]:[().ledgerAccounts=governmentAccounts:()]"
+      }
+    },
+    "docName": "ledgerCounterInput",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

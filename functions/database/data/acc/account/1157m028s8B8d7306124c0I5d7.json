@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687892458,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "sMOa1EI3KCGDq6y9a5lBguffqShR00QiYLRNPLt9asmlf1YWVCrQ3uCUDt73-1708687892456",
+  "ref": "ACC-00000320",
+  "ledgerAccount": "7711/1/1",
+  "blockAccount": "No",
+  "name": "Dividends",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "77",
+    "771",
+    "7711"
+  ],
+  "__props__": {
+    "id": "1157m028s8B8d7306124c0I5d7",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "5sFR7hd0qnqwOsOkJBkMVaQ0J4cDw3OEytlx2tn9rSJMSu7AgOgKeVk2JlPk-1708687892456",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687886661,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "FVZuQPGQp6NeKKHGOWbF7FtrXwVdO3l92x1IGiXT0euad8AhISy8ODXAuZtK-1708687886661",
+  "ref": "ACC-00000166",
+  "ledgerAccount": "6815/1/1",
+  "blockAccount": "No",
+  "name": "Financial Fixed Assets",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "68",
+    "681",
+    "6815"
+  ],
+  "__props__": {
+    "id": "8157t0e8Z8F8D7R041d3W997H5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "1p6gTKophqB6ui0pkmqtIKTCD4dePKBw5tQD3seizdfH9qtKfAaccl6167V2-1708687886661",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

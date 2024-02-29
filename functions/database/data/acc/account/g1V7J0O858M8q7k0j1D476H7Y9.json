@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687890765,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "l3giJE92jD9QfWd4nabOVVCK1ND0c1RDSbXusRz0NCs5RWHdB8w1jO0cCD5z-1708687890764",
+  "ref": "ACC-00000273",
+  "ledgerAccount": "7010/1/1",
+  "blockAccount": "No",
+  "name": "Sales",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "70",
+    "701",
+    "7010"
+  ],
+  "__props__": {
+    "id": "g1V7J0O858M8q7k0j1D476H7Y9",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "YbIVqCk98r0A7OlbivgrtBReMEX1Sb6LLuJsaiRU8l2KS225G9HzOmhQ2J1n-1708687890764",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687891766,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "jsFiIf4FjgBe5U6jxqaTGMw5Evskx9VllIL4f0DevJ4UeQljIdnIIku8oX2s-1708687891766",
+  "ref": "ACC-00000301",
+  "ledgerAccount": "731/1/1",
+  "blockAccount": "No",
+  "name": "Intangible Fixed Assets",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "73",
+    "731"
+  ],
+  "__props__": {
+    "id": "t1P780c8e8d807L0x1m4C8Y0l1",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "hJQ8v52fkEbxkOcEyEg2kjamfueKZnS15yTcHjKVB6vBPjrKiHQ7uNLyEQsz-1708687891766",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

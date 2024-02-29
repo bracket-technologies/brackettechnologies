@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687885668,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "vhukWUQoxuwznoPlL40gdAO2NG1bc7Qz7ps1jBWcNrHYqvbUu5uyEfhHPpij-1708687885668",
+  "ref": "ACC-00000141",
+  "ledgerAccount": "6612/1/1",
+  "blockAccount": "No",
+  "name": "Losses On Irrecoverable Operating",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "66",
+    "661",
+    "6612"
+  ],
+  "__props__": {
+    "id": "p1t7x008L8W8a730w1Z4x1r322",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "9jHoz3WEn5gJoryLoGLiYGcQBBbMPgf5OnSU40tX4Z3rJezRjcTnuHzGgb24-1708687885668",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

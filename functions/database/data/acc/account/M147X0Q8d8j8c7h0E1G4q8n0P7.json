@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687894981,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "Vt9BM07feeMgUIF865SPklryDXtzmu59L8sYJnrzOz5zXfTS7DWauzgVgJha-1708687894981",
+  "ref": "ACC-00000379",
+  "ledgerAccount": "75522/1/1",
+  "blockAccount": "No",
+  "name": "Reversal of Prov. for End of Service Dues",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "75",
+    "755",
+    "7552",
+    "75522"
+  ],
+  "__props__": {
+    "id": "M147X0Q8d8j8c7h0E1G4q8n0P7",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "i4rXrtELIzSYzyL5XiPoxL2cEMvIa3pak2SG7jheaT6KE8RCbPobb6UpgGeX-1708687894981",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

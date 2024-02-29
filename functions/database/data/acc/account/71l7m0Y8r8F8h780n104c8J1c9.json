@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687887258,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "IEDlxcmDtWsCG6LI2ueJ2jPnlaw4u6wbHXYWwprdkSUDz4red6czEIJ5Xfq2-1708687887258",
+  "ref": "ACC-00000182",
+  "ledgerAccount": "6895/1/1",
+  "blockAccount": "No",
+  "name": "Prov. Fr Risks &Charges -Non Operational",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "68",
+    "689",
+    "6895"
+  ],
+  "__props__": {
+    "id": "71l7m0Y8r8F8h780n104c8J1c9",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "jO1UsFRl0YW2mGydfgEmIdykI0UO8bmRtCyarirCYSSjt6w4e79lD9bQEQpH-1708687887258",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

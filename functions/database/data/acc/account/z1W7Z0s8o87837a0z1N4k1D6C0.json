@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687887880,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "eRsV2riNnnqBq0NyjGFi86ERccb6gO20CGoMePkWOMOuH45dwgR0loFPQzkv-1708687887880",
+  "ref": "ACC-00000200",
+  "ledgerAccount": "62699/1/1",
+  "blockAccount": "No",
+  "name": "Other Miscellaneous External Services",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "62",
+    "626",
+    "6269",
+    "62699"
+  ],
+  "__props__": {
+    "id": "z1W7Z0s8o87837a0z1N4k1D6C0",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "AszBtjWoaBlnxYNxTjCqUAKvJoFAHHkhGYaUvWF6ObQg6nqvYs8onDre9tMV-1708687887880",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

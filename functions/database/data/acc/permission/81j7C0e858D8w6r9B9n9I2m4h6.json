@@ -1,0 +1,213 @@
+{
+  "permission": {
+    "voucher": [
+      "Remove",
+      "Create",
+      "Edit",
+      "Read",
+      "Import",
+      "Export"
+    ],
+    "bill": [
+      "Edit",
+      "Remove",
+      "Transaction Sheet",
+      "History",
+      "Cash Flow",
+      "Income Statement",
+      "Create",
+      "Read"
+    ],
+    "expense": [
+      "Create",
+      "Edit",
+      "Read",
+      "Remove"
+    ],
+    "branch": [
+      "Read",
+      "Edit",
+      "Create",
+      "History",
+      "Remove",
+      "Switch Branches"
+    ],
+    "notification": [
+      "Create",
+      "Edit",
+      "Read",
+      "Remove",
+      "Receive"
+    ],
+    "service": [
+      "Remove",
+      "History",
+      "Create",
+      "Edit",
+      "Read",
+      "Print"
+    ],
+    "sheet": [
+      "Remove",
+      "Create",
+      "Edit",
+      "Read",
+      "Import",
+      "Export"
+    ],
+    "currency": [
+      "Create",
+      "Edit",
+      "Read",
+      "Remove"
+    ],
+    "invoice": [
+      "Remove",
+      "History",
+      "Create",
+      "Edit",
+      "Read",
+      "Print"
+    ],
+    "asset": [
+      "Read",
+      "Remove",
+      "Create",
+      "History",
+      "Edit"
+    ],
+    "user": [
+      "Edit",
+      "Remove",
+      "History",
+      "Create",
+      "Read"
+    ],
+    "account": [
+      "Edit",
+      "Remove",
+      "Transaction Sheet",
+      "History",
+      "Cash Flow",
+      "Income Statement",
+      "Create",
+      "Read"
+    ],
+    "dashboard": [
+      "Read"
+    ],
+    "gallery": [
+      "Upload",
+      "Read",
+      "Edit",
+      "Remove"
+    ],
+    "transaction": [
+      "Remove",
+      "Create",
+      "Edit",
+      "Read",
+      "Import",
+      "Export"
+    ]
+  },
+  "creationDay": 1700524800000,
+  "creationDate": 1700573331131,
+  "user": "i4sFsUOhrwc4ahQQqznbaqcj3qJb53Ha9VRkIqeFBuHMFlNxEY9jP7GYwkyt",
+  "__props__": {
+    "id": "81j7C0e858D8w6r9B9n9I2m4h6",
+    "creationDate": 1700573235660,
+    "collapsed": [
+      {
+        "path": [
+          "permission",
+          "asset"
+        ]
+      },
+      {
+        "path": [
+          "permission",
+          "branch"
+        ]
+      },
+      {
+        "path": [
+          "permission",
+          "dashboard"
+        ]
+      },
+      {
+        "path": [
+          "permission",
+          "invoice"
+        ]
+      },
+      {
+        "path": [
+          "permission",
+          "service"
+        ]
+      },
+      {
+        "path": [
+          "permission",
+          "sheet"
+        ]
+      },
+      {
+        "path": [
+          "permission",
+          "account"
+        ]
+      },
+      {
+        "path": [
+          "permission",
+          "voucher"
+        ]
+      },
+      {
+        "path": [
+          "permission",
+          "gallery"
+        ]
+      },
+      {
+        "path": [
+          "permission",
+          "user"
+        ]
+      },
+      {
+        "path": [
+          "permission",
+          "currency"
+        ]
+      },
+      {
+        "path": [
+          "permission",
+          "expense"
+        ]
+      },
+      {
+        "path": [
+          "permission",
+          "notification"
+        ]
+      },
+      {
+        "path": [
+          "permission",
+          "transaction"
+        ]
+      }
+    ],
+    "comments": [],
+    "docName": "qgZpEBDIN2bOI8soQeEXwS2wgcIDl0PsG2sRPmTqIkOSN4kaqox2mpZYpU1r1700573331135",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

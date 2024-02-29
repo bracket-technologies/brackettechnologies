@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687893063,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "Xu9wQ7rhRebqNrhDM813tu3s0xelNgVaLgXPL6IMcNFTiVgxbCmPu16z0l7Y-1708687893063",
+  "ref": "ACC-00000337",
+  "ledgerAccount": "7789/1/1",
+  "blockAccount": "No",
+  "name": "Allocation Of Financial Charges",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "77",
+    "778",
+    "7789"
+  ],
+  "__props__": {
+    "id": "E1E7m0y8W8o8Q7a0n1c4N8U4l1",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "kFx3eEztQpPZ2vPvrBvUsYkAlkVxGvSmo85SnYIuk7np6LsdRFVXInjYCi5V-1708687893063",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

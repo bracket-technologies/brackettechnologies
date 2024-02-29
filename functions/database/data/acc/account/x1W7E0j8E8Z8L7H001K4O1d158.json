@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687890974,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "qxm7eEOurW2bxbAN7G19Lz1ljYTXqhmSOzwga1ejXccVIWTrAeHD72TCLMfH-1708687890974",
+  "ref": "ACC-00000279",
+  "ledgerAccount": "7113/1/1",
+  "blockAccount": "No",
+  "name": "Sales Of Scrap",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "71",
+    "711",
+    "7113"
+  ],
+  "__props__": {
+    "id": "x1W7E0j8E8Z8L7H001K4O1d158",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "8g6wT949hkCZZf2MzDyb1jUtpmK5Nc92P8f52lnWqgmFkB4bb7fdylbAzCQO-1708687890974",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

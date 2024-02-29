@@ -1,0 +1,28 @@
+{
+  "view": "View:customCheckbox?class=flex;style:[width=100%;gap=.5rem;alignItems=center]",
+  "children": [
+    {
+      "view": "View?class=flexbox;style:[height=_.height;width=_.width;border=1px solid #ddd;borderRadius=.4rem;cursor=pointer]",
+      "children": [
+        {
+          "view": "Icon?name=done;google.symbol;style:[fontSize=_.iconSize;color=#0000ffa6;transition=.1s;opacity=0]"
+        }
+      ]
+    },
+    {
+      "view": "Text?text=_.text;style:[fontSize=_.textSize;color=#555;textAlign=start;text-overflow=ellipsis;overflow=hidden;whiteSpace=nowrap;cursor=_.cursor];tooltip:[text=_.text]"
+    }
+  ],
+  "__props__": {
+    "id": "k197J0Y8Q8l8U7g0n1o6N7W139",
+    "creationDate": 1693636979393,
+    "collapsed": [],
+    "comments": [],
+    "actions": {},
+    "docName": "customCheckbox",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

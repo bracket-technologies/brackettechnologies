@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687892961,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "SXElpX2awb4M8RjADwrhA0FjL1jN8Cu8uli6XDqt0yKUhONNLIy3HLOysOne-1708687892961",
+  "ref": "ACC-00000334",
+  "ledgerAccount": "7755/1/1",
+  "blockAccount": "No",
+  "name": "Capital Operations",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "77",
+    "775",
+    "7755"
+  ],
+  "__props__": {
+    "id": "I1Z7S02868a8V7H0K1A4L3B5R1",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "KXcDM0qi7U7hJUuyfC1EOcXwU0rVxDEGUvFMuxCIcuF4MOc3ltSDqO3KflIk-1708687892961",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687883770,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "wbr4lbacTgInbzMisma11T9SXCqJgvzOAWPaL8VlfSlUVaOzJDOW2Yn14BKC-1708687883770",
+  "ref": "ACC-00000119",
+  "ledgerAccount": "6350/1/1",
+  "blockAccount": "No",
+  "name": "Social Security",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "63",
+    "635",
+    "6350"
+  ],
+  "__props__": {
+    "id": "z1Q7N0S8V8w8I7e0V1E4n7j2Q7",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "c1X0hcq8L0WTZfCAm19GtL1iLp2kBC6HtncPYXKbqeY9QHDGDUK3AnbB2maD-1708687883770",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

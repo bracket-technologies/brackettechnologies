@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687883865,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "ppvJYKT8rtiVzgPnUZXUXhK7kYfuOLrViaLVobfcF4wHfJnkXTKxc535V2cM-1708687883864",
+  "ref": "ACC-00000121",
+  "ledgerAccount": "641/1/1",
+  "blockAccount": "No",
+  "name": "Income Tax On Salaries & Remunerations",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "64",
+    "641"
+  ],
+  "__props__": {
+    "id": "I1n7n0A848Q897m0V1e4R1c2s1",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "9IilFPI0RyYw17ZY1ERtTzbPLYvhs6XTBJhdOAuGTJk1K4OnnCmHAW3mrYrs-1708687883864",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

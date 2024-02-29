@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687878068,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "8lBZoHG9YBtMslKXlJJeEvHPagtdsIr6402oiptN3bDr7oiJm3VsuQWTKObF-1708687878068",
+  "ref": "ACC-00000012",
+  "ledgerAccount": "519/1/1",
+  "blockAccount": "No",
+  "name": "Financial Institutions",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "5",
+    "51",
+    "519"
+  ],
+  "__props__": {
+    "id": "k1M7f018P868s7A0C13409S0C6",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "nxSkgaRevAeXPKDHpKQt8UglLSyS0A1n2uPprLDAh9y5F4VQv0FNzCNHVItA-1708687878068",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -24,7 +24,7 @@ module.exports = {
       to: data.email,
       subject: "Please confirm your account",
       html: `<h1>Email Confirmation</h1>
-          <h2>Hello ${data["first-name"]}</h2>
+          <h2>Hello ${data["firstName"]}</h2>
           <p>Thank you for subscribing. Please confirm your email using this <h1>${code}</h1>.</p>
           </div>`,
     }).catch(err => console.log(err))

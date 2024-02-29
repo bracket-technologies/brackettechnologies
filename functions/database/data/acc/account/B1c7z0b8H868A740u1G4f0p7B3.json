@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687894774,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "bAbcnr4VEtAibTvVA9CNXh5l3E49wVlqCc2zvUDUg0PTyee0e9VRGlO9eJKw-1708687894766",
+  "ref": "ACC-00000374",
+  "ledgerAccount": "75341/1/1",
+  "blockAccount": "No",
+  "name": "Reversal of Non-Deduct.Deval.Prov. of Debts",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "75",
+    "753",
+    "7534",
+    "75341"
+  ],
+  "__props__": {
+    "id": "B1c7z0b8H868A740u1G4f0p7B3",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "6uxlOtLRjI4XRFoYAzJXzkJT2ieRa1vV7y6DcQ3S55c6Xd1UcfkBo00pBg7K-1708687894765",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

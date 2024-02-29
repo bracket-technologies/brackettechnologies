@@ -9,9 +9,9 @@ const { isParam } = require("./isParam")
 
 const execute = ({ _window, lookupActions, stack, controls, actions, e, id, params, __ }) => {
 
-  var views = _window ? _window.views : window.views
+  const views = _window ? _window.views : window.views
   var view = views[id] || {}
-  var global = window.global
+  const global = window.global
   var _params = params, viewId = id
 
   if (controls) actions = controls.actions || controls.action

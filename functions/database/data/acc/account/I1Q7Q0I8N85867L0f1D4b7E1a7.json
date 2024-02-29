@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687888765,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "3uxbq3zlNsB9DDKYEFwXP3PhHYsVNwZEhBuukSIpDM0j2ySZkoEp0NN5vdxN-1708687888765",
+  "ref": "ACC-00000223",
+  "ledgerAccount": "65113/1/1",
+  "blockAccount": "No",
+  "name": "Amortiz.Alloc.of Patents & Trade Marks",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6511",
+    "65113"
+  ],
+  "__props__": {
+    "id": "I1Q7Q0I8N85867L0f1D4b7E1a7",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "bbeZstTbC3J3BTlEk6TuocM5tLQvkE2Hz0jqTPIwwIFO1bsOEB4BcHpyWtVN-1708687888765",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

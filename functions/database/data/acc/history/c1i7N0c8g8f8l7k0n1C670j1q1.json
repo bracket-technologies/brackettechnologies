@@ -1,0 +1,25 @@
+{
+  "updateBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+  "difference": [
+    {
+      "new": "gg",
+      "path": "country",
+      "old": "g"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "aRiAoFpuKnap9rZCJcACccDMX29Kai3iT6kFHbYUfHtc2mL9kHAk3wzgai8g1699268378803",
+  "creationDay": 1700611200000,
+  "creationDate": 1700659477601,
+  "__props__": {
+    "id": "c1i7N0c8g8f8l7k0n1C670j1q1",
+    "creationDate": 1700659383269,
+    "collapsed": [],
+    "comments": [],
+    "docName": "vl3nobEnqFEZPH6n9lZxZNSW7z6IsAWwxrefwaVLiwAlg4hq4AS8hd05ysc01700659477600",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

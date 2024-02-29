@@ -1,0 +1,38 @@
+{
+  "createdBy": {
+    "lastName": "khalil",
+    "country": "lebanon",
+    "address": "beirut",
+    "city": "beirut",
+    "type": "User",
+    "creationDate": 1699560101515,
+    "birthDate": 1699660800000,
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "firstName": "abdallah",
+    "password": "12345",
+    "ref": "USR-00000005",
+    "nationality": "lebanese",
+    "createdBy": "j7neF8CHqumHOGzAXNWi9JcLKTTyx9LRmJptYuYbJeiNWWfSrQMeqwKTZSp01699559755885",
+    "contactNumber": "827375893",
+    "creation-date": 1699560061978,
+    "id": "jv8shvHPz8yS6trgQZn9NYB6akJrRQl70WLsSULHkKCOZWADaq5XYObUZ0r61699560101513",
+    "creationDay": 1699488000000,
+    "email": "abdallah@gmail.com",
+    "username": "abdallahkhalil"
+  },
+  "description": "account creation",
+  "creationDay": 1700697600000,
+  "creationDate": 1700743332196,
+  "account": "JExf7LKwAWbeShZYhVWFnxv3jycINMZ4S6RtWFaUULfIrevOyrYckmGQnpnH1700743332082",
+  "__props__": {
+    "id": "r137r078N8t807N0R1C5q9f5w1",
+    "creationDate": 1700743237667,
+    "collapsed": [],
+    "comments": [],
+    "docName": "pR44oEa3VxvgbT0eqErpT1Q1xY1RqOX1wwqBF2eUQ9seaPoQA7MoLEBQgcCg1700743332194",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

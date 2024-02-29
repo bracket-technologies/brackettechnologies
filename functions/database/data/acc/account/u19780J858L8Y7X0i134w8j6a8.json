@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687878258,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "Xgxu8OWxyxwM6OlgcLlOsaSmEgjcmWuqgmsTeCcBgqcDK9znrhcePjKtdpCZ-1708687878258",
+  "ref": "ACC-00000016",
+  "ledgerAccount": "531/1/1",
+  "blockAccount": "No",
+  "name": "Petty Cash",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "5",
+    "53",
+    "531"
+  ],
+  "__props__": {
+    "id": "u19780J858L8Y7X0i134w8j6a8",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "lBY2XWhhxNJywa6uwaJDocVkuYHMyljWAYQq4J7AAiCyXXjRlDoz4yQUwU0R-1708687878258",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

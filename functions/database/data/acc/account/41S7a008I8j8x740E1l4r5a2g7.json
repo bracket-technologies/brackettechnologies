@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687895126,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "Mz0Hq2JuWFka7Lu8nIXBgZSBjXO1CTHXxAyk1coWK0xrlYkwjmgdRzO5GVf5-1708687895125",
+  "ref": "ACC-00000381",
+  "ledgerAccount": "7610/1/1",
+  "blockAccount": "No",
+  "name": "Other Operating Ordinary Revenues",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "76",
+    "761",
+    "7610"
+  ],
+  "__props__": {
+    "id": "41S7a008I8j8x740E1l4r5a2g7",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "Smrh8xlOntieZV8WNIOrWHx2IZMNfFTGfctvQgmmpNa9O75o81ZQRD35bgit-1708687895122",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

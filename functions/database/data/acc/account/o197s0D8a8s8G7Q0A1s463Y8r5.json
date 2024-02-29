@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687886262,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "OzjMEFRBXBFpBlPVWDV5r005rEF8j4BjB4mRZT751hFroPWw2DeYFiTRGtpF-1708687886262",
+  "ref": "ACC-00000154",
+  "ledgerAccount": "6751/1/1",
+  "blockAccount": "No",
+  "name": "Normal Operations",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "67",
+    "675",
+    "6751"
+  ],
+  "__props__": {
+    "id": "o197s0D8a8s8G7Q0A1s463Y8r5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "N57LcnDIeaFeA3ujqUrWXq2SPOg4t2LjjCgnPxzIuie1tTJptpPp5oCGel7Z-1708687886261",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687891272,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "Z7edSVciNxWvdmRkSQmj4RNSVQYnzkjsI7HxhyDRTHmsCOp3FNMPGOiKDWmo-1708687891272",
+  "ref": "ACC-00000288",
+  "ledgerAccount": "7197/1/1",
+  "blockAccount": "No",
+  "name": "Ancillary Activities",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "71",
+    "719",
+    "7197"
+  ],
+  "__props__": {
+    "id": "i1l7k0E8h8j827t031F4o1T2e9",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "9eyqIlPhOVMYF3egP1Dwvi26z6Pdug74F5pmLj9aIuAbCamHNVxJibvvrhaF-1708687891272",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

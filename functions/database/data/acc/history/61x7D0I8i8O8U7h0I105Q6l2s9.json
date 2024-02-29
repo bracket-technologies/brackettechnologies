@@ -1,0 +1,27 @@
+{
+  "difference": [
+    {
+      "new": 0,
+      "path": "credit"
+    },
+    {
+      "new": 0,
+      "path": "debit"
+    }
+  ],
+  "description": "Data has been updated",
+  "creationDay": 1700352000000,
+  "creationDate": 1700384979688,
+  "account": "DhtEUXDDQ0W5Yz2CQCDjqwVraGRPIlD0REtjZYBHVl0ogWphoT2Ry7HWZ0qC1700375151583",
+  "__props__": {
+    "id": "61x7D0I8i8O8U7h0I105Q6l2s9",
+    "creationDate": 1700384977542,
+    "collapsed": [],
+    "comments": [],
+    "docName": "Q0Z0dwNgN2EtrMsI0BrQXF4ohYvI0a28UUNkqI4GouwMCq30S7THjQzcMyRq1700384979686",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

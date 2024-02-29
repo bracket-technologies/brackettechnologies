@@ -1,0 +1,27 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687883460,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "Rs1vXqVEZVeMtIQSDUJEY9cxnT28Isy4sFJE5sZihmHS4m8qQlCDhOzD3fsx-1708687883459",
+  "ref": "ACC-00000111",
+  "ledgerAccount": "63/1/1",
+  "blockAccount": "No",
+  "name": "Personnel Charges",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "63"
+  ],
+  "__props__": {
+    "id": "C1A7K0G8g8w8Q7q0Y1C4b8Z9R2",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "n1y2oORWjXKZSNZpJSlYwN0etha3wlRREYSgrBqdUxoUIraaYq8FSNvH4fa0-1708687883459",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

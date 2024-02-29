@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687879976,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "r6x4EQFDR904zinWYm7dRLpt4UeS0SwHAJW0Dv7J0xfbgka9dxpQySG72SN9-1708687879975",
+  "ref": "ACC-00000055",
+  "ledgerAccount": "61122/1/1",
+  "blockAccount": "No",
+  "name": "Maintenance Products",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "61",
+    "611",
+    "6112",
+    "61122"
+  ],
+  "__props__": {
+    "id": "D1n7d0w838U8l7v0c1m4A3H1R5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "JMtQ9nw3zd9ugR20JssD0frU0uZJmZPWPbVOJWCtWGuELdlS9SlrMiIO2fix-1708687879975",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "create": {
+    "notification": {
+      "keyValue": [
+        {
+          "path": "dueDate",
+          "type": "number",
+          "key": "dueDate",
+          "required": "true"
+        },
+        {
+          "path": "scheduleId",
+          "type": "string",
+          "key": "id",
+          "required": "true"
+        },
+        {
+          "path": "users",
+          "type": "array",
+          "key": "users",
+          "required": "true"
+        }
+      ],
+      "customUpdate": "updateScheduleInSession():[data=saveStack:().0.data;collection=saveStack:().0.collection]"
+    }
+  },
+  "collection": "session",
+  "__props__": {
+    "id": "y1i7r0o8k838i7e0e0U3L687e8",
+    "creationDate": 1704664811874,
+    "collapsed": [],
+    "comments": [],
+    "docName": "sessions2MHL2YSh6GZ1J54E3cn",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

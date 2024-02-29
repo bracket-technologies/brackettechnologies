@@ -1,5 +1,4 @@
 const { toArray } = require("./toArray")
-const readFile = require("./readFile");
 
 module.exports = {
     mail: async ({ _window, req, res, id, data, __, ...params }) => {
@@ -10,7 +9,7 @@ module.exports = {
         const nodemailer = _window.__package__.nodemailer
         const OAuth2 = google.auth.OAuth2;
         var data = req.body.data
-        var global = _window.global
+        const global = _window.global
         var project = global.data.project
 
         // no recipient

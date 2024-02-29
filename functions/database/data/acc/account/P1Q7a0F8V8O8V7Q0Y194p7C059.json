@@ -1,0 +1,26 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687890664,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "7USUyaWRuX2gOCjNpBysJepsaz4PRo4sZNW8EWMIYU6z7iWOjrq53nr900pj-1708687890663",
+  "ref": "ACC-00000270",
+  "ledgerAccount": "7/1/1",
+  "blockAccount": "No",
+  "name": "Income",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7"
+  ],
+  "__props__": {
+    "id": "P1Q7a0F8V8O8V7Q0Y194p7C059",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "aThdDKdwTwPRortegvjmLEyb6afjNky1nmMzTqVvpE5OcZuYKspCQwwEWpsD-1708687890663",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

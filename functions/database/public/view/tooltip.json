@@ -1,0 +1,15 @@
+{
+    "view": "View:tooltip?class=flex-start;style.zIndex=999;style.width=fit-content;style.alignItems=center;style.position=fixed;style.opacity=0;style.pointerEvents=none;style.padding=.5rem 1rem;style.backgroundColor=#444444dd;style.borderRadius=.5rem",
+    "children": [{
+        "view": "Text:tooltip-text?style.width=fit-content;style.fontSize=1.1rem;style.color=#fff"
+    }],
+    "__props__": {
+      "provider": "bracketDB",
+      "db": "public",
+      "collection": "view",
+      "id": "z1W7Z0s8o87837a0z1N4k1D6C0",
+      "creationDate": 0,
+      "docName": "tooltip",
+      "public": true
+    }
+}

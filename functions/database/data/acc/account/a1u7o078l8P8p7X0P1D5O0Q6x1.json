@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687883375,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "TpmK3JyEbFBZg6Qe86F7jAHF7HRI2Gb70b5HJx57rCotrmGpICLgCotRIDGw-1708687883375",
+  "ref": "ACC-00000110",
+  "ledgerAccount": "62692/1/1",
+  "blockAccount": "No",
+  "name": "Financial Fees &Expenses(Security &Note)",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "62",
+    "626",
+    "6269",
+    "62692"
+  ],
+  "__props__": {
+    "id": "a1u7o078l8P8p7X0P1D5O0Q6x1",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "y1qtlWahdm62ViEXdOxlvktwz8HGgHxysYCClKcxBaupcsm6QIyGpA8qPn0P-1708687883374",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -27,8 +27,14 @@ module.exports = async ({ req, res, data }) => {
     return res.end()
   }
 
+  // database
+  if (_window.global.manifest.server === "database") return require("./database").database({ _window, req, res, id })
+
+  // storage
+  if (_window.global.manifest.server === "storage") return require("./storage").storage({ _window, req, res, id })
+
   // open stack
-  var stack = openStack({ _window, id, event: req.method.toLowerCase(), server: true, action: _window.global.manifest.action })
+  var stack = openStack({ _window, id, event: req.method.toLowerCase(), server: _window.global.manifest.server, route: _window.global.manifest.route })
 
   // render
   await render({ _window, req, res, stack, id, data: { view: "route" } })

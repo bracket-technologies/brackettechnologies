@@ -15,6 +15,10 @@ body {
   float: none;
 }
 
+.darkmode {
+  filter: invert(90%)
+}
+
 .hidden {
   display: none !important;
 }

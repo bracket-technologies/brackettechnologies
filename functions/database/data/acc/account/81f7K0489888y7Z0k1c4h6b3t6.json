@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687879963,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "oWAjnME0DvS77fokJNksVMTJSEI9w7vOwdIGk5lbV0JRbfGHJhxHHHidlof4-1708687879963",
+  "ref": "ACC-00000054",
+  "ledgerAccount": "61121/1/1",
+  "blockAccount": "No",
+  "name": "Fuel & Gaz",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "61",
+    "611",
+    "6112",
+    "61121"
+  ],
+  "__props__": {
+    "id": "81f7K0489888y7Z0k1c4h6b3t6",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "WjBCrVS5ZvaRHL48ffRkSPmnmkhS4yf48kKqaAnRj6YZLR14O55xJAnum6g3-1708687879963",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

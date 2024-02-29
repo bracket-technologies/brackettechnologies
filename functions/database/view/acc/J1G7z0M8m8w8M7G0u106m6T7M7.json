@@ -1,0 +1,40 @@
+{
+  "view": "View:checkboxes?class=flex;style:[alignItems=center;gap=.5rem];click:[op()];if():[_.defaultSelectedValues]:[sheetCheckBox()]",
+  "children": [
+    {
+      "view": "View?class=flexbox;style:[height=2rem;width=2rem;border=1px solid #ddd;borderRadius=.4rem;cursor=pointer]",
+      "children": [
+        {
+          "view": "Icon?name=done;google.symbol;style:[fontSize=3rem;color=#0000ffa6;transition=.1s;opacity=if():[selectedOption:().includes():[_.key]]:[1]:[0]]"
+        }
+      ]
+    },
+    {
+      "view": "Text?text=_.option"
+    }
+  ],
+  "__props__": {
+    "id": "J1G7z0M8m8w8M7G0u106m6T7M7",
+    "creationDate": 1696426734620,
+    "collapsed": [],
+    "comments": [],
+    "actions": {
+      "sheetCheckBox": {
+        "_": "if():[!firstRun:()]:[filterValue:()._():[selectedOption:().push():[_.rowId]]];firstRun:()=true"
+      },
+      "op": {
+        "maxChecked": "if():[selectedOption:().includes():[_.key]]:[selectedOption:().pullItem():[_.key];1stChild().1stChild().style():[opacity=0]]:[if():[selectedOption:().len()<_.limitCheckNumber]:[selectedOption:().push():[_.key];1stChild().1stChild().style():[opacity=1]]:[note():[text='You can add only '+__.limitCheckNumber+' options';danger]]]",
+        "multyCheck": "if():[selectedOption:().includes():[_.key]]:[selectedOption:().pullItem():[_.key];if():[_.reverseTick]:[activateTick()]:[deactivateTick()]]:[selectedOption:().push():[_.key];if():[_.reverseTick]:[deactivateTick()]:[activateTick()]]",
+        "singleCheck": "selectedOption:().pull();selectedOption:().push():[_.key];2ndParent().children().():[1stChild().1stChild().1stChild().style():[opacity=0]];[1stChild().1stChild().style():[opacity=1]]",
+        "activateTick": "1stChild().1stChild().style():[opacity=0]",
+        "_": "if():[_.checkOnlyOne]:[singleCheck()].elif():[_.multiCheck]:[multyCheck()].elif():[_.limitCheckNumber]:[maxChecked()]",
+        "deactivateTick": "1stChild().1stChild().style():[opacity=1]"
+      }
+    },
+    "docName": "checkboxes",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

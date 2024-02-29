@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687895263,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "kHLM0bCKMh0buJRdtdR46b2ZSJSGUAEC1a3RIq34vCCuIySpgZpiP2D9eaQb-1708687895263",
+  "ref": "ACC-00000384",
+  "ledgerAccount": "7710/1/1",
+  "blockAccount": "No",
+  "name": "Revenues of Equity Participations",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "77",
+    "771",
+    "7710"
+  ],
+  "__props__": {
+    "id": "y1V7C0y838Z8f7i0V1u479B792",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "rydFNes3WanHEW9B8RG5mBVbvpczyiY5pfIbHYnXYfxtTUXCmJzfHJOeTMlS-1708687895263",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

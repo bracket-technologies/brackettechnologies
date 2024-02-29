@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687881962,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "qSXrTeov6bu8n4lgEWjOZsgFfSi2ILAEJNKyUoEUOI0TlbLhY81cOn7DNepE-1708687881962",
+  "ref": "ACC-00000080",
+  "ledgerAccount": "6252/1/1",
+  "blockAccount": "No",
+  "name": "Leasing On Property",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "62",
+    "625",
+    "6252"
+  ],
+  "__props__": {
+    "id": "a1n7o0W8u8X887M0a1o5g0C4j5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "xL1EvJYrZOePg0BvRYtqjPMwnQ3imPSqzrUts0Ltp8r3b27sVq5JlfoicdIA-1708687881962",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -20,7 +20,7 @@ const mime = {
 
 const storage = async ({ req, res }) => {
 
-  var upload = req.body.upload
+  var upload = req.body.data
   var data = await storeFile({ req, upload })
   res.send(data)
 }
@@ -54,7 +54,7 @@ const storeFile = async ({ req, upload }) => {
     type: data.type,
     tags: data.tags || [],
     title: data.title || data.type.toUpperCase(),
-    "creation-date": parseInt(req.headers.timestamp)
+    "creationDate": parseInt(req.headers.timestamp)
   }
   
   await db.collection(collection).doc(upload.doc).set(data).then(() => {

@@ -1,0 +1,27 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687878174,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "N1SSOnPI4o1mbZNyvis6j1PBfcLEdFpSIEXmpWomtHlaw1mjdPjCTkWGM62G-1708687878173",
+  "ref": "ACC-00000015",
+  "ledgerAccount": "53/1/1",
+  "blockAccount": "No",
+  "name": "Cash",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "5",
+    "53"
+  ],
+  "__props__": {
+    "id": "71Q7v0f8M8m8c7v0D1N4e400k8",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "PHcavK8643CGnOKElJkPe5RCWmpTE6FyJ1wGUlbChdlp0mezB2rSVzfRx9K1-1708687878173",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

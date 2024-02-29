@@ -1,12 +1,12 @@
 const { removeView } = require("./view")
 const { clone } = require("./clone")
 const { closePublicViews } = require("./closePublicViews")
-const { lineInterpreter } = require("./lineInterpreter")
+const { toLine } = require("./toLine")
 const { isNumber } = require("./toValue")
 
 const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
 
-  var views = window.views
+  const views = window.views
   var view = window.views[id]
 
   var path = data.path, __dataPath__ = []
@@ -17,18 +17,18 @@ const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
   if (__dataPath__.length > 0 && !data.preventDefault) {
 
     var string = `${view.doc}:().` + __dataPath__.join(".").slice(0, -1)
-    var parentData = lineInterpreter({ id, data: {string} })
+    var parentData = toLine({ id, data: {string} })
 
     // remove data
     if (Array.isArray(parentData) && parentData.length === 0) {
 
       var string = `${view.doc}:().` + __dataPath__.join(".").slice(0, -1) + "=:"
-      lineInterpreter({ id, data: {string}, __, lookupActions })
+      toLine({ id, data: {string}, __, lookupActions })
 
     } else {
 
       var string = `${view.doc}:().` + __dataPath__.join(".") + ".del()"
-      lineInterpreter({ id, data: {string}, __, lookupActions })
+      toLine({ id, data: {string}, __, lookupActions })
     }
   }
 
@@ -50,7 +50,7 @@ const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
 
 const updateDataPath = ({ id, index, decrement, increment }) => {
 
-  var views = window.views
+  const views = window.views
   var view = views[id]
   
   if (!view) return

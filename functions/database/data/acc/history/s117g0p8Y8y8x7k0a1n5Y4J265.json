@@ -1,0 +1,244 @@
+{
+  "createdBy": {
+    "lastName": "Zoghbi",
+    "country": "Lebanon",
+    "address": "beirut",
+    "city": "beirut",
+    "permission": {
+      "hezzzyawezzz": [],
+      "creation-date": 1700573235660,
+      "permission": {
+        "voucher": [
+          "Remove",
+          "Create",
+          "Edit",
+          "Read",
+          "Import",
+          "Export"
+        ],
+        "bill": [
+          "Edit",
+          "Remove",
+          "Transaction Sheet",
+          "History",
+          "Cash Flow",
+          "Income Statement",
+          "Create",
+          "Read"
+        ],
+        "expense": [
+          "Create",
+          "Edit",
+          "Read",
+          "Remove"
+        ],
+        "branch": [
+          "Read",
+          "Edit",
+          "Create",
+          "History",
+          "Remove",
+          "Switch Branches"
+        ],
+        "notification": [
+          "Create",
+          "Edit",
+          "Read",
+          "Remove",
+          "Receive"
+        ],
+        "service": [
+          "Remove",
+          "History",
+          "Create",
+          "Edit",
+          "Read",
+          "Print"
+        ],
+        "sheet": [
+          "Remove",
+          "Create",
+          "Edit",
+          "Read",
+          "Import",
+          "Export"
+        ],
+        "currency": [
+          "Create",
+          "Edit",
+          "Read",
+          "Remove"
+        ],
+        "invoice": [
+          "Remove",
+          "History",
+          "Create",
+          "Edit",
+          "Read",
+          "Print"
+        ],
+        "asset": [
+          "Read",
+          "Remove",
+          "Create",
+          "History",
+          "Edit"
+        ],
+        "user": [
+          "Edit",
+          "Remove",
+          "History",
+          "Create",
+          "Read"
+        ],
+        "account": [
+          "Edit",
+          "Remove",
+          "Transaction Sheet",
+          "History",
+          "Cash Flow",
+          "Income Statement",
+          "Create",
+          "Read"
+        ],
+        "dashboard": [
+          "Read"
+        ],
+        "gallery": [
+          "Upload",
+          "Read",
+          "Edit",
+          "Remove"
+        ],
+        "transaction": [
+          "Remove",
+          "Create",
+          "Edit",
+          "Read",
+          "Import",
+          "Export"
+        ]
+      },
+      "id": "qgZpEBDIN2bOI8soQeEXwS2wgcIDl0PsG2sRPmTqIkOSN4kaqox2mpZYpU1r1700573331130",
+      "creationDay": 1700524800000,
+      "creationDate": 1700573331131,
+      "user": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+      "clooossseeed": [
+        {
+          "path": [
+            "permission",
+            "account"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "asset"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "branch"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "currency"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "dashboard"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "expense"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "gallery"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "invoice"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "notification"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "service"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "sheet"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "user"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "voucher"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "transaction"
+          ]
+        }
+      ]
+    },
+    "type": "Admin User",
+    "creationDate": 1699560006936,
+    "birthDate": 1699056000000,
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "firstName": "Mohamad",
+    "password": "54321",
+    "ref": "USR-00000001",
+    "nationality": "lebanese",
+    "createdBy": "j7neF8CHqumHOGzAXNWi9JcLKTTyx9LRmJptYuYbJeiNWWfSrQMeqwKTZSp01699559755885",
+    "contactNumber": "13457892",
+    "creation-date": 1699559967729,
+    "id": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+    "creationDay": 1699488000000,
+    "email": "mohamad@gmail.com",
+    "username": "mohamadz"
+  },
+  "description": "sheet creation",
+  "sheet": "WKVRwqDw8mD8FW9r5M6WIxOQDdUopUm8zMmHlp5ESyenCgYqJaiHjtpF9ivu1701784548436",
+  "creationDay": 1701734400000,
+  "creationDate": 1701784548590,
+  "__props__": {
+    "id": "s117g0p8Y8y8x7k0a1n5Y4J265",
+    "creationDate": 1701784440115,
+    "collapsed": [],
+    "comments": [],
+    "docName": "8G80u8Qc2IrIDM3Jev1IA6svCKykRVHniungwCAlblxZ6ptT6LVlxgfAfmRm1701784548588",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

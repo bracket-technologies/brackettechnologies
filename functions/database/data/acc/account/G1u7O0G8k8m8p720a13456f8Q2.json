@@ -1,0 +1,32 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687888970,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "Vcj4WjWTfm2ZwTFbqk1x8eyhNE0dxKvCwzDmypIYYyrdJjTmAsGaS8rZxgpi-1708687888969",
+  "ref": "ACC-00000229",
+  "ledgerAccount": "6512313/1/1",
+  "blockAccount": "No",
+  "name": "Depr.Alloc. - Metalllic Buildings for Trade or Industr",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6512",
+    "65123",
+    "651231",
+    "6512313"
+  ],
+  "__props__": {
+    "id": "G1u7O0G8k8m8p720a13456f8Q2",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "Yg7OwOFPSnZ3pz77jkx275FHvRhkCwIVBaHz4ZsJNT5F30OsFPGclYNXvrYw-1708687888969",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

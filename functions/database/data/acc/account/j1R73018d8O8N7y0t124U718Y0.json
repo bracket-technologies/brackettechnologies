@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687890456,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "eaDhImoFRQbyA1Ijr5WYWofxTcLZiBxnOV3LxtIHrAO6r8yIFNN3dGVSAPd1-1708687890377",
+  "ref": "ACC-00000264",
+  "ledgerAccount": "6810/1/1",
+  "blockAccount": "No",
+  "name": "Net Book Value of Disposed Fixed Assets",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "68",
+    "681",
+    "6810"
+  ],
+  "__props__": {
+    "id": "j1R73018d8O8N7y0t124U718Y0",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "fEDeRa7jaL43UANTYXzvm5O5iLKfQbRAfmfmVy1LQGhM0xsMSEBuSmiUvuSM-1708687890377",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

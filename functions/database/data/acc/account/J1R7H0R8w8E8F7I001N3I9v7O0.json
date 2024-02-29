@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687886766,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "GafBv2x5EPMMYLwXDqQ7epO22L9ruPpKoLGwh5eyu2c9VoarKCRkU6Ha4wUc-1708687886765",
+  "ref": "ACC-00000169",
+  "ledgerAccount": "68511/1/1",
+  "blockAccount": "No",
+  "name": "Donations",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "68",
+    "685",
+    "6851",
+    "68511"
+  ],
+  "__props__": {
+    "id": "J1R7H0R8w8E8F7I001N3I9v7O0",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "1fxHwZ287v3xazECSonGwI2pKfBd4dcpCMxxx2jkVNKEML5pEkUcqBr64SiS-1708687886765",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

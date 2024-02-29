@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687884168,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "8aDzHOihPWkVbVMUnN0fbAxQ0Sieib3mNsYHbNIpOm42gAndAHpTRFaIB3Xo-1708687884167",
+  "ref": "ACC-00000130",
+  "ledgerAccount": "6512/1/1",
+  "blockAccount": "No",
+  "name": "Depreciation Of Fixed Assets",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6512"
+  ],
+  "__props__": {
+    "id": "l11710O8G8s8p7p0816426X7P7",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "YQSGXeqqd2jq2eeOufPp9V4nNIU8zc24JXrCIMSAMjfSfWgERLwZgHGX5ztR-1708687884167",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

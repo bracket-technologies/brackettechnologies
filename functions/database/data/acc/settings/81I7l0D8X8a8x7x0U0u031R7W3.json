@@ -1,0 +1,40 @@
+{
+  "navBar": [
+    {
+      "permission": "branch",
+      "text": "Branches",
+      "id": "branchManager"
+    },
+    {
+      "permission": "user",
+      "id": "userManager",
+      "text": "Users"
+    },
+    {
+      "permission": "currency",
+      "text": "Currencies",
+      "id": "currencyManager"
+    },
+    {
+      "permission": "notification",
+      "id": "notificationManager",
+      "text": "Notifications"
+    },
+    {
+      "permission": "paymentTerms",
+      "id": "paymentTermsManager",
+      "text": "Payment Terms"
+    }
+  ],
+  "__props__": {
+    "id": "81I7l0D8X8a8x7x0U0u031R7W3",
+    "creationDate": 1695052084051,
+    "collapsed": [],
+    "comments": [],
+    "docName": "navBar",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

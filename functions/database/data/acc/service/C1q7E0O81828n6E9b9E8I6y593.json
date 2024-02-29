@@ -1,0 +1,32 @@
+{
+  "sponsorCommission": "0",
+  "netPrice": "0",
+  "discount": "0",
+  "tax": "0",
+  "creationDate": 1699812127905,
+  "arrivalStation": "Union Station",
+  "trip": "One Way",
+  "exchangeRate": "1",
+  "createdBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+  "service": "Train",
+  "supplier": "1011/1",
+  "trainName": "The Ghan",
+  "name": "dasfdfasd",
+  "currency": "USD",
+  "agentCommission": "0",
+  "salesmanCommission": "0",
+  "departureStation": "King Cross Station",
+  "creationDay": 1699747200000,
+  "class": "Economy",
+  "__props__": {
+    "id": "C1q7E0O81828n6E9b9E8I6y593",
+    "creationDate": 1699812127804,
+    "collapsed": [],
+    "comments": [],
+    "docName": "S0wK1OjPuZZu9J9aXgPfSJ6RXmtf1hN1TwXmM5iHCWtkdH0vSzf4pFaQU5fO1699812127903",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

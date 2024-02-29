@@ -1,0 +1,24 @@
+{
+  "msg": "test1.7",
+  "createdBy": "5i7aFi1VZvdJzdVB5WTK0KOJGqJuerg3X2A8fjNqFxLXXU4NaOKpEH0iVnGU1700835548602",
+  "dueDate": 1706019720000,
+  "creationDay": 1705968000000,
+  "creationDate": 1706020075258,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "users": [
+    "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+    "5i7aFi1VZvdJzdVB5WTK0KOJGqJuerg3X2A8fjNqFxLXXU4NaOKpEH0iVnGU1700835548602",
+    "miNHA3ZfIRRg8ZXjE3FSefAshelXrNIAR99U6VidwDOC2POfLpRSnTcwOzkC-1705920997212"
+  ],
+  "__props__": {
+    "id": "b1A7A088z8f8G649E999H2f7s0",
+    "creationDate": 1706019907674,
+    "collapsed": [],
+    "comments": [],
+    "docName": "mio8yh10NBFElgkuHUSQUsnkOvQJWImTf9m22ytUF6qFdrGES18jCMSRIbrv-1706020075250",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

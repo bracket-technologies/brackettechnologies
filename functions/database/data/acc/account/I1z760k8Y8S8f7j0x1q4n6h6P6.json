@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687895055,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "XpHwv3fCi5KbVeeD0fpyUs7oGwHZWpld0uAp3swPevG7TJuxIafScm6ZQ755-1708687894993",
+  "ref": "ACC-00000380",
+  "ledgerAccount": "75523/1/1",
+  "blockAccount": "No",
+  "name": "Reversal of Prov. for Taxes (Other than Income Tax",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "75",
+    "755",
+    "7552",
+    "75523"
+  ],
+  "__props__": {
+    "id": "I1z760k8Y8S8f7j0x1q4n6h6P6",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "Xj26mgUCQTLXily9syRRojkyvnbdjohAHVapynOJdJ17C12faQD7I5TWTPpK-1708687894993",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

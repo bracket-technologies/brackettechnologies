@@ -1,0 +1,39 @@
+{
+  "difference": [
+    {
+      "new": "gjf5R",
+      "path": "inputId",
+      "old": "3eQwN"
+    },
+    {
+      "new": "v",
+      "path": "country",
+      "old": ""
+    },
+    {
+      "new": "v",
+      "path": "trainName",
+      "old": ""
+    },
+    {
+      "new": "v",
+      "path": "trainStation",
+      "old": ""
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "aRiAoFpuKnap9rZCJcACccDMX29Kai3iT6kFHbYUfHtc2mL9kHAk3wzgai8g1699268378803",
+  "creationDay": 1700611200000,
+  "creationDate": 1700645117929,
+  "__props__": {
+    "id": "41Z7D0s8I8Y8f7108185q6z1M7",
+    "creationDate": 1700645023918,
+    "collapsed": [],
+    "comments": [],
+    "docName": "PSQfqg0Ei269kfHAsoM8dLsqkUQnBZkuCzrgP7hcbbLH7oQWAK9DNrMz5CTo1700645117929",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

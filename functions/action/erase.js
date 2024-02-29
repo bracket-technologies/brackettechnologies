@@ -1,17 +1,14 @@
 const axios = require("axios")
 const { deleteData } = require("./database")
-const { jsonToBracket } = require("./jsonToBracket")
 
 const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase = {}, ...params }) => {
 
   var data
-  var headers = erase.headers || {}
-  var store = erase.store || "route/database"
 
   if (!erase.collection) return console.log("No collection!")
 
   // headers
-  headers = { ...headers, erase: encodeURI(jsonToBracket({ erase })), timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()) }
+  var headers = { ...(erase.headers || {}), timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()), "Access-Control-Allow-Headers": "Access-Control-Allow-Headers" }
   
   if (_window) {
 
@@ -19,13 +16,7 @@ const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase
 
   } else {
 
-    var response = await axios.delete(`/${store}`, {
-      headers: {
-        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-        ...headers
-      }
-    })
-
+    var response = await axios.post(`/`, { server: "database", type: "erase", data: erase }, { headers })
     data = response.data
   }
 

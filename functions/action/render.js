@@ -9,7 +9,7 @@ require("dotenv").config();
 
 const render = async ({ _window, id, req, res, stack, address, lookupAction, data }) => {
 
-    var global = _window.global
+    const global = _window.global
     var __ = global.__
 
     // get route view from database
@@ -36,7 +36,7 @@ const render = async ({ _window, id, req, res, stack, address, lookupAction, dat
 
         view = { ...view, __customView__: "route", __viewPath__: ["route"], __customViewPath__: ["route"], __lookupViewActions__: [{ type: "customView", view: "route" }] }
     }
-
+    
     // address: start toView
     address = addresser({ _window, id, type: "function", status: "Start", function: "toView", headAddress: address, stack, renderer: true, __ }).address
 
@@ -75,7 +75,7 @@ const document = async ({ _window, res, stack, address, __ }) => {
 
     logger({ _window, data: { key: "document", end: true } })
 
-    toAwait({ _window, stack, address })
+    toAwait({ _window, stack, address, __ })
 
     // clear secure view actions
     Object.values(global.data.view).map(view => {

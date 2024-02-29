@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687894081,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "0u8UvdfHJAYRNdhftya2oI93RQebcZph0yKj5UM62fxXXzK94lrDEMhL8ReG-1708687894081",
+  "ref": "ACC-00000360",
+  "ledgerAccount": "7173/1/1",
+  "blockAccount": "No",
+  "name": "Revenues of Sub. Activities - Services",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "71",
+    "717",
+    "7173"
+  ],
+  "__props__": {
+    "id": "E127e0q8k8y8c7E0Z1d4y7x8n9",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "gUNeSE80K4352fD3VHR5LwcGz5AKRK9Ym07KaGzdcid3ZcjA0nERGb1vHqB7-1708687894081",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687877668,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "lJCowdbfvcpJO4PeoV30jJkQGLtsHOGQNgJzgqpDdST3EmzrcpTHzTzQAcnX-1708687877668",
+  "ref": "ACC-00000002",
+  "ledgerAccount": "50/1/1",
+  "blockAccount": "No",
+  "name": "Security Placements",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "5",
+    "50"
+  ],
+  "__props__": {
+    "id": "v1x7h0u8O8H8U7E0T144M8S6O5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "lAxc4h1qmWUZKs6WA9y97Py9EwDgY1ooMUSmCXHSnlWDnHeYO26E2ekI4jkA-1708687877668",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687879768,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "0ZOCAPEKRsj4pjdLEhTnp9OqGenmjHu1KDGwraoi0BWpCmOoG4336els8HJJ-1708687879768",
+  "ref": "ACC-00000050",
+  "ledgerAccount": "6111/1/1",
+  "blockAccount": "No",
+  "name": "Raw Materials Purchases",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "61",
+    "611",
+    "6111"
+  ],
+  "__props__": {
+    "id": "j1S7W0j8x878A7z0P1x4x9w0e3",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "nu3mpIxxcPU3ZoLJELjISNIRJwN5TwrVGsvA5ADJiRYvTpGQm7AXfyqE74wj-1708687879768",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -43,7 +43,6 @@ const upload = require("./upload")
 const {compare} = require("./compare")
 const {toCSV} = require("./toCSV")
 const {decode} = require("./decode")
-const {route} = require("./route")
 const {contentful} = require("./contentful")
 const {getDateTime} = require("./getDateTime")
 const {insert} = require("./insert")
@@ -62,7 +61,6 @@ module.exports = {
   setCookie,
   position,
   getPadding,
-  route,
   decode,
   contentful,
   toCSV,

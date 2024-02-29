@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687880774,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "t75vogT48zEauqnLqOvNONMdyVGThEOetRfOHJO8KvFRL8NqH0O0f0kIKvf0-1708687880773",
+  "ref": "ACC-00000068",
+  "ledgerAccount": "61185/1/1",
+  "blockAccount": "No",
+  "name": "Customs Charges",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "61",
+    "611",
+    "6118",
+    "61185"
+  ],
+  "__props__": {
+    "id": "b1y7k0f8B8m8c7G0T1o4w8W5W1",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "kydUasaZDlZMCNlct4kHeImzhsTvKxjaRTA4b8qcBuKNcfeLwTmHDWMwq4i9-1708687880773",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687886463,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "t1w8RuVlvVcWcdJp6RMYnZWCcuI4VXzVXaebfcxpkk821VvGnu8MNjcRO0Tr-1708687886463",
+  "ref": "ACC-00000160",
+  "ledgerAccount": "6794/1/1",
+  "blockAccount": "No",
+  "name": "Prov.For Dimunit.Value Securities Place.",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "67",
+    "679",
+    "6794"
+  ],
+  "__props__": {
+    "id": "u1k7Y0L898u8s7M0T1y4H4r889",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "Qe1hLhnaWeyoByeMfQwVkNNa4QhwhsH5Y9S1GWFk9lynFhiSeR5gMkUGSWPp-1708687886463",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687882084,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "Fq9cI9iRmxhccoCKU3gN9Bjxp3XEh83pzwijhEvsgO70liy0w5yOvT1iqCqJ-1708687882083",
+  "ref": "ACC-00000082",
+  "ledgerAccount": "6254/1/1",
+  "blockAccount": "No",
+  "name": "Licences",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "62",
+    "625",
+    "6254"
+  ],
+  "__props__": {
+    "id": "41T7i0Y8W8y8B7X0x1n5v0x2V6",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "w7UgGFG4XZHbCabd73CmSRPWOGUYyRR9Hbsot8BMknJy2ZcpOmyx1o8Bt8Xi-1708687882083",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

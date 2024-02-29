@@ -5,7 +5,7 @@ const { toCode } = require("./toCode")
 const { clone } = require("./clone")
 const { replaceNbsps } = require("./replaceNbsps")
 const { isCondition } = require("./isCondition")
-const { lineInterpreter } = require("./lineInterpreter")
+const { toLine } = require("./toLine")
 const { isEvent } = require("./isEvent")
 const { override } = require("./merge")
 const { toEvent } = require("./toEvent")
@@ -17,8 +17,8 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
   const { toAction } = require("./toAction")
   const { toApproval } = require("./toApproval")
 
-  var views = _window ? _window.views : window.views
-  var global = _window ? _window.global : window.global
+  const views = _window ? _window.views : window.views
+  const global = _window ? _window.global : window.global
   var view = views[id] || { id, __view__:true }
 
   var params = object || {}
@@ -39,7 +39,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     if (isEvent({ _window, string })) return toEvent({ _window, string, id, __, lookupActions })
 
     // line interpreter
-    return lineInterpreter({ _window, lookupActions, stack, id, e, data: { string }, req, res, mount, __, condition, object, action: "toParam" }).data
+    return toLine({ _window, lookupActions, stack, id, e, data: { string }, req, res, mount, __, condition, object, action: "toParam" }).data
   }
 
   // conditions
@@ -96,7 +96,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     else if (key && value && key.slice(-1) === "+") {
 
       key = key.slice(0, -1)
-      var myVal = key.split(".")[0].includes("()") || key.includes("_") || key.split(".")[0] === "" ? key : (`().` + key)
+      var myVal = (key.slice(0, 2) === "()" || key.slice(-3) === ":()" || key.includes("_") || key.split(".")[0] === "") ? key : (`().` + key)
       var data = `[${myVal}||[if():[type():[${value}]=number]:0.elif():[type():[${value}]=map]:[].elif():[type():[${value}]=list]:[:]:'']]`
       data = toCode({ _window, id, string: toCode({ _window, id, string: data, start: "'" }) })
       value = `${data}+${value}`
@@ -106,7 +106,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     else if (key && value && key.slice(-1) === "-") {
 
       key = key.slice(0, -1)
-      var myVal = key.split(".")[0].includes("()") || key.includes("_") || key.split(".")[0] === "" ? key : (`().` + key)
+      var myVal = (key.slice(0, 2) === "()" || key.slice(-3) === ":()" || key.includes("_") || key.split(".")[0] === "") ? key : (`().` + key)
       var data = toCode({ _window, id, string: `[${myVal}||0]` })
       var data1 = toCode({ _window, id, string: `[${value}||0]` })
       value = `${data}-${data1}`
@@ -116,7 +116,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     else if (key && value && key.slice(-1) === "*") {
 
       key = key.slice(0, -1)
-      var myVal = key.split(".")[0].includes("()") || key.includes("_") || key.split(".")[0] === "" ? key : (`().` + key)
+      var myVal = (key.slice(0, 2) === "()" || key.slice(-3) === ":()" || key.includes("_") || key.split(".")[0] === "") ? key : (`().` + key)
       var data = toCode({ _window, id, string: `[${myVal}||0]` })
       value = `${data}*${value}`
     }
@@ -161,10 +161,8 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
     // action()
     if (path0.slice(-2) === "()") {
       var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: path[0] }, condition, mount, object })
-      if (action !== "__continue__") {
-        if (typeof action === "object") override(params, action)
-        return action
-      }
+      if (action !== "__continue__" && typeof action === "object" && !Array.isArray(action)) override(params, action)
+      if (action !== "__continue__") return
     }
 
     // if()

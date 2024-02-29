@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687879872,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "TlPOOVTW4ADYvh1a1O8ay2y52TkZUAv0GCaJe5kWqIJswNZEUhN1XrQOOrdP-1708687879871",
+  "ref": "ACC-00000053",
+  "ledgerAccount": "6112/1/1",
+  "blockAccount": "No",
+  "name": "Consumables Purchases",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "61",
+    "611",
+    "6112"
+  ],
+  "__props__": {
+    "id": "B1n7C0A8D84837S051S3M9G8q8",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "2DsNXaQNP48IBssnDtbO2GQDhN1LcybSkztqNcKMHXccMmwNINB0DZV4ucbd-1708687879871",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

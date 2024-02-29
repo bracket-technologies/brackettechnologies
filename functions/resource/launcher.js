@@ -6,8 +6,8 @@ window.views = JSON.parse(document.getElementById("views").textContent)
 window.global = JSON.parse(document.getElementById("global").textContent)
 
 //
-var views = window.views
-var global = window.global
+const views = window.views
+const global = window.global
 
 // app default event listeneres
 defaultAppEvents()

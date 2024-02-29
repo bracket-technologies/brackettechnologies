@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687880366,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "js38PFkd8i2wHVjFs3BiCiTrn2Gva4h30PEmeSf7Pn15bdEyjZeJSTSe9r8H-1708687880366",
+  "ref": "ACC-00000059",
+  "ledgerAccount": "6113/1/1",
+  "blockAccount": "No",
+  "name": "Containers & Packing Materials",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "61",
+    "611",
+    "6113"
+  ],
+  "__props__": {
+    "id": "y167T0Z838C8m7g0Y1t4t3W6u2",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "LHAPuUGULtbXT3XBImybe4zT26xbcTErylcPnQsEwdA25cYiPBfjtxLIYEYi-1708687880366",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

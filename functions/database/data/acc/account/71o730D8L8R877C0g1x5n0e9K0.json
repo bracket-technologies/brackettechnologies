@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687886470,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "fDlwFveYPafchrDVPQCpfGvC77Jylfm6XpJsfr32abBFbqEdMfK4gZAj3knv-1708687886470",
+  "ref": "ACC-00000161",
+  "ledgerAccount": "6795/1/1",
+  "blockAccount": "No",
+  "name": "Provision For Risks & Financial Charges",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "67",
+    "679",
+    "6795"
+  ],
+  "__props__": {
+    "id": "71o730D8L8R877C0g1x5n0e9K0",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "zpbQA0FzAcvvfXF08WOcqiEKEpoAxzFEW43Ts5Vc3Sh15ktO9TC1uSKMzh6O-1708687886470",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687882757,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "9a55IbUbct8zriHD3Q4goyPpo55aWUs28O3A9IHsWRyFeXDhUC21nb3otvJf-1708687882756",
+  "ref": "ACC-00000094",
+  "ledgerAccount": "62632/1/1",
+  "blockAccount": "No",
+  "name": "Other Relatead Charges",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "62",
+    "626",
+    "6263",
+    "62632"
+  ],
+  "__props__": {
+    "id": "A1C7X0L818o8O7H061s4w7w761",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "eRhmgU7ab9QfBUUeo2AMBF93Ag0bd88IIFMuU4D4cAeW0zHIAqqAYkGpAF4w-1708687882756",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

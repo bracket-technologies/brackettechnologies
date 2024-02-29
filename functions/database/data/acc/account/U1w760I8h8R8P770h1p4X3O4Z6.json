@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687887362,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "AoYuEHBZOydnVEGD3JG76pHIGF0XcbqE6ZUaxL3up0kW0i6WNq9ZHJ0oNGUN-1708687887361",
+  "ref": "ACC-00000185",
+  "ledgerAccount": "6110/1/1",
+  "blockAccount": "No",
+  "name": "Purchases of Raw Materials & Consumables",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "61",
+    "611",
+    "6110"
+  ],
+  "__props__": {
+    "id": "U1w760I8h8R8P770h1p4X3O4Z6",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "KQKsUwPUSbhikOha8fvXMJcClkYueAUPyOWOm5M3a0dNOLg70ejHO3M3py7e-1708687887361",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

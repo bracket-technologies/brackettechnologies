@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687888162,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "nTxZCW5fjIFLX16uP26RU2cGlWU0UVnbRmzOXrYBsErUaSG3X0Qhn0bysqxX-1708687888162",
+  "ref": "ACC-00000206",
+  "ledgerAccount": "63195/1/1",
+  "blockAccount": "No",
+  "name": "Scholarships to the Personnel & their Child.",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "63",
+    "631",
+    "6319",
+    "63195"
+  ],
+  "__props__": {
+    "id": "g137i028d8L8Q7y0F1N4k7J0z4",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "aBnwCcj0VUL1rJcJjeJHmm7LNEh3wjj08LM5JgHXb4cwMkYvSVoJkuECg8OC-1708687888162",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

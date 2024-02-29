@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687879669,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "xXZMm8ZpX2dSt8FbzpnT4iZl9Ks9cG88OxCN99FF8ruv2ezv3ZM0KZ3KB2jL-1708687879664",
+  "ref": "ACC-00000047",
+  "ledgerAccount": "6052/1/1",
+  "blockAccount": "No",
+  "name": "Closing Stock",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "60",
+    "605",
+    "6052"
+  ],
+  "__props__": {
+    "id": "G1N7T0L8d8V80700o164o6i6C3",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "XVvwkxqrZKsj12mYJnfNesFWyQmiy0Pe4pysAolWbjwkt8NFpPJ4vjcR6RCM-1708687879664",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,16 +1,10 @@
-const axios = require('axios')
-const { jsonToBracket } = require('./jsonToBracket')
-
 module.exports = {
   search: async ({ _window, lookupActions, stack, id, req, res, e, __, data: search = {}, address }) => {
     
     var data
 
-    if (!search.collection) return console.log("No collection!")
-
     // headers
-    var headers = search.headers || {}
-    headers = { ...headers, search: encodeURI(jsonToBracket({ search })), timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()) }
+    var headers = { ...(search.headers || {}), timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()), "Access-Control-Allow-Headers": "Access-Control-Allow-Headers" }
     
     if (_window) {
 
@@ -18,12 +12,7 @@ module.exports = {
 
     } else {
 
-      var response = await axios.get(search.url || `/route/database`, {
-        headers: {
-          "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-          ...headers
-        }
-      })
+      var response = await require('axios').post(`/`, { server: "database", type: "search", data: search }, { headers })
 
       data = response.data
     }

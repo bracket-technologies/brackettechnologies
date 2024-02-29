@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687877767,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "kUy4vAN5vTVPLHEe8tdH1DdWwbkGwt2DyQE0mGCzCOP4ZnQW9g26brybEVsN-1708687877766",
+  "ref": "ACC-00000004",
+  "ledgerAccount": "502/1/1",
+  "blockAccount": "No",
+  "name": "Property Rights Related To Notes",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "5",
+    "50",
+    "502"
+  ],
+  "__props__": {
+    "id": "t1B7W0T8T8s8c7N0W1x4B7Z440",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "crs6tNMkDuZwAKJ44uTtfrK4XnfBQUC1sFaoiuoSLtt1u3bYLIsdgxZHP17d-1708687877766",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

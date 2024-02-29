@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687894671,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "jAKue6eYv34WaFGnhWfq5QFndCo8GnteZviWi4GstKKuxZiJh4BBYmAEQxlN-1708687894671",
+  "ref": "ACC-00000372",
+  "ledgerAccount": "7530/1/1",
+  "blockAccount": "No",
+  "name": "REVERSAL OF DEVAL.PROV. OF CURRENT ASSET",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "75",
+    "753",
+    "7530"
+  ],
+  "__props__": {
+    "id": "H1m7b0J8c8Q8W7y091F4p7R1x2",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "amo3ncywzN5cKvQu2RhhOK8SIyugfiFCXmOtcSybzrHpIVreoIfM6gpoC7wB-1708687894671",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

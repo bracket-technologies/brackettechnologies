@@ -1,0 +1,27 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687891857,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "4ftdrqwbT4ObI9nXTR141u9hsifZ6yA3OUw40erbwbSmsz73DxHZZ5W4zesi-1708687891857",
+  "ref": "ACC-00000303",
+  "ledgerAccount": "74/1/1",
+  "blockAccount": "No",
+  "name": "Operating Subsidies",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "74"
+  ],
+  "__props__": {
+    "id": "g1w7V0p8P8M8f7A0l1v3z9r5T3",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "0e4fW85bV9Dg2OTwvxbNg7IVBfXSAui7qv0TLo6sUw7ohcFMu5jtxtemyf24-1708687891857",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

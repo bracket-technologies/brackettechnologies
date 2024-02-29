@@ -8,7 +8,7 @@ const starter = ({ lookupActions, stack, __, address, id }) => {
   if (!view) return
   
   // status
-  view.__status__ = "Mounting Element"
+  view.__status__ = "Mounted"
   view.__rendered__ = true
   
   view.__element__ = document.getElementById(id)
@@ -19,18 +19,18 @@ const starter = ({ lookupActions, stack, __, address, id }) => {
   defaultInputHandler({ id })
   
   // status
-  view.__status__ = "Mounting Events"
+  //view.__status__ = "Mounting Events"
   
   // lunch auto controls
   Object.entries(require("../event/event")).map(([eventName, events]) => {
     
     if (view[eventName]) view.__controls__.push(...events({ id, data: view[eventName] }))
   })
+
+  //view.__status__ = "Mounted"
   
   // events
-  toArray(view.__controls__).map(data => addEventListener({ lookupActions, stack, __, id, address, ...data, event: data.event }))
-
-  view.__status__ = "Mounted"
+  toArray(view.__controls__).map(data => addEventListener({ lookupActions, stack, address, __, id, ...data, event: data.event }))
 }
 
 module.exports = { starter }

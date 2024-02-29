@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687884459,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "aOPmn2G4osOryHIHAae0MMMOLnwRNpWyLDxHdMDFQQV0thvLG1cgqjKI3eXz-1708687884458",
+  "ref": "ACC-00000136",
+  "ledgerAccount": "6554/1/1",
+  "blockAccount": "No",
+  "name": "Provisions For Bad & Doubtful Debts",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "655",
+    "6554"
+  ],
+  "__props__": {
+    "id": "y1X710w8s8T817R051S4h8V8L8",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "mwuXDx5ZUvGW5WdVo3ydMfTEngyVv2N25nUjevQwMZmksCHD3IZ0zfRo9Qqj-1708687884458",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

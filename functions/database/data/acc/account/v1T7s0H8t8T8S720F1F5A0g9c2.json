@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687888258,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "zvP84CYdch8EwolLkyyDVJmqeElnV8eWo7saQeCb74t2hM7tfZfRsyZx4c2p-1708687888257",
+  "ref": "ACC-00000208",
+  "ledgerAccount": "6351/1/1",
+  "blockAccount": "No",
+  "name": "Social Security FundContributions",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "63",
+    "635",
+    "6351"
+  ],
+  "__props__": {
+    "id": "v1T7s0H8t8T8S720F1F5A0g9c2",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "zsFCINCPIBbs7EOyt2Cj2KY1utskMFwWWAMFrW419aDz3xvgwBQ8EZy2yRWh-1708687888257",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

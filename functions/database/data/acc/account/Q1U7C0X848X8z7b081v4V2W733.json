@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687883566,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "3v7ZAkvOWm5gUEWPRRyYkcdRB3hydT6sfwoTHjcUq2OoCgOC179SwodaxylE-1708687883566",
+  "ref": "ACC-00000114",
+  "ledgerAccount": "6312/1/1",
+  "blockAccount": "No",
+  "name": "Wages",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "63",
+    "631",
+    "6312"
+  ],
+  "__props__": {
+    "id": "Q1U7C0X848X8z7b081v4V2W733",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "H95VsgjcKQUwLGLuav7CkHRfP41idlfO570uiBsWO35vKcryruPcgOGR9dM4-1708687883565",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

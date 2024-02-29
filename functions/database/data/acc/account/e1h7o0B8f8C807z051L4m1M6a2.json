@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687891062,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "awqzdsrYjsiH4QOsgSObpVbcnpsFXBa14EVyChwMGZ6w1tkRcDeGjyumuIDM-1708687891061",
+  "ref": "ACC-00000281",
+  "ledgerAccount": "713/1/1",
+  "blockAccount": "No",
+  "name": "Services",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "71",
+    "713"
+  ],
+  "__props__": {
+    "id": "e1h7o0B8f8C807z051L4m1M6a2",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "AzkJHd93NUMbDfOEaNc4jYamfKiZ7gL3pwEX0azkoHCt0n62wPxfmwUaQ1Zd-1708687891061",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687890581,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "K38WCUcTYu14hrDfcBASZ7YwWwSbyU9mPU7SW826t3GfH5oespkRyH6vSV1x-1708687890581",
+  "ref": "ACC-00000269",
+  "ledgerAccount": "6901/1/1",
+  "blockAccount": "No",
+  "name": "Income Tax on Net Operating Profits",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "69",
+    "690",
+    "6901"
+  ],
+  "__props__": {
+    "id": "m1I7V0288888s7i0G1e417B8M4",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "fl45uU2z8tCnwCVOxU2wJV4XD44VaClbcEj0taW0g8UIaQ0Q4dUODvWLzo4q-1708687890581",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

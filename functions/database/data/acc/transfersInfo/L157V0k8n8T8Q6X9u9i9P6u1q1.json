@@ -1,0 +1,697 @@
+{
+  "identifier": "voucher",
+  "searchEngineInputs": "voucherSharedInfo",
+  "createFormInputs": "voucherSharedInfo",
+  "tablevvv": [
+    {
+      "#onClickRowAction": "openBalanceSheet()",
+      "collection": "voucher",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Voucher#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "creationDate",
+          "header": "Date",
+          "formatCell": "toCellDate()",
+          "fraction": "1fr"
+        },
+        {
+          "path": "status",
+          "header": "Status",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "balanceSheet": "true",
+          "delete": true,
+          "justifyContent": "end",
+          "customIcon": [
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Pending"
+                  ],
+                  "conditionReference": "status"
+                }
+              ],
+              "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/Ry6VCfrImishYVFev3Qy?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=JHHcpMp5oYR%2FejdfJpCBeJz3dF%2FCCzEW8INeKKAUTPhkddgrrZ55HJ7a2sGI4PpwCsldZ1ATIQc%2FYCezQFsqX8AY6FR3xYK%2F4DeYLJCLX8gjj%2BRaa8yF4l0Nq4zZ34lIWR0Ed3Ma%2F9UB5DpYHlH6AKXNCCFgU0oVHbbg1xGPEZL%2BzphHwdqehvKSNPeQxMNHEHEHGmNfzWMhL3M8JfoQiLpnqKsxTJ8lwqlOsAAQKnbkS1gQUWb7uHwYOHwFHObAdqoGN2GJsOMa5L%2BByn7Y8cddcJbIHIUq4Wc54dvURkubQXyaKMkuTrMNyHAySFSVeVxXyTRYKugcUBe0MQoDrg%3D%3D",
+              "tooltip": "confirm",
+              "action": "confirmPendingVoucher()"
+            },
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Pending",
+                    "Confirmed"
+                  ],
+                  "conditionReference": "status"
+                }
+              ],
+              "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/RT2XaAcbRvxR5b9rxXSH?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=CGimAr0R0Y1GRBtyAlEU2qviIKLfrsKHRVQwDm77D7%2FHHV1PmCgisrKqiHUXWrvc1uwSiGX%2FRxdomxELvAwvBQl2u9Gz08%2FkXucqhbE68liL1TPm0ZlcqKRbTwPApTi3e%2BD8qk3KqVwJ8wimxBcqtgUJf4TqXPGx336BUTpLqrhsLpptfgJISJbqRm1M74RuA5Yna5CluBD9jIUJ4UBUb8V3lJYTOM8h34MwuwgC8aMt7nJl7EliD%2BWjDlw0mR8uGyq2omH37IEChGZTvBTsHim7422jYcHiuLYvS9m60un8uni9MIyUsh6R9mwUADZ0L6Yzm3aXyh2awou6yP9BXA%3D%3D",
+              "tooltip": "cancel",
+              "action": "cancelVoucher()"
+            }
+          ],
+          "fraction": ".5fr"
+        }
+      ]
+    }
+  ],
+  "title": "Journal Voucher Manager",
+  "managerName": "journalManager",
+  "type": "Journal Voucher",
+  "#searchEngineInputs": [
+    {
+      "clearable": true,
+      "inputPath": "voucherRef",
+      "inputLabel": "Voucher#",
+      "hideSearchIcon": true,
+      "collection": "voucher",
+      "searchable": true
+    },
+    {
+      "clearable": true,
+      "inputPath": "invoiceRef",
+      "inputLabel": "Invoice#",
+      "collection": "invoice",
+      "searchable": true
+    },
+    {
+      "inputPath": "creditAccount",
+      "generalLedger": true,
+      "inputLabel": "Credit Account",
+      "#allowedLedgers": [
+        "5"
+      ]
+    },
+    {
+      "inputPath": "debitAccount",
+      "generalLedger": "true",
+      "inputLabel": "Debit Account",
+      "#allowedLedgers": [
+        "5"
+      ]
+    },
+    {
+      "inputPath": "fromDate",
+      "inputLabel": "From Date",
+      "type": "date"
+    },
+    {
+      "inputPath": "toDate",
+      "inputLabel": "To Date",
+      "type": "date"
+    },
+    {
+      "clearable": true,
+      "inputPath": "status",
+      "readonly": "readonly",
+      "inputLabel": "Status",
+      "inputValue": "Confirmed",
+      "items": [
+        "Pending",
+        "Confirmed",
+        "Canceled"
+      ]
+    }
+  ],
+  "#createFormInputs": {
+    "subInput": [
+      {
+        "input": [
+          {
+            "inputPath": "voucherDate",
+            "inputLabel": "Transfer Date",
+            "inputValue": "today().timestamp()",
+            "type": "date"
+          },
+          {
+            "inputPath": "status",
+            "readonly": "readonly",
+            "inputLabel": "Status",
+            "inputValue": "Confirmed",
+            "items": [
+              "Pending",
+              "Confirmed",
+              "Canceled"
+            ],
+            "required": "true"
+          }
+        ],
+        "title": "General Information"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "ledgerAccount",
+            "counterInputBlurAction": "customUpdate():[section=1]",
+            "generalLedger": true,
+            "inputLabel": "Account",
+            "allowedLedgers": {
+              "condition": "__.index<1",
+              "allowedLedgers": [
+                "5"
+              ]
+            },
+            "required": true
+          },
+          {
+            "inputPath": "currency",
+            "readonly": true,
+            "inputLabel": "Currency",
+            "inputValue": "userData:().defaultCurrency.value",
+            "items": "userData:().currency.():code",
+            "droplistClickAction": "customUpdate():[section=1]",
+            "required": "true"
+          },
+          {
+            "multiInput": [
+              {
+                "inputPath": "exchangeRate",
+                "inputLabel": "Exchange Rate",
+                "inputValue": 1,
+                "icon": "Equal",
+                "executeUnitEveryLoad": "true",
+                "fr": "1.3fr",
+                "required": "true",
+                "unitValue": "___.accountCurrency"
+              },
+              {
+                "inputPath": "systemRate",
+                "readonly": "readonly",
+                "inputValue": 1,
+                "executeUnitEveryLoad": true,
+                "fr": "1fr",
+                "required": "true",
+                "unitValue": "___.currency"
+              }
+            ],
+            "customCondition": "().accountCurrency=userData:().currency.find():[counter=__.ledgerAccount.split():['/'].2.num()].code||false;if():[().accountCurrency]:[__.accountCurrency=().accountCurrency]:[if():[__.ledgerAccount]:[().splittedTxt=__.ledgerAccount.split():['/'];().splittedTxt.pop();().splittedTxt.push():'1';__.ledgerAccount=().splittedTxt.join():['/']];__.accountCurrency=userData:().currency.find():[counter=1].code];if():[!().accountCurrency]:[().display=false;delFromDoc()].elif():[().accountCurrency=__.currency]:[().display=false;delFromDoc()]"
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "required": true,
+            "fraction": "2fr"
+          },
+          {
+            "inputPath": "amount",
+            "price": true,
+            "inputLabel": "Amount",
+            "executeUnitEveryLoad": true,
+            "inputValue": 0,
+            "required": true,
+            "unitValue": "__.currency"
+          }
+        ],
+        "path": "credit",
+        "constantRows": "1",
+        "title": "Credit"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "ledgerAccount",
+            "counterInputBlurAction": "customUpdate():[section=2]",
+            "generalLedger": "true",
+            "inputLabel": "Account",
+            "required": true
+          },
+          {
+            "inputPath": "currency",
+            "readonly": true,
+            "inputLabel": "Currency",
+            "inputValue": "userData:().defaultCurrency.value",
+            "items": "userData:().currency.():code",
+            "droplistClickAction": "updateWrapper()",
+            "required": "true"
+          },
+          {
+            "multiInput": [
+              {
+                "inputPath": "exchangeRate",
+                "inputLabel": "Exchange Rate",
+                "inputValue": 1,
+                "icon": "Equal",
+                "executeUnitEveryLoad": "true",
+                "fr": "1.3fr",
+                "required": "true",
+                "unitValue": "___.accountCurrency"
+              },
+              {
+                "inputPath": "systemRate",
+                "readonly": "readonly",
+                "inputValue": 1,
+                "executeUnitEveryLoad": true,
+                "fr": "1fr",
+                "required": "true",
+                "unitValue": "___.currency"
+              }
+            ],
+            "customCondition": "().accountCurrency=userData:().currency.find():[counter=__.ledgerAccount.split():['/'].2.num()].code||false;if():[().accountCurrency]:[__.accountCurrency=().accountCurrency]:[if():[__.ledgerAccount]:[().splittedTxt=__.ledgerAccount.split():['/'];().splittedTxt.pop();().splittedTxt.push():'1';__.ledgerAccount=().splittedTxt.join():['/']];__.accountCurrency=userData:().currency.find():[counter=1].code];if():[!().accountCurrency]:[().display=false;delFromDoc()].elif():[().accountCurrency=__.currency]:[().display=false;delFromDoc()]"
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "required": true,
+            "fraction": "2fr"
+          },
+          {
+            "inputPath": "amount",
+            "price": true,
+            "inputLabel": "Amount",
+            "executeUnitEveryLoad": true,
+            "inputValue": 0,
+            "required": true,
+            "unitValue": "__.accountCurrency"
+          }
+        ],
+        "path": "debit",
+        "title": "Debit"
+      },
+      {
+        "input": [
+          {
+            "clearable": "true",
+            "inputPath": "note",
+            "inputLabel": "Note",
+            "textarea": "textarea",
+            "height": "12rem"
+          },
+          {
+            "clearable": "true",
+            "inputPath": "terms",
+            "inputLabel": "Terms",
+            "textarea": "textarea",
+            "height": "12rem"
+          }
+        ],
+        "grid": "1fr 1fr",
+        "title": "Note & Terms"
+      }
+    ],
+    "collection": "voucher"
+  },
+  "popupInfo": {
+    "docName": "voucherInfo",
+    "title": "Journal Voucher Form"
+  },
+  "table": [
+    {
+      "#onClickRowAction": "openBalanceSheet()",
+      "collection": "voucher",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Voucher#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "creationDate",
+          "header": "Date",
+          "formatCell": "toCellDate()",
+          "fraction": "1fr"
+        },
+        {
+          "path": "transactions",
+          "header": "From Account",
+          "innerPath": "fromAccount",
+          "fraction": "1fr"
+        },
+        {
+          "path": "transactions",
+          "header": "To Account",
+          "innerPath": "toAccount",
+          "fraction": "1fr"
+        },
+        {
+          "path": "transactions",
+          "header": "Description",
+          "innerPath": "description",
+          "fraction": "1fr"
+        },
+        {
+          "path": "status",
+          "header": "Status",
+          "fraction": "1fr"
+        },
+        {
+          "path": "transactions",
+          "header": "Charges/Fees",
+          "formatCell": "toPrice()",
+          "innerPath": "chargesFeesAmount",
+          "fraction": "1fr"
+        },
+        {
+          "path": "transactions",
+          "header": "Amount",
+          "formatCell": "toPrice()",
+          "innerPath": "amount",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "balanceSheet": "true",
+          "delete": true,
+          "justifyContent": "end",
+          "customIcon": [
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Pending"
+                  ],
+                  "conditionReference": "status"
+                }
+              ],
+              "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/Ry6VCfrImishYVFev3Qy?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=JHHcpMp5oYR%2FejdfJpCBeJz3dF%2FCCzEW8INeKKAUTPhkddgrrZ55HJ7a2sGI4PpwCsldZ1ATIQc%2FYCezQFsqX8AY6FR3xYK%2F4DeYLJCLX8gjj%2BRaa8yF4l0Nq4zZ34lIWR0Ed3Ma%2F9UB5DpYHlH6AKXNCCFgU0oVHbbg1xGPEZL%2BzphHwdqehvKSNPeQxMNHEHEHGmNfzWMhL3M8JfoQiLpnqKsxTJ8lwqlOsAAQKnbkS1gQUWb7uHwYOHwFHObAdqoGN2GJsOMa5L%2BByn7Y8cddcJbIHIUq4Wc54dvURkubQXyaKMkuTrMNyHAySFSVeVxXyTRYKugcUBe0MQoDrg%3D%3D",
+              "tooltip": "confirm",
+              "action": "confirmPendingVoucher()"
+            },
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Pending",
+                    "Confirmed"
+                  ],
+                  "conditionReference": "status"
+                }
+              ],
+              "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/RT2XaAcbRvxR5b9rxXSH?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=CGimAr0R0Y1GRBtyAlEU2qviIKLfrsKHRVQwDm77D7%2FHHV1PmCgisrKqiHUXWrvc1uwSiGX%2FRxdomxELvAwvBQl2u9Gz08%2FkXucqhbE68liL1TPm0ZlcqKRbTwPApTi3e%2BD8qk3KqVwJ8wimxBcqtgUJf4TqXPGx336BUTpLqrhsLpptfgJISJbqRm1M74RuA5Yna5CluBD9jIUJ4UBUb8V3lJYTOM8h34MwuwgC8aMt7nJl7EliD%2BWjDlw0mR8uGyq2omH37IEChGZTvBTsHim7422jYcHiuLYvS9m60un8uni9MIyUsh6R9mwUADZ0L6Yzm3aXyh2awou6yP9BXA%3D%3D",
+              "tooltip": "cancel",
+              "action": "cancelVoucher()"
+            }
+          ],
+          "fraction": ".5fr"
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "L157V0k8n8T8Q6X9u9i9P6u1q1",
+    "creationDate": 1697802684397,
+    "collapsed": [
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          11
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          2,
+          "#allowedLedgers"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          5
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          4
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          3
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          2
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          1
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          0
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          6
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "inputLabel"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          2,
+          "multiInput"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "inputLabel"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "#searchEngineInputs"
+        ]
+      },
+      {
+        "path": [
+          "#createFormInputs"
+        ]
+      },
+      {
+        "path": [
+          "table"
+        ]
+      },
+      {
+        "path": [
+          "tablevvv"
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "general",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0
+        ]
+      },
+      {
+        "note": "Credit",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "note": "Debit",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2
+        ]
+      },
+      {
+        "note": "note",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3
+        ]
+      }
+    ],
+    "docName": "transferManager",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -25,7 +25,7 @@ const openStack = ({ _window, id: viewID, string = "", headAddress, headStack, .
   stack.logs.push(`# Status TYPE ID Index Action => HeadID HeadIndex HeadAction`)
   stack.logs.push(`1 Start STACK ${stack.id} ${stack.event.toUpperCase()} ${stack.string}`)
 
-  var global = _window ? _window.global : window.global
+  const global = _window ? _window.global : window.global
   global.__stacks__[stack.id] = stack
 
   return stack

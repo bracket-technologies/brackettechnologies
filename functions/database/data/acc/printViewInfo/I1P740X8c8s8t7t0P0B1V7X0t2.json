@@ -1,0 +1,1122 @@
+{
+  "mainInfo": [
+    {
+      "mainInfo": [
+        {
+          "text": [
+            {
+              "text": "SKAYLA GROUP",
+              "textStyle": {
+                "fontSize": "1.5rem",
+                "text-align": "start"
+              }
+            },
+            {
+              "text": "ABIDJAN. SENEGAL. BENIN. MALLI. NIJERIA. LEBANON",
+              "textStyle": {
+                "fontSize": "1.5rem",
+                "text-align": "start"
+              }
+            },
+            {
+              "text": "TEL: 0096170005252, 0096170005353",
+              "textStyle": {
+                "fontSize": "1.5rem",
+                "text-align": "start"
+              }
+            }
+          ],
+          "class": "flex column"
+        },
+        {
+          "subContainerStyle": {
+            "padding-top": "3rem",
+            "width": "100%",
+            "justify-content": "end"
+          },
+          "text": "RECEIPT VOUCHER",
+          "textStyle": {
+            "fontSize": "2rem"
+          },
+          "class": "flexbox"
+        }
+      ],
+      "class": "flex",
+      "mainContainerStyle": {
+        "gridTemplateColumns": "1fr 1fr",
+        "display": "grid",
+        "width": "100%"
+      }
+    },
+    {
+      "viewInfo": {
+        "noCounter": "true",
+        "tableHeaderAndBody": [
+          {
+            "headerRowStyle": {
+              "padding": "1rem",
+              "display": "grid",
+              "paddingLeft": "8%",
+              "height": "20rem"
+            },
+            "horizontalTable": "true",
+            "tableStyle": {
+              "flex-direction": "row",
+              "gap": ".1rem",
+              "width": "100%"
+            },
+            "bodyStyle": {
+              "gap": ".1rem"
+            },
+            "bodyRowStyle": {
+              "padding": "1rem",
+              "display": "grid",
+              "width": "max-content",
+              "height": "20rem"
+            },
+            "collection": "statmentOfAccount",
+            "table": [
+              {
+                "path": "receivedFrom",
+                "footer": {
+                  "textStyle": {
+                    "fontSize": "1.3rem"
+                  },
+                  "cellStyle": {
+                    "backgroundColor": "#fff"
+                  }
+                },
+                "header": {
+                  "text": "Received from",
+                  "textStyle": {
+                    "fontSize": "1.5rem"
+                  },
+                  "cellStyle": {
+                    "backgroundColor": "#fff"
+                  },
+                  "class": "flexbox"
+                },
+                "body": {
+                  "textStyle": {
+                    "fontSize": "1.3rem"
+                  },
+                  "cellStyle": {
+                    "backgroundColor": "#fff"
+                  }
+                }
+              },
+              {
+                "path": "addressAndTelephone",
+                "footer": {
+                  "textStyle": {
+                    "fontSize": "1.3rem"
+                  },
+                  "cellStyle": {
+                    "backgroundColor": "#fff"
+                  }
+                },
+                "header": {
+                  "text": "Address & Telephone",
+                  "textStyle": {
+                    "fontSize": "1.5rem"
+                  },
+                  "cellStyle": {
+                    "backgroundColor": "#fff"
+                  },
+                  "class": "flexbox"
+                },
+                "body": {
+                  "textStyle": {
+                    "fontSize": "1.3rem"
+                  },
+                  "cellStyle": {
+                    "backgroundColor": "#fff",
+                    "width": "100%"
+                  }
+                }
+              },
+              {
+                "path": "theSumOf",
+                "footer": {
+                  "textStyle": {
+                    "fontSize": "1.3rem"
+                  },
+                  "cellStyle": {
+                    "backgroundColor": "#fff"
+                  }
+                },
+                "header": {
+                  "text": "The Sum of",
+                  "textStyle": {
+                    "fontSize": "1.5rem"
+                  },
+                  "cellStyle": {
+                    "backgroundColor": "#fff"
+                  },
+                  "class": "flexbox"
+                },
+                "body": {
+                  "textStyle": {
+                    "fontSize": "1.3rem"
+                  },
+                  "cellStyle": {
+                    "backgroundColor": "#fff"
+                  }
+                }
+              },
+              {
+                "path": "being",
+                "footer": {
+                  "textStyle": {
+                    "fontSize": "1.3rem"
+                  },
+                  "cellStyle": {
+                    "backgroundColor": "#fff"
+                  }
+                },
+                "header": {
+                  "text": "Being",
+                  "textStyle": {
+                    "fontSize": "1.5rem"
+                  },
+                  "cellStyle": {
+                    "backgroundColor": "#fff"
+                  },
+                  "class": "flexbox"
+                },
+                "body": {
+                  "textStyle": {
+                    "fontSize": "1.3rem"
+                  },
+                  "cellStyle": {
+                    "backgroundColor": "#fff"
+                  }
+                }
+              },
+              {
+                "path": "formOfReceipt",
+                "footer": {
+                  "textStyle": {
+                    "fontSize": "1.3rem"
+                  },
+                  "cellStyle": {
+                    "backgroundColor": "#fff"
+                  }
+                },
+                "header": {
+                  "text": "Form Of receipt",
+                  "textStyle": {
+                    "fontSize": "1.5rem"
+                  },
+                  "cellStyle": {
+                    "backgroundColor": "#fff"
+                  },
+                  "class": "flexbox"
+                },
+                "body": {
+                  "textStyle": {
+                    "textAlign": "left",
+                    "fontSize": "1.3rem"
+                  },
+                  "cellStyle": {
+                    "backgroundColor": "#fff",
+                    "width": "100%"
+                  }
+                }
+              }
+            ]
+          }
+        ],
+        "collection": "statmentOfAccount"
+      },
+      "tables": [
+        {
+          "viewInfo": {
+            "noCounter": "true",
+            "tableHeaderAndBody": [
+              {
+                "headerRowStyle": {
+                  "padding": "1rem"
+                },
+                "horizontalTable": true,
+                "tableStyle": {
+                  "border": "1px solid #000",
+                  "width": "20rem",
+                  "justifyContent": "space-between"
+                },
+                "bodyRowStyle": {
+                  "padding": "1rem",
+                  "width": "max-content"
+                },
+                "bodyStyle": {
+                  "width": "1"
+                },
+                "collection": "statmentOfAccount",
+                "table": [
+                  {
+                    "path": "receipt",
+                    "footer": {
+                      "textStyle": {
+                        "fontSize": "1.3rem"
+                      },
+                      "cellStyle": {
+                        "backgroundColor": "#fff"
+                      }
+                    },
+                    "header": {
+                      "text": "Receipt #",
+                      "textStyle": {
+                        "fontSize": "1.5rem"
+                      },
+                      "cellStyle": {
+                        "backgroundColor": "#fff"
+                      },
+                      "class": "flexbox"
+                    },
+                    "body": {
+                      "textStyle": {
+                        "fontSize": "1.3rem"
+                      },
+                      "cellStyle": {
+                        "backgroundColor": "#fff"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "collection": "statmentOfAccount"
+          }
+        },
+        {
+          "viewInfo": {
+            "noCounter": "true",
+            "tableHeaderAndBody": [
+              {
+                "headerRowStyle": {
+                  "padding": "1rem"
+                },
+                "horizontalTable": true,
+                "tableStyle": {
+                  "border": "1px solid #000",
+                  "width": "25rem",
+                  "justifyContent": "space-between"
+                },
+                "bodyRowStyle": {
+                  "padding": "1rem",
+                  "width": "max-content"
+                },
+                "bodyStyle": {
+                  "width": "1"
+                },
+                "collection": "statmentOfAccount",
+                "table": [
+                  {
+                    "path": "amount",
+                    "footer": {
+                      "textStyle": {
+                        "fontSize": "1.3rem"
+                      },
+                      "cellStyle": {
+                        "backgroundColor": "#fff"
+                      }
+                    },
+                    "header": {
+                      "text": "Amount",
+                      "textStyle": {
+                        "fontSize": "1.5rem"
+                      },
+                      "cellStyle": {
+                        "backgroundColor": "#fff"
+                      },
+                      "class": "flexbox"
+                    },
+                    "body": {
+                      "textStyle": {
+                        "fontSize": "1.3rem"
+                      },
+                      "cellStyle": {
+                        "backgroundColor": "#fff"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "collection": "statmentOfAccount"
+          }
+        },
+        {
+          "viewInfo": {
+            "noCounter": "true",
+            "tableHeaderAndBody": [
+              {
+                "headerRowStyle": {
+                  "padding": "1rem"
+                },
+                "horizontalTable": true,
+                "tableStyle": {
+                  "border": "1px solid #000",
+                  "width": "20rem",
+                  "justifyContent": "space-between"
+                },
+                "bodyRowStyle": {
+                  "padding": "1rem",
+                  "width": "max-content"
+                },
+                "bodyStyle": {
+                  "width": "1"
+                },
+                "collection": "statmentOfAccount",
+                "table": [
+                  {
+                    "path": "date",
+                    "footer": {
+                      "textStyle": {
+                        "fontSize": "1.3rem"
+                      },
+                      "cellStyle": {
+                        "backgroundColor": "#fff"
+                      }
+                    },
+                    "header": {
+                      "text": "Date",
+                      "textStyle": {
+                        "fontSize": "1.5rem"
+                      },
+                      "cellStyle": {
+                        "backgroundColor": "#fff"
+                      },
+                      "class": "flexbox"
+                    },
+                    "body": {
+                      "textStyle": {
+                        "fontSize": "1.3rem"
+                      },
+                      "cellStyle": {
+                        "backgroundColor": "#fff"
+                      }
+                    }
+                  }
+                ]
+              }
+            ],
+            "collection": "statmentOfAccount"
+          }
+        }
+      ],
+      "viewName": "customGeneralTable",
+      "mainTableContainerStyle": {
+        "border": "1px solid #000",
+        "padding": "1rem",
+        "borderRadius": "1rem",
+        "marginTop": "5rem"
+      },
+      "mainContainerStyle": {
+        "alignSelf": "center",
+        "width": "90%"
+      },
+      "subMainTableContainerStyle": {
+        "width": "100%",
+        "paddingTop": "1rem",
+        "justifyContent": "space-around"
+      }
+    },
+    {
+      "mainInfo": [
+        {
+          "text": "SIGNATURE",
+          "textStyle": {
+            "fontSize": "1.5rem",
+            "text-align": "start"
+          }
+        },
+        {
+          "subContainerStyle": {
+            "backgroundColor": "black",
+            "width": "100%",
+            "height": "1px"
+          },
+          "textStyle": {
+            "fontSize": "1.5rem",
+            "text-align": "start"
+          },
+          "class": "flexbox"
+        }
+      ],
+      "class": "flexbox",
+      "mainContainerStyle": {
+        "alignSelf": "center",
+        "gridTemplateColumns": "0.7fr 10fr",
+        "display": "grid",
+        "width": "90%",
+        "paddingTop": "3rem"
+      }
+    }
+  ],
+  "__props__": {
+    "id": "I1P740X8c8s8t7t0P0B1V7X0t2",
+    "creationDate": 1702110944782,
+    "collapsed": [
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table",
+          0
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table",
+          1
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table",
+          2
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table",
+          3
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table",
+          4
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table",
+          0,
+          "header",
+          "cellStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table",
+          0,
+          "footer",
+          "textStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table",
+          0,
+          "header"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table",
+          0,
+          "body",
+          "textStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          2,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table",
+          0,
+          "header"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          2,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table",
+          0,
+          "footer"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          2,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table",
+          0,
+          "body"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "bodyRowStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "tableStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "bodyStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table",
+          0,
+          "body",
+          "cellStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table",
+          0,
+          "body"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table",
+          0,
+          "footer"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          2,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          2,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "bodyRowStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "bodyRowStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "bodyStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "headerRowStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          1,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "table"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          1
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          0,
+          "mainInfo",
+          1,
+          "textStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          0,
+          "mainInfo",
+          1,
+          "subContainerStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          0,
+          "mainInfo",
+          0,
+          "text",
+          2
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          0,
+          "mainInfo",
+          0,
+          "text",
+          1
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          0,
+          "mainInfo",
+          0,
+          "text",
+          0
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          0,
+          "mainInfo",
+          0
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          0,
+          "mainInfo"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          0,
+          "mainContainerStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "mainContainerStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "mainTableContainerStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "subMainTableContainerStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          2,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "bodyStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          2,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "headerRowStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          2,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "tableStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "headerRowStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          2,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0,
+          "tableStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0,
+          "viewInfo",
+          "tableHeaderAndBody"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0,
+          "viewInfo"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          0
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          2,
+          "viewInfo",
+          "tableHeaderAndBody"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          2,
+          "viewInfo"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables",
+          2
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "viewInfo",
+          "tableHeaderAndBody",
+          0
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "viewInfo",
+          "tableHeaderAndBody"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "viewInfo"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1,
+          "tables"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          2,
+          "mainInfo",
+          1,
+          "textStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          2,
+          "mainInfo",
+          1,
+          "subContainerStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          2,
+          "mainInfo",
+          1
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          2,
+          "mainInfo",
+          0
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          2,
+          "mainInfo"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          2,
+          "mainContainerStyle"
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          2
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          0
+        ]
+      },
+      {
+        "path": [
+          "mainInfo",
+          1
+        ]
+      }
+    ],
+    "comments": [],
+    "docName": "voucherTemplate",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

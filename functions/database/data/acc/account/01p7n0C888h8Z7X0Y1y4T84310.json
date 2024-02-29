@@ -1,0 +1,31 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687889464,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "U63fofApPeEDAC7ckKGxQTVpMZGz71T79K6TbFQX2ZJZ9C4BYrtNn2zZCjFR-1708687889464",
+  "ref": "ACC-00000240",
+  "ledgerAccount": "651251/1/1",
+  "blockAccount": "No",
+  "name": "Depr.Alloc. - Passenger Vehicles",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6512",
+    "65125",
+    "651251"
+  ],
+  "__props__": {
+    "id": "01p7n0C888h8Z7X0Y1y4T84310",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "k6K39NivkzRls2ezYes2q9x02lDniS2Ru5MPtEpiUXgYIoa83Zgy3ZTVylLy-1708687889464",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687883573,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "CaJVJgu3qt2krXebQQ2NKCXdWwXdHhnzH1GJfaWbtVQk66LI1NymWJ6ZtOzS-1708687883573",
+  "ref": "ACC-00000115",
+  "ledgerAccount": "6314/1/1",
+  "blockAccount": "No",
+  "name": "Fixed Commission",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "63",
+    "631",
+    "6314"
+  ],
+  "__props__": {
+    "id": "41p7m0F8H8883740t1f486O1W0",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "VTQvqxuzyUXAWnAOMCX5Ew293Wn5CHZmtjY5TLobSmPk8qQRCqnWruymnfzP-1708687883573",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

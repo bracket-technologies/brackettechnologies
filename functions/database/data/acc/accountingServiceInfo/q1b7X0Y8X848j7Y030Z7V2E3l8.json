@@ -1,0 +1,2508 @@
+{
+  "tableActivity": [
+    {
+      "collection": "service",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "capacity",
+          "header": "Capacity",
+          "fraction": "1fr"
+        },
+        {
+          "path": "includedPax",
+          "header": "Pax",
+          "fraction": "1fr"
+        },
+        {
+          "path": "description",
+          "header": "Description",
+          "fraction": "1fr"
+        },
+        {
+          "path": "netPrice",
+          "fromatCell": "toPrice()",
+          "justifyContet": "end",
+          "header": "Net Price",
+          "fraction": "1fr"
+        },
+        {
+          "path": "tax",
+          "header": "Tax",
+          "fraction": "1fr"
+        },
+        {
+          "path": "agentCommission",
+          "header": "Agent Commission",
+          "fraction": "1fr"
+        },
+        {
+          "path": "discount",
+          "header": "Discount",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "statement": true,
+          "delete": "true",
+          "fraction": "3rem"
+        }
+      ]
+    }
+  ],
+  "searchEngineInputs": [
+    {
+      "clearable": "clearable",
+      "inputPath": "serviceRef",
+      "inputLabel": "Service#",
+      "hideSearchIcon": true,
+      "collection": "service",
+      "searchable": true
+    },
+    {
+      "clearable": "clearable",
+      "inputPath": "name",
+      "inputLabel": "Name"
+    },
+    {
+      "clearable": "clearable",
+      "inputPath": "service",
+      "readonly": "readonly",
+      "sheetName": "Services",
+      "inputLabel": "Services",
+      "sheetHeader": "name",
+      "droplistClickAction": "searchEngineUpdateWrapper()"
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Flight"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "airline",
+      "readonly": "readonly",
+      "sheetName": "Airline",
+      "inputLabel": "Airline",
+      "sheetHeader": "name"
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Flight"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "departureAirport",
+      "readonly": "readonly",
+      "sheetName": "Airports",
+      "inputLabel": "From",
+      "sheetHeader": "name"
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Flight"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "arrivalAirport",
+      "readonly": "readonly",
+      "sheetName": "Airports",
+      "inputLabel": "To",
+      "sheetHeader": "name"
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Flight"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "destinationAirport",
+      "readonly": "readonly",
+      "inputLabel": "Class",
+      "items": [
+        "First Class",
+        "Business Class",
+        "Economy Class"
+      ]
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Hotel"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "country",
+      "readonly": "readonly",
+      "sheetName": "Hotels",
+      "inputLabel": "Country",
+      "sheetHeader": "country",
+      "droplistClickAction": "droplistHandler()",
+      "required": "true"
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Hotel"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "hotelName",
+      "sheetName": "Hotels",
+      "inputLabel": "Hotel Name",
+      "sheetHeader": "hotelName"
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Hotel"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "roomName",
+      "inputLabel": "Room Name",
+      "items": [
+        "Budget Double Room",
+        "Business Double Room with Gym Access",
+        "Deluxe Double Room",
+        "Deluxe Double Room (1 adult + 1 child)",
+        "Deluxe Double Room (1 adult + 2 children)",
+        "Deluxe Double Room (2 Adults + 1 Child)",
+        "Deluxe Double Room with Balcony",
+        "Deluxe Double Room with Balcony and Sea View",
+        "Deluxe Double Room with Bath",
+        "Deluxe Double Room with Castle View",
+        "Double Room with Extra Bed",
+        "Deluxe Double Room with Sea View",
+        "Deluxe Double Room with Shower",
+        "Deluxe Double Room with Side Sea View",
+        "Deluxe Double or Twin Room",
+        "Deluxe King Room",
+        "Deluxe Queen Room",
+        "Deluxe Room",
+        "Deluxe Room (1 adult + 1 child)",
+        "Deluxe Room (1 adult + 2 children)",
+        "Deluxe Room (2 Adults + 1 Child)",
+        "Double Room",
+        "Double Room (1 Adult + 1 Child)",
+        "Double Room - Disability Access",
+        "Double Room with Balcony",
+        "Double Room with Balcony (2 Adults + 1 Child)",
+        "Double Room with Balcony (3 Adults)",
+        "Double Room with Balcony and Sea View",
+        "Double Room with Extra Bed",
+        "Double Room with Garden View",
+        "Double Room with Lake View",
+        "Double Room with Mountain View",
+        "Double Room with Patio",
+        "Double Room with Pool View",
+        "Double Room with Private Bathroom",
+        "Double Room with Private External Bathroom",
+        "Double Room with Sea View",
+        "Double Room with Shared Bathroom",
+        "Double Room with Shared Toilet",
+        "Double Room with Spa Bath",
+        "Double Room with Terrace",
+        "Economy Double Room",
+        "King Room",
+        "King Room - Disability Access",
+        "King Room with Balcony",
+        "King Room with Garden View",
+        "King Room with Lake View",
+        "King Room with Mountain View",
+        "King Room with Pool View",
+        "King Room with Roll-In Shower - Disability Access",
+        "King Room with Sea View",
+        "King Room with Spa Bath",
+        "Large Double Room",
+        "Queen Room",
+        "Queen Room - Disability Access",
+        "ueen Room with Balcony",
+        "ueen Room with Garden View",
+        "Queen Room with Pool View",
+        "Queen Room with Sea View",
+        "Queen Room with Shared Bathroom",
+        "Queen Room with Spa Bath",
+        "Small Double Room",
+        "Standard Double Room",
+        "Standard Double Room with Fan",
+        "Standard Double Room with Shared Bathroom",
+        "Standard King Room",
+        "Standard Queen Room",
+        "Superior Double Room",
+        "Superior King Room",
+        "Superior Queen Room"
+      ]
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Hotel"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "roomType",
+      "readonly": "readonly",
+      "inputLabel": "Room Type",
+      "items": [
+        "Single",
+        "Double",
+        "Triple",
+        "Quad",
+        "Queen",
+        "King",
+        "Twin",
+        "Hollywood Twin Room",
+        "Double-double",
+        "Double-double",
+        "Suite / Executive Suite",
+        "Mini Suite or Junior Suite",
+        "President Suite | Presidential Suite",
+        "Apartments / Room for Extended Stay",
+        "Connecting rooms",
+        "Murphy Room",
+        "Accessible Room / Disabled Room",
+        "Cabana",
+        "Adjoining rooms",
+        "Adjacent rooms",
+        "Villa",
+        "Executive Floor/Floored Room",
+        "Executive Floor/Floored Room"
+      ]
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Transportation"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "vehicleType",
+      "readonly": "readonly",
+      "inputLabel": "Vehicle Type",
+      "items": [
+        "Car",
+        "Van",
+        "Bus",
+        "Mini Bus",
+        "Auto Bus",
+        "Public Transit"
+      ]
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Transportation"
+          ],
+          "conditionReference": "services"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "type",
+      "readonly": "readonly",
+      "inputLabel": "Type",
+      "items": [
+        "Economy",
+        "Business",
+        "Luxury"
+      ]
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Transportation"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "from",
+      "inputLabel": "From"
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Transportation"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "to",
+      "inputLabel": "To"
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Tour"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "vehicleType",
+      "inputLabel": "Vehicle Type",
+      "items": [
+        "Car",
+        "Van",
+        "Bus",
+        "Mini Bus",
+        "Auto Bus",
+        "Public Transit"
+      ]
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Tour"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "guide",
+      "inputLabel": "Guide",
+      "items": [
+        "Yes",
+        "No"
+      ]
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Tour"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "inputPath": "capacity",
+      "inputLabel": "Capacity",
+      "inputValue": "0",
+      "type": "number",
+      "required": "required"
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Train"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "trainName",
+      "sheetName": "Trains",
+      "inputLabel": "Train Name",
+      "sheetHeader": "trainName"
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Train"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "departureCity",
+      "inputLabel": "Departure City"
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Train"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "arrivalCity",
+      "inputLabel": "Arrival City"
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Train"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "class",
+      "readonly": "readonly",
+      "inputLabel": "Class",
+      "items": [
+        "Economy",
+        "Bussiness",
+        "First Class"
+      ]
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Insurance"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "companyName",
+      "inputLabel": "Company Name"
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Insurance"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "country",
+      "readonly": "readonly",
+      "inputLabel": "Country",
+      "sheetHeader": "country",
+      "items": "Countries"
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Insurance"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "type",
+      "readonly": "readonly",
+      "inputLabel": "Type",
+      "items": [
+        "Medical Insurance",
+        "Evacuation Insurance",
+        "Baggage and Personal Items Loss",
+        "Life Insurance",
+        "Car Rental Insurance"
+      ]
+    },
+    {
+      "condition": [
+        {
+          "condition": [
+            "Activity"
+          ],
+          "conditionReference": "service"
+        }
+      ],
+      "clearable": "clearable",
+      "inputPath": "clubName",
+      "inputLabel": "Club Name"
+    }
+  ],
+  "createFormInputs": {
+    "subInput": [
+      {
+        "input": [
+          {
+            "inputPath": "service",
+            "readonly": "readonly",
+            "sheetName": "Services",
+            "inputLabel": "Service",
+            "sheetHeader": "name",
+            "droplistClickAction": "updateWrapper()",
+            "required": true
+          },
+          {
+            "duplicatedInputPath": "name",
+            "inputPath": "name",
+            "inputLabel": "Name",
+            "required": "required"
+          },
+          {
+            "inputPath": "preferedSupplier",
+            "generalLedger": true,
+            "inputLabel": "Prefered Supplier",
+            "required": true
+          },
+          {
+            "inputPath": "currency",
+            "inputLabel": "Currency",
+            "items": "userData:().currency.():code",
+            "droplistClickAction": "updateWrapper()",
+            "required": "true"
+          },
+          {
+            "multiInput": [
+              {
+                "inputPath": "exchangeRate",
+                "unitPath": "currency",
+                "inputLabel": "Exchange Rate",
+                "inputValue": 1,
+                "icon": "Equal",
+                "fr": "1.3fr",
+                "required": "true",
+                "unitValue": "userData:().defaultCurrency.value"
+              },
+              {
+                "inputPath": "systemRate",
+                "readonly": "readonly",
+                "unitPath": "systemCurrency",
+                "inputValue": 1,
+                "#inputLabel": "Exchange Rate",
+                "fr": "1fr",
+                "required": "true",
+                "unitValue": "userData:().defaultCurrency.value"
+              }
+            ],
+            "customCondition": "exchangeRateInputCondition()"
+          },
+          {
+            "inputPath": "incomeAccount",
+            "inputLabel": "Income Account",
+            "govInput": "true",
+            "required": true
+          }
+        ],
+        "title": "General Information"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "trip",
+            "readonly": "readonly",
+            "inputLabel": "Trip",
+            "items": [
+              "One Way",
+              "Round Trip",
+              "Open Return"
+            ],
+            "required": "true"
+          },
+          {
+            "varName": "airline",
+            "inputPath": "airline",
+            "readonly": "readonly",
+            "sheetName": "Airline",
+            "inputLabel": "Airline",
+            "sheetHeader": "name",
+            "openSheet": true,
+            "required": "required"
+          },
+          {
+            "inputPath": "departureAirport",
+            "readonly": "readonly",
+            "sheetName": "Airports",
+            "inputLabel": "Departure Airport",
+            "sheetHeader": "name",
+            "openSheet": "true",
+            "required": "required"
+          },
+          {
+            "inputPath": "arrivalAirport",
+            "readonly": "readonly",
+            "sheetName": "Airports",
+            "inputLabel": "Arrival Airport",
+            "sheetHeader": "name",
+            "openSheet": "true",
+            "required": "required"
+          },
+          {
+            "inputPath": "class",
+            "readonly": "readonly",
+            "inputLabel": "Class",
+            "items": [
+              "First Class",
+              "Business Class",
+              "Economy Class"
+            ],
+            "required": true
+          }
+        ],
+        "condition": [
+          {
+            "condition": [
+              "Flight"
+            ],
+            "conditionReference": "service"
+          }
+        ],
+        "title": "Flight"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "country",
+            "readonly": "readonly",
+            "sheetName": "Hotels",
+            "inputLabel": "Country",
+            "sheetHeader": "country",
+            "droplistClickAction": "droplistHandler();updateSectionWrapper()",
+            "required": "true"
+          },
+          {
+            "#headerReference": "country",
+            "inputPath": "hotelName",
+            "readonly": "readonly",
+            "sheetName": "Hotels",
+            "inputLabel": "Hotel",
+            "sheetHeader": "hotelName",
+            "openSheet": "true",
+            "required": "required"
+          },
+          {
+            "inputPath": "roomName",
+            "readonly": "readonly",
+            "sheetName": "Hotel Room Names",
+            "inputLabel": "Room Name",
+            "sheetHeader": "name",
+            "openSheet": "true",
+            "required": "required"
+          },
+          {
+            "inputPath": "roomType",
+            "readonly": "readonly",
+            "sheetName": "Hotel Room Types",
+            "inputLabel": "Room Type",
+            "sheetHeader": "type",
+            "openSheet": "true",
+            "required": "required"
+          },
+          {
+            "inputPath": "extraBed",
+            "readonly": "readonly",
+            "inputLabel": "Extra Bed",
+            "inputValue": "0",
+            "items": [
+              "0",
+              "1",
+              "2"
+            ],
+            "required": "required"
+          }
+        ],
+        "condition": [
+          {
+            "condition": [
+              "Hotel"
+            ],
+            "conditionReference": "service"
+          }
+        ],
+        "title": "Hotel"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "trip",
+            "readonly": "readonly",
+            "inputLabel": "Trip",
+            "items": [
+              "One Way",
+              "Round Trip"
+            ],
+            "required": "true"
+          },
+          {
+            "inputPath": "vehicleName",
+            "inputLabel": "Vehicle Name",
+            "required": "required"
+          },
+          {
+            "inputPath": "vehicleType",
+            "readonly": "readonly",
+            "inputLabel": "Vehicle Type",
+            "inputValue": "Car",
+            "items": [
+              "Car",
+              "Van",
+              "Bus",
+              "Mini Bus",
+              "Auto Bus",
+              "Public Transit"
+            ],
+            "required": "required"
+          },
+          {
+            "inputPath": "capacity",
+            "inputLabel": "Capacity",
+            "type": "number"
+          },
+          {
+            "inputPath": "class",
+            "readonly": "readonly",
+            "inputLabel": "Class",
+            "inputValue": "Economy",
+            "items": [
+              "Economy",
+              "VIP"
+            ],
+            "required": "required"
+          },
+          {
+            "inputPath": "from",
+            "sheetName": "Transportation-Destinations",
+            "inputLabel": "From",
+            "sheetHeader": "destination",
+            "openSheet": true,
+            "required": "required"
+          },
+          {
+            "inputPath": "to",
+            "sheetName": "Transportation-Destinations",
+            "inputLabel": "To",
+            "sheetHeader": "destination",
+            "openSheet": true,
+            "required": "required"
+          }
+        ],
+        "condition": [
+          {
+            "condition": [
+              "Transportation"
+            ],
+            "conditionReference": "service"
+          }
+        ],
+        "title": "Transportation"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "vehicleType",
+            "readonly": "readonly",
+            "inputLabel": "Vehicle Type",
+            "inputValue": "Car",
+            "items": [
+              "Car",
+              "Van",
+              "Bus",
+              "Mini Bus",
+              "Auto Bus",
+              "Public Transit"
+            ],
+            "required": "required"
+          },
+          {
+            "inputPath": "tourGuide",
+            "inputLabel": "Tour Guide Exisits",
+            "inputValue": "Yes",
+            "items": [
+              "Yes",
+              "No"
+            ],
+            "required": "required"
+          },
+          {
+            "inputPath": "capacity",
+            "inputLabel": "Capacity",
+            "inputValue": "0",
+            "type": "number",
+            "required": "required"
+          },
+          {
+            "inputPath": "numberOfPaxIncludedInPrice",
+            "inputLabel": "Number of Pax Included in Price",
+            "inputValue": "0",
+            "type": "number",
+            "required": "required"
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "textarea": true,
+            "required": "required"
+          }
+        ],
+        "condition": [
+          {
+            "condition": [
+              "Tour"
+            ],
+            "conditionReference": "service"
+          }
+        ],
+        "title": "Tour"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "activityName",
+            "inputLabel": "Activity Name",
+            "required": "required"
+          },
+          {
+            "inputPath": "clubName",
+            "inputLabel": "Club Name",
+            "required": "required"
+          },
+          {
+            "inputPath": "numberOfPaxIncludedInPrice",
+            "inputLabel": "Number of Pax Included in Price",
+            "inputValue": "0",
+            "type": "number",
+            "required": "required"
+          }
+        ],
+        "condition": [
+          {
+            "condition": [
+              "Activity"
+            ],
+            "conditionReference": "service"
+          }
+        ],
+        "title": "Activity"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "trip",
+            "readonly": "readonly",
+            "inputLabel": "Trip",
+            "items": [
+              "One Way",
+              "Round Trip",
+              "Open Return"
+            ],
+            "required": "true"
+          },
+          {
+            "inputPath": "trainName",
+            "sheetName": "Trains",
+            "inputLabel": "Train Name",
+            "sheetHeader": "trainName",
+            "openSheet": "true",
+            "required": "required"
+          },
+          {
+            "inputPath": "departureStation",
+            "sheetName": "Trains",
+            "inputLabel": "Departure Station",
+            "sheetHeader": "trainStation",
+            "openSheet": "true",
+            "required": "required"
+          },
+          {
+            "inputPath": "arrivalStation",
+            "sheetName": "Trains",
+            "inputLabel": "Arrival Station",
+            "sheetHeader": "trainStation",
+            "openSheet": "true",
+            "required": "required"
+          },
+          {
+            "inputPath": "class",
+            "readonly": "readonly",
+            "inputLabel": "Class",
+            "items": [
+              "Economy",
+              "Bussiness",
+              "First Class"
+            ],
+            "required": "required"
+          }
+        ],
+        "condition": [
+          {
+            "condition": [
+              "Train"
+            ],
+            "conditionReference": "service"
+          }
+        ],
+        "title": "Train"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "trip",
+            "readonly": "readonly",
+            "inputLabel": "Trip",
+            "items": [
+              "One Way",
+              "Round Trip",
+              "Open Return"
+            ],
+            "required": "true"
+          },
+          {
+            "inputPath": "cruiseName",
+            "sheetName": "Trains",
+            "inputLabel": "Cruise Name",
+            "sheetHeader": "trainName",
+            "openSheet": "true",
+            "required": "required"
+          },
+          {
+            "inputPath": "departurePort",
+            "sheetName": "Trains",
+            "inputLabel": "Departure Port",
+            "sheetHeader": "trainStation",
+            "openSheet": "true",
+            "required": "required"
+          },
+          {
+            "inputPath": "arrivalPort",
+            "sheetName": "Trains",
+            "inputLabel": "Arrival Port",
+            "sheetHeader": "trainStation",
+            "openSheet": "true",
+            "required": "required"
+          },
+          {
+            "inputPath": "class",
+            "readonly": "readonly",
+            "inputLabel": "Class",
+            "items": [
+              "Economy",
+              "Bussiness",
+              "First Class"
+            ],
+            "required": "required"
+          }
+        ],
+        "condition": [
+          {
+            "condition": [
+              "Cruise"
+            ],
+            "conditionReference": "service"
+          }
+        ],
+        "title": "Cruise"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "insuranceAgencyName",
+            "sheetName": "Insurance Agencies",
+            "inputLabel": "Insurance Agency Name",
+            "openSheet": "true",
+            "sheetHeader": "name",
+            "required": "required"
+          },
+          {
+            "inputPath": "type",
+            "readonly": "readonly",
+            "inputLabel": "Type",
+            "items": [
+              "Medical Insurance",
+              "Evacuation Insurance",
+              "Baggage and Personal Items Loss",
+              "Life Insurance",
+              "Car Rental Insurance"
+            ],
+            "required": "required"
+          },
+          {
+            "inputPath": "country",
+            "readonly": "readonly",
+            "sheetName": "Countries",
+            "inputLabel": "Country",
+            "sheetHeader": "country",
+            "required": "required"
+          },
+          {
+            "inputPath": "duration",
+            "inputLabel": "Duration",
+            "type": "date",
+            "required": "required"
+          }
+        ],
+        "condition": [
+          {
+            "condition": [
+              "Insurance"
+            ],
+            "conditionReference": "service"
+          }
+        ],
+        "title": "Insurance"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "services",
+            "readonly": "readonly",
+            "viewToUpdateName": "34rwefweferwfger",
+            "maxSelected": 100,
+            "inputLabel": "Services",
+            "collection": "service",
+            "listName": "services",
+            "searchable": "true",
+            "required": "required"
+          }
+        ],
+        "condition": [
+          {
+            "condition": [
+              "Package"
+            ],
+            "conditionReference": "service"
+          }
+        ],
+        "title": "Services",
+        "table": {
+          "tableId": "34rwefweferwfger",
+          "collection": "item",
+          "table": [
+            {
+              "filterKey": "service",
+              "docListName": "items",
+              "filterValue": "Flight",
+              "collection": "flight"
+            },
+            {
+              "filterKey": "service",
+              "docListName": "items",
+              "filterValue": "Hotel",
+              "collection": "hotel"
+            }
+          ]
+        }
+      },
+      {
+        "input": [
+          {
+            "inputPath": "netPrice",
+            "unitPath": "currency",
+            "inputLabel": "Net Price",
+            "inputValue": 0,
+            "inputPrice": "currency"
+          },
+          {
+            "inputPath": "taxes",
+            "unitPath": "currency",
+            "inputLabel": "Taxes",
+            "inputValue": 0
+          },
+          {
+            "inputPath": "discount",
+            "unitPath": "currency",
+            "inputLabel": "Discount",
+            "inputValue": 0
+          }
+        ],
+        "title": "Price"
+      },
+      {
+        "input": [
+          {
+            "priceInput": true,
+            "inputPath": "credit",
+            "unitPath": "currency",
+            "inputLabel": "Credit",
+            "inputValue": 0,
+            "blurAction": "doc().balance=[doc().debit||0]-[doc().credit||0];updateSectionWrapper()"
+          },
+          {
+            "inputPath": "debit",
+            "unitPath": "currency",
+            "inputLabel": "Debit",
+            "inputValue": 0,
+            "blurAction": "doc().balance=[doc().debit||0]-[doc().credit||0];updateSectionWrapper()"
+          },
+          {
+            "faded": true,
+            "inputPath": "balance",
+            "readonly": "readonly",
+            "unitPath": "currency",
+            "pointerEvents": "none",
+            "inputLabel": "Balance",
+            "inputValue": 0
+          }
+        ],
+        "title": "Opening Balance"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "note",
+            "inputLabel": "Note",
+            "textarea": "textarea",
+            "height": "12rem"
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "textarea": "textarea",
+            "height": "12rem"
+          }
+        ],
+        "grid": "1fr 1fr",
+        "title": "Note & Description",
+        "close": "true"
+      }
+    ],
+    "collection": "service"
+  },
+  "tableServices": [
+    {
+      "collection": "service",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "services",
+          "header": "Services",
+          "fraction": "1fr"
+        },
+        {
+          "path": "netPrice",
+          "header": "Net Price",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "tax",
+          "header": "Tax",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "agentCommission",
+          "header": "Agent Commission",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "discount",
+          "header": "Discount",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "statement": true,
+          "delete": "true",
+          "fraction": "3rem"
+        }
+      ]
+    }
+  ],
+  "tableHotel": [
+    {
+      "collection": "service",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "roomName",
+          "header": "Room Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "country",
+          "header": "Country",
+          "fraction": "1fr"
+        },
+        {
+          "path": "city",
+          "header": "City",
+          "fraction": "1fr"
+        },
+        {
+          "path": "roomType",
+          "header": "Room Type",
+          "fraction": "1fr"
+        },
+        {
+          "path": "extraBed",
+          "header": "Extra Bed",
+          "fraction": "1fr"
+        },
+        {
+          "path": "netPrice",
+          "header": "Net Price",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "tax",
+          "header": "Tax",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "agentCommission",
+          "header": "Agent Commission",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "discount",
+          "header": "Discount",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "statement": true,
+          "delete": "true",
+          "fraction": "3rem"
+        }
+      ]
+    }
+  ],
+  "title": "Service Manager",
+  "tableFlight": [
+    {
+      "collection": "service",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "trip",
+          "header": "Trip",
+          "fraction": "1fr"
+        },
+        {
+          "path": "airline",
+          "header": "Airline",
+          "fraction": "1fr"
+        },
+        {
+          "path": "flightNumber",
+          "header": "Flight No",
+          "fraction": "1fr"
+        },
+        {
+          "path": "departureAirport",
+          "header": "Departure Airport",
+          "fraction": "1fr"
+        },
+        {
+          "path": "arrivalAirport",
+          "header": "Arrival Airport",
+          "fraction": "1fr"
+        },
+        {
+          "path": "netPrice",
+          "header": "Net Price",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "tax",
+          "header": "Tax",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "agentCommission",
+          "header": "Agent Commission",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "discount",
+          "header": "Discount",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "statement": true,
+          "delete": true,
+          "fraction": "3rem"
+        }
+      ]
+    }
+  ],
+  "tableTrain": [
+    {
+      "collection": "service",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "trip",
+          "header": "Trip",
+          "fraction": "1fr"
+        },
+        {
+          "path": "trainName",
+          "header": "Train Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "departureStation",
+          "header": "Departure Station",
+          "fraction": "1fr"
+        },
+        {
+          "path": "arrivalStation",
+          "header": "Arrival Station",
+          "fraction": "1fr"
+        },
+        {
+          "path": "class",
+          "header": "Class",
+          "fraction": "1fr"
+        },
+        {
+          "path": "netPrice",
+          "header": "Net Price",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "tax",
+          "header": "Tax",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "agentCommission",
+          "header": "Agent Commission",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "discount",
+          "header": "Discount",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "statement": true,
+          "delete": "true",
+          "fraction": "3rem"
+        }
+      ]
+    }
+  ],
+  "tableOther": [
+    {
+      "collection": "service",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "description",
+          "header": "Description",
+          "fraction": "1fr"
+        },
+        {
+          "path": "netPrice",
+          "header": "Net Price",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "tax",
+          "header": "Tax",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "agentCommission",
+          "header": "Agent Commission",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "discount",
+          "header": "Discount",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "statement": true,
+          "delete": "true",
+          "fraction": "3rem"
+        }
+      ]
+    }
+  ],
+  "tableTravel Insurance": [
+    {
+      "collection": "service",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "insuranceAgencyName",
+          "header": "Insurance Agency Type",
+          "fraction": "1fr"
+        },
+        {
+          "path": "type",
+          "header": "Type",
+          "fraction": "1fr"
+        },
+        {
+          "path": "country",
+          "header": "Country",
+          "fraction": "1fr"
+        },
+        {
+          "header": "Duration",
+          "#path": "duration",
+          "fraction": "1fr"
+        },
+        {
+          "path": "netPrice",
+          "header": "Net Price",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "tax",
+          "header": "Tax",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "agentCommission",
+          "header": "Agent Commission",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "discount",
+          "header": "Discount",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "statement": true,
+          "delete": "true",
+          "fraction": "3rem"
+        }
+      ]
+    }
+  ],
+  "popupInfo": {
+    "docName": "serviceInfo",
+    "title": "Service Form"
+  },
+  "tableTransportation": [
+    {
+      "collection": "service",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "trip",
+          "header": "Trip",
+          "fraction": "1fr"
+        },
+        {
+          "path": "transportationType",
+          "header": "Type",
+          "fraction": "1fr"
+        },
+        {
+          "path": "class",
+          "header": "Class",
+          "fraction": "1fr"
+        },
+        {
+          "path": "from",
+          "header": "From",
+          "fraction": "1fr"
+        },
+        {
+          "path": "to",
+          "header": "To",
+          "fraction": "1fr"
+        },
+        {
+          "path": "netPrice",
+          "header": "Net Price",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "tax",
+          "header": "Tax",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "agentCommission",
+          "header": "Agent Commission",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "discount",
+          "header": "Discount",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "statement": true,
+          "delete": "true",
+          "fraction": "3rem"
+        }
+      ]
+    }
+  ],
+  "tableTour": [
+    {
+      "collection": "service",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "tourGuide",
+          "header": "Guide",
+          "fraction": "1fr"
+        },
+        {
+          "path": "capacity",
+          "header": "Capacity",
+          "fraction": "1fr"
+        },
+        {
+          "path": "tourGuidePax",
+          "header": "Pax",
+          "fraction": "1fr"
+        },
+        {
+          "path": "description",
+          "header": "Description",
+          "fraction": "1fr"
+        },
+        {
+          "path": "netPrice",
+          "header": "Net Price",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "tax",
+          "header": "Tax",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "agentCommission",
+          "header": "Agent Commission",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "discount",
+          "header": "Discount",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "statement": true,
+          "delete": "true",
+          "fraction": "3rem"
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "q1b7X0Y8X848j7Y030Z7V2E3l8",
+    "creationDate": 1697522499371,
+    "collapsed": [
+      {
+        "path": [
+          "searchEngineInputs",
+          28,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          5,
+          "sheetName"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          12,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          27,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          26,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          28
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          9,
+          "table"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          6,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          5,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          5,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          1,
+          "sheetName"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          5,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          6,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          12,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "tableHotel"
+        ]
+      },
+      {
+        "path": [
+          "tableOther"
+        ]
+      },
+      {
+        "path": [
+          "tableServices"
+        ]
+      },
+      {
+        "path": [
+          "tableTrain"
+        ]
+      },
+      {
+        "path": [
+          "tableTransportation"
+        ]
+      },
+      {
+        "path": [
+          "tableActivity"
+        ]
+      },
+      {
+        "path": [
+          "tableTour"
+        ]
+      },
+      {
+        "path": [
+          "tableTravel Insurance"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          2
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          3
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          4
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          5
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          6
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          7
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          8
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          9
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          10
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          13,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          14
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          15
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          13
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          12
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          11,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          11
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          16
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          17
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          19
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          21
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          22
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          23
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          24,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          24
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          25
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs"
+        ]
+      },
+      {
+        "path": [
+          "tableFlight"
+        ]
+      },
+      {
+        "path": [
+          "popupInfo"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          10
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          5
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          6
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          7,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          7
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          8,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          8
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          9,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          9
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          11,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          11
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "hotel",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          5
+        ]
+      },
+      {
+        "note": "Room Name",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          5
+        ]
+      },
+      {
+        "note": "Room Type",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          4
+        ]
+      },
+      {
+        "note": "Extra Bed",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          5
+        ]
+      },
+      {
+        "note": "Flight",
+        "path": [
+          "searchEngineInputs",
+          3
+        ]
+      },
+      {
+        "note": "Flight",
+        "path": [
+          "searchEngineInputs",
+          4
+        ]
+      },
+      {
+        "note": "Flight",
+        "path": [
+          "searchEngineInputs",
+          5
+        ]
+      },
+      {
+        "note": "Flight",
+        "path": [
+          "searchEngineInputs",
+          6
+        ]
+      },
+      {
+        "note": "Main",
+        "path": [
+          "searchEngineInputs",
+          0
+        ]
+      },
+      {
+        "note": "Main",
+        "path": [
+          "searchEngineInputs",
+          1
+        ]
+      },
+      {
+        "note": "Main",
+        "path": [
+          "searchEngineInputs",
+          2
+        ]
+      },
+      {
+        "note": "Hotel",
+        "path": [
+          "searchEngineInputs",
+          7
+        ]
+      },
+      {
+        "note": "Hotel",
+        "path": [
+          "searchEngineInputs",
+          8
+        ]
+      },
+      {
+        "note": "Hotel",
+        "path": [
+          "searchEngineInputs",
+          9
+        ]
+      },
+      {
+        "note": "Hotel",
+        "path": [
+          "searchEngineInputs",
+          10
+        ]
+      },
+      {
+        "note": "Transportation",
+        "path": [
+          "searchEngineInputs",
+          11
+        ]
+      },
+      {
+        "note": "Transportation",
+        "path": [
+          "searchEngineInputs",
+          12
+        ]
+      },
+      {
+        "note": "Transportation",
+        "path": [
+          "searchEngineInputs",
+          13
+        ]
+      },
+      {
+        "note": "Transportation",
+        "path": [
+          "searchEngineInputs",
+          14
+        ]
+      },
+      {
+        "note": "Tour",
+        "path": [
+          "searchEngineInputs",
+          26
+        ]
+      },
+      {
+        "note": "Train",
+        "path": [
+          "searchEngineInputs",
+          16
+        ]
+      },
+      {
+        "note": "Tour",
+        "path": [
+          "searchEngineInputs",
+          17
+        ]
+      },
+      {
+        "note": "Travel Insurance",
+        "path": [
+          "searchEngineInputs",
+          19
+        ]
+      },
+      {
+        "note": "Travel Insurance",
+        "path": [
+          "searchEngineInputs",
+          20
+        ]
+      },
+      {
+        "note": "Travel Insurance",
+        "path": [
+          "searchEngineInputs",
+          21
+        ]
+      },
+      {
+        "note": "Tour",
+        "path": [
+          "searchEngineInputs",
+          15
+        ]
+      }
+    ],
+    "docName": "itemManager",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

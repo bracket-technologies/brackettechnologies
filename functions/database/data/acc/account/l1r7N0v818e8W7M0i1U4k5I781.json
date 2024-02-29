@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687884264,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "xDbIQ9aB8u3jFL4hENqN1MhSBFCzE11WBxlwL5PqlnlvH9zBJwaK84aCghsl-1708687884263",
+  "ref": "ACC-00000132",
+  "ledgerAccount": "655/1/1",
+  "blockAccount": "No",
+  "name": "Provisions",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "655"
+  ],
+  "__props__": {
+    "id": "l1r7N0v818e8W7M0i1U4k5I781",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "UAOFHHwMf1w77b9pXcPclPUS7WYxJgR1tY4tLDhRywIcQQWbSLCu71VX8niL-1708687884263",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

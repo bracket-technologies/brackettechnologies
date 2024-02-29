@@ -1,0 +1,65 @@
+{
+  "monthly": [
+    {
+      "Jul": {
+        "income": "8000",
+        "expense": "3200"
+      },
+      "Oct": {
+        "income": "1300",
+        "expense": "800"
+      },
+      "Feb": {
+        "income": "4200",
+        "expense": "3000"
+      },
+      "Apr": {
+        "income": "10000",
+        "expense": "8200"
+      },
+      "Jun": {
+        "income": "14000",
+        "expense": "12000"
+      },
+      "Aug": {
+        "income": "35000",
+        "expense": "28000"
+      },
+      "Dec": {
+        "income": "12000",
+        "expense": "10000"
+      },
+      "Nov": {
+        "income": "3900",
+        "expense": "3400"
+      },
+      "May": {
+        "income": "43000",
+        "expense": "40000"
+      },
+      "Jan": {
+        "income": "6000",
+        "expense": "3000"
+      },
+      "Mar": {
+        "income": "3200",
+        "expense": "3000"
+      },
+      "Sep": {
+        "income": "26000",
+        "expense": "24000"
+      }
+    }
+  ],
+  "__props__": {
+    "id": "s137E0r8Z8m8C6A949e865R8u1",
+    "creationDate": 1698050130155,
+    "collapsed": [],
+    "comments": [],
+    "docName": "incomeExpense",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

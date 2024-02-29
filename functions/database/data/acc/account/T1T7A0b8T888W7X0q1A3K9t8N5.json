@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687883467,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "phL57dGsRNG2OfGV1HqU83GFwkKjrMagW2Q5O7jo0xZSeywrYQGXSJAOGgvK-1708687883466",
+  "ref": "ACC-00000112",
+  "ledgerAccount": "631/1/1",
+  "blockAccount": "No",
+  "name": "Salaries & Wages",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "63",
+    "631"
+  ],
+  "__props__": {
+    "id": "T1T7A0b8T888W7X0q1A3K9t8N5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "1t4xREer35pxiHK7OU3bMpue16OjskvjN4Nm9bxTQFPufAY4NeeFerjRW0HU-1708687883466",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687889577,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "j8vSzJG5dDLaecUo41PnyBJyRbSOkxlc0rOX0kr6ZKAT29StAizIKIX3W3Zc-1708687889577",
+  "ref": "ACC-00000245",
+  "ledgerAccount": "651261/1/1",
+  "blockAccount": "No",
+  "name": "Depr.Alloc. - Internal Install. Decor & Improvements",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6512",
+    "65126",
+    "651261"
+  ],
+  "__props__": {
+    "id": "O1D780F8x8p8N7v0W1e4B580C7",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "RZ1fbpgl43V1iho4lDF90DdGFrfNOs3ffp4HhppUJzXFuzy8Dx0Jl8asE8fP-1708687889577",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

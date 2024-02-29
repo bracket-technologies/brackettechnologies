@@ -5,12 +5,9 @@ module.exports = {
   save: async ({ _window, lookupActions, stack, address, id, req, res, e, __, save = {} }) => {
 
     var data
-    var headers = save.headers || {}
-
-    if (!save.collection) return console.log("No collection!")
 
     // headers
-    headers = { ...headers, timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()) }
+    var headers = { ...(save.headers || {}), timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()), "Access-Control-Allow-Headers": "Access-Control-Allow-Headers" }
     
     if (_window) {
       
@@ -18,12 +15,7 @@ module.exports = {
 
     } else {
 
-      var response = await axios.post(save.url || `/route/database`, { save }, {
-        headers: {
-          "Access-Control-Allow-Headers": "Access-Control-Allow-Headers",
-          ...headers
-        }
-      })
+      var response = await axios.post(`/`, { server: "database", type: "save", data: save }, { headers })
 
       data = response.data
     }

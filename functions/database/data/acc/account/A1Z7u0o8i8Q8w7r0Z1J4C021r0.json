@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687888860,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "DOF4SRmLLGjKlMPOrKuTJWPTwKYqwrFiVCNtWdmewdqFHgUasrb6znYDf8su-1708687888859",
+  "ref": "ACC-00000225",
+  "ledgerAccount": "65121/1/1",
+  "blockAccount": "No",
+  "name": "Deprec.Alloc.of Lands",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6512",
+    "65121"
+  ],
+  "__props__": {
+    "id": "A1Z7u0o8i8Q8w7r0Z1J4C021r0",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "3ofl0sfTiw8l8FBq7O1EgNHjrXCM83z11FDddPt4nMPvTjy0WAdWqsgGh5Th-1708687888859",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

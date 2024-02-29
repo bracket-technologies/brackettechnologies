@@ -1,0 +1,32 @@
+{
+  "view": "View:collection-sidebar?class=flex column;style.transition=.2s;style.width=15.5rem;style.backgroundColor=#f0f0f0;style.overflow=auto;style.padding=.5rem 0;style.width=0px;style.zIndex=2",
+  "children": [
+    {
+      "view": "collection"
+    },
+    {
+      "view": "collection-list"
+    },
+    {
+      "view": "storage"
+    },
+    {
+      "view": "storage-list"
+    },
+    {
+      "view": "collections"
+    }
+  ],
+  "__props__": {
+    "id": "k1A7u0v8u818k7z060g6B9z8T6",
+    "creationDate": 1643562122803,
+    "collapsed": [],
+    "comments": [],
+    "actions": {},
+    "docName": "collection-sidebar",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "d17770q8A8Z7l0Q0l031g188q9"
+    }
+  }
+}

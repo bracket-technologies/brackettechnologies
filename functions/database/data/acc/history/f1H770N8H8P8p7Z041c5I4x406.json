@@ -1,0 +1,25 @@
+{
+  "updateBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+  "difference": [
+    {
+      "new": "",
+      "path": "cities",
+      "old": "l5"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "IMtV7fkXinPU7cl9VGxdNVlHfLgoNZ0xQp8xOm6QIhZxvZiCE6mdHAj5bi791700304799392",
+  "creationDay": 1700611200000,
+  "creationDate": 1700659513884,
+  "__props__": {
+    "id": "f1H770N8H8P8p7Z041c5I4x406",
+    "creationDate": 1700659419447,
+    "collapsed": [],
+    "comments": [],
+    "docName": "BCwlN6OkPpC9iJATJFPEoWxIw9B7EvhphpTNwITZuNotuplphXYjAH8lCqnq1700659513883",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

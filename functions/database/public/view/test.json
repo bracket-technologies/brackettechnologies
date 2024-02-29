@@ -1,0 +1,11 @@
+{
+    "view": "View:test",
+    "__props__": {
+        "provider": "bracketDB",
+        "db": "public",
+        "collection": "view",
+        "id": "91C73098j8o8c7o0N134c2n2s7",
+        "creationDate": 0,
+        "docName": "test"
+    }
+}

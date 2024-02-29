@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687888657,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "vTIkVlRbOLjdPQZKx7b4on0ooHPL0GcXmhyvfE6T1OiaILBxmBiFwAYbPQXv-1708687888657",
+  "ref": "ACC-00000219",
+  "ledgerAccount": "6510/1/1",
+  "blockAccount": "No",
+  "name": "Amortization & Depreciations Allocations",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6510"
+  ],
+  "__props__": {
+    "id": "01o73078J8D8T7T0n1d4P0g3o6",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "53ZThLGSR8rrRG6UCvwuc08tqerouQD4V2yWi4CuwKnH8JDu3fCVNNlnzHK9-1708687888657",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

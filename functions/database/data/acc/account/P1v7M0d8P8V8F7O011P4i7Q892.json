@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687890265,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "JHXkq87V8fsq9AIe6MRaYJ9EOXg2hKYN5b4i9XuWvdsfbY8PigEiwleTbrFJ-1708687890265",
+  "ref": "ACC-00000260",
+  "ledgerAccount": "6650/1/1",
+  "blockAccount": "No",
+  "name": "Company Part in Losses on Joint Ventures",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "66",
+    "665",
+    "6650"
+  ],
+  "__props__": {
+    "id": "P1v7M0d8P8V8F7O011P4i7Q892",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "fk58soYPFr3dABn2N4Cp3l1fMKyPQtqpHgOtWp1ZaQSNAt9WZtyOGi8NUVzx-1708687890265",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

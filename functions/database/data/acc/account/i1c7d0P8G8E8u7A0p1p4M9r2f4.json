@@ -1,0 +1,26 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687877662,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "kus1kjAgzK2coQDybFmUHKV1ogmtHEGKr8ee6IhIrJoUdoO25xTDPNXvNHoz-1708687877662",
+  "ref": "ACC-00000001",
+  "ledgerAccount": "5/1/1",
+  "blockAccount": "No",
+  "name": "Financial Accounts",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "5"
+  ],
+  "__props__": {
+    "id": "i1c7d0P8G8E8u7A0p1p4M9r2f4",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "pNaljYVMwAXUJvUKc4BXjrSoHUwPhThwXMkQBkNWcL676DQoYGEPZ9ngDfo5-1708687877661",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

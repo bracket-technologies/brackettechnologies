@@ -19,7 +19,7 @@ const { qr } = require("./qr")
 const { replaceNbsps } = require("./replaceNbsps")
 const { addresser, endAddress } = require("./addresser")
 const { vcard } = require("./vcard")
-const { lineInterpreter } = require("./lineInterpreter")
+const { toLine } = require("./toLine")
 const { colorize } = require("./colorize")
 const { override } = require("./merge")
 const { nthParent, nthNext, nthPrev } = require("./getView")
@@ -38,8 +38,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
     const { toApproval } = require("./toApproval")
     const { reducer } = require("./reducer")
 
-    var views = _window ? _window.views : window.views
-    var global = _window ? _window.global : window.global
+    const views = _window ? _window.views : window.views
+    const global = _window ? _window.global : window.global
     var view = views[id]
 
     var pathJoined = pathJoined || path.join("."), breakRequest
@@ -566,7 +566,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             o.__element__.dispatchEvent(mouseupEvent)
 
         } else if (k0 === "mouseenter()") {
-
+            
             if (!o.__view__) return
             global.__mouseentered__ = o
             var mouseenterEvent = new Event("mouseenter")
@@ -712,7 +712,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
             if (Array.isArray(data)) data = { path: data }
-            answer = reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.value !== undefined ? true : key, value: data.value !== undefined ? data.value : value }, e, req, res, __ })
+            answer = reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.data !== undefined ? true : key, value: data.data !== undefined ? data.data : value }, e, req, res, __ })
 
         } else if (k0 === "path()") {
 
@@ -1013,8 +1013,6 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             if (isParam({ _window, string: args[1] })) {
 
                 data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                data.length = data.length || data.len || 5
-                data.number = data.number || data.num
                 answer = generate(data)
 
             } else {
@@ -1829,9 +1827,13 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             stack.returns[0].data = answer = toValue({ _window, data: args[1], e, id, object, __, stack, lookupActions })
             stack.returns[0].returned = true
 
+        } else if (k0 === "toggleMode()") {
+
+            document.documentElement.classList.toggle("darkmode")
+
         } else if (k0 === "export()") {
 
-            var data = lineInterpreter({ _window, req, res, _window, id, e, __, data: { string: args[1] } }).data
+            var data = toLine({ _window, req, res, _window, id, e, __, data: { string: args[1] } }).data
 
             if (data.json) data.type = "json"
             if (data.csv) data.type = "csv"
@@ -2375,14 +2377,6 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             if (lang === "ar") range = range.map(num => num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
             answer = range
 
-        } else if (k0 === "database()") {
-
-            return require("./database").database({ _window, req, res, id })
-
-        } else if (k0 === "storage()") {
-
-            return require("./storage").storage({ _window, req, res, id })
-
         } else if (k0 === "render()") {
 
             if (!o.__view__) return
@@ -2407,10 +2401,17 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "route()") {
 
-            var { address, data } = addresser({ _window, stack, args, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id: o.id, action: "route()", object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, status: "Start", type: "action", asynchronous: true, id: o.id, action: "route()", object, lookupActions, __, id })
+            if (typeof data === "string") data = { route: data }
+            
+            require("./route").route({ _window, lookupActions, stack, address, id, req, res, data: { type: "route", route: { __: data.data !== undefined ? [data.data] : [] } }, __ })
+
+        } else if (k0 === "root()") {
+
+            var { address, data } = addresser({ _window, stack, args, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id: o.id, action: "root()", object, lookupActions, __, id })
             if (typeof data === "string") data = { page: data }
             
-            require("./route").route({ _window, lookupActions, stack, address, id, req, res, route: data, __ })
+            require("./root").root({ _window, lookupActions, stack, address, id, req, res, root: data, __ })
 
         } else if (k0 === "update()") {
 
@@ -2500,7 +2501,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
         } else if (k0 === "end()") {
 
-            var { data = {} } = lineInterpreter({ req, res, _window, lookupActions, stack, id, e, __, data: { string: args[1] }, action: "toParam" })
+            var { data = {} } = toLine({ req, res, _window, lookupActions, stack, id, e, __, data: { string: args[1] }, action: "toParam" })
             endAddress({ req, res, _window, lookupActions, stack, id, e, __, data })
 
         } else if (k0 === "send()") {
@@ -2527,8 +2528,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             stack.terminated = true
 
             // logs
-            console.log("Send " + stack.action + " (" + executionDuration + ")")
-            stack.logs.push(stack.logs.length + " Send " + stack.action + " (" + executionDuration + ")")
+            console.log("Send " + stack.route + " (" + executionDuration + ")")
+            stack.logs.push(stack.logs.length + " Send " + stack.route + " (" + executionDuration + ")")
             response.logs = stack.logs
 
             // respond
@@ -2582,9 +2583,19 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
             if (o.__element__) answer = o.__element__.classList.remove(_class)
 
+        } else if (k0 === "toggleClass()") {
+
+            if (!o.__view__) return o
+            var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
+            if (o.__element__) answer = o.__element__.classList.toggle(_class)
+
         } else if (k0 === "encodeURI()") {
 
             answer = encodeURI(o)
+
+        } else if (k0 === "preventDefault()") {
+
+            e.preventDefault()
 
         } else if (k0 === "decodeURI()") {
 
@@ -2624,8 +2635,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
                 var data = global.__refs__["@" + args[1].slice(-5)].data
                 
-                if (views[id].__status__ === "Mounted") return require("./event").addEventListener({ event: k0 + "?" + data, id, __, lookupActions, eventID: o.id })
-                else return views[id].__controls__.push({ event: k0 + "?" + data, id, __, lookupActions, eventID: o.id })
+                /*if (views[id].__status__ === "Mounted") return require("./event").addEventListener({ event: k0 + "?" + data, id, __, lookupActions, eventID: o.id })
+                else*/ return views[id].__controls__.push({ event: k0 + "?" + data, id, __, lookupActions, eventID: o.id })
             }
 
             args[1] = (global.__refs__[args[1]].data || "").split(".")
@@ -2667,7 +2678,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
 const getDeepChildren = ({ _window, id }) => {
 
-    var views = _window ? _window.views : window.views
+    const views = _window ? _window.views : window.views
     var view = views[id]
     var all = [view]
     if (!view) return []
@@ -2689,7 +2700,7 @@ const getDeepChildren = ({ _window, id }) => {
 
 const getDeepChildrenId = ({ _window, id }) => {
 
-    var views = _window ? _window.views : window.views
+    const views = _window ? _window.views : window.views
     var view = views[id]
     var all = [id]
     if (!view) return []
@@ -2711,7 +2722,7 @@ const getDeepChildrenId = ({ _window, id }) => {
 
 const getDeepParentId = ({ _window, lookupActions, stack, id }) => {
 
-    var views = _window ? _window.views : window.views
+    const views = _window ? _window.views : window.views
     var view = views[id]
 
     if (!view) return []

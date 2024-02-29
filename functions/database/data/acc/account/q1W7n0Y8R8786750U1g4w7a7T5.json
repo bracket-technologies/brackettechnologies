@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687880463,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "UOo9KHlhP3sPdEkogOceuAZmrqU6Jpm4Qf8q87K7edg5VXq3HtTR3EPsx2NF-1708687880463",
+  "ref": "ACC-00000061",
+  "ledgerAccount": "61132/1/1",
+  "blockAccount": "No",
+  "name": "Returnable Containers",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "61",
+    "611",
+    "6113",
+    "61132"
+  ],
+  "__props__": {
+    "id": "q1W7n0Y8R8786750U1g4w7a7T5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "f5vi7v40p85VDJyFIvUtTjVGYbpia2qTVUmQcKCiz1ufNLvY0fFIB6BwQZPb-1708687880463",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

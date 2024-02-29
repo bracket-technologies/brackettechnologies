@@ -1,6 +1,5 @@
 const { clone } = require("./clone")
 const { generate } = require("./generate")
-const { toArray } = require("./toArray")
 
 const initView = ({ views, global, id = generate(), doc, children = [], parent, __parent__, __status__ = "Loading", __dataPath__, __controls__ = [], ...data }) => {
 
@@ -9,7 +8,7 @@ const initView = ({ views, global, id = generate(), doc, children = [], parent, 
     views[id] = {
         ...data,
         id,
-        children: toArray(children),
+        children,
         doc: doc || parentView.doc,
         __status__,
         __view__: true,
@@ -17,7 +16,7 @@ const initView = ({ views, global, id = generate(), doc, children = [], parent, 
         __dataPath__: __dataPath__ || [...(parentView.__dataPath__ || [])],
         __indexing__: 0,
         __name__: data.view,
-        __controls__: toArray(__controls__),
+        __controls__,
         __childrenRef__: [],
         __timers__: [],
         __rendered__: false,
@@ -35,7 +34,7 @@ const initView = ({ views, global, id = generate(), doc, children = [], parent, 
 const getViewParams = ({ view }) => {
     
     var { id, doc, data, view, children, __lookupViewActions__, __element__, __dataPath__, __childrenRef__, __index__,
-        __viewPath__, __customViewPath__, __indexing__, __childIndex__, __initialIndex__, __customView__, __htmlStyles__, 
+        __viewPath__, __customViewPath__, __indexing__, __childIndex__, __initialIndex__, __customView__, __htmlStyles__,
         __parent__, __controls__, __status__, __rendered__, __timers__, __view__, __name__, __customID__, __, ...params } = view
         
     return params
@@ -43,11 +42,11 @@ const getViewParams = ({ view }) => {
 
 const removeView = ({ _window, id, stack, self = true, main, insert }) => {
     
-    var views = _window ? _window.views : window.views
-    var global = _window ? _window.global : window.global
+    const views = _window ? _window.views : window.views
+    const global = _window ? _window.global : window.global
     var view = views[id] || {}, parent = views[view.__parent__], element = {}
     
-    toArray(view.__childrenRef__).map(({ id }) => id).map(id => removeView({ _window, id, stack, insert }))
+    view.__childrenRef__.map(({ id }) => id).map(id => removeView({ _window, id, stack, insert }))
 
     if (self && view.id) {
 
@@ -56,7 +55,7 @@ const removeView = ({ _window, id, stack, self = true, main, insert }) => {
         var index = parent.__childrenRef__.findIndex(({ id }) => id === view.id)
 
         if (index >= 0) {
-            parent.__childrenRef__.slice(index).map(viewRef => {
+            main && parent.__childrenRef__.slice(index).map(viewRef => {
                 
                 viewRef.index--
                 views[viewRef.id].__index__ = viewRef.index
@@ -67,11 +66,11 @@ const removeView = ({ _window, id, stack, self = true, main, insert }) => {
 
         if (main) element = view.__element__
         
-        deepDelete({ obj: global.__events__, key: id })
+        // deepDelete({ obj: global.__events__, key: id })
 
         blockRelatedAddressesByViewID({ stack, id })
 
-        Object.keys(view).map(key => delete view[key])
+        // Object.keys(view).map(key => delete view[key])
 
         delete views[id]
     }

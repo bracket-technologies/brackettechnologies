@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687878156,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "X2vQuETfWo0gGmtcvhsipHW5PG40YKfD9WMMT8E7caKyiNCAqOuUzw2F5rQt-1708687878156",
+  "ref": "ACC-00000013",
+  "ledgerAccount": "5111/1/1",
+  "blockAccount": "No",
+  "name": "Cheque for Collection",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "5",
+    "51",
+    "511",
+    "5111"
+  ],
+  "__props__": {
+    "id": "t13790i8a8E8O7D081P580i386",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "wGzvJ0QZnCDce4a1NCMYMtIcruMz0KBZSc8V78LMNr237JAD0h7pgbM6e9jA-1708687878156",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

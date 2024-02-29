@@ -1,0 +1,87 @@
+{
+  "view": "View?id=sidebar;class=flex;style.transition=.2s;style.height=calc(100vh - 4rem);style.position=relative;sidebar-open-manager:()=page-view-sidebar;mouseenter:[lastChild().style().opacity=1];mouseleave:[lastChild().style().opacity=0]",
+  "children": [
+    {
+      "view": "View:sidebar-items?class=flex column;style.width=4.5rem;style.backgroundColor=#f9f9f9;sidebar-item-open:()=false",
+      "children": [
+        {
+          "view": "View:page-view-btn?tooltip.text=code;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #FF0000:2px solid #ffffff00];click:[openCode()]",
+          "children": [
+            {
+              "view": "Icon?class=flexbox;name=code;google.symbol;style.color=if():[parent().open]:#FF0000:#888;style.fontSize=2.5rem"
+            }
+          ]
+        },
+        {
+          "view": "View:collection-btn?tooltip.text=datastore;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #FF0000:2px solid #ffffff00];click:[openCollections()]",
+          "children": [
+            {
+              "view": "Icon?class=flexbox;name=data_table;google.symbol;style.color=if():[parent().open]:#FF0000:#888;style.fontSize=2.5rem"
+            }
+          ]
+        },
+        {
+          "view": "View:gallery-icon?tooltip.text=storage;open=if():[sidebar-item-open:()=().id]:true:false;class=flexbox pointer;style:[minHeight=5rem;width=100%;borderLeft=2px solid #ffffff00;borderRight=if():open:2px solid #FF0000:2px solid #ffffff00];click:[openGallery()]",
+          "children": [
+            {
+              "view": "Icon?class=flexbox;name=gallery_thumbnail;google.symbol;style.color=if():[parent().open]:#FF0000:#888;style.fontSize=2.5rem"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "view": "page-view-sidebar"
+    },
+    {
+      "view": "collection-sidebar"
+    },
+    {
+      "view": "View:sidebar-width-controller?style:[minHeight=100%;width=7px;backgroundColor=#34aeeb;cursor=ew-resize;position=absolute;right=-3px;top=0;zIndex=100;opacity=0;transition=.2s];mousedown:[widthVerticalBarMousedown()];():body.mousemove:[mousemoveVerticalBar()];():body.mouseup:[mousedownVerticalBar()]"
+    }
+  ],
+  "__props__": {
+    "id": "01u7l0l8X8o8C7I0J0s7n0Q9w7",
+    "creationDate": 1640440075917,
+    "collapsed": [],
+    "comments": [
+      {
+        "note": "",
+        "path": [
+          "children",
+          1
+        ]
+      }
+    ],
+    "actions": {
+      "cancelEditCreateDoc": "txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||if():[_.head-collection]:[!data:().editor.collections.[_.collection].[open-doc:()]]:[!data:().editor.[_.collection].[open-doc:()]]]:[if():[if():[_.head-collection]:[!data:().editor.collections.[_.collection]||data:().editor.collections.[_.collection].keys().len()=0]:[!data:().editor.[_.collection]||data:().editor.[_.collection].keys().len()=0]]:[closeFolder():[id=_.view]];parent().rem()]",
+      "pushDocView": "():'data-viewer'.insert():[view=():'data-viewer';viewPath=:children:0;index=():'data-viewer-bar'.children().len();preventDefault;data=open-map:();index=():'data-viewer'.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:();open-head-collection=__.head-collection];loader.hide]",
+      "displayOpenedDoc": "():'my-functions'.style().height=0;open-doc:()=().data;open-collection:()=if():[_.head-collection]:['collection-'+_.collection]:[_.collection];open-map:()=data:().editor.[_.collection].[open-doc:()];():'data-viewer-bar'.children().():[style().backgroundColor=inherit;hover.disable=false];():'data-viewer-bar'.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():'data-viewer'.():[style().display=none];className():'data-viewer'.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex",
+      "closeFolder": "if():[!_.id]:[_.id=().id];():[_.id].1stChild().style().transform='rotate(0deg)';next().children().():rem()",
+      "showActionPopup": "if():[():'file-action-popup'.style().opacity=1;action-popup-caller:()=().id]:[():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform='scale(0)']]:[action-popup-caller:()=().id;():'file-action-popup'.style():[opacity=1;pointerEvents=auto;zIndex=10;transform='scale(1)']];open-doc:()=().data;open-collection:()=if():[_.head-collection]:['collection-'+_.collection]:[_.collection];open-head-collection:()=_.head-collection;():'file-action-popup'.caller=().id;():'file-action-popup'.position():[positioner=().id;placement=right]",
+      "problemEditingCreateDoc": "note():[text=if():[!txt()]:[File name could not be empty!].elif():[if():[data:().editor.collections.[_.collection].keys().inc().[txt()]]:[_.head-collection]:[data:().editor.[_.collection].keys().inc():txt()]]:[File name should be unique!].elif():[txt().inc(): ]:'File name cannot contain spaces!';danger]",
+      "eraseDoc": "if():[open-doc:()]:[erase():[collection=if():[_.head-collection]:['collection-'+_.collection]:[_.collection];doc=open-doc:();headers.project=project:()];if():[_.head-collection]:[data:().editor.collections.[_.collection].[open-doc:()].del()]:[data:().editor.[_.collection].[open-doc:()].del()]]",
+      "mousedownVerticalBar": "mousedown=false;document().style().cursor=default;():[sidebar-open-manager:()].style().transition=.2s;():data-viewer.style().transition=.2s;():my-functions.style().transition=.2s",
+      "searchDocsRequest": "search():[collection=if():[_.head-collection]:['collection-'+_.collection]:[_.collection];headers.project=project:()]:[if():[__.head-collection]:[data:().editor.collections.[__.collection]=_.data]:[data:().editor.[__.collection]=_.data];next().style().display=flex;1stChild().style().transform='rotate(90deg)';loader():hide;():[__.list].update()]",
+      "searchDocs": "if():[1stChild().style().transform='rotate(0deg)'||3rdChild().contains():[clicked()]]:[loader():show;next().children().():rem();searchDocsRequest():[head-collection=_.head-collection;collection=_.collection;list=_.list]]:closeFolder()",
+      "pushDocHeader": "():'data-viewer-bar'.insert():[view=():'data-viewer-bar';viewPath=:children:0;index=():'data-viewer-bar'.children().len();preventDefault;data=if():[_.head-collection]:['data/'+_.collection+'/'+open-doc:()]:[_.collection+'/'+open-doc:()]]:[_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:();open-head-collection=__.head-collection]]",
+      "removeCollection": "loader.show;myCollection=_.collection;search():[collection='collection-'+().myCollection;headers.project=project:()]:[data:().editor.collections.[().myCollection]=_.data;data:().editor.project.datastore.collections.pullItem():[().myCollection];data:().editor.collections.[().myCollection]._():[erase():[collection='collection-'+().myCollection;doc=_.key();headers.project=project:()]:[data:().editor.collections.[().myCollection].[_.key()].del()]];save():[collection=_project_;data=data:().editor.project;doc=project:()]:[note():'Collection deleted successfully!';loader.hide;():collections.update()]]",
+      "createNewCollection": "data:().editor.project.datastore.collections||=:;new-collection:()=true;():'collection-sidebar'.insert():[view=new-collection]:[_.view.input().focus();new-collection:()=false]",
+      "createEditDoc": "if():[open-doc:()||duplicate-doc:()]:[if():[_.head-collection]:[data:().editor.collections.[_.collection].[txt()]=data:().editor.collections.[_.collection].[open-doc:()||duplicate-doc:()].clone();data:().editor.collections.[_.collection].[txt()].id=txt()]:[data:().editor.[_.collection].[txt()]=data:().editor.[_.collection].[open-doc:()||duplicate-doc:()].clone();data:().editor.[_.collection].[txt()].id=txt()]]:[if():[_.head-collection]:[data:().editor.collections.[_.collection].[txt()]=[id=txt();'creation-date'=[today().timestamp()]]]:[data:().editor.[_.collection].[txt()]=[id=txt();'creation-date'=[today().timestamp()]]]];createDoc():[collection=_.collection;list=_.list;head-collection=_.head-collection]",
+      "openCollections": "'sidebar-open-manager':()='collection-sidebar';():'gallery-view'.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;1stChild().style().color=#888];if():open:[style():[borderRight=2px solid #FF0000];1stChild().style().color=#FF0000;sidebar-item-open:()=().id];2ndParent().children().slice():1:[-1].():[style().width=0px];if():open:[if():[():'sidebar-width-controller'.width>5]:[():'collection-sidebar'.style().width=():'sidebar-width-controller'.width+():'sidebar-width-controller'.diff+rem;():data-viewer.style().width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5]+'rem)';():'my-functions'.style().width=():'data-viewer'.style().width]:[():'collection-sidebar'.style().width=19rem;():data-viewer.style().width='calc(100vw - 23.5rem)';():my-functions.style().width='calc(100vw - 23.5rem)']]:[():'collection-sidebar'.style().width=0px;():'data-viewer'.style().width='calc(100vw - 4.5rem)';():'my-functions'.style().width='calc(100vw - 4.5rem)'];className():'data-viewer'.find():[open-doc=open-doc:()].style().display=flex;():'gallery-view'.style().display=none;if():[():'data-viewer-bar'.children().len()>0]:[():'data-viewer-bar'.style().display=flex];():'main-data-viewer'.style().display=flex",
+      "openCode": "'sidebar-open-manager':()='page-view-sidebar';():'gallery-view'.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;1stChild().style().color=#888];if():open:[style():[borderRight=2px solid #FF0000;sidebar-item-open:()=().id];1stChild().style().color=#FF0000];2ndParent().children().slice():1:[-1].():[style().width=0px];if():open:[if():[():sidebar-width-controller.width>5]:[():page-view-sidebar.style().width=():sidebar-width-controller.width+():sidebar-width-controller.diff+rem;():data-viewer.style().width='calc(100vw - '+[():sidebar-width-controller.width+():sidebar-width-controller.diff+4.5]+'rem)';():my-functions.style().width=():data-viewer.style().width]:[():page-view-sidebar.style().width=19rem;():data-viewer.style().width='calc(100vw - 23.5rem)';():my-functions.style().width='calc(100vw - 23.5rem)']]:[():page-view-sidebar.style().width=0px;():data-viewer.style().width='calc(100vw - 4.5rem)';():my-functions.style().width='calc(100vw - 4.5rem)'];className():'data-viewer'.find():[open-doc=open-doc:()].style().display=flex;():gallery-view.style().display=none;if():[():data-viewer-bar.children().len()>0]:[():data-viewer-bar.style().display=flex];():main-data-viewer.style().display=flex",
+      "createDoc": "loader.show;save():[collection=if():[_.head-collection]:['collection-'+_.collection]:[_.collection];doc=txt();data=if():[_.head-collection]:[data:().editor.collections.[_.collection].[txt()]]:[data:().editor.[_.collection].txt()];headers.project=project:()]:[loader.hide;note():[text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!'];if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del();eraseDoc():[collection=__.collection;head-collection=__.head-collection];():[__.list].update()]",
+      "createNewDocRequest": "parent().next().style().display=flex;2ndPrev().style().transform='rotate(90deg)';open-doc:().del();open-collection:()=if():[_.head-collection]:['collection-'+_.collection]:[_.collection];parent().next().insert():[view=parent().next();viewPath=:children:0;preventDefault]:[_.view.():[2ndChild().style().display=none;3rdChild().style().display=flex;lastChild().[txt()]='';3rdChild().clear();3rdChild().focus()];():'file-action-popup'.style():[opacity=0;pointerEvents=none;transform='scale(0)']]",
+      "openGallery": "parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;1stChild().style().color=#888];if():open:[style().borderRight=2px solid #FF0000;style().color=#FF0000;sidebar-item-open:()=().id];parent().parent().children().slice():1:-1.():[style().width=0px];():gallery-view.style().display=if():open:grid:none;():data-viewer.children().():[style().display=none];():'gallery-view'.style():[display=grid;borderRight=2px solid #FF0000];1stChild().style().color=#FF0000;open=true;():'main-data-viewer'.style().display=none;():'data-viewer-bar'.style().display=none;search():[collection=storage;headers.project=project:();limit=250]:[gallery-images:()=_.data.values().sort():[path=creation-date];():'gallery-view'.update()]",
+      "openDoc": "loader.show;():'my-functions'.style().height=0;():'data-viewer'.style().height=100%;open-doc:()=().data;open-docs:().push():[if():[_.head-collection]:['data/'+_.collection+'/'+open-doc:()]:[_.collection+'/'+open-doc:()]];open-collection:()=if():[_.head-collection]:['collection-'+_.collection]:[_.collection];open-map:()=if():[_.head-collection]:[data:().editor.collections.[_.collection].[open-doc:()]]:[data:().editor.[_.collection].[open-doc:()]];():'data-viewer-bar'.style().display=flex;className():'data-viewer'.():[style().display=none];():'data-viewer-bar'.children().():[style().backgroundColor=inherit;hover.disable=false];pushDocHeader();pushDocView()",
+      "widthVerticalBarMousedown": "mousedown=true;document().style().cursor=ew-resize;():[sidebar-open-manager:()].style().transition=null;():data-viewer.style().transition=null;():my-functions.style().transition=null;width=():[sidebar-open-manager:()].style().width.split():rem.0.num();screenX=mousePosX:()",
+      "createCollection": "if():[txt().lowercase()=collection]:[note():[text='Collection name cannot be collection neither collections!';danger]]:[save():[collection=_project_;data:().editor.project.datastore.collections||=:;data:().editor.project.datastore.collections.push():[txt()];data=data:().editor.project;doc=project:();data:().editor.collections.[txt()]=[]]:[note():'Collection created successfully!';blur();():collections.update()]]",
+      "mousemoveVerticalBar": "diff=[[mousePosX:()]-[().screenX]].divide():10;():[sidebar-open-manager:()].style().width=[().width+().diff]+rem;():data-viewer.style().width='calc(100vw - '+[().width+().diff+4.5]+'rem)';():my-functions.style().width='calc(100vw - '+[().width+().diff+4.5]+'rem)'?mousedown"
+    },
+    "docName": "sidebar",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "d17770q8A8Z7l0Q0l031g188q9"
+    }
+  }
+}

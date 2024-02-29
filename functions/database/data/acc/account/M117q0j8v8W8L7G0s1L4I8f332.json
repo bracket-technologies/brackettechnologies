@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687885956,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "Cen6wXOzfknAfI6MNGxrME4NkmqwIakqNzhQmfejdLsn1jTeaniGWAnfsOJJ-1708687885956",
+  "ref": "ACC-00000146",
+  "ledgerAccount": "6731/1/1",
+  "blockAccount": "No",
+  "name": "Interest-Accounts Payable & Loans",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "67",
+    "673",
+    "6731"
+  ],
+  "__props__": {
+    "id": "M117q0j8v8W8L7G0s1L4I8f332",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "kADfqx0fLUSq7jhHQBecyM39gZtOVuNziGEhKHvPq7cmHqHtcFs7vyX0vG0c-1708687885956",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

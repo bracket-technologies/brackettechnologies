@@ -1,0 +1,31 @@
+{
+  "updateBy": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+  "difference": [
+    {
+      "new": {
+        "asdf": "sdsdsd"
+      },
+      "path": "list"
+    },
+    {
+      "new": "ABdallammmm",
+      "path": "title",
+      "old": "ABdalla"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "Z4RW8b99lcjPNpiOdrd6vPNNpA2fE7Br1CXyLRYf8PRRkdlxnKLHrrhPzvSU1700904423690",
+  "creationDay": 1700870400000,
+  "creationDate": 1700910677009,
+  "__props__": {
+    "id": "21n7g0g8Z8m8T7S0n1959609L8",
+    "creationDate": 1700910580003,
+    "collapsed": [],
+    "comments": [],
+    "docName": "VQepyFT6o5yEK1w3OHmIbCOM8FnfwSZgFfMqBxP9s9aRNRH9IyCDOrrSo58L1700910677008",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

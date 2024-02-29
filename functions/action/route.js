@@ -1,33 +1,13 @@
-const { clone } = require("./clone")
-const { update } = require("./update")
+const route = async ({ _window, lookupActions, stack, address, id, req, __, res, e, data: { type, route = {} } }) => {
 
-module.exports = {
-  route: ({ id, _window, route = {}, stack, lookupActions, address, req, res, __ }) => {
+  // headers
+  var headers = { ...(route.headers || {}), timestamp: (new Date()).getTime(), timezone: Math.abs((new Date()).getTimezoneOffset()), "Access-Control-Allow-Headers": "Access-Control-Allow-Headers" }
 
-    var views = _window ? _window.views : window.views
-    var global = _window ? _window.global : window.global
-
-    // path
-    var path = route.path || (route.page.includes("/") ? route.page : global.manifest.path.join("/"))
-
-    // page
-    var page = route.page && (route.page.includes("/") ? (!route.page.split("/")[0] ? route.page.split("/")[1] : route.page.split("/")[0]) : route.page) || path.split("/")[1] || "main"
-
-    // recheck path
-    path = route.path ? path : page === "main" ? "/" : `/${page}`
-
-    // prevs
-    global.__prevPath__.push(global.manifest.path.join("/"))
-    global.__prevPage__.push(global.manifest.page)
-
-    // page & path
-    global.manifest.page = page
-    global.manifest.path = path.split("/")
-
-    // params
-    route.path = path
-    route.page = page
-
-    update({ _window, id, req, res, stack, lookupActions, address, data: { route, id: "root" }, __ })
-  }
+  // route
+  var { data } = await require("axios").post(`/route`, { server: "render", type, data: route }, { headers })
+  
+  // await
+  require("./toAwait").toAwait({ _window, lookupActions, address, stack, id, e, req, res, _: data, __ })
 }
+
+module.exports = { route }

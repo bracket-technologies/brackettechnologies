@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687885757,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "zxZCvIIy433vgjOyWPKpMjNHyzH7aJEgNwmOzGu40CDjYe8TOqwIjdLWJDZc-1708687885756",
+  "ref": "ACC-00000142",
+  "ledgerAccount": "665/1/1",
+  "blockAccount": "No",
+  "name": "Loss On Joint Venture",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "66",
+    "665"
+  ],
+  "__props__": {
+    "id": "4117L0E8R8C8H7V0P1Z4r8Q0B9",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "iCRXFiRjbn8xYSWhsyrEenadpdr7Umn4e2le1QJ43mkfcI4vPoCEWGTNBNMC-1708687885756",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687893570,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "GzlDtnXeaGZQmHeHsywLL3t69vuG437kUCeFY39nESGAurgMzUiBCbvGyoHz-1708687893569",
+  "ref": "ACC-00000349",
+  "ledgerAccount": "7888/1/1",
+  "blockAccount": "No",
+  "name": "Other Revenue Except. Capital",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "78",
+    "788",
+    "7888"
+  ],
+  "__props__": {
+    "id": "g1b7s0X8E8N8j7B0W104H170e5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "863RoAtxBMav12GIrwPUPRlL2l96L9zlQvqj6ZOuFJCm85zZCQImusqT1gVz-1708687893569",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

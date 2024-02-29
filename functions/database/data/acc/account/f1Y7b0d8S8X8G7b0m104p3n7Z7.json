@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687892159,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "QMVZxzsDXeAE0BxfYTpn6wYoGZnl4IP2xkT5X1WThRWGn2Qpj7BKgyFNx1Ty-1708687892159",
+  "ref": "ACC-00000312",
+  "ledgerAccount": "7612/1/1",
+  "blockAccount": "No",
+  "name": "Rent Income",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "76",
+    "761",
+    "7612"
+  ],
+  "__props__": {
+    "id": "f1Y7b0d8S8X8G7b0m104p3n7Z7",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "M2nTfnlf0Xos15dHZSkYomsbCkeTOYf0sQl0EhwnosAldkadMrgZMqIP3kpj-1708687892158",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

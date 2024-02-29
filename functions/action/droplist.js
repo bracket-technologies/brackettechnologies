@@ -1,13 +1,13 @@
 const { update } = require("./update")
 const { clone } = require("./clone")
 const { jsonToBracket } = require("./jsonToBracket")
-const { lineInterpreter } = require("./lineInterpreter")
+const { toLine } = require("./toLine")
 const { kernel } = require("./kernel")
 
 const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   
-  var views = window.views
-  var global = window.global
+  const views = window.views
+  const global = window.global
   var view = views[id]
 
   if (!view.droplist) return
@@ -26,11 +26,11 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   var droplistView = { ...global.data.view.droplist, children: [], __dataPath__, doc, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["route", "document", "root", "droplist"], __lookupViewActions__: [...view.__lookupViewActions__] }
 
   // input id
-  var { data: inputID } = lineInterpreter({ id, data: { string: "input().id||().id" } })
+  var { data: inputID } = toLine({ id, data: { string: "input().id||().id" } })
   var text = views[inputID].__element__.value || views[inputID].__element__.innerHTML
 
   // items
-  if (typeof items === "string") items = lineInterpreter({ id, data: { string: items }, lookupActions, __: view.__ }).data
+  if (typeof items === "string") items = toLine({ id, data: { string: items }, lookupActions, __: view.__ }).data
 
   // filterable
   if (!view.droplist.preventDefault) {

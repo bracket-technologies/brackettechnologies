@@ -1,0 +1,17 @@
+{
+    "view": "View:droplist?__droplistMouseleaveTimer__:()=400;class=box-shadow flex column;[mouseleave?mouseleaveDroplist()];[mouseenter?mouseenterDroplist()];[click:document?outClickDroplist()];style:[width=fit-content;transition=opacity .1s, transform .1s, background-color .1s;height=fit-content;overflowY=auto;overflowX=hidden;maxWidth=40rem;transform=scale(0.5);opacity=0;pointerEvents=none;position=fixed;borderRadius=.5rem;backgroundColor=#fff;zIndex=998]",
+    "functions": {
+        "mouseleaveDroplist": "mouseentered=false;clearTimer():[__droplistTimer__:()];__droplistTimer__:()=timer():[__keyupIndex__:()=0;__droplistMouseenterer__:().del();__droplistPositioner__:().del();():droplist.style():[opacity=0;transform='scale(0.5)';pointerEvents=none]]:[__droplistMouseleaveTimer__:()]",
+        "mouseenterDroplist": "mouseentered=true;__droplistMouseleaveTimer__:()=400;clearTimer():[__droplistTimer__:()]",
+        "outClickDroplist": "__droplistMouseleaveTimer__:()=400;mouseleave()?!contains():[clicked()];!():[__droplistPositioner__:()].contains():[clicked()]"
+    },
+    "__props__": {
+        "provider": "bracketDB",
+        "db": "public",
+        "collection": "view",
+        "id": "H1Q7f0a828R8d7d0Q060p1E5l2",
+        "creationDate": 0,
+        "docName": "droplist",
+        "public": true
+    }
+}

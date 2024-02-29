@@ -1,0 +1,31 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687889074,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "WfYRX7nUEXjbOdUmb1qS5dIMknxA0PnzN0FUtiM0pIFy0bKDkxb7WjFdI5XW-1708687889073",
+  "ref": "ACC-00000232",
+  "ledgerAccount": "651234/1/1",
+  "blockAccount": "No",
+  "name": "Depr.Alloc. - Constructions on Unowned Lands",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6512",
+    "65123",
+    "651234"
+  ],
+  "__props__": {
+    "id": "51a7H0K8s8k8h7X0B1c4N3I3G4",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "K3DorQfp8DXQnPGAODIERWBtOFyvAejotgAdpGTh6e5Tdd11xKefJ8bSG6CA-1708687889073",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

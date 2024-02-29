@@ -1,0 +1,39 @@
+{
+  "view": "View:new-collection?style:[width=100%]",
+  "children": [
+    {
+      "view": "View?style:[width=100%]?new-collection:()",
+      "children": [
+        {
+          "view": "View?class=flex pointer align-center;hover.style.backgroundColor=#e9e9e9;style:[minHeight=3rem;width=100%;position=relative];mouseenter:[lastChild().style().display=flex];mouseleave:[lastChild().style().display=none]",
+          "children": [
+            {
+              "view": "Icon?class=flexbox;name=bi-chevron-right;style:[fontSize=1.3rem;width=2.25rem;transition=.2s]"
+            },
+            {
+              "view": "Text?class=dots;style:[fontSize=1.3rem;display=none]"
+            },
+            {
+              "view": "Input?style:[fontSize=1.3rem;width=100%;display=flex;border=0;padding=.2rem];blur:[2ndParent().rem()];keyup:[if():[e().key=Escape]:[2ndParent().rem()]:[prev().txt()=txt()]];keyup:[createCollection()?e().key=Enter]"
+            },
+            {
+              "view": "Icon?name=bi-plus;style:[display=none;color=#000;fontSize=1.9rem;position=absolute;right=.5rem;height=2rem;width=2rem;borderRadius=.25rem];hover.style.color=blue"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "q1F7i0I8m8i847Z0U0U7B0P6W0",
+    "creationDate": 1696325265828,
+    "collapsed": [],
+    "comments": [],
+    "actions": {},
+    "docName": "new-collection",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "d17770q8A8Z7l0Q0l031g188q9"
+    }
+  }
+}

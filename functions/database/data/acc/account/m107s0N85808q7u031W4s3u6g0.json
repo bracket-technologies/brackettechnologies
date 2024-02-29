@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687889976,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "pN8nzUfYwWiIp6lbYw0rLfmC6B97HhGfTNQfFj7zFx57PTwmwXCwwCuC8jeE-1708687889975",
+  "ref": "ACC-00000253",
+  "ledgerAccount": "65541/1/1",
+  "blockAccount": "No",
+  "name": "Prov.Alloc. for Bad & Doubtful Receivables",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "655",
+    "6554",
+    "65541"
+  ],
+  "__props__": {
+    "id": "m107s0N85808q7u031W4s3u6g0",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "LFKRZp1jne1LBM25H4HSAmkNYQhT0Ey7nB1akD29RIEMuQtECtWUXf6mX5FR-1708687889975",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

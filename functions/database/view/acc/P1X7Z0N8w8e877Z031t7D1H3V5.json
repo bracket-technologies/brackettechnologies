@@ -1,0 +1,99 @@
+{
+  "view": "View:mobileMainPage?class=column;style:[height=100vh];doc=mobileMainPage;mobileStack:()=[]",
+  "children": [
+    {
+      "view": "View?class=flexbox",
+      "children": [
+        {
+          "view": "View:gridData?style:[display=grid;gridTemplateColumns=1fr 1fr;gap=1px;backgroundColor=#eee;width=100%]?mainMobilePageInfo:()!=dashBoard",
+          "children": [
+            {
+              "view": "[View]:[data=mainMobilePageInfo:()]?class=flexbox;style:[backgroundColor=#fff;display=flex;flexDirection=column;alignItems=center;gap=2rem;padding=2rem;min-height=27rem];if():[doc().identifier=sheet]:[_.image=sheetImage()];click:[changePageData();log():[mainMobilePageInfo:()]:qqqq]?mainMobilePageInfo:().len()>0",
+              "children": [
+                {
+                  "view": "View?class=flexbox;style:[height=6rem]",
+                  "children": [
+                    {
+                      "view": "Icon?name=_.icon;google.symbol;style:[fontSize=5.5rem;color=#453f3f;transition=.2s]?_.icon"
+                    },
+                    {
+                      "view": "Image?src=if():[_.image]:[_.image].elif():[_.url;_.type.inc():['image']]:[_.url]:[mobileStack:().lastPic];style:[width=5rem]?!_.icon"
+                    }
+                  ]
+                },
+                {
+                  "view": "Text?text=if():[_.tooltip.capitalize()]:[_.tooltip.capitalize()]:[if():[_.name]:[_.name]:[_.firstName]];class=flex;style:[fontSize=1.5rem;color=#000;fontWeight=bold;#height=3rem;maxWidth=17rem;textOverflow=ellipsis;whiteSpace=wrap;overflow=hidden]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "view": "View:dashBoard?class=flexbox column;style:[display=grid;gridTemplateColumns=1fr;gap=2rem;width=100%]?mainMobilePageInfo:()=dashBoard",
+      "children": [
+        {
+          "view": "rowBar"
+        },
+        {
+          "view": "customDoubleBarChart"
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "P1X7Z0N8w8e877Z031t7D1H3V5",
+    "creationDate": 1701072710325,
+    "collapsed": [
+      {
+        "path": [
+          "functions"
+        ]
+      },
+      {
+        "path": [
+          "#getSearchResult"
+        ]
+      },
+      {
+        "path": [
+          "changePageData"
+        ]
+      }
+    ],
+    "comments": [],
+    "actions": {
+      "#getSearchResult": {
+        "notSuccess": "managersSearchResult:().[doc().identifier]=false;():customManagerTable.update():[loader.hide];openNewForm();doc().identifier='';():searchBoxTable.update():[loader.hide];note():[text=_.message;danger]",
+        "searchEngineSearch": "loader.show;doc().branch=userData:().currentBranch;customSearchEngine():[doc()]:[if():[_.success]:[successSearch()]:[notSuccess()]]",
+        "getIdentifier": "doc().keys()._():[if():[doc().[_].len()<1]:[doc().[_].del()]];doc().identifier=_.collection;searchEngineSearch()",
+        "successSearch": "updateStack();mobileStack:().lastPic='https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/EB3i2nbjAUoPlGctJtJO?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=WS2abKlgAUcBcM9b5nu1%2BTYbVRUqu4GMPDEoP4ufmC%2BfwMA5g2UBiR1rX1RvbqtwMkAuuxuXz8uSzp8qONCYJn01ejb1bxPxAp0jppTr6cNsOdlNK%2FF9PfLSEm%2FdkGXulMoxLVZgZh8C24zfXz86MRGjUPXI6%2BKfO3NQaOhlZZMiNJMVQkKFkEpXIUIjwO%2Fh8OykZb51fccfelVhtQ3keOt5JdkCwZYpBWF9Q95A%2F9rJw9aSh88gqvzQmEQwAfu7lbRczRQRZ%2FRD8CmN8kCLW7MZ%2BKaX%2BvOen3J7VzT6NIe1pA0Lddxa2oa6rpEgtq6dr1z5raXsz51Eptw5t4vGXg%3D%3D';#mobileStack:().lastPic=__.image;mainMobilePageInfo:()=_.data;():mobileMainPage.update();():mobileTopbar.update();loader.hide",
+        "_": "getIdentifier()"
+      },
+      "openDashBoard": "mainMobilePageInfo:()=dashBoard;():mobileMainPage.update();():mobileTopbar.update()",
+      "changePageData": {
+        "customAction": "[_.clickAction]()",
+        "updatePage": "():gridData.update();():mobileTopbar.update()",
+        "changeManager": "mainMobilePageInfo:()=[_.managerName]();title:()=_.tooltip.capitalize();managerName:()=_.managerInfo;updatePage()",
+        "_": "if():[_.managerName]:[updateStack();updateStackTitle();changeManager()]:[if():[_.clickAction]:[updateStack();updateTitleStack();[customAction()]()]:[if():[doc().identifier]:[openForms()]:[updateStack();mainMobilePageInfo:()='';mobileMainPage:().identifier=_.collection;updatePage()]]]"
+      },
+      "updateStackTitle": "mobileStack:().mainTitle.push():[title:()]",
+      "updateStack": "mobileStack:().pageInfo.push():[_list:[mainMobilePageInfo:()]]",
+      "sheetImage": "'https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/giedZXf0aEEULvj6flr5?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=gBPA%2B6G157NAABsNmK2unAzBMVejd2u4cYjPNzYp1%2B3Q32blPjaeqhxy0qgiUTOZo6HTKl9d6HY0OD%2FTaoYbTjdRsCtG7x%2FmoXocEgyfSh5GkGKrpNVMkxTVeaiIrIJGfDHV%2FvqLjF%2FJDLVhz62hWLmy5vR4FCZ4l93GziyBxk625WUOvO1HwU6kpSLpgZyuGW5zpBEl6Nlfz8Ug%2FkKPUMZYqyudBqeofkNZUiMKlclEDu554%2B%2FXWmWYjuBkEQAYkjzheMQuj1mj7IB9k%2F5F9%2FtjW05zajIB290Xt8oYbFd5SuxdtMtZ4oNINo49o%2FM8HgzhQgF2s2zgenTiiJ2L0g%3D%3D'",
+      "openForms": {
+        "openNewForm": "group=collectionsInfo:().find():[managers.():collection.inc():[doc().identifier]];manager=[().group.groupName]:().[().group.managers.find():[collection=doc().identifier].manager];loader.show;generalPopup:()=[title=doc().identifier.capitalize()+' Form';popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName];openGeneralPopup()",
+        "openGallery": "imageId:()=_.id;generalPopup:()=[title='Edit Image';popupName=customForm;inputInfo=galleryManagerInfo:().galleryManager.createFormInputs;imageData=_.clone();SaveAction='editImage()';deleteAction='deleteImage()'];openGeneralPopup()",
+        "openForm": "group=collectionsInfo:().find():[managers.():collection.inc():[doc().identifier]];manager=[().group.groupName]:().[().group.managers.find():[collection=doc().identifier].manager];loader.show;generalPopup:()=[title=doc().identifier.capitalize()+' Form';popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName;docValues=_.clone()];openGeneralPopup()",
+        "openGeneralPopup": "timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:10",
+        "openExcelSheet": "loader.show;generalPopup:()=[sheet;title=Sheet Form;popupName=sheet;currentSheetInfo:()=_;saveAs];updateStatus:()=false;sheetName:().del();openGeneralPopup()",
+        "_": "if():[doc().identifier=sheet]:[openExcelSheet()].elif():[doc().identifier=gallery]:[openGallery()]:[openForm()]"
+      }
+    },
+    "docName": "mobileMainPage",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

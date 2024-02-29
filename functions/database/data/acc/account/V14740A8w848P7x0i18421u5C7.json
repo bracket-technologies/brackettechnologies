@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687882872,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "wTaaMJ2AQ7A1hy2ZbRryI6U5u31PQ8mq9GN97BXap3UZ8Y9PYrbnEkxaBISw-1708687882871",
+  "ref": "ACC-00000097",
+  "ledgerAccount": "62642/1/1",
+  "blockAccount": "No",
+  "name": "Travel & Transport",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "62",
+    "626",
+    "6264",
+    "62642"
+  ],
+  "__props__": {
+    "id": "V14740A8w848P7x0i18421u5C7",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "AgXQzydtpn2gYuDBpelQR2ZCiN8GXVHNXZPUrwjjgG4CnHFaOPokhath2DXY-1708687882871",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,140 @@
+{
+  "view": "View?class=flexbox column;style.backgroundColor=#fff;style.borderRadius=.25rem;style.width=80rem",
+  "children": [
+    {
+      "view": "View?class=flexbox column;style.gap=.4rem;style.padding=5rem",
+      "children": [
+        {
+          "view": "Text?text='Step 1 of 2';style.fontSize=1.3rem;style.color=#222"
+        },
+        {
+          "view": "Text?text='Tell us a little about yourself';style.fontSize=2.6rem;style.color=#222;style.fontWeight=bold"
+        },
+        {
+          "view": "Text?text='We’ll help you get started based on your responses';style.fontSize=1.75rem;style.color=#888"
+        }
+      ]
+    },
+    {
+      "view": "View?Data=account-setup-data;data=_map;class=flexbox column;style.width=100%;style.gap=2rem;style.padding=3rem 5rem;style.borderBottom=1px solid #f0f0f0;style.alignSelf=start",
+      "children": [
+        {
+          "view": "Input?id=are-you-already-selling;path=are-you-already-selling;label.location=outside;label.text='Are you already selling?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style:[height=100%;fontSize=1.4rem;width=100%];style.height=5rem;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:[I'm just playing around]:[I'm not selling products yet]:[I'm selling just not online]:[I sell with a different system]",
+          "controls": [
+            {
+              "event": "click:droplist?next().style().display=flex;next().lastChild().style().display=if():[droplist-txt:()=I'm selling just not online]:flex:none;next().2ndLastChild().style().display=if():[droplist-txt:()=I sell with a different system]:flex:none"
+            }
+          ]
+        },
+        {
+          "view": "View?class=flex column;style.gap=.5rem;style.width=100%;style.alignItems=flex-start;style.display=none",
+          "children": [
+            {
+              "view": "Text?text='In addition to your store, where else would you like to sell online?';style.fontSize=1.4rem"
+            },
+            {
+              "view": "Text?text='We'll pre-install these sales channels for you. You can always add more later.';style.color=#888;style.fontSize=1.4rem"
+            },
+            {
+              "view": "View?class=flex align-center;style.gap=1rem;style.marginTop=1rem",
+              "children": [
+                {
+                  "view": "Checkbox?path=sell-online-platforms.facebook-or-instagram"
+                },
+                {
+                  "view": "Text?text=Facebook or Instagram;style.fontSize=1.4rem"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flex align-center;style.gap=1rem;style.marginTop=1rem",
+              "children": [
+                {
+                  "view": "Checkbox?path=sell-online-platforms.google"
+                },
+                {
+                  "view": "Text?text=Google;style.fontSize=1.4rem"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flex align-center;style.gap=1rem;style.marginTop=1rem",
+              "children": [
+                {
+                  "view": "Checkbox?path=sell-online-platforms.bracket-buy-btn"
+                },
+                {
+                  "view": "Text?text=Bracket Buy Button;style.fontSize=1.4rem"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flex align-center;style.gap=1rem;style.marginTop=1rem",
+              "children": [
+                {
+                  "view": "Checkbox?path=sell-online-platforms.im-not-sure-yet"
+                },
+                {
+                  "view": "Text?text=I'm not sure yet;style.fontSize=1.4rem"
+                }
+              ]
+            },
+            {
+              "view": "Input?container.style.display=none;path=which-system-do-you-use-the-most;container.style.marginTop=2rem;label.location=outside;label.text='What is your current revenue?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style.height=100%;input.style.fontSize=1.4rem;input.style.width=100%;style.height=5rem;featured;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:Amazon:Big Cartel:BigCommerce:Clover:eBay:Etsy:GoDaddy:IndieGogo:Kickstarter:Lightspeed:Magento:OpenCart:PrestaShop:Revel:ShopKeep:Square:Squarespace:Tictail:Vend:Volusion:Wix:WooCommerce:WordPress"
+            },
+            {
+              "view": "Input?container.style.display=none;path=how-do-you-want-to-sell;container.style.marginTop=2rem;label.location=outside;label.text='How do you want to sell?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style.height=100%;input.style.fontSize=1.4rem;input.style.width=100%;style.height=5rem;featured;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:Online only:In person only:Both online and in person"
+            }
+          ]
+        },
+        {
+          "view": "Input?path=what-is-your-current-revenue;label.location=outside;label.text='What is your current revenue?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style.height=100%;input.style.fontSize=1.4rem;input.style.width=100%;style.height=5rem;featured;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:[0$ (I'm just getting started)]:'Up to 5,000$':'5,000$ to 50,000$':'50,000$ to 250,000$':'250,000$ to 1,000,000$':'1,000,000$+'"
+        },
+        {
+          "view": "Input?path=which-industry-will-you-be-operating-in;label.location=outside;label.text='Which industry will you be operating in?';label.style.fontSize=1.4rem;container.style.width=100%;style.padding=0 0.5rem;input.style.height=100%;input.style.fontSize=1.4rem;input.style.width=100%;style.height=5rem;featured;clearable;readonly;input.placeholder=Please choose one...;droplist.items=_array:Beauty:Clothing:Electronics:Furniture:Handcrafts:Jewelry:Painting:Photography:Restaurants:Groceries:Food & Beverages:Sports:Toys:Services:Virtual services:Travel & Tourism:Other"
+        }
+      ]
+    },
+    {
+      "view": "View?style.padding=3rem 6rem;style.display=flex;style.justifyContent=flex-end;style.width=100%;style.gap=1.5rem",
+      "children": [
+        {
+          "view": "Text?class=pointer;text=Skip;style.fontSize=1.5rem;style.color=#222;style.padding=1rem 2.5rem;style.border=1px solid #ccc;style.backgroundColor=#fff;hover.style.backgroundColor=#eee;style.borderRadius=.5rem",
+          "controls": [
+            {
+              "event": "click?account-setup-data:()=_map",
+              "actions": "toggleView:[parent().parent().id]?toggle.view=account_setup2"
+            }
+          ]
+        },
+        {
+          "view": "Text?class=pointer;text=Next;style.fontSize=1.5rem;style.color=#fff;style.padding=1rem 2.5rem;style.backgroundColor=#008060;hover.style.backgroundColor=#004C3F;style.borderRadius=.5rem",
+          "controls": [
+            {
+              "event": "click?data:().editor.project.override():[account-setup-data:()]?data:().editor.project.id;account-setup-data:().keys().len()>0",
+              "actions": "wait():save:[toggleView:[parent().parent().id]]?toggle.view=account_setup2;save.collection=_project_;save.doc=data:().editor.project.id;save.data=data:().editor.project"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "h1y7G0L8D8c8w7I0j0V6v9a3Z5",
+    "creationDate": 1640347009932,
+    "collapsed": [
+      {
+        "path": [
+          "children"
+        ]
+      }
+    ],
+    "comments": [],
+    "actions": {},
+    "docName": "account_setup1",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "d17770q8A8Z7l0Q0l031g188q9"
+    }
+  }
+}

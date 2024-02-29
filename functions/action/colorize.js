@@ -5,7 +5,7 @@ const _colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#bf9202
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[a-zA-Z]/
 
-const colorize = ({ _window, string, start = "[", end = "]", index = 0, colors = _colors }) => {
+const colorize = ({ _window, string, start = "[", index = 0, colors = _colors }) => {
 
   colors = toArray(colors)
   
@@ -16,35 +16,6 @@ const colorize = ({ _window, string, start = "[", end = "]", index = 0, colors =
   string = string.replaceAll(">", "&#62;")
 
   // comment
-  string = colorizeComment({ _window, index, string, colors })
-
-  // arabic
-  if (arabic.test(string)) {
-
-    var i = 0, lastIndex = string.length - 1, start = false, newString = ""
-    while (i <= lastIndex) {
-      if ((arabic.test(string[i]) && !english.test(string[i])) || (start !== false && string[i] === " ")) {
-        if (start === false) {
-          start = i
-          newString += `<span contenteditable class="arabic" style="color:inherit; background-color:#00000000; white-space:nowrap">`
-        }
-      } else if (start !== false) {
-        start = false
-        newString += `</span>`
-      } else start = false
-      newString += string[i]
-      i++
-    }
-    string = newString
-  }
-
-  if (index !== 0) string = `<span contenteditable style="background-color:#00000000; color:${colors[index]}; white-space:nowrap">${string}</span>`
-
-  return string
-}
-
-const colorizeComment = ({ _window, index, string, colors }) => {
-
   if (string.charAt(0) === "#" || string.includes("?#") || string.includes(";#") || string.includes("[#")) {
 
     var string0 = "", operator = ""
@@ -80,12 +51,34 @@ const colorizeComment = ({ _window, index, string, colors }) => {
 
   } else string = colorizeCoded({ _window, index, string, colors })
 
+  // arabic
+  /*if (arabic.test(string)) {
+
+    var i = 0, lastIndex = string.length - 1, start = false, newString = ""
+    while (i <= lastIndex) {
+      if ((arabic.test(string[i]) && !english.test(string[i])) || (start !== false && string[i] === " ")) {
+        if (start === false) {
+          start = i
+          newString += `<span contenteditable class="arabic" style="color:inherit; background-color:#00000000; white-space:nowrap">`
+        }
+      } else if (start !== false) {
+        start = false
+        newString += `</span>`
+      } else start = false
+      newString += string[i]
+      i++
+    }
+    string = newString
+  }*/
+
+  if (index !== 0) string = `<span contenteditable style="background-color:#00000000; color:${colors[index]}; white-space:nowrap">${string}</span>`
+
   return string
 }
 
 const colorizeCoded = ({ _window, index, string, colors }) => {
 
-  var global = _window ? _window.global : window.global
+  const global = _window ? _window.global : window.global
   var slicer = string.split("@")
   if (slicer.length < 2) return string
   

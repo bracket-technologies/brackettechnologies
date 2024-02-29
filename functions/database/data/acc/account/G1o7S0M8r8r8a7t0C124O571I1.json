@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687890273,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "7z56b2R2NrGULk78k2zOlj4czcstd0DgnDxvRwJbgR9DC1JCdBHkRlnQOZ1D-1708687890272",
+  "ref": "ACC-00000261",
+  "ledgerAccount": "6739/1/1",
+  "blockAccount": "No",
+  "name": "Bank Commissions & Other Charges",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "67",
+    "673",
+    "6739"
+  ],
+  "__props__": {
+    "id": "G1o7S0M8r8r8a7t0C124O571I1",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "RzmZS8onVLLX9hos41WJoTZFWHUaUyaQqmej2AYITntWq27hZOVYz8jqdOeU-1708687890272",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

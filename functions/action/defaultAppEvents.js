@@ -1,10 +1,10 @@
 const { eventExecuter } = require("../action/event")
-const { lineInterpreter } = require("../action/lineInterpreter")
+const { toLine } = require("../action/toLine")
 
 const defaultAppEvents = () => {
 
-    var views = window.views
-    var global = window.global
+    const views = window.views
+    const global = window.global
 
     // document default event listeners
 
@@ -29,7 +29,6 @@ const defaultAppEvents = () => {
 
     document.addEventListener("mouseenter", (e) => {
 
-        global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
         global.__mouseentered__ = views[((e || window.event).target || e.currentTarget).id]
 
         // document mouseenter events
@@ -38,7 +37,6 @@ const defaultAppEvents = () => {
 
     document.addEventListener("mouseleave", (e) => {
 
-        global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
         global.__mouseleaved__ = views[((e || window.event).target || e.currentTarget).id]
 
         // document mouseleav events
@@ -47,7 +45,6 @@ const defaultAppEvents = () => {
 
     document.addEventListener("mousedown", (e) => {
 
-        global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
         global.__mousedowned__ = views[((e || window.event).target || e.currentTarget).id]
 
         // document mousedown events
@@ -55,15 +52,12 @@ const defaultAppEvents = () => {
     })
 
     document.addEventListener("mouseup", (e) => {
-
-        global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
+        
         global.__mouseuped__ = views[((e || window.event).target || e.currentTarget).id]
 
         // document mouseup events
         Object.entries(global.__events__).map(([id, event]) => views[id] && event.mouseup && event.mouseup.map(data => (global.__mouseuped__ && (global.__mouseuped__.id === data.eventID || views[data.eventID].__element__.contains(global.__mouseuped__.__element__))) && eventExecuter({ ...data, e })))
     })
-
-    // document default event listeners
 
     document.addEventListener('keydown', e => {
 
@@ -90,7 +84,7 @@ const defaultAppEvents = () => {
         if (views.droplist.__element__.style.pointerEvents === "auto") {
 
             var string = "():droplist.mouseleave()?!():droplist.mouseentered"
-            lineInterpreter({ id: "document", e, data: {string} })
+            toLine({ id: "document", e, data: {string} })
         }
 
         Object.entries(global.__events__).map(([id, event]) => views[id] && event.scroll && event.scroll.map(data => (global.__scrolled__ && (global.__scrolled__.id === data.eventID || views[data.eventID].__element__.contains(global.__scrolled__.__element__))) && eventExecuter({ ...data, e })))
@@ -104,7 +98,7 @@ const defaultAppEvents = () => {
         document.activeElement.blur()
 
         var string = "():mininote.style():[opacity=0;transform=scale(0)]"
-        lineInterpreter({ id: "window", e, data: {string} })
+        toLine({ id: "window", e, data: {string} })
     })
 
     window.addEventListener("mousedown", (e) => {

@@ -1,0 +1,3100 @@
+{
+  "searchEngineInputs": [
+    {
+      "clearable": "true",
+      "inputPath": "invoiceRef",
+      "inputLabel": "Invoice#",
+      "hideSearchIcon": true,
+      "collection": "invoice",
+      "searchable": "true"
+    },
+    {
+      "clearable": true,
+      "inputPath": "type",
+      "readonly": true,
+      "inputLabel": "Type",
+      "inputValue": "Sales",
+      "items": [
+        "Sales",
+        "Refund"
+      ]
+    },
+    {
+      "clearable": true,
+      "inputPath": "status",
+      "readonly": true,
+      "inputLabel": "Status",
+      "inputValue": "Confirmed",
+      "items": [
+        "Pending",
+        "Confirmed",
+        "Canceled"
+      ]
+    },
+    {
+      "clearable": true,
+      "inputPath": "paymentStatus",
+      "readonly": "readonly",
+      "inputLabel": "Payment Status",
+      "items": [
+        "Pending",
+        "Partially Paid",
+        "Paid",
+        "Canceled"
+      ]
+    },
+    {
+      "inputPath": "customer",
+      "generalLedger": "true",
+      "inputLabel": "Customer",
+      "allowedLedgers": [
+        "41"
+      ]
+    },
+    {
+      "inputPath": "salesman",
+      "generalLedger": "true",
+      "inputLabel": "Salesman",
+      "allowedLedgers": [
+        "42"
+      ]
+    },
+    {
+      "inputPath": "supplier",
+      "generalLedger": "true",
+      "inputLabel": "Supplier",
+      "allowedLedgers": [
+        "40"
+      ]
+    },
+    {
+      "inputPath": "issuingDate",
+      "inputLabel": "Issuing Date",
+      "type": "date"
+    },
+    {
+      "inputPath": "passengerName",
+      "inputLabel": "Passenger Name"
+    },
+    {
+      "inputPath": "eTicket",
+      "inputLabel": "E-Ticket"
+    }
+  ],
+  "#createFormInputs": {
+    "docDefaultValues": {
+      "invoiceType": "currentOpenManager:().invoiceType",
+      "currency": "userData:().defaultCurrency.value"
+    },
+    "subInput": [
+      {
+        "input": [
+          {
+            "input": [
+              {
+                "inputPath": "customerAccount",
+                "generalLedger": "true",
+                "inputLabel": "Customer Account",
+                "allowedLedgers": [
+                  "41"
+                ],
+                "required": true
+              },
+              {
+                "inputPath": "agentCommission",
+                "price": true,
+                "inputLabel": "Commission",
+                "inputValue": 0,
+                "executeUnitEveryLoad": "true",
+                "required": true,
+                "unitValue": "doc().currency"
+              }
+            ],
+            "id": "customer"
+          },
+          {
+            "input": [
+              {
+                "inputPath": "salesman",
+                "generalLedger": "true",
+                "inputLabel": "Salesman",
+                "allowedLedgers": [
+                  "42"
+                ]
+              },
+              {
+                "inputPath": "salesmanCommission",
+                "price": true,
+                "inputLabel": "Commission",
+                "inputValue": 0,
+                "executeUnitEveryLoad": "true",
+                "unitValue": "doc().currency"
+              }
+            ],
+            "id": "salesman"
+          }
+        ],
+        "multiSection": true,
+        "#path": "beneficiaries",
+        "title": [
+          "Customer",
+          "Salesman"
+        ]
+      },
+      {
+        "input": [
+          {
+            "inputPath": "type",
+            "readonly": "readonly",
+            "inputLabel": "Type",
+            "inputValue": "Sales",
+            "items": [
+              "Sales",
+              "Refund"
+            ],
+            "required": true
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Credit Note",
+                  "Debit Note"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "invoice",
+            "generalLedger": true,
+            "inputLabel": "Invoice"
+          },
+          {
+            "inputPath": "status",
+            "readonly": "readonly",
+            "inputLabel": "Status",
+            "inputValue": "Confirmed",
+            "items": [
+              "Pending",
+              "Confirmed",
+              "Canceled"
+            ],
+            "required": true
+          },
+          {
+            "inputPath": "currency",
+            "readonly": true,
+            "inputLabel": "Currency",
+            "inputValue": "userData:().defaultCurrency.value",
+            "items": "userData:().currency.():code",
+            "droplistClickAction": "updateWrapper()",
+            "required": "true"
+          },
+          {
+            "inputPath": "invoiceDate",
+            "inputLabel": "Invoice Date",
+            "inputValue": "todayStart().timestamp()",
+            "type": "date",
+            "required": "true"
+          },
+          {
+            "inputPath": "dueDate",
+            "inputLabel": "Due Date",
+            "type": "date"
+          },
+          {
+            "inputPath": "paymentTerms",
+            "readonly": "readonly",
+            "inputLabel": "Payment Terms",
+            "inputValue": "Due on receipt",
+            "items": [
+              "Due on receipt",
+              "Net 15",
+              "Net 30",
+              "Net 50",
+              "Net 60"
+            ]
+          }
+        ],
+        "title": "General Information"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "passportNumber",
+            "inputLabel": "Passport#"
+          },
+          {
+            "inputPath": "firstName",
+            "inputLabel": "First Name"
+          },
+          {
+            "inputPath": "lastName",
+            "inputLabel": "Last Name"
+          },
+          {
+            "inputPath": "dateOfBirth",
+            "inputLabel": "DOB",
+            "type": "date"
+          },
+          {
+            "inputPath": "nationality",
+            "sheetName": "Nationalities",
+            "inputLabel": "Nationality",
+            "sheetHeader": "nationalities"
+          },
+          {
+            "inputPath": "expirationDate",
+            "inputLabel": "Expiration Date",
+            "type": "date"
+          }
+        ],
+        "path": "passengers",
+        "title": "Passengers"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "invoiceNumber",
+            "inputLabel": "Invoice#"
+          },
+          {
+            "inputPath": "pnr",
+            "inputLabel": "PNR"
+          },
+          {
+            "duplicatedInputPath": "eTicket",
+            "duplicatedInput": "true",
+            "inputLabel": "E-Tickets"
+          },
+          {
+            "inputPath": "service",
+            "sheetName": "Services",
+            "readonly": "readonly",
+            "inputLabel": "Service",
+            "sheetHeader": "name",
+            "droplistClickAction": "customUpdate():[section=4]"
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "textarea": true
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Flight"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "trip",
+            "readonly": "readonly",
+            "inputLabel": "Trip",
+            "items": [
+              "One Way",
+              "Round Trip",
+              "Open Return"
+            ],
+            "droplistClickAction": "customUpdate():[section=3]"
+          },
+          {
+            "varName": "airline",
+            "condition": [
+              {
+                "condition": [
+                  "Flight"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "airline",
+            "readonly": "readonly",
+            "sheetName": "Airline",
+            "inputLabel": "Airline",
+            "sheetHeader": "name",
+            "openSheet": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Flight"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "flighNumber",
+            "inputLabel": "Flight#"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Flight"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "travelDate",
+            "inputLabel": "Travel Date",
+            "type": "date"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Round Trip"
+                ],
+                "conditionReference": "trip"
+              }
+            ],
+            "inputPath": "returnDate",
+            "inputLabel": "Return Date",
+            "type": "date"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Flight"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "departureAirport",
+            "readonly": "readonly",
+            "sheetName": "Airports",
+            "inputLabel": "Departure Airport",
+            "sheetHeader": "name",
+            "openSheet": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Flight"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "arrivalAirport",
+            "readonly": "readonly",
+            "sheetName": "Airports",
+            "inputLabel": "Arrival Airport",
+            "sheetHeader": "name",
+            "openSheet": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Flight"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "class",
+            "readonly": "readonly",
+            "inputLabel": "Class",
+            "items": [
+              "First Class",
+              "Business Class",
+              "Economy Class"
+            ]
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Hotel"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "country",
+            "readonly": "readonly",
+            "sheetName": "Hotels",
+            "inputLabel": "Country",
+            "sheetHeader": "country",
+            "droplistClickAction": "droplistHandler();updateSectionWrapper()"
+          },
+          {
+            "#headerReference": "country",
+            "condition": [
+              {
+                "condition": [
+                  "Hotel"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "hotelName",
+            "readonly": "readonly",
+            "sheetName": "Hotels",
+            "inputLabel": "Hotel",
+            "sheetHeader": "hotelName",
+            "openSheet": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Hotel"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "checkIn",
+            "inputLabel": "Check-in Date",
+            "type": "date"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Hotel"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "checkOut",
+            "inputLabel": "Check-out Date",
+            "type": "date"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Hotel"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "roomName",
+            "readonly": "readonly",
+            "sheetName": "Hotel Room Names",
+            "inputLabel": "Room Name",
+            "sheetHeader": "name",
+            "openSheet": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Hotel"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "roomType",
+            "readonly": "readonly",
+            "sheetName": "Hotel Room Types",
+            "inputLabel": "Room Type",
+            "sheetHeader": "type",
+            "openSheet": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Hotel"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "extraBed",
+            "readonly": "readonly",
+            "inputLabel": "Extra Bed",
+            "inputValue": "0",
+            "items": [
+              "0",
+              "1",
+              "2"
+            ]
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Transportation"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "trip",
+            "readonly": "readonly",
+            "inputLabel": "Trip",
+            "items": [
+              "One Way",
+              "Round Trip"
+            ]
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Transportation"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "transporationDate",
+            "inputLabel": "Transporation Date",
+            "type": "date"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Transportation"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "vehicleName",
+            "inputLabel": "Vehicle Name"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Transportation"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "vehicleType",
+            "readonly": "readonly",
+            "inputLabel": "Vehicle Type",
+            "inputValue": "Car",
+            "items": [
+              "Car",
+              "Van",
+              "Bus",
+              "Mini Bus",
+              "Auto Bus",
+              "Public Transit"
+            ]
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Transportation"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "capacity",
+            "inputLabel": "Capacity",
+            "type": "number"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Transportation"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "class",
+            "readonly": "readonly",
+            "inputLabel": "Class",
+            "inputValue": "Economy",
+            "items": [
+              "Economy",
+              "VIP"
+            ]
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Transportation"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "from",
+            "sheetName": "Transportation-Destinations",
+            "inputLabel": "From",
+            "sheetHeader": "destination",
+            "openSheet": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Transportation"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "to",
+            "sheetName": "Transportation-Destinations",
+            "inputLabel": "To",
+            "sheetHeader": "destination",
+            "openSheet": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Tour"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "tourDate",
+            "inputLabel": "Tour Date",
+            "type": "date"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Tour"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "vehicleType",
+            "readonly": "readonly",
+            "inputLabel": "Vehicle Type",
+            "inputValue": "Car",
+            "items": [
+              "Car",
+              "Van",
+              "Bus",
+              "Mini Bus",
+              "Auto Bus",
+              "Public Transit"
+            ]
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Tour"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "tourGuide",
+            "inputLabel": "Tour Guide Exisits",
+            "inputValue": "Yes",
+            "items": [
+              "Yes",
+              "No"
+            ]
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Tour"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "capacity",
+            "inputLabel": "Capacity",
+            "inputValue": "0",
+            "type": "number"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Tour"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "numberOfPaxIncludedInPrice",
+            "inputLabel": "Number of Pax Included in Price",
+            "inputValue": "0",
+            "type": "number"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Tour"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "textarea": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Activity"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "activityDate",
+            "inputLabel": "Activity Date",
+            "type": "date"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Activity"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "activityName",
+            "inputLabel": "Activity Name"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Activity"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "clubName",
+            "inputLabel": "Club Name"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Activity"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "numberOfPaxIncludedInPrice",
+            "inputLabel": "Number of Pax Included in Price",
+            "inputValue": "0",
+            "type": "number"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Train"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "trip",
+            "readonly": "readonly",
+            "inputLabel": "Trip",
+            "items": [
+              "One Way",
+              "Round Trip",
+              "Open Return"
+            ]
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Train"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "trainName",
+            "sheetName": "Trains",
+            "inputLabel": "Train Name",
+            "sheetHeader": "trainName",
+            "openSheet": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Train"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "departureStation",
+            "sheetName": "Trains",
+            "inputLabel": "Departure Station",
+            "sheetHeader": "trainStation",
+            "openSheet": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Train"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "arrivalStation",
+            "sheetName": "Trains",
+            "inputLabel": "Arrival Station",
+            "sheetHeader": "trainStation",
+            "openSheet": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Train"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "class",
+            "readonly": "readonly",
+            "inputLabel": "Class",
+            "items": [
+              "Economy",
+              "Bussiness",
+              "First Class"
+            ]
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Cruise"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "trip",
+            "readonly": "readonly",
+            "inputLabel": "Trip",
+            "items": [
+              "One Way",
+              "Round Trip",
+              "Open Return"
+            ]
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Cruise"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "cruiseName",
+            "sheetName": "Trains",
+            "inputLabel": "Cruise Name",
+            "sheetHeader": "trainName",
+            "openSheet": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Cruise"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "departurePort",
+            "sheetName": "Trains",
+            "inputLabel": "Departure Port",
+            "sheetHeader": "trainStation",
+            "openSheet": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Cruise"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "arrivalPort",
+            "sheetName": "Trains",
+            "inputLabel": "Arrival Port",
+            "sheetHeader": "trainStation",
+            "openSheet": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Cruise"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "class",
+            "readonly": "readonly",
+            "inputLabel": "Class",
+            "items": [
+              "Economy",
+              "Bussiness",
+              "First Class"
+            ]
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Insurance"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "fromDate",
+            "inputLabel": "From Date",
+            "type": "date"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Insurance"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "toDate",
+            "inputLabel": "To Date",
+            "type": "date"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Insurance"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "insuranceAgencyName",
+            "sheetName": "Insurance Agencies",
+            "inputLabel": "Insurance Agency Name",
+            "openSheet": "true",
+            "sheetHeader": "name"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Insurance"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "insuranceType",
+            "readonly": "readonly",
+            "inputLabel": "Type",
+            "items": [
+              "Medical Insurance",
+              "Evacuation Insurance",
+              "Baggage and Personal Items Loss",
+              "Life Insurance",
+              "Car Rental Insurance"
+            ]
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Insurance"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "country",
+            "readonly": "readonly",
+            "sheetName": "Countries",
+            "inputLabel": "Country",
+            "sheetHeader": "country"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Insurance"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "duration",
+            "inputLabel": "Duration",
+            "type": "date"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Train",
+                  "Cruise",
+                  "Package",
+                  "Other"
+                ],
+                "conditionReference": "service"
+              }
+            ],
+            "inputPath": "travelDate",
+            "inputLabel": "Travel Date",
+            "type": "date"
+          }
+        ],
+        "title": "Services"
+      },
+      {
+        "input": [
+          {
+            "input": [
+              {
+                "inputPath": "supplier",
+                "counterInputBlurAction": "customUpdate():[section=3]",
+                "generalLedger": "true",
+                "inputLabel": "Supplier",
+                "allowedLedgers": [
+                  "4011"
+                ],
+                "required": "true"
+              },
+              {
+                "multiInput": [
+                  {
+                    "inputPath": "exchangeRate",
+                    "inputLabel": "Exchange Rate",
+                    "inputValue": 1,
+                    "icon": "Equal",
+                    "executeUnitEveryLoad": "true",
+                    "fr": "1.3fr",
+                    "required": "true",
+                    "unitValue": "___.purchaseCurrency"
+                  },
+                  {
+                    "inputPath": "systemRate",
+                    "readonly": "readonly",
+                    "unitPath": "systemCurrency",
+                    "inputValue": 1,
+                    "executeUnitEveryLoad": true,
+                    "fr": "1fr",
+                    "required": "true",
+                    "unitValue": "doc().currency"
+                  }
+                ],
+                "customCondition": "().accountCurrency=userData:().currency.find():[counter=__.supplier.split():['/'].2.num()].code||false;if():[!__.supplier.split():['/'].2||().accountCurrency=doc().currency]:[__.purchaseCurrency=doc().currency;().display=false;delFromDoc()].elif():[().accountCurrency]:[__.purchaseCurrency=().accountCurrency]:[__.purchaseCurrency=doc().currency;().display=false;delFromDoc();note():[text='Currency not found';danger]]",
+                "#customConditiona": "exchangeRateInputCondition()"
+              },
+              {
+                "inputPath": "purchaseNetPrice",
+                "price": true,
+                "inputLabel": "Net Price",
+                "executeUnitEveryLoad": true,
+                "inputValue": 0,
+                "blurAction": "customUpdate():[input=:6:8]",
+                "required": true,
+                "unitValue": "__.purchaseCurrency"
+              },
+              {
+                "inputPath": "purchaseTaxes",
+                "price": true,
+                "inputLabel": "Taxes",
+                "inputValue": 0,
+                "executeUnitEveryLoad": "true",
+                "blurAction": "customUpdate():[input=:6:8]",
+                "required": true,
+                "unitValue": "__.purchaseCurrency"
+              },
+              {
+                "condition": [
+                  {
+                    "condition": [
+                      "Flight"
+                    ],
+                    "conditionReference": "service"
+                  }
+                ],
+                "inputPath": "IATAInsurance",
+                "price": true,
+                "inputLabel": "IATA Insurance",
+                "inputValue": 0,
+                "executeUnitEveryLoad": true,
+                "blurAction": "customUpdate():[input=:6:8]",
+                "required": true,
+                "unitValue": "__.purchaseCurrency"
+              },
+              {
+                "inputPath": "purchaseCommission",
+                "price": true,
+                "inputLabel": "Commission",
+                "executeUnitEveryLoad": "true",
+                "inputValue": 0,
+                "blurAction": "customUpdate():[input=:6:8]",
+                "required": true,
+                "unitValue": "__.purchaseCurrency"
+              },
+              {
+                "onLoadAction": "calcCostPrice()",
+                "faded": true,
+                "inputPath": "costPrice",
+                "price": true,
+                "pointerEvents": "none",
+                "inputLabel": "Cost Price",
+                "executeUnitEveryLoad": "true",
+                "inputValue": 0,
+                "required": true,
+                "unitValue": "doc().currency"
+              },
+              {
+                "inputPath": "quantity",
+                "price": true,
+                "inputLabel": "Qty",
+                "inputValue": 1,
+                "blurAction": "customUpdate():[input=8]",
+                "required": "true"
+              },
+              {
+                "onLoadAction": "calcTotalCost()",
+                "faded": true,
+                "inputPath": "totalCost",
+                "readonly": "readonly",
+                "price": true,
+                "pointerEvents": "none",
+                "inputLabel": "Total Cost",
+                "executeUnitEveryLoad": "true",
+                "inputValue": 0,
+                "id": "totalCost",
+                "required": true,
+                "unitValue": "doc().currency"
+              }
+            ],
+            "id": "cost"
+          },
+          {
+            "input": [
+              {
+                "inputPath": "salesNetPrice",
+                "price": true,
+                "inputLabel": "Net Price",
+                "executeUnitEveryLoad": "true",
+                "inputValue": 0,
+                "blurAction": "customUpdate():[input=:3:5]",
+                "required": true,
+                "unitValue": "doc().currency"
+              },
+              {
+                "inputPath": "salesTaxes",
+                "price": true,
+                "inputLabel": "Taxes",
+                "inputValue": 0,
+                "executeUnitEveryLoad": "true",
+                "blurAction": "customUpdate():[input=:3:5]",
+                "required": true,
+                "unitValue": "doc().currency"
+              },
+              {
+                "inputPath": "salesCommission",
+                "price": true,
+                "inputLabel": "Commission",
+                "inputValue": 0,
+                "executeUnitEveryLoad": "true",
+                "blurAction": "customUpdate():[input=:3:5]",
+                "required": true,
+                "unitValue": "doc().currency"
+              },
+              {
+                "onLoadAction": "calcSellingPrice()",
+                "faded": true,
+                "inputPath": "sellingPrice",
+                "price": true,
+                "pointerEvents": "none",
+                "inputLabel": "Selling Price",
+                "inputValue": 0,
+                "executeUnitEveryLoad": "true",
+                "required": true,
+                "unitValue": "doc().currency"
+              },
+              {
+                "inputPath": "quantity",
+                "price": true,
+                "inputLabel": "Qty",
+                "inputValue": 1,
+                "blurAction": "customUpdate():[input=5]",
+                "required": "true"
+              },
+              {
+                "onLoadAction": "calcTotalSelling()",
+                "faded": true,
+                "inputPath": "totalSelling",
+                "price": true,
+                "pointerEvents": "none",
+                "inputLabel": "Total Selling",
+                "inputValue": 0,
+                "executeUnitEveryLoad": "true",
+                "required": true,
+                "unitValue": "doc().currency"
+              }
+            ],
+            "id": "selling"
+          }
+        ],
+        "multiSection": true,
+        "title": [
+          "Cost",
+          "Selling"
+        ]
+      },
+      {
+        "path": "attachments",
+        "viewId": "invoiceAttachments",
+        "maxSelected": 100,
+        "title": "Attachments",
+        "type": "image",
+        "plus": "true"
+      },
+      {
+        "input": [
+          {
+            "clearable": "true",
+            "inputPath": "note",
+            "inputLabel": "Note",
+            "textarea": "textarea",
+            "height": "12rem"
+          },
+          {
+            "clearable": "true",
+            "inputPath": "messageOnInvoice",
+            "inputLabel": "Message on Invoice",
+            "textarea": "textarea",
+            "height": "12rem"
+          }
+        ],
+        "grid": "1fr 1fr",
+        "title": "Note & Message on Invoice"
+      }
+    ],
+    "collection": "invoice"
+  },
+  "createFormInputs": {
+    "docDefaultValues": {
+      "invoiceType": "currentOpenManager:().invoiceType",
+      "currency": "userData:().defaultCurrency.value"
+    },
+    "subInput": [
+      {
+        "input": [
+          {
+            "path": "bookings",
+            "subInput": [
+              {
+                "input": [
+                  {
+                    "inputPath": "issueDate",
+                    "inputLabel": "Issue Date",
+                    "type": "date"
+                  },
+                  {
+                    "inputPath": "type",
+                    "inputLabel": "Type",
+                    "items": [
+                      "Flight",
+                      "Hotel"
+                    ]
+                  },
+                  {
+                    "inputPath": "PNR",
+                    "inputLabel": "PNR"
+                  },
+                  {
+                    "inputPath": "trip",
+                    "inputLabel": "Trip"
+                  },
+                  {
+                    "inputPath": "airline",
+                    "inputLabel": "Airline"
+                  },
+                  {
+                    "inputPath": "passengerName",
+                    "inputLabel": "Passenger Name"
+                  },
+                  {
+                    "inputPath": "passengerSurname",
+                    "inputLabel": "Passenger Surname",
+                    "items": [
+                      "Flight",
+                      "Hotel"
+                    ]
+                  },
+                  {
+                    "inputPath": "age",
+                    "inputLabel": "Age"
+                  },
+                  {
+                    "inputPath": "etickets",
+                    "inputLabel": "etickets"
+                  }
+                ],
+                "title": "Booking Detail"
+              },
+              {
+                "input": [
+                  {
+                    "inputPath": "departureAirport",
+                    "inputLabel": "Departure Airport"
+                  },
+                  {
+                    "inputPath": "arrivaAirport",
+                    "inputLabel": "Arrival Airport"
+                  },
+                  {
+                    "inputPath": "flightDate",
+                    "inputLabel": "Flight Data"
+                  }
+                ],
+                "path": "flightDetails",
+                "title": "Flight Details"
+              }
+            ],
+            "id": "booking details"
+          },
+          {
+            "path": "pricing",
+            "subInput": [
+              {
+                "input": [
+                  {
+                    "inputPath": "fareBasis",
+                    "inputLabel": "Fare Basis"
+                  },
+                  {
+                    "inputPath": "class",
+                    "inputLabel": "Class"
+                  },
+                  {
+                    "inputPath": "crossFare",
+                    "inputLabel": "Cross Fare"
+                  }
+                ],
+                "title": "Fare"
+              },
+              {
+                "input": [
+                  {
+                    "inputPath": "tax1",
+                    "inputLabel": "Tax 1"
+                  },
+                  {
+                    "inputPath": "tax2",
+                    "inputLabel": "Tax 2"
+                  },
+                  {
+                    "inputPath": "tax3",
+                    "inputLabel": "Tax 3"
+                  },
+                  {
+                    "inputPath": "tax4",
+                    "inputLabel": "Tax 4"
+                  },
+                  {
+                    "inputPath": "tax5",
+                    "inputLabel": "Tax 5"
+                  },
+                  {
+                    "inputPath": "tax6",
+                    "inputLabel": "Tax 6"
+                  },
+                  {
+                    "inputPath": "tax7",
+                    "inputLabel": "Tax 7"
+                  },
+                  {
+                    "inputPath": "tax8",
+                    "inputLabel": "Tax 8"
+                  },
+                  {
+                    "inputPath": "totalTaxes",
+                    "inputLabel": "Total Taxes"
+                  }
+                ],
+                "title": "Taxes"
+              },
+              {
+                "input": [
+                  {
+                    "readonly": true,
+                    "inputValue": "Cost:",
+                    "noBorder": true
+                  },
+                  {
+                    "inputPath": "costCutFare",
+                    "inputLabel": "Cut Fare"
+                  },
+                  {
+                    "inputPath": "costCommission",
+                    "inputLabel": "Commission"
+                  },
+                  {
+                    "inputPath": "costIATAInsurance",
+                    "inputLabel": "IATA Insurance"
+                  },
+                  {
+                    "inputPath": "costServiceCharge",
+                    "inputLabel": "Service Charge"
+                  },
+                  {
+                    "inputPath": "costNetPrice",
+                    "inputLabel": "Net Price"
+                  },
+                  {
+                    "inputPath": "costTotalPrice",
+                    "inputLabel": "Total Price"
+                  },
+                  {
+                    "readonly": true,
+                    "inputValue": "Selling:",
+                    "noBorder": true
+                  },
+                  {
+                    "inputPath": "sellingCutFare",
+                    "inputLabel": "Cut Fare"
+                  },
+                  {
+                    "inputPath": "sellingCommission",
+                    "inputLabel": "Commission"
+                  },
+                  {
+                    "inputPath": "sellingIATAInsurance",
+                    "inputLabel": "IATA Insurance"
+                  },
+                  {
+                    "inputPath": "sellingServiceCharge",
+                    "inputLabel": "Service Charge"
+                  },
+                  {
+                    "inputPath": "sellingNetPrice",
+                    "inputLabel": "Net Price"
+                  },
+                  {
+                    "inputPath": "sellingTotalPrice",
+                    "inputLabel": "Total Price"
+                  }
+                ],
+                "title": "Pricing"
+              }
+            ],
+            "id": "pricing details"
+          },
+          {
+            "subInput": [
+              {
+                "input": [
+                  {
+                    "inputPath": "dueDate",
+                    "inputLabel": "Due Date"
+                  },
+                  {
+                    "inputPath": "paymentTerms",
+                    "inputLabel": "Payment Terms"
+                  }
+                ],
+                "title": "Payment"
+              },
+              {
+                "input": [
+                  {
+                    "inputPath": "salesman",
+                    "inputLabel": "Salesman"
+                  },
+                  {
+                    "inputPath": "commission ",
+                    "inputLabel": "Commission"
+                  }
+                ],
+                "title": "Commission"
+              }
+            ],
+            "id": "payment terms & commissions"
+          }
+        ],
+        "multiSection": true,
+        "title": [
+          "Booking Details",
+          "Pricing Details",
+          "Payment Terms & Commissions"
+        ]
+      }
+    ],
+    "collection": "invoice"
+  },
+  "__props__": {
+    "id": "01o780A8A8l8t7j0a0h497T6j9",
+    "creationDate": 1705742470824,
+    "collapsed": [
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          5
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          6
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          6
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          7
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          8
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          9
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          10
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          11
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          12
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          13
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          14
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          15
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          16
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          17
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          18
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          19,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          19
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          20,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          20
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          21
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          22
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          23,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          23,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          23
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          24
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          25
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          26
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          27
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          28
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          29,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          29
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          30
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          31
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          32
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          33
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          34
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          35
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          36
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          37
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          38,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          38
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          39
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          40
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          41
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          42
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          43
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          45
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          46
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          47,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          47
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          48
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          49
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          44
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          50
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          54
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          53
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          52
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          51
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs"
+        ]
+      },
+      {
+        "path": [
+          "#createFormInputs",
+          "docDefaultValues"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "docDefaultValues"
+        ]
+      },
+      {
+        "path": [
+          "#createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "#createFormInputs",
+          "subInput",
+          2
+        ]
+      },
+      {
+        "path": [
+          "#createFormInputs",
+          "subInput",
+          3
+        ]
+      },
+      {
+        "path": [
+          "#createFormInputs",
+          "subInput",
+          4
+        ]
+      },
+      {
+        "path": [
+          "#createFormInputs",
+          "subInput",
+          5
+        ]
+      },
+      {
+        "path": [
+          "#createFormInputs",
+          "subInput",
+          6
+        ]
+      },
+      {
+        "path": [
+          "#createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "#createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          1,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          1,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          1,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          1,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          1,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          1,
+          "input",
+          6
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "#input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          3,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "#createFormInputs"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "subInput",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "subInput",
+          0,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "subInput",
+          0,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "subInput",
+          0,
+          "input",
+          6
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "subInput",
+          0,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "subInput",
+          0,
+          "input",
+          7
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "subInput",
+          0,
+          "input",
+          8
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "subInput",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          3,
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          3,
+          "subInput",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          3,
+          "subInput",
+          0,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          0,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          1,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          1,
+          "input",
+          7
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          1,
+          "input",
+          8
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          2,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          2,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          2,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          2,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          2,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          2,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          2,
+          "input",
+          6
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "subInput",
+          1,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "subInput",
+          1,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          3,
+          "subInput"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "subInput",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "subInput",
+          0,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "subInput",
+          0,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "subInput",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "subInput",
+          0,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "subInput",
+          0,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "subInput",
+          1,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "subInput",
+          1,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "subInput",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "#input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          0,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          2,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "subInput",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "subInput"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "subInput",
+          0,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "subInput",
+          0,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "subInput",
+          0,
+          "subInput",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "subInput",
+          0,
+          "subInput",
+          0,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "subInput",
+          1
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "general info",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "note": "customer and salesman",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0
+        ]
+      },
+      {
+        "note": "passengers",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2
+        ]
+      },
+      {
+        "note": "services",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3
+        ]
+      },
+      {
+        "note": "cost and sellings",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4
+        ]
+      },
+      {
+        "note": "attachments",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          5
+        ]
+      },
+      {
+        "note": "note and message on invoice",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          6
+        ]
+      }
+    ],
+    "docName": "invoiceSharedInfo",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

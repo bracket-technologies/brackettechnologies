@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687892674,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "BGwfM4uo66WbWriei14lIssU0sXnXvCA7d4pThrc6JORMBdsGSH2kntGIjAz-1708687892673",
+  "ref": "ACC-00000328",
+  "ledgerAccount": "7727/1/1",
+  "blockAccount": "No",
+  "name": "Revenue Frm Misc. Receivables",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "77",
+    "772",
+    "7727"
+  ],
+  "__props__": {
+    "id": "B1H7y0G8q8M8b7D0g164C457d3",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "QIF9NCPrHSai99LaNPe3pl3Q0CQT4hT0cSFjqDjnNobjSM9y34NNalkWR8Jo-1708687892673",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

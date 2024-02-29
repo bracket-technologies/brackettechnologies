@@ -7,8 +7,8 @@ const { replaceNbsps } = require("./replaceNbsps")
 
 const defaultInputHandler = ({ id }) => {
 
-  var views = window.views
-  var global = window.global
+  const views = window.views
+  const global = window.global
   var view = views[id]
 
   if (!view) return
@@ -44,8 +44,8 @@ const defaultInputHandler = ({ id }) => {
     return view.__element__.addEventListener("change", changeEventHandler)
   }
 
-  if ((view.input || view).type === "number")
-    view.__element__.addEventListener("mousewheel", (e) => e.target.blur())
+  // mousewheel
+  if ((view.input || view).type === "number") view.__element__.addEventListener("mousewheel", (e) => e.target.blur())
 
   // readonly
   if (view.readonly) return

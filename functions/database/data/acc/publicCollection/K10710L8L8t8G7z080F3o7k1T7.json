@@ -1,0 +1,341 @@
+{
+  "countries": [
+    {
+      "country": "Lebanon",
+      "cities": [
+        "Beirut",
+        "Tyre",
+        "Byblos",
+        "Sidon",
+        "Tripoli",
+        "Baalbek",
+        "Jounieh",
+        "Nabatieh",
+        "Mount Lebanon Governorate",
+        "Aley",
+        "Harissa",
+        "Baalbek-Hermel Governorate",
+        "Zahle",
+        "Batroun",
+        "Baabda",
+        "Habbouch"
+      ],
+      "nationality": "Lebanese"
+    },
+    {
+      "country": "Iraq",
+      "cities": [
+        "Baghdad",
+        "Mosul",
+        "Basra",
+        "Erbil",
+        "Kirkuk",
+        "Najaf",
+        "Sulaymaniyah",
+        "Tikrit",
+        "Karbala",
+        "Fallujah"
+      ],
+      "nationality": "Iraqis"
+    },
+    {
+      "country": "Qatar",
+      "cities": [
+        "Doha",
+        "Al Rayyan",
+        "Al Wakrah",
+        "Al Khor",
+        "Umm Salal",
+        "Al Daayen"
+      ],
+      "nationality": "Qatari"
+    },
+    {
+      "country": "Saudi Arabia",
+      "nationality": "Saudi",
+      "cities": [
+        "Riyadh",
+        "Jeddah",
+        "Mecca",
+        "Medina",
+        "Dammam",
+        "Khobar",
+        "Dhahran",
+        "Hofuf",
+        "Jubail",
+        "Taif",
+        "Tabuk",
+        "Abha",
+        "Buraidah",
+        "Khamis Mushait",
+        "Hail",
+        "Najran",
+        "Yanbu",
+        "Al-Kharj",
+        "Al Qassim"
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "K10710L8L8t8G7z080F3o7k1T7",
+    "creationDate": 1689173900673,
+    "collapsed": [
+      {
+        "path": [
+          "countries",
+          "Morocco"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Saudi Arabia"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Syria"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Somalia"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Tunisia"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "United Arab Emirates"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Libya"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Palestine"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Mauritania"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Oman"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Kuwait"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Qatar"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Sudan"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Lebanon"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          -2
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Jordan"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Kuwait"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Lebanon"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Libya"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Mauritania"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "United Arab Emirates"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Yemen"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Tunisia"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Syria"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Sudan"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Somalia"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Saudi Arabia"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Qatar"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Palestine"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Oman"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Morocco"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Bahrain"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Comoros"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Djibouti"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Egypt"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Iraq"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          "Algeria"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          1,
+          "cities"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          2,
+          "cities"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          3,
+          "cities"
+        ]
+      },
+      {
+        "path": [
+          "countries",
+          0,
+          "cities"
+        ]
+      }
+    ],
+    "comments": [],
+    "docName": "countries",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

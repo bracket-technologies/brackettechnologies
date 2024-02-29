@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687892661,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "wiiKn670ULwy8bkc5v4ekmbVT1Lm6yPiBosEtJtnrllwHVTFTiUxN4PKYAnw-1708687892660",
+  "ref": "ACC-00000326",
+  "ledgerAccount": "7725/1/1",
+  "blockAccount": "No",
+  "name": "Revenue From Blocked Receivable",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "77",
+    "772",
+    "7725"
+  ],
+  "__props__": {
+    "id": "41s7Y0v8H8Q8X7k0t144W9i3a6",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "qChpfqRRAr1TVevXJM1C33NHur4Z2q463ZT4ynFYvMidVgcEf822mWlADdNO-1708687892660",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

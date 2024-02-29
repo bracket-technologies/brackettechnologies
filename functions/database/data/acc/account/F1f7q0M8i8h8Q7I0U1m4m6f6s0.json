@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687886669,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "i1i3wY9UVzDe61iL7mTrzsuzXog1Lg0jwk0CNYEWgadaoX3kJYq8QrnxrwQz-1708687886669",
+  "ref": "ACC-00000167",
+  "ledgerAccount": "685/1/1",
+  "blockAccount": "No",
+  "name": "Other Charges - Non Operating",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "68",
+    "685"
+  ],
+  "__props__": {
+    "id": "F1f7q0M8i8h8Q7I0U1m4m6f6s0",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "XQxPeMae7BdguK820lw5a8Wu2ZjQbfmCHQ7DJ7ZiXwSXh4rQlw2p18F88UYM-1708687886669",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,606 @@
+{
+  "searchEngineInputs": [
+    {
+      "clearable": true,
+      "inputPath": "voucherRef",
+      "inputLabel": "Voucher#",
+      "hideSearchIcon": true,
+      "collection": "voucher",
+      "searchable": true
+    },
+    {
+      "clearable": true,
+      "inputPath": "invoiceRef",
+      "inputLabel": "Invoice#",
+      "hideSearchIcon": true,
+      "collection": "invoice",
+      "searchable": true
+    },
+    {
+      "inputPath": "fromAccount",
+      "generalLedger": true,
+      "inputLabel": "From Account",
+      "#allowedLedgers": [
+        "5"
+      ]
+    },
+    {
+      "inputPath": "toAccount",
+      "generalLedger": "true",
+      "inputLabel": "To Account",
+      "#allowedLedgers": [
+        "5"
+      ]
+    },
+    {
+      "inputPath": "fromDate",
+      "inputLabel": "From Date",
+      "type": "date"
+    },
+    {
+      "inputPath": "toDate",
+      "inputLabel": "To Date",
+      "type": "date"
+    },
+    {
+      "clearable": true,
+      "inputPath": "type",
+      "readonly": "readonly",
+      "inputLabel": "Type",
+      "inputValue": "Payment",
+      "items": [
+        "Payment",
+        "Receipt",
+        "Transfer"
+      ]
+    },
+    {
+      "clearable": true,
+      "inputPath": "status",
+      "readonly": "readonly",
+      "inputLabel": "Status",
+      "inputValue": "Confirmed",
+      "items": [
+        "Pending",
+        "Confirmed",
+        "Canceled",
+        "Void"
+      ]
+    }
+  ],
+  "createFormInputs": {
+    "subInput": [
+      {
+        "input": [
+          {
+            "inputPath": "type",
+            "readonly": "readonly",
+            "inputLabel": "Type",
+            "inputValue": "Payment",
+            "items": [
+              "Payment",
+              "Receipt",
+              "Transfer"
+            ],
+            "droplistClickAction": "customUpdate():[section=0]",
+            "required": true
+          },
+          {
+            "inputPath": "voucherDate",
+            "inputLabel": [
+              {
+                "condition": [
+                  "Payment"
+                ],
+                "inputLabel": "Payment Date",
+                "conditionReference": "type"
+              },
+              {
+                "condition": [
+                  "Receipt"
+                ],
+                "inputLabel": "Receipt Date",
+                "conditionReference": "type"
+              },
+              {
+                "condition": [
+                  "Transfer"
+                ],
+                "inputLabel": "Transfer Date",
+                "conditionReference": "type"
+              }
+            ],
+            "inputValue": "today().timestamp()",
+            "type": "date"
+          },
+          {
+            "inputPath": "status",
+            "readonly": "readonly",
+            "inputLabel": "Status",
+            "inputValue": "Pending",
+            "items": [
+              "Pending",
+              "Confirmed",
+              "Canceled"
+            ],
+            "required": "true"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Payment",
+                  "Receipt"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "invoice",
+            "inputLabel": "Invoice",
+            "collection": "invoice",
+            "searchable": true
+          },
+          {
+            "#executeUnitEveryLoad": true,
+            "condition": [
+              {
+                "conditionReference": "invoice"
+              }
+            ],
+            "inputPath": "amount",
+            "#readonly": "readonly",
+            "#pointerEvents": "none",
+            "inputLabel": "Amount",
+            "inputValue": 0,
+            "blurAction": "calcTotalAmount()",
+            "required": true,
+            "unitValue": "USD"
+          }
+        ],
+        "title": "General Information"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "ledgerAccount",
+            "counterInputBlurAction": "customUpdate():[section=1]",
+            "generalLedger": true,
+            "inputLabel": "Account",
+            "allowedLedgers": {
+              "condition": "__.index<1",
+              "allowedLedgers": [
+                "5"
+              ]
+            },
+            "required": true
+          },
+          {
+            "inputPath": "currency",
+            "inputLabel": "Currency",
+            "inputValue": "userData:().defaultCurrency.value",
+            "items": "userData:().currency.():code",
+            "droplistClickAction": "customUpdate():[section=1]",
+            "required": "true"
+          },
+          {
+            "multiInput": [
+              {
+                "inputPath": "exchangeRate",
+                "inputLabel": "Exchange Rate",
+                "inputValue": 1,
+                "icon": "Equal",
+                "executeUnitEveryLoad": "true",
+                "fr": "1.3fr",
+                "required": "true",
+                "unitValue": "___.accountCurrency"
+              },
+              {
+                "inputPath": "systemRate",
+                "readonly": "readonly",
+                "inputValue": 1,
+                "executeUnitEveryLoad": true,
+                "fr": "1fr",
+                "required": "true",
+                "unitValue": "___.currency"
+              }
+            ],
+            "customCondition": "().accountCurrency=userData:().currency.find():[counter=__.ledgerAccount.split():['/'].2.num()].code||false;if():[().accountCurrency]:[__.accountCurrency=().accountCurrency]:[if():[__.ledgerAccount]:[().splittedTxt=__.ledgerAccount.split():['/'];().splittedTxt.pop();().splittedTxt.push():'1';__.ledgerAccount=().splittedTxt.join():['/']];__.accountCurrency=userData:().currency.find():[counter=1].code];if():[!().accountCurrency]:[().display=false;delFromDoc()].elif():[().accountCurrency=__.currency]:[().display=false;delFromDoc()]"
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "required": true,
+            "fraction": "2fr"
+          },
+          {
+            "inputPath": "amount",
+            "price": true,
+            "inputLabel": "Amount",
+            "executeUnitEveryLoad": true,
+            "inputValue": 0,
+            "required": true,
+            "unitValue": "__.currency"
+          }
+        ],
+        "path": "credit",
+        "constantRows": "1",
+        "title": "Credit"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "ledgerAccount",
+            "counterInputBlurAction": "customUpdate():[section=2]",
+            "generalLedger": "true",
+            "inputLabel": "Account",
+            "required": true
+          },
+          {
+            "inputPath": "currency",
+            "inputLabel": "Currency",
+            "inputValue": "userData:().defaultCurrency.value",
+            "items": "userData:().currency.():code",
+            "droplistClickAction": "updateWrapper()",
+            "required": "true"
+          },
+          {
+            "multiInput": [
+              {
+                "inputPath": "exchangeRate",
+                "inputLabel": "Exchange Rate",
+                "inputValue": 1,
+                "icon": "Equal",
+                "executeUnitEveryLoad": "true",
+                "fr": "1.3fr",
+                "required": "true",
+                "unitValue": "___.accountCurrency"
+              },
+              {
+                "inputPath": "systemRate",
+                "readonly": "readonly",
+                "inputValue": 1,
+                "executeUnitEveryLoad": true,
+                "fr": "1fr",
+                "required": "true",
+                "unitValue": "___.currency"
+              }
+            ],
+            "customCondition": "().accountCurrency=userData:().currency.find():[counter=__.ledgerAccount.split():['/'].2.num()].code||false;if():[().accountCurrency]:[__.accountCurrency=().accountCurrency]:[if():[__.ledgerAccount]:[().splittedTxt=__.ledgerAccount.split():['/'];().splittedTxt.pop();().splittedTxt.push():'1';__.ledgerAccount=().splittedTxt.join():['/']];__.accountCurrency=userData:().currency.find():[counter=1].code];if():[!().accountCurrency]:[().display=false;delFromDoc()].elif():[().accountCurrency=__.currency]:[().display=false;delFromDoc()]"
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "required": true,
+            "fraction": "2fr"
+          },
+          {
+            "inputPath": "amount",
+            "price": true,
+            "inputLabel": "Amount",
+            "executeUnitEveryLoad": true,
+            "inputValue": 0,
+            "required": true,
+            "unitValue": "__.accountCurrency"
+          }
+        ],
+        "path": "debit",
+        "title": "Debit"
+      },
+      {
+        "input": [
+          {
+            "clearable": "true",
+            "inputPath": "note",
+            "inputLabel": "Note",
+            "textarea": "textarea",
+            "height": "12rem"
+          },
+          {
+            "clearable": "true",
+            "inputPath": "terms",
+            "inputLabel": "Terms",
+            "textarea": "textarea",
+            "height": "12rem"
+          }
+        ],
+        "grid": "1fr 1fr",
+        "title": "Note & Terms"
+      }
+    ],
+    "collection": "voucher"
+  },
+  "popupInfo": {
+    "docName": "voucherInfo",
+    "title": "Voucher Form"
+  },
+  "title": "Voucher Manager",
+  "managerName": "voucher",
+  "__props__": {
+    "id": "C1C7x0m8B85867v0W0l7D22522",
+    "creationDate": 1697802684397,
+    "collapsed": [
+      {
+        "path": [
+          "popupInfo"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          11
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          2,
+          "#allowedLedgers"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          5
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          4
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          3
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          2
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          1
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          0
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          6
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "inputLabel"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          2,
+          "multiInput"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          4
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "general",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0
+        ]
+      },
+      {
+        "note": "Credit",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "note": "Debit",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2
+        ]
+      },
+      {
+        "note": "note",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3
+        ]
+      }
+    ],
+    "docName": "voucherManager",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

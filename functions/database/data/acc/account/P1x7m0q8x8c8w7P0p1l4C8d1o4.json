@@ -1,0 +1,31 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687889471,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "pOU3wmA7bdklZE4EAhtE9BRtJX4b9WhGxXciLl2yKIWEp2GBUyBY0gkKWLbj-1708687889471",
+  "ref": "ACC-00000241",
+  "ledgerAccount": "651252/1/1",
+  "blockAccount": "No",
+  "name": "Depr.Alloc. - Transport Vehicles & Handling Equipm",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6512",
+    "65125",
+    "651252"
+  ],
+  "__props__": {
+    "id": "P1x7m0q8x8c8w7P0p1l4C8d1o4",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "j6Ua6ca51WbTjomhQeAtlrwykIHu5OnQVIAkd80oPVet6p7eBZSqo9jK0juC-1708687889471",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

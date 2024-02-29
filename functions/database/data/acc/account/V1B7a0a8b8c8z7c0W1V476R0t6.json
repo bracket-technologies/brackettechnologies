@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687880657,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "jkm0GPE8cmkYwtrcnziR43J5QrIfdJ0WpApoEdW97VuTeyWMDJxVwQbM8xQH-1708687880656",
+  "ref": "ACC-00000065",
+  "ledgerAccount": "61182/1/1",
+  "blockAccount": "No",
+  "name": "Commissions & Brokerage",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "61",
+    "611",
+    "6118",
+    "61182"
+  ],
+  "__props__": {
+    "id": "V1B7a0a8b8c8z7c0W1V476R0t6",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "VPzvPNFISvtEqDAkKUXAWHMHMjTZHnF1NTXF5E97juEgBqlmZeoMARiX5jPf-1708687880656",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

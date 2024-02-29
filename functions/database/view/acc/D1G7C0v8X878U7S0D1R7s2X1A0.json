@@ -1,0 +1,139 @@
+{
+  "view": "View:rowBar?class=column;style:[width=100%]",
+  "children": [
+    {
+      "view": "[View]:[data=data:().collection.dashboard.rowChart]?class=flex column;style:[width=100%]",
+      "children": [
+        {
+          "view": "View?class=flex;style:[border-radius=if():[mobile()]:[0]:[10px 10px 0 0];padding=1rem;justifyContent=space-between;borderLeft=1px solid #ddd;borderTop=1px solid #ddd;borderRight=1px solid #ddd;backgroundColor=#f5f5f5]",
+          "children": [
+            {
+              "view": "Text?text=_.title;style:[fontSize=1.6rem;fontWieght=bolder]"
+            }
+          ]
+        },
+        {
+          "view": "View?class=flex;style:[width=100%;gap=1rem;borderTop=1px solid #ddd;borderRight=1px solid #ddd;borderLeft=1px solid #ddd]",
+          "children": [
+            {
+              "view": "View?class=flex column;style:[width=100%;gap=.5rem;padding=1rem]",
+              "children": [
+                {
+                  "view": "Text?text='Total Unpaid Invoices SGD '+_.total;style:[fontSize=1.3rem]"
+                },
+                {
+                  "view": "View?class=flex;style:[width=100%;opacity=.8]",
+                  "children": [
+                    {
+                      "view": "[View]:[data=data:().collection.dashboard.rowChart.current]?style:[width=[[_.value]*100]/[__.total]+'%']",
+                      "children": [
+                        {
+                          "view": "View?class=flexbox;style:[height=1.5rem;backgroundColor=#DB4437]"
+                        }
+                      ]
+                    },
+                    {
+                      "view": "[View]:[data=data:().collection.dashboard.rowChart.overdue]?style:[width=[[_.value]*100]/[__.total]+'%']",
+                      "children": [
+                        {
+                          "view": "View?class=flexbox;style:[height=1.5rem;backgroundColor=#4285F4]"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "view": "View?class=flex;style:[borderRadius=0 0px 10px 10px;width=100%;gap=1rem;padding=1rem;border=1px solid #ddd]",
+          "children": [
+            {
+              "view": "[View]:[data=data:().collection.dashboard.rowChart.current]?class=flex column;style:[width=49%;gap=.5rem;padding=.5rem]",
+              "children": [
+                {
+                  "view": "Text?text=_.title;style:[color=#DB4437;fontSize=1rem]"
+                },
+                {
+                  "view": "Text?text='SGD'+_.value;style:[fontSize=1.5rem]"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flex;style:[width=1px;backgroundColor=#ddd;#height=100%]"
+            },
+            {
+              "view": "[View]:[data=data:().collection.dashboard.rowChart.overdue]?class=flex column;style:[width=49%;gap=.5rem;padding=.5rem]",
+              "children": [
+                {
+                  "view": "Text?text=OVERDUE;style:[color=_.color;fontSize=1rem]"
+                },
+                {
+                  "view": "Text?text='SGD'+_.value;style:[fontSize=1.5rem]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "D1G7C0v8X878U7S0D1R7s2X1A0",
+    "creationDate": 1697277074860,
+    "collapsed": [
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          2
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          1
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "title",
+        "path": [
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "width percentage",
+        "path": [
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "current overdue price",
+        "path": [
+          "children",
+          0,
+          "children",
+          2
+        ]
+      }
+    ],
+    "actions": {},
+    "docName": "rowBar",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

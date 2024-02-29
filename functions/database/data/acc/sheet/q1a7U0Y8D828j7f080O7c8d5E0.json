@@ -1,0 +1,112 @@
+{
+  "data": [
+    {
+      "cities": "Beirut"
+    },
+    {
+      "cities": "Tripoli"
+    },
+    {
+      "cities": "Sidon (Saida)"
+    },
+    {
+      "cities": "Tyre (Sour)"
+    },
+    {
+      "cities": "Byblos (Jbeil)"
+    },
+    {
+      "cities": "Zahle"
+    },
+    {
+      "cities": "Baalbek"
+    },
+    {
+      "cities": "Nabatieh"
+    },
+    {
+      "cities": "Jounieh"
+    },
+    {
+      "cities": "Aley"
+    },
+    {
+      "cities": "Jbeil"
+    },
+    {
+      "cities": "Choueifat"
+    },
+    {
+      "cities": "Hermel"
+    },
+    {
+      "cities": "Kfarshima"
+    },
+    {
+      "cities": "Zgharta"
+    },
+    {
+      "cities": "Marjayoun"
+    },
+    {
+      "cities": "Bsharri"
+    },
+    {
+      "cities": "Rashaya"
+    },
+    {
+      "cities": "Bint Jbeil"
+    },
+    {
+      "cities": "Batroun"
+    }
+  ],
+  "keys": [
+    {
+      "text": "Cities",
+      "key": "cities"
+    }
+  ],
+  "active": true,
+  "creationDate": 1705410861166,
+  "type": "Readonly",
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "name": "Lebanon Cities",
+  "columnWidth": {
+    "A": {
+      "columnWidth": "210px"
+    },
+    "B": {
+      "columnWidth": "511px"
+    }
+  },
+  "rowCount": 50,
+  "creationDay": 1705410832217,
+  "__props__": {
+    "id": "q1a7U0Y8D828j7f080O7c8d5E0",
+    "creationDate": 1699345620103,
+    "collapsed": [
+      {
+        "path": [
+          "columnWidth"
+        ]
+      },
+      {
+        "path": [
+          "list"
+        ]
+      },
+      {
+        "path": [
+          "keys"
+        ]
+      }
+    ],
+    "comments": [],
+    "docName": "WYixcIZwcOpf9x2Rn3qP0wOjMtmDSRVdvR6ubnomf6U4OrsKcHw2QBosglqx1698743279662",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

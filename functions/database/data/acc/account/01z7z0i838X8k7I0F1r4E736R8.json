@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687884362,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "F5i8hUCkMmYXxj0fk4Q9xf5X256FJh2BTzHbPyaKHtjY81hJOHXaRJzWk5JW-1708687884362",
+  "ref": "ACC-00000134",
+  "ledgerAccount": "6552/1/1",
+  "blockAccount": "No",
+  "name": "Prov.Fr Dimunition Of Tangible Fix.Asset",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "65",
+    "655",
+    "6552"
+  ],
+  "__props__": {
+    "id": "01z7z0i838X8k7I0F1r4E736R8",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "eAB23MhyOaW6oTxDhjaVAwUUwILjLcT1p3z5WB9mdORLKPQ3b7U7HmLnT0aZ-1708687884361",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

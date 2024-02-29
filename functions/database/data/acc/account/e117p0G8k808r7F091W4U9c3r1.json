@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687893865,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "DQezYh3xcufmpM6M8qHHL1CRjXmmYbm909oJFtP95G2q5x7JUw9OKVcLGbBv-1708687893865",
+  "ref": "ACC-00000355",
+  "ledgerAccount": "7110/1/1",
+  "blockAccount": "No",
+  "name": "Sales of Products",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "71",
+    "711",
+    "7110"
+  ],
+  "__props__": {
+    "id": "e117p0G8k808r7F091W4U9c3r1",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "q7XfhehTlSw4rbAyh30sZoP8tIK1ZBQ9p32UgYvTmOKsx8sxU0KgaYLmjtee-1708687893865",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

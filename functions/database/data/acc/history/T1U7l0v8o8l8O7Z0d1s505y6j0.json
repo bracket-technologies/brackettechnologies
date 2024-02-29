@@ -1,0 +1,40 @@
+{
+  "updateBy": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+  "difference": [
+    {
+      "new": {
+        "2wfsf": "wf435"
+      },
+      "path": "list"
+    },
+    {
+      "new": {
+        "2wfsf": "fssfs"
+      },
+      "path": "list"
+    },
+    {
+      "new": "2wfsf",
+      "path": "titles"
+    },
+    {
+      "new": "2wfsf",
+      "path": "keys"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "Z4RW8b99lcjPNpiOdrd6vPNNpA2fE7Br1CXyLRYf8PRRkdlxnKLHrrhPzvSU1700904423690",
+  "creationDay": 1700870400000,
+  "creationDate": 1700910692124,
+  "__props__": {
+    "id": "T1U7l0v8o8l8O7Z0d1s505y6j0",
+    "creationDate": 1700910595132,
+    "collapsed": [],
+    "comments": [],
+    "docName": "LfFqTAb1vRVf3kF43ikLqoZPfLJ5cBd1r3T0d95EdIn7cr22G0vybTzWEXn11700910692123",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

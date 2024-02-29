@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687878757,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "LXyg55OmNtfh3lsUvyhHEfvcWJ41n9IWFJjctEyH72hd2OXyNRpcwq7JjeRP-1708687878684",
+  "ref": "ACC-00000027",
+  "ledgerAccount": "5191/1/1",
+  "blockAccount": "No",
+  "name": "Banks & Financial Establishments Facilities",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "5",
+    "51",
+    "519",
+    "5191"
+  ],
+  "__props__": {
+    "id": "G1o7A0w8q808k7n0R14440A8Q0",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "7F3H1e9MKSx9dNb7BURJtoNuAGBSfKziIrNbfq8RoSk13W6Eme8q8Kadxmqj-1708687878684",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

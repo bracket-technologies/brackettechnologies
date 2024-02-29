@@ -1,0 +1,28 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687883966,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "IFTubYGcAe3NxrtiMd7PQKe8tkTzl3cpljD2kP9PWge5ZcOFkAqpIHnr9kQ8-1708687883966",
+  "ref": "ACC-00000125",
+  "ledgerAccount": "644/1/1",
+  "blockAccount": "No",
+  "name": "Registration Fees",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "64",
+    "644"
+  ],
+  "__props__": {
+    "id": "q1Y7E0r8u8q807B0H1K4O2C3c7",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "Eo4pyrO2z6eLMNaV6VgvxrM6PFMjDHQz3EpSdvN9Qg5pdj0zyVZuTC1XPgQK-1708687883966",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

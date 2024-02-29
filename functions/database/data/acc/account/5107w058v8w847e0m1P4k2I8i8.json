@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687880073,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "7w5goV54zhQVxZLfjj7lL4Hn11cbOGddhjF7IQtnfYde9z2FZ9D3AnrRgufX-1708687880073",
+  "ref": "ACC-00000056",
+  "ledgerAccount": "61123/1/1",
+  "blockAccount": "No",
+  "name": "Workshop & Factory Supplies",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "61",
+    "611",
+    "6112",
+    "61123"
+  ],
+  "__props__": {
+    "id": "5107w058v8w847e0m1P4k2I8i8",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "IQfqTUCYCogGSW6okuPTSLQdTjX4L3CV2t2Va5q1ruDOsf9OJW4v7mWrSkhp-1708687880073",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

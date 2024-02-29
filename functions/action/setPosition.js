@@ -1,6 +1,6 @@
 const setPosition = ({ position = {}, id, e }) => {
 
-  var views = window.views
+  const views = window.views
   var align = position.align || "center"
   var element = views[position.id || id].__element__
   var mousePos = position.positioner === "mouse"

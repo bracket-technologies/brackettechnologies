@@ -1,0 +1,666 @@
+{
+  "view": "View?class=flex column;if():[_.sheetName;_.items]:[_.items.del()];click:[log():[under=_;under2=__;under3=___;under4=____]];style:[width=100%;overflow=hidden;align-self=end;if():[____.read||_____.read||______.read]:[pointerEvents=none]]",
+  "children": [
+    {
+      "view": "View?class=flex column?!_.searchable;!_.unitPath;!_.governmentCode;!_.govInput;!_.generalLedger;!_.priceInput;!_.unitValue;!_.eticketInput",
+      "children": [
+        {
+          "view": "customInputLabel"
+        },
+        {
+          "view": "View?class=flex;style:[width=100%;gap=.2rem;height=100%]",
+          "children": [
+            {
+              "view": "View?class=flex;style:[inputStyle();if():[_.height]:[height=_.height];if():[_.noBorder||[____.read||_____.read||______.read]]:[border=0]:[if():[_.editableLabel]:[border=1px dashed #ddd]];if():[_.items]:[cursor=pointer];if():[_.finalValue]:[pointerEvents=none]];clearableAndGeneratorHandler();timer():[if():[_.editableLabel]:[if():[1stChild().txt()]:[style().border=1px solid #ddd]]]:5",
+              "children": [
+                {
+                  "view": "Input?loaded:[initAddress():[self=input]];if():[_.inputPath]:[path=_.inputPath];copyable=_.copyable;if():[_.readonly]:[readonly=true];generatore=_.generatore;placeholder=_.placeHolder;textarea=_.textarea;input.type=_.type;if():[_.inputValue;!doc().[_.inputPath]]:[doc().[_.inputPath]=[_.inputValue]();value=[_.inputValue]()];if():[_.items.0.text]:[inputValueHandler()];style:[color=#444;transition=.2s;height=100%;border=1px solid transparent;width=100%;padding=.3rem;text-overflow=ellipsis];if():[_.items]:[droplistHandler();filterable;searchable;if():[_.style]:[[_.style].flat()]];loaded:[if():[!_.items;[_.sheetName]();[_.sheetHeader]()]:[autoFillItems()]];if():[_.type=date||_.type=time||_.type='datetime-local']:[timeAndDateHandler()];if():[_.blurAction]:[blur:[stack().print;[_.blurAction]()]];if():[_.timeFormat]:[handelDurationFormat()];if():[_.action]:[click:[[_.action]()]];if():[_.focusAction]:[focus:[[_.focusAction]()]];if():[_.keydownAction]:[keydown:[[_.keydownAction]()]];if():[_.loadedAction]:[loaded:[[_.loadedAction]()]];if():[_.finalValue]:[readonly]"
+                },
+                {
+                  "view": "View?class=flexbox;style:[paddingRight=.5rem;height=100%]?_.clearable||_.items||_.idGeneratorAction||_.sheetName||[[_.type=date||_.type=time||_.type='datetime-local'];createFormStack:()||createFormStack:().[-1].searchbox]",
+                  "children": [
+                    {
+                      "view": "Icon?name=Close;google.symbol;style:[fontSize=1.8rem;cursor=pointer;color=#666;opacity=0;transition=.2s];click:[if():[_.inputPath]:[data().[_.inputPath].del()];parent().prev().clear();if():[_.clearIconAction]:[[_.clearIconAction]()]]?_.clearable||[[_.type=date||_.type=time||_.type='datetime-local'];createFormStack:()||createFormStack:().[-1].searchbox]"
+                    },
+                    {
+                      "view": "View?class=flexbox;style:[width=10%;height=100%;paddingRight=1.2rem;cursor=pointer];click:[[_.idGeneratorAction]()]?_.idGeneratorAction;!__.read",
+                      "children": [
+                        {
+                          "view": "Text?text=ID;style:[fontSize=2rem;Color=#BDC3C7;opacity=0;transition=0.2s]"
+                        }
+                      ]
+                    },
+                    {
+                      "view": "Icon?name=expand_more;google.symbol;style:[fontSize=2rem;color=#666];click:[parent().prev().click()]?_.items||_.sheetName;!____.read;!_____.read;!_.finalValue"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "view": "View?class=flexbox;style:[backgroundColor=#fff;width=3.5rem;border=1px solid #ddd;borderRadius=.4rem;cursor=pointer];tooltip:[text='add option'];click:[openSheet()]?_.openSheet;!____.read",
+              "children": [
+                {
+                  "view": "Icon?name=add;google.symbol;style:[fontSize=2rem]"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flexbox;style:[width=3.5rem;border=1px solid #ddd;borderRadius=.4rem;cursor=pointer;backgroundColor=#fff];click:[switchInput()]?_.switchable;!____.read",
+              "children": [
+                {
+                  "view": "Icon?name=Swap_Vert;google.symbol;style:[fontSize=2rem;color=#666]"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flexbox;style:[width=3.5rem;border=1px solid #ddd;borderRadius=.4rem;cursor=pointer;backgroundColor=#fff];click:[openPermissionPopup()]?_.editIcon;!____.read",
+              "children": [
+                {
+                  "view": "Icon?name=edit;google.symbol;style:[fontSize=2rem;color=#666]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "view": "searchableInput??_.searchable"
+    },
+    {
+      "view": "eticketInput??_.eticketInput"
+    },
+    {
+      "view": "unitPathInput??_.unitPath||_.priceInput||_.unitValue"
+    },
+    {
+      "view": "ledgerCounterInput??_.generalLedger||_.govInput"
+    }
+  ],
+  "__props__": {
+    "id": "x1q7i0I8K8a8p760r1i6T8J3i4",
+    "creationDate": 1689860364553,
+    "collapsed": [
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          4
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          2
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          2
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          3
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          3
+        ]
+      },
+      {
+        "path": [
+          "children",
+          4
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children"
+        ]
+      },
+      {
+        "path": [
+          "handelDurationFormat",
+          "convertTimeStampToDateFormat"
+        ]
+      },
+      {
+        "path": [
+          "handelDurationFormat",
+          "convertToTimeStamp"
+        ]
+      },
+      {
+        "path": [
+          "timeAndDateHandler",
+          "saveAsTimeStamp"
+        ]
+      },
+      {
+        "path": [
+          "checkMaxDuration"
+        ]
+      },
+      {
+        "path": [
+          "checkRefInDoc"
+        ]
+      },
+      {
+        "path": [
+          "handelDurationFormat"
+        ]
+      },
+      {
+        "path": [
+          "openSheet"
+        ]
+      },
+      {
+        "path": [
+          "searchByRefNumber"
+        ]
+      },
+      {
+        "path": [
+          "switchInput"
+        ]
+      },
+      {
+        "path": [
+          "timeAndDateHandler"
+        ]
+      },
+      {
+        "path": [
+          "unitValueHandler"
+        ]
+      },
+      {
+        "path": [
+          "searchInDoc"
+        ]
+      },
+      {
+        "path": [
+          "#openHotCreateForm"
+        ]
+      },
+      {
+        "path": [
+          "openHotCreateForm"
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "unite droplist ",
+        "path": [
+          "children",
+          1,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "normal input",
+        "path": [
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "search input",
+        "path": [
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "label",
+        "path": [
+          "children",
+          0,
+          "children",
+          "0"
+        ]
+      },
+      {
+        "note": "input",
+        "path": [
+          "children",
+          0,
+          "children",
+          "1"
+        ]
+      },
+      {
+        "note": "unite",
+        "path": [
+          "children",
+          2,
+          "children",
+          2,
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "unitPath@",
+        "path": [
+          "children",
+          2
+        ]
+      },
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      {
+        "note": "generalLedger@",
+        "path": [
+          "children",
+          4
+        ]
+      },
+      {
+        "note": "_icon",
+        "path": [
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "label",
+        "path": [
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "input",
+        "path": [
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "requied",
+        "path": [
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          3
+        ]
+      },
+      {
+        "note": "expand more",
+        "path": [
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "id generator",
+        "path": [
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "cleareable",
+        "path": [
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "main input",
+        "path": [
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "input",
+        "path": [
+          "children",
+          1,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "icons inside input",
+        "path": [
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "label",
+        "path": [
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "add icon",
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "switch icon",
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "edit icon",
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          3
+        ]
+      },
+      {
+        "note": "if():[_.uniteValue]:[save unit value in doc/path]:[save first index in subItems list in doc/path]",
+        "path": [
+          "unitValueHandler"
+        ]
+      },
+      {
+        "note": "e",
+        "path": [
+          "timeAndDateHandler",
+          "convertToDate"
+        ]
+      },
+      {
+        "note": "@",
+        "path": [
+          "timeAndDateHandler"
+        ]
+      }
+    ],
+    "actions": {
+      "showAndHideClearIcon": "mouseenter:[2ndChild().1stChild().style():[opacity=1]];mouseleave:[2ndChild().1stChild().style():[opacity=0]]",
+      "updateSectionById": "if():[_.sectionId]:[():[_.sectionId].update()]",
+      "calcTotalCost": "__.costPrice=[[__.purchaseNetPriceview]+[if():[__.purchaseTax]:[__.purchaseTax]:[0]]-[if():[__.purchaseDiscount]:[__.purchaseDiscount]:[0]]];__.totalCost=[__.costPrice]*[__.quantity];():totalCost.update()",
+      "inputValueHandler": "if():[___.path]:[value=_.items.find():[pathValue=__.[_.inputPath]].text]:[value=_.items.find():[pathValue=doc().[_.inputPath]].text]",
+      "switchInput": {
+        "deleteUnderscoreKeys": "underscoreKeys=_.keys();().underscoreKeys._():[__.[_].del()];().switchParams.0.keys()._():[__.[_]=().switchParams.0.[_]];().switchParams.pullItem():[().switchParams.0];().switchParams.push():[().currentInputParams];_.switchable=().switchParams",
+        "delFromDoc": "if():[___.path]:[__.[_.inputPath].del()]:[doc().[_.inputPath].del()]",
+        "_": "delFromDoc();().switchParams=_.switchable.clone();_.switchable.del();().currentInputParams=_.clone();deleteUnderscoreKeys();updateInputWrapper()"
+      },
+      "unitValueHandler": {
+        "addValueInDoc": "if():[!doc().[_.unitPath]]:[doc().[_.unitPath]=if():[_.unitValue]:[[_.unitValue]()]:[[_.subItemsList]().0]]",
+        "addValueInPath": "if():[!__.[_.unitPath]]:[__.[_.unitPath]=if():[_.unitValue]:[[_.unitValue]()]:[[_.subItemsList]().0]]",
+        "_": "if():[___.path]:[addValueInPath()]:[addValueInDoc()]"
+      },
+      "autoFillItems": {
+        "checkFields": "if():[_.inputLabel='City']:[[_.sheetName]()+' Cities']:[[_.sheetName]()]",
+        "getSheetData": "dropListFromSheet():[name=checkFields()]:[if():[_.success]:[successHandler()]:[falseHandler()]]",
+        "falseHandler": "sheetData:().[[__.sheetName]()]=false;note():[text=if():[__.inputLabel='City']:['Cities not found!']:['Sheet not found!'];danger]",
+        "checkToDeleteOldCity": "if():[_.inputPath='city']:[if():[!sheetData:().[doc().country].data.():cities.inc():[doc().city]]:[doc().city.del()]]",
+        "successHandler": "if():[_.data.data]:[__.items=_.data.data.():[.[__.sheetHeader]];sheetData:().[[__.sheetName]()]=_.data;parent().update()]",
+        "fillItemsFromExistData": "if():[sheetData:().[[_.sheetName]()].data]:[_.items=sheetData:().[[_.sheetName]()].data.():[.[_.sheetHeader]];parent().update()]",
+        "_": "#checkToDeleteOldCity();if():[!sheetData:().[[_.sheetName]()]]:[getSheetData()]:[fillItemsFromExistData()]"
+      },
+      "openPermissionPopup": "if():[parent().1stChild().1stChild().txt()]:[createFormStack:().push():'permission';generalPopup:()=[title='Permission Form';popupName=permissionView;permission=____.permission;defaultPermission=____.defaultPermission;doc=____.docName;userType=parent().1stChild().1stChild().txt()];():generalPopup.update()::[():generalPopup.style():[visibility=visible;opacity=1]]]:[note():[text=Please select the type of user;warning]]",
+      "openSheet": {
+        "setNewCurrentSheetInfo": "().key.push():[_.sheetHeader];().title.push():[_.sheetHeader.capitalize()];currentSheetInfo:()=[name=doc().country+' '+_.sheetHeader.capitalize();type=Editable;keys=().key;titles=().title]",
+        "setCurrentSheetInfo": "if():[sheetData:().[[_.sheetName]()]]:[setExistingData()]:[setNewCurrentSheetInfo()]",
+        "requiredInput": "if():[doc().[_.requiredInput]]:[loader.show;currentSheetInfo:()='';().key='';().title='';setCurrentSheetInfo();openSheet()]:[note():[text='Select a '+[_.requiredInput]+'!';type=danger]]",
+        "openSheet": "createFormStack:().push():['sheet'];timer():[generalPopup:()=[sheet;title=Sheet Form;popupName=sheet;saveAs;currentSheetInfo:().status=hotCreateSheet;inputId=prev().id;uneditableInputs=true];():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:100",
+        "setExistingData": "currentSheetInfo:()=sheetData:().[[_.sheetName]()]",
+        "_": "if():[_.requiredInput]:[requiredInput()]:[loader.show;currentSheetInfo:()=sheetData:().[_.sheetName];openSheet()]"
+      },
+      "customizableInputBlur": "if():[!().data()]:[parent().style().border=1px dashed #ddd]",
+      "searchEngineUpdateWrapper": "if():[_.inputLabel='Country']:[if():[doc().city]:[doc().city.del()].elif():[__.city]:[__.city.del()]];3rdParent().3rdParent().parent().update()",
+      "cmntFocus": "if():[doc().cmnt]:[().focus()]",
+      "handelDurationFormat": {
+        "toTimeFormat": "().taha='t';().timeList=().prevValue.replaceAll():[':']:[''].slice()::[6].split()::;().i=0;while():[i<().timeList.len()]:[().taha+=().timeList.[().i];i+=1;if():[i=2||i=4]:[().taha+=':']];txt()=().taha.replace():'t':''",
+        "removeChar": "if():[[e().keyCode>=48;e().keyCode<=57]||[e().keyCode>=96;e().keyCode<=105]||[e().keyCode=110||e().keyCode=8]||[e().keyCode>=37;e().keyCode<=40]||[e().keyCode>=16;e().keyCode<=20]||[e().keyCode>=112;e().keyCode<=123]]:[]:[pullChar()]",
+        "convertTimeStampToDateFormat": {
+          "calcTime": "().days=math().floor():[().timestampSec/86400]+'';().hours=math().floor():[[().timestampSec%86400]/3600]+'';().minutes=math().floor():[[().timestampSec%3600]/60]+'';fillInText()",
+          "readFromDoc": "if():[doc().resetDuration]:[().timestampSec=doc().resetDuration/1000;calcTime()]",
+          "readFromPath": "if():[__.resetDuration]:[().timestampSec=[__.resetDuration/1000];calcTime()]",
+          "fillInText": "txt()=[().days.padStart():2:0+':'+().hours.padStart():2:0+':'+().minutes.padStart():2:0]",
+          "_": "if():[___.path]:[readFromPath()]:[readFromDoc()]"
+        },
+        "convertToTimeStamp": {
+          "fillInDoc": "doc().resetDuration=[[().parts.0*24*3600]+[().parts.1*3600]+[().parts.2*60]]*1000;doc().[_.inputPath]=doc().[_.referenceDate]+doc().[resetDuration]",
+          "fillInPath": "__.resetDuration=[[().parts.0*24*3600]+[().parts.1*3600]+[().parts.2*60]]*1000;__.[_.inputPath]=__.[_.referenceDate]+__.[resetDuration]",
+          "_": "if():[__.[_.referenceDate]||doc().[_.referenceDate]]:[().parts=[];parts=txt().split():[':'];if():[___.path]:[fillInPath()]:[fillInDoc()]]"
+        },
+        "_": "loaded:[convertTimeStampToDateFormat();convertToTimeStamp()];entry:[toTimeFormat()];keydown:[removeChar()];blur:[convertToTimeStamp()]"
+      },
+      "#openHotCreateForm": {
+        "fillGeneralPopup": "generalPopup:()=[title=[prev().1stChild().1stChild().collection].capitalize()+' Form';popupName=customForm;inputInfo=().manager.createFormInputs.clone();docName=().manager.popupInfo.docName];if():[_.listName]:[generalPopup:().listName=_.listName]:[generalPopup:().varName=_.varName];if():[_.finalValue]:[activateFinalValueInInputInfo()]",
+        "activateFinalValueInInputInfo": "generalPopup:().inputInfo.subInput._():[_.input.find():[inputPath=__.finalValueReference].finalValue=true;_.input.find():[inputPath=__.finalValueReference].inputValue=__.finalValue]",
+        "_": "createFormStack:().push():[prev().1stChild().1stChild().collection];group=collectionsInfo:().find():[managers.():collection.inc():[prev().1stChild().1stChild().collection]];manager=[().group.groupName]:().[().group.managers.find():[collection=prev().1stChild().1stChild().collection].manager];fillGeneralPopup();():generalPopup.update()::[():generalPopup.style():[visibility=visible;opacity=1]]"
+      },
+      "fillInSearchboxSelected": "selected:().currency.push():[id=userData:().currency;code=userData:().currencyCode;ref=userData:().currencyRef]",
+      "saveInDoc": {
+        "handleIfMultiInput": "if():[().____.path]:[().___.[()._.inputPath]=[_]]:[doc().[()._.inputPath]=[_]]",
+        "saveValue": "if():[().___.path]:[().__.[_.inputPath]=_.value]:[doc().[_.inputPath]=_.value]",
+        "checkIfInPath": "if():[().___.path]:[().__.[()._.inputPath]=[_]]:[doc().[()._.inputPath]=[_]]",
+        "_": "if():[___.multiInput]:[handleIfMultiInput()].elif():[_.value]:[saveValue()]:[checkIfInPath()]"
+      },
+      "delFromDoc": "if():[().___.path]:[().__.[_].del()]:[doc().[_].del()]",
+      "showNext": "doc().itemInfo.del();3rdParent().3rdParent().parent().2ndNext().update()",
+      "setPermission": "if():[____.defaultPermission.[txt()]]:[doc().permission=____.defaultPermission.[txt()]]:[doc().permission.del()]",
+      "droplistHandler": {
+        "getItemsFromData": "loader.show;getDataForDroplist():[collection=_.items.collection;fields=_.items.fields]:[loader.hide;if():[_.success]:[droplist.items=_.data.():[__.items.returnKey]]]",
+        "handleDroplistClickIfMap": "saveInDoc():[_.items.find():[text=clicked().txt()].pathValue];txt()=clicked().txt();[_.droplistClickAction]()",
+        "handeItemsCondition": "_.items._():[().isConditionTrue=true;_.condition._():[if():[!doc().[_.conditionReference].in():[_.condition]]:[().isConditionTrue=false]];if():[().isConditionTrue]:[if():[_.items.type()=array]:[().droplist.items=_.items]:[getItemsFromData()]]]",
+        "fillFirstItemInInputValue": "doc().[_.inputPath]=().droplist.items.0;txt()=().droplist.items.0",
+        "handleDroplistItems": "if():[_.items.collection]:[getItemsFromData()].elif():[_.items.0.text]:[droplist.items=_.items.():text].elif():[_.items.0.condition]:[handeItemsCondition()]:[().droplist.items=_.items]",
+        "handleDroplistClick": "if():[__.unitPath]:[saveInDoc():[inputPath=__.unitPath;value=clicked().txt()]]:[data()=clicked().txt()];txt()=clicked().txt();[_.droplistClickAction]()",
+        "_": "handleDroplistItems();droplist:[preventDefault;#items=().items;style:[maxHeight=20rem]];if():[_.fillFirstItemAsValue]:[fillFirstItemInInputValue()];if():[_.items.0.text]:[():droplist.click:[handleDroplistClickIfMap()]]:[():droplist.click:[handleDroplistClick()]]"
+      },
+      "searchByRefNumber": {
+        "noDataAction": "if():[__.varName]:[selected:().[().collection]=flase;if():[().___.path]:[().__.[__.inputPath].del()]:[doc().[__.inputPath].del()]];txt()='';note():[text=().collection.capitalize()+' does not exist';type=danger]",
+        "saveVariable": "selected:().[().collection]=false;selected:().[().collection].push():[_.data];if():[().___.path]:[().__.[__.inputPath]=_.data.id]:[doc().[[__.inputPath]()]=_.data.id]",
+        "saveListInPath": "if():[!___.[__.inputPath]]:[___.[__.inputPath]=_list];___.[__.inputPath].replace():[_.data.id];():[().___.table.tableId].update()",
+        "checkVarOrList": "if():[__.varName]:[saveVariable()]:[saveList()]",
+        "saveList": "txt()='';if():[!selected:().[().collection]]:[selected:().[().collection]=_list];selected:().[().collection].replace():[_.data];if():[().___.path]:[saveListInPath()]:[saveListInDoc()]",
+        "saveListInDoc": "if():[!doc().[__.inputPath]]:[doc().[__.inputPath]=_list];doc().[__.inputPath].replace():[_.data.id];():[parent().___.table.tableId].update()",
+        "_": "if():[txt()]:[loader.show;data=[identifier=().collection.toLowerCase();ref=parent().prev().1stChild().txt()+'-'+().ref];customSearchEngine():[().data]:[loader.hide;if():[_.success]:[checkVarOrList();updateWrapper()]:[noDataAction()]]]"
+      },
+      "openHotCreateForm": {
+        "_": "openCreateForm():[manager=getManagerFromCollection():[collection=prev().1stChild().1stChild().collection]]"
+      },
+      "createRef": "().collection=2ndParent().1stChild().1stChild().collection;counter=8-txt().len();ref=txt()+'t';while():[counter>0]:[().ref='0'+().ref;().counter=().counter-1];().ref=().ref.replace():'t':''",
+      "readNameFromSelected": "if():[_.readNameFromSelected]:[input.value=selected:().[_.collection].find():[doc().[_.inputPath]].name]",
+      "updateWrapper": "():customForm.update();#children()._():[[():[_.id]].update()]",
+      "checkRefInDoc": {
+        "checkInPath": "if():[__.[_.inputPath]]:[txt()=allSelected:().find():[id=__.[_.inputPath]].ref.slice():[4]+0]",
+        "checkInDoc": "if():[doc().[[_.inputPath]()]]:[txt()=allSelected:().find():[id=doc().[[_.inputPath]()]].ref.slice():[4]+0]",
+        "_": "if():[_.varName]:[if():[___.path]:[checkInPath()]:[checkInDoc()]]"
+      },
+      "searchInDoc": {
+        "searchForKeyAndValue": "if():[().___.path]:[if()::[().__.[_.key].in():[_.value.list()]]:[return():[true]]:[return():[false]]]:[if():[doc().[_.key].in():[_.value.list()]]:[return():[true]]:[return():[false]]]",
+        "_if():[_.key;_.value]:[search]:[]": "__continue__",
+        "_": "if():[_.key;_.value]:[return():[searchForKeyAndValue()]]:[return():[SearchForKey()]]",
+        "SearchForKey": "if():[().___.path]:[if()::[().__.[_.key]]:[return():[true]]:[return():[false]]]:[if():[doc().[_.key]]:[return():[true]]:[return():[false]]]"
+      },
+      "clearableAndGeneratorHandler": "if():[_.clearable]:[showAndHideClearIcon();if():[_.idGeneratorAction]:[mouseenter:[2ndChild().2ndChild().child().style():[opacity=1]];mouseleave:[2ndChild().2ndChild().child().style():[opcity=0]]]]:[if():[_.idGeneratorAction]:[mouseenter:[2ndChild().1stChild().1stChild().style():[opacity=1]];mouseleave:[2ndChild().1stChild().1stChild().style():[opacity=0]]]]",
+      "generateUsernamee": "if():[doc().firstName;doc().lastName]:[generateUsername():[firstName=doc().firstName;lastName=doc().lastName]:[parent().prev().txt()=_.username;doc().username=_.username]]:[note():[text=please enter your name first]]",
+      "timeAndDateHandler": {
+        "convertToDate": {
+          "saveAsTimeStampp": "().date=doc().[_.inputPath]||__.[_.inputPath];if():[().date]:[if():[().type='datetime-local']:[txt()=[().date].toDateInputFormat():'yyyy-mm-ddthh:mm']:[txt()=[().date].toDateInputFormat()]]",
+          "calculateResetDuration": "().date=__.[resetDuration]||doc().[resetDuration];().startDate=__.[_.referenceDate]||doc().[_.referenceDate];if():[().date;().startDate]:[saveInDoc():[().startDate+().date];txt()=[().startDate+().date].toDateInputFormat()]",
+          "_": "if():[_.referenceDate]:[calculateResetDuration()]:[saveAsTimeStampp()]"
+        },
+        "saveAsTimeStamp": {
+          "delInputPathFromDoc": "delFromDoc():[_.inputPath];#if():[___.path]:[__.[_.inputPath].del();if():[_.referenceDate]:[__.resetDuration.del()]]:[doc().[_.inputPath].del();if():[_.referenceDate]:[doc().resetDuration.del()]]",
+          "saveAsTimeStamp": "if():[___.path]:[__.[_.inputPath]=txt().timestamp();if():[_.referenceDate]:[__.resetDuration=[[__.[_.inputPath]]-[__.[_.referenceDate]]]]]:[doc().[_.inputPath]=txt().timestamp();if():[_.referenceDate]:[doc().resetDuration=txt().timestamp()-[doc().[_.referenceDate]]]]",
+          "_": "if():[txt()='']:[delInputPathFromDoc()]:[saveAsTimeStamp();if():[_.maxDuration]:[checkMaxDuration():[maxDuration=_.maxDuration]]]"
+        },
+        "_": "change:[saveAsTimeStamp()];loaded:[convertToDate()]"
+      },
+      "calculateAccountBalance": "if():[doc().debit;doc().credit]:[doc().balance=[doc().debit]-[doc().credit];updateSectionWrapper()]",
+      "checkMaxDuration": {
+        "noteText": "if():[().days=0]:[note():[text='max duration is '+().months+' months';type=danger]]:[if():[().months=0]:[note():[text='max duration is '+().days+' days';type=danger]]:[note():[text='max duration is '+().months+' months and '+().days+' days';type=danger]]]",
+        "checkMaxDuration": "if():[[doc().expiryDate-doc().startDate]>_.maxDuration*24*60*60*1000]:[if():[__.inputPath=startDate]:[3rdParent().2ndParent().next().1stChild().1stChild().1stChild().2ndChild().1stChild().txt()='']:[txt()=''];doc().expiryDate.del();noteText()]",
+        "checkIfDurationValid": "if():[doc().expiryDate<doc().startDate]:[if():[__.inputPath=startDate]:[3rdParent().2ndParent().next().1stChild().1stChild().1stChild().2ndChild().1stChild().txt()='']:[txt()=''];doc().expiryDate.del();note():[text=please enter valid duration;type=danger]]:[checkMaxDuration()]",
+        "_": "months=math().floor():[_.maxDuration/30];days=_.maxDuration%30;if():[doc().startDate]:[checkIfDurationValid()]:[if():[doc().expiryDate]:[checkIfDurationValid()]:[txt()='';doc().expiryDate.del();note():[text=please fill Start Date first;type=danger]]]"
+      },
+      "inputStyle": "if():[__.customInputInfo]:[height=if():[mobile()]:[5rem]:[4.5rem];width=100%;backgroundColor=#fff;color=#444]:[width=100%;height=if():[mobile()]:[4rem]:[3.5rem];borderRadius=.4rem;if():[!____.read;!_____.read;!______.read]:[border=1px solid #ddd];backgroundColor=#fff;color=#444]",
+      "hideClearInput": "if():[_.clearable]:[mouselea View?class=flexbox;style:[width=3.5rem;border=1px solid #ddd;borderRadius=.4rem;cursor=pointer];tooltip:[text='create'];click:[openHotCreateForm()]?_.docNamechildren0viewIcon?name=add;google.symbol;style:[fontSize=2rem]2...expand_moreweb_assetvideo_labelexpand_moreve:[2ndChild().1stChild().style():[opacity=0]]]",
+      "customizableInputFocus": "parent().style().border=1px solid #ddd"
+    },
+    "docName": "customInput",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

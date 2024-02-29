@@ -1,6 +1,6 @@
 const decode = ({ _window, string }) => {
 
-  var global = _window ? _window.global : window.global
+  const global = _window ? _window.global : window.global
   if (typeof string !== "string") return string
 
   string.split("@").map((state, i) => {

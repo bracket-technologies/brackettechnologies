@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687895273,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "TcRcyBfMvKQmh7vnPxhj9ZsQ40eTLEGu6WIg0PPGN16S1mBJ71zcZDd8lkB0-1708687895272",
+  "ref": "ACC-00000385",
+  "ledgerAccount": "7720/1/1",
+  "blockAccount": "No",
+  "name": "Revenues of Securities and Receivables",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "77",
+    "772",
+    "7720"
+  ],
+  "__props__": {
+    "id": "m1D7a068i8U8K710Q1w5r0K7n4",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "yz2JMWz3mwSp1sP5bzeDaxtSOuVa9Xufkky9eyZ2lT49Mnnny6bCnSv35duO-1708687895272",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

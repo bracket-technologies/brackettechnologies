@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687888366,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "MWQdEW3XZUKz1xXNkNigWsHGomIZerjcp3ruUN3Ank8Cz5zr6JUL9WBcKZUV-1708687888365",
+  "ref": "ACC-00000212",
+  "ledgerAccount": "6440/1/1",
+  "blockAccount": "No",
+  "name": "Registration & Notary Fees",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "64",
+    "644",
+    "6440"
+  ],
+  "__props__": {
+    "id": "11D7x0q82828X7u0N134I2V284",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "DV2QF2VJIrwJ2MTHKqCFGJ4cv6yvPODoXZvSDPXqWjh8yPkWEu8jFkATq0iJ-1708687888365",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

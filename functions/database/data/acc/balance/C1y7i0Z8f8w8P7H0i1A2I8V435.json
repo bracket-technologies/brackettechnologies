@@ -1,0 +1,29 @@
+{
+  "ref": "TRN-00000030",
+  "accountBalances": [
+    {
+      "balance": 0,
+      "credit": 0,
+      "debit": 0,
+      "account": "UXUbBr9VblrlRCRrDWdULO1RUgh48ALJqkkHS5kaAF8K5jWzXmhMQTTCSXw2-1708687878864"
+    }
+  ],
+  "description": "Opening",
+  "creationDay": 1708646400000,
+  "creationDate": 1708687878871,
+  "credit": 0,
+  "debit": 0,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "account": "UXUbBr9VblrlRCRrDWdULO1RUgh48ALJqkkHS5kaAF8K5jWzXmhMQTTCSXw2-1708687878864",
+  "__props__": {
+    "id": "C1y7i0Z8f8w8P7H0i1A2I8V435",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "GQjYGwmFApPxDwvw0FCPUeNkqVu2Zy11k3TWVSBgQhUbUQs1pRfAOGyMNYHa-1708687878864",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

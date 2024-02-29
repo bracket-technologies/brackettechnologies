@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687891563,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "QytmWqLms4RN3agCHdC78ZCTpFyysBZXDBkiNH0AIFh54wZwYFJd2DEtdBzg-1708687891563",
+  "ref": "ACC-00000295",
+  "ledgerAccount": "7226/1/1",
+  "blockAccount": "No",
+  "name": "Services In Progress",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "72",
+    "722",
+    "7226"
+  ],
+  "__props__": {
+    "id": "C1M7k0B8K818V710U1c4y0K0k7",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "3hhOJokNUC6C1zU9H1FkfCAOGcxqjjMQl8pndQjAo9FvdmHATaBX1C2ZluYO-1708687891563",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

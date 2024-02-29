@@ -1,0 +1,85 @@
+{
+  "view": "View:dashbaord?class=column;style:[width=100%;overflow=scroll;height=calc(100vh - 4.6rem)];beforeloading:[getBalanceOfAcc()]",
+  "children": [
+    {
+      "view": "View?class=flex column;style:[width=100%;gap=.4rem]",
+      "children": [
+        {
+          "view": "View?class=flex;style:[width=100%;gap=.4rem;padding=1rem 1rem 0 1rem]",
+          "children": [
+            {
+              "view": "[View]:[data=range():1]?style:[width=50%]",
+              "children": [
+                {
+                  "view": "rowBar"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "view": "View?class=flex column;style:[gap=.4rem;padding=0 1rem 1rem 1rem]",
+          "children": [
+            {
+              "view": "customPieChar??false"
+            },
+            {
+              "view": "customSingleBarChart??false"
+            },
+            {
+              "view": "customDoubleBarChart"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "n1Z7K0O8k8b8Q7z071y6J9X209",
+    "creationDate": 1697195526788,
+    "collapsed": [
+      "_map:path:path()",
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "convertToTimestamp"
+        ]
+      }
+    ],
+    "comments": [
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()"
+    ],
+    "actions": {
+      "convertToTimestamp": {
+        "toYear": "doc().[reset]=[[doc().startDate]+[[doc().reset]*31557600000]]",
+        "toDay": "doc().[reset]=[[doc().startDate]+[[doc().reset]*86400000]]",
+        "toMonth": "doc().[reset]=[[doc().startDate]+[[doc().reset]*2629743000]]",
+        "toWeek": "doc().[reset]=[[doc().startDate]+[[doc().reset]*604800016.56]]",
+        "_": "if():[doc().expiryUnit='Hr']:[toHour()].elif():[doc().expiryUnit='Day']:[toDay()].elif():[doc().expiryUnit='Week']:[toWeek()].elif():[doc().expiryUnit='Month']:[toMonth()].elif():[doc().expiryUnit='Year']:[toYear()]",
+        "toHour": "doc().[reset]=[[doc().startDate]+[[doc().reset]*3600000]]"
+      },
+      "getBalanceOfAcc": "loader.show;getBalanceAccount()::[balances:()=_.data;loader.hide]"
+    },
+    "docName": "dashbaord",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

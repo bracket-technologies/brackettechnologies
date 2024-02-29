@@ -1,9 +1,0 @@
-{
-  "__public__": true,
-  "view": "View:loader-container?class=loader-container",
-  "children": [
-    {
-      "view": "View:loader?class=loader"
-    }
-  ]
-}

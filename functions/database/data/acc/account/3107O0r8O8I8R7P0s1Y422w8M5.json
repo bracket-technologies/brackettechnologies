@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687893978,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "IdzzHKFLAF9oma9YiT3Ft8Amaw8UayD141NOfJpS6skx7zkqmnlglTOeVmXo-1708687893977",
+  "ref": "ACC-00000357",
+  "ledgerAccount": "7170/1/1",
+  "blockAccount": "No",
+  "name": "Revenues of Subsidiary Activities",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "71",
+    "717",
+    "7170"
+  ],
+  "__props__": {
+    "id": "3107O0r8O8I8R7P0s1Y422w8M5",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "IHdXOu4uSm7jJzO2vpyK8hu4zTi1ycu60zJCq16UdD92jgXGVO6vn3mqiXCv-1708687893977",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

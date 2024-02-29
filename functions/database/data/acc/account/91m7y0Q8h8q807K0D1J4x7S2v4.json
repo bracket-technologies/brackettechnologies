@@ -1,0 +1,30 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687883256,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "sD5RFhE1spE571qfpZYzpKxPgCyZmnCTr1bf8A9eCWCIOC8ycC32IN9gmzGY-1708687883256",
+  "ref": "ACC-00000105",
+  "ledgerAccount": "62662/1/1",
+  "blockAccount": "No",
+  "name": "Documentations",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "62",
+    "626",
+    "6266",
+    "62662"
+  ],
+  "__props__": {
+    "id": "91m7y0Q8h8q807K0D1J4x7S2v4",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "btUxg6BjyCJy9YpnrA0ZRqdC0GqSCVU8aLRFCuY1QvRrhNIO3NNMkethhaKo-1708687883256",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{
+  "view": "View:filterDroplist?class=flex column;style:[width=20rem;height=30rem;overflow=hidden]",
+  "children": [
+    {
+      "view": "View?class=flex;style:[width=100%;height=2.8rem;padding=0 .5rem;borderRadius=.4rem;cursor=pointer;gap=.5rem];mouseenter:[style():[backgroundColor=#f3f3f3]];mouseleave:[style():[backgroundColor=white]]",
+      "children": [
+        {
+          "view": "Icon?name=sort;google.symbol;style:[fontSize=2rem;color=#666;cursor=pointer]"
+        },
+        {
+          "view": "Text?class=flex;text=Sort A to Z;style:[fontSize=1.3rem;fontWeight=700]"
+        }
+      ]
+    },
+    {
+      "view": "View?class=flex;style:[width=100%;height=2.8rem;padding=0 .5rem;borderRadius=.4rem;cursor=pointer;gap=.5rem];mouseenter:[style():[backgroundColor=#f3f3f3]];mouseleave:[style():[backgroundColor=white]]",
+      "children": [
+        {
+          "view": "Icon?name=sort;google.symbol;style:[fontSize=2rem;color=#666;cursor=pointer]"
+        },
+        {
+          "view": "Text?class=flex;text=Sort Z to A;style:[fontSize=1.3rem;fontWeight=700]"
+        }
+      ]
+    },
+    {
+      "view": "View?class=flexbox column;style:[width=100%;gap=1rem]",
+      "children": [
+        {
+          "view": "View?class=flex;style:[width=100%;height=2.8rem;padding=0 .5rem;borderRadius=.4rem;cursor=pointer;gap=.5rem];mouseenter:[style():[backgroundColor=#f3f3f3]];mouseleave:[style():[backgroundColor=white]]",
+          "children": [
+            {
+              "view": "Icon?name=Filter_Alt;google.symbol;style:[fontSize=2rem;color=#666;cursor=pointer]"
+            },
+            {
+              "view": "Text?class=flex;text=Filter;style:[fontSize=1.3rem;fontWeight=700]"
+            }
+          ]
+        },
+        {
+          "view": "View?class=flexbox column;style:[width=100%;gap=.5rem]",
+          "children": [
+            {
+              "view": "View?class=flex;style:[width=100%]?false",
+              "children": [
+                {
+                  "view": "customInput?inputLabel='Add '+_.currentTitle+' Key';path='titleKey'"
+                }
+              ]
+            },
+            {
+              "view": "customInput?inputLabel='Search';path='filterSearch';entry:[filterValues()];filteredValues:()=filterValue:()"
+            },
+            {
+              "view": "View?class=flex;style:[#border=1px dashed black;height=auto;width=100%;display=grid;gridTemplateColumns='repeat(2,1fr)';grid-row-gap=30px;padding=1rem;#justify-items=center];cellsIds:()=:;counter=1;rowConditions:().del();filterAllDataInfo:().del()",
+              "children": [
+                {
+                  "view": "[View]:[data=filteredValues:()]?class=flex;style:[width=90%;justifyContent=space-between];cellsIds:().push():[_.rowId]?filteredValues:().len()>0",
+                  "children": [
+                    {
+                      "view": "View?class=flexbox;style:[width=60%;justifyContent=start]",
+                      "children": [
+                        {
+                          "view": "Text?text=[[_.rowId.slice():3]+[1]]+'-';style:[fontSize=1.3rem]"
+                        },
+                        {
+                          "view": "Text?text=_.cellText;style:[fontSize=1.3rem;textAlign=start;whiteSpace=nowrap;overflow=hidden;textOverflow=ellipsis]"
+                        }
+                      ]
+                    },
+                    {
+                      "view": "checkboxes?key=_.rowId;selected=true;multiCheck=true;reverseTick=true;defaultSelectedValues=true"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "z1s7m0m878N8b7V0h1X6i985K9",
+    "creationDate": 1696318065452,
+    "collapsed": [
+      {
+        "path": [
+          "children",
+          0,
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          2
+        ]
+      }
+    ],
+    "comments": [],
+    "actions": {},
+    "docName": "filterDroplist",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

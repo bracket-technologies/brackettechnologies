@@ -1,10 +1,10 @@
 const { decode } = require("./decode")
-const { lineInterpreter } = require("./lineInterpreter")
+const { toLine } = require("./toLine")
 const { toCode } = require("./toCode")
 
 const searchParams = ({ _window, lookupActions, stack, req, res, id, e, __, string, object }) => {
 
-    var global = _window ? _window.global : window.global
+    const global = _window ? _window.global : window.global
 
     if (string.charAt(0) === "@" && string.length === 6) string = global.__refs__[string].data
 
@@ -24,7 +24,7 @@ const searchParams = ({ _window, lookupActions, stack, req, res, id, e, __, stri
 
     string = stringList.join("field=")
     
-    var data = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: { string }, object }).data
+    var data = toLine({ _window, lookupActions, stack, req, res, id, e, __, data: { string }, object }).data
 
     if (!data.field || typeof data.field !== "string") return data
 
@@ -56,7 +56,7 @@ const searchParams = ({ _window, lookupActions, stack, req, res, id, e, __, stri
 
     string = string.slice(0, -1)
 
-    data.field = lineInterpreter({ _window, lookupActions, stack, req, res, id, e, __, data: { string, action: "toParam" }, object }).data
+    data.field = toLine({ _window, lookupActions, stack, req, res, id, e, __, data: { string, action: "toParam" }, object }).data
 
     return data
 }

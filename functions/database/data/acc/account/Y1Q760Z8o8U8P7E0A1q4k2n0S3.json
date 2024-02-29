@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687887163,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "PH8B5RHckzsS7XKiiGk3FzqWTmdzuFz4dWLCHhioOZYH6cZwVoPDx2zm38G3-1708687887163",
+  "ref": "ACC-00000180",
+  "ledgerAccount": "6891/1/1",
+  "blockAccount": "No",
+  "name": "Exceptional Depreciation Of Fixed Assets",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "6",
+    "68",
+    "689",
+    "6891"
+  ],
+  "__props__": {
+    "id": "Y1Q760Z8o8U8P7E0A1q4k2n0S3",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "Cv1TFtlcMJZA20k5joiXv4SIdL7GnPfckLeZZCHHcNEW1CGFeVVKj7pUKZPP-1708687887163",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

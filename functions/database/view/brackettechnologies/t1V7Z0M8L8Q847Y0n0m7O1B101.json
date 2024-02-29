@@ -1,0 +1,156 @@
+{
+  "view": "View:signup?style:[transition=.2s;backgroundColor=#084C3F;minHeight=100vh;position=relative;overflow=hidden];name=Sign up Page;title=Sign up to Bracket;path=/signup;meta:[description=Sign up to Bracket;title=Sign up to Bracket]",
+  "controls": [
+    {
+      "event": "loaded",
+      "actions": [
+        "async():search?search.collection=list;search.doc=user;async():[)(:list.user=().search.data]"
+      ]
+    }
+  ],
+  "children": [
+    {
+      "view": "View?doc=new-user-data;data=_map;style.backgroundColor=#fff;style.borderRadius=1rem;style.width=38%;style.top=2%;style.left=10%;style.position=fixed;style.padding=8rem 4rem;class=column;style.display=flex;style.paddingBottom=3rem;style.zIndex=1",
+      "children": [
+        {
+          "view": "Text?text=Bracket;style.fontSize=2.5rem;style.fontWeight=bolder;style.color=#000;style.marginBottom=6rem"
+        },
+        {
+          "view": "Text?text=Create a Bracket ID;style.fontSize=2.3rem;style.color=#000"
+        },
+        {
+          "view": "Text?text=The ecommerce platform made for you;style.fontSize=1.7rem;style.marginBottom=2rem;style.color=#888"
+        },
+        {
+          "view": "Input?path=email;container.style.marginBottom=1.5rem;label.text=Email;label.location=outside;style.height=5rem;style.width=100%;style.padding=1rem",
+          "controls": [
+            {
+              "event": "input?if():[Data().email;Data().first-name;Data().password;Data().password=Data().confirm-password]:[():create-id-btn.style():[backgroundColor=#008060;color=#fff;cursor=pointer;)(:create-user=true]].elif():[!Data().email||!Data().first-name||!Data().last-name||!Data().password||!Data().confirm-password||Data().confirm-password!=Data().password]:[():create-id-btn.style():[backgroundColor=#f1f1f1;color=#8C9196;cursor=initial;)(:create-user=false]]"
+            }
+          ]
+        },
+        {
+          "view": "View?class=grid gridTemplateColumns-1fr1fr gap-1rem marginBottom-1rem",
+          "children": [
+            {
+              "view": "Input?path=first-name;label.text=First name;label.location=outside;style.height=5rem;style.width=100%;style.padding=1rem",
+              "controls": [
+                {
+                  "event": "input?if():[Data().email;Data().first-name;Data().last-name;Data().password;Data().password=Data().confirm-password]:[():create-id-btn.style():[backgroundColor=#008060;color=#fff;cursor=pointer];)(:create-user=true];if():[!Data().email||!Data().first-name||!Data().last-name||!Data().password||!Data().confirm-password||Data().confirm-password!=Data().password]:[():create-id-btn.style():[backgroundColor=#f1f1f1;color=#8C9196;cursor=initial];)(:create-user=false]"
+                }
+              ]
+            },
+            {
+              "view": "Input?path=last-name;label.text=Last name;label.location=outside;style.height=5rem;style.width=100%;style.padding=1rem",
+              "controls": [
+                {
+                  "event": "input?if():[Data().email;Data().first-name;Data().last-name;Data().password;Data().password=Data().confirm-password]:[():create-id-btn.style():[backgroundColor=#008060;color=#fff;cursor=pointer];)(:create-user=true];if():[!Data().email||!Data().first-name||!Data().last-name||!Data().password||!Data().confirm-password||Data().confirm-password!=Data().password]:[():create-id-btn.style():[backgroundColor=#f1f1f1;color=#8C9196;cursor=initial];)(:create-user=false]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "view": "Text?text=Enter your first and last name as they appear on your government-issued ID.;style.width=100%;style.fontSize=1.3rem;style.marginBottom=1.5rem"
+        },
+        {
+          "view": "Input?path=password;container.style.marginBottom=1rem;label.text=Password;label.location=outside;style.height=5rem;style.width=100%;style.padding=0;style.paddingLeft=1rem;password",
+          "controls": [
+            {
+              "event": "input?if():[Data().email;Data().first-name;Data().last-name;Data().password;Data().password=Data().confirm-password]:[():create-id-btn.style():[backgroundColor=#008060;color=#fff;cursor=pointer];)(:create-user=true];if():[!Data().email||!Data().first-name||!Data().last-name||!Data().password||!Data().confirm-password||Data().confirm-password!=Data().password]:[():create-id-btn.style():[backgroundColor=#f1f1f1;color=#8C9196;cursor=initial];)(:create-user=false]"
+            }
+          ]
+        },
+        {
+          "view": "Text?text=Your password must be at least 5 characters, and can’t begin or end with a space.;style.width=100%;style.fontSize=1.3rem;style.marginBottom=1.5rem"
+        },
+        {
+          "view": "Input?container.style.marginBottom=1rem;path=confirm-password;label.text=Confirm new password;label.location=outside;style.height=5rem;style.width=100%;style.padding=0;style.paddingLeft=1rem;password",
+          "controls": [
+            {
+              "event": "input?if():[Data().email;Data().first-name;Data().last-name;Data().password;Data().password=Data().confirm-password]:[():create-id-btn.style():[backgroundColor=#008060;color=#fff;cursor=pointer];)(:create-user=true];if():[!Data().email||!Data().first-name||!Data().last-name||!Data().password||!Data().confirm-password||Data().confirm-password!=Data().password]:[():create-id-btn.style():[backgroundColor=#f1f1f1;color=#8C9196;cursor=initial];)(:create-user=false]"
+            }
+          ]
+        },
+        {
+          "view": "View?class=flex start;style.width=100%;style.marginBottom=3.5rem;style.gap=.2rem",
+          "children": [
+            {
+              "view": "Text?text=By proceeding, you agree to the;style.fontSize=1.3rem"
+            },
+            {
+              "view": "Text?text=Terms and Conditions;style.color=#008060;style.fontSize=1.3rem;hover.style.textDecoration=underline;class=pointer;link.path=/terms"
+            }
+          ]
+        },
+        {
+          "view": "Text?id=create-id-btn;style.transition=.2s;text=Create Bracket ID;style.color=#8C9196;style.padding=1.75rem;style.fontSize=1.5rem;style.width=100%;style.borderRadius=.5rem;style.backgroundColor=#f1f1f1;class=flex-box;#style.cursor=pointer;hover.style.backgroundColor=#084C3F;hover.disable",
+          "controls": [
+            {
+              "event": "click??)(:list.user.email.find():[Data().email]",
+              "actions": "note?note.text=This Email already exists!;note.type=danger"
+            },
+            {
+              "event": "click?)(:user-password=Data().password;Data().password.del();Data().confirm-password.del();Data().id=[Data().first-name+ +Data().last-name].toId();Data().projects=_array?)(:create-user",
+              "actions": [
+                "wait():save:route?save.doc=Data().id;save.collection=_account_;save.data=Data();route.path=/login/+Data().id",
+                "save?save.doc=Data().id;save.collection=_password_;save.data=_map:creation-date:[today().timestamp()]:user:[Data().id]:password:[)(:user-password]"
+              ]
+            }
+          ]
+        },
+        {
+          "view": "View?style.marginTop=2.5rem;class=flexbox;style.gap=.5rem;style.justifyContent=flex-start",
+          "children": [
+            {
+              "view": "Text?text='Already have a Bracket ID?';style.color=#666;style.fontSize=1.4rem"
+            },
+            {
+              "view": "Text?text=Log in;style.color=#008060;link.path=/login;style.fontSize=1.4rem;hover.style.textDecoration=underline",
+              "controls": [
+                {
+                  "event": "click",
+                  "actions": "route?route.path=/login"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "view": "View?class=flex-start;style.gap=2.5rem;style.width=fit-content;style.marginTop=8rem;style.alignSelf=flex-end",
+          "children": [
+            {
+              "view": "Text?text=Help;style.color=#008060;style.fontSize=1.4rem;class=pointer;link.path=/help;hover.style.textDecoration=underline"
+            },
+            {
+              "view": "Text?text=Privacy;style.color=#008060;style.fontSize=1.4rem;class=pointer;link.path=/privacy;hover.style.textDecoration=underline"
+            },
+            {
+              "view": "Text?text=Terms;style.color=#008060;style.fontSize=1.4rem;class=pointer;link.path=/terms;hover.style.textDecoration=underline"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "view": "View?style:[width=100vw;height=100vh;position=fixed;top=0;left=0;zIndex=0]",
+      "children": [
+        {
+          "view": "Image?src='https://firebasestorage.googleapis.com/v0/b/bracketjs.appspot.com/o/gallery-bracketjs%2Fbackground.png?alt=media&token=16d2397a-cbc3-4316-b2af-ac2d45bde3a4';style:[minHeight=100%;minWidth=100%;maxHeight=100%;maxWidth=100%;height=100%;width=100%]"
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "t1V7Z0M8L8Q847Y0n0m7O1B101",
+    "creationDate": 1639346801468,
+    "collapsed": [],
+    "comments": [],
+    "actions": {},
+    "docName": "signup",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "d17770q8A8Z7l0Q0l031g188q9"
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "lastName": "Zoghbi",
+  "country": "Lebanon",
+  "address": "beirut",
+  "city": "beirut",
+  "type": "Admin User",
+  "creationDate": 1699560006936,
+  "birthDate": 1699056000000,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "firstName": "Mohamad",
+  "password": "54321",
+  "ref": "USR-00000001",
+  "nationality": "lebanese",
+  "createdBy": "j7neF8CHqumHOGzAXNWi9JcLKTTyx9LRmJptYuYbJeiNWWfSrQMeqwKTZSp01699559755885",
+  "contactNumber": "13457892",
+  "creationDay": 1699488000000,
+  "email": "mohamad@gmail.com",
+  "username": "mohamadz",
+  "__props__": {
+    "id": "h1h7W0r8B8A8p6h9D9w76562D4",
+    "creationDate": 1699559967729,
+    "collapsed": [],
+    "comments": [],
+    "docName": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}

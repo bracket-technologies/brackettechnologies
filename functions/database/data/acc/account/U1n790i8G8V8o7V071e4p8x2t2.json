@@ -1,0 +1,29 @@
+{
+  "description": "Default account",
+  "creationDate": 1708687894596,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "lastBalance": "0J9qtSv1yTh1Msqp3uYCOtus5C4ezPsIrHTKrH91GFKMJXUU854WayrdcwoA-1708687894595",
+  "ref": "ACC-00000371",
+  "ledgerAccount": "7522/1/1",
+  "blockAccount": "No",
+  "name": "Reversal of Deval.Prov. of Tang.Fixed Assets",
+  "currency": "USD",
+  "creationDay": 1708646400000,
+  "startsWith": [
+    "7",
+    "75",
+    "752",
+    "7522"
+  ],
+  "__props__": {
+    "id": "U1n790i8G8V8o7V071e4p8x2t2",
+    "creationDate": 1708687671675,
+    "collapsed": [],
+    "comments": [],
+    "docName": "jQdnVsP0EPsI6mXEankcXGFjROunDXb9a138vY74swCzw3JacjfihpSOrVeF-1708687894595",
+    "folderPath": [],
+    "confidential": {
+      "projectPublicID": "71j7R0d8Z8p7E0d0n081r1e854"
+    }
+  }
+}
