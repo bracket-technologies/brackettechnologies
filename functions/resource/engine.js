@@ -8583,6 +8583,7 @@ const builtInViews = require("../view/views")
 const { getJsonFiles } = require("./jsonFiles")
 const cssStyleKeyNames = require("./cssStyleKeyNames")
 const { toParam } = require("./toParam")
+const { endStack } = require("./stack")
 
 const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data = {} }) => {
 
@@ -8782,10 +8783,36 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
   if (address.function === "toHTML") toHTML({ _window, lookupActions, stack, id, req, res, address, ...(address.params || {}), data: address.data, __ })
   else if (address.function === "toView") toView({ _window, lookupActions, stack, id, req, res, address, ...(address.params || {}), data: address.data, __ })
-  
+
   address.interpreting = false
 
-  return !address.asynchronous && toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
+  if (!address.asynchronous) {
+
+    if (!address.id || stack.terminated || address.hold || address.starter) return
+    if (stack.blocked && !address.blocked) stack.blocked = false
+
+    var headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
+
+    if (address.blocked || address.status === "Start" || address.status === "End") {
+
+      address.status = address.blocked ? "Block" : "End"
+      printAddress({ stack, address, headAddress })
+
+      // get await index for splicing
+      stack.addresses.splice(address.index, 1)
+    }
+
+    if (address.headAddressID && !headAddress.interpreting && (headAddress.stackID || headAddress.hold || headAddress.status === "Wait")) {
+
+      var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.headAddressID === address.headAddressID)
+
+      if (otherWaiting === -1 || (otherWaiting > -1 && !stack.addresses.find(waitingAddress => waitingAddress.headAddressID === address.headAddressID && !address.blocked))) {
+
+        headAddress.hold = false
+        return toAwait({ _window, lookupActions, stack, address: headAddress, id, req, res, __ })
+      }
+    }
+  }
 }
 
 const sortAndArrange = ({ data, sort, arrange }) => {
@@ -9171,7 +9198,7 @@ const link = ({ _window, id, stack, __ }) => {
 }
 
 module.exports = { toView, toHTML, customView }
-},{"../view/views":166,"./addresser":2,"./clone":4,"./colorize":6,"./cssStyleKeyNames":9,"./executable":20,"./generate":24,"./isParam":36,"./jsonFiles":37,"./kernel":39,"./logger":40,"./merge":42,"./replaceNbsps":48,"./search":53,"./toApproval":62,"./toArray":63,"./toAwait":64,"./toCode":67,"./toLine":72,"./toParam":75,"./toValue":78,"./view":83}],80:[function(require,module,exports){
+},{"../view/views":166,"./addresser":2,"./clone":4,"./colorize":6,"./cssStyleKeyNames":9,"./executable":20,"./generate":24,"./isParam":36,"./jsonFiles":37,"./kernel":39,"./logger":40,"./merge":42,"./replaceNbsps":48,"./search":53,"./stack":58,"./toApproval":62,"./toArray":63,"./toAwait":64,"./toCode":67,"./toLine":72,"./toParam":75,"./toValue":78,"./view":83}],80:[function(require,module,exports){
 const { starter } = require("./starter")
 const { toView, toHTML } = require("./toView")
 const { clone } = require("./clone")
