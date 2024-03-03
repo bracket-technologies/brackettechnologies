@@ -2,17 +2,16 @@ const { printAddress } = require("./addresser")
 const { clone } = require("./clone")
 const { toLine } = require("./toLine")
 const { endStack } = require("./stack")
+const { logger } = require("./logger")
 
 const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, stack, id, e, _, __, action }) => {
 
-  require("./toView")
-  require("./reducer")
-  require("./update")
+  const { toView, toHTML, documenter, update } = require("./toView")
 
   const global = _window ? _window.global : window.global
 
   if (addressID && !address.id) address = stack.addresses.find(address => address.id === addressID)
-  if (!address.id || stack.terminated || address.hold || address.starter) return
+  if (!address.id || stack.terminated || address.hold || address.starter || address.end) return
 
   // params
   address.params = address.params || {}
@@ -24,36 +23,47 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
   if (stack.blocked && !address.blocked) stack.blocked = false
 
   // address
-  var headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
+  var nextAddress = stack.addresses.find(nextAddress => nextAddress.id === address.nextAddressID) || {}
 
-  if (address.blocked || address.status === "Start" || address.status === "End") {
+  if (address.blocked || address.status === "Start") {
 
     address.status = address.blocked ? "Block" : "End"
+    address.end = true
     address.interpreting = false
-    printAddress({ stack, address, headAddress })
+    printAddress({ stack, address, nextAddress })
 
-    // get await index for splicing
+    // remove address
     var index = stack.addresses.findIndex(waitingAddress => waitingAddress.id === address.id)
     if (index !== -1) stack.addresses.splice(index, 1)
 
     // pass underscores to waits
-    if (address.hasWaits && headAddress.params) headAddress.params.__ = my__
+    if (address.hasWaits && nextAddress.params) nextAddress.params.__ = my__
+
+    // logger
+    if (address.logger && address.logger.end) logger({ _window, data: { key: address.logger.key, end: true } })
 
   } else if (address.status === "Wait") {
 
     address.status = "Start"
     address.interpreting = true
-    printAddress({ stack, address, headAddress })
+    printAddress({ stack, address, nextAddress })
 
     stack.interpretingAddressID = address.id
+
+    // logger
+    if (address.logger && address.logger.start) logger({ _window, data: { key: address.logger.key, start: true } })
 
     if (address.function) {
 
       var func = address.function || "toLine"
       var file = address.file || func
+      var data = { _window, lookupActions, stack, id, e, req, res, address, nextAddress, ...(address.params || {}), data: address.data, __: my__, action }
 
-      require(`./${file}`)[func]({ _window, lookupActions, stack, id, e, req, res, address, headAddress, ...(address.params || {}), data: address.data, __: my__, action })
-
+      if (func === "toView") toView(data)
+      else if (func === "toHTML") toHTML(data)
+      else if (func === "update") update(data)
+      else if (func === "documenter") documenter(data)
+      
       address.interpreting = false
 
       return !address.asynchronous && toAwait({ _window, lookupActions, stack, address, id, e, req, res, __: my__, action })
@@ -63,15 +73,15 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
 
   if (stack.terminated) return
 
-  // asynchronous unholds headAddresses
-  if (address.headAddressID && !headAddress.interpreting && (headAddress.stackID || headAddress.hold || headAddress.status === "Wait")) {
+  // asynchronous unholds nextAddresses
+  if (address.nextAddressID && !nextAddress.interpreting && (nextAddress.stackID || nextAddress.hold || nextAddress.status === "Wait")) {
 
-    var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.headAddressID === address.headAddressID)
+    var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.nextAddressID === address.nextAddressID)
+    
+    if (otherWaiting === -1 || (otherWaiting > -1 && !stack.addresses.find(waitingAddress => waitingAddress.nextAddressID === address.nextAddressID && !address.blocked))) {
 
-    if (otherWaiting === -1 || (otherWaiting > -1 && !stack.addresses.find(waitingAddress => waitingAddress.headAddressID === address.headAddressID && !address.blocked))) {
-
-      headAddress.hold = false
-      return toAwait({ _window, lookupActions, stack, address: headAddress, id, e, req, res, __, action })
+      nextAddress.hold = false
+      return toAwait({ _window, lookupActions, stack, address: nextAddress, id, req, res, __, action, e })
     }
   }
 

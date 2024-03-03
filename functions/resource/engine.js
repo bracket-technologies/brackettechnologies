@@ -29,49 +29,66 @@ const { clone } = require("./clone");
 const { generate } = require("./generate");
 const { toLine } = require("./toLine");
 
-const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, noHeadAddress, hasWaits, params, function: func, newLookupActions, headAddressID, headAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition }) => {
+const addresser = ({ _window, addressID = generate(), index = 0, switchWithAddress, switchWithRunningAddress, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, hasWaits, params, function: func, newLookupActions, nextAddressID, nextAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition }) => {
     
-    // find headAddress by headAddressID
-    if (headAddressID && !headAddress.id && !noHeadAddress) headAddress = stack.addresses.find(headAddress => headAddress.id === headAddressID)
+    if (switchWithAddress) {
 
+        nextAddressID = switchWithAddress.nextAddressID
+        hasWaits = switchWithAddress.hasWaits
+        switchWithAddress.nextAddressID = addressID
+        switchWithAddress.hasWaits = false
+        switchWithAddress.interpreting = false
+        // switchWithAddress.status = "Wait"
+
+    } else if (switchWithRunningAddress) {
+
+        nextAddressID = switchWithRunningAddress.nextAddressID
+        hasWaits = switchWithRunningAddress.hasWaits
+        switchWithRunningAddress.nextAddressID = addressID
+        switchWithRunningAddress.hasWaits = false
+    }
+
+    // find nextAddress by nextAddressID
+    if (nextAddressID && !nextAddress.id) nextAddress = stack.addresses.find(nextAddress => nextAddress.id === nextAddressID) || {}
+    
     // waits
     waits = waits || args[2], params = params || args[1] || ""
 
     // address waits
-    if (waits) headAddress = addresser({ _window, stack, req, res, e, type: "waits", action: action + "::[...]", data: { string: waits }, headAddress, blockable, __, id, object, mount, lookupActions, condition }).address
+    if (waits) nextAddress = addresser({ _window, stack, req, res, e, type: "waits", action: action + "::[...]", data: { string: waits }, nextAddress, blockable, __, id, object, mount, lookupActions, condition }).address
 
-    var address = { id: generate(), stackID: stack.id, noHeadAddress, viewID: id, type, data, status, file, function: func, hasWaits: hasWaits || (waits ? true : false), headAddressID: headAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
+    var address = { id: addressID, stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: hasWaits !== undefined ? hasWaits : (waits ? true : false), nextAddressID: nextAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
     var stackLength = stack.addresses.length
 
     // find and lock the head address
-    if (stackLength > 0 && !headAddress.id && !noHeadAddress) {
+    if (stackLength > 0 && !nextAddress.id) {
 
-        var headAddressIndex = 0
+        var nextAddressIndex = 0
         
-        // headAddress is interpreting or renderer
-        while (headAddressIndex < stackLength && !stack.addresses[headAddressIndex].interpreting && !stack.addresses[headAddressIndex].renderer) { headAddressIndex += 1 }
+        // nextAddress is interpreting or renderer
+        while (nextAddressIndex < stackLength && !stack.addresses[nextAddressIndex].interpreting && !stack.addresses[nextAddressIndex].renderer) { nextAddressIndex += 1 }
         
         // there exist a head address
-        if (headAddressIndex < stackLength) {
+        if (nextAddressIndex < stackLength) {
             
-            address.headAddressID = stack.addresses[headAddressIndex].id
+            address.nextAddressID = stack.addresses[nextAddressIndex].id
 
             // get head address
-            headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID)
+            nextAddress = stack.addresses.find(nextAddress => nextAddress.id === address.nextAddressID)
         }
     }
 
     // set all head addresses asynchronous
     if (asynchronous) {
 
-        var headAddressID = address.stackID === stack.id && address.headAddressID
-        while (headAddressID) {
+        var nextAddressID = address.stackID === stack.id && address.nextAddressID
+        while (nextAddressID) {
             
-            var holdHeadAddress = stack.addresses.find(headAddress => headAddress.id === headAddressID)
-            if (holdHeadAddress) {
-                holdHeadAddress.hold = true
-                headAddressID = holdHeadAddress.stackID === stack.id && holdHeadAddress.headAddressID
-            } else headAddressID = false
+            var holdnextAddress = stack.addresses.find(nextAddress => nextAddress.id === nextAddressID)
+            if (holdnextAddress) {
+                holdnextAddress.hold = true
+                nextAddressID = holdnextAddress.stackID === stack.id && holdnextAddress.nextAddressID
+            } else nextAddressID = false
         }
     }
 
@@ -83,12 +100,13 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
     address.params = { __, id, object, mount, lookupActions: newLookupActions || lookupActions, condition }
 
     // push to stack
-    stack.addresses.unshift(address)
+    if (index) stack.addresses.splice(index, 0, address)
+    else stack.addresses.unshift(address)
 
-    if (action === "search()" || action === "erase()" || action === "save()") address.action += ":" + data.collection
+    if (action === "search()" || action === "erase()" || action === "save()") address.action += ":" + data.collection + (data.doc || "")
     
     // log
-    if (!newLookupActions) stack.logs.push(`${stack.logs.length} ${address.status} ${type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action}${headAddress.id ? ` => ${headAddress.id || ""} ${headAddress.index !== undefined ? headAddress.index : ""} ${headAddress.type === "function" ? headAddress.function : headAddress.action || ""}` : ""}`)
+    if (address.status !== "Wait") printAddress({ stack, address, nextAddress, newAddress: true })
 
     return { address, data, stack, action: interpretAction, __: [...(data !== undefined ? [data] : []), ...__] }
 }
@@ -105,27 +123,27 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
     data.executionDuration = executionDuration
     delete data.msg
 
-    var starter = false, headAddressID = stack.interpretingAddressID, currentStackID = stack.id
-    var address = stack.addresses.find(address => address.id === headAddressID)
+    var starter = false, nextAddressID = stack.interpretingAddressID, currentStackID = stack.id
+    var address = stack.addresses.find(address => address.id === nextAddressID)
 
     var endStarterAddress = ({ address, stack }) => {
         
         address.starter = false
 
-        // get start headAddress to push data to its underscores
-        var starterHeadAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID)
-        if (starterHeadAddress) {
+        // get start nextAddress to push data to its underscores
+        var starternextAddress = stack.addresses.find(nextAddress => nextAddress.id === address.nextAddressID)
+        if (starternextAddress) {
 
-            // start again from the current interpreting address to reach headAddress to set blocked
+            // start again from the current interpreting address to reach nextAddress to set blocked
             var stack = global.__stacks__[currentStackID], blockedAddress = true
-            headAddressID = stack.interpretingAddressID
+            nextAddressID = stack.interpretingAddressID
 
-            while (blockedAddress && headAddressID && headAddressID !== starterHeadAddress.id) {
+            while (blockedAddress && nextAddressID && nextAddressID !== starternextAddress.id) {
 
-                blockedAddress = stack.addresses.find(address => address.id === headAddressID)
+                blockedAddress = stack.addresses.find(address => address.id === nextAddressID)
                 if (blockedAddress) {
                     blockedAddress.blocked = true
-                    headAddressID = blockedAddress.headAddressID
+                    nextAddressID = blockedAddress.nextAddressID
 
                     stack.blocked = true
 
@@ -134,7 +152,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
                 }
             }
             
-            toAwait({ req, res, _window, lookupActions, stack: global.__stacks__[starterHeadAddress.stackID], address, id, e, __, _: data })
+            toAwait({ req, res, _window, lookupActions, stack: global.__stacks__[starternextAddress.stackID], address, id, e, __, _: data })
         }
     }
 
@@ -151,10 +169,10 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
 
     } else {
 
-        while (!starter && headAddressID && stack) {
+        while (!starter && nextAddressID && stack) {
 
             // start from self address (by interpretingAddressID) to reach the start head address
-            var address = stack.addresses.find(address => address.id === headAddressID)
+            var address = stack.addresses.find(address => address.id === nextAddressID)
             
             if (address.starter) {
 
@@ -163,21 +181,30 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
             }
 
             // move to head address
-            headAddressID = address.headAddressID
+            nextAddressID = address.nextAddressID
 
-            // reached index 0 address => check stack if it has headAddress
+            // reached index 0 address => check stack if it has nextAddress
             if (address.stackID !== stack.id) stack = global.__stacks__[address.stackID]
         }
     }
 }
 
-const printAddress = ({ stack, address, headAddress }) => {
-    if (!headAddress) headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
-    stack.logs.push(`${stack.logs.length} ${address.status}${address.status === "End" ? (" (" + ((new Date()).getTime() - address.executionStartTime) + ") ") : " "}${address.type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action}${headAddress.id ? ` => ${headAddress.id || ""} ${headAddress.index !== undefined ? headAddress.index : ""} ${headAddress.type === "function" ? headAddress.function : headAddress.action || ""}` : ""}`)
+const printAddress = ({ stack, address, nextAddress = {}, newAddress }) => {
+
+    if (newAddress) stack.logs.push(`${stack.logs.length} ${address.status} ${address.type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action}${nextAddress.id ? ` => ${nextAddress.id || ""} ${nextAddress.index !== undefined ? nextAddress.index : ""} ${nextAddress.type === "function" ? nextAddress.function : nextAddress.action || ""}` : ""}`)
+    else stack.logs.push(`${stack.logs.length} ${address.status}${address.status === "End" ? (" (" + ((new Date()).getTime() - address.executionStartTime) + ") ") : " "}${address.type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action}${nextAddress.id ? ` => ${nextAddress.id || ""} ${nextAddress.index !== undefined ? nextAddress.index : ""} ${nextAddress.type === "function" ? nextAddress.function : nextAddress.action || ""}` : ""}`)
+    // console.log(stack.logs.at(-1));
 }
 
-module.exports = { addresser, printAddress, endAddress }
-},{"./clone":4,"./generate":24,"./toAwait":64,"./toLine":72}],3:[function(require,module,exports){
+const resetAddress = ({ address, ...data }) => {
+    
+    Object.entries(data || {}).map(([key, value]) => {
+        address[key] = value
+    })
+}
+
+module.exports = { addresser, printAddress, endAddress, resetAddress }
+},{"./clone":4,"./generate":24,"./toAwait":63,"./toLine":71}],3:[function(require,module,exports){
 const capitalize = (string, minimize) => {
   if (typeof string !== "string") return string
 
@@ -243,7 +270,7 @@ const closePublicViews = ({ _window, id, __, lookupActions }) => {
 }
 
 module.exports = { closePublicViews }
-},{"./toLine":72}],6:[function(require,module,exports){
+},{"./toLine":71}],6:[function(require,module,exports){
 const { decode } = require("./decode")
 const { toArray } = require("./toArray")
 
@@ -347,7 +374,7 @@ const colorizeCoded = ({ _window, index, string, colors }) => {
 }
 
 module.exports = { colorize }
-},{"./decode":13,"./toArray":63}],7:[function(require,module,exports){
+},{"./decode":13,"./toArray":62}],7:[function(require,module,exports){
 const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
 
   var cookie = document.cookie || ""
@@ -553,7 +580,7 @@ module.exports = {
         reader.readAsBinaryString(file || e.target.files[0]);
     }
 }
-},{"./toParam":75}],11:[function(require,module,exports){
+},{"./toParam":74}],11:[function(require,module,exports){
 (function (global){(function (){
 const { clone } = require("./clone")
 const { reducer } = require("./reducer")
@@ -589,7 +616,7 @@ const clearData = ({ id, e, clear = {}, __ }) => {
 module.exports = { createData, setData, clearData }
 
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./clone":4,"./reducer":45,"./setData":55}],12:[function(require,module,exports){
+},{"./clone":4,"./reducer":45,"./setData":54}],12:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { generate } = require("./generate")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
@@ -1202,7 +1229,7 @@ module.exports = {
   deletedb,
   deleteData
 }
-},{"./clone":4,"./generate":24,"./toArray":63,"./toFirebaseOperator":71,"./toOperator":74,"axios":90}],13:[function(require,module,exports){
+},{"./clone":4,"./generate":24,"./toArray":62,"./toFirebaseOperator":70,"./toOperator":73,"axios":88}],13:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   const global = _window ? _window.global : window.global
@@ -1380,7 +1407,7 @@ const defaultAppEvents = () => {
 }
 
 module.exports = { defaultAppEvents }
-},{"../action/event":18,"../action/toLine":72}],15:[function(require,module,exports){
+},{"../action/event":18,"../action/toLine":71}],15:[function(require,module,exports){
 const { setData } = require("./data")
 const { resize } = require("./resize")
 const { isArabic } = require("./isArabic")
@@ -1612,8 +1639,8 @@ module.exports = { defaultInputHandler }
   e.target.selectionStart = e.target.selectionEnd = e.target.selectionEnd - 1
 
 }*/
-},{"./colorize":6,"./data":11,"./isArabic":31,"./replaceNbsps":48,"./resize":49,"./toCode":67}],16:[function(require,module,exports){
-const { update } = require("./update")
+},{"./colorize":6,"./data":11,"./isArabic":31,"./replaceNbsps":47,"./resize":48,"./toCode":66}],16:[function(require,module,exports){
+const { update } = require("./toView")
 const { clone } = require("./clone")
 const { jsonToBracket } = require("./jsonToBracket")
 const { toLine } = require("./toLine")
@@ -1768,7 +1795,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
 }
 
 module.exports = { droplist }
-},{"./clone":4,"./jsonToBracket":38,"./kernel":39,"./toLine":72,"./update":80}],17:[function(require,module,exports){
+},{"./clone":4,"./jsonToBracket":38,"./kernel":39,"./toLine":71,"./toView":78}],17:[function(require,module,exports){
 const axios = require("axios")
 const { deleteData } = require("./database")
 
@@ -1798,7 +1825,7 @@ const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase
 }
 
 module.exports = { erase }
-},{"./database":12,"./toAwait":64,"axios":90}],18:[function(require,module,exports){
+},{"./database":12,"./toAwait":63,"axios":88}],18:[function(require,module,exports){
 const { toCode } = require("./toCode")
 const { openStack, endStack } = require("./stack")
 const { toLine } = require("./toLine")
@@ -1864,7 +1891,7 @@ const addEventListener = ({ event, id, __, stack, lookupActions, address, eventI
   })
 }
 
-const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: headStack, address: headAddress, __ }) => {
+const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: headStack, address: nextAddress, __ }) => {
 
   const views = window.views
   const global = window.global
@@ -1882,10 +1909,10 @@ const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: he
   if (id !== "droplist" && eventID === "droplist" && (!global.__droplistPositioner__ || !views[global.__droplistPositioner__] || !views[global.__droplistPositioner__].__element__.contains(view.__element__))) return
 
   // init stack
-  var stack = openStack({ event, id, eventID, string, headStack, headAddress, e })
+  var stack = openStack({ event, id, eventID, string, headStack, nextAddress, e })
 
   // address line
-  var address = addresser({ stack, id, status: "Start", type: "line", event: "click", interpreting: true, lookupActions, __, headAddress: address }).address
+  var address = addresser({ stack, id, status: "Start", type: "line", event: "click", interpreting: true, lookupActions, __, nextAddress: address }).address
 
   // main params
   toParam({ lookupActions, stack, id, e, address, data: string, __, mount: true })
@@ -1967,7 +1994,7 @@ const modifyEvent = ({ eventID, string, event }) => {
 
 module.exports = { addEventListener, defaultEventHandler, eventExecuter }
 
-},{"./addresser":2,"./clone":4,"./decode":13,"./generate":24,"./stack":58,"./toArray":63,"./toCode":67,"./toLine":72,"./toParam":75,"./watch":84}],19:[function(require,module,exports){
+},{"./addresser":2,"./clone":4,"./decode":13,"./generate":24,"./stack":57,"./toArray":62,"./toCode":66,"./toLine":71,"./toParam":74,"./watch":82}],19:[function(require,module,exports){
 module.exports=[
   "mouseenter", "mouseleave",  "mouseover", "mousemove", "mousedown", "mouseup", "touchstart", 
   "touchend", "touchmove", "touchcancel", "click", "change", "focus", "blur", "keypress", "keyup", 
@@ -2071,7 +2098,7 @@ module.exports = {
     }
 }
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./toArray":63,"./toAwait":64}],23:[function(require,module,exports){
+},{"./toArray":62,"./toAwait":63}],23:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var view = window.views[id]
@@ -2207,7 +2234,7 @@ const getType = (value) => {
   if (typeof value === "string") return "string"
 }
 module.exports = { getType }
-},{"./toValue":78}],29:[function(require,module,exports){
+},{"./toValue":77}],29:[function(require,module,exports){
 const nthParent = ({ _window, nth, o }) => {
 
   if (!o.__view__) return o
@@ -2274,7 +2301,7 @@ const { getDeepChildrenId } = require("./kernel")
 const { updateDataPath } = require("./remove")
 const { toCode } = require("./toCode")
 const { isNumber } = require("./toValue")
-const { update } = require("./update")
+const { update } = require("./toView")
 
 const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
@@ -2375,7 +2402,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 }
 
 module.exports = { insert }
-},{"./clone":4,"./decode":13,"./generate":24,"./kernel":39,"./remove":46,"./toCode":67,"./toValue":78,"./update":80}],31:[function(require,module,exports){
+},{"./clone":4,"./decode":13,"./generate":24,"./kernel":39,"./remove":46,"./toCode":66,"./toValue":77,"./toView":78}],31:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -2774,7 +2801,7 @@ const uploadJsonFile = ({ upload = {} }) => {
 }
 
 module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }
-},{"./toArray":63,"./toOperator":74,"fs":120}],38:[function(require,module,exports){
+},{"./toArray":62,"./toOperator":73,"fs":118}],38:[function(require,module,exports){
 const jsonToBracket = (object, field) => {
 
   if (!object) return ""
@@ -4753,7 +4780,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 var address;
                 ([...toArray(o)]).reverse().map(o => {
                     // address
-                    address = addresser({ _window, id, stack, headAddress: address, __: [o, ...__], lookupActions, data: { string: args[2] }, object }).address
+                    address = addresser({ _window, id, stack, nextAddress: address, __: [o, ...__], lookupActions, data: { string: args[2] }, object }).address
                 })
                 
                 // address
@@ -4765,7 +4792,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 var address;
                 ([...toArray(o)]).reverse().map(o => {
                     // address
-                    address = addresser({ _window, id, stack, headAddress: address, __, lookupActions, data: { string: args[2] }, object: o }).address
+                    address = addresser({ _window, id, stack, nextAddress: address, __, lookupActions, data: { string: args[2] }, object: o }).address
                 })
 
                 // address
@@ -5189,38 +5216,21 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             if (lang === "ar") range = range.map(num => num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
             answer = range
 
-        } else if (k0 === "render()") {
-
-            if (!o.__view__) return
-            
-            var { address, data } = addresser({ _window, stack, args, status: "Start", type: "function", interpreting: true, renderer: true, id: o.id, action: "render()", object, lookupActions, __, id })
-            
-            require('./render').render({ _window, req, res, id, stack, data })
-
-        } else if (k0 === "view()") {
-
-            if (!o.__view__) return
-            
-            var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "function", interpreting: true, renderer: true, id: o.id, action: "view()", object, lookupActions, __, id })
-            data.view = data.view || o
-            
-            require("./toView").toView({ _window, id: o.id, e, __, stack, address, lookupActions, data, req, res })
-
         } else if (k0 === "droplist()") {
 
-            var { address, data } = addresser({ _window, stack, args, id: o.id, status: "Start", action: "droplist()", object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, id: o.id, interpreting: true, status: "Start", action: "droplist()", object, lookupActions, __, id })
             require("./droplist").droplist({ id, e, data, __, stack, lookupActions, address })
 
         } else if (k0 === "route()") {
 
-            var { address, data } = addresser({ _window, stack, args, status: "Start", type: "action", asynchronous: true, id: o.id, action: "route()", object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", asynchronous: true, id: o.id, action: "route()", object, lookupActions, __, id })
             if (typeof data === "string") data = { route: data }
             
             require("./route").route({ _window, lookupActions, stack, address, id, req, res, data: { type: "route", route: { __: data.data !== undefined ? [data.data] : [] } }, __ })
 
         } else if (k0 === "root()") {
 
-            var { address, data } = addresser({ _window, stack, args, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id: o.id, action: "root()", object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id: o.id, action: "root()", object, lookupActions, __, id })
             if (typeof data === "string") data = { page: data }
             
             require("./root").root({ _window, lookupActions, stack, address, id, req, res, root: data, __ })
@@ -5229,16 +5239,16 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             if (!o.__view__) return o
 
-            var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "action", dataInterpretAction: "toValue", renderer: true, blockable: false, id: o.id, action: "update()", object, lookupActions, __, id })
-            require("./update").update({ _window, lookupActions, stack, req, res, id, address, __, data: { id: data.id || o.id, ...data } })
+            var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", renderer: true, blockable: false, id: o.id, action: "update()", object, lookupActions, __, id })
+            require("./toView").update({ _window, lookupActions, stack, req, res, id, address, __, data: { id: data.id || o.id, ...data } })
 
         } else if (k0 === "insert()") {
 
             if (!o.__view__) return o
 
             // wait address
-            var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "action", renderer: true, id: o.id, action: "insert()", lookupActions, __, id })
-            require("./insert").insert({ id, insert: { ...data, parent: o.id }, lookupActions, stack, address, __ })
+            var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", renderer: true, id: o.id, action: "insert()", lookupActions, __, id })
+            require("./insert").insert({ id, lookupActions, stack, address, __, insert: { ...data, parent: o.id } })
 
         } else if (k0 === "confirmEmail()") {
 
@@ -5602,7 +5612,7 @@ const toDataURL = url => fetch(url)
     }))
 
 module.exports = { kernel, getDeepChildren, getDeepChildrenId }
-},{"./addresser":2,"./capitalize":3,"./clone":4,"./colorize":6,"./cookie":7,"./counter":8,"./csvToJson":10,"./decode":13,"./droplist":16,"./erase":17,"./events.json":19,"./exportJson":21,"./fileReader":22,"./focus":23,"./generate":24,"./getCoords":25,"./getDateTime":26,"./getDaysInMonth":27,"./getType":28,"./getView":29,"./insert":30,"./isEqual":34,"./isParam":36,"./jsonToBracket":38,"./mail":41,"./merge":42,"./note":43,"./qr":44,"./reducer":45,"./remove":46,"./render":47,"./replaceNbsps":48,"./resize":49,"./root":50,"./route":51,"./save":52,"./search":53,"./searchParams":54,"./setPosition":56,"./sort":57,"./toAction":61,"./toApproval":62,"./toArray":63,"./toAwait":64,"./toCSV":65,"./toClock":66,"./toExcel":70,"./toLine":72,"./toNumber":73,"./toParam":75,"./toPdf":76,"./toSimplifiedDate":77,"./toValue":78,"./toView":79,"./update":80,"./upload":81,"./vcard":82}],40:[function(require,module,exports){
+},{"./addresser":2,"./capitalize":3,"./clone":4,"./colorize":6,"./cookie":7,"./counter":8,"./csvToJson":10,"./decode":13,"./droplist":16,"./erase":17,"./events.json":19,"./exportJson":21,"./fileReader":22,"./focus":23,"./generate":24,"./getCoords":25,"./getDateTime":26,"./getDaysInMonth":27,"./getType":28,"./getView":29,"./insert":30,"./isEqual":34,"./isParam":36,"./jsonToBracket":38,"./mail":41,"./merge":42,"./note":43,"./qr":44,"./reducer":45,"./remove":46,"./replaceNbsps":47,"./resize":48,"./root":49,"./route":50,"./save":51,"./search":52,"./searchParams":53,"./setPosition":55,"./sort":56,"./toAction":60,"./toApproval":61,"./toArray":62,"./toAwait":63,"./toCSV":64,"./toClock":65,"./toExcel":69,"./toLine":71,"./toNumber":72,"./toParam":74,"./toPdf":75,"./toSimplifiedDate":76,"./toValue":77,"./toView":78,"./upload":79,"./vcard":80}],40:[function(require,module,exports){
 const logger = ({ _window: { global }, data: { key, start, end } }) => {
     
     if (!key) return
@@ -5671,7 +5681,7 @@ module.exports = {
         if (params.asyncer) require("./toAwait").toAwait({ _window, id, ...params, req, res, __, _: global.mail })
     }
 }
-},{"./toArray":63,"./toAwait":64}],42:[function(require,module,exports){
+},{"./toArray":62,"./toAwait":63}],42:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
@@ -5742,7 +5752,7 @@ const override = (obj1, obj2) => { // (old, new)
 
 module.exports = { merge, override }
 
-},{"./clone":4,"./toArray":63}],43:[function(require,module,exports){
+},{"./clone":4,"./toArray":62}],43:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const note = ({ note: data }) => {
@@ -5814,7 +5824,7 @@ const wifiQrText = ({ data }) => {
 }
 
 module.exports = { qr }
-},{"./toAwait":64,"easyqrcodejs":125,"qrcode":131}],45:[function(require,module,exports){
+},{"./toAwait":63,"easyqrcodejs":121,"qrcode":126}],45:[function(require,module,exports){
 const { isParam } = require("./isParam")
 const { addresser } = require("./addresser")
 const { toLine } = require("./toLine")
@@ -6054,7 +6064,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
 }
 
 module.exports = { reducer }
-},{"./addresser":2,"./clone":4,"./decode":13,"./isCalc":32,"./isParam":36,"./kernel":39,"./merge":42,"./toAction":61,"./toApproval":62,"./toAwait":64,"./toLine":72,"./toParam":75,"./toValue":78}],46:[function(require,module,exports){
+},{"./addresser":2,"./clone":4,"./decode":13,"./isCalc":32,"./isParam":36,"./kernel":39,"./merge":42,"./toAction":60,"./toApproval":61,"./toAwait":63,"./toLine":71,"./toParam":74,"./toValue":77}],46:[function(require,module,exports){
 const { removeView } = require("./view")
 const { clone } = require("./clone")
 const { closePublicViews } = require("./closePublicViews")
@@ -6121,185 +6131,7 @@ const updateDataPath = ({ id, index, decrement, increment }) => {
 
 module.exports = { remove, updateDataPath }
 
-},{"./clone":4,"./closePublicViews":5,"./toLine":72,"./toValue":78,"./view":83}],47:[function(require,module,exports){
-const { toView } = require("./toView");
-const { addresser } = require("./addresser");
-const { logger } = require("./logger");
-const { toAwait } = require("./toAwait");
-const { getData } = require("./database");
-const cssStyleKeyNames = require("./cssStyleKeyNames")
-
-require("dotenv").config();
-
-const render = async ({ _window, id, req, res, stack, address, lookupAction, data }) => {
-
-    const global = _window.global
-    var __ = global.__
-
-    // get route view from database
-    if (data.view === "route") {
-
-        // views
-        var { data: view } = await getData({ _window, req, res, search: { collection: "view", doc: "route" } })
-        global.data.view[view.id] = view
-    }
-    
-    // view does not exist
-    if (!data.view || !global.data.view[data.view]) return res.end("Page not found!")
-
-    // view
-    var view = global.data.view[data.view]
-
-    // log start render
-    if (data.view === "route") {
-
-        logger({ _window, data: { key: "render", start: true } })
-
-        // address: log end render
-        address = addresser({ _window, id, type: "function", file: "logger", function: "logger", headAddress: address, stack, __, data: { key: "render", end: true } }).address
-
-        view = { ...view, __customView__: "route", __viewPath__: ["route"], __customViewPath__: ["route"], __lookupViewActions__: [{ type: "customView", view: "route" }] }
-    }
-    
-    // address: start toView
-    address = addresser({ _window, id, type: "function", status: "Start", function: "toView", headAddress: address, stack, renderer: true, __ }).address
-
-    toView({ _window, req, res, stack, __, address, lookupAction, data: { view, parent: data.parent } })
-}
-
-const document = async ({ _window, res, stack, address, __ }) => {
-
-    var { global, views } = _window
-    var page = global.manifest.page
-    var view = views[global.manifest.page] || {}
-
-    // head tags
-    var language = global.language = view.language || view.lang || "en"
-    var direction = view.direction || view.dir || (language === "ar" || language === "fa" ? "rtl" : "ltr")
-    var title = view.title || "Bracket App Title"
-
-    // favicon
-    var favicon = views.document.favicon && views.document.favicon.url
-    var faviconType = favicon && views.document.favicon.type
-
-    // meta
-    view.meta = view.meta || {}
-    var metaHTTPEquiv = view.meta["http-equiv"] || view.meta["httpEquiv"] || {}
-    if (typeof metaHTTPEquiv !== "object") metaHTTPEquiv = {}
-    if (!metaHTTPEquiv["content-type"]) metaHTTPEquiv["content-type"] = "text/html; charset=UTF-8"
-    var metaKeywords = view.meta.keywords || ""
-    var metaDescription = view.meta.description || ""
-    var metaTitle = view.meta.title || view.title || ""
-    var metaViewport = view.meta.viewport || ""
-
-    delete global.data.project
-
-    // logs
-    global.__server__.logs = stack.logs
-
-    logger({ _window, data: { key: "document", end: true } })
-
-    toAwait({ _window, stack, address, __ })
-
-    // clear secure view actions
-    Object.values(global.data.view).map(view => {
-        if (view._secure_) {
-            view.view = ""
-            view.children = []
-            clearActions(view.functions)
-        }
-    })
-    
-    res.end(
-        `<!DOCTYPE html>
-        <html lang="${language}" dir="${direction}" class="html">
-            <head>
-                <!-- css -->
-                <link rel="stylesheet" href="/route/resource/index.css"/>
-                ${views.document.stylesheet ? `
-                    <style>
-                    ${Object.entries(views.document.stylesheet).map(([key, value]) => typeof value === "object" && !Array.isArray(value)
-                    ? `${key}{
-                        ${Object.entries(value).map(([key, value]) => `${cssStyleKeyNames[key] || key}: ${value.toString().replace(/\\/g, '')}`).join(`;
-                        `)};
-                    }` : "").filter(style => style).join(`
-                    `)}
-                    </style>` : ""}
-                
-                <!-- Font -->
-                <link rel="preconnect" href="https://fonts.googleapis.com">
-                <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap">
-                <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400&display=swap">
-                
-                <!-- title -->
-                <title>${title}</title>
-                
-                <!-- meta -->
-                ${metaHTTPEquiv ? Object.entries(metaHTTPEquiv).map(([key, value]) => `<meta http-equiv="${key}" content="${value}">
-                `) : ""}
-                <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-                <meta name="viewport" content= "width=device-width, initial-scale=1.0">
-                ${metaViewport ? `<meta name="viewport" content="${metaViewport}">` : ""}
-                ${metaKeywords ? `<meta name="keywords" content="${metaKeywords}">` : ""}
-                ${metaDescription ? `<meta name="description" content="${metaDescription}">` : ""}
-                ${metaTitle ? `<meta name="title" content="${metaTitle}">` : ""}
-                
-                <!-- favicon -->
-                ${favicon ? `<link rel="icon" type="image/${faviconType || "x-icon"}" href="${favicon}"/>` : `<link rel="icon" href="data:,">`}
-                
-                <!-- views & global -->
-                <script id="views" type="application/json">${JSON.stringify(views)}</script>
-                <script id="global" type="application/json">${JSON.stringify(global)}</script>
-                
-                <!-- head tags -->
-                ${(views.document.links || []).map(link => !link.body ? `<link ${link.rel ? `rel="${link.rel}"` : ""} ${link.type ? `type="${link.type}"` : ""} href="${link.href}" />` : "").join("")}
-
-            </head>
-            <body>
-                <!-- body tags -->
-                ${(views.document.links || []).map(link => link.body ? `<link ${link.rel ? `rel="${link.rel}"` : ""} ${link.type ? `type="${link.type}"` : ""} href="${link.href}" />` : "").join("")}
-
-                <!-- html -->
-                ${views.body.__html__ || ""}
-
-                <!-- engine -->
-                <script src="/route/resource/engine.js"></script>
-
-                <!-- google icons -->
-                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"/>
-                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded"/>
-                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Sharp"/>
-                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
-                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"/>
-                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/>
-                <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"/>
-                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-
-                <!-- html2pdf -->
-                <script src="https://cdn.jsdelivr.net/npm/js-html2pdf@1.1.4/lib/html2pdf.min.js"></script>
-            </body>
-        </html>`
-    )
-}
-
-const clearActions = (data) => {
-    if (typeof data !== "object") return
-    Object.entries(data || {}).map(([action, mapAction]) => {
-        if (typeof mapAction === "object") return clearActions(mapAction)
-        data[action] = ""
-    })
-}
-
-module.exports = { render, document, clearActions }
-
-/* 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.bundle.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.8.0/html2pdf.min.js"></script>
-*/
-},{"./addresser":2,"./cssStyleKeyNames":9,"./database":12,"./logger":40,"./toAwait":64,"./toView":79,"dotenv":123}],48:[function(require,module,exports){
+},{"./clone":4,"./closePublicViews":5,"./toLine":71,"./toValue":77,"./view":81}],47:[function(require,module,exports){
 const replaceNbsps = (str) => {
   if (typeof str !== "string") return str
     var re = new RegExp(String.fromCharCode(160), "g");
@@ -6307,7 +6139,7 @@ const replaceNbsps = (str) => {
   }
 
   module.exports = { replaceNbsps }
-},{}],49:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -6410,9 +6242,9 @@ var lengthConverter = (length) => {
 
 module.exports = {resize, dimensions, lengthConverter}
 
-},{}],50:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 const { clone } = require("./clone")
-const { update } = require("./update")
+const { update } = require("./toView")
 
 module.exports = {
   root: ({ id, _window, root = {}, stack, lookupActions, address, req, res, __ }) => {
@@ -6444,7 +6276,7 @@ module.exports = {
     update({ _window, id, req, res, stack, lookupActions, address, data: { root, id: "root", action: "ROOT" }, __ })
   }
 }
-},{"./clone":4,"./update":80}],51:[function(require,module,exports){
+},{"./clone":4,"./toView":78}],50:[function(require,module,exports){
 const route = async ({ _window, lookupActions, stack, address, id, req, __, res, e, data: { type, route = {} } }) => {
 
   // headers
@@ -6458,7 +6290,7 @@ const route = async ({ _window, lookupActions, stack, address, id, req, __, res,
 }
 
 module.exports = { route }
-},{"./toAwait":64,"axios":90}],52:[function(require,module,exports){
+},{"./toAwait":63,"axios":88}],51:[function(require,module,exports){
 const axios = require('axios')
 const { postData } = require('./database')
 
@@ -6487,7 +6319,7 @@ module.exports = {
     require("./toAwait").toAwait({ _window, lookupActions, stack, id, address, e, req, res, _: data, __ })
   }
 }
-},{"./database":12,"./toAwait":64,"axios":90}],53:[function(require,module,exports){
+},{"./database":12,"./toAwait":63,"axios":88}],52:[function(require,module,exports){
 module.exports = {
   search: async ({ _window, lookupActions, stack, id, req, res, e, __, data: search = {}, address }) => {
     
@@ -6511,7 +6343,7 @@ module.exports = {
     require("./toAwait").toAwait({ _window, lookupActions, stack, id, e, address, req, res, _: data, __ })
   }
 }
-},{"./database":12,"./toAwait":64,"axios":90}],54:[function(require,module,exports){
+},{"./database":12,"./toAwait":63,"axios":88}],53:[function(require,module,exports){
 const { decode } = require("./decode")
 const { toLine } = require("./toLine")
 const { toCode } = require("./toCode")
@@ -6576,7 +6408,7 @@ const searchParams = ({ _window, lookupActions, stack, req, res, id, e, __, stri
 }
 
 module.exports = { searchParams }
-},{"./decode":13,"./toCode":67,"./toLine":72}],55:[function(require,module,exports){
+},{"./decode":13,"./toCode":66,"./toLine":71}],54:[function(require,module,exports){
 const {clone} = require("./clone")
 const { kernel } = require("./kernel")
 
@@ -6612,7 +6444,7 @@ const setData = ({ id, data, __, stack = {} }) => {
 
 module.exports = { setData }
 
-},{"./clone":4,"./kernel":39}],56:[function(require,module,exports){
+},{"./clone":4,"./kernel":39}],55:[function(require,module,exports){
 const setPosition = ({ position = {}, id, e }) => {
 
   const views = window.views
@@ -6791,7 +6623,7 @@ const setPosition = ({ position = {}, id, e }) => {
 
 module.exports = {setPosition}
 
-},{}],57:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 (function (global){(function (){
 const { reducer } = require("./reducer")
 const { toArray } = require("./toArray")
@@ -6894,12 +6726,12 @@ const sort = ({ _window, sort = {}, id, e, lookupActions, __, stack }) => {
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./reducer":45,"./toArray":63,"./toCode":67}],58:[function(require,module,exports){
+},{"./reducer":45,"./toArray":62,"./toCode":66}],57:[function(require,module,exports){
 const { decode } = require("./decode")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const openStack = ({ _window, id: viewID, string = "", headAddress, headStack, ...data }) => {
+const openStack = ({ _window, id: viewID, string = "", nextAddress, headStack, ...data }) => {
 
   var stack = {
     ...data,
@@ -6912,7 +6744,7 @@ const openStack = ({ _window, id: viewID, string = "", headAddress, headStack, .
     interpreting: true,
     string: string ? decode({ _window, string }) : "",
     executionStartTime: (new Date()).getTime(),
-    addresses: toArray(headAddress),
+    addresses: toArray(nextAddress),
     logs: [],
     returns: []
   }
@@ -6953,7 +6785,7 @@ const endStack = ({ _window, stack, end }) => {
 }
 
 module.exports = { openStack, clearStack, endStack }
-},{"./decode":13,"./generate":24,"./toArray":63}],59:[function(require,module,exports){
+},{"./decode":13,"./generate":24,"./toArray":62}],58:[function(require,module,exports){
 const { defaultInputHandler } = require("./defaultInputHandler")
 const { addEventListener } = require("./event")
 const { toArray } = require("./toArray")
@@ -6990,7 +6822,7 @@ const starter = ({ lookupActions, stack, __, address, id }) => {
 }
 
 module.exports = { starter }
-},{"../event/event":86,"./defaultInputHandler":15,"./event":18,"./toArray":63}],60:[function(require,module,exports){
+},{"../event/event":84,"./defaultInputHandler":15,"./event":18,"./toArray":62}],59:[function(require,module,exports){
 (function (Buffer){(function (){
 const fs = require("fs")
 const { generate } = require("./generate")
@@ -7095,7 +6927,7 @@ const deleteFile = async ({ req, res }) => {
 
 module.exports = { storeFile, deleteFile, storage }
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./generate":24,"./toArray":63,"buffer":121,"fs":120}],61:[function(require,module,exports){
+},{"./generate":24,"./toArray":62,"buffer":119,"fs":118}],60:[function(require,module,exports){
 const { clone } = require("./clone")
 const { toArray } = require("./toArray")
 const { addresser } = require("./addresser")
@@ -7245,7 +7077,7 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
 }
 
 module.exports = { toAction }
-},{"./actions.json":1,"./addresser":2,"./clone":4,"./route":51,"./toArray":63,"./toAwait":64}],62:[function(require,module,exports){
+},{"./actions.json":1,"./addresser":2,"./clone":4,"./route":50,"./toArray":62,"./toAwait":63}],61:[function(require,module,exports){
 const { decode } = require("./decode")
 const { isEqual } = require("./isEqual")
 
@@ -7369,29 +7201,28 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
 
 module.exports = { toApproval }
 
-},{"./decode":13,"./isEqual":34,"./toAction":61,"./toValue":78}],63:[function(require,module,exports){
+},{"./decode":13,"./isEqual":34,"./toAction":60,"./toValue":77}],62:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? data : [data]) : [];
 }
 
 module.exports = {toArray}
 
-},{}],64:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 const { printAddress } = require("./addresser")
 const { clone } = require("./clone")
 const { toLine } = require("./toLine")
 const { endStack } = require("./stack")
+const { logger } = require("./logger")
 
 const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, stack, id, e, _, __, action }) => {
 
-  require("./toView")
-  require("./reducer")
-  require("./update")
+  const { toView, toHTML, documenter, update } = require("./toView")
 
   const global = _window ? _window.global : window.global
 
   if (addressID && !address.id) address = stack.addresses.find(address => address.id === addressID)
-  if (!address.id || stack.terminated || address.hold || address.starter) return
+  if (!address.id || stack.terminated || address.hold || address.starter || address.end) return
 
   // params
   address.params = address.params || {}
@@ -7403,36 +7234,47 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
   if (stack.blocked && !address.blocked) stack.blocked = false
 
   // address
-  var headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
+  var nextAddress = stack.addresses.find(nextAddress => nextAddress.id === address.nextAddressID) || {}
 
-  if (address.blocked || address.status === "Start" || address.status === "End") {
+  if (address.blocked || address.status === "Start") {
 
     address.status = address.blocked ? "Block" : "End"
+    address.end = true
     address.interpreting = false
-    printAddress({ stack, address, headAddress })
+    printAddress({ stack, address, nextAddress })
 
-    // get await index for splicing
+    // remove address
     var index = stack.addresses.findIndex(waitingAddress => waitingAddress.id === address.id)
     if (index !== -1) stack.addresses.splice(index, 1)
 
     // pass underscores to waits
-    if (address.hasWaits && headAddress.params) headAddress.params.__ = my__
+    if (address.hasWaits && nextAddress.params) nextAddress.params.__ = my__
+
+    // logger
+    if (address.logger && address.logger.end) logger({ _window, data: { key: address.logger.key, end: true } })
 
   } else if (address.status === "Wait") {
 
     address.status = "Start"
     address.interpreting = true
-    printAddress({ stack, address, headAddress })
+    printAddress({ stack, address, nextAddress })
 
     stack.interpretingAddressID = address.id
+
+    // logger
+    if (address.logger && address.logger.start) logger({ _window, data: { key: address.logger.key, start: true } })
 
     if (address.function) {
 
       var func = address.function || "toLine"
       var file = address.file || func
+      var data = { _window, lookupActions, stack, id, e, req, res, address, nextAddress, ...(address.params || {}), data: address.data, __: my__, action }
 
-      require(`./${file}`)[func]({ _window, lookupActions, stack, id, e, req, res, address, headAddress, ...(address.params || {}), data: address.data, __: my__, action })
-
+      if (func === "toView") toView(data)
+      else if (func === "toHTML") toHTML(data)
+      else if (func === "update") update(data)
+      else if (func === "documenter") documenter(data)
+      
       address.interpreting = false
 
       return !address.asynchronous && toAwait({ _window, lookupActions, stack, address, id, e, req, res, __: my__, action })
@@ -7442,15 +7284,15 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
 
   if (stack.terminated) return
 
-  // asynchronous unholds headAddresses
-  if (address.headAddressID && !headAddress.interpreting && (headAddress.stackID || headAddress.hold || headAddress.status === "Wait")) {
+  // asynchronous unholds nextAddresses
+  if (address.nextAddressID && !nextAddress.interpreting && (nextAddress.stackID || nextAddress.hold || nextAddress.status === "Wait")) {
 
-    var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.headAddressID === address.headAddressID)
+    var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.nextAddressID === address.nextAddressID)
+    
+    if (otherWaiting === -1 || (otherWaiting > -1 && !stack.addresses.find(waitingAddress => waitingAddress.nextAddressID === address.nextAddressID && !address.blocked))) {
 
-    if (otherWaiting === -1 || (otherWaiting > -1 && !stack.addresses.find(waitingAddress => waitingAddress.headAddressID === address.headAddressID && !address.blocked))) {
-
-      headAddress.hold = false
-      return toAwait({ _window, lookupActions, stack, address: headAddress, id, e, req, res, __, action })
+      nextAddress.hold = false
+      return toAwait({ _window, lookupActions, stack, address: nextAddress, id, req, res, __, action, e })
     }
   }
 
@@ -7461,7 +7303,7 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
 }
 
 module.exports = { toAwait }
-},{"./addresser":2,"./clone":4,"./reducer":45,"./stack":58,"./toLine":72,"./toView":79,"./update":80}],65:[function(require,module,exports){
+},{"./addresser":2,"./clone":4,"./logger":40,"./stack":57,"./toLine":71,"./toView":78}],64:[function(require,module,exports){
 module.exports = {
     toCSV: (file = {}) => {
 
@@ -7536,7 +7378,7 @@ module.exports = {
         }
     }
 }
-},{}],66:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 module.exports = {
     toClock: ({ timestamp, day, hr, min, sec }) => {
 
@@ -7557,7 +7399,7 @@ module.exports = {
         return (day ? days_ + ":" : "") + (hr ? hrs_ + ":" : "") + (min ? mins_ : "") + (sec ? ":" + secs_ : "")
     }
 }
-},{}],67:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 const { generate } = require("./generate")
 const { replaceNbsps } = require("./replaceNbsps")
 
@@ -7618,7 +7460,7 @@ const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) =
 }
 
 module.exports = { toCode }
-},{"./generate":24,"./replaceNbsps":48}],68:[function(require,module,exports){
+},{"./generate":24,"./replaceNbsps":47}],67:[function(require,module,exports){
 const {generate} = require("./generate")
 const {toArray} = require("./toArray")
 
@@ -7650,7 +7492,7 @@ const toComponent = (obj) => {
 
 module.exports = {toComponent}
 
-},{"./generate":24,"./toArray":63}],69:[function(require,module,exports){
+},{"./generate":24,"./toArray":62}],68:[function(require,module,exports){
 const { toArray } = require("./toArray")
 
 const toEvent = ({ _window, id, string, __, lookupActions }) => {
@@ -7662,7 +7504,7 @@ const toEvent = ({ _window, id, string, __, lookupActions }) => {
 }
 
 module.exports = { toEvent }
-},{"./toArray":63}],70:[function(require,module,exports){
+},{"./toArray":62}],69:[function(require,module,exports){
 // const XLSX = require("xlsx")
 
 module.exports = {
@@ -7687,7 +7529,7 @@ module.exports = {
         XLSX.writeFile(myWorkBook, myFile)
     }
 }
-},{}],71:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 module.exports = {
     toFirebaseOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -7702,7 +7544,7 @@ module.exports = {
         else return string
     }
 }
-},{}],72:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 const { toCode } = require("./toCode")
 const { generate } = require("./generate")
 const { isCondition } = require("./isCondition")
@@ -7853,7 +7695,7 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
 }
 
 module.exports = { toLine }
-},{"./clone":4,"./executable":20,"./generate":24,"./isCondition":33,"./isEvent":35,"./isParam":36,"./toApproval":62,"./toAwait":64,"./toCode":67,"./toEvent":69,"./toParam":75,"./toValue":78}],73:[function(require,module,exports){
+},{"./clone":4,"./executable":20,"./generate":24,"./isCondition":33,"./isEvent":35,"./isParam":36,"./toApproval":61,"./toAwait":63,"./toCode":66,"./toEvent":68,"./toParam":74,"./toValue":77}],72:[function(require,module,exports){
 const { isNumber } = require("./toValue")
 const toNumber = (string) => {
 
@@ -7865,7 +7707,7 @@ const toNumber = (string) => {
 
 module.exports = { toNumber }
 
-},{"./toValue":78}],74:[function(require,module,exports){
+},{"./toValue":77}],73:[function(require,module,exports){
 module.exports = {
     toOperator: (string) => {
         if (!string || string === 'equal' || string === 'eq') return '=='
@@ -7882,7 +7724,7 @@ module.exports = {
 }
 
 // in, notin, 
-},{}],75:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 const { toValue } = require("./toValue")
 const { reducer } = require("./reducer")
 const { generate } = require("./generate")
@@ -8147,7 +7989,7 @@ const sleep = (milliseconds) => {
 }
 
 module.exports = { toParam }
-},{"./clone":4,"./decode":13,"./generate":24,"./isCondition":33,"./isEvent":35,"./kernel":39,"./merge":42,"./reducer":45,"./replaceNbsps":48,"./toAction":61,"./toApproval":62,"./toCode":67,"./toEvent":69,"./toLine":72,"./toValue":78}],76:[function(require,module,exports){
+},{"./clone":4,"./decode":13,"./generate":24,"./isCondition":33,"./isEvent":35,"./kernel":39,"./merge":42,"./reducer":45,"./replaceNbsps":47,"./toAction":60,"./toApproval":61,"./toCode":66,"./toEvent":68,"./toLine":71,"./toValue":77}],75:[function(require,module,exports){
 module.exports = {
     toPdf: async (options) => {
 
@@ -8176,7 +8018,7 @@ module.exports = {
         }
     }
 }
-},{}],77:[function(require,module,exports){
+},{}],76:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -8224,7 +8066,7 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],78:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 const { decode } = require("./decode");
 const { executable } = require("./executable");
 const { generate } = require("./generate")
@@ -8561,7 +8403,7 @@ const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res,
 
 module.exports = { toValue, calcSubs, calcDivision, calcModulo, emptySpaces, isNumber }
 
-},{"./decode":13,"./executable":20,"./generate":24,"./isParam":36,"./reducer":45,"./toLine":72,"./toParam":75}],79:[function(require,module,exports){
+},{"./decode":13,"./executable":20,"./generate":24,"./isParam":36,"./reducer":45,"./toLine":71,"./toParam":74}],78:[function(require,module,exports){
 const { generate } = require("./generate")
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
@@ -8579,25 +8421,27 @@ const { executable } = require("./executable")
 const { logger } = require("./logger")
 const { replaceNbsps } = require("./replaceNbsps")
 const { colorize } = require("./colorize")
-const builtInViews = require("../view/views")
 const { getJsonFiles } = require("./jsonFiles")
-const cssStyleKeyNames = require("./cssStyleKeyNames")
 const { toParam } = require("./toParam")
-const { endStack } = require("./stack")
+const { closePublicViews } = require("./closePublicViews")
+const { starter } = require("./starter")
+const cssStyleKeyNames = require("./cssStyleKeyNames")
+const Input = require("../view/Input")
 
 const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data = {} }) => {
 
   const views = _window ? _window.views : window.views
   const global = _window ? _window.global : window.global
-  var view = data.view
+  var view = data.view || views[id]
 
+  // interpret view
   if (!view.__interpreted__) {
 
     // init view
     var details = initView({ views, global, id, parent: data.parent, ...(data.view || {}), __ })
     view = details.view
     id = details.id
-
+    
     // no view
     if (!view.view) return removeView({ _window, lookupActions, stack, id, address, __ })
 
@@ -8626,7 +8470,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
       subParams = ""
     }
 
-    // loop over view
+    // loop
     var loop = view.__name__.charAt(0) === "@" && view.__name__.length == 6
 
     // view name
@@ -8645,16 +8489,14 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
     // interpret subparams
     if (subParams) {
 
-      address.interpreting = true
       var { data = {}, conditionsNotApplied } = toLine({ _window, lookupActions, stack, id, data: { string: subParams }, req, res, __ })
-      address.interpreting = false
-
       if (conditionsNotApplied) return removeView({ _window, id, stack, address })
       else subParams = data
     }
 
     // [View]
     if (loop) return loopOverView({ _window, id, stack, lookupActions, __, address, data: subParams || {}, req, res })
+
 
     // subparam is params or id
     if (typeof subParams === "object") {
@@ -8677,13 +8519,11 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
     // conditions
     var approved = toApproval({ _window, lookupActions, stack, data: conditions, id, req, res, __ })
     if (!approved) return removeView({ _window, id, stack, address })
-
+    
     // params
     if (params) {
-
-      address.interpreting = true
+      
       toParam({ _window, lookupActions, stack, data: params, id, req, res, mount: true, __ })
-      address.interpreting = false
 
       if (view.id !== id) {
 
@@ -8692,7 +8532,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
         id = view.id
       }
     }
-
+    
     // data
     view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, data: global[view.doc] || {}, value: view.data, key: true }, __ })
 
@@ -8704,36 +8544,34 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
     // set interpreted
     view.__interpreted__ = true
-
+    
     // maybe update in params or root
-    if (address.blocked) return
-
+    if (address.blocked) return// toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
+    
     // asynchronous actions within view params
-    if (stack.addresses[0].asynchronous) {
-
-      var headAddress = addresser({ _window, id, stack, headAddressID: address.headAddressID, type: "function", function: "toView", __, lookupActions, stack, data: { view } }).address
-      return address.headAddressID = headAddress.id
-    }
+    if (address.hold) return addresser({ _window, id, stack, switchWithAddress: address, type: "function", function: "toView", __, lookupActions, stack, data: { view } })
   }
 
   // custom View
   if (global.data.views.includes(view.__name__)) {
 
-    view.__interpreted__ = false
-
     // query custom view
     if (!global.__queries__.views.includes(view.__name__) && !global.data.view[view.__name__]) {
-
-      address = addresser({ _window, id, stack, headAddress: address, type: "function", function: "customView", file: "toView", __, lookupActions, stack }).address
-      var { address, data } = addresser({ _window, id, stack, headAddress: address, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${view.__name__}`, waits: `loader.hide;__queries__:().views.push():[${view.__name__}];data:().view.${view.__name__}=_.data`, __, lookupActions, stack })
+      
+      address.interpreting = false
+      address.status = "Wait"
+      address.data = { view }
+      
+      var { address, data } = addresser({ _window, id, stack, nextAddress: address, __, lookupActions, stack, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${view.__name__}`, waits: `loader.hide;__queries__:().views.push():[${view.__name__}];data:().view.${view.__name__}=_.data` })
       return require("./search").search({ _window, lookupActions, stack, address, id, __, req, res, data })
     }
 
     // continue to custom view
     else {
-
+      
       var newView = {
         ...global.data.view[view.__name__],
+        __interpreted__: false,
         __customView__: view.__name__,
         __viewPath__: [view.__name__],
         __customViewPath__: [...view.__customViewPath__, view.__name__],
@@ -8750,69 +8588,54 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
       var data = getViewParams({ view })
 
+      // document
+      if (view.__name__ === "document") {
+
+        // log start document
+        logger({ _window, data: { key: "documenter", start: true } })
+
+        // address: document
+        address = addresser({ _window, id: child.id, nextAddress: address, type: "function", file: "toView", function: "documenter", stack, __, logger: { key: "documenter", end: true } }).address
+
+        // get shared public views
+        Object.entries(getJsonFiles({ search: { collection: "public/view" } })).map(([doc, data]) => {
+
+          global.data.view[doc] = { ...data, id: doc }
+          global.data.views.push(doc)
+          global.__queries__.views.push(doc)
+        })
+
+        address = addresser({ _window, stack, status: "Start", type: "function", function: "toView", nextAddress: address, lookupActions, __ }).address
+      }
+      
       // address
       return toView({ _window, stack, address, req, res, lookupActions, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
     }
   }
+  
+  // render children
+  if (view.children.length > 0) {
 
-  // address toHTML
-  address = addresser({ _window, id, stack, headAddress: address, blocked: view.__name__ === "Action", type: "function", function: "toHTML", file: "toView", __, lookupActions, stack }).address
+    // html address
+    address = addresser({ _window, id, stack, type: "function", function: "toHTML", file: "toView", __, lookupActions, nextAddress: address }).address
 
-  // 
-  var lastIndex = view.children.length - 1;
+    var lastIndex = view.children.length - 1;
 
-  [...view.children].reverse().map(async (child, index) => {
+    // address children
+    [...view.children].reverse().map((child, index) => {
 
-    var childID = child.id || generate()
-    views[childID] = { ...child, id: childID, __view__: true, __parent__: id, __viewPath__: [...view.__viewPath__, "children", lastIndex - index], __childIndex__: lastIndex - index }
+      var childID = child.id || generate()
+      views[childID] = { ...child, id: childID, __view__: true, __parent__: id, __viewPath__: [...view.__viewPath__, "children", lastIndex - index], __childIndex__: lastIndex - index }
 
-    // address
-    address = addresser({ _window, id: childID, stack, type: "function", function: "toView", headAddress: address, __, lookupActions, data: { view: views[childID] } }).address
-  })
-
-  delete view.view
-  delete view.children
-  delete view.functions
+      // address
+      address = addresser({ _window, index, id: childID, stack, type: "function", function: "toView", __, lookupActions, nextAddress: address, data: { view: views[childID] } }).address
+    
+    })//.reverse().map(address => !address.hold && toView({ _window, lookupActions, stack, id, req, res, address, ...(address.params || {}), data: address.data, __ }))
+  
+  } else toHTML({ _window, id, stack, __ })
 
   // address
-  address.status = "Start"
-  address.interpreting = true
-  printAddress({ stack, address, headAddress })
-
-  stack.interpretingAddressID = address.id
-
-  if (address.function === "toHTML") toHTML({ _window, lookupActions, stack, id, req, res, address, ...(address.params || {}), data: address.data, __ })
-  else if (address.function === "toView") toView({ _window, lookupActions, stack, id, req, res, address, ...(address.params || {}), data: address.data, __ })
-
-  address.interpreting = false
-
-  if (!address.asynchronous) {
-
-    if (!address.id || stack.terminated || address.hold || address.starter) return
-    if (stack.blocked && !address.blocked) stack.blocked = false
-
-    var headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
-
-    if (address.blocked || address.status === "Start" || address.status === "End") {
-
-      address.status = address.blocked ? "Block" : "End"
-      printAddress({ stack, address, headAddress })
-
-      // get await index for splicing
-      stack.addresses.splice(address.index, 1)
-    }
-
-    if (address.headAddressID && !headAddress.interpreting && (headAddress.stackID || headAddress.hold || headAddress.status === "Wait")) {
-
-      var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.headAddressID === address.headAddressID)
-
-      if (otherWaiting === -1 || (otherWaiting > -1 && !stack.addresses.find(waitingAddress => waitingAddress.headAddressID === address.headAddressID && !address.blocked))) {
-
-        headAddress.hold = false
-        return toAwait({ _window, lookupActions, stack, address: headAddress, id, req, res, __ })
-      }
-    }
-  }
+  toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
 }
 
 const sortAndArrange = ({ data, sort, arrange }) => {
@@ -8916,9 +8739,6 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
   const views = _window ? _window.views : window.views
   var view = views[id]
 
-  var timer = (new Date()).getTime(), loopID = generate()
-  stack.logs.push([stack.logs.length, "LOOP start", loopID, JSON.stringify(data)].join(" "));
-
   // mount
   if (!data.preventDefault && (data.doc || data.path)) data.mount = true
 
@@ -8956,10 +8776,11 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
 
   var values = keys ? data : toArray(data), address = {}
   if (keys && !Array.isArray(data)) loopData = sortAndArrange({ data: loopData, sort: myparams.sort, arrange: myparams.arrange })
+
   var lastIndex = loopData.length - 1;
 
   // view
-  ([...loopData]).reverse().map(async (key, index) => {
+  [...loopData].reverse().map((key, index) => {
 
     view.__looped__ = true
     index = lastIndex - index
@@ -8970,65 +8791,12 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
 
     views[params.id] = { __view__: true, __loop__: true, __mount__: mount, ...clone(view), ...myparams, ...params }
 
-    address = addresser({ _window, id: params.id, stack, type: "function", function: "toView", renderer: true, blockable: false, __: [values[key], ...__], lookupActions, data: { view: views[params.id] } }).address
-  })
+    address = addresser({ _window, id: params.id, stack, nextAddress: address, type: "function", function: "toView", renderer: true, blockable: false, __: [values[key], ...__], lookupActions, data: { view: views[params.id] } }).address
 
-  // 
-  removeView({ _window, id, stack });
+  })//.reverse().map(address => !stack.addresses[0].asynchronous && toView({ _window, lookupActions, stack, req, res, address, ...(address.params || {}), data: address.data, __ }))
 
-  // awaits
-  toAwait({ _window, id: address.viewID, lookupActions, stack, address, __, req, res })
-
-  // log loop
-  stack.logs.push([stack.logs.length, "LOOP end", (new Date()).getTime() - timer, loopID].join(" "));
-}
-
-const customView = ({ _window, id, lookupActions, stack, __, address, req, res }) => {
-
-  const global = _window ? _window.global : window.global
-  const views = _window ? _window.views : window.views
-  var view = views[id]
-
-  var newView = {
-    ...global.data.view[view.__name__],
-    __customView__: view.__name__,
-    __viewPath__: [view.__name__],
-    __customViewPath__: [...view.__customViewPath__, view.__name__],
-    __lookupViewActions__: [...view.__lookupViewActions__, { type: "customView", view: view.__name__ }]
-  }
-
-  // id
-  if (newView.id && views[newView.id] && newView.id !== id) newView.id += "_" + generate()
-  else if (newView.id) newView.__customID__ = true
-  else if (!newView.id) newView.id = id
-
-  var child = { ...view, ...newView }
-  views[child.id] = child
-
-  var data = getViewParams({ view })
-
-  // document
-  if (view.__name__ === "document") {
-
-    // log start document
-    logger({ _window, data: { key: "document", start: true } })
-
-    // address: document
-    address = addresser({ _window, id: child.id, headAddress: address, type: "function", file: "render", function: "document", stack, __ }).address
-
-    // get shared public views
-    Object.entries(getJsonFiles({ search: { collection: "public/view" } })).map(([doc, data]) => {
-
-      global.data.view[doc] = { ...data, id: doc }
-      global.data.views.push(doc)
-      global.__queries__.views.push(doc)
-    })
-
-    address = addresser({ _window, stack, status: "Start", type: "function", function: "toView", headAddress: address, lookupActions, __ }).address
-  }
-
-  // address
-  toView({ _window, stack, address, req, res, lookupActions, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
+  toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
+  removeView({ _window, id, stack, address })
 }
 
 const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ }) => {
@@ -9037,7 +8805,7 @@ const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ })
   const global = _window ? _window.global : window.global
   var view = views[id]
 
-  views[id] = builtInViews[view.__name__](view)
+  views[id] = Input(view)
   var { id, view } = initView({ views, global, parent: views[id].__parent__, ...views[id] })
 
   toLine({ _window, lookupActions, stack, data: { string: view.view, id, index: 1 }, req, res, mount: true, __ })
@@ -9060,6 +8828,13 @@ const toHTML = ({ _window, id, stack, __ }) => {
 
   var view = views[id], parent = views[view.__parent__]
   var name = view.__name__, html = ""
+
+  // remove view
+  delete view.view
+  delete view.children
+  delete view.functions
+  
+  if (name === "Action") return
 
   // linkable
   //if (view.link && !view.__linked__) return link({ _window, id, stack, __ })
@@ -9137,7 +8912,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
       ${toArray(view.src).map(src => typeof src === "string" ? `<source src=${src}>` : typeof src === "object" ? `<source src=${src.src} type=${src.type}>` : "")}
       ${view.alt || view.message || ""}
     </video>`
-  } else return removeView({ _window, stack, id })
+  } else return html = `<></>`
 
   // indexing
   var index = 0
@@ -9197,18 +8972,127 @@ const link = ({ _window, id, stack, __ }) => {
   toHTML({ _window, id, stack, __ })
 }
 
-module.exports = { toView, toHTML, customView }
-},{"../view/views":166,"./addresser":2,"./clone":4,"./colorize":6,"./cssStyleKeyNames":9,"./executable":20,"./generate":24,"./isParam":36,"./jsonFiles":37,"./kernel":39,"./logger":40,"./merge":42,"./replaceNbsps":48,"./search":53,"./stack":58,"./toApproval":62,"./toArray":63,"./toAwait":64,"./toCode":67,"./toLine":72,"./toParam":75,"./toValue":78,"./view":83}],80:[function(require,module,exports){
-const { starter } = require("./starter")
-const { toView, toHTML } = require("./toView")
-const { clone } = require("./clone")
-const { closePublicViews } = require("./closePublicViews")
-const { removeView } = require("./view")
-const { generate } = require("./generate")
-const { addresser } = require("./addresser")
-const { toParam } = require("./toParam")
-const { decode } = require("./decode")
-const { toAwait } = require("./toAwait")
+const documenter = ({ _window, res, stack, address, __ }) => {
+
+  var { global, views } = _window
+  var page = global.manifest.page
+  var view = views[page] || {}
+
+  // head tags
+  var language = global.language = view.language || view.lang || "en"
+  var direction = view.direction || view.dir || (language === "ar" || language === "fa" ? "rtl" : "ltr")
+  var title = view.title || "Bracket App Title"
+
+  // favicon
+  var favicon = views.document.favicon && views.document.favicon.url
+  var faviconType = favicon && views.document.favicon.type
+
+  // meta
+  view.meta = view.meta || {}
+  var metaHTTPEquiv = view.meta["http-equiv"] || view.meta["httpEquiv"] || {}
+  if (typeof metaHTTPEquiv !== "object") metaHTTPEquiv = {}
+  if (!metaHTTPEquiv["content-type"]) metaHTTPEquiv["content-type"] = "text/html; charset=UTF-8"
+  var metaKeywords = view.meta.keywords || ""
+  var metaDescription = view.meta.description || ""
+  var metaTitle = view.meta.title || view.title || ""
+  var metaViewport = view.meta.viewport || ""
+
+  delete global.data.project
+
+  // logs
+  global.__server__.logs = stack.logs
+
+  // clear secure view actions
+  Object.values(global.data.view).map(view => {
+    if (view._secure_) {
+      view.view = ""
+      view.children = []
+      clearActions(view.functions)
+    }
+  })
+
+  toAwait({ _window, stack, address, __ })
+
+  res.end(
+    `<!DOCTYPE html>
+      <html lang="${language}" dir="${direction}" class="html">
+          <head>
+              <!-- css -->
+              <link rel="stylesheet" href="/route/resource/index.css"/>
+              ${views.document.stylesheet ? `
+                  <style>
+                  ${Object.entries(views.document.stylesheet).map(([key, value]) => typeof value === "object" && !Array.isArray(value)
+      ? `${key}{
+                      ${Object.entries(value).map(([key, value]) => `${cssStyleKeyNames[key] || key}: ${value.toString().replace(/\\/g, '')}`).join(`;
+                      `)};
+                  }` : "").filter(style => style).join(`
+                  `)}
+                  </style>` : ""}
+              
+              <!-- Font -->
+              <link rel="preconnect" href="https://fonts.googleapis.com">
+              <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+              <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap">
+              <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400&display=swap">
+              
+              <!-- title -->
+              <title>${title}</title>
+              
+              <!-- meta -->
+              ${metaHTTPEquiv ? Object.entries(metaHTTPEquiv).map(([key, value]) => `<meta http-equiv="${key}" content="${value}">
+              `) : ""}
+              <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+              <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+              ${metaViewport ? `<meta name="viewport" content="${metaViewport}">` : ""}
+              ${metaKeywords ? `<meta name="keywords" content="${metaKeywords}">` : ""}
+              ${metaDescription ? `<meta name="description" content="${metaDescription}">` : ""}
+              ${metaTitle ? `<meta name="title" content="${metaTitle}">` : ""}
+              
+              <!-- favicon -->
+              ${favicon ? `<link rel="icon" type="image/${faviconType || "x-icon"}" href="${favicon}"/>` : `<link rel="icon" href="data:,">`}
+              
+              <!-- views & global -->
+              <script id="views" type="application/json">${JSON.stringify(views)}</script>
+              <script id="global" type="application/json">${JSON.stringify(global)}</script>
+              
+              <!-- head tags -->
+              ${(views.document.links || []).map(link => !link.body ? `<link ${link.rel ? `rel="${link.rel}"` : ""} ${link.type ? `type="${link.type}"` : ""} href="${link.href}" />` : "").join("")}
+
+          </head>
+          <body>
+              <!-- body tags -->
+              ${(views.document.links || []).map(link => link.body ? `<link ${link.rel ? `rel="${link.rel}"` : ""} ${link.type ? `type="${link.type}"` : ""} href="${link.href}" />` : "").join("")}
+
+              <!-- html -->
+              ${views.body.__html__ || ""}
+
+              <!-- engine -->
+              <script src="/route/resource/engine.js"></script>
+
+              <!-- google icons -->
+              <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"/>
+              <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded"/>
+              <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Sharp"/>
+              <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+              <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"/>
+              <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/>
+              <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"/>
+              <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+              <!-- html2pdf -->
+              <script src="https://cdn.jsdelivr.net/npm/js-html2pdf@1.1.4/lib/html2pdf.min.js"></script>
+          </body>
+      </html>`
+  )
+}
+
+const clearActions = (data) => {
+  if (typeof data !== "object") return
+  Object.entries(data || {}).map(([action, mapAction]) => {
+    if (typeof mapAction === "object") return clearActions(mapAction)
+    data[action] = ""
+  })
+}
 
 const update = ({ _window, id, lookupActions, stack, address, req, res, __, data = {} }) => {
 
@@ -9217,150 +9101,152 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
   const global = _window ? _window.global : window.global
 
   var view = views[data.id]
-  var parent = views[data.__parent__ || view.__parent__]
-  
-  var __index__ = data.__index__
-  var __childIndex__ = data.__childIndex__ !== undefined ? data.__childIndex__ : view.__childIndex__
-  var __viewPath__ = [...(data.__viewPath__ || view.__viewPath__)]
-  var __customViewPath__ = [...(data.__customViewPath__ || view.__customViewPath__)]
-  var __lookupViewActions__ = [...(data.__lookupViewActions__ || view.__lookupViewActions__)]
-  var my__ = data.__ || view.__
 
-  var elements = []
-  var timer = (new Date()).getTime()
-  
-  if (!view) return
-  
-  // close publics
-  closePublicViews({ _window, id: data.id, __, stack, lookupActions })
+  if (!data.postUpdate) {
 
-  // get view to be rendered
-  var reducedView = {
-    ...(data.view ? data.view : clone(__viewPath__.reduce((o, k) => o[k], global.data.view))), 
-    __index__, 
-    __childIndex__, 
-    __view__: true, 
-    __viewPath__, 
-    __customViewPath__, 
-    __lookupViewActions__ 
-  }
+    var parent = views[data.__parent__ || view.__parent__]
+    var __index__ = data.__index__
+    var __childIndex__ = data.__childIndex__ !== undefined ? data.__childIndex__ : view.__childIndex__
+    var __viewPath__ = [...(data.__viewPath__ || view.__viewPath__)]
+    var __customViewPath__ = [...(data.__customViewPath__ || view.__customViewPath__)]
+    var __lookupViewActions__ = [...(data.__lookupViewActions__ || view.__lookupViewActions__)]
+    var my__ = data.__ || view.__
 
-  // data
-  if (data.data) {
+    var elements = []
+    var timer = (new Date()).getTime()
 
-    reducedView.data = clone(data.data)
-    reducedView.doc = data.doc || parent.doc || generate()
-    global[reducedView.doc] = global[reducedView.doc] || reducedView.data
+    if (!view) return
 
-  } else if (data.doc) {
+    // close publics
+    closePublicViews({ _window, id: data.id, __, stack, lookupActions })
 
-    reducedView.doc = data.doc
-    global[reducedView.doc] = global[reducedView.doc] || reducedView.data || {}
-  }
+    // get view to be rendered
+    var reducedView = {
+      ...(data.view ? data.view : clone(__viewPath__.reduce((o, k) => o[k], global.data.view))),
+      __index__,
+      __childIndex__,
+      __view__: true,
+      __viewPath__,
+      __customViewPath__,
+      __lookupViewActions__
+    }
 
-  // path
-  if (data.path !== undefined) reducedView.__dataPath__ = (Array.isArray(data.path) ? data.path : typeof data.path === "number" ? [data.path] : data.path.split(".")) || []
+    // data
+    if (data.data) {
 
-  // remove views
-  if (!data.insert && parent.__rendered__) parent.__childrenRef__.filter(({ childIndex }) => childIndex === __childIndex__).map(({ id }) => elements.push(removeView({ _window, id, stack, main: true, insert: data.insert })))
-  else if (!parent.__rendered__) removeView({ _window, id: data.id, stack, main: true })
+      reducedView.data = clone(data.data)
+      reducedView.doc = data.doc || parent.doc || generate()
+      global[reducedView.doc] = global[reducedView.doc] || reducedView.data
 
-  // address for postUpdate
-  var headAddress = addresser({ _window, id, stack, headAddressID: address.headAddressID, hasWaits: address.hasWaits, type: "function", function: "postUpdate", file: "update", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent } }).address
-  address.headAddressID = headAddress.id
-  address.hasWaits = false
- 
-  // render
-  toView({ _window, lookupActions: __lookupViewActions__, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
-}
+    } else if (data.doc) {
 
-const postUpdate = ({ _window, lookupActions, stack, __, id, address, data: { childIndex, elements, root, timer, parent, ...data } }) => {
+      reducedView.doc = data.doc
+      global[reducedView.doc] = global[reducedView.doc] || reducedView.data || {}
+    }
 
-  const views = _window ? _window.views : window.views
-  const global = _window ? _window.global : window.global
+    // path
+    if (data.path !== undefined) reducedView.__dataPath__ = (Array.isArray(data.path) ? data.path : typeof data.path === "number" ? [data.path] : data.path.split(".")) || []
 
-  // tohtml parent
-  toHTML({ _window, lookupActions, stack, __, id: parent.id })
+    // remove views
+    if (!data.insert && parent.__rendered__) parent.__childrenRef__.filter(({ childIndex }) => childIndex === __childIndex__).map(({ id }) => elements.push(removeView({ _window, id, stack, main: true, insert: data.insert })))
+    else if (!parent.__rendered__) removeView({ _window, id: data.id, stack, main: true })
 
-  var renderedRefView = parent.__childrenRef__.filter(({ id, childIndex: chdIndex }) => chdIndex === childIndex && !views[id].__rendered__ && views[id])
+    // address for post update
+    addresser({ _window, id, stack, switchWithAddress: address, type: "function", function: "update", file: "toView", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent, postUpdate: true } })
 
-  var updatedViews = [], idLists = [], innerHTML = ""
-
-  // insert absolutely
-  renderedRefView.map(({ id }) => {
-
-    var { __idList__, __html__ } = views[id]
-
-    // push to html
-    innerHTML += __html__
-
-    // _.data
-    updatedViews.push(views[id])
-
-    // start
-    idLists.push(...[id, ...__idList__])
-  })
-
-  // browser actions
-  if (!_window) {
-
-    var lDiv = document.createElement("div")
-    document.body.appendChild(lDiv)
-    lDiv.style.position = "absolute"
-    lDiv.style.opacity = "0"
-    lDiv.style.left = -1000
-    lDiv.style.top = -1000
-    lDiv.innerHTML = innerHTML
-    lDiv.children[0].style.opacity = "0"
-
-    // remove prev elements
-    elements.map(element => element.remove())
-
-    // innerHTML
-    renderedRefView.map(({ index }) => {
-
-      if (index >= parent.__element__.children.length || parent.__element__.children.length === 0) parent.__element__.appendChild(lDiv.children[0])
-      else parent.__element__.insertBefore(lDiv.children[0], parent.__element__.children[index])
-    })
-
-    idLists.map(id => starter({ _window, lookupActions, address, stack, __, id }))
+    // address
+    address = addresser({ _window, id, stack, status: "Start", type: "function", function: "toView", __: my__, lookupActions: __lookupViewActions__, nextAddress: address, data: { view: reducedView, parent: parent.id } }).address
     
-    // display
-    updatedViews.map(({ id }) => views[id].__element__.style.opacity = "1")
+    // render
+    toView({ _window, lookupActions: __lookupViewActions__, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
+    
+  } else { // post update
 
-    // rout
-    if (updatedViews[0].id === "root") {
-      
-      document.body.scrollTop = document.documentElement.scrollTop = 0
-      var title = root.title || views[global.manifest.page].title
-      var path = root.path || views[global.manifest.page].path
-      
-      history.pushState(null, title, path)
-      document.title = title
+    var { childIndex, elements, root, timer, parent, ...data } = data
+
+    // tohtml parent
+    toHTML({ _window, lookupActions, stack, __, id: parent.id })
+
+    var renderedRefView = parent.__childrenRef__.filter(({ id, childIndex: chdIndex }) => chdIndex === childIndex && !views[id].__rendered__ && views[id])
+
+    var updatedViews = [], idLists = [], innerHTML = ""
+
+    // insert absolutely
+    renderedRefView.map(({ id }) => {
+
+      var { __idList__, __html__ } = views[id]
+
+      // push to html
+      innerHTML += __html__
+
+      // _.data
+      updatedViews.push(views[id])
+
+      // start
+      idLists.push(...[id, ...__idList__])
+    })
+    
+    // browser actions
+    if (!_window) {
+
+      var lDiv = document.createElement("div")
+      document.body.appendChild(lDiv)
+      lDiv.style.position = "absolute"
+      lDiv.style.opacity = "0"
+      lDiv.style.left = -1000
+      lDiv.style.top = -1000
+      lDiv.innerHTML = innerHTML
+      lDiv.children[0].style.opacity = "0"
+
+      // remove prev elements
+      elements.map(element => element.remove())
+
+      // innerHTML
+      renderedRefView.map(({ index }) => {
+
+        if (index >= parent.__element__.children.length || parent.__element__.children.length === 0) parent.__element__.appendChild(lDiv.children[0])
+        else parent.__element__.insertBefore(lDiv.children[0], parent.__element__.children[index])
+      })
+
+      idLists.map(id => starter({ _window, lookupActions, address, stack, __, id }))
+
+      // display
+      updatedViews.map(({ id }) => views[id].__element__.style.opacity = "1")
+
+      // rout
+      if (updatedViews[0].id === "root") {
+
+        document.body.scrollTop = document.documentElement.scrollTop = 0
+        var title = root.title || views[global.manifest.page].title
+        var path = root.path || views[global.manifest.page].path
+
+        history.pushState(null, title, path)
+        document.title = title
+      }
+
+      if (lDiv) {
+
+        document.body.removeChild(lDiv)
+        lDiv = null
+      }
     }
 
-    if (lDiv) {
+    console.log((data.action || "UPDATE") + ":" + updatedViews[0].id, (new Date()).getTime() - timer)
 
-      document.body.removeChild(lDiv)
-      lDiv = null
+    var data = { view: updatedViews.length === 1 ? updatedViews[0] : updatedViews, message: "View updated successfully!", success: true }
+
+    toParam({ _window, data: "loader.hide" })
+
+    if (address) {
+
+      address.params.__ = [data, ...address.params.__]
+      address.params.id = views[address.params.id] ? address.params.id : updatedViews[0].id
     }
-  }
-
-  console.log((data.action || "UPDATE") + ":" + updatedViews[0].id, (new Date()).getTime() - timer)
-
-  var data = { view: updatedViews.length === 1 ? updatedViews[0] : updatedViews, message: "View updated successfully!", success: true }
-
-  toParam({ _window, data: "loader.hide" })
-  
-  if (address) {
-
-    address.params.__ = [data, ...address.params.__]
-    address.params.id = views[address.params.id] ? address.params.id : updatedViews[0].id
   }
 }
 
-module.exports = { update, postUpdate }
-},{"./addresser":2,"./clone":4,"./closePublicViews":5,"./decode":13,"./generate":24,"./starter":59,"./toAwait":64,"./toParam":75,"./toView":79,"./view":83}],81:[function(require,module,exports){
+module.exports = { toView, toHTML, documenter, update }
+},{"../view/Input":156,"./addresser":2,"./clone":4,"./closePublicViews":5,"./colorize":6,"./cssStyleKeyNames":9,"./executable":20,"./generate":24,"./isParam":36,"./jsonFiles":37,"./kernel":39,"./logger":40,"./merge":42,"./replaceNbsps":47,"./search":52,"./starter":58,"./toApproval":61,"./toArray":62,"./toAwait":63,"./toCode":66,"./toLine":71,"./toParam":74,"./toValue":77,"./view":81}],79:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
@@ -9431,7 +9317,7 @@ const readFile = (file) => new Promise(res => {
     myReader.readAsDataURL(file)
   }
 })
-},{"./clone":4,"./generate":24,"./storage":60,"./toArray":63,"./toAwait":64,"axios":90}],82:[function(require,module,exports){
+},{"./clone":4,"./generate":24,"./storage":59,"./toArray":62,"./toAwait":63,"axios":88}],80:[function(require,module,exports){
 'use strict';
 
 const downloadToFile = (content, filename, contentType) => {
@@ -9504,7 +9390,7 @@ const vcardServer = ({ res, data }) => {
 }
 
 module.exports = { vcard }
-},{"vcards-js":158}],83:[function(require,module,exports){
+},{"vcards-js":153}],81:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 
@@ -9550,7 +9436,6 @@ const getViewParams = ({ view }) => {
 const removeView = ({ _window, id, stack, self = true, main, insert }) => {
     
     const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
     var view = views[id] || {}, parent = views[view.__parent__], element = {}
     
     view.__childrenRef__.map(({ id }) => id).map(id => removeView({ _window, id, stack, insert }))
@@ -9596,27 +9481,28 @@ const deepDelete = ({ obj, key }) => {
     delete obj[key]
 }
 
-const blockRelatedAddressesByHeadAddress = ({ stack, index }) => {
+const blockRelatedAddressesBynextAddress = ({ stack, index }) => {
     
     var address = stack.addresses[index]
+    address.interpreting = false
 
-    // block headAddress
+    // block nextAddress
     if (address.blockable) stack.addresses[index].blocked = true
 
     // remove child addresses
-    var index = stack.addresses.findIndex(({ headAddressID, blocked, blockable }) => blockable && !blocked && headAddressID === address.id)
-    if (index !== -1) blockRelatedAddressesByHeadAddress({ stack, index })
+    var index = stack.addresses.findIndex(({ nextAddressID, blocked, blockable }) => blockable && !blocked && nextAddressID === address.id)
+    if (index !== -1) blockRelatedAddressesBynextAddress({ stack, index })
 }
 
 const blockRelatedAddressesByViewID = ({ stack, id }) => {
 
     // delete addresses
     var index = stack.addresses.findIndex(({ viewID, blocked }) => !blocked && viewID === id)
-    if (index !== -1) blockRelatedAddressesByHeadAddress({ stack, index })
+    if (index !== -1) blockRelatedAddressesBynextAddress({ stack, index })
 }
 
 module.exports = { initView, getViewParams, removeView }
-},{"./clone":4,"./generate":24}],84:[function(require,module,exports){
+},{"./clone":4,"./generate":24}],82:[function(require,module,exports){
 const { toApproval } = require("./toApproval")
 const { clone } = require("./clone")
 const { toParam } = require("./toParam")
@@ -9664,7 +9550,7 @@ const watch = ({ lookupActions, __, string, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":4,"./generate":24,"./isEqual":34,"./toApproval":62,"./toCode":67,"./toParam":75,"./toValue":78}],85:[function(require,module,exports){
+},{"./clone":4,"./generate":24,"./isEqual":34,"./toApproval":61,"./toCode":66,"./toParam":74,"./toValue":77}],83:[function(require,module,exports){
 module.exports = () => {
   
   return [{ // close droplist
@@ -9683,14 +9569,14 @@ module.exports = () => {
     event: `keyup:input()?():droplist.children().[__keyupIndex__:()||0].mouseleave();__keyupIndex__:()=if():[e().keyCode=40]:[__keyupIndex__:()+1]:[__keyupIndex__:()-1];():droplist.children().[__keyupIndex__:()].mouseenter()?e().keyCode=40||=38;__droplistPositioner__:();if():[e().keyCode=38]:[__keyupIndex__:()>0].elif():[e().keyCode=40]:[__keyupIndex__:()<():droplist.children().len()-1]`
   }]
 }
-},{}],86:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 module.exports = {
   droplist: require("./droplist"),
   tooltip: require("./tooltip"),
   mininote: require("./mininote"),
   hover: require("./hover")
 }
-},{"./droplist":85,"./hover":87,"./mininote":88,"./tooltip":89}],87:[function(require,module,exports){
+},{"./droplist":83,"./hover":85,"./mininote":86,"./tooltip":87}],85:[function(require,module,exports){
 module.exports = ({ data, id }) => {
 
     var view = window.views[id]
@@ -9711,14 +9597,14 @@ module.exports = ({ data, id }) => {
         "event": `mouseleave:${_id}?hover.default.style.keys()._():[style().[_]=.hover.default.style.[_]]?!hover.disable`
     }]
 }
-},{}],88:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 module.exports = () => {
   
   return [{
     event: `click?():mininote-text.txt()=[.mininote.text||.mininote.note||''];clearTimeout():[mininote-timer:()];():mininote.style():[opacity=1;transform='scale(1)'];mininote-timer:()=():root.timer():[():mininote.style():[opacity=0;transform=scale(0)]]:[.mininote.timer||3000]`
   }]
 }
-},{}],89:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[a-zA-Z]/
 
@@ -9735,9 +9621,9 @@ module.exports = ({ data, id }) => {
     event: "mouseenter?mouseentered=true"
   }]
 }
-},{}],90:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":92}],91:[function(require,module,exports){
+},{"./lib/axios":90}],89:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9928,7 +9814,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":98,"../core/createError":99,"./../core/settle":103,"./../helpers/buildURL":107,"./../helpers/cookies":109,"./../helpers/isURLSameOrigin":112,"./../helpers/parseHeaders":114,"./../utils":117}],92:[function(require,module,exports){
+},{"../core/buildFullPath":96,"../core/createError":97,"./../core/settle":101,"./../helpers/buildURL":105,"./../helpers/cookies":107,"./../helpers/isURLSameOrigin":110,"./../helpers/parseHeaders":112,"./../utils":115}],90:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -9986,7 +9872,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":93,"./cancel/CancelToken":94,"./cancel/isCancel":95,"./core/Axios":96,"./core/mergeConfig":102,"./defaults":105,"./helpers/bind":106,"./helpers/isAxiosError":111,"./helpers/spread":115,"./utils":117}],93:[function(require,module,exports){
+},{"./cancel/Cancel":91,"./cancel/CancelToken":92,"./cancel/isCancel":93,"./core/Axios":94,"./core/mergeConfig":100,"./defaults":103,"./helpers/bind":104,"./helpers/isAxiosError":109,"./helpers/spread":113,"./utils":115}],91:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10007,7 +9893,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],94:[function(require,module,exports){
+},{}],92:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -10066,14 +9952,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":93}],95:[function(require,module,exports){
+},{"./Cancel":91}],93:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],96:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10223,7 +10109,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":107,"../helpers/validator":116,"./../utils":117,"./InterceptorManager":97,"./dispatchRequest":100,"./mergeConfig":102}],97:[function(require,module,exports){
+},{"../helpers/buildURL":105,"../helpers/validator":114,"./../utils":115,"./InterceptorManager":95,"./dispatchRequest":98,"./mergeConfig":100}],95:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10279,7 +10165,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":117}],98:[function(require,module,exports){
+},{"./../utils":115}],96:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -10301,7 +10187,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":108,"../helpers/isAbsoluteURL":110}],99:[function(require,module,exports){
+},{"../helpers/combineURLs":106,"../helpers/isAbsoluteURL":108}],97:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -10321,7 +10207,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":101}],100:[function(require,module,exports){
+},{"./enhanceError":99}],98:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10405,7 +10291,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":95,"../defaults":105,"./../utils":117,"./transformData":104}],101:[function(require,module,exports){
+},{"../cancel/isCancel":93,"../defaults":103,"./../utils":115,"./transformData":102}],99:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10449,7 +10335,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],102:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -10538,7 +10424,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":117}],103:[function(require,module,exports){
+},{"../utils":115}],101:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -10565,7 +10451,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":99}],104:[function(require,module,exports){
+},{"./createError":97}],102:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10589,7 +10475,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":105,"./../utils":117}],105:[function(require,module,exports){
+},{"./../defaults":103,"./../utils":115}],103:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -10727,7 +10613,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":91,"./adapters/xhr":91,"./core/enhanceError":101,"./helpers/normalizeHeaderName":113,"./utils":117,"_process":130}],106:[function(require,module,exports){
+},{"./adapters/http":89,"./adapters/xhr":89,"./core/enhanceError":99,"./helpers/normalizeHeaderName":111,"./utils":115,"_process":125}],104:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -10740,7 +10626,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],107:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10812,7 +10698,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":117}],108:[function(require,module,exports){
+},{"./../utils":115}],106:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10828,7 +10714,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],109:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10883,7 +10769,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":117}],110:[function(require,module,exports){
+},{"./../utils":115}],108:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10899,7 +10785,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],111:[function(require,module,exports){
+},{}],109:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10912,7 +10798,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],112:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10982,7 +10868,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":117}],113:[function(require,module,exports){
+},{"./../utils":115}],111:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -10996,7 +10882,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":117}],114:[function(require,module,exports){
+},{"../utils":115}],112:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -11051,7 +10937,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":117}],115:[function(require,module,exports){
+},{"./../utils":115}],113:[function(require,module,exports){
 'use strict';
 
 /**
@@ -11080,7 +10966,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],116:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -11187,7 +11073,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":118}],117:[function(require,module,exports){
+},{"./../../package.json":116}],115:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -11538,7 +11424,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":106}],118:[function(require,module,exports){
+},{"./helpers/bind":104}],116:[function(require,module,exports){
 module.exports={
   "name": "axios",
   "version": "0.21.4",
@@ -11624,7 +11510,7 @@ module.exports={
   ]
 }
 
-},{}],119:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -11776,9 +11662,9 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],120:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 
-},{}],121:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 (function (Buffer){(function (){
 /*!
  * The buffer module from node.js, for the browser.
@@ -13559,7 +13445,7 @@ function numberIsNaN (obj) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"base64-js":119,"buffer":121,"ieee754":127}],122:[function(require,module,exports){
+},{"base64-js":117,"buffer":119,"ieee754":123}],120:[function(require,module,exports){
 'use strict';
 
 /******************************************************************************
@@ -13726,185 +13612,7 @@ if (typeof module !== 'undefined') {
   module.exports = dijkstra;
 }
 
-},{}],123:[function(require,module,exports){
-(function (process){(function (){
-const fs = require('fs')
-const path = require('path')
-const os = require('os')
-const packageJson = require('../package.json')
-
-const version = packageJson.version
-
-const LINE = /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(?:#.*)?(?:$|$)/mg
-
-// Parser src into an Object
-function parse (src) {
-  const obj = {}
-
-  // Convert buffer to string
-  let lines = src.toString()
-
-  // Convert line breaks to same format
-  lines = lines.replace(/\r\n?/mg, '\n')
-
-  let match
-  while ((match = LINE.exec(lines)) != null) {
-    const key = match[1]
-
-    // Default undefined or null to empty string
-    let value = (match[2] || '')
-
-    // Remove whitespace
-    value = value.trim()
-
-    // Check if double quoted
-    const maybeQuote = value[0]
-
-    // Remove surrounding quotes
-    value = value.replace(/^(['"`])([\s\S]*)\1$/mg, '$2')
-
-    // Expand newlines if double quoted
-    if (maybeQuote === '"') {
-      value = value.replace(/\\n/g, '\n')
-      value = value.replace(/\\r/g, '\r')
-    }
-
-    // Add to object
-    obj[key] = value
-  }
-
-  return obj
-}
-
-function _log (message) {
-  console.log(`[dotenv@${version}][DEBUG] ${message}`)
-}
-
-function _resolveHome (envPath) {
-  return envPath[0] === '~' ? path.join(os.homedir(), envPath.slice(1)) : envPath
-}
-
-// Populates process.env from .env file
-function config (options) {
-  let dotenvPath = path.resolve(process.cwd(), '.env')
-  let encoding = 'utf8'
-  const debug = Boolean(options && options.debug)
-  const override = Boolean(options && options.override)
-
-  if (options) {
-    if (options.path != null) {
-      dotenvPath = _resolveHome(options.path)
-    }
-    if (options.encoding != null) {
-      encoding = options.encoding
-    }
-  }
-
-  try {
-    // Specifying an encoding returns a string instead of a buffer
-    const parsed = DotenvModule.parse(fs.readFileSync(dotenvPath, { encoding }))
-
-    Object.keys(parsed).forEach(function (key) {
-      if (!Object.prototype.hasOwnProperty.call(process.env, key)) {
-        process.env[key] = parsed[key]
-      } else {
-        if (override === true) {
-          process.env[key] = parsed[key]
-        }
-
-        if (debug) {
-          if (override === true) {
-            _log(`"${key}" is already defined in \`process.env\` and WAS overwritten`)
-          } else {
-            _log(`"${key}" is already defined in \`process.env\` and was NOT overwritten`)
-          }
-        }
-      }
-    })
-
-    return { parsed }
-  } catch (e) {
-    if (debug) {
-      _log(`Failed to load ${dotenvPath} ${e.message}`)
-    }
-
-    return { error: e }
-  }
-}
-
-const DotenvModule = {
-  config,
-  parse
-}
-
-module.exports.config = DotenvModule.config
-module.exports.parse = DotenvModule.parse
-module.exports = DotenvModule
-
-}).call(this)}).call(this,require('_process'))
-},{"../package.json":124,"_process":130,"fs":120,"os":128,"path":129}],124:[function(require,module,exports){
-module.exports={
-  "name": "dotenv",
-  "version": "16.0.3",
-  "description": "Loads environment variables from .env file",
-  "main": "lib/main.js",
-  "types": "lib/main.d.ts",
-  "exports": {
-    ".": {
-      "require": "./lib/main.js",
-      "types": "./lib/main.d.ts",
-      "default": "./lib/main.js"
-    },
-    "./config": "./config.js",
-    "./config.js": "./config.js",
-    "./lib/env-options": "./lib/env-options.js",
-    "./lib/env-options.js": "./lib/env-options.js",
-    "./lib/cli-options": "./lib/cli-options.js",
-    "./lib/cli-options.js": "./lib/cli-options.js",
-    "./package.json": "./package.json"
-  },
-  "scripts": {
-    "dts-check": "tsc --project tests/types/tsconfig.json",
-    "lint": "standard",
-    "lint-readme": "standard-markdown",
-    "pretest": "npm run lint && npm run dts-check",
-    "test": "tap tests/*.js --100 -Rspec",
-    "prerelease": "npm test",
-    "release": "standard-version"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/motdotla/dotenv.git"
-  },
-  "keywords": [
-    "dotenv",
-    "env",
-    ".env",
-    "environment",
-    "variables",
-    "config",
-    "settings"
-  ],
-  "readmeFilename": "README.md",
-  "license": "BSD-2-Clause",
-  "devDependencies": {
-    "@types/node": "^17.0.9",
-    "decache": "^4.6.1",
-    "dtslint": "^3.7.0",
-    "sinon": "^12.0.1",
-    "standard": "^16.0.4",
-    "standard-markdown": "^7.1.0",
-    "standard-version": "^9.3.2",
-    "tap": "^15.1.6",
-    "tar": "^6.1.11",
-    "typescript": "^4.5.4"
-  },
-  "engines": {
-    "node": ">=12"
-  }
-}
-
-},{}],125:[function(require,module,exports){
+},{}],121:[function(require,module,exports){
 (function (global){(function (){
 /**
  * EasyQRCodeJS
@@ -13928,7 +13636,7 @@ module.exports={
 !function(){"use strict";function a(a,b){var c,d=Object.keys(b);for(c=0;c<d.length;c++)a=a.replace(new RegExp("\\{"+d[c]+"\\}","gi"),b[d[c]]);return a}function b(a){var b,c,d;if(!a)throw new Error("cannot create a random attribute name for an undefined object");b="ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz",c="";do{for(c="",d=0;d<12;d++)c+=b[Math.floor(Math.random()*b.length)]}while(a[c]);return c}function c(a){var b={left:"start",right:"end",center:"middle",start:"start",end:"end"};return b[a]||b.start}function d(a){var b={alphabetic:"alphabetic",hanging:"hanging",top:"text-before-edge",bottom:"text-after-edge",middle:"central"};return b[a]||b.alphabetic}var e,f,g,h,i;i=function(a,b){var c,d,e,f={};for(a=a.split(","),b=b||10,c=0;c<a.length;c+=2)d="&"+a[c+1]+";",e=parseInt(a[c],b),f[d]="&#"+e+";";return f["\\xa0"]="&#160;",f}("50,nbsp,51,iexcl,52,cent,53,pound,54,curren,55,yen,56,brvbar,57,sect,58,uml,59,copy,5a,ordf,5b,laquo,5c,not,5d,shy,5e,reg,5f,macr,5g,deg,5h,plusmn,5i,sup2,5j,sup3,5k,acute,5l,micro,5m,para,5n,middot,5o,cedil,5p,sup1,5q,ordm,5r,raquo,5s,frac14,5t,frac12,5u,frac34,5v,iquest,60,Agrave,61,Aacute,62,Acirc,63,Atilde,64,Auml,65,Aring,66,AElig,67,Ccedil,68,Egrave,69,Eacute,6a,Ecirc,6b,Euml,6c,Igrave,6d,Iacute,6e,Icirc,6f,Iuml,6g,ETH,6h,Ntilde,6i,Ograve,6j,Oacute,6k,Ocirc,6l,Otilde,6m,Ouml,6n,times,6o,Oslash,6p,Ugrave,6q,Uacute,6r,Ucirc,6s,Uuml,6t,Yacute,6u,THORN,6v,szlig,70,agrave,71,aacute,72,acirc,73,atilde,74,auml,75,aring,76,aelig,77,ccedil,78,egrave,79,eacute,7a,ecirc,7b,euml,7c,igrave,7d,iacute,7e,icirc,7f,iuml,7g,eth,7h,ntilde,7i,ograve,7j,oacute,7k,ocirc,7l,otilde,7m,ouml,7n,divide,7o,oslash,7p,ugrave,7q,uacute,7r,ucirc,7s,uuml,7t,yacute,7u,thorn,7v,yuml,ci,fnof,sh,Alpha,si,Beta,sj,Gamma,sk,Delta,sl,Epsilon,sm,Zeta,sn,Eta,so,Theta,sp,Iota,sq,Kappa,sr,Lambda,ss,Mu,st,Nu,su,Xi,sv,Omicron,t0,Pi,t1,Rho,t3,Sigma,t4,Tau,t5,Upsilon,t6,Phi,t7,Chi,t8,Psi,t9,Omega,th,alpha,ti,beta,tj,gamma,tk,delta,tl,epsilon,tm,zeta,tn,eta,to,theta,tp,iota,tq,kappa,tr,lambda,ts,mu,tt,nu,tu,xi,tv,omicron,u0,pi,u1,rho,u2,sigmaf,u3,sigma,u4,tau,u5,upsilon,u6,phi,u7,chi,u8,psi,u9,omega,uh,thetasym,ui,upsih,um,piv,812,bull,816,hellip,81i,prime,81j,Prime,81u,oline,824,frasl,88o,weierp,88h,image,88s,real,892,trade,89l,alefsym,8cg,larr,8ch,uarr,8ci,rarr,8cj,darr,8ck,harr,8dl,crarr,8eg,lArr,8eh,uArr,8ei,rArr,8ej,dArr,8ek,hArr,8g0,forall,8g2,part,8g3,exist,8g5,empty,8g7,nabla,8g8,isin,8g9,notin,8gb,ni,8gf,prod,8gh,sum,8gi,minus,8gn,lowast,8gq,radic,8gt,prop,8gu,infin,8h0,ang,8h7,and,8h8,or,8h9,cap,8ha,cup,8hb,int,8hk,there4,8hs,sim,8i5,cong,8i8,asymp,8j0,ne,8j1,equiv,8j4,le,8j5,ge,8k2,sub,8k3,sup,8k4,nsub,8k6,sube,8k7,supe,8kl,oplus,8kn,otimes,8l5,perp,8m5,sdot,8o8,lceil,8o9,rceil,8oa,lfloor,8ob,rfloor,8p9,lang,8pa,rang,9ea,loz,9j0,spades,9j3,clubs,9j5,hearts,9j6,diams,ai,OElig,aj,oelig,b0,Scaron,b1,scaron,bo,Yuml,m6,circ,ms,tilde,802,ensp,803,emsp,809,thinsp,80c,zwnj,80d,zwj,80e,lrm,80f,rlm,80j,ndash,80k,mdash,80o,lsquo,80p,rsquo,80q,sbquo,80s,ldquo,80t,rdquo,80u,bdquo,810,dagger,811,Dagger,81g,permil,81p,lsaquo,81q,rsaquo,85c,euro",32),e={strokeStyle:{svgAttr:"stroke",canvas:"#000000",svg:"none",apply:"stroke"},fillStyle:{svgAttr:"fill",canvas:"#000000",svg:null,apply:"fill"},lineCap:{svgAttr:"stroke-linecap",canvas:"butt",svg:"butt",apply:"stroke"},lineJoin:{svgAttr:"stroke-linejoin",canvas:"miter",svg:"miter",apply:"stroke"},miterLimit:{svgAttr:"stroke-miterlimit",canvas:10,svg:4,apply:"stroke"},lineWidth:{svgAttr:"stroke-width",canvas:1,svg:1,apply:"stroke"},globalAlpha:{svgAttr:"opacity",canvas:1,svg:1,apply:"fill stroke"},font:{canvas:"10px sans-serif"},shadowColor:{canvas:"#000000"},shadowOffsetX:{canvas:0},shadowOffsetY:{canvas:0},shadowBlur:{canvas:0},textAlign:{canvas:"start"},textBaseline:{canvas:"alphabetic"},lineDash:{svgAttr:"stroke-dasharray",canvas:[],svg:null,apply:"stroke"}},g=function(a,b){this.__root=a,this.__ctx=b},g.prototype.addColorStop=function(b,c){var d,e,f=this.__ctx.__createElement("stop");f.setAttribute("offset",b),-1!==c.indexOf("rgba")?(d=/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d?\.?\d*)\s*\)/gi,e=d.exec(c),f.setAttribute("stop-color",a("rgb({r},{g},{b})",{r:e[1],g:e[2],b:e[3]})),f.setAttribute("stop-opacity",e[4])):f.setAttribute("stop-color",c),this.__root.appendChild(f)},h=function(a,b){this.__root=a,this.__ctx=b},f=function(a){var b,c={width:500,height:500,enableMirroring:!1};if(arguments.length>1?(b=c,b.width=arguments[0],b.height=arguments[1]):b=a||c,!(this instanceof f))return new f(b);this.width=b.width||c.width,this.height=b.height||c.height,this.enableMirroring=void 0!==b.enableMirroring?b.enableMirroring:c.enableMirroring,this.canvas=this,this.__document=b.document||document,b.ctx?this.__ctx=b.ctx:(this.__canvas=this.__document.createElement("canvas"),this.__ctx=this.__canvas.getContext("2d")),this.__setDefaultStyles(),this.__stack=[this.__getStyleState()],this.__groupStack=[],this.__root=this.__document.createElementNS("http://www.w3.org/2000/svg","svg"),this.__root.setAttribute("version",1.1),this.__root.setAttribute("xmlns","http://www.w3.org/2000/svg"),this.__root.setAttributeNS("http://www.w3.org/2000/xmlns/","xmlns:xlink","http://www.w3.org/1999/xlink"),this.__root.setAttribute("width",this.width),this.__root.setAttribute("height",this.height),this.__ids={},this.__defs=this.__document.createElementNS("http://www.w3.org/2000/svg","defs"),this.__root.appendChild(this.__defs),this.__currentElement=this.__document.createElementNS("http://www.w3.org/2000/svg","g"),this.__root.appendChild(this.__currentElement)},f.prototype.__createElement=function(a,b,c){void 0===b&&(b={});var d,e,f=this.__document.createElementNS("http://www.w3.org/2000/svg",a),g=Object.keys(b);for(c&&(f.setAttribute("fill","none"),f.setAttribute("stroke","none")),d=0;d<g.length;d++)e=g[d],f.setAttribute(e,b[e]);return f},f.prototype.__setDefaultStyles=function(){var a,b,c=Object.keys(e);for(a=0;a<c.length;a++)b=c[a],this[b]=e[b].canvas},f.prototype.__applyStyleState=function(a){var b,c,d=Object.keys(a);for(b=0;b<d.length;b++)c=d[b],this[c]=a[c]},f.prototype.__getStyleState=function(){var a,b,c={},d=Object.keys(e);for(a=0;a<d.length;a++)b=d[a],c[b]=this[b];return c},f.prototype.__applyStyleToCurrentElement=function(b){var c=this.__currentElement,d=this.__currentElementsToStyle;d&&(c.setAttribute(b,""),c=d.element,d.children.forEach(function(a){a.setAttribute(b,"")}));var f,i,j,k,l,m,n=Object.keys(e);for(f=0;f<n.length;f++)if(i=e[n[f]],j=this[n[f]],i.apply)if(j instanceof h){if(j.__ctx)for(;j.__ctx.__defs.childNodes.length;)k=j.__ctx.__defs.childNodes[0].getAttribute("id"),this.__ids[k]=k,this.__defs.appendChild(j.__ctx.__defs.childNodes[0]);c.setAttribute(i.apply,a("url(#{id})",{id:j.__root.getAttribute("id")}))}else if(j instanceof g)c.setAttribute(i.apply,a("url(#{id})",{id:j.__root.getAttribute("id")}));else if(-1!==i.apply.indexOf(b)&&i.svg!==j)if("stroke"!==i.svgAttr&&"fill"!==i.svgAttr||-1===j.indexOf("rgba")){var o=i.svgAttr;if("globalAlpha"===n[f]&&(o=b+"-"+i.svgAttr,c.getAttribute(o)))continue;c.setAttribute(o,j)}else{l=/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d?\.?\d*)\s*\)/gi,m=l.exec(j),c.setAttribute(i.svgAttr,a("rgb({r},{g},{b})",{r:m[1],g:m[2],b:m[3]}));var p=m[4],q=this.globalAlpha;null!=q&&(p*=q),c.setAttribute(i.svgAttr+"-opacity",p)}},f.prototype.__closestGroupOrSvg=function(a){return a=a||this.__currentElement,"g"===a.nodeName||"svg"===a.nodeName?a:this.__closestGroupOrSvg(a.parentNode)},f.prototype.getSerializedSvg=function(a){var b,c,d,e,f,g,h=(new XMLSerializer).serializeToString(this.__root);if(g=/xmlns="http:\/\/www\.w3\.org\/2000\/svg".+xmlns="http:\/\/www\.w3\.org\/2000\/svg/gi,g.test(h)&&(h=h.replace('xmlns="http://www.w3.org/2000/svg','xmlns:xlink="http://www.w3.org/1999/xlink')),a)for(b=Object.keys(i),c=0;c<b.length;c++)d=b[c],e=i[d],f=new RegExp(d,"gi"),f.test(h)&&(h=h.replace(f,e));return h},f.prototype.getSvg=function(){return this.__root},f.prototype.save=function(){var a=this.__createElement("g"),b=this.__closestGroupOrSvg();this.__groupStack.push(b),b.appendChild(a),this.__currentElement=a,this.__stack.push(this.__getStyleState())},f.prototype.restore=function(){this.__currentElement=this.__groupStack.pop(),this.__currentElementsToStyle=null,this.__currentElement||(this.__currentElement=this.__root.childNodes[1]);var a=this.__stack.pop();this.__applyStyleState(a)},f.prototype.__addTransform=function(a){var b=this.__closestGroupOrSvg();if(b.childNodes.length>0){"path"===this.__currentElement.nodeName&&(this.__currentElementsToStyle||(this.__currentElementsToStyle={element:b,children:[]}),this.__currentElementsToStyle.children.push(this.__currentElement),this.__applyCurrentDefaultPath());var c=this.__createElement("g");b.appendChild(c),this.__currentElement=c}var d=this.__currentElement.getAttribute("transform");d?d+=" ":d="",d+=a,this.__currentElement.setAttribute("transform",d)},f.prototype.scale=function(b,c){void 0===c&&(c=b),this.__addTransform(a("scale({x},{y})",{x:b,y:c}))},f.prototype.rotate=function(b){var c=180*b/Math.PI;this.__addTransform(a("rotate({angle},{cx},{cy})",{angle:c,cx:0,cy:0}))},f.prototype.translate=function(b,c){this.__addTransform(a("translate({x},{y})",{x:b,y:c}))},f.prototype.transform=function(b,c,d,e,f,g){this.__addTransform(a("matrix({a},{b},{c},{d},{e},{f})",{a:b,b:c,c:d,d:e,e:f,f:g}))},f.prototype.beginPath=function(){var a,b;this.__currentDefaultPath="",this.__currentPosition={},a=this.__createElement("path",{},!0),b=this.__closestGroupOrSvg(),b.appendChild(a),this.__currentElement=a},f.prototype.__applyCurrentDefaultPath=function(){var a=this.__currentElement;"path"===a.nodeName?a.setAttribute("d",this.__currentDefaultPath):console.error("Attempted to apply path command to node",a.nodeName)},f.prototype.__addPathCommand=function(a){this.__currentDefaultPath+=" ",this.__currentDefaultPath+=a},f.prototype.moveTo=function(b,c){"path"!==this.__currentElement.nodeName&&this.beginPath(),this.__currentPosition={x:b,y:c},this.__addPathCommand(a("M {x} {y}",{x:b,y:c}))},f.prototype.closePath=function(){this.__currentDefaultPath&&this.__addPathCommand("Z")},f.prototype.lineTo=function(b,c){this.__currentPosition={x:b,y:c},this.__currentDefaultPath.indexOf("M")>-1?this.__addPathCommand(a("L {x} {y}",{x:b,y:c})):this.__addPathCommand(a("M {x} {y}",{x:b,y:c}))},f.prototype.bezierCurveTo=function(b,c,d,e,f,g){this.__currentPosition={x:f,y:g},this.__addPathCommand(a("C {cp1x} {cp1y} {cp2x} {cp2y} {x} {y}",{cp1x:b,cp1y:c,cp2x:d,cp2y:e,x:f,y:g}))},f.prototype.quadraticCurveTo=function(b,c,d,e){this.__currentPosition={x:d,y:e},this.__addPathCommand(a("Q {cpx} {cpy} {x} {y}",{cpx:b,cpy:c,x:d,y:e}))};var j=function(a){var b=Math.sqrt(a[0]*a[0]+a[1]*a[1]);return[a[0]/b,a[1]/b]};f.prototype.arcTo=function(a,b,c,d,e){var f=this.__currentPosition&&this.__currentPosition.x,g=this.__currentPosition&&this.__currentPosition.y;if(void 0!==f&&void 0!==g){if(e<0)throw new Error("IndexSizeError: The radius provided ("+e+") is negative.");if(f===a&&g===b||a===c&&b===d||0===e)return void this.lineTo(a,b);var h=j([f-a,g-b]),i=j([c-a,d-b]);if(h[0]*i[1]==h[1]*i[0])return void this.lineTo(a,b);var k=h[0]*i[0]+h[1]*i[1],l=Math.acos(Math.abs(k)),m=j([h[0]+i[0],h[1]+i[1]]),n=e/Math.sin(l/2),o=a+n*m[0],p=b+n*m[1],q=[-h[1],h[0]],r=[i[1],-i[0]],s=function(a){var b=a[0];return a[1]>=0?Math.acos(b):-Math.acos(b)},t=s(q),u=s(r);this.lineTo(o+q[0]*e,p+q[1]*e),this.arc(o,p,e,t,u)}},f.prototype.stroke=function(){"path"===this.__currentElement.nodeName&&this.__currentElement.setAttribute("paint-order","fill stroke markers"),this.__applyCurrentDefaultPath(),this.__applyStyleToCurrentElement("stroke")},f.prototype.fill=function(){"path"===this.__currentElement.nodeName&&this.__currentElement.setAttribute("paint-order","stroke fill markers"),this.__applyCurrentDefaultPath(),this.__applyStyleToCurrentElement("fill")},f.prototype.rect=function(a,b,c,d){"path"!==this.__currentElement.nodeName&&this.beginPath(),this.moveTo(a,b),this.lineTo(a+c,b),this.lineTo(a+c,b+d),this.lineTo(a,b+d),this.lineTo(a,b),this.closePath()},f.prototype.fillRect=function(a,b,c,d){var e,f;e=this.__createElement("rect",{x:a,y:b,width:c,height:d,"shape-rendering":"crispEdges"},!0),f=this.__closestGroupOrSvg(),f.appendChild(e),this.__currentElement=e,this.__applyStyleToCurrentElement("fill")},f.prototype.strokeRect=function(a,b,c,d){var e,f;e=this.__createElement("rect",{x:a,y:b,width:c,height:d},!0),f=this.__closestGroupOrSvg(),f.appendChild(e),this.__currentElement=e,this.__applyStyleToCurrentElement("stroke")},f.prototype.__clearCanvas=function(){for(var a=this.__closestGroupOrSvg(),b=a.getAttribute("transform"),c=this.__root.childNodes[1],d=c.childNodes,e=d.length-1;e>=0;e--)d[e]&&c.removeChild(d[e]);this.__currentElement=c,this.__groupStack=[],b&&this.__addTransform(b)},f.prototype.clearRect=function(a,b,c,d){if(0===a&&0===b&&c===this.width&&d===this.height)return void this.__clearCanvas();var e,f=this.__closestGroupOrSvg();e=this.__createElement("rect",{x:a,y:b,width:c,height:d,fill:"#FFFFFF"},!0),f.appendChild(e)},f.prototype.createLinearGradient=function(a,c,d,e){var f=this.__createElement("linearGradient",{id:b(this.__ids),x1:a+"px",x2:d+"px",y1:c+"px",y2:e+"px",gradientUnits:"userSpaceOnUse"},!1);return this.__defs.appendChild(f),new g(f,this)},f.prototype.createRadialGradient=function(a,c,d,e,f,h){var i=this.__createElement("radialGradient",{id:b(this.__ids),cx:e+"px",cy:f+"px",r:h+"px",fx:a+"px",fy:c+"px",gradientUnits:"userSpaceOnUse"},!1);return this.__defs.appendChild(i),new g(i,this)},f.prototype.__parseFont=function(){var a=/^\s*(?=(?:(?:[-a-z]+\s*){0,2}(italic|oblique))?)(?=(?:(?:[-a-z]+\s*){0,2}(small-caps))?)(?=(?:(?:[-a-z]+\s*){0,2}(bold(?:er)?|lighter|[1-9]00))?)(?:(?:normal|\1|\2|\3)\s*){0,3}((?:xx?-)?(?:small|large)|medium|smaller|larger|[.\d]+(?:\%|in|[cem]m|ex|p[ctx]))(?:\s*\/\s*(normal|[.\d]+(?:\%|in|[cem]m|ex|p[ctx])))?\s*([-,\'\"\sa-z0-9]+?)\s*$/i,b=a.exec(this.font),c={style:b[1]||"normal",size:b[4]||"10px",family:b[6]||"sans-serif",weight:b[3]||"normal",decoration:b[2]||"normal",href:null};return"underline"===this.__fontUnderline&&(c.decoration="underline"),this.__fontHref&&(c.href=this.__fontHref),c},f.prototype.__wrapTextLink=function(a,b){if(a.href){var c=this.__createElement("a");return c.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href",a.href),c.appendChild(b),c}return b},f.prototype.__applyText=function(a,b,e,f){var g=this.__parseFont(),h=this.__closestGroupOrSvg(),i=this.__createElement("text",{"font-family":g.family,"font-size":g.size,"font-style":g.style,"font-weight":g.weight,"text-decoration":g.decoration,x:b,y:e,"text-anchor":c(this.textAlign),"dominant-baseline":d(this.textBaseline)},!0);i.appendChild(this.__document.createTextNode(a)),this.__currentElement=i,this.__applyStyleToCurrentElement(f),h.appendChild(this.__wrapTextLink(g,i))},f.prototype.fillText=function(a,b,c){this.__applyText(a,b,c,"fill")},f.prototype.strokeText=function(a,b,c){this.__applyText(a,b,c,"stroke")},f.prototype.measureText=function(a){return this.__ctx.font=this.font,this.__ctx.measureText(a)},f.prototype.arc=function(b,c,d,e,f,g){if(e!==f){e%=2*Math.PI,f%=2*Math.PI,e===f&&(f=(f+2*Math.PI-.001*(g?-1:1))%(2*Math.PI));var h=b+d*Math.cos(f),i=c+d*Math.sin(f),j=b+d*Math.cos(e),k=c+d*Math.sin(e),l=g?0:1,m=0,n=f-e;n<0&&(n+=2*Math.PI),m=g?n>Math.PI?0:1:n>Math.PI?1:0,this.lineTo(j,k),this.__addPathCommand(a("A {rx} {ry} {xAxisRotation} {largeArcFlag} {sweepFlag} {endX} {endY}",{rx:d,ry:d,xAxisRotation:0,largeArcFlag:m,sweepFlag:l,endX:h,endY:i})),this.__currentPosition={x:h,y:i}}},f.prototype.clip=function(){var c=this.__closestGroupOrSvg(),d=this.__createElement("clipPath"),e=b(this.__ids),f=this.__createElement("g");this.__applyCurrentDefaultPath(),c.removeChild(this.__currentElement),d.setAttribute("id",e),d.appendChild(this.__currentElement),this.__defs.appendChild(d),c.setAttribute("clip-path",a("url(#{id})",{id:e})),c.appendChild(f),this.__currentElement=f},f.prototype.drawImage=function(){var a,b,c,d,e,g,h,i,j,k,l,m,n,o,p=Array.prototype.slice.call(arguments),q=p[0],r=0,s=0;if(3===p.length)a=p[1],b=p[2],e=q.width,g=q.height,c=e,d=g;else if(5===p.length)a=p[1],b=p[2],c=p[3],d=p[4],e=q.width,g=q.height;else{if(9!==p.length)throw new Error("Invalid number of arguments passed to drawImage: "+arguments.length);r=p[1],s=p[2],e=p[3],g=p[4],a=p[5],b=p[6],c=p[7],d=p[8]}h=this.__closestGroupOrSvg(),this.__currentElement;var t="translate("+a+", "+b+")";if(q instanceof f){if(i=q.getSvg().cloneNode(!0),i.childNodes&&i.childNodes.length>1){for(j=i.childNodes[0];j.childNodes.length;)o=j.childNodes[0].getAttribute("id"),this.__ids[o]=o,this.__defs.appendChild(j.childNodes[0]);if(k=i.childNodes[1]){var u,v=k.getAttribute("transform");u=v?v+" "+t:t,k.setAttribute("transform",u),h.appendChild(k)}}}else"CANVAS"!==q.nodeName&&"IMG"!==q.nodeName||(l=this.__createElement("image"),l.setAttribute("width",c),l.setAttribute("height",d),l.setAttribute("preserveAspectRatio","none"),l.setAttribute("opacity",this.globalAlpha),(r||s||e!==q.width||g!==q.height)&&(m=this.__document.createElement("canvas"),m.width=c,m.height=d,n=m.getContext("2d"),n.drawImage(q,r,s,e,g,0,0,c,d),q=m),l.setAttribute("transform",t),l.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href","CANVAS"===q.nodeName?q.toDataURL():q.originalSrc),h.appendChild(l))},f.prototype.createPattern=function(a,c){var d,e=this.__document.createElementNS("http://www.w3.org/2000/svg","pattern"),g=b(this.__ids);return e.setAttribute("id",g),e.setAttribute("width",a.width),e.setAttribute("height",a.height),"CANVAS"===a.nodeName||"IMG"===a.nodeName?(d=this.__document.createElementNS("http://www.w3.org/2000/svg","image"),d.setAttribute("width",a.width),d.setAttribute("height",a.height),d.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href","CANVAS"===a.nodeName?a.toDataURL():a.getAttribute("src")),e.appendChild(d),this.__defs.appendChild(e)):a instanceof f&&(e.appendChild(a.__root.childNodes[1]),this.__defs.appendChild(e)),new h(e,this)},f.prototype.setLineDash=function(a){a&&a.length>0?this.lineDash=a.join(","):this.lineDash=null},f.prototype.drawFocusRing=function(){},f.prototype.createImageData=function(){},f.prototype.getImageData=function(){},f.prototype.putImageData=function(){},f.prototype.globalCompositeOperation=function(){},f.prototype.setTransform=function(){},"object"==typeof window&&(window.C2S=f),"object"==typeof module&&"object"==typeof module.exports&&(module.exports=f)}(),function(){"use strict";function a(a,b,c){if(this.mode=q.MODE_8BIT_BYTE,this.data=a,this.parsedData=[],b){for(var d=0,e=this.data.length;d<e;d++){var f=[],g=this.data.charCodeAt(d);f[0]=g,this.parsedData.push(f)}this.parsedData=Array.prototype.concat.apply([],this.parsedData)}else this.parsedData=function(a){for(var b=[],c=0;c<a.length;c++){var d=a.charCodeAt(c);d<128?b.push(d):d<2048?b.push(192|d>>6,128|63&d):d<55296||d>=57344?b.push(224|d>>12,128|d>>6&63,128|63&d):(c++,d=65536+((1023&d)<<10|1023&a.charCodeAt(c)),b.push(240|d>>18,128|d>>12&63,128|d>>6&63,128|63&d))}return b}(a);this.parsedData=Array.prototype.concat.apply([],this.parsedData),c||this.parsedData.length==this.data.length||(this.parsedData.unshift(191),this.parsedData.unshift(187),this.parsedData.unshift(239))}function b(a,b){this.typeNumber=a,this.errorCorrectLevel=b,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[]}function c(a,b){if(a.length==i)throw new Error(a.length+"/"+b);for(var c=0;c<a.length&&0==a[c];)c++;this.num=new Array(a.length-c+b);for(var d=0;d<a.length-c;d++)this.num[d]=a[d+c]}function d(a,b){this.totalCount=a,this.dataCount=b}function e(){this.buffer=[],this.length=0}function f(){var a=!1,b=navigator.userAgent;if(/android/i.test(b)){a=!0;var c=b.toString().match(/android ([0-9]\.[0-9])/i);c&&c[1]&&(a=parseFloat(c[1]))}return a}function g(a,b){for(var c=b.correctLevel,d=1,e=h(a),f=0,g=w.length;f<g;f++){var i=0;switch(c){case r.L:i=w[f][0];break;case r.M:i=w[f][1];break;case r.Q:i=w[f][2];break;case r.H:i=w[f][3]}if(e<=i)break;d++}if(d>w.length)throw new Error("Too long data. the CorrectLevel."+["M","L","H","Q"][c]+" limit length is "+i);return 0!=b.version&&(d<=b.version?(d=b.version,b.runVersion=d):(console.warn("QR Code version "+b.version+" too small, run version use "+d),b.runVersion=d)),d}function h(a){return encodeURI(a).toString().replace(/\%[0-9a-fA-F]{2}/g,"a").length}var i,j,k="object"==typeof global&&global&&global.Object===Object&&global,l="object"==typeof self&&self&&self.Object===Object&&self,m=k||l||Function("return this")(),n="object"==typeof exports&&exports&&!exports.nodeType&&exports,o=n&&"object"==typeof module&&module&&!module.nodeType&&module,p=m.QRCode;a.prototype={getLength:function(a){return this.parsedData.length},write:function(a){for(var b=0,c=this.parsedData.length;b<c;b++)a.put(this.parsedData[b],8)}},b.prototype={addData:function(b,c,d){var e=new a(b,c,d);this.dataList.push(e),this.dataCache=null},isDark:function(a,b){if(a<0||this.moduleCount<=a||b<0||this.moduleCount<=b)throw new Error(a+","+b);return this.modules[a][b][0]},getEye:function(a,b){if(a<0||this.moduleCount<=a||b<0||this.moduleCount<=b)throw new Error(a+","+b);var c=this.modules[a][b];if(c[1]){var d="P"+c[1]+"_"+c[2];return"A"==c[2]&&(d="A"+c[1]),{isDark:c[0],type:d}}return null},getModuleCount:function(){return this.moduleCount},make:function(){this.makeImpl(!1,this.getBestMaskPattern())},makeImpl:function(a,c){this.moduleCount=4*this.typeNumber+17,this.modules=new Array(this.moduleCount);for(var d=0;d<this.moduleCount;d++){this.modules[d]=new Array(this.moduleCount);for(var e=0;e<this.moduleCount;e++)this.modules[d][e]=[]}this.setupPositionProbePattern(0,0,"TL"),this.setupPositionProbePattern(this.moduleCount-7,0,"BL"),this.setupPositionProbePattern(0,this.moduleCount-7,"TR"),this.setupPositionAdjustPattern("A"),this.setupTimingPattern(),this.setupTypeInfo(a,c),this.typeNumber>=7&&this.setupTypeNumber(a),null==this.dataCache&&(this.dataCache=b.createData(this.typeNumber,this.errorCorrectLevel,this.dataList)),this.mapData(this.dataCache,c)},setupPositionProbePattern:function(a,b,c){for(var d=-1;d<=7;d++)if(!(a+d<=-1||this.moduleCount<=a+d))for(var e=-1;e<=7;e++)b+e<=-1||this.moduleCount<=b+e||(0<=d&&d<=6&&(0==e||6==e)||0<=e&&e<=6&&(0==d||6==d)||2<=d&&d<=4&&2<=e&&e<=4?(this.modules[a+d][b+e][0]=!0,this.modules[a+d][b+e][2]=c,this.modules[a+d][b+e][1]=-0==d||-0==e||6==d||6==e?"O":"I"):this.modules[a+d][b+e][0]=!1)},getBestMaskPattern:function(){for(var a=0,b=0,c=0;c<8;c++){this.makeImpl(!0,c);var d=t.getLostPoint(this);(0==c||a>d)&&(a=d,b=c)}return b},createMovieClip:function(a,b,c){var d=a.createEmptyMovieClip(b,c);this.make();for(var e=0;e<this.modules.length;e++)for(var f=1*e,g=0;g<this.modules[e].length;g++){var h=1*g,i=this.modules[e][g][0];i&&(d.beginFill(0,100),d.moveTo(h,f),d.lineTo(h+1,f),d.lineTo(h+1,f+1),d.lineTo(h,f+1),d.endFill())}return d},setupTimingPattern:function(){for(var a=8;a<this.moduleCount-8;a++)null==this.modules[a][6][0]&&(this.modules[a][6][0]=a%2==0);for(var b=8;b<this.moduleCount-8;b++)null==this.modules[6][b][0]&&(this.modules[6][b][0]=b%2==0)},setupPositionAdjustPattern:function(a){for(var b=t.getPatternPosition(this.typeNumber),c=0;c<b.length;c++)for(var d=0;d<b.length;d++){var e=b[c],f=b[d];if(null==this.modules[e][f][0])for(var g=-2;g<=2;g++)for(var h=-2;h<=2;h++)-2==g||2==g||-2==h||2==h||0==g&&0==h?(this.modules[e+g][f+h][0]=!0,this.modules[e+g][f+h][2]=a,this.modules[e+g][f+h][1]=-2==g||-2==h||2==g||2==h?"O":"I"):this.modules[e+g][f+h][0]=!1}},setupTypeNumber:function(a){for(var b=t.getBCHTypeNumber(this.typeNumber),c=0;c<18;c++){var d=!a&&1==(b>>c&1);this.modules[Math.floor(c/3)][c%3+this.moduleCount-8-3][0]=d}for(var c=0;c<18;c++){var d=!a&&1==(b>>c&1);this.modules[c%3+this.moduleCount-8-3][Math.floor(c/3)][0]=d}},setupTypeInfo:function(a,b){for(var c=this.errorCorrectLevel<<3|b,d=t.getBCHTypeInfo(c),e=0;e<15;e++){var f=!a&&1==(d>>e&1);e<6?this.modules[e][8][0]=f:e<8?this.modules[e+1][8][0]=f:this.modules[this.moduleCount-15+e][8][0]=f}for(var e=0;e<15;e++){var f=!a&&1==(d>>e&1);e<8?this.modules[8][this.moduleCount-e-1][0]=f:e<9?this.modules[8][15-e-1+1][0]=f:this.modules[8][15-e-1][0]=f}this.modules[this.moduleCount-8][8][0]=!a},mapData:function(a,b){for(var c=-1,d=this.moduleCount-1,e=7,f=0,g=this.moduleCount-1;g>0;g-=2)for(6==g&&g--;;){for(var h=0;h<2;h++)if(null==this.modules[d][g-h][0]){var i=!1;f<a.length&&(i=1==(a[f]>>>e&1));var j=t.getMask(b,d,g-h);j&&(i=!i),this.modules[d][g-h][0]=i,e--,-1==e&&(f++,e=7)}if((d+=c)<0||this.moduleCount<=d){d-=c,c=-c;break}}}},b.PAD0=236,b.PAD1=17,b.createData=function(a,c,f){for(var g=d.getRSBlocks(a,c),h=new e,i=0;i<f.length;i++){var j=f[i];h.put(j.mode,4),h.put(j.getLength(),t.getLengthInBits(j.mode,a)),j.write(h)}for(var k=0,i=0;i<g.length;i++)k+=g[i].dataCount;if(h.getLengthInBits()>8*k)throw new Error("code length overflow. ("+h.getLengthInBits()+">"+8*k+")");for(h.getLengthInBits()+4<=8*k&&h.put(0,4);h.getLengthInBits()%8!=0;)h.putBit(!1);for(;;){if(h.getLengthInBits()>=8*k)break;if(h.put(b.PAD0,8),h.getLengthInBits()>=8*k)break;h.put(b.PAD1,8)}return b.createBytes(h,g)},b.createBytes=function(a,b){for(var d=0,e=0,f=0,g=new Array(b.length),h=new Array(b.length),i=0;i<b.length;i++){var j=b[i].dataCount,k=b[i].totalCount-j;e=Math.max(e,j),f=Math.max(f,k),g[i]=new Array(j);for(var l=0;l<g[i].length;l++)g[i][l]=255&a.buffer[l+d];d+=j;var m=t.getErrorCorrectPolynomial(k),n=new c(g[i],m.getLength()-1),o=n.mod(m);h[i]=new Array(m.getLength()-1);for(var l=0;l<h[i].length;l++){var p=l+o.getLength()-h[i].length;h[i][l]=p>=0?o.get(p):0}}for(var q=0,l=0;l<b.length;l++)q+=b[l].totalCount;for(var r=new Array(q),s=0,l=0;l<e;l++)for(var i=0;i<b.length;i++)l<g[i].length&&(r[s++]=g[i][l]);for(var l=0;l<f;l++)for(var i=0;i<b.length;i++)l<h[i].length&&(r[s++]=h[i][l]);return r};for(var q={MODE_NUMBER:1,MODE_ALPHA_NUM:2,MODE_8BIT_BYTE:4,MODE_KANJI:8},r={L:1,M:0,Q:3,H:2},s={PATTERN000:0,PATTERN001:1,PATTERN010:2,PATTERN011:3,PATTERN100:4,PATTERN101:5,PATTERN110:6,PATTERN111:7},t={PATTERN_POSITION_TABLE:[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],G15:1335,G18:7973,G15_MASK:21522,getBCHTypeInfo:function(a){for(var b=a<<10;t.getBCHDigit(b)-t.getBCHDigit(t.G15)>=0;)b^=t.G15<<t.getBCHDigit(b)-t.getBCHDigit(t.G15);return(a<<10|b)^t.G15_MASK},getBCHTypeNumber:function(a){for(var b=a<<12;t.getBCHDigit(b)-t.getBCHDigit(t.G18)>=0;)b^=t.G18<<t.getBCHDigit(b)-t.getBCHDigit(t.G18);return a<<12|b},getBCHDigit:function(a){for(var b=0;0!=a;)b++,a>>>=1;return b},getPatternPosition:function(a){return t.PATTERN_POSITION_TABLE[a-1]},getMask:function(a,b,c){switch(a){case s.PATTERN000:return(b+c)%2==0;case s.PATTERN001:return b%2==0;case s.PATTERN010:return c%3==0;case s.PATTERN011:return(b+c)%3==0;case s.PATTERN100:return(Math.floor(b/2)+Math.floor(c/3))%2==0;case s.PATTERN101:return b*c%2+b*c%3==0;case s.PATTERN110:return(b*c%2+b*c%3)%2==0;case s.PATTERN111:return(b*c%3+(b+c)%2)%2==0;default:throw new Error("bad maskPattern:"+a)}},getErrorCorrectPolynomial:function(a){for(var b=new c([1],0),d=0;d<a;d++)b=b.multiply(new c([1,u.gexp(d)],0));return b},getLengthInBits:function(a,b){if(1<=b&&b<10)switch(a){case q.MODE_NUMBER:return 10;case q.MODE_ALPHA_NUM:return 9;case q.MODE_8BIT_BYTE:case q.MODE_KANJI:return 8;default:throw new Error("mode:"+a)}else if(b<27)switch(a){case q.MODE_NUMBER:return 12;case q.MODE_ALPHA_NUM:return 11;case q.MODE_8BIT_BYTE:return 16;case q.MODE_KANJI:return 10;default:throw new Error("mode:"+a)}else{if(!(b<41))throw new Error("type:"+b);switch(a){case q.MODE_NUMBER:return 14;case q.MODE_ALPHA_NUM:return 13;case q.MODE_8BIT_BYTE:return 16;case q.MODE_KANJI:return 12;default:throw new Error("mode:"+a)}}},getLostPoint:function(a){for(var b=a.getModuleCount(),c=0,d=0;d<b;d++)for(var e=0;e<b;e++){for(var f=0,g=a.isDark(d,e),h=-1;h<=1;h++)if(!(d+h<0||b<=d+h))for(var i=-1;i<=1;i++)e+i<0||b<=e+i||0==h&&0==i||g==a.isDark(d+h,e+i)&&f++;f>5&&(c+=3+f-5)}for(var d=0;d<b-1;d++)for(var e=0;e<b-1;e++){var j=0;a.isDark(d,e)&&j++,a.isDark(d+1,e)&&j++,a.isDark(d,e+1)&&j++,a.isDark(d+1,e+1)&&j++,0!=j&&4!=j||(c+=3)}for(var d=0;d<b;d++)for(var e=0;e<b-6;e++)a.isDark(d,e)&&!a.isDark(d,e+1)&&a.isDark(d,e+2)&&a.isDark(d,e+3)&&a.isDark(d,e+4)&&!a.isDark(d,e+5)&&a.isDark(d,e+6)&&(c+=40);for(var e=0;e<b;e++)for(var d=0;d<b-6;d++)a.isDark(d,e)&&!a.isDark(d+1,e)&&a.isDark(d+2,e)&&a.isDark(d+3,e)&&a.isDark(d+4,e)&&!a.isDark(d+5,e)&&a.isDark(d+6,e)&&(c+=40);for(var k=0,e=0;e<b;e++)for(var d=0;d<b;d++)a.isDark(d,e)&&k++;return c+=Math.abs(100*k/b/b-50)/5*10}},u={glog:function(a){if(a<1)throw new Error("glog("+a+")");return u.LOG_TABLE[a]},gexp:function(a){for(;a<0;)a+=255;for(;a>=256;)a-=255;return u.EXP_TABLE[a]},EXP_TABLE:new Array(256),LOG_TABLE:new Array(256)},v=0;v<8;v++)u.EXP_TABLE[v]=1<<v;for(var v=8;v<256;v++)u.EXP_TABLE[v]=u.EXP_TABLE[v-4]^u.EXP_TABLE[v-5]^u.EXP_TABLE[v-6]^u.EXP_TABLE[v-8];for(var v=0;v<255;v++)u.LOG_TABLE[u.EXP_TABLE[v]]=v;c.prototype={get:function(a){return this.num[a]},getLength:function(){return this.num.length},multiply:function(a){for(var b=new Array(this.getLength()+a.getLength()-1),d=0;d<this.getLength();d++)for(var e=0;e<a.getLength();e++)b[d+e]^=u.gexp(u.glog(this.get(d))+u.glog(a.get(e)));return new c(b,0)},mod:function(a){if(this.getLength()-a.getLength()<0)return this;for(var b=u.glog(this.get(0))-u.glog(a.get(0)),d=new Array(this.getLength()),e=0;e<this.getLength();e++)d[e]=this.get(e);for(var e=0;e<a.getLength();e++)d[e]^=u.gexp(u.glog(a.get(e))+b);return new c(d,0).mod(a)}},
 d.RS_BLOCK_TABLE=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12,7,37,13],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],d.getRSBlocks=function(a,b){var c=d.getRsBlockTable(a,b);if(c==i)throw new Error("bad rs block @ typeNumber:"+a+"/errorCorrectLevel:"+b);for(var e=c.length/3,f=[],g=0;g<e;g++)for(var h=c[3*g+0],j=c[3*g+1],k=c[3*g+2],l=0;l<h;l++)f.push(new d(j,k));return f},d.getRsBlockTable=function(a,b){switch(b){case r.L:return d.RS_BLOCK_TABLE[4*(a-1)+0];case r.M:return d.RS_BLOCK_TABLE[4*(a-1)+1];case r.Q:return d.RS_BLOCK_TABLE[4*(a-1)+2];case r.H:return d.RS_BLOCK_TABLE[4*(a-1)+3];default:return i}},e.prototype={get:function(a){var b=Math.floor(a/8);return 1==(this.buffer[b]>>>7-a%8&1)},put:function(a,b){for(var c=0;c<b;c++)this.putBit(1==(a>>>b-c-1&1))},getLengthInBits:function(){return this.length},putBit:function(a){var b=Math.floor(this.length/8);this.buffer.length<=b&&this.buffer.push(0),a&&(this.buffer[b]|=128>>>this.length%8),this.length++}};var w=[[17,14,11,7],[32,26,20,14],[53,42,32,24],[78,62,46,34],[106,84,60,44],[134,106,74,58],[154,122,86,64],[192,152,108,84],[230,180,130,98],[271,213,151,119],[321,251,177,137],[367,287,203,155],[425,331,241,177],[458,362,258,194],[520,412,292,220],[586,450,322,250],[644,504,364,280],[718,560,394,310],[792,624,442,338],[858,666,482,382],[929,711,509,403],[1003,779,565,439],[1091,857,611,461],[1171,911,661,511],[1273,997,715,535],[1367,1059,751,593],[1465,1125,805,625],[1528,1190,868,658],[1628,1264,908,698],[1732,1370,982,742],[1840,1452,1030,790],[1952,1538,1112,842],[2068,1628,1168,898],[2188,1722,1228,958],[2303,1809,1283,983],[2431,1911,1351,1051],[2563,1989,1423,1093],[2699,2099,1499,1139],[2809,2213,1579,1219],[2953,2331,1663,1273]],x=function(){return"undefined"!=typeof CanvasRenderingContext2D}()?function(){function a(){if("svg"==this._htOption.drawer){var a=this._oContext.getSerializedSvg(!0);this.dataURL=a,this._el.innerHTML=a}else try{var b=this._elCanvas.toDataURL("image/png");this.dataURL=b}catch(a){console.error(a)}this._htOption.onRenderingEnd&&(this.dataURL||console.error("Can not get base64 data, please check: 1. Published the page and image to the server 2. The image request support CORS 3. Configured `crossOrigin:'anonymous'` option"),this._htOption.onRenderingEnd(this._htOption,this.dataURL))}function b(a,b){var c=this;if(c._fFail=b,c._fSuccess=a,null===c._bSupportDataURI){var d=document.createElement("img"),e=function(){c._bSupportDataURI=!1,c._fFail&&c._fFail.call(c)},f=function(){c._bSupportDataURI=!0,c._fSuccess&&c._fSuccess.call(c)};d.onabort=e,d.onerror=e,d.onload=f,d.src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="}else!0===c._bSupportDataURI&&c._fSuccess?c._fSuccess.call(c):!1===c._bSupportDataURI&&c._fFail&&c._fFail.call(c)}if(m._android&&m._android<=2.1){var c=1/window.devicePixelRatio,d=CanvasRenderingContext2D.prototype.drawImage;CanvasRenderingContext2D.prototype.drawImage=function(a,b,e,f,g,h,i,j,k){if("nodeName"in a&&/img/i.test(a.nodeName))for(var l=arguments.length-1;l>=1;l--)arguments[l]=arguments[l]*c;else void 0===j&&(arguments[1]*=c,arguments[2]*=c,arguments[3]*=c,arguments[4]*=c);d.apply(this,arguments)}}var e=function(a,b){this._bIsPainted=!1,this._android=f(),this._el=a,this._htOption=b,"svg"==this._htOption.drawer?(this._oContext={},this._elCanvas={}):(this._elCanvas=document.createElement("canvas"),this._el.appendChild(this._elCanvas),this._oContext=this._elCanvas.getContext("2d")),this._bSupportDataURI=null,this.dataURL=null};return e.prototype.draw=function(a){function b(){d.quietZone>0&&d.quietZoneColor&&(j.lineWidth=0,j.fillStyle=d.quietZoneColor,j.fillRect(0,0,k._elCanvas.width,d.quietZone),j.fillRect(0,d.quietZone,d.quietZone,k._elCanvas.height-2*d.quietZone),j.fillRect(k._elCanvas.width-d.quietZone,d.quietZone,d.quietZone,k._elCanvas.height-2*d.quietZone),j.fillRect(0,k._elCanvas.height-d.quietZone,k._elCanvas.width,d.quietZone))}function c(a){function c(a){var c=Math.round(d.width/3.5),e=Math.round(d.height/3.5);c!==e&&(c=e),d.logoMaxWidth?c=Math.round(d.logoMaxWidth):d.logoWidth&&(c=Math.round(d.logoWidth)),d.logoMaxHeight?e=Math.round(d.logoMaxHeight):d.logoHeight&&(e=Math.round(d.logoHeight));var f,g;void 0===a.naturalWidth?(f=a.width,g=a.height):(f=a.naturalWidth,g=a.naturalHeight),(d.logoMaxWidth||d.logoMaxHeight)&&(d.logoMaxWidth&&f<=c&&(c=f),d.logoMaxHeight&&g<=e&&(e=g),f<=c&&g<=e&&(c=f,e=g));var h=(d.realWidth-c)/2,i=(d.realHeight-e)/2,k=Math.min(c/f,e/g),l=f*k,m=g*k;(d.logoMaxWidth||d.logoMaxHeight)&&(c=l,e=m,h=(d.realWidth-c)/2,i=(d.realHeight-e)/2),d.logoBackgroundTransparent||(j.fillStyle=d.logoBackgroundColor,j.fillRect(h,i,c,e));var n=j.imageSmoothingQuality,o=j.imageSmoothingEnabled;j.imageSmoothingEnabled=!0,j.imageSmoothingQuality="high",j.drawImage(a,h+(c-l)/2,i+(e-m)/2,l,m),j.imageSmoothingEnabled=o,j.imageSmoothingQuality=n,b(),s._bIsPainted=!0,s.makeImage()}d.onRenderingStart&&d.onRenderingStart(d);for(var h=0;h<e;h++)for(var i=0;i<e;i++){var k=i*f+d.quietZone,l=h*g+d.quietZone,m=a.isDark(h,i),n=a.getEye(h,i),o=d.dotScale;j.lineWidth=0;var p,q;n?(p=d[n.type]||d[n.type.substring(0,2)]||d.colorDark,q=d.colorLight):d.backgroundImage?(q="rgba(0,0,0,0)",6==h?d.autoColor?(p=d.timing_H||d.timing||d.autoColorDark,q=d.autoColorLight):p=d.timing_H||d.timing||d.colorDark:6==i?d.autoColor?(p=d.timing_V||d.timing||d.autoColorDark,q=d.autoColorLight):p=d.timing_V||d.timing||d.colorDark:d.autoColor?(p=d.autoColorDark,q=d.autoColorLight):p=d.colorDark):(p=6==h?d.timing_H||d.timing||d.colorDark:6==i?d.timing_V||d.timing||d.colorDark:d.colorDark,q=d.colorLight),j.strokeStyle=m?p:q,j.fillStyle=m?p:q,n?(o="AO"==n.type?d.dotScaleAO:"AI"==n.type?d.dotScaleAI:1,d.backgroundImage&&d.autoColor?(p=("AO"==n.type?d.AI:d.AO)||d.autoColorDark,q=d.autoColorLight):p=("AO"==n.type?d.AI:d.AO)||p,m=n.isDark,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))):6==h?(o=d.dotScaleTiming_H,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))):6==i?(o=d.dotScaleTiming_V,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))):(d.backgroundImage,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))),1==d.dotScale||n||(j.strokeStyle=d.colorLight)}if(d.title&&(j.fillStyle=d.titleBackgroundColor,j.fillRect(d.quietZone,d.quietZone,d.width,d.titleHeight),j.font=d.titleFont,j.fillStyle=d.titleColor,j.textAlign="center",j.fillText(d.title,this._elCanvas.width/2,+d.quietZone+d.titleTop)),d.subTitle&&(j.font=d.subTitleFont,j.fillStyle=d.subTitleColor,j.fillText(d.subTitle,this._elCanvas.width/2,+d.quietZone+d.subTitleTop)),d.logo){var r=new Image,s=this;r.onload=function(){c(r)},r.onerror=function(a){console.error(a)},null!=d.crossOrigin&&(r.crossOrigin=d.crossOrigin),r.originalSrc=d.logo,r.src=d.logo}else b(),this._bIsPainted=!0,this.makeImage()}var d=this._htOption,e=a.getModuleCount(),f=d.width/e,g=d.height/e;f<=1&&(f=1),g<=1&&(g=1);var h=f*e,i=g*e;d.heightWithTitle=i+d.titleHeight,d.realHeight=d.heightWithTitle+2*d.quietZone,d.realWidth=h+2*d.quietZone,this._elCanvas.width=d.realWidth,this._elCanvas.height=d.realHeight,"canvas"!=d.drawer&&(this._oContext=new C2S(this._elCanvas.width,this._elCanvas.height)),this.clear();var j=this._oContext;j.lineWidth=0,j.fillStyle=d.colorLight,j.fillRect(0,0,this._elCanvas.width,this._elCanvas.height),j.clearRect(d.quietZone,d.quietZone,d.width,d.titleHeight);var k=this;if(d.backgroundImage){var l=new Image;l.onload=function(){j.globalAlpha=1,j.globalAlpha=d.backgroundImageAlpha;var b=j.imageSmoothingQuality,e=j.imageSmoothingEnabled;j.imageSmoothingEnabled=!0,j.imageSmoothingQuality="high",(d.title||d.subTitle)&&d.titleHeight?j.drawImage(l,d.quietZone,d.quietZone+d.titleHeight,d.width,d.height):j.drawImage(l,0,0,d.realWidth,d.realHeight),j.imageSmoothingEnabled=e,j.imageSmoothingQuality=b,j.globalAlpha=1,c.call(k,a)},null!=d.crossOrigin&&(l.crossOrigin=d.crossOrigin),l.originalSrc=d.backgroundImage,l.src=d.backgroundImage}else c.call(k,a)},e.prototype.makeImage=function(){this._bIsPainted&&b.call(this,a)},e.prototype.isPainted=function(){return this._bIsPainted},e.prototype.clear=function(){this._oContext.clearRect(0,0,this._elCanvas.width,this._elCanvas.height),this._bIsPainted=!1},e.prototype.remove=function(){this._oContext.clearRect(0,0,this._elCanvas.width,this._elCanvas.height),this._bIsPainted=!1,this._el.innerHTML=""},e.prototype.round=function(a){return a?Math.floor(1e3*a)/1e3:a},e}():function(){var a=function(a,b){this._el=a,this._htOption=b};return a.prototype.draw=function(a){var b=this._htOption,c=this._el,d=a.getModuleCount(),e=b.width/d,f=b.height/d;e<=1&&(e=1),f<=1&&(f=1);var g=e*d,h=f*d;b.heightWithTitle=h+b.titleHeight,b.realHeight=b.heightWithTitle+2*b.quietZone,b.realWidth=g+2*b.quietZone;var i=[],j="",k=Math.round(e*b.dotScale),l=Math.round(f*b.dotScale);k<4&&(k=4,l=4);var m=b.colorDark,n=b.colorLight;if(b.backgroundImage){b.autoColor?(b.colorDark="rgba(0, 0, 0, .6);filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#99000000', EndColorStr='#99000000');",b.colorLight="rgba(255, 255, 255, .7);filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#B2FFFFFF', EndColorStr='#B2FFFFFF');"):b.colorLight="rgba(0,0,0,0)";var o='<div style="display:inline-block; z-index:-10;position:absolute;"><img src="'+b.backgroundImage+'" width="'+(b.width+2*b.quietZone)+'" height="'+b.realHeight+'" style="opacity:'+b.backgroundImageAlpha+";filter:alpha(opacity="+100*b.backgroundImageAlpha+'); "/></div>';i.push(o)}if(b.quietZone&&(j="display:inline-block; width:"+(b.width+2*b.quietZone)+"px; height:"+(b.width+2*b.quietZone)+"px;background:"+b.quietZoneColor+"; text-align:center;"),i.push('<div style="font-size:0;'+j+'">'),i.push('<table  style="font-size:0;border:0;border-collapse:collapse; margin-top:'+b.quietZone+'px;" border="0" cellspacing="0" cellspadding="0" align="center" valign="middle">'),i.push('<tr height="'+b.titleHeight+'" align="center"><td style="border:0;border-collapse:collapse;margin:0;padding:0" colspan="'+d+'">'),b.title){var p=b.titleColor,q=b.titleFont;i.push('<div style="width:100%;margin-top:'+b.titleTop+"px;color:"+p+";font:"+q+";background:"+b.titleBackgroundColor+'">'+b.title+"</div>")}b.subTitle&&i.push('<div style="width:100%;margin-top:'+(b.subTitleTop-b.titleTop)+"px;color:"+b.subTitleColor+"; font:"+b.subTitleFont+'">'+b.subTitle+"</div>"),i.push("</td></tr>");for(var r=0;r<d;r++){i.push('<tr style="border:0; padding:0; margin:0;" height="7">');for(var s=0;s<d;s++){var t=a.isDark(r,s),u=a.getEye(r,s);if(u){t=u.isDark;var v=u.type,w=b[v]||b[v.substring(0,2)]||m;i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+'px;"><span style="width:'+e+"px;height:"+f+"px;background-color:"+(t?w:n)+';display:inline-block"></span></td>')}else{var x=b.colorDark;6==r?(x=b.timing_H||b.timing||m,i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+"px;background-color:"+(t?x:n)+';"></td>')):6==s?(x=b.timing_V||b.timing||m,i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+"px;background-color:"+(t?x:n)+';"></td>')):i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+'px;"><div style="display:inline-block;width:'+k+"px;height:"+l+"px;background-color:"+(t?x:b.colorLight)+';"></div></td>')}}i.push("</tr>")}if(i.push("</table>"),i.push("</div>"),b.logo){var y=new Image;null!=b.crossOrigin&&(y.crossOrigin=b.crossOrigin),y.src=b.logo;var z=b.width/3.5,A=b.height/3.5;z!=A&&(z=A),b.logoWidth&&(z=b.logoWidth),b.logoHeight&&(A=b.logoHeight);var B="position:relative; z-index:1;display:table-cell;top:-"+(b.height/2+A/2+b.quietZone)+"px;text-align:center; width:"+z+"px; height:"+A+"px;line-height:"+z+"px; vertical-align: middle;";b.logoBackgroundTransparent||(B+="background:"+b.logoBackgroundColor),i.push('<div style="'+B+'"><img  src="'+b.logo+'"  style="max-width: '+z+"px; max-height: "+A+'px;" /> <div style=" display: none; width:1px;margin-left: -1px;"></div></div>')}b.onRenderingStart&&b.onRenderingStart(b),c.innerHTML=i.join("");var C=c.childNodes[0],D=(b.width-C.offsetWidth)/2,E=(b.heightWithTitle-C.offsetHeight)/2;D>0&&E>0&&(C.style.margin=E+"px "+D+"px"),this._htOption.onRenderingEnd&&this._htOption.onRenderingEnd(this._htOption,null)},a.prototype.clear=function(){this._el.innerHTML=""},a}();j=function(a,b){if(this._htOption={width:256,height:256,typeNumber:4,colorDark:"#000000",colorLight:"#ffffff",correctLevel:r.H,dotScale:1,dotScaleTiming:1,dotScaleTiming_H:i,dotScaleTiming_V:i,dotScaleA:1,dotScaleAO:i,dotScaleAI:i,quietZone:0,quietZoneColor:"rgba(0,0,0,0)",title:"",titleFont:"normal normal bold 16px Arial",titleColor:"#000000",titleBackgroundColor:"#ffffff",titleHeight:0,titleTop:30,subTitle:"",subTitleFont:"normal normal normal 14px Arial",subTitleColor:"#4F4F4F",subTitleTop:60,logo:i,logoWidth:i,logoHeight:i,logoMaxWidth:i,logoMaxHeight:i,logoBackgroundColor:"#ffffff",logoBackgroundTransparent:!1,PO:i,PI:i,PO_TL:i,PI_TL:i,PO_TR:i,PI_TR:i,PO_BL:i,PI_BL:i,AO:i,AI:i,timing:i,timing_H:i,timing_V:i,backgroundImage:i,backgroundImageAlpha:1,autoColor:!1,autoColorDark:"rgba(0, 0, 0, .6)",autoColorLight:"rgba(255, 255, 255, .7)",onRenderingStart:i,onRenderingEnd:i,version:0,tooltip:!1,binary:!1,drawer:"canvas",crossOrigin:null,utf8WithoutBOM:!0},"string"==typeof b&&(b={text:b}),b)for(var c in b)this._htOption[c]=b[c];this._htOption.title||this._htOption.subTitle||(this._htOption.titleHeight=0),(this._htOption.version<0||this._htOption.version>40)&&(console.warn("QR Code version '"+this._htOption.version+"' is invalidate, reset to 0"),this._htOption.version=0),(this._htOption.dotScale<0||this._htOption.dotScale>1)&&(console.warn(this._htOption.dotScale+" , is invalidate, dotScale must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScale=1),(this._htOption.dotScaleTiming<0||this._htOption.dotScaleTiming>1)&&(console.warn(this._htOption.dotScaleTiming+" , is invalidate, dotScaleTiming must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleTiming=1),this._htOption.dotScaleTiming_H?(this._htOption.dotScaleTiming_H<0||this._htOption.dotScaleTiming_H>1)&&(console.warn(this._htOption.dotScaleTiming_H+" , is invalidate, dotScaleTiming_H must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleTiming_H=1):this._htOption.dotScaleTiming_H=this._htOption.dotScaleTiming,this._htOption.dotScaleTiming_V?(this._htOption.dotScaleTiming_V<0||this._htOption.dotScaleTiming_V>1)&&(console.warn(this._htOption.dotScaleTiming_V+" , is invalidate, dotScaleTiming_V must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleTiming_V=1):this._htOption.dotScaleTiming_V=this._htOption.dotScaleTiming,(this._htOption.dotScaleA<0||this._htOption.dotScaleA>1)&&(console.warn(this._htOption.dotScaleA+" , is invalidate, dotScaleA must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleA=1),this._htOption.dotScaleAO?(this._htOption.dotScaleAO<0||this._htOption.dotScaleAO>1)&&(console.warn(this._htOption.dotScaleAO+" , is invalidate, dotScaleAO must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleAO=1):this._htOption.dotScaleAO=this._htOption.dotScaleA,this._htOption.dotScaleAI?(this._htOption.dotScaleAI<0||this._htOption.dotScaleAI>1)&&(console.warn(this._htOption.dotScaleAI+" , is invalidate, dotScaleAI must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleAI=1):this._htOption.dotScaleAI=this._htOption.dotScaleA,(this._htOption.backgroundImageAlpha<0||this._htOption.backgroundImageAlpha>1)&&(console.warn(this._htOption.backgroundImageAlpha+" , is invalidate, backgroundImageAlpha must between 0 and 1, now reset to 1. "),this._htOption.backgroundImageAlpha=1),this._htOption.quietZone||(this._htOption.quietZone=0),this._htOption.titleHeight||(this._htOption.titleHeight=0),this._htOption.width=Math.round(this._htOption.width),this._htOption.height=Math.round(this._htOption.height),this._htOption.quietZone=Math.round(this._htOption.quietZone),this._htOption.titleHeight=Math.round(this._htOption.titleHeight),"string"==typeof a&&(a=document.getElementById(a)),(!this._htOption.drawer||"svg"!=this._htOption.drawer&&"canvas"!=this._htOption.drawer)&&(this._htOption.drawer="canvas"),this._android=f(),this._el=a,this._oQRCode=null,this._htOption._element=a;var d={};for(var c in this._htOption)d[c]=this._htOption[c];this._oDrawing=new x(this._el,d),this._htOption.text&&this.makeCode(this._htOption.text)},j.prototype.makeCode=function(a){this._oQRCode=new b(g(a,this._htOption),this._htOption.correctLevel),this._oQRCode.addData(a,this._htOption.binary,this._htOption.utf8WithoutBOM),this._oQRCode.make(),this._htOption.tooltip&&(this._el.title=a),this._oDrawing.draw(this._oQRCode)},j.prototype.makeImage=function(){"function"==typeof this._oDrawing.makeImage&&(!this._android||this._android>=3)&&this._oDrawing.makeImage()},j.prototype.clear=function(){this._oDrawing.remove()},j.prototype.resize=function(a,b){this._oDrawing._htOption.width=a,this._oDrawing._htOption.height=b,this._oDrawing.draw(this._oQRCode)},j.prototype.download=function(a){var b=this._oDrawing.dataURL,c=document.createElement("a");if("svg"==this._htOption.drawer){a+=".svg";var d=new Blob([b],{type:"text/plain"});if(navigator.msSaveBlob)navigator.msSaveBlob(d,a);else{c.download=a;var e=new FileReader;e.onload=function(){c.href=e.result,c.click()},e.readAsDataURL(d)}}else if(a+=".png",navigator.msSaveBlob){var f=function(a){var b=atob(a.split(",")[1]),c=a.split(",")[0].split(":")[1].split(";")[0],d=new ArrayBuffer(b.length),e=new Uint8Array(d);for(v=0;v<b.length;v++)e[v]=b.charCodeAt(v);return new Blob([d],{type:c})}(b);navigator.msSaveBlob(f,a)}else c.download=a,c.href=b,c.click()},j.prototype.noConflict=function(){return m.QRCode===this&&(m.QRCode=p),j},j.CorrectLevel=r,"function"==typeof define&&(define.amd||define.cmd)?define([],function(){return j}):o?((o.exports=j).QRCode=j,n.QRCode=j):m.QRCode=j}.call(this);
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],126:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 'use strict'
 
 module.exports = function encodeUtf8 (input) {
@@ -13985,7 +13693,7 @@ module.exports = function encodeUtf8 (input) {
   return new Uint8Array(result).buffer
 }
 
-},{}],127:[function(require,module,exports){
+},{}],123:[function(require,module,exports){
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
@@ -14072,58 +13780,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],128:[function(require,module,exports){
-exports.endianness = function () { return 'LE' };
-
-exports.hostname = function () {
-    if (typeof location !== 'undefined') {
-        return location.hostname
-    }
-    else return '';
-};
-
-exports.loadavg = function () { return [] };
-
-exports.uptime = function () { return 0 };
-
-exports.freemem = function () {
-    return Number.MAX_VALUE;
-};
-
-exports.totalmem = function () {
-    return Number.MAX_VALUE;
-};
-
-exports.cpus = function () { return [] };
-
-exports.type = function () { return 'Browser' };
-
-exports.release = function () {
-    if (typeof navigator !== 'undefined') {
-        return navigator.appVersion;
-    }
-    return '';
-};
-
-exports.networkInterfaces
-= exports.getNetworkInterfaces
-= function () { return {} };
-
-exports.arch = function () { return 'javascript' };
-
-exports.platform = function () { return 'browser' };
-
-exports.tmpdir = exports.tmpDir = function () {
-    return '/tmp';
-};
-
-exports.EOL = '\n';
-
-exports.homedir = function () {
-	return '/'
-};
-
-},{}],129:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 (function (process){(function (){
 // 'path' module extracted from Node.js v8.11.1 (only the posix part)
 // transplited with Babel
@@ -14656,7 +14313,7 @@ posix.posix = posix;
 module.exports = posix;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":130}],130:[function(require,module,exports){
+},{"_process":125}],125:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -14842,7 +14499,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],131:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 
 const canPromise = require('./can-promise')
 
@@ -14920,7 +14577,7 @@ exports.toString = renderCanvas.bind(null, function (data, _, opts) {
   return SvgRenderer.render(data, opts)
 })
 
-},{"./can-promise":132,"./core/qrcode":148,"./renderer/canvas":155,"./renderer/svg-tag.js":156}],132:[function(require,module,exports){
+},{"./can-promise":127,"./core/qrcode":143,"./renderer/canvas":150,"./renderer/svg-tag.js":151}],127:[function(require,module,exports){
 // can-promise has a crash in some versions of react native that dont have
 // standard global objects
 // https://github.com/soldair/node-qrcode/issues/157
@@ -14929,7 +14586,7 @@ module.exports = function () {
   return typeof Promise === 'function' && Promise.prototype && Promise.prototype.then
 }
 
-},{}],133:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 /**
  * Alignment pattern are fixed reference pattern in defined positions
  * in a matrix symbology, which enables the decode software to re-synchronise
@@ -15014,7 +14671,7 @@ exports.getPositions = function getPositions (version) {
   return coords
 }
 
-},{"./utils":152}],134:[function(require,module,exports){
+},{"./utils":147}],129:[function(require,module,exports){
 const Mode = require('./mode')
 
 /**
@@ -15075,7 +14732,7 @@ AlphanumericData.prototype.write = function write (bitBuffer) {
 
 module.exports = AlphanumericData
 
-},{"./mode":145}],135:[function(require,module,exports){
+},{"./mode":140}],130:[function(require,module,exports){
 function BitBuffer () {
   this.buffer = []
   this.length = 0
@@ -15114,7 +14771,7 @@ BitBuffer.prototype = {
 
 module.exports = BitBuffer
 
-},{}],136:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 /**
  * Helper class to handle QR Code symbol modules
  *
@@ -15181,7 +14838,7 @@ BitMatrix.prototype.isReserved = function (row, col) {
 
 module.exports = BitMatrix
 
-},{}],137:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 const encodeUtf8 = require('encode-utf8')
 const Mode = require('./mode')
 
@@ -15213,7 +14870,7 @@ ByteData.prototype.write = function (bitBuffer) {
 
 module.exports = ByteData
 
-},{"./mode":145,"encode-utf8":126}],138:[function(require,module,exports){
+},{"./mode":140,"encode-utf8":122}],133:[function(require,module,exports){
 const ECLevel = require('./error-correction-level')
 
 const EC_BLOCKS_TABLE = [
@@ -15350,7 +15007,7 @@ exports.getTotalCodewordsCount = function getTotalCodewordsCount (version, error
   }
 }
 
-},{"./error-correction-level":139}],139:[function(require,module,exports){
+},{"./error-correction-level":134}],134:[function(require,module,exports){
 exports.L = { bit: 1 }
 exports.M = { bit: 0 }
 exports.Q = { bit: 3 }
@@ -15402,7 +15059,7 @@ exports.from = function from (value, defaultValue) {
   }
 }
 
-},{}],140:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 const getSymbolSize = require('./utils').getSymbolSize
 const FINDER_PATTERN_SIZE = 7
 
@@ -15426,7 +15083,7 @@ exports.getPositions = function getPositions (version) {
   ]
 }
 
-},{"./utils":152}],141:[function(require,module,exports){
+},{"./utils":147}],136:[function(require,module,exports){
 const Utils = require('./utils')
 
 const G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0)
@@ -15457,7 +15114,7 @@ exports.getEncodedBits = function getEncodedBits (errorCorrectionLevel, mask) {
   return ((data << 10) | d) ^ G15_MASK
 }
 
-},{"./utils":152}],142:[function(require,module,exports){
+},{"./utils":147}],137:[function(require,module,exports){
 const EXP_TABLE = new Uint8Array(512)
 const LOG_TABLE = new Uint8Array(256)
 /**
@@ -15528,7 +15185,7 @@ exports.mul = function mul (x, y) {
   return EXP_TABLE[LOG_TABLE[x] + LOG_TABLE[y]]
 }
 
-},{}],143:[function(require,module,exports){
+},{}],138:[function(require,module,exports){
 const Mode = require('./mode')
 const Utils = require('./utils')
 
@@ -15584,7 +15241,7 @@ KanjiData.prototype.write = function (bitBuffer) {
 
 module.exports = KanjiData
 
-},{"./mode":145,"./utils":152}],144:[function(require,module,exports){
+},{"./mode":140,"./utils":147}],139:[function(require,module,exports){
 /**
  * Data mask pattern reference
  * @type {Object}
@@ -15820,7 +15477,7 @@ exports.getBestMask = function getBestMask (data, setupFormatFunc) {
   return bestPattern
 }
 
-},{}],145:[function(require,module,exports){
+},{}],140:[function(require,module,exports){
 const VersionCheck = require('./version-check')
 const Regex = require('./regex')
 
@@ -15989,7 +15646,7 @@ exports.from = function from (value, defaultValue) {
   }
 }
 
-},{"./regex":150,"./version-check":153}],146:[function(require,module,exports){
+},{"./regex":145,"./version-check":148}],141:[function(require,module,exports){
 const Mode = require('./mode')
 
 function NumericData (data) {
@@ -16034,7 +15691,7 @@ NumericData.prototype.write = function write (bitBuffer) {
 
 module.exports = NumericData
 
-},{"./mode":145}],147:[function(require,module,exports){
+},{"./mode":140}],142:[function(require,module,exports){
 const GF = require('./galois-field')
 
 /**
@@ -16098,7 +15755,7 @@ exports.generateECPolynomial = function generateECPolynomial (degree) {
   return poly
 }
 
-},{"./galois-field":142}],148:[function(require,module,exports){
+},{"./galois-field":137}],143:[function(require,module,exports){
 const Utils = require('./utils')
 const ECLevel = require('./error-correction-level')
 const BitBuffer = require('./bit-buffer')
@@ -16595,7 +16252,7 @@ exports.create = function create (data, options) {
   return createSymbol(data, version, errorCorrectionLevel, mask)
 }
 
-},{"./alignment-pattern":133,"./bit-buffer":135,"./bit-matrix":136,"./error-correction-code":138,"./error-correction-level":139,"./finder-pattern":140,"./format-info":141,"./mask-pattern":144,"./mode":145,"./reed-solomon-encoder":149,"./segments":151,"./utils":152,"./version":154}],149:[function(require,module,exports){
+},{"./alignment-pattern":128,"./bit-buffer":130,"./bit-matrix":131,"./error-correction-code":133,"./error-correction-level":134,"./finder-pattern":135,"./format-info":136,"./mask-pattern":139,"./mode":140,"./reed-solomon-encoder":144,"./segments":146,"./utils":147,"./version":149}],144:[function(require,module,exports){
 const Polynomial = require('./polynomial')
 
 function ReedSolomonEncoder (degree) {
@@ -16653,7 +16310,7 @@ ReedSolomonEncoder.prototype.encode = function encode (data) {
 
 module.exports = ReedSolomonEncoder
 
-},{"./polynomial":147}],150:[function(require,module,exports){
+},{"./polynomial":142}],145:[function(require,module,exports){
 const numeric = '[0-9]+'
 const alphanumeric = '[A-Z $%*+\\-./:]+'
 let kanji = '(?:[u3000-u303F]|[u3040-u309F]|[u30A0-u30FF]|' +
@@ -16686,7 +16343,7 @@ exports.testAlphanumeric = function testAlphanumeric (str) {
   return TEST_ALPHANUMERIC.test(str)
 }
 
-},{}],151:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 const Mode = require('./mode')
 const NumericData = require('./numeric-data')
 const AlphanumericData = require('./alphanumeric-data')
@@ -17018,7 +16675,7 @@ exports.rawSplit = function rawSplit (data) {
   )
 }
 
-},{"./alphanumeric-data":134,"./byte-data":137,"./kanji-data":143,"./mode":145,"./numeric-data":146,"./regex":150,"./utils":152,"dijkstrajs":122}],152:[function(require,module,exports){
+},{"./alphanumeric-data":129,"./byte-data":132,"./kanji-data":138,"./mode":140,"./numeric-data":141,"./regex":145,"./utils":147,"dijkstrajs":120}],147:[function(require,module,exports){
 let toSJISFunction
 const CODEWORDS_COUNT = [
   0, // Not used
@@ -17083,7 +16740,7 @@ exports.toSJIS = function toSJIS (kanji) {
   return toSJISFunction(kanji)
 }
 
-},{}],153:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 /**
  * Check if QR Code version is valid
  *
@@ -17094,7 +16751,7 @@ exports.isValid = function isValid (version) {
   return !isNaN(version) && version >= 1 && version <= 40
 }
 
-},{}],154:[function(require,module,exports){
+},{}],149:[function(require,module,exports){
 const Utils = require('./utils')
 const ECCode = require('./error-correction-code')
 const ECLevel = require('./error-correction-level')
@@ -17259,7 +16916,7 @@ exports.getEncodedBits = function getEncodedBits (version) {
   return (version << 12) | d
 }
 
-},{"./error-correction-code":138,"./error-correction-level":139,"./mode":145,"./utils":152,"./version-check":153}],155:[function(require,module,exports){
+},{"./error-correction-code":133,"./error-correction-level":134,"./mode":140,"./utils":147,"./version-check":148}],150:[function(require,module,exports){
 const Utils = require('./utils')
 
 function clearCanvas (ctx, canvas, size) {
@@ -17324,7 +16981,7 @@ exports.renderToDataURL = function renderToDataURL (qrData, canvas, options) {
   return canvasEl.toDataURL(type, rendererOpts.quality)
 }
 
-},{"./utils":157}],156:[function(require,module,exports){
+},{"./utils":152}],151:[function(require,module,exports){
 const Utils = require('./utils')
 
 function getColorAttrib (color, attrib) {
@@ -17407,7 +17064,7 @@ exports.render = function render (qrData, options, cb) {
   return svgTag
 }
 
-},{"./utils":157}],157:[function(require,module,exports){
+},{"./utils":152}],152:[function(require,module,exports){
 function hex2rgba (hex) {
   if (typeof hex === 'number') {
     hex = hex.toString()
@@ -17508,7 +17165,7 @@ exports.qrToImageData = function qrToImageData (imgData, qr, opts) {
   }
 }
 
-},{}],158:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 /********************************************************************************
     vCards-js, Eric J Nesser, November 2014
 ********************************************************************************/
@@ -17848,7 +17505,7 @@ var vCard = (function () {
 
 module.exports = vCard;
 
-},{"./lib/vCardFormatter":159,"fs":120,"path":129}],159:[function(require,module,exports){
+},{"./lib/vCardFormatter":154,"fs":118,"path":124}],154:[function(require,module,exports){
 /********************************************************************************
  vCards-js, Eric J Nesser, November 2014,
  ********************************************************************************/
@@ -18246,7 +17903,7 @@ module.exports = vCard;
 		}
 	};
 })();
-},{}],160:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 const { starter } = require("../action/starter")
 const { defaultAppEvents } = require("../action/defaultAppEvents")
 const { initView } = require("../action/view")
@@ -18258,12 +17915,13 @@ window.global = JSON.parse(document.getElementById("global").textContent)
 const views = window.views
 const global = window.global
 
+views.document.__element__ = document
+
 // app default event listeneres
 defaultAppEvents()
 
 // start app
 views.document.__idList__.map(id => starter({ id }))
-views.document.__element__ = document
 // starter({ id: "document" })
 
 // window
@@ -18276,17 +17934,7 @@ arDiv.classList.add("ar")
 arDiv.style.position = "absolute"
 arDiv.style.top = "-1000px"
 views.body.__element__.appendChild(arDiv)
-},{"../action/defaultAppEvents":14,"../action/starter":59,"../action/view":83}],161:[function(require,module,exports){
-module.exports = (view) => {
-  var scrollWidth = `[px():[().swiper.scroll]||100]`
-  var clickLeft = `():[().swiper.id]._():[clearTimer():[_.mytimer];_.scroll+=[${scrollWidth}-_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll>_.scrollable]:[_.scroll=0];_.style().transform='translateX('+_.scroll+'px)';if():[_.autorun]:[_.mytimer=interval():[_.scroll+=[${scrollWidth}-_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll>_.scrollable]:[_.scroll=0];_.style().transform='translateX('+_.scroll+'px)']:[_.autorun.timer||100]]]`
-  var clickRight = `():[().swiper.id]._():[clearTimer():[_.mytimer];_.scroll-=[_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll<0]:[_.scroll=_.scrollable];_.style().transform='translateX('+_.scroll+'px)';if():[_.autorun]:[_.mytimer=interval():[_.scroll+=[${scrollWidth}-_.scroll%${scrollWidth}||${scrollWidth}];if():[_.scroll>_.scrollable]:[_.scroll=0];_.style().transform='translateX('+_.scroll+'px)']:[_.autorun.timer||100]]]`
-  return {
-    ...view,
-    view: `Icon?class='flexbox pointer '+[().class||];name=if():[direction=right]:'bi-chevron-right'.elif():[direction=left]:'bi-chevron-left';style:[fontSize=[().style.fontSize||2.5rem];if():[().direction=left]:[left=[().style.left||0]].elif():[().direction=right]:[right=[().style.right||0]]];click:[if():[direction=left;swiper.id]:[${clickLeft}].elif():[direction=right;swiper.id]:[${clickRight}]]`
-  }
-}
-},{}],162:[function(require,module,exports){
+},{"../action/defaultAppEvents":14,"../action/starter":58,"../action/view":81}],156:[function(require,module,exports){
 const { toComponent } = require('../action/toComponent')
 const { jsonToBracket } = require('../action/jsonToBracket')
 const { override } = require('../action/merge')
@@ -18595,70 +18243,4 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../action/clone":4,"../action/generate":24,"../action/jsonToBracket":38,"../action/merge":42,"../action/toComponent":68}],163:[function(require,module,exports){
-module.exports = (view) => {
-
-  var AutorunScrollInPixel = `[px():[().autorun.scroll]||100]`
-  var toScrollWidth = `[${AutorunScrollInPixel}-().scroll%${AutorunScrollInPixel}||${AutorunScrollInPixel}]`
-  var autorunInterval = `mytimer=interval():[().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]`
-  var loadedActions = `loaded:[scrollable=el().scrollWidth-parent().el().clientWidth;if():[autorun]:[${autorunInterval}]]`
-  var mouseenterActions = `mouseenter:[clearTimer():[().mytimer]]`
-  var mouseleaveActions = `mouseleave:[if():[!mousedn]:[style().transition=[().style.transition||.2s];${autorunInterval}]]`
-  var mousedownActions = `mousedown:[mousedn=true;style().transition=null;mouseposition=e().screenX;scrollLeft=().scroll]`
-  var bodyMousemoveActions = `():body.mousemove:[if():[mousedn]:[scroll=().scrollLeft+e().screenX-().mouseposition;if():[scroll<0]:[().scroll=0].elif():[scroll>().scrollable]:[().scroll=().scrollable];style().transform='translateX('+[().scroll]+'px)']]`
-  var touchstartActions = `touchstart:[clearTimer():[().mytimer];touchst=true;style().transition=null;mouseposition=e().changedTouches.0.screenX;scrollLeft=().scroll]`
-  var touchmoveActions = `touchmove:[if():[touchst]:[scroll=().scrollLeft+e().changedTouches.0.screenX-().mouseposition;if():[scroll<0]:[().scroll=0].elif():[scroll>().scrollable]:[().scroll=().scrollable];style().transform='translateX('+[().scroll]+'px)']]`
-  var touchendActions = `touchend:[if():[touchst]:[touchst=false;if():[autorun]:[mytimer=interval():[().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]];().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)';().scrollLeft=().scroll]]`
-  var bodyMouseupActions = `():body.mouseup:[if():[mousedn]:[mousedn=false;if():[autorun;!mouseentered]:[mytimer=interval():[().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)']:[().autorun.timer||100]];().scroll+=${toScrollWidth};if():[().scroll>().scrollable]:[().scroll=0];style().transition=[().style.transition||.2s];style().transform='translateX('+().scroll+'px)';().scrollLeft=().scroll]]`
-  return {
-    ...view,
-    view: `View?style:[display=flex;alignItems=if():[().style.alignItems]:[().style.alignItems]:center;if():[vertical]:[flexDirection=column]];scrollLeft=0;scroll=0;${loadedActions};if():[autorun]:[${mouseenterActions};${mouseleaveActions}];${mousedownActions};${bodyMousemoveActions};${bodyMouseupActions};${touchstartActions};${touchmoveActions};${touchendActions}`,
-  }
-}
-},{}],164:[function(require,module,exports){
-module.exports = (view) => {
-  return {
-    ...view,
-    view: `View?class='hide-scrollbar '+if():[().class]:[().class]:'';style:[display=if():[().style.display]:[().style.display]:flex;alignItems=if():[().style.alignItems]:[().style.alignItems]:center;position=if():[().style.position]:[().style.position]:relative;overflowX=if():[().style.overflowX]:[().style.overflowX]:hidden]`,
-  }
-}
-},{}],165:[function(require,module,exports){
-const { jsonToBracket } = require("../action/jsonToBracket")
-
-module.exports = (component) => {
-
-  var { icon, pin, controls, style } = component
-
-  pin = pin || {}
-  icon = icon || {}
-  icon.on = icon.on || {}
-  icon.off = icon.off || {}
-
-  return {
-    ...component,
-    view: `View?class=flexbox pointer;hover.style.backgroundColor=#ddd;style.justifyContent=flex-start;style.width=5rem;style.height=2.4rem;style.position=relative;style.borderRadius=2.2rem;style.backgroundColor=#eee;${jsonToBracket({ style })}`,
-    children: [{
-      view: `View?class=flexbox;style.transition=.3s;style.width=2rem;style.height=2rem;style.borderRadius=2rem;style.backgroundColor=#fff;style.position=absolute;style.left=0.3rem;${jsonToBracket(pin)}`,
-      children: [{
-          view: `Icon?style.color=red;style.fontSize=1.8rem;style.position=absolute;style.transition=.3s;${jsonToBracket(icon.off)}?[${icon.off.name}]`
-        }, {
-          view: `Icon?style.color=blue;style.fontSize=1.3rem;style.position=absolute;style.opacity=0;style.transition=.3s;${jsonToBracket(icon.on)}?[${icon.on.name}]`
-        }]
-    }],
-    __controls__: [{
-        event: "click?().el().checked=[true].if().[().el().checked.notexist()].else().[false];().checked=().el().checked;().1stChild().el().style.left=[calc(100% - 2.3rem)].if().[().el().checked].else().[0.3rem];().1stChild().1stChild().el().style.opacity=[0].if().[().el().checked].else().[1];().1stChild().2ndChild().el().style.opacity=[1].if().[().el().checked].else().[0]"
-      },
-      ...controls
-    ]
-  }
-}
-
-},{"../action/jsonToBracket":38}],166:[function(require,module,exports){
-module.exports = {
-  Input : require("./Input"),
-  Switch : require("./Switch"),
-  Swiper : require("./Swiper"),
-  Chevron : require("./Chevron"),
-  SwiperWrapper : require("./SwiperWrapper")
-}
-},{"./Chevron":161,"./Input":162,"./Swiper":163,"./SwiperWrapper":164,"./Switch":165}]},{},[160]);
+},{"../action/clone":4,"../action/generate":24,"../action/jsonToBracket":38,"../action/merge":42,"../action/toComponent":67}]},{},[155]);

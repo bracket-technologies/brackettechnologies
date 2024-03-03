@@ -43,7 +43,6 @@ const getViewParams = ({ view }) => {
 const removeView = ({ _window, id, stack, self = true, main, insert }) => {
     
     const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
     var view = views[id] || {}, parent = views[view.__parent__], element = {}
     
     view.__childrenRef__.map(({ id }) => id).map(id => removeView({ _window, id, stack, insert }))
@@ -89,23 +88,24 @@ const deepDelete = ({ obj, key }) => {
     delete obj[key]
 }
 
-const blockRelatedAddressesByHeadAddress = ({ stack, index }) => {
+const blockRelatedAddressesBynextAddress = ({ stack, index }) => {
     
     var address = stack.addresses[index]
+    address.interpreting = false
 
-    // block headAddress
+    // block nextAddress
     if (address.blockable) stack.addresses[index].blocked = true
 
     // remove child addresses
-    var index = stack.addresses.findIndex(({ headAddressID, blocked, blockable }) => blockable && !blocked && headAddressID === address.id)
-    if (index !== -1) blockRelatedAddressesByHeadAddress({ stack, index })
+    var index = stack.addresses.findIndex(({ nextAddressID, blocked, blockable }) => blockable && !blocked && nextAddressID === address.id)
+    if (index !== -1) blockRelatedAddressesBynextAddress({ stack, index })
 }
 
 const blockRelatedAddressesByViewID = ({ stack, id }) => {
 
     // delete addresses
     var index = stack.addresses.findIndex(({ viewID, blocked }) => !blocked && viewID === id)
-    if (index !== -1) blockRelatedAddressesByHeadAddress({ stack, index })
+    if (index !== -1) blockRelatedAddressesBynextAddress({ stack, index })
 }
 
 module.exports = { initView, getViewParams, removeView }

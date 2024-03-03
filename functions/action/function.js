@@ -8,7 +8,6 @@ const {toApproval} = require("./toApproval")
 const {toId} = require("./toId")
 const {toParam} = require("./toParam")
 const {jsonToBracket} = require("./jsonToBracket")
-const {update} = require("./update")
 const {toArray} = require("./toArray")
 const {generate} = require("./generate")
 const {axios} = require("./axios")
@@ -79,7 +78,6 @@ module.exports = {
   toParam,
   fileReader,
   jsonToBracket,
-  update,
   execute,
   toArray,
   generate,

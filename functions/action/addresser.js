@@ -2,49 +2,66 @@ const { clone } = require("./clone");
 const { generate } = require("./generate");
 const { toLine } = require("./toLine");
 
-const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, noHeadAddress, hasWaits, params, function: func, newLookupActions, headAddressID, headAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition }) => {
+const addresser = ({ _window, addressID = generate(), index = 0, switchWithAddress, switchWithRunningAddress, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, hasWaits, params, function: func, newLookupActions, nextAddressID, nextAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition }) => {
     
-    // find headAddress by headAddressID
-    if (headAddressID && !headAddress.id && !noHeadAddress) headAddress = stack.addresses.find(headAddress => headAddress.id === headAddressID)
+    if (switchWithAddress) {
 
+        nextAddressID = switchWithAddress.nextAddressID
+        hasWaits = switchWithAddress.hasWaits
+        switchWithAddress.nextAddressID = addressID
+        switchWithAddress.hasWaits = false
+        switchWithAddress.interpreting = false
+        // switchWithAddress.status = "Wait"
+
+    } else if (switchWithRunningAddress) {
+
+        nextAddressID = switchWithRunningAddress.nextAddressID
+        hasWaits = switchWithRunningAddress.hasWaits
+        switchWithRunningAddress.nextAddressID = addressID
+        switchWithRunningAddress.hasWaits = false
+    }
+
+    // find nextAddress by nextAddressID
+    if (nextAddressID && !nextAddress.id) nextAddress = stack.addresses.find(nextAddress => nextAddress.id === nextAddressID) || {}
+    
     // waits
     waits = waits || args[2], params = params || args[1] || ""
 
     // address waits
-    if (waits) headAddress = addresser({ _window, stack, req, res, e, type: "waits", action: action + "::[...]", data: { string: waits }, headAddress, blockable, __, id, object, mount, lookupActions, condition }).address
+    if (waits) nextAddress = addresser({ _window, stack, req, res, e, type: "waits", action: action + "::[...]", data: { string: waits }, nextAddress, blockable, __, id, object, mount, lookupActions, condition }).address
 
-    var address = { id: generate(), stackID: stack.id, noHeadAddress, viewID: id, type, data, status, file, function: func, hasWaits: hasWaits || (waits ? true : false), headAddressID: headAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
+    var address = { id: addressID, stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: hasWaits !== undefined ? hasWaits : (waits ? true : false), nextAddressID: nextAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
     var stackLength = stack.addresses.length
 
     // find and lock the head address
-    if (stackLength > 0 && !headAddress.id && !noHeadAddress) {
+    if (stackLength > 0 && !nextAddress.id) {
 
-        var headAddressIndex = 0
+        var nextAddressIndex = 0
         
-        // headAddress is interpreting or renderer
-        while (headAddressIndex < stackLength && !stack.addresses[headAddressIndex].interpreting && !stack.addresses[headAddressIndex].renderer) { headAddressIndex += 1 }
+        // nextAddress is interpreting or renderer
+        while (nextAddressIndex < stackLength && !stack.addresses[nextAddressIndex].interpreting && !stack.addresses[nextAddressIndex].renderer) { nextAddressIndex += 1 }
         
         // there exist a head address
-        if (headAddressIndex < stackLength) {
+        if (nextAddressIndex < stackLength) {
             
-            address.headAddressID = stack.addresses[headAddressIndex].id
+            address.nextAddressID = stack.addresses[nextAddressIndex].id
 
             // get head address
-            headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID)
+            nextAddress = stack.addresses.find(nextAddress => nextAddress.id === address.nextAddressID)
         }
     }
 
     // set all head addresses asynchronous
     if (asynchronous) {
 
-        var headAddressID = address.stackID === stack.id && address.headAddressID
-        while (headAddressID) {
+        var nextAddressID = address.stackID === stack.id && address.nextAddressID
+        while (nextAddressID) {
             
-            var holdHeadAddress = stack.addresses.find(headAddress => headAddress.id === headAddressID)
-            if (holdHeadAddress) {
-                holdHeadAddress.hold = true
-                headAddressID = holdHeadAddress.stackID === stack.id && holdHeadAddress.headAddressID
-            } else headAddressID = false
+            var holdnextAddress = stack.addresses.find(nextAddress => nextAddress.id === nextAddressID)
+            if (holdnextAddress) {
+                holdnextAddress.hold = true
+                nextAddressID = holdnextAddress.stackID === stack.id && holdnextAddress.nextAddressID
+            } else nextAddressID = false
         }
     }
 
@@ -56,12 +73,13 @@ const addresser = ({ _window, stack = [], args = [], req, res, e, type = "action
     address.params = { __, id, object, mount, lookupActions: newLookupActions || lookupActions, condition }
 
     // push to stack
-    stack.addresses.unshift(address)
+    if (index) stack.addresses.splice(index, 0, address)
+    else stack.addresses.unshift(address)
 
-    if (action === "search()" || action === "erase()" || action === "save()") address.action += ":" + data.collection
+    if (action === "search()" || action === "erase()" || action === "save()") address.action += ":" + data.collection + (data.doc || "")
     
     // log
-    if (!newLookupActions) stack.logs.push(`${stack.logs.length} ${address.status} ${type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action}${headAddress.id ? ` => ${headAddress.id || ""} ${headAddress.index !== undefined ? headAddress.index : ""} ${headAddress.type === "function" ? headAddress.function : headAddress.action || ""}` : ""}`)
+    if (address.status !== "Wait") printAddress({ stack, address, nextAddress, newAddress: true })
 
     return { address, data, stack, action: interpretAction, __: [...(data !== undefined ? [data] : []), ...__] }
 }
@@ -78,27 +96,27 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
     data.executionDuration = executionDuration
     delete data.msg
 
-    var starter = false, headAddressID = stack.interpretingAddressID, currentStackID = stack.id
-    var address = stack.addresses.find(address => address.id === headAddressID)
+    var starter = false, nextAddressID = stack.interpretingAddressID, currentStackID = stack.id
+    var address = stack.addresses.find(address => address.id === nextAddressID)
 
     var endStarterAddress = ({ address, stack }) => {
         
         address.starter = false
 
-        // get start headAddress to push data to its underscores
-        var starterHeadAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID)
-        if (starterHeadAddress) {
+        // get start nextAddress to push data to its underscores
+        var starternextAddress = stack.addresses.find(nextAddress => nextAddress.id === address.nextAddressID)
+        if (starternextAddress) {
 
-            // start again from the current interpreting address to reach headAddress to set blocked
+            // start again from the current interpreting address to reach nextAddress to set blocked
             var stack = global.__stacks__[currentStackID], blockedAddress = true
-            headAddressID = stack.interpretingAddressID
+            nextAddressID = stack.interpretingAddressID
 
-            while (blockedAddress && headAddressID && headAddressID !== starterHeadAddress.id) {
+            while (blockedAddress && nextAddressID && nextAddressID !== starternextAddress.id) {
 
-                blockedAddress = stack.addresses.find(address => address.id === headAddressID)
+                blockedAddress = stack.addresses.find(address => address.id === nextAddressID)
                 if (blockedAddress) {
                     blockedAddress.blocked = true
-                    headAddressID = blockedAddress.headAddressID
+                    nextAddressID = blockedAddress.nextAddressID
 
                     stack.blocked = true
 
@@ -107,7 +125,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
                 }
             }
             
-            toAwait({ req, res, _window, lookupActions, stack: global.__stacks__[starterHeadAddress.stackID], address, id, e, __, _: data })
+            toAwait({ req, res, _window, lookupActions, stack: global.__stacks__[starternextAddress.stackID], address, id, e, __, _: data })
         }
     }
 
@@ -124,10 +142,10 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
 
     } else {
 
-        while (!starter && headAddressID && stack) {
+        while (!starter && nextAddressID && stack) {
 
             // start from self address (by interpretingAddressID) to reach the start head address
-            var address = stack.addresses.find(address => address.id === headAddressID)
+            var address = stack.addresses.find(address => address.id === nextAddressID)
             
             if (address.starter) {
 
@@ -136,17 +154,26 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
             }
 
             // move to head address
-            headAddressID = address.headAddressID
+            nextAddressID = address.nextAddressID
 
-            // reached index 0 address => check stack if it has headAddress
+            // reached index 0 address => check stack if it has nextAddress
             if (address.stackID !== stack.id) stack = global.__stacks__[address.stackID]
         }
     }
 }
 
-const printAddress = ({ stack, address, headAddress }) => {
-    if (!headAddress) headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
-    stack.logs.push(`${stack.logs.length} ${address.status}${address.status === "End" ? (" (" + ((new Date()).getTime() - address.executionStartTime) + ") ") : " "}${address.type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action}${headAddress.id ? ` => ${headAddress.id || ""} ${headAddress.index !== undefined ? headAddress.index : ""} ${headAddress.type === "function" ? headAddress.function : headAddress.action || ""}` : ""}`)
+const printAddress = ({ stack, address, nextAddress = {}, newAddress }) => {
+
+    if (newAddress) stack.logs.push(`${stack.logs.length} ${address.status} ${address.type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action}${nextAddress.id ? ` => ${nextAddress.id || ""} ${nextAddress.index !== undefined ? nextAddress.index : ""} ${nextAddress.type === "function" ? nextAddress.function : nextAddress.action || ""}` : ""}`)
+    else stack.logs.push(`${stack.logs.length} ${address.status}${address.status === "End" ? (" (" + ((new Date()).getTime() - address.executionStartTime) + ") ") : " "}${address.type.toUpperCase()} ${address.id} ${address.index} ${address.type === "function" ? address.function : address.action}${nextAddress.id ? ` => ${nextAddress.id || ""} ${nextAddress.index !== undefined ? nextAddress.index : ""} ${nextAddress.type === "function" ? nextAddress.function : nextAddress.action || ""}` : ""}`)
+    // console.log(stack.logs.at(-1));
 }
 
-module.exports = { addresser, printAddress, endAddress }
+const resetAddress = ({ address, ...data }) => {
+    
+    Object.entries(data || {}).map(([key, value]) => {
+        address[key] = value
+    })
+}
+
+module.exports = { addresser, printAddress, endAddress, resetAddress }

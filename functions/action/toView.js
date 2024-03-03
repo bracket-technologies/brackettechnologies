@@ -15,25 +15,27 @@ const { executable } = require("./executable")
 const { logger } = require("./logger")
 const { replaceNbsps } = require("./replaceNbsps")
 const { colorize } = require("./colorize")
-const builtInViews = require("../view/views")
 const { getJsonFiles } = require("./jsonFiles")
-const cssStyleKeyNames = require("./cssStyleKeyNames")
 const { toParam } = require("./toParam")
-const { endStack } = require("./stack")
+const { closePublicViews } = require("./closePublicViews")
+const { starter } = require("./starter")
+const cssStyleKeyNames = require("./cssStyleKeyNames")
+const Input = require("../view/Input")
 
 const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data = {} }) => {
 
   const views = _window ? _window.views : window.views
   const global = _window ? _window.global : window.global
-  var view = data.view
+  var view = data.view || views[id]
 
+  // interpret view
   if (!view.__interpreted__) {
 
     // init view
     var details = initView({ views, global, id, parent: data.parent, ...(data.view || {}), __ })
     view = details.view
     id = details.id
-
+    
     // no view
     if (!view.view) return removeView({ _window, lookupActions, stack, id, address, __ })
 
@@ -62,7 +64,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
       subParams = ""
     }
 
-    // loop over view
+    // loop
     var loop = view.__name__.charAt(0) === "@" && view.__name__.length == 6
 
     // view name
@@ -81,16 +83,14 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
     // interpret subparams
     if (subParams) {
 
-      address.interpreting = true
       var { data = {}, conditionsNotApplied } = toLine({ _window, lookupActions, stack, id, data: { string: subParams }, req, res, __ })
-      address.interpreting = false
-
       if (conditionsNotApplied) return removeView({ _window, id, stack, address })
       else subParams = data
     }
 
     // [View]
     if (loop) return loopOverView({ _window, id, stack, lookupActions, __, address, data: subParams || {}, req, res })
+
 
     // subparam is params or id
     if (typeof subParams === "object") {
@@ -113,13 +113,11 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
     // conditions
     var approved = toApproval({ _window, lookupActions, stack, data: conditions, id, req, res, __ })
     if (!approved) return removeView({ _window, id, stack, address })
-
+    
     // params
     if (params) {
-
-      address.interpreting = true
+      
       toParam({ _window, lookupActions, stack, data: params, id, req, res, mount: true, __ })
-      address.interpreting = false
 
       if (view.id !== id) {
 
@@ -128,7 +126,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
         id = view.id
       }
     }
-
+    
     // data
     view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, data: global[view.doc] || {}, value: view.data, key: true }, __ })
 
@@ -140,36 +138,34 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
     // set interpreted
     view.__interpreted__ = true
-
+    
     // maybe update in params or root
-    if (address.blocked) return
-
+    if (address.blocked) return// toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
+    
     // asynchronous actions within view params
-    if (stack.addresses[0].asynchronous) {
-
-      var headAddress = addresser({ _window, id, stack, headAddressID: address.headAddressID, type: "function", function: "toView", __, lookupActions, stack, data: { view } }).address
-      return address.headAddressID = headAddress.id
-    }
+    if (address.hold) return addresser({ _window, id, stack, switchWithAddress: address, type: "function", function: "toView", __, lookupActions, stack, data: { view } })
   }
 
   // custom View
   if (global.data.views.includes(view.__name__)) {
 
-    view.__interpreted__ = false
-
     // query custom view
     if (!global.__queries__.views.includes(view.__name__) && !global.data.view[view.__name__]) {
-
-      address = addresser({ _window, id, stack, headAddress: address, type: "function", function: "customView", file: "toView", __, lookupActions, stack }).address
-      var { address, data } = addresser({ _window, id, stack, headAddress: address, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${view.__name__}`, waits: `loader.hide;__queries__:().views.push():[${view.__name__}];data:().view.${view.__name__}=_.data`, __, lookupActions, stack })
+      
+      address.interpreting = false
+      address.status = "Wait"
+      address.data = { view }
+      
+      var { address, data } = addresser({ _window, id, stack, nextAddress: address, __, lookupActions, stack, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${view.__name__}`, waits: `loader.hide;__queries__:().views.push():[${view.__name__}];data:().view.${view.__name__}=_.data` })
       return require("./search").search({ _window, lookupActions, stack, address, id, __, req, res, data })
     }
 
     // continue to custom view
     else {
-
+      
       var newView = {
         ...global.data.view[view.__name__],
+        __interpreted__: false,
         __customView__: view.__name__,
         __viewPath__: [view.__name__],
         __customViewPath__: [...view.__customViewPath__, view.__name__],
@@ -186,69 +182,54 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
       var data = getViewParams({ view })
 
+      // document
+      if (view.__name__ === "document") {
+
+        // log start document
+        logger({ _window, data: { key: "documenter", start: true } })
+
+        // address: document
+        address = addresser({ _window, id: child.id, nextAddress: address, type: "function", file: "toView", function: "documenter", stack, __, logger: { key: "documenter", end: true } }).address
+
+        // get shared public views
+        Object.entries(getJsonFiles({ search: { collection: "public/view" } })).map(([doc, data]) => {
+
+          global.data.view[doc] = { ...data, id: doc }
+          global.data.views.push(doc)
+          global.__queries__.views.push(doc)
+        })
+
+        address = addresser({ _window, stack, status: "Start", type: "function", function: "toView", nextAddress: address, lookupActions, __ }).address
+      }
+      
       // address
       return toView({ _window, stack, address, req, res, lookupActions, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
     }
   }
+  
+  // render children
+  if (view.children.length > 0) {
 
-  // address toHTML
-  address = addresser({ _window, id, stack, headAddress: address, blocked: view.__name__ === "Action", type: "function", function: "toHTML", file: "toView", __, lookupActions, stack }).address
+    // html address
+    address = addresser({ _window, id, stack, type: "function", function: "toHTML", file: "toView", __, lookupActions, nextAddress: address }).address
 
-  // 
-  var lastIndex = view.children.length - 1;
+    var lastIndex = view.children.length - 1;
 
-  [...view.children].reverse().map(async (child, index) => {
+    // address children
+    [...view.children].reverse().map((child, index) => {
 
-    var childID = child.id || generate()
-    views[childID] = { ...child, id: childID, __view__: true, __parent__: id, __viewPath__: [...view.__viewPath__, "children", lastIndex - index], __childIndex__: lastIndex - index }
+      var childID = child.id || generate()
+      views[childID] = { ...child, id: childID, __view__: true, __parent__: id, __viewPath__: [...view.__viewPath__, "children", lastIndex - index], __childIndex__: lastIndex - index }
 
-    // address
-    address = addresser({ _window, id: childID, stack, type: "function", function: "toView", headAddress: address, __, lookupActions, data: { view: views[childID] } }).address
-  })
-
-  delete view.view
-  delete view.children
-  delete view.functions
+      // address
+      address = addresser({ _window, index, id: childID, stack, type: "function", function: "toView", __, lookupActions, nextAddress: address, data: { view: views[childID] } }).address
+    
+    })//.reverse().map(address => !address.hold && toView({ _window, lookupActions, stack, id, req, res, address, ...(address.params || {}), data: address.data, __ }))
+  
+  } else toHTML({ _window, id, stack, __ })
 
   // address
-  address.status = "Start"
-  address.interpreting = true
-  printAddress({ stack, address, headAddress })
-
-  stack.interpretingAddressID = address.id
-
-  if (address.function === "toHTML") toHTML({ _window, lookupActions, stack, id, req, res, address, ...(address.params || {}), data: address.data, __ })
-  else if (address.function === "toView") toView({ _window, lookupActions, stack, id, req, res, address, ...(address.params || {}), data: address.data, __ })
-
-  address.interpreting = false
-
-  if (!address.asynchronous) {
-
-    if (!address.id || stack.terminated || address.hold || address.starter) return
-    if (stack.blocked && !address.blocked) stack.blocked = false
-
-    var headAddress = stack.addresses.find(headAddress => headAddress.id === address.headAddressID) || {}
-
-    if (address.blocked || address.status === "Start" || address.status === "End") {
-
-      address.status = address.blocked ? "Block" : "End"
-      printAddress({ stack, address, headAddress })
-
-      // get await index for splicing
-      stack.addresses.splice(address.index, 1)
-    }
-
-    if (address.headAddressID && !headAddress.interpreting && (headAddress.stackID || headAddress.hold || headAddress.status === "Wait")) {
-
-      var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.headAddressID === address.headAddressID)
-
-      if (otherWaiting === -1 || (otherWaiting > -1 && !stack.addresses.find(waitingAddress => waitingAddress.headAddressID === address.headAddressID && !address.blocked))) {
-
-        headAddress.hold = false
-        return toAwait({ _window, lookupActions, stack, address: headAddress, id, req, res, __ })
-      }
-    }
-  }
+  toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
 }
 
 const sortAndArrange = ({ data, sort, arrange }) => {
@@ -352,9 +333,6 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
   const views = _window ? _window.views : window.views
   var view = views[id]
 
-  var timer = (new Date()).getTime(), loopID = generate()
-  stack.logs.push([stack.logs.length, "LOOP start", loopID, JSON.stringify(data)].join(" "));
-
   // mount
   if (!data.preventDefault && (data.doc || data.path)) data.mount = true
 
@@ -392,10 +370,11 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
 
   var values = keys ? data : toArray(data), address = {}
   if (keys && !Array.isArray(data)) loopData = sortAndArrange({ data: loopData, sort: myparams.sort, arrange: myparams.arrange })
+
   var lastIndex = loopData.length - 1;
 
   // view
-  ([...loopData]).reverse().map(async (key, index) => {
+  [...loopData].reverse().map((key, index) => {
 
     view.__looped__ = true
     index = lastIndex - index
@@ -406,65 +385,12 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
 
     views[params.id] = { __view__: true, __loop__: true, __mount__: mount, ...clone(view), ...myparams, ...params }
 
-    address = addresser({ _window, id: params.id, stack, type: "function", function: "toView", renderer: true, blockable: false, __: [values[key], ...__], lookupActions, data: { view: views[params.id] } }).address
-  })
+    address = addresser({ _window, id: params.id, stack, nextAddress: address, type: "function", function: "toView", renderer: true, blockable: false, __: [values[key], ...__], lookupActions, data: { view: views[params.id] } }).address
 
-  // 
-  removeView({ _window, id, stack });
+  })//.reverse().map(address => !stack.addresses[0].asynchronous && toView({ _window, lookupActions, stack, req, res, address, ...(address.params || {}), data: address.data, __ }))
 
-  // awaits
-  toAwait({ _window, id: address.viewID, lookupActions, stack, address, __, req, res })
-
-  // log loop
-  stack.logs.push([stack.logs.length, "LOOP end", (new Date()).getTime() - timer, loopID].join(" "));
-}
-
-const customView = ({ _window, id, lookupActions, stack, __, address, req, res }) => {
-
-  const global = _window ? _window.global : window.global
-  const views = _window ? _window.views : window.views
-  var view = views[id]
-
-  var newView = {
-    ...global.data.view[view.__name__],
-    __customView__: view.__name__,
-    __viewPath__: [view.__name__],
-    __customViewPath__: [...view.__customViewPath__, view.__name__],
-    __lookupViewActions__: [...view.__lookupViewActions__, { type: "customView", view: view.__name__ }]
-  }
-
-  // id
-  if (newView.id && views[newView.id] && newView.id !== id) newView.id += "_" + generate()
-  else if (newView.id) newView.__customID__ = true
-  else if (!newView.id) newView.id = id
-
-  var child = { ...view, ...newView }
-  views[child.id] = child
-
-  var data = getViewParams({ view })
-
-  // document
-  if (view.__name__ === "document") {
-
-    // log start document
-    logger({ _window, data: { key: "document", start: true } })
-
-    // address: document
-    address = addresser({ _window, id: child.id, headAddress: address, type: "function", file: "render", function: "document", stack, __ }).address
-
-    // get shared public views
-    Object.entries(getJsonFiles({ search: { collection: "public/view" } })).map(([doc, data]) => {
-
-      global.data.view[doc] = { ...data, id: doc }
-      global.data.views.push(doc)
-      global.__queries__.views.push(doc)
-    })
-
-    address = addresser({ _window, stack, status: "Start", type: "function", function: "toView", headAddress: address, lookupActions, __ }).address
-  }
-
-  // address
-  toView({ _window, stack, address, req, res, lookupActions, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
+  toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
+  removeView({ _window, id, stack, address })
 }
 
 const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ }) => {
@@ -473,7 +399,7 @@ const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ })
   const global = _window ? _window.global : window.global
   var view = views[id]
 
-  views[id] = builtInViews[view.__name__](view)
+  views[id] = Input(view)
   var { id, view } = initView({ views, global, parent: views[id].__parent__, ...views[id] })
 
   toLine({ _window, lookupActions, stack, data: { string: view.view, id, index: 1 }, req, res, mount: true, __ })
@@ -496,6 +422,13 @@ const toHTML = ({ _window, id, stack, __ }) => {
 
   var view = views[id], parent = views[view.__parent__]
   var name = view.__name__, html = ""
+
+  // remove view
+  delete view.view
+  delete view.children
+  delete view.functions
+  
+  if (name === "Action") return
 
   // linkable
   //if (view.link && !view.__linked__) return link({ _window, id, stack, __ })
@@ -573,7 +506,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
       ${toArray(view.src).map(src => typeof src === "string" ? `<source src=${src}>` : typeof src === "object" ? `<source src=${src.src} type=${src.type}>` : "")}
       ${view.alt || view.message || ""}
     </video>`
-  } else return removeView({ _window, stack, id })
+  } else return html = `<></>`
 
   // indexing
   var index = 0
@@ -633,4 +566,277 @@ const link = ({ _window, id, stack, __ }) => {
   toHTML({ _window, id, stack, __ })
 }
 
-module.exports = { toView, toHTML, customView }
+const documenter = ({ _window, res, stack, address, __ }) => {
+
+  var { global, views } = _window
+  var page = global.manifest.page
+  var view = views[page] || {}
+
+  // head tags
+  var language = global.language = view.language || view.lang || "en"
+  var direction = view.direction || view.dir || (language === "ar" || language === "fa" ? "rtl" : "ltr")
+  var title = view.title || "Bracket App Title"
+
+  // favicon
+  var favicon = views.document.favicon && views.document.favicon.url
+  var faviconType = favicon && views.document.favicon.type
+
+  // meta
+  view.meta = view.meta || {}
+  var metaHTTPEquiv = view.meta["http-equiv"] || view.meta["httpEquiv"] || {}
+  if (typeof metaHTTPEquiv !== "object") metaHTTPEquiv = {}
+  if (!metaHTTPEquiv["content-type"]) metaHTTPEquiv["content-type"] = "text/html; charset=UTF-8"
+  var metaKeywords = view.meta.keywords || ""
+  var metaDescription = view.meta.description || ""
+  var metaTitle = view.meta.title || view.title || ""
+  var metaViewport = view.meta.viewport || ""
+
+  delete global.data.project
+
+  // logs
+  global.__server__.logs = stack.logs
+
+  // clear secure view actions
+  Object.values(global.data.view).map(view => {
+    if (view._secure_) {
+      view.view = ""
+      view.children = []
+      clearActions(view.functions)
+    }
+  })
+
+  toAwait({ _window, stack, address, __ })
+
+  res.end(
+    `<!DOCTYPE html>
+      <html lang="${language}" dir="${direction}" class="html">
+          <head>
+              <!-- css -->
+              <link rel="stylesheet" href="/route/resource/index.css"/>
+              ${views.document.stylesheet ? `
+                  <style>
+                  ${Object.entries(views.document.stylesheet).map(([key, value]) => typeof value === "object" && !Array.isArray(value)
+      ? `${key}{
+                      ${Object.entries(value).map(([key, value]) => `${cssStyleKeyNames[key] || key}: ${value.toString().replace(/\\/g, '')}`).join(`;
+                      `)};
+                  }` : "").filter(style => style).join(`
+                  `)}
+                  </style>` : ""}
+              
+              <!-- Font -->
+              <link rel="preconnect" href="https://fonts.googleapis.com">
+              <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+              <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend+Deca&display=swap">
+              <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400&display=swap">
+              
+              <!-- title -->
+              <title>${title}</title>
+              
+              <!-- meta -->
+              ${metaHTTPEquiv ? Object.entries(metaHTTPEquiv).map(([key, value]) => `<meta http-equiv="${key}" content="${value}">
+              `) : ""}
+              <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+              <meta name="viewport" content= "width=device-width, initial-scale=1.0">
+              ${metaViewport ? `<meta name="viewport" content="${metaViewport}">` : ""}
+              ${metaKeywords ? `<meta name="keywords" content="${metaKeywords}">` : ""}
+              ${metaDescription ? `<meta name="description" content="${metaDescription}">` : ""}
+              ${metaTitle ? `<meta name="title" content="${metaTitle}">` : ""}
+              
+              <!-- favicon -->
+              ${favicon ? `<link rel="icon" type="image/${faviconType || "x-icon"}" href="${favicon}"/>` : `<link rel="icon" href="data:,">`}
+              
+              <!-- views & global -->
+              <script id="views" type="application/json">${JSON.stringify(views)}</script>
+              <script id="global" type="application/json">${JSON.stringify(global)}</script>
+              
+              <!-- head tags -->
+              ${(views.document.links || []).map(link => !link.body ? `<link ${link.rel ? `rel="${link.rel}"` : ""} ${link.type ? `type="${link.type}"` : ""} href="${link.href}" />` : "").join("")}
+
+          </head>
+          <body>
+              <!-- body tags -->
+              ${(views.document.links || []).map(link => link.body ? `<link ${link.rel ? `rel="${link.rel}"` : ""} ${link.type ? `type="${link.type}"` : ""} href="${link.href}" />` : "").join("")}
+
+              <!-- html -->
+              ${views.body.__html__ || ""}
+
+              <!-- engine -->
+              <script src="/route/resource/engine.js"></script>
+
+              <!-- google icons -->
+              <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"/>
+              <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Rounded"/>
+              <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Sharp"/>
+              <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons"/>
+              <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Outlined"/>
+              <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Round"/>
+              <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp"/>
+              <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+              <!-- html2pdf -->
+              <script src="https://cdn.jsdelivr.net/npm/js-html2pdf@1.1.4/lib/html2pdf.min.js"></script>
+          </body>
+      </html>`
+  )
+}
+
+const clearActions = (data) => {
+  if (typeof data !== "object") return
+  Object.entries(data || {}).map(([action, mapAction]) => {
+    if (typeof mapAction === "object") return clearActions(mapAction)
+    data[action] = ""
+  })
+}
+
+const update = ({ _window, id, lookupActions, stack, address, req, res, __, data = {} }) => {
+
+  // address.blockable = false
+  const views = _window ? _window.views : window.views
+  const global = _window ? _window.global : window.global
+
+  var view = views[data.id]
+
+  if (!data.postUpdate) {
+
+    var parent = views[data.__parent__ || view.__parent__]
+    var __index__ = data.__index__
+    var __childIndex__ = data.__childIndex__ !== undefined ? data.__childIndex__ : view.__childIndex__
+    var __viewPath__ = [...(data.__viewPath__ || view.__viewPath__)]
+    var __customViewPath__ = [...(data.__customViewPath__ || view.__customViewPath__)]
+    var __lookupViewActions__ = [...(data.__lookupViewActions__ || view.__lookupViewActions__)]
+    var my__ = data.__ || view.__
+
+    var elements = []
+    var timer = (new Date()).getTime()
+
+    if (!view) return
+
+    // close publics
+    closePublicViews({ _window, id: data.id, __, stack, lookupActions })
+
+    // get view to be rendered
+    var reducedView = {
+      ...(data.view ? data.view : clone(__viewPath__.reduce((o, k) => o[k], global.data.view))),
+      __index__,
+      __childIndex__,
+      __view__: true,
+      __viewPath__,
+      __customViewPath__,
+      __lookupViewActions__
+    }
+
+    // data
+    if (data.data) {
+
+      reducedView.data = clone(data.data)
+      reducedView.doc = data.doc || parent.doc || generate()
+      global[reducedView.doc] = global[reducedView.doc] || reducedView.data
+
+    } else if (data.doc) {
+
+      reducedView.doc = data.doc
+      global[reducedView.doc] = global[reducedView.doc] || reducedView.data || {}
+    }
+
+    // path
+    if (data.path !== undefined) reducedView.__dataPath__ = (Array.isArray(data.path) ? data.path : typeof data.path === "number" ? [data.path] : data.path.split(".")) || []
+
+    // remove views
+    if (!data.insert && parent.__rendered__) parent.__childrenRef__.filter(({ childIndex }) => childIndex === __childIndex__).map(({ id }) => elements.push(removeView({ _window, id, stack, main: true, insert: data.insert })))
+    else if (!parent.__rendered__) removeView({ _window, id: data.id, stack, main: true })
+
+    // address for post update
+    addresser({ _window, id, stack, switchWithAddress: address, type: "function", function: "update", file: "toView", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent, postUpdate: true } })
+
+    // address
+    address = addresser({ _window, id, stack, status: "Start", type: "function", function: "toView", __: my__, lookupActions: __lookupViewActions__, nextAddress: address, data: { view: reducedView, parent: parent.id } }).address
+    
+    // render
+    toView({ _window, lookupActions: __lookupViewActions__, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
+    
+  } else { // post update
+
+    var { childIndex, elements, root, timer, parent, ...data } = data
+
+    // tohtml parent
+    toHTML({ _window, lookupActions, stack, __, id: parent.id })
+
+    var renderedRefView = parent.__childrenRef__.filter(({ id, childIndex: chdIndex }) => chdIndex === childIndex && !views[id].__rendered__ && views[id])
+
+    var updatedViews = [], idLists = [], innerHTML = ""
+
+    // insert absolutely
+    renderedRefView.map(({ id }) => {
+
+      var { __idList__, __html__ } = views[id]
+
+      // push to html
+      innerHTML += __html__
+
+      // _.data
+      updatedViews.push(views[id])
+
+      // start
+      idLists.push(...[id, ...__idList__])
+    })
+    
+    // browser actions
+    if (!_window) {
+
+      var lDiv = document.createElement("div")
+      document.body.appendChild(lDiv)
+      lDiv.style.position = "absolute"
+      lDiv.style.opacity = "0"
+      lDiv.style.left = -1000
+      lDiv.style.top = -1000
+      lDiv.innerHTML = innerHTML
+      lDiv.children[0].style.opacity = "0"
+
+      // remove prev elements
+      elements.map(element => element.remove())
+
+      // innerHTML
+      renderedRefView.map(({ index }) => {
+
+        if (index >= parent.__element__.children.length || parent.__element__.children.length === 0) parent.__element__.appendChild(lDiv.children[0])
+        else parent.__element__.insertBefore(lDiv.children[0], parent.__element__.children[index])
+      })
+
+      idLists.map(id => starter({ _window, lookupActions, address, stack, __, id }))
+
+      // display
+      updatedViews.map(({ id }) => views[id].__element__.style.opacity = "1")
+
+      // rout
+      if (updatedViews[0].id === "root") {
+
+        document.body.scrollTop = document.documentElement.scrollTop = 0
+        var title = root.title || views[global.manifest.page].title
+        var path = root.path || views[global.manifest.page].path
+
+        history.pushState(null, title, path)
+        document.title = title
+      }
+
+      if (lDiv) {
+
+        document.body.removeChild(lDiv)
+        lDiv = null
+      }
+    }
+
+    console.log((data.action || "UPDATE") + ":" + updatedViews[0].id, (new Date()).getTime() - timer)
+
+    var data = { view: updatedViews.length === 1 ? updatedViews[0] : updatedViews, message: "View updated successfully!", success: true }
+
+    toParam({ _window, data: "loader.hide" })
+
+    if (address) {
+
+      address.params.__ = [data, ...address.params.__]
+      address.params.id = views[address.params.id] ? address.params.id : updatedViews[0].id
+    }
+  }
+}
+
+module.exports = { toView, toHTML, documenter, update }

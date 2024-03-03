@@ -9,12 +9,13 @@ window.global = JSON.parse(document.getElementById("global").textContent)
 const views = window.views
 const global = window.global
 
+views.document.__element__ = document
+
 // app default event listeneres
 defaultAppEvents()
 
 // start app
 views.document.__idList__.map(id => starter({ id }))
-views.document.__element__ = document
 // starter({ id: "document" })
 
 // window

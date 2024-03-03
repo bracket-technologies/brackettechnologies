@@ -5,7 +5,7 @@ const { getDeepChildrenId } = require("./kernel")
 const { updateDataPath } = require("./remove")
 const { toCode } = require("./toCode")
 const { isNumber } = require("./toValue")
-const { update } = require("./update")
+const { update } = require("./toView")
 
 const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 

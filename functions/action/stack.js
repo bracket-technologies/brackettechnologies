@@ -2,7 +2,7 @@ const { decode } = require("./decode")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const openStack = ({ _window, id: viewID, string = "", headAddress, headStack, ...data }) => {
+const openStack = ({ _window, id: viewID, string = "", nextAddress, headStack, ...data }) => {
 
   var stack = {
     ...data,
@@ -15,7 +15,7 @@ const openStack = ({ _window, id: viewID, string = "", headAddress, headStack, .
     interpreting: true,
     string: string ? decode({ _window, string }) : "",
     executionStartTime: (new Date()).getTime(),
-    addresses: toArray(headAddress),
+    addresses: toArray(nextAddress),
     logs: [],
     returns: []
   }

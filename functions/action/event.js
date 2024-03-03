@@ -63,7 +63,7 @@ const addEventListener = ({ event, id, __, stack, lookupActions, address, eventI
   })
 }
 
-const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: headStack, address: headAddress, __ }) => {
+const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: headStack, address: nextAddress, __ }) => {
 
   const views = window.views
   const global = window.global
@@ -81,10 +81,10 @@ const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: he
   if (id !== "droplist" && eventID === "droplist" && (!global.__droplistPositioner__ || !views[global.__droplistPositioner__] || !views[global.__droplistPositioner__].__element__.contains(view.__element__))) return
 
   // init stack
-  var stack = openStack({ event, id, eventID, string, headStack, headAddress, e })
+  var stack = openStack({ event, id, eventID, string, headStack, nextAddress, e })
 
   // address line
-  var address = addresser({ stack, id, status: "Start", type: "line", event: "click", interpreting: true, lookupActions, __, headAddress: address }).address
+  var address = addresser({ stack, id, status: "Start", type: "line", event: "click", interpreting: true, lookupActions, __, nextAddress: address }).address
 
   // main params
   toParam({ lookupActions, stack, id, e, address, data: string, __, mount: true })

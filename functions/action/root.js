@@ -1,5 +1,5 @@
 const { clone } = require("./clone")
-const { update } = require("./update")
+const { update } = require("./toView")
 
 module.exports = {
   root: ({ id, _window, root = {}, stack, lookupActions, address, req, res, __ }) => {

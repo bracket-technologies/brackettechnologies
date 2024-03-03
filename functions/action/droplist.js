@@ -1,4 +1,4 @@
-const { update } = require("./update")
+const { update } = require("./toView")
 const { clone } = require("./clone")
 const { jsonToBracket } = require("./jsonToBracket")
 const { toLine } = require("./toLine")

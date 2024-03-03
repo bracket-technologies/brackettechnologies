@@ -1941,7 +1941,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 var address;
                 ([...toArray(o)]).reverse().map(o => {
                     // address
-                    address = addresser({ _window, id, stack, headAddress: address, __: [o, ...__], lookupActions, data: { string: args[2] }, object }).address
+                    address = addresser({ _window, id, stack, nextAddress: address, __: [o, ...__], lookupActions, data: { string: args[2] }, object }).address
                 })
                 
                 // address
@@ -1953,7 +1953,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 var address;
                 ([...toArray(o)]).reverse().map(o => {
                     // address
-                    address = addresser({ _window, id, stack, headAddress: address, __, lookupActions, data: { string: args[2] }, object: o }).address
+                    address = addresser({ _window, id, stack, nextAddress: address, __, lookupActions, data: { string: args[2] }, object: o }).address
                 })
 
                 // address
@@ -2377,38 +2377,21 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             if (lang === "ar") range = range.map(num => num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
             answer = range
 
-        } else if (k0 === "render()") {
-
-            if (!o.__view__) return
-            
-            var { address, data } = addresser({ _window, stack, args, status: "Start", type: "function", interpreting: true, renderer: true, id: o.id, action: "render()", object, lookupActions, __, id })
-            
-            require('./render').render({ _window, req, res, id, stack, data })
-
-        } else if (k0 === "view()") {
-
-            if (!o.__view__) return
-            
-            var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "function", interpreting: true, renderer: true, id: o.id, action: "view()", object, lookupActions, __, id })
-            data.view = data.view || o
-            
-            require("./toView").toView({ _window, id: o.id, e, __, stack, address, lookupActions, data, req, res })
-
         } else if (k0 === "droplist()") {
 
-            var { address, data } = addresser({ _window, stack, args, id: o.id, status: "Start", action: "droplist()", object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, id: o.id, interpreting: true, status: "Start", action: "droplist()", object, lookupActions, __, id })
             require("./droplist").droplist({ id, e, data, __, stack, lookupActions, address })
 
         } else if (k0 === "route()") {
 
-            var { address, data } = addresser({ _window, stack, args, status: "Start", type: "action", asynchronous: true, id: o.id, action: "route()", object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", asynchronous: true, id: o.id, action: "route()", object, lookupActions, __, id })
             if (typeof data === "string") data = { route: data }
             
             require("./route").route({ _window, lookupActions, stack, address, id, req, res, data: { type: "route", route: { __: data.data !== undefined ? [data.data] : [] } }, __ })
 
         } else if (k0 === "root()") {
 
-            var { address, data } = addresser({ _window, stack, args, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id: o.id, action: "root()", object, lookupActions, __, id })
+            var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id: o.id, action: "root()", object, lookupActions, __, id })
             if (typeof data === "string") data = { page: data }
             
             require("./root").root({ _window, lookupActions, stack, address, id, req, res, root: data, __ })
@@ -2417,16 +2400,16 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             if (!o.__view__) return o
 
-            var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "action", dataInterpretAction: "toValue", renderer: true, blockable: false, id: o.id, action: "update()", object, lookupActions, __, id })
-            require("./update").update({ _window, lookupActions, stack, req, res, id, address, __, data: { id: data.id || o.id, ...data } })
+            var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", renderer: true, blockable: false, id: o.id, action: "update()", object, lookupActions, __, id })
+            require("./toView").update({ _window, lookupActions, stack, req, res, id, address, __, data: { id: data.id || o.id, ...data } })
 
         } else if (k0 === "insert()") {
 
             if (!o.__view__) return o
 
             // wait address
-            var { address, data = {} } = addresser({ _window, stack, args, status: "Start", type: "action", renderer: true, id: o.id, action: "insert()", lookupActions, __, id })
-            require("./insert").insert({ id, insert: { ...data, parent: o.id }, lookupActions, stack, address, __ })
+            var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", renderer: true, id: o.id, action: "insert()", lookupActions, __, id })
+            require("./insert").insert({ id, lookupActions, stack, address, __, insert: { ...data, parent: o.id } })
 
         } else if (k0 === "confirmEmail()") {
 
