@@ -50,6 +50,6 @@ module.exports = {
         } else global.mail = { success: false, message: `No mail api exists!` }
 
         // await params
-        if (params.asyncer) require("./toAwait").toAwait({ _window, id, ...params, req, res, __, _: global.mail })
+        if (params.asyncer) require("./kernel").toAwait({ _window, id, ...params, req, res, __, _: global.mail })
     }
 }

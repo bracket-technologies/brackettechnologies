@@ -23,6 +23,6 @@ module.exports = {
     // console.log("SAVE", (new Date()).getTime() - headers.timestamp, save.collection, data)
     
     // await
-    require("./toAwait").toAwait({ _window, lookupActions, stack, id, address, e, req, res, _: data, __ })
+    require("./kernel").toAwait({ _window, lookupActions, stack, id, address, e, req, res, _: data, __ })
   }
 }

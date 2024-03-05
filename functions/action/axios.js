@@ -1,4 +1,4 @@
-const { toAwait } = require("./toAwait")
+const { toAwait } = require("./kernel")
 
 const axios = async ({ id, lookupActions, stack, ...params }) => {
 

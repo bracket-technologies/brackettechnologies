@@ -1,4 +1,4 @@
-const { toParam } = require("./toParam")
+const { toParam } = require("./kernel")
 
 const getParam = ({ string, param, defValue }) => {
 

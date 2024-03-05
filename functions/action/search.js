@@ -18,6 +18,6 @@ module.exports = {
     }
 
     // await params
-    require("./toAwait").toAwait({ _window, lookupActions, stack, id, e, address, req, res, _: data, __ })
+    require("./kernel").toAwait({ _window, lookupActions, stack, id, e, address, req, res, _: data, __ })
   }
 }

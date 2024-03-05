@@ -1,4 +1,4 @@
-const { reducer } = require("./reducer")
+const { reducer } = require("./kernel")
 const { toArray } = require("./toArray")
 const { toCode } = require("./toCode")
 

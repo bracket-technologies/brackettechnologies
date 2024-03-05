@@ -1,4 +1,4 @@
-const { toParam } = require("./toParam")
+const { toParam } = require("./kernel")
 const { toCode } = require("./toCode")
 const axios = require("axios")
 const { getJsonFiles, postJsonFiles, removeJsonFiles } = require("./jsonFiles")

@@ -1,4 +1,4 @@
-const { toParam } = require("./toParam");
+const { toParam } = require("./kernel");
 
 module.exports = {
     csvToJson: ({ id, e, file, onload, __ }) => {

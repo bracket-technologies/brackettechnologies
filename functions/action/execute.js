@@ -1,10 +1,9 @@
-const { toApproval } = require("./toApproval")
+const { toApproval } = require("./kernel")
 const { toArray } = require("./toArray")
-const { toParam } = require("./toParam")
-const _method = require("./function")
+const { toParam } = require("./kernel")
 const { toCode } = require("./toCode")
-const { toAwait } = require("./toAwait")
-const { toValue } = require("./toValue")
+const { toAwait } = require("./kernel")
+const { toValue } = require("./kernel")
 const { isParam } = require("./isParam")
 
 const execute = ({ _window, lookupActions, stack, controls, actions, e, id, params, __ }) => {

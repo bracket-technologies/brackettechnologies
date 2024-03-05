@@ -54,7 +54,7 @@ module.exports = async ({ _window, lookupActions, stack, address, id, req, res, 
   await Promise.all(promises)
 
   // await
-  require("./toAwait").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __, _: uploads.length === 1 ? uploads[0] : uploads, ...params })
+  require("./kernel").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __, _: uploads.length === 1 ? uploads[0] : uploads, ...params })
 }
 
 const readFile = (file) => new Promise(res => {

@@ -1,8 +1,6 @@
-const { update } = require("./toView")
 const { clone } = require("./clone")
 const { jsonToBracket } = require("./jsonToBracket")
-const { toLine } = require("./toLine")
-const { kernel } = require("./kernel")
+const { update, toLine, kernel } = require("./kernel")
 
 const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   

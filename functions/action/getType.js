@@ -1,5 +1,5 @@
 const getType = (value) => {
-  const { emptySpaces, isNumber } = require("./toValue")
+  const { emptySpaces, isNumber } = require("./kernel")
 
   if (typeof value === "boolean" || value === "true" || value === "false") return "boolean"
   if (typeof value === "object" && Array.isArray(value)) return "array"

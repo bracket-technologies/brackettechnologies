@@ -3,8 +3,8 @@ const { getLocalFile } = require("./storageLocal")
 const { initializer } = require("./initializer")
 const { openStack, endStack } = require("./stack")
 const { getData } = require("./database")
-const { toView } = require("./toView")
-const { addresser } = require("./addresser")
+const { toView } = require("./kernel")
+const { addresser } = require("./kernel")
 const { logger } = require("./logger")
 
 require("dotenv").config();

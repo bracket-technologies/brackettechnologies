@@ -1,5 +1,5 @@
 const { toArray } = require("./toArray")
-const { toAwait } = require("./toAwait")
+const { toAwait } = require("./kernel")
 
 module.exports = {
     fileReader: ({ req, res, _window, lookupActions, stack, address, id, e, __, data }) => {

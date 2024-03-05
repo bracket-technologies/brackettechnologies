@@ -1,5 +1,5 @@
 const { decode } = require("./decode")
-const { toLine } = require("./toLine")
+const { toLine } = require("./kernel")
 const { toCode } = require("./toCode")
 
 const searchParams = ({ _window, lookupActions, stack, req, res, id, e, __, string, object }) => {

@@ -1,7 +1,7 @@
-const { toView } = require("./toView");
-const { addresser } = require("./addresser");
+const { toView } = require("./kernel");
+const { addresser } = require("./kernel");
 const { logger } = require("./logger");
-const { toAwait } = require("./toAwait");
+const { toAwait } = require("./kernel");
 const { getData } = require("./database");
 
 require("dotenv").config();

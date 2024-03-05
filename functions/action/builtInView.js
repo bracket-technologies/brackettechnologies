@@ -1,5 +1,5 @@
-const { toApproval } = require("./toApproval")
-const { toParam } = require("./toParam")
+const { toApproval } = require("./kernel")
+const { toParam } = require("./kernel")
 const { toCode } = require("./toCode")
 const builtInViews = require("../view/views")
 
