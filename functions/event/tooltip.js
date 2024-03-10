@@ -7,7 +7,7 @@ module.exports = ({ data, id }) => {
   var text = data.text || ""
   
   return [{
-    event: `mousemove?if():[!__tooltipTimer__:()]:[__tooltipTimer__:()=timer():[():tooltip.style().opacity=1?mouseentered]:500];():tooltip-text.txt()=.tooltip.text;():tooltip-text.removeClass():ar;if():[${arabic.test(text) && !english.test(text)}]:[():tooltip-text.addClass():ar];():tooltip.position():[positioner=mouse;placement=[.tooltip.placement||left];distance=[.tooltip.distance||0]]?mouseentered`
+    event: `mousemove?if():[!__tooltipTimer__:()]:[__tooltipTimer__:()=timer():[():tooltip.style().opacity=1?mouseentered]:500];():'tooltip-text'.txt()=.tooltip.text;#():tooltip-text.removeClass():ar;#if():[${arabic.test(text) && !english.test(text)}]:[():tooltip-text.addClass():ar];():tooltip.position():[positioner=mouse;placement=[.tooltip.placement||left];distance=[.tooltip.distance||0]]?mouseentered`
   }, {
     event: "mouseleave?mouseentered=false;clearTimer():[__tooltipTimer__:()];__tooltipTimer__:().del();():tooltip.style().opacity=0"
   }, {

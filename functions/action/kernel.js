@@ -40,22 +40,24 @@ const events = require("./events.json")
 
 var actions = {
     "caret()": ({ o }) => ({ index: getCaretIndex(o) }),
+    "device()": ({ global }) => global.manifest.device.device,
+    "mobile()": ({ global }) => global.manifest.device.device.type === "smartphone",
+    "desktop()": ({ global }) => global.manifest.device.device.type === "desktop",
+    "tablet()": ({ global }) => global.manifest.device.device.type === "tablet",
+    "stack()": ({ stack }) => stack,
     "toInt()": ({ o }) => {
 
         if (!isNumber(o)) return
         var integer = o
         return Math.round(toNumber(integer))
-    },
-    "clicked()": ({ global }) => {
+    }, "clicked()": ({ global }) => {
 
         return global.__clicked__
-    },
-    "focused()": ({ global }) => {
+    }, "focused()": ({ global }) => {
 
         return global.__focused__
-    },
-    "click()": ({ _window, global, o, view, pathJoined }) => {
-
+    }, "click()": ({ _window, global, view, o, pathJoined }) => {
+        
         if (!o.__view__ || !o.__rendered__) return
 
         if (_window) return view.__controls__.push({
@@ -64,8 +66,7 @@ var actions = {
 
         global.__clicked__ = o
         o.__element__.click()
-    },
-    "focus()": ({ _window, o, view, pathJoined }) => {
+    }, "focus()": ({ _window, view, o, pathJoined }) => {
 
         if (!o.__view__) return
 
@@ -74,8 +75,7 @@ var actions = {
         })
 
         focus({ id: o.id })
-    },
-    "blur()": ({ _window, o, view, pathJoined }) => {
+    }, "blur()": ({ _window, view, o, pathJoined }) => {
 
         if (!o.__view__) return
 
@@ -84,73 +84,57 @@ var actions = {
         })
 
         o.__element__.blur()
-    },
-    "mousedown()": ({ o }) => {
+    }, "mousedown()": ({ o }) => {
 
         if (!o.__view__) return
         var mousedownEvent = new Event("mousedown")
         o.__element__.dispatchEvent(mousedownEvent)
-    },
-    "mouseup()": ({ o }) => {
+    }, "mouseup()": ({ o }) => {
         if (!o.__view__) return
         var mouseupEvent = new Event("mouseup")
         o.__element__.dispatchEvent(mouseupEvent)
-    },
-    "mouseenter()": ({ o }) => {
+    }, "mouseenter()": ({ o }) => {
 
         if (!o.__view__) return
         var mouseenterEvent = new Event("mouseenter")
         o.__element__.dispatchEvent(mouseenterEvent)
-    },
-    "mouseleave()": ({ o }) => {
+    }, "mouseleave()": ({ o }) => {
 
-        if (!o.__view__) return
+        if (!o.__view__ || !o.__rendered__) return
         var mouseleaveEvent = new Event("mouseleave")
         o.__element__.dispatchEvent(mouseleaveEvent)
-    },
-    "keyup()": ({ o }) => {
+    }, "keyup()": ({ o }) => {
         if (!o.__view__) return
         var keyupevent = new Event("keyup")
         o.__element__.dispatchEvent(keyupevent)
-    },
-    "keydown()": ({ o }) => {
+    }, "keydown()": ({ o }) => {
         if (!o.__view__) return
         var keyupevent = new Event("keydown")
         o.__element__.dispatchEvent(keyupevent)
-    },
-    "device()": ({ global }) => global.manifest.device.device,
-    "mobile()": ({ global }) => global.manifest.device.device.type === "smartphone",
-    "desktop()": ({ global }) => global.manifest.device.device.type === "desktop",
-    "tablet()": ({ global }) => global.manifest.device.device.type === "tablet",
-    "stack()": ({ stack }) => stack,
-    "name()": ({ _window, id, e, object, args, o }) => {
+    }, "name()": ({ _window, o, id, e, __, args, object }) => {
 
         var name = toValue({ _window, id, e, object, value: args[1], __ })
         if (name === o.__name__) return o
         var children = getDeepChildren({ _window, id: o.id })
         return children.find(view => view.__name__ === name)
 
-    },
-    "names()": ({ _window, id, e, object, args, o }) => {
+    }, "names()": ({ _window, o, id, e, __, args, object }) => {
 
         var name = toValue({ _window, id, e, object, value: args[1], __ })
         var children = getDeepChildren({ _window, id: o.id })
         return children.filter(view => view.__name__ === name)
 
-    },
-    "display()": ({ o }) => {
+    }, "display()": ({ o }) => {
 
         if (!o.__view__) return
         o.__element__.style.display = "flex"
 
-    },
-    "hide()": ({ o }) => {
+    }, "hide()": ({ o }) => {
 
         if (!o.__view__) return
         o.__element__.style.display = "none"
 
-    },
-    "style()": ({ req, res, _window, lookupActions, stack, id, e, __, args, o, pathJoined }) => {
+    }, "style()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
 
         if (!o.__view__) return
         if (!args[1]) {
@@ -172,28 +156,24 @@ var actions = {
             })
         }
 
-    },
-    "qr()": ({ req, res, _window, lookupActions, stack, id, e, __, args, o }) => {
+    }, "qr()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
 
         // wait address
         var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "qr()", object, lookupActions, __, id })
         qr({ _window, id, req, res, data, e, __, stack, address, lookupActions })
 
-    },
-    "contact()": ({ req, res, _window, lookupActions, stack, id, e, __, args, o }) => {
+    }, "contact()": ({ _window, req, res, o, id, e, __, args }) => {
 
         var data = toValue({ req, res, _window, id, e, __, data: args[1] })
         if (typeof data !== "obejct") return o
 
         vcard({ _window, id, req, res, data, e, __ })
 
-    },
-    "bracket()": ({ o }) => {
+    }, "bracket()": ({ o }) => {
 
         if (typeof o === "object") return require("./jsonToBracket").jsonToBracket(o)
 
-    },
-    "inputs()": ({ _window, lookupActions, stack, o }) => {
+    }, "inputs()": ({ _window, views, o, stack, lookupActions }) => {
 
         if (!o.__view__) return
         var inputs = [], textareas = [], editables = []
@@ -205,8 +185,7 @@ var actions = {
 
         return [...inputs, ...textareas, ...editables].map(o => views[o.id])
 
-    },
-    "input()": ({ req, res, _window, lookupActions, stack, id, e, __, args, o }) => {
+    }, "input()": ({ _window, views, o, stack, lookupActions }) => {
 
         if (!o.__view__) return
         var inputs = [], textareas = [], editables = []
@@ -217,22 +196,19 @@ var actions = {
         if (o.editable) editables.push(o)
 
         if ([...inputs, ...textareas, ...editables].length === 0) return
-        answer = views[[...inputs, ...textareas, ...editables][0].id]
+        return views[[...inputs, ...textareas, ...editables][0].id]
 
-    },
-    "px()": ({ req, res, _window, lookupActions, stack, id, e, __, args, o }) => {
+    }, "px()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
 
         if (args[1]) return lengthConverter(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
         return lengthConverter(o)
 
-    },
-    "touchable()": ({ _window, global }) => {
+    }, "touchable()": ({ _window, global }) => {
 
         if (_window) return global.manifest.device.device.type === "smartphone"
         else return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0))
 
-    },
-    "className()": ({ req, res, _window, lookupActions, stack, id, e, __, args, o }) => {
+    }, "className()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, i, lastIndex, value, key, path, breakRequest, condition, _object, answer }) => {
 
         if (!o.__view__) return
         var className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
@@ -245,21 +221,2269 @@ var actions = {
         if (!o.__view__) return
         return [...o.__element__.classList]
 
-    }
+    }, "log()": ({ _window, req, res, o, stack, pathJoined, lookupActions, id, e, __, args, k, underScored, object, i }) => {
+
+        var logs = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: underScored ? [o, ...__] : __, data: arg, object: underScored ? object : (i === 0 ? ((pathJoined || "").split(".")[0] !== k ? o : undefined) : o) }))
+        if (args.slice(1).length === 0 && pathJoined !== "log()") logs = [o]
+
+        console.log("LOG:" + (o.id || id), decode({ _window, string: pathJoined }), ...logs)
+        stack.logs.push(stack.logs.length + " LOG:" + (o.id || id) + " " + logs.join(" "))
+
+        return o
+    }, "parent()": ({ _window, o }) => {
+
+        return nthParent({ _window, nth: 1, o })
+
+    }, "2ndParent()": ({ _window, o }) => {
+
+        return nthParent({ _window, nth: 2, o })
+
+    }, "3rdParent()": ({ _window, o }) => {
+
+        return nthParent({ _window, nth: 3, o })
+
+    }, "nthParent()": ({ _window, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__ || !o.id) return
+        var nth = toValue({ _window, id, e, lookupActions, stack, __, data: args[1] })
+        return nthParent({ _window, nth, o })
+
+    }, "prevSiblings()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return o
+        return views[o.__parent__].__childrenRef__.slice(0, o.__index__ + 1).map(({ id }) => views[id])
+
+    }, "nextSiblings()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return o
+        return views[o.__parent__].__childrenRef__.slice(o.__index__ + 1).map(({ id }) => views[id])
+
+    }, "siblings()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return o
+        var children = clone(views[o.__parent__].__childrenRef__)
+        children.splice(o.__index__, 1)
+        return children.map(({ id }) => views[id])
+
+    }, "next()": ({ _window, o }) => {
+
+        return nthNext({ _window, nth: 1, o })
+
+    }, "2ndNext()": ({ _window, o }) => {
+
+        return nthNext({ _window, nth: 2, o })
+
+    }, "3rdNext()": ({ _window, o }) => {
+
+        return nthNext({ _window, nth: 3, o })
+
+    }, "nthNext()": ({ _window, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__ || !o.id) return
+        var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
+        return nthNext({ _window, nth, o })
+
+    }, "last()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[views[o.__parent__].__childrenRef__.slice(-1)[0].id]
+
+    }, "2ndLast()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[views[o.__parent__].__childrenRef__.slice(-2)[0].id]
+
+    }, "3rdLast()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[views[o.__parent__].__childrenRef__.slice(-3)[0].id]
+
+    }, "nthLast()": ({ _window, views, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__ || !o.id) return
+        var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
+        if (!isNumber(nth)) return
+        return views[views[o.__parent__].__childrenRef__.slice(-1 * nth)[0].id]
+
+    }, "1stSibling()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return o
+        return views[views[o.__parent__].__childrenRef__[0].id]
+
+    }, "2ndSibling()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return o
+        return views[views[o.__parent__].__childrenRef__[1].id]
+
+    }, "3rdSibling()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return o
+        return views[views[o.__parent__].__childrenRef__[2].id]
+
+    }, "nthSibling()": ({ _window, views, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__ || !o.id) return o
+        var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
+        return views[views[o.__parent__].__childrenRef__[nth - 1].id]
+
+    }, "grandChild()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[views[o.__childrenRef__[0].id].__childrenRef__[0].id]
+
+    }, "grandChildren()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[o.__childrenRef__[0].id].__childrenRef__.map(({ id }) => views[id])
+
+    }, "prev()": ({ _window, o }) => {
+
+        return nthPrev({ _window, nth: 1, o })
+
+    }, "2ndPrev()": ({ _window, o }) => {
+
+        return nthPrev({ _window, nth: 2, o })
+
+    }, "3rdPrev()": ({ _window, o }) => {
+
+        return nthPrev({ _window, nth: 3, o })
+
+    }, "nthPrev()": ({ _window, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__ || !o.id) return
+        var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
+        return nthPrev({ _window, nth, o })
+
+    }, "1stChild()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id || !o.__childrenRef__[0]) return
+        return views[o.__childrenRef__[0].id]
+
+    }, "child()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id || !o.__childrenRef__[0]) return
+        return views[o.__childrenRef__[0].id]
+
+    }, "2ndChild()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id || !o.__childrenRef__[1]) return
+        return views[o.__childrenRef__[1].id]
+
+    }, "3rdChild()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id || !o.__childrenRef__[2]) return
+        return views[o.__childrenRef__[2].id]
+
+    }, "nthChild()": ({ _window, views, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__ || !o.id) return
+        var nth = toValue({ _window, __, value: args[1], e, id, stack, lookupActions })
+        if (!isNumber(nth)) return
+        if (!o.__childrenRef__[nth - 1]) return
+        return views[o.__childrenRef__[nth - 1].id]
+
+    }, "3rdLastChild()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[o.__childrenRef__.slice(-3)[0].id]
+
+    }, "2ndLastChild()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[o.__childrenRef__.slice(-2)[0].id]
+
+    }, "lastChild()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[o.__childrenRef__.slice(-1)[0].id]
+
+    }, "nthLastChild()": ({ _window, views, o, id, e, __, args }) => {
+
+        if (!o.__view__ || !o.id) return
+        var nth = toValue({ _window, __, value: args[1], e, id })
+        if (!isNumber(nth)) return
+        return views[o.__childrenRef__.slice(-1 * nth)[0].id]
+
+    }, "children()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return o.__childrenRef__.map(({ id }) => views[id])
+
+    }, "lastEl()": ({ o }) => {
+
+        return o[o.length - 1]
+
+    }, "2ndLastEl()": ({ o }) => {
+
+        return o[o.length - 2]
+
+    }, "3rdLastEl()": ({ o }) => {
+
+        return o[o.length - 3]
+
+    }, "nthLastEl()": ({ _window, o, stack, lookupActions, id, e, __, args }) => {
+
+        var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
+        return o[o.length - nth]
+
+    }, "while()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        while (toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })) {
+            toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e })
+        }
+
+    }, "data()": ({ _window, req, res, global, o, stack, lookupActions, id, e, __, args, object, i, value, key, path, breakRequest }) => {
+
+        if (!o.__view__) return
+
+        breakRequest.break = true
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
+
+        if (data.path) return answer = kernel({ req, res, _window, lookupActions, stack, id, e, data: { data: data.data || global[data.doc || o.doc], value, key, path: data.path, object }, __ })
+
+        if (!o.doc) return
+
+        return kernel({ req, res, _window, lookupActions, stack, id, data: { path: [...o.__dataPath__, ...path.slice(i + 1)], object, data: global[o.doc], value, key }, __, e })
+
+    }, "doc()": ({ _window, req, res, global, views, o, stack, lookupActions, id, e, __, args, object, i, value, key, path, breakRequest, answer }) => {
+
+        breakRequest.break = true
+        var doc = o.__view__ ? o.doc : views[id].doc
+
+        if (args[1]) {
+
+            if (isParam({ _window, string: args[1] })) {
+
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                args[1] = data.path || data.__dataPath__ || []
+                if (typeof args[1] === "string") args[1] = args[1].split(".")
+
+                return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
+            }
+
+            if (args[1].charAt(0) === "@") args[1] = global.__refs__[args[1]].data
+            args[1] = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            if (typeof args[1] === "string") args[1] = args[1].split(".")
+
+            return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
+        }
+
+        if (path[i + 1] !== undefined) {
+
+            if (path[i + 1] && path[i + 1].charAt(0) === "@") path[i + 1] = toValue({ req, res, _window, lookupActions, stack, id, data: global.__refs__[path[i + 1]].data, __, e })
+            answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...path.slice(i + 1)], object }, __ })
+
+        } else if (key && value !== undefined) answer = global[doc] = value
+        else answer = global[doc]
+
+        return answer
+
+    }, "installApp()": ({ global }) => {
+
+        const installApp = async () => {
+
+            global.__installApp__.prompt();
+            const { outcome } = await global.__installApp__.userChoice;
+            console.log(`User response to the install prompt: ${outcome}`);
+        }
+
+        installApp()
+
+    }, "clearTimer()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var timer = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e }) || o
+        return clearTimeout(timer)
+
+    }, "clearInterval()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var timer = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e }) || o
+        return clearInterval(timer)
+
+    }, "interval()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        if (!o.__view__) return
+        if (!isNaN(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))) { // interval():params:timer
+
+            var timer = parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))
+            var myFn = () => toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], object })
+            return setInterval(myFn, timer)
+        }
+
+    }, "repeat()": ({ _window, req, res, stack, lookupActions, id, e, __, args, object, i }) => {
+
+        var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
+        var times = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
+        var loop = []
+        for (var i = 0; i < times; i++) {
+            loop.push(item)
+        }
+        return loop
+
+    }, "timer()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object, answer }) => { // timer():params:timer:repeats
+
+        var timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })) : 0
+        var repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object })) : false
+        var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object }) }
+
+        if (typeof repeats === "boolean") {
+
+            if (repeats === true) answer = setInterval(myFn, timer)
+            else if (repeats === false) answer = setTimeout(myFn, timer)
+
+        } else if (typeof repeats === "number") {
+
+            answer = []
+            answer.push(setTimeout(myFn, timer))
+            if (repeats > 1) {
+                for (let index = 0; index < repeats; index++) {
+                    answer.push(setTimeout(myFn, timer))
+                }
+            }
+        }
+
+        if (o.__view__) toArray(answer).map(timer => o.__timers__.push(timer))
+        return answer
+
+    }, "slice()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object, answer }) => { // slice by text or by number
+
+        if (!Array.isArray(o) && typeof o !== "string" && typeof o !== "number") return
+
+        var start = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object })
+        var end = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[2], __, object })
+
+        if (end !== undefined) {
+
+            if (!isNaN(end)) {
+
+                if (!isNaN(start)) answer = o.slice(parseInt(start), parseInt(end))
+                else {
+                    answer = o.split(start)[1]
+                    answer = answer.slice(0, end)
+                }
+
+            } else {
+
+                if (!isNaN(start)) answer = o.slice(parseInt(start))
+                else answer = o.split(start)[1]
+                answer = answer.split(end)[0]
+            }
+
+        } else {
+
+            if (!isNaN(start)) answer = o.slice(parseInt(start) || 0)
+            else answer = o.split(start)[1]
+        }
+        return answer
+
+    }, "reduce()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, value, key }) => { // o.reduce():[path=]
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        if (Array.isArray(data)) data = { path: data }
+        return reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.data !== undefined ? true : key, value: data.data !== undefined ? data.data : value }, e, req, res, __ })
+
+    }, "path()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, lastIndex, value, key }) => {
+
+        var data = {}
+        if (args[1]) {
+
+            if (isParam({ _window, string: args[1] })) {
+
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+
+            } else data.path = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        }
+
+        if ((key && value !== undefined && lastIndex) || data.value !== undefined) {
+
+            if (data.path !== undefined) return toArray(data.path).reduce((o, k, i) => {
+                if (i === data.path.length - 1) return o[k] = data.value !== undefined ? data.value : value
+                else return o[k]
+            }, o)
+
+            else return o.__dataPath__
+
+        } else {
+
+            if (data.path !== undefined) return toArray(data.path).reduce((o, k) => o[k], o)
+            else return o.__dataPath__
+        }
+
+    }, "reload()": () => {
+
+        document.location.reload(true)
+
+    }, "contains()": ({ _window, req, res, views, o, stack, lookupActions, id, e, __, args, answer }) => {
+
+        var first = o, next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+        if (!first || !next) return
+
+        if (typeof first === "string") first = views[first]
+        if (typeof next === "string") next = views[next]
+
+        if (first.nodeType === Node.ELEMENT_NODE) first = views[first.id]
+        if (next.nodeType === Node.ELEMENT_NODE) next = views[next.id]
+
+        if (!first.__view__ || !next.__view__) return
+
+        if (first.__element__.nodeType === Node.ELEMENT_NODE && next.__element__.nodeType === Node.ELEMENT_NODE) {
+            answer = first.__element__.contains(next.__element__)
+            if (!answer) answer = first.__element__.id === next.__element__.id
+        }
+        return answer
+
+    }, "in()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+
+        if (next) {
+            if (typeof o === "string" || Array.isArray(o) || typeof o === "number") return next.includes(o)
+            else if (typeof o === "object") return next[o] !== undefined
+            else if (o.nodeType === Node.ELEMENT_NODE && next.nodeType === Node.ELEMENT_NODE) return next.contains(o)
+        } else return false
+
+    }, "is()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var b = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+        return isEqual(o, b)
+
+    }, "opp()": ({ o }) => {
+
+        if (typeof o === "number") return -1 * o
+        else if (typeof o === "boolean") return !o
+        else if (typeof o === "string" && o === "true" || o === "false") {
+            if (o === "true") return false
+            else return true
+        }
+
+    }, "neg()": ({ o }) => {
+
+        return o < 0 ? o : -o
+
+    }, "pos()": ({ o }) => {
+
+        return o > 0 ? o : o < 0 ? -o : o
+
+    }, "sum()": ({ o }) => {
+
+        return o.reduce((o, k) => o + toNumber(k), 0)
+
+    }, "src()": ({ o, lastIndex, value, key }) => {
+
+        if (!o.__view__) return
+
+        if (lastIndex && key && value !== undefined) return o.__element__.src = value
+        else return o.__element__.src
+
+    }, "clear()": ({ o }) => {
+
+        if (!o.__view__) return
+        o.__element__.value = null
+        o.__element__.text = null
+        o.__element__.files = null
+        return o
+
+    }, "list()": ({ o, answer }) => {
+
+        answer = toArray(o)
+        return [...answer]
+
+    }, "notify()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        var notify = () => {
+            if (isParam({ _window, string: args[1] })) {
+
+                var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                new Notification(_params.title || "", _params)
+
+            } else {
+
+                var title = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                new Notification(title || "")
+            }
+        }
+
+        if (!("Notification" in window)) {
+            // Check if the browser supports notifications
+            alert("This browser does not support notification");
+        } else if (Notification.permission === "granted") {
+            // Check whether notification permissions have already been granted;
+            // if so, create a notification
+            notify()
+            // …
+        } else if (Notification.permission !== "denied") {
+
+            // We need to ask the user for permission
+            Notification.requestPermission().then((permission) => {
+                // If the user accepts, let's create a notification
+                if (permission === "granted") {
+                    notify()
+                    // …
+                }
+            });
+        }
+
+    }, "alert()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        var text = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+        alert(text)
+
+    }, "clone()": ({ o }) => {
+
+        return clone(o)
+
+    }, "override()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var obj1 = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+        override(o, obj1)
+
+    }, "txt()": ({ views, o, i, lastIndex, value, key, path, breakRequest, answer }) => {
+
+        if (!o.__view__) return
+
+        var el
+        if ((o.__islabel__ || o.__labeled__) && o.__name__ !== "Input") el = o.__element__.getElementsByTagName("INPUT")[0]
+        else if (views[o.id].__status__ === "Mounted") el = o.__element__
+
+        if (value) value = replaceNbsps(value)
+
+        if (el) {
+
+            if (views[el.id].__name__ === "Input") {
+
+                answer = el.value
+                if (i === lastIndex && key && value !== undefined && o.__element__) answer = el.value = value
+                else if (path[i + 1] === "del()") {
+                    breakRequest.index = i + 1
+                    answer = el.value = ""
+                }
+
+            } else {
+
+                answer = (el.textContent === undefined) ? el.innerText : el.textContent
+                if (i === lastIndex && key && value !== undefined) answer = el.innerHTML = value
+                else if (path[i + 1] === "del()") {
+                    breakRequest.index = i + 1
+                    answer = el.innerHTML = ""
+                }
+            }
+
+        } else {
+
+            if (i === lastIndex && key && value !== undefined) answer = views[o.id].text = value
+            else if (path[i + 1] === "del()") {
+                breakRequest.index = i + 1
+                answer = views[o.id].text = ""
+            }
+            answer = views[o.id].text
+        }
+        return answer
+
+    }, "min()": ({ o, i, lastIndex, value, key }) => {
+
+        if (!o.__view__) return
+
+        if (i === lastIndex && key && value !== undefined) o.min = value
+        return o.min
+
+    }, "max()": ({ o, i, lastIndex, value, key }) => {
+
+        if (!o.__view__) return
+
+        if (i === lastIndex && key && value !== undefined) o.max = value
+        return o.max
+
+    }, "push()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object, i, path, _object }) => {
+
+        if (!Array.isArray(o)) o = kernel({ req, res, _window, id, data: { data: _object, path: path.slice(0, i), value: [], key: true, object }, __, e })
+
+        var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
+        var index = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
+
+        if (!Array.isArray(o)) return
+        if (index === undefined) index = o.length || 0
+
+        if (Array.isArray(item)) {
+
+            item.map(item => {
+                o.splice(index, 0, item)
+                index += 1
+            })
+
+        } else if (Array.isArray(o)) o.splice(index, 0, item)
+
+        return o
+
+    }, "pushItems()": ({ _window, req, res, o, id, e, __, args, object }) => {
+
+        args.slice(1).map(arg => {
+            arg = toValue({ req, res, _window, id, data: args[1], __, e, object })
+            o.splice(o.length, 0, arg)
+        })
+        return o
+
+    }, "pullIndex()": ({ _window, o, stack, lookupActions, id, e, __, args, object, i, lastIndex }) => { // pull by index
+
+        // if no index pull the last element
+        var lastIndex = 1, firstIndex = 0
+        if (args[1]) firstIndex = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack })
+        if (args[2]) lastIndex = toValue({ _window, id, data: args[2], __, e, object, lookupActions, stack })
+
+        o.splice(firstIndex, lastIndex || 1)
+        return o
+
+    }, "pull()": ({ _window, o, stack, lookupActions, id, e, __, args, object }) => { // pull by conditions
+
+        var items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __, lookupActions, stack }))
+
+        items.filter(data => data !== undefined && data !== null).map(_item => {
+            var _index = o.findIndex(item => isEqual(item, _item))
+            if (_index !== -1) o.splice(_index, 1)
+        })
+
+        return o
+
+    }, "pullItem()": ({ _window, o, id, e, __, args, object }) => { // pull by item
+
+        var item = toValue({ _window, id, data: args[1], __, e, object })
+        var index = o.findIndex(_item => isEqual(_item, item))
+        if (index !== -1) o.splice(index, 1)
+        return o
+
+    }, "pullLast()": ({ o }) => {
+
+        // if no it pulls the last element
+        o.splice(o.length - 1, 1)
+        return o
+
+    }, "rem()": ({ o, stack }) => {
+
+        if (!o.__view__) return
+        remove({ id: o.id, __, stack })
+
+    }, "keys()": ({ o }) => {
+
+        return Object.keys(o)
+
+    }, "key()": ({ o, i, lastIndex, value, key }) => {
+
+        if (i === lastIndex && value !== undefined && key) return Object.keys(o)[0] = value
+        else return Object.keys(o)[0]
+
+    }, "values()": ({ o }) => { // values in an object
+
+        if (Array.isArray(o)) return o
+        else return Object.values(o)
+
+    }, "value()": ({ o, i, lastIndex, value, key }) => { // value 0 in an object
+
+        if (i === lastIndex && value !== undefined && key) return o[Object.keys(o)[0]] = value
+        else return Object.values(o)[0]
+
+    }, "gen()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        if (isParam({ _window, string: args[1] })) {
+
+            data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            return generate(data)
+
+        } else {
+
+            var length = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 5
+            return generate({ length })
+        }
+
+    }, "inc()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var item = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+
+        if (typeof o === "string") return o.split(item).length > 1
+        else if (Array.isArray(o)) return o.find(_item => isEqual(_item, item)) ? true : false
+
+    }, "incAny()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, answer }) => {
+
+        var items = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        answer = false
+
+        if (typeof o === "string") {
+
+            items.map(item => {
+
+                if (answer) return
+                answer = o.split(item).length > 1
+            })
+
+        } else if (Array.isArray(o)) {
+
+            items.map(item => {
+
+                if (answer) return
+                answer = o.find(_item => isEqual(_item, item)) ? true : false
+            })
+        }
+        return answer
+
+    }, "capitalize()": ({ o }) => {
+
+        return capitalize(o)
+
+    }, "capitalizeFirst()": ({ o }) => {
+
+        return capitalizeFirst(o)
+
+    }, "len()": ({ o }) => {
+
+        if (Array.isArray(o)) return o.length
+        else if (typeof o === "string") return o.split("").length
+        else if (typeof o === "object") return Object.keys(o).length
+
+    }, "require()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        require(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
+
+    }, "new()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        var data = [], className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        args.slice(1).map(arg => {
+            data.push(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg || "" }))
+        })
+        if (className && typeof (new [className]()) === "object") return new [className](...data)
+
+    }, "today()": () => {
+
+        return new Date()
+
+    }, "now()": () => {
+
+        return new Date()
+
+    }, "todayEnd()": ({ answer }) => {
+
+        answer = new Date()
+        answer.setUTCHours(23, 59, 59, 999)
+        return answer
+
+    }, "timezone()": () => {
+
+        var _date = new Date()
+        var timeZone = Math.abs(_date.getTimezoneOffset()) * 60 * 1000
+        return timeZone
+
+    }, "clock()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, answer }) => { // dd:hh:mm:ss
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        if (!data.timestamp) data.timestamp = o
+
+        return toClock(data)
+
+    }, "toSimplifiedDate()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, answer }) => {
+
+        var data = toParam({ _window, req, res, lookupActions, stack, id, e, data: args[1], __ })
+        return toSimplifiedDate({ timestamp: o, lang: data.lang || "en", timer: data.time || false })
+
+    }, "ar()": ({ o }) => {
+        //
+        if (Array.isArray(o)) return o.map(o => o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
+        else return o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d])
+
+    }, "date()": ({ _window, stack, lookupActions, id, e, __, args, object }) => {
+
+        var data = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack })
+        if (isNumber(data) && typeof data === "string") data = parseInt(data)
+        return new Date(data)
+
+    }, "toDateFormat()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => { // returns date for input
+
+        if (isParam({ _window, string: args[1] })) {
+
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var format = data.format, day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
+
+            if (typeof o === "string") {
+
+                if (format.split("/").length > 1) {
+
+                    var date = o.split("/")
+                    format.split("/").map((format, i) => {
+                        if (format === "dd") day = date[i]
+                        else if (format === "mm") month = date[i]
+                        else if (format === "yyyy") year = date[i]
+                        else if (format === "hh") hour = date[i]
+                        else if (format === "mm") min = date[i]
+                        else if (format === "ss") sec = date[i]
+                    })
+                }
+
+                return new Date(year, month, day, hour, min, sec)
+
+            } else if (data.excel && typeof o === "number") {
+
+                function ExcelDateToJSDate(serial) {
+
+                    var utc_days = Math.floor(serial - 25569)
+                    var utc_value = utc_days * 86400
+                    var date_info = new Date(utc_value * 1000)
+
+                    var fractional_day = serial - Math.floor(serial) + 0.0000001
+
+                    var total_seconds = Math.floor(86400 * fractional_day)
+
+                    var seconds = total_seconds % 60
+
+                    total_seconds -= seconds
+
+                    var hours = Math.floor(total_seconds / (60 * 60))
+                    var minutes = Math.floor(total_seconds / 60) % 60
+
+                    return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds)
+                }
+
+                return ExcelDateToJSDate(o)
+            }
+
+        } else {
+
+            var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) || "format1"
+
+            if (!isNaN(o) && typeof o === "string") o = parseInt(o)
+            var date = new Date(o)
+            var _year = date.getFullYear()
+            var _month = date.getMonth() + 1
+            var _day = date.getDate()
+            var _dayofWeek = date.getDay()
+            var _hour = date.getHours()
+            var _mins = date.getMinutes()
+            var _daysofWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+            var monthsCode = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+
+            if (format.replace(" ", "") === "format1") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${args[1] === "time" ? ` ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}` : ""}`
+            else if (format.replace(" ", "") === "format2") return `${_year.toString()}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
+            else if (format.replace(" ", "") === "format3") return `${_day.toString().length === 2 ? _day : `0${_day}`}${monthsCode[_month - 1]}${_year.toString().slice(2)}`
+            else if (format.replace(" ", "") === "format4") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${` | ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}`}`
+        }
+
+    }, "toDateInputFormat()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => { // returns date for input in a specific format
+
+        var data = {}
+        if (isParam({ _window, string: args[1] })) {
+
+            data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        } else if (args[1]) {
+            data = { date: toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) }
+        } else data = { date: o }
+
+        var format = data.format || "yyyy-mm-dd"
+        var date = new Date(data.date || o)
+        if (!date) return
+
+        var day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
+        var newDate = ""
+
+        if (format.split("/").length === 3) {
+
+            format.split("/").map((format, i) => {
+                if (i !== 0) newDate += "-"
+                format = format.toLowerCase()
+                if (format === "dd") {
+                    day = date.getDate()
+                    newDate += day.toString().length === 2 ? day : `0${day}`
+                } else if (format === "mm") {
+                    month = date.getMonth() + 1
+                    newDate += month.toString().length === 2 ? month : `0${month}`
+                } else if (format === "yyyy") {
+                    year = date.getFullYear()
+                    newDate += year
+                } else if (format === "hh") {
+                    hour = date.getHours() || 0
+                    newDate += hour.toString().length === 2 ? hour : `0${hour}`
+                } else if (format === "mm") {
+                    min = date.getMinutes() || 0
+                    newDate += min.toString().length === 2 ? min : `0${min}`
+                } else if (format === "ss") {
+                    sec = date.getSeconds() || 0
+                    newDate += sec.toString().length === 2 ? sec : `0${sec}`
+                } else if (format === "hh:mm:ss") {
+                    hour = date.getHours() || 0
+                    min = date.getMinutes() || 0
+                    sec = date.getSeconds() || 0
+                    newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`) + ":" + (sec.toString().length === 2 ? sec : `0${sec}`)
+                } else if (format === "hh:mm") {
+                    hour = date.getHours() || 0
+                    min = date.getMinutes() || 0
+                    newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`)
+                }
+            })
+
+        } else if (format.split("T").length === 2 || format.split("T")[0].split("-").length === 3) {
+
+            var length = format.split("T").length
+            format.split("T").map((format, i) => {
+                format.split("-").map((format, i) => {
+                    format = format.toLowerCase()
+                    if (i !== 0) newDate += "-"
+                    if (format === "dd") {
+                        day = date.getDate()
+                        newDate += day.toString().length === 2 ? day : `0${day}`
+                    } else if (format === "mm") {
+                        month = date.getMonth() + 1
+                        newDate += month.toString().length === 2 ? month : `0${month}`
+                    } else if (format === "yyyy") {
+                        year = date.getFullYear()
+                        newDate += year
+                    } else if (format === "hh") {
+                        hour = date.getHours() || 0
+                        newDate += (hour.toString().length === 2 ? hour : `0${hour}`)
+                    } else if (format === "mm") {
+                        min = date.getMinutes() || 0
+                        newDate += (min.toString().length === 2 ? min : `0${min}`)
+                    } else if (format === "ss") {
+                        sec = date.getSeconds() || 0
+                        newDate += (sec.toString().length === 2 ? sec : `0${sec}`)
+                    } else if (format === "hh:mm:ss") {
+                        hour = date.getHours() || 0
+                        min = date.getMinutes() || 0
+                        sec = date.getSeconds() || 0
+                        newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`) + ":" + (sec.toString().length === 2 ? sec : `0${sec}`)
+                    } else if (format === "hh:mm") {
+                        hour = date.getHours() || 0
+                        min = date.getMinutes() || 0
+                        newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`)
+                    }
+                })
+                if (length === 2 && i === 0) newDate += "T"
+            })
+
+        }
+
+        return newDate
+
+    }, "getGeoLocation()": ({ answer }) => {
+
+        navigator.geolocation.getCurrentPosition((position) => { answer = position })
+        return answer
+
+    }, "counter()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        var data = {}
+        if (isParam({ _window, string: args[1] })) data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+
+        data.counter = data.counter || data.start || data.count || 0
+        data.length = data.length || data.len || data.maxLength || 0
+        data.end = data.end || data.max || data.maximum || 999999999999
+
+        return require("./counter").counter({ ...data })
+
+    }, "time()": ({ o }) => {
+
+        if (isNumber(o)) {
+
+            var _1Day = 24 * 60 * 60 * 1000, _1Hr = 60 * 60 * 1000, _1Min = 60 * 1000
+            o = parseInt(o)
+
+            var _days = Math.floor(o / _1Day).toString()
+            _days = _days.length === 1 ? ("0" + _days) : _days
+
+            var _hrs = Math.floor(o % _1Day, _1Hr).toString()
+            _hrs = _hrs.length === 1 ? ("0" + _hrs) : _hrs
+
+            var _mins = Math.floor(o % _1Hr, _1Min).toString()
+            _mins = _mins.length === 1 ? ("0" + _mins) : _mins
+
+            return _days + ":" + _hrs + ":" + _mins
+        }
+
+    }, "timestamp()": ({ o }) => {
+
+        if (o instanceof Date) return o.getTime()
+        else if (o.length === 5 && o.split(":").length === 2) {
+
+            var _hrs = parseInt(o.split(":")[0]) * 60 * 60 * 1000
+            var _mins = parseInt(o.split(":")[1]) * 60 * 1000
+            return _hrs + _mins
+
+        } else if (o.length === 8 && o.split(":").length === 3) {
+
+            var _days = parseInt(o.split(":")[0]) * 24 * 60 * 60 * 1000
+            var _hrs = parseInt(o.split(":")[1]) * 60 * 60 * 1000
+            var _mins = parseInt(o.split(":")[2]) * 60 * 1000
+            return _days + _hrs + _mins
+
+        } else {
+
+            o = new Date(o)
+            if (o.getTime()) return o.getTime()
+            o = new Date()
+            return o.getTime()
+        }
+
+    }, "getDateTime()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, k, underScored, i, lastIndex, value, key, path, breakRequest, condition, _object, answer }) => {
+
+        var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        return getDateTime(o, format)
+
+    }, "getDaysInMonth()": ({ o }) => {
+
+        if (o instanceof Date) return new Date(o.getFullYear(), o.getMonth() + 1, 0).getDate()
+
+    }, "1MonthLater()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+        var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+        var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+
+        return new Date(date.setYear(year)).setMonth(month, date.getDays())
+
+    }, "2MonthLater()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+        var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+        var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+        month = month + 1 > 11 ? 1 : month + 1
+        year = month === 1 ? year + 1 : year
+
+        return new Date(date.setYear(year)).setMonth(month, date.getDays())
+
+    }, "3MonthLater()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+        var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+        month = month + 1 > 11 ? 1 : month + 1
+        year = month === 1 ? year + 1 : year
+        month = month + 1 > 11 ? 1 : month + 1
+        year = month === 1 ? year + 1 : year
+        return new Date(date.setYear(year)).setMonth(month, date.getDays())
+
+    }, "1MonthEarlier()" : ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+        var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+        return new Date(date.setYear(year)).setMonth(month, date.getDays())
+
+    }, "2MonthEarlier()" : ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+        var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+        month = month - 1 < 0 ? 11 : month - 1
+        year = month === 11 ? year - 1 : year
+        return new Date(date.setYear(year)).setMonth(month, date.getDays())
+
+    }, "3MonthEarlier()" : ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+        var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+        month = month - 1 < 0 ? 11 : month - 1
+        year = month === 11 ? year - 1 : year
+        month = month - 1 < 0 ? 11 : month - 1
+        year = month === 11 ? year - 1 : year
+        return new Date(date.setYear(year)).setMonth(month, date.getDays())
+
+    }, "todayStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return date.setHours(_hrs, _min, 0, 0)
+
+    }, "todayEnd()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return date.setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "monthStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = _date.getTimezoneOffset() % 60
+        var _hrs = (_date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(_date.setMonth(_date.getMonth(), 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "monthEnd()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(date.setMonth(date.getMonth(), getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "nextMonthStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+        var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "nextMonthEnd()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+        var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "2ndNextMonthStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = o.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+        var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+        month = month + 1 > 11 ? 1 : month + 1
+        year = month === 1 ? year + 1 : year
+        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "2ndNextMonthEnd()": ({ o }) => {
+
+        var date
+        if (typeof o.getMonth === 'function') date = o
+        else date = new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+        var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+        month = month + 1 > 11 ? 1 : month + 1
+        year = month === 1 ? year + 1 : year
+        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "prevMonthStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+        var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "prevMonthEnd()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+        var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "2ndPrevMonthStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+        var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+        month = month - 1 < 0 ? 11 : month - 1
+        year = month === 11 ? year - 1 : year
+        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "2ndPrevMonthEnd()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+        var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+        month = month - 1 < 0 ? 11 : month - 1
+        year = month === 11 ? year - 1 : year
+        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "yearStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "yearEnd()": ({ o }) => {
+
+        var date
+        if (typeof o.getMonth === 'function') date = o
+        else date = new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "nextYearStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "nextYearEnd()": ({ o }) => {
+
+        var date
+        if (typeof o.getMonth === 'function') date = o
+        else date = new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "prevYearStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "prevYearEnd()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "removeDuplicates()": ({ _window, o, stack, lookupActions, id, e, __, args }) => { // without condition and by condition. ex: removeDuplicates():number (it will remove items that has the same number value)
+
+        if (args[1]) {
+
+            var keys = toValue({ _window, e, data: args[1], id, __, lookupActions, stack })
+            var list = []
+
+            toArray(keys).map(key => {
+
+                var seen = new Set()
+
+                o.map(item => {
+                    if (!seen.has(item[key])) {
+                        seen.add(item[key])
+                        list.push(item)
+                    }
+                })
+            })
+
+            return answer = o = list
+
+        } else {
+
+            if (!Array.isArray(o)) return o
+            var removeDuplicates = (array) => {
+                for (let i = 0; i < array.length; i++) {
+                    if (array.filter(el => isEqual(el, array[i])).length > 1) {
+
+                        array.splice(i, 1);
+                        removeDuplicates(array);
+                        break;
+                    }
+                }
+            }
+
+            removeDuplicates(o);
+            return o
+        }
+
+    }, "replace()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object, i, path, _object }) => { // replace():prev:new
+
+        if (!Array.isArray(o) && typeof o !== "string") o = kernel({ req, res, _window, id, data: { data: _object, path: path.slice(0, i), value: [], key: true, object }, __, e })
+
+        var rec0, rec1
+
+        rec0 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
+        rec1 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] || "" })
+
+        if (typeof o === "string") {
+
+            if (rec1 !== undefined) return o.replace(rec0, rec1)
+            else return o.replace(rec0)
+
+        } else if (Array.isArray(o)) {
+
+            var _itemIndex = o.findIndex(item => isEqual(item, rec0)), rec2 = rec1 || rec0 // replace():rec0:rec1 || replace():rec0 (if rec0 doesnot exist push it)
+            if (_itemIndex >= 0) o[_itemIndex] = rec2
+            else o.push(rec2)
+            return o
+        }
+
+    }, "replaceItem()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, value, key }) => { // replace by condition
+
+        if (!Array.isArray(o)) return
+        if (isParam({ _window, string: args[1] })) {
+
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var _path = data.path, _data = data.data
+            var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, data: item }, e, __: [o, ...__] }), kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, data: _data }, __: [o, ...__], e })))
+            if (_index >= 0) o[_index] = _data
+            else o.push(_data)
+
+        } else if (args[1]) {
+
+            var data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+
+            if (typeof o[0] === "object" || (typeof o[0] === "undefined" && typeof data === "object")) {
+
+                var _index = o.findIndex(item => item.id === data.id)
+                if (_index >= 0) o[_index] = data
+                else o.push(data)
+
+            } else if ((typeof o[0] === "undefined" && typeof data !== "object") || typeof o[0] === "number" || typeof o[0] === "string") {
+
+                var _index = o.findIndex(item => item === data)
+                if (_index < 0) o.push(data)
+            }
+        }
+        return o
+
+    }, "replaceItems()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (isParam({ _window, string: args[1] })) {
+
+            var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var _path = _params.path, _data = _params.data.filter(data => data !== undefined && data !== null)
+            toArray(_data).map(_data => {
+
+                var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], data: item }, __: [o, ...__], e }), kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], data: _data }, __: [o, ...__], e })))
+                if (_index >= 0) o[_index] = _data
+                else o.push(_data)
+            })
+
+        } else if (args[1]) {
+
+            var _data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }).filter(data => data !== undefined && data !== null)
+            if (typeof o[0] === "object") {
+
+                toArray(_data).map(_data => {
+
+                    var _index = o.findIndex(item => item.id === _data.id)
+                    if (_index >= 0) o[_index] = _data
+                    else o.push(_data)
+                })
+
+            } else if (typeof o[0] === "number" || typeof o[0] === "string") {
+
+                toArray(_data).map(_data => {
+
+                    var _index = o.findIndex(item => item === _data)
+                    if (_index >= 0) o[_index] = _data
+                    else o.push(_data)
+                })
+            }
+        }
+
+        return o
+
+    }, "terminate()": ({ stack,  }) => {
+
+        stack.terminated = true
+
+    }, "break()": ({ stack,  }) => {
+
+        if (stack.loop) stack.broke = true
+
+    }, "return()": ({ _window, stack, lookupActions, id, e, __, args, object, answer }) => {
+
+        stack.returns[0].data = answer = toValue({ _window, data: args[1], e, id, object, __, stack, lookupActions })
+        stack.returns[0].returned = true
+        return answer
+
+    }, "export()": ({ _window, req, res, id, e, __, args }) => {
+
+        var data = toLine({ _window, req, res, _window, id, e, __, data: { string: args[1] } }).data
+
+        if (data.json) data.type = "json"
+        if (data.csv) data.type = "csv"
+        if (data.excel) data.type = "excel"
+        if (data.pdf) data.type = "pdf"
+
+        if (data.type === "json") exportJson(data)
+        else if (data.type === "csv") require("./toCSV").toCSV(data)
+        else if (data.type === "excel") require("./toExcel").toExcel(data)
+        else if (data.type === "pdf") require("./toPdf").toPdf(data)
+
+    }, "flat()": ({ o, _object }) => {
+
+        if (typeof o === "object") {
+            if (Array.isArray(o)) {
+                o = [...o]
+                return o.flat()
+            } else {
+
+                if (typeof _object === "object") Object.entries(o).map(([key, value]) => _object[key] = value)
+                return _object
+            }
+        } else return o
+
+    }, "action()": ({ _window, req, res, stack, lookupActions, id, e, __, args, object, condition }) => {
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        if (typeof data.path === "string") data.path = data.path.split(".")
+        toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { path: data.path || data.action.split("."), view: data.view, data: data.data }, condition, object })
+
+    }, "getDeepChildrenId()": ({ _window, o }) => {
+
+        return getDeepChildrenId({ _window, id: o.id })
+
+    }, "deep()": ({ _window, o }) => {
+
+        return getDeepChildren({ _window, id: o.id })
+
+    }, "deepChildren()": ({ _window, o }) => {
+
+        return getDeepChildren({ _window, id: o.id })
+
+    }, "filter()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, underScored }) => {
+
+        args = args.slice(1), isnot
+        if (!args[0]) isnot = true
+
+        if (isnot) return toArray(o).filter(o => o !== "" && o !== undefined && o !== null)
+
+        if (underScored) return toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: args[0], id, __: [o, ...__], req, res }))
+        else return toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: args[0], id, object: o, req, res, __ }))
+
+    }, "find()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, underScored, i, lastIndex, value, key, answer }) => {
+
+        if (i === lastIndex && key && value !== undefined) {
+
+            var index
+            if (underScored) index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
+            else index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+            if (index !== undefined && index !== -1) o[index] = answer = value
+            return answer
+
+        } else {
+
+            if (underScored) return toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
+            else return toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+        }
+
+    }, "sort()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, answer }) => {
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        if (!data.data) data.data = o
+
+        // else return o
+        data.data = answer = require("./sort").sort({ _window, lookupActions, stack, __, sort: data, id, e })
+
+        return answer
+
+    }, "findIndex()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, underScored }) => {
+
+        if (typeof o !== "object") return
+
+        if (underScored) return toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
+        else return toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+
+    }, "()": ({ _window, req, res, global, o, stack, lookupActions, id, e, __, args, underScored, object, breakRequest }) => {// map()
+
+        var notArray = false
+        if (args[1] && args[1].charAt(0) === "@" && args[1].length == 6) args[1] = global.__refs__[args[1]].data
+        if (args[2] && args[2].charAt(0) === "@" && args[2].length == 6) args[2] = global.__refs__[args[2]].data
+
+        if (typeof o === "object" && !Array.isArray(o)) notArray = true
+
+        stack.loop = true
+
+        if (args[1] && underScored) {
+
+            toArray(o).map(o => toValue({ req, res, _window, lookupActions, stack, id, data: args[1] || "", object, __: [o, ...__], e }))
+            return o
+
+        } else if (args[1]) {
+
+            return toArray(o).map(o => toValue({ req, res, _window, lookupActions, stack, id, data: args[1] || "", object: o, __, e }))
+
+        } else if (args[2] && underScored) {
+
+            breakRequest.break = true
+            var address;
+            ([...toArray(o)]).reverse().map(o => {
+                // address
+                address = addresser({ _window, id, stack, nextAddress: address, __: [o, ...__], lookupActions, data: { string: args[2] }, object }).address
+            })
+
+            // address
+            if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+
+        } else if (args[2]) {
+
+            breakRequest.break = true
+            var address;
+            ([...toArray(o)]).reverse().map(o => {
+                // address
+                address = addresser({ _window, id, stack, nextAddress: address, __, lookupActions, data: { string: args[2] }, object: o }).address
+            })
+
+            // address
+            if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+        }
+
+        stack.loop = false
+        stack.broke = false
+
+        if (notArray) return o
+
+    }, "html2pdf()": ({ _window, o, stack, lookupActions, id, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, status: "Start", action: "html2pdf()", object, lookupActions, __, id })
+
+        var options = {
+            margin: .25,
+            filename: data.name || generate({ length: 20 }),
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, dpi: 300, letterRendering: true },
+            jsPDF: { unit: 'mm', format: data.format || 'a4', orientation: 'portrait' }
+        }
+
+        data.view = data.view || o
+        var exporter = new html2pdf(data.view.__element__, options)
+
+        exporter.getPdf(true).then((pdf) => {
+            console.log('pdf file downloaded')
+        })
+
+        /*exporter.getPdf(false).then((pdf) => {
+            console.log('doing something before downloading pdf file');
+            pdf.save();
+          });*/
+
+        /*pages.map(page => {
+
+            var _element
+            if (typeof page === "object" && page.id) _element = views[page.id].__element__
+            else if (page.nodeType === Node.ELEMENT_NODE) _element = page
+            else if (typeof page === "string") _element = views[page].__element__
+
+            _elements.push(_element)
+            var images = [..._element.getElementsByTagName("IMG")]
+
+            if (images.length > 0) {
+
+                images.map((image, i) => {
+                    toDataURL(image.src).then(dataUrl => {
+
+                        image.src = dataUrl
+                        if (images.length === i + 1) {
+
+                            if (!once && pages.length > 1 && pages.length === _elements.length) {
+
+                                once = true
+                                exportHTMLToPDF({ _window, pages: _elements, opt, lookupActions, stack, address, req, res, id, e, __, args })
+
+                            } else if (pages.length === 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then(pdf => {
+
+                                var totalPages = pdf.internal.getNumberOfPages()
+
+                                for (i = 1; i <= totalPages; i++) {
+
+                                    pdf.setPage(i)
+                                    pdf.setFontSize(9)
+                                    pdf.setTextColor(150)
+                                    pdf.text('page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.1), (pdf.internal.pageSize.getHeight() - 0.08))
+                                }
+
+                            }).save().then((pdf) => {
+
+                                // await params
+                                if (args[2]) require("./kernel").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __: [pdf, ...__] })
+                                window.devicePixelRatio = 1
+                            })
+                        }
+                    })
+                })
+
+            } else html2pdf().set(opt).from(_element).save().then((pdf) => {
+
+
+                // await params
+                if (args[2]) require("./kernel").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __: [pdf, ...__] })
+                window.devicePixelRatio = 1
+            })
+        })*/
+
+    }, "share()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        if (isParam({ _window, string: args[1] })) { // share():[text;title;url;files]
+
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || {}, images = []
+            data.files = toArray(data.file || data.files) || []
+            if (data.image || data.images) data.images = toArray(data.image || data.images)
+
+            var getFileFromUrl = async (url, name) => {
+
+                const response = await fetch(url)
+                const blob = await response.blob()
+                images.push(new File([blob], 'rick.jpg', { type: blob.type }))
+
+                if (images.length === data.images.length)
+                    await navigator.share({ title: data.title, text: data.text, url: data.url, files: images })
+            }
+
+            if (data.images) data.images.map(async url => getFileFromUrl(url, data.title))
+            else {
+                console.log(data);
+                navigator.share(data)
+            }
+
+        } else if (args[1]) { // share():url
+            navigator.share({ url: toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) })
+        }
+
+    }, "loader()": ({ _window, req, res, views, o, stack, lookupActions, id, e, __, args, k }) => {
+
+        var data = {}
+
+        if (isParam({ _window, string: args[1] })) {
+
+            data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            if (data.hide) data.show = false
+
+        } else {
+
+            var show = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            if (show === "show") data.show = true
+            else if (show === "hide") data.show = false
+        }
+
+        var _o
+        if (data.id) _o = views[data.id]
+        else if (data.window) _o = views.body
+        else _o = o
+
+        if (typeof _o !== "object") return
+        if (_o.__status__ === "Loading") {
+            return _o.__controls__.push({
+                event: "loaded?" + k
+            })
+        }
+
+        if (data.show) {
+
+            var lDiv = document.createElement("div")
+            document.body.appendChild(lDiv)
+            lDiv.classList.add("loader-container")
+            lDiv.setAttribute("id", _o.id + "-loader")
+            if (_o.id !== "body") {
+
+                lDiv.style.position = "absolute"
+                var coords = require("./getCoords")({ id: _o.id || id })
+                lDiv.style.top = coords.top + "px"
+                lDiv.style.bottom = coords.bottom + "px"
+                lDiv.style.height = coords.height + "px"
+                lDiv.style.left = coords.left + "px"
+                lDiv.style.right = coords.right + "px"
+                lDiv.style.width = coords.width + "px"
+            }
+
+            var loader = document.createElement("div")
+            lDiv.appendChild(loader)
+            loader.classList.add("loader")
+            lDiv.style.display = "flex"
+
+            if (data.style) {
+                Object.entries(data.style).map(([key, value]) => {
+                    loader.style[key] = value
+                })
+            }
+
+            if (data.background && data.background.style) {
+                Object.entries(data.background.style).map(([key, value]) => {
+                    lDiv.style[key] = value
+                })
+            }
+
+            return sleep(10)
+
+        } else if (data.show === false) {
+
+            var lDiv = document.getElementById(_o.id + "-loader")
+            if (lDiv) lDiv.parentNode.removeChild(lDiv)
+            else console.log("Loader doesnot exist!")
+        }
+
+    }, "type()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (args[1]) return getType(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
+        else return getType(o)
+
+    }, "coords()": ({ o }) => {
+
+        if (!o.__view__) return
+        require("./getCoords")({ id: o.id })
+
+    }, "price()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!isNumber(o)) return
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        if (!data.decimal) data.decimal = 2
+        var formatter = new Intl.NumberFormat("en", {
+            style: 'decimal',
+            decimal: data.decimal,
+        })
+
+        return formatter.format(parseFloat(o))
+
+    }, "bool()": ({ o }) => {
+
+        return typeof o === "boolean" ? o : (o === "true" ? true : o === "false" ? false : undefined)
+
+    }, "num()": ({ o }) => {
+
+        return toNumber(o)
+
+    }, "isNum()": ({ o }) => {
+
+        return isNumber(o)
+
+    }, "round()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (isNumber(o)) {
+            var nth = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 2
+            return parseFloat(o || 0).toFixed(nth)
+        }
+
+    }, "str()": ({ o }) => {
+
+        if (typeof o !== "object") return o + ""
+        else return toString(o)
+
+    }, "lastIndex()": ({ o }) => {
+
+        return o.length ? o.length - 1 : 0
+
+    }, "2ndLastIndex()": ({ o }) => {
+
+        return o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
+
+    }, "2ndLastIndex()": ({ o }) => {
+
+        return o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
+
+    }, "nthLastIndex()": ({ o }) => {
+
+        return o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
+
+    }, "el()": ({ o }) => {
+
+        return o.__element__
+
+    }, "index()": ({ o }) => {
+
+        if (!o.__indexed__ && o.__loop__) return o.__loopIndex__
+        else if (!o.__indexed__) return o.__childIndex__
+        else return o.__index__
+
+    }, "checked()": ({ o, value, key }) => {
+
+        if (!o.__view__) return
+
+        if (value !== undefined && key) return o.checked.checked = o.__element__.checked = value
+        else return o.checked.checked || o.__element__.checked || false
+
+    }, "check()": ({ o, value, breakRequest }) => {
+
+        breakRequest.break = true
+        if (!o.__view__) return
+
+        return o.checked.checked = o.__element__.checked = value || false
+
+    }, "parseFloat()": ({ o }) => {
+
+        return parseFloat(o)
+
+    }, "parseInt()": ({ o }) => {
+
+        return parseInt(o)
+
+    }, "stringify()": ({ o }) => {
+
+        return JSON.stringify(o)
+
+    }, "parse()": ({ o }) => {
+
+        return JSON.parse(o)
+
+    }, "getCookie()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        // getCookie():name
+        if (isParam({ _window, string: args[1], req, res })) {
+
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            return getCookie({ ...data, req, res, _window })
+        }
+
+        var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        var _cookie = getCookie({ name: _name, req, res, _window })
+        return _cookie
+
+    }, "eraseCookie()": ({ _window, req, res, views, stack, pathJoined, lookupActions, id, e, __, args }) => {
+
+        if (_window) return views.root.__controls__.push({ event: `loading?${pathJoined}` })
+
+        // getCookie():name
+        if (isParam({ _window, req, res, string: args[1] })) {
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            return eraseCookie({ ...data, req, res, _window })
+        }
+
+        var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        var _cookie = eraseCookie({ name: _name, req, res, _window })
+        return _cookie
+
+    }, "setCookie()": ({ _window, req, res, views, stack, pathJoined, lookupActions, id, e, __, args }) => {
+
+        if (_window) return views.root.__controls__.push({ event: `loading?${pathJoined}` })
+
+        // X setCookie():value:name:expiry-date X // setCookie():[value;name;expiry]
+        var cookies = []
+        if (isParam({ _window, req, res, string: args[1] })) {
+
+            args.slice(1).map(arg => {
+
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: arg })
+                setCookie({ ...data, req, res, _window })
+
+                cookies.push(data)
+            })
+
+        } else {
+
+            var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var _value = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] })
+            var _expiryDate = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[3] })
+
+            setCookie({ name: _name, value: _value, expires: _expiryDate, req, res, _window })
+        }
+
+
+        if (cookies.length === 1) return cookies[0]
+        else return cookies
+
+    }, "cookie()": ({ _window, req, res, views, stack, pathJoined, lookupActions, id, e, __, args }) => {
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+
+        if (_window && data.method === "post" || data.method === "delete") return views.root.__controls__.push({ event: `loading?${pathJoined}` })
+        if (data.method === "post") return setCookie({ ...data, req, res, _window })
+        if (data.method === "delete") return eraseCookie({ ...data, req, res, _window })
+        if (data.method === "get") return getCookie({ ...data, req, res, _window })
+
+    }, "clean()": ({ o }) => {
+
+        return o.filter(o => o !== undefined && !Number.isNaN(o) && o !== "")
+
+    }, "colorize()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1] || "", __ })
+        return colorize({ _window, string: o, ...data })
+
+    }, "deepChildren()": ({ _window, o, stack, lookupActions }) => {
+
+        return getDeepChildren({ _window, lookupActions, stack, id: o.id })
+
+    }, "note()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => { // note
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        note({ note: data })
+
+    }, "readonly()": ({ _window, o }) => {
+
+        if (!o.__view__) return
+        var children = getDeepChildren({ _window, id: o.id })
+
+        children.map(child => {
+
+            child.__element__.setAttribute("readOnly", true)
+            child.readonly = true
+
+            child.__element__.setAttribute("contenteditable", false)
+            child.editable = false
+        })
+
+    }, "editable()": ({ _window, o }) => {
+
+        if (!o.__view__) return
+        var children = getDeepChildren({ _window, id: o.id })
+
+        children.map(child => {
+
+            child.__element__.setAttribute("readOnly", false)
+            child.readonly = false
+
+            child.__element__.setAttribute("contenteditable", true)
+            child.editable = true
+        })
+
+    }, "range()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        var index = 0
+        var range = []
+        var startIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) : 0 || 0
+        var endIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] }) : toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        var steps = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[3] }) || 1
+        var lang = args[4] || ""
+        index = startIndex
+
+        while (index <= endIndex) {
+            if ((index - startIndex) % steps === 0) {
+                range.push(index)
+                index += steps
+            }
+        }
+
+        if (lang === "ar") range = range.map(num => num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
+        return range
+
+    }, "droplist()": ({ _window, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, id: o.id, interpreting: true, status: "Start", action: "droplist()", object, lookupActions, __ })
+        require("./droplist").droplist({ id, e, data, __, stack, lookupActions, address })
+
+    }, "route()": ({ _window, req, res, o, stack, lookupActions, id, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", asynchronous: true, id: o.id, action: "route()", object, lookupActions, __ })
+        if (typeof data === "string") data = { route: data }
+
+        require("./route").route({ _window, lookupActions, stack, address, id, req, res, data: { type: "route", route: { __: data.data !== undefined ? [data.data] : [] } }, __ })
+
+    }, "root()": ({ _window, req, res, o, stack, lookupActions, id, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id: o.id, action: "root()", object, lookupActions, __ })
+        if (typeof data === "string") data = { page: data }
+
+        require("./root").root({ _window, lookupActions, stack, address, id, req, res, root: data, __ })
+
+    }, "update()": ({ _window, req, res, o, stack, lookupActions, id, __, args, object }) => {
+
+        if (!o.__view__) return o
+
+        var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", renderer: true, blockable: false, id: o.id, action: "update()", object, lookupActions, __ })
+        update({ _window, lookupActions, stack, req, res, id, address, __, data: { id: data.id || o.id, ...data } })
+
+    }, "insert()": ({ _window, o, stack, lookupActions, id, __, args }) => {
+
+        if (!o.__view__) return o
+
+        // wait address
+        var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", renderer: true, id: o.id, action: "insert()", lookupActions, __ })
+        insert({ id, lookupActions, stack, address, __, insert: { ...data, parent: o.id } })
+
+    }, "confirmEmail()": ({ _window, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "confirmEmail()", object, lookupActions, __ })
+        data.store = "confirmEmail"
+        require("./save").save({ id, lookupActions, stack, address, e, __, save: data })
+
+    }, "mail()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        if (!o.__view__) return o
+
+        // wait address
+        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "mail()", object, lookupActions, __ })
+
+        require("./mail").mail({ req, res, _window, lookupActions, stack, address, id, e, __, data })
+        return true
+
+    }, "print()": () => {
+
+    }, "files()": ({ o }) => {
+
+        return [...(o.__element__.files || [])]
+
+    }, "file()": ({ o }) => {
+
+        return (o.__element__.files || [])[0]
+
+    }, "read()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        // wait address
+        var { address, data, action } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "mail()", object, lookupActions, __, id, dataInterpretAction: "conditional" })
+
+        if (!data) return
+        if (action === "toValue") data.file = data
+
+        fileReader({ req, res, _window, lookupActions, stack, address, id, e, __, data })
+
+    }, "upload()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "upload()", object, lookupActions, __, id })
+        require("./upload")({ _window, lookupActions, stack, address, req, res, id, e, upload: data, __ })
+
+    }, "search()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, req, res, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "search()", object, lookupActions, __, id })
+        // var data = searchParams({ _window, lookupActions, stack, address, id, e, __, req, res, string: args[1], object })
+        require("./search").search({ _window, lookupActions, stack, address, id, e, __, req, res, data })
+        return true
+
+    }, "erase()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "erase()", object, lookupActions, __, id })
+        require("./erase").erase({ _window, lookupActions, stack, address, id, e, __, req, res, erase: data })
+        return true
+
+    }, "save()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "save()", object, lookupActions, __, id })
+        require("./save").save({ _window, lookupActions, stack, address, id, e, __, req, res, save: data })
+        return true
+
+    }, "start()": ({ global, stack }) => {
+
+        var address = stack.addresses.find(address => address.id === stack.interpretingAddressID)
+        address.starter = true
+        var startID = generate()
+        global.__startAddresses__[startID] = { id: startID, address }
+
+        stack.logs.push(`${stack.logs.length} Starter STACK ${stack.id} ${stack.event.toUpperCase()} ${stack.string}`)
+
+        return startID
+
+    }, "end()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        var { data = {} } = toLine({ req, res, _window, lookupActions, stack, id, e, __, data: { string: args[1] }, action: "toParam" })
+        endAddress({ req, res, _window, lookupActions, stack, id, e, __, data })
+
+    }, "send()": ({ _window, req, res, stack, lookupActions, id, e, __, args, breakRequest }) => {
+
+        breakRequest.break = true
+        if (!res || res.headersSent) return
+
+        var executionDuration = (new Date()).getTime() - stack.executionStartTime, response
+
+        if (isParam({ _window, string: args[1] })) {
+
+            response = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            response.success = response.success !== undefined ? response.success : true
+            response.message = response.message || response.msg || "Action executed successfully!"
+            response.executionDuration = executionDuration
+            delete response.msg
+
+        } else {
+
+            var data = toValue({ req, res, _window, lookupActions, id, e, __, data: args[1] })
+            response = { success: true, message: "Action executed successfully!", data, executionDuration }
+        }
+
+        stack.terminated = true
+
+        // logs
+        console.log("Send " + stack.route, executionDuration)
+        stack.logs.push(stack.logs.length + " Send " + stack.route + " (" + executionDuration + ")")
+        response.logs = stack.logs
+
+        // respond
+        res.setHeader('Content-Type', 'application/json')
+        res.write(JSON.stringify(response));
+        res.end()
+
+    }, "sent()": ({ res }) => {
+
+        if (!res || res.headersSent) return true
+        else return false
+
+    }, "position()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var position = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        return require("./setPosition").setPosition({ position, id: o.id || id, e })
+
+    }, "csvToJson()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        var file = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        require("./csvToJson").csvToJson({ id, lookupActions, stack, e, file, onload: args[2] || "", __ })
+
+    }, "copyToClipBoard()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var text
+        if (args[1]) text = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        else text = o
+
+        if (navigator.clipboard) answer = navigator.clipboard.writeText(text)
+        else {
+            var textArea = document.createElement("textarea")
+            textArea.value = text
+            document.body.appendChild(textArea)
+            textArea.focus()
+            textArea.select()
+            textArea.setSelectionRange(0, 99999)
+            if (navigator.clipboard) navigator.clipboard.writeText(text)
+            else document.execCommand("copy")
+            document.body.removeChild(textArea)
+        }
+
+    }, "addClass()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__) return o
+        var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
+        if (o.__element__) return o.__element__.classList.add(_class)
+
+    }, "remClass()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__) return o
+        var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
+        if (o.__element__) return o.__element__.classList.remove(_class)
+
+    }, "toggleClass()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__) return o
+        var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
+        if (o.__element__) return o.__element__.classList.toggle(_class)
+
+    }, "encodeURI()": ({ o }) => {
+
+        return  encodeURI(o)
+
+    }, "preventDefault()": ({ e }) => {
+
+        e.preventDefault()
+
+    }, "decodeURI()": ({ o }) => {
+
+        return decodeURI(o)
+
+    } 
 }
 
 const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: _object, path, pathJoined, value, key, object } }) => {
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
     var view = views[id]
 
-    var pathJoined = pathJoined || path.join("."), breakRequest
+    var pathJoined = pathJoined || path.join("."), breakRequest = { break: false, index: -1 }
 
     // no path but there is value
     if (path.length === 0 && key && value !== undefined) return value
 
     var answer = path.reduce((o, k, i) => {
+
+        // break
+        if (breakRequest.break === true || breakRequest.index >= i) return o
 
         var lastIndex = path.length - 1
 
@@ -268,7 +2492,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
         k = k.toString()
         var k0 = k.split(":")[0]
         var args = k.split(":")
-
+        
         // get underscores
         var underScored = 0
         while (k0.charAt(0) === "_") {
@@ -285,24 +2509,13 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             }
         }
 
-        // break
-        if (breakRequest === true || breakRequest >= i) return o
-
+        // undefined
         if ((o === undefined || o === null) && k0 !== "push()" && k0 !== "replace()") return o
 
-        if (k0 === "log()") { // log
+        // delete
+        if (k0 !== "data()" && k0 !== "doc()" && path[i + 1] === "del()") {
 
-            var logs = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: underScored ? [o, ...__] : __, data: arg, object: underScored ? object : (i === 0 ? ((pathJoined || "").split(".")[0] !== k ? o : undefined) : o) }))
-            if (args.slice(1).length === 0 && pathJoined !== "log()") logs = [o]
-
-            console.log("LOG:" + (o.id || id), decode({ _window, string: pathJoined }), ...logs)
-            stack.logs.push(stack.logs.length + " LOG:" + (o.id || id) + " " + logs.join(" "))
-
-            return o
-
-        } else if (k0 !== "data()" && k0 !== "doc()" && path[i + 1] === "del()") {
-
-            breakRequest = i + 1
+            breakRequest.index = i + 1
             if (k.charAt(0) === "@" && k.length === 6) k = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: k, object })
 
             if (Array.isArray(o)) {
@@ -317,13 +2530,10 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             return o
 
-        } else if (k0 === "while()") {
-
-            while (toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })) {
-                toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e })
-            }
-
-        } else if (underScored && !k0) { // _
+        } 
+        
+        // underscore
+        else if (underScored && !k0) { // _
 
             if (o.__view__) {
 
@@ -342,7 +2552,10 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 else answer = o[underscores]
             }
 
-        } else if (k.charAt(0) === "@" && k.length === 6) { // k not k0
+        } 
+        
+        // encoded
+        else if (k.charAt(0) === "@" && k.length === 6) { // k not k0
 
             var data
             if (k0.charAt(0) === "@" && global.__refs__[k0].type === "text") data = global.__refs__[k0].data
@@ -369,2213 +2582,13 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             } else answer = data
 
-        } else if (k0 === "data()") {
-
-            if (!o.__view__) return
-
-            breakRequest = true
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
-
-            if (data.path) return answer = kernel({ req, res, _window, lookupActions, stack, id, e, data: { data: data.data || global[data.doc || o.doc], value, key, path: data.path, object }, __ })
-
-            if (!o.doc) return
-
-            answer = kernel({ req, res, _window, lookupActions, stack, id, data: { path: [...o.__dataPath__, ...path.slice(i + 1)], object, data: global[o.doc], value, key }, __, e })
-
-        } else if (k0 === "doc()") {
-
-            breakRequest = true
-            var doc = o.__view__ ? o.doc : views[id].doc
-
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    args[1] = data.path || data.__dataPath__ || []
-                    if (typeof args[1] === "string") args[1] = args[1].split(".")
-
-                    return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
-                }
-
-                if (args[1].charAt(0) === "@") args[1] = global.__refs__[args[1]].data
-                args[1] = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-                if (typeof args[1] === "string") args[1] = args[1].split(".")
-
-                return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
-            }
-
-            if (path[i + 1] !== undefined) {
-
-                if (path[i + 1] && path[i + 1].charAt(0) === "@") path[i + 1] = toValue({ req, res, _window, lookupActions, stack, id, data: global.__refs__[path[i + 1]].data, __, e })
-                answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...path.slice(i + 1)], object }, __ })
-
-            } else if (key && value !== undefined) {
-                answer = global[doc] = value
-            } else answer = global[doc]
-
-        } else if (k0 === "parent()") {
-
-            return nthParent({ _window, nth: 1, o })
-
-        } else if (k0 === "2ndParent()") {
-
-            return nthParent({ _window, nth: 2, o })
-
-        } else if (k0 === "3rdParent()") {
-
-            return nthParent({ _window, nth: 3, o })
-
-        } else if (k0 === "nthParent()") {
-
-            if (!o.__view__ || !o.id) return
-            var nth = toValue({ _window, id, e, lookupActions, stack, __, data: args[1] })
-            return nthParent({ _window, nth, o })
-
-        } else if (k0 === "prevSiblings()") {
-
-            if (!o.__view__ || !o.id) return o
-            return views[o.__parent__].__childrenRef__.slice(0, o.__index__ + 1).map(({ id }) => views[id])
-
-        } else if (k0 === "nextSiblings()") {
-
-            if (!o.__view__ || !o.id) return o
-            return views[o.__parent__].__childrenRef__.slice(o.__index__ + 1).map(({ id }) => views[id])
-
-        } else if (k0 === "siblings()") {
-
-            if (!o.__view__ || !o.id) return o
-            var children = clone(views[o.__parent__].__childrenRef__)
-            children.splice(o.__index__, 1)
-            return children.map(({ id }) => views[id])
-
-        } else if (k0 === "next()") {
-
-            return nthNext({ _window, nth: 1, o })
-
-        } else if (k0 === "2ndNext()") {
-
-            return nthNext({ _window, nth: 2, o })
-
-        } else if (k0 === "3rdNext()") {
-
-            return nthNext({ _window, nth: 3, o })
-
-        } else if (k0 === "nthNext()") {
-
-            if (!o.__view__ || !o.id) return
-            var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
-            return nthNext({ _window, nth, o })
-
-        } else if (k0 === "last()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[views[o.__parent__].__childrenRef__.slice(-1)[0].id]
-
-        } else if (k0 === "2ndLast()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[views[o.__parent__].__childrenRef__.slice(-2)[0].id]
-
-        } else if (k0 === "3rdLast()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[views[o.__parent__].__childrenRef__.slice(-3)[0].id]
-
-        } else if (k0 === "nthLast()") {
-
-            if (!o.__view__ || !o.id) return
-            var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
-            if (!isNumber(nth)) return
-            return views[views[o.__parent__].__childrenRef__.slice(-1 * nth)[0].id]
-
-        } else if (k0 === "1stSibling()") {
-
-            if (!o.__view__ || !o.id) return o
-            return views[views[o.__parent__].__childrenRef__[0].id]
-
-        } else if (k0 === "2ndSibling()") {
-
-            if (!o.__view__ || !o.id) return o
-            return views[views[o.__parent__].__childrenRef__[1].id]
-
-        } else if (k0 === "3rdSibling()") {
-
-            if (!o.__view__ || !o.id) return o
-            return views[views[o.__parent__].__childrenRef__[2].id]
-
-        } else if (k0 === "nthSibling()") {
-
-            if (!o.__view__ || !o.id) return o
-            var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
-            return views[views[o.__parent__].__childrenRef__[nth - 1].id]
-
-        } else if (k0 === "grandChild()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[views[o.__childrenRef__[0].id].__childrenRef__[0].id]
-
-        } else if (k0 === "grandChildren()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[o.__childrenRef__[0].id].__childrenRef__.map(({ id }) => views[id])
-
-        } else if (k0 === "prev()") {
-
-            return nthPrev({ _window, nth: 1, o })
-
-        } else if (k0 === "2ndPrev()") {
-
-            return nthPrev({ _window, nth: 2, o })
-
-        } else if (k0 === "3rdPrev()") {
-
-            return nthPrev({ _window, nth: 3, o })
-
-        } else if (k0 === "nthPrev()") {
-
-            if (!o.__view__ || !o.id) return
-            var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
-            return nthPrev({ _window, nth, o })
-
-        } else if (k0 === "1stChild()" || k0 === "child()") {
-
-            if (!o.__view__ || !o.id || !o.__childrenRef__[0]) return
-            return views[o.__childrenRef__[0].id]
-
-        } else if (k0 === "2ndChild()") {
-
-            if (!o.__view__ || !o.id || !o.__childrenRef__[1]) return
-            return views[o.__childrenRef__[1].id]
-
-        } else if (k0 === "3rdChild()") {
-
-            if (!o.__view__ || !o.id || !o.__childrenRef__[2]) return
-            return views[o.__childrenRef__[2].id]
-
-        } else if (k0 === "nthChild()") {
-
-            if (!o.__view__ || !o.id) return
-            var nth = toValue({ _window, __, value: args[1], e, id, stack, lookupActions })
-            if (!isNumber(nth)) return
-            if (!o.__childrenRef__[nth - 1]) return
-            return views[o.__childrenRef__[nth - 1].id]
-
-        } else if (k0 === "3rdLastChild()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[o.__childrenRef__.slice(-3)[0].id]
-
-        } else if (k0 === "2ndLastChild()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[o.__childrenRef__.slice(-2)[0].id]
-
-        } else if (k0 === "lastChild()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[o.__childrenRef__.slice(-1)[0].id]
-
-        } else if (k0 === "nthLastChild()") {
-
-            if (!o.__view__ || !o.id) return
-            var nth = toValue({ _window, __, value: args[1], e, id })
-            if (!isNumber(nth)) return
-            return views[o.__childrenRef__.slice(-1 * nth)[0].id]
-
-        } else if (k0 === "children()") {
-
-            if (!o.__view__ || !o.id) return
-            return o.__childrenRef__.map(({ id }) => views[id])
-
-        } else if (k0 === "lastEl()") {
-            return o[o.length - 1]
-        } else if (k0 === "2ndLastEl()") {
-            return o[o.length - 2]
-        } else if (k0 === "3rdLastEl()") {
-            return o[o.length - 3]
-        } else if (k0 === "nthLastEl()") {
-            var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
-            return o[o.length - nth]
-        }
+        } 
 
         // OOP
-        else if (actions[k0]) return actions[k0]({ _window, req, res, global, views, view, o, stack, pathJoined, lookupActions, id, e, __, args })
-
-
-        else if (k0 === "installApp()") {
-
-            const installApp = async () => {
-
-                global.__installApp__.prompt();
-                const { outcome } = await global.__installApp__.userChoice;
-                console.log(`User response to the install prompt: ${outcome}`);
-            }
-
-            installApp()
-
-        } else if (k0 === "clearTimer()") {
-
-            var timer = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e }) || o
-            answer = clearTimeout(timer)
-
-        } else if (k0 === "clearInterval()") {
-
-            var timer = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e }) || o
-            answer = clearInterval(timer)
-
-        } else if (k0 === "interval()") {
-
-            if (!o.__view__) return
-            if (!isNaN(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))) { // interval():params:timer
-
-                var timer = parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))
-                var myFn = () => toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], object })
-                answer = setInterval(myFn, timer)
-            }
-
-        } else if (k0 === "repeat()") {
-
-            var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
-            var times = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
-            var loop = []
-            for (var i = 0; i < times; i++) {
-                loop.push(item)
-            }
-            return loop
-
-        } else if (k0 === "timer()") { // timer():params:timer:repeats
-
-            var timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })) : 0
-            var repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object })) : false
-            var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object }) }
-
-            if (typeof repeats === "boolean") {
-
-                if (repeats === true) answer = setInterval(myFn, timer)
-                else if (repeats === false) answer = setTimeout(myFn, timer)
-
-            } else if (typeof repeats === "number") {
-
-                answer = []
-                answer.push(setTimeout(myFn, timer))
-                if (repeats > 1) {
-                    for (let index = 0; index < repeats; index++) {
-                        answer.push(setTimeout(myFn, timer))
-                    }
-                }
-            }
-
-            if (o.__view__) toArray(answer).map(timer => o.__timers__.push(timer))
-
-        } else if (k0 === "slice()") { // slice by text or by number
-
-            if (!Array.isArray(o) && typeof o !== "string" && typeof o !== "number") return
-
-            var start = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object })
-            var end = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[2], __, object })
-
-            if (end !== undefined) {
-
-                if (!isNaN(end)) {
-
-                    if (!isNaN(start)) answer = o.slice(parseInt(start), parseInt(end))
-                    else {
-                        answer = o.split(start)[1]
-                        answer = answer.slice(0, end)
-                    }
-
-                } else {
-
-                    if (!isNaN(start)) answer = o.slice(parseInt(start))
-                    else answer = o.split(start)[1]
-                    answer = answer.split(end)[0]
-                }
-
-            } else {
-
-                if (!isNaN(start)) answer = o.slice(parseInt(start) || 0)
-                else answer = o.split(start)[1]
-            }
-
-        } else if (k0 === "reduce()") { // o.reduce():[path=]
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            if (Array.isArray(data)) data = { path: data }
-            answer = reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.data !== undefined ? true : key, value: data.data !== undefined ? data.data : value }, e, req, res, __ })
-
-        } else if (k0 === "path()") {
-
-            var data = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-
-                } else data.path = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            }
-
-            if ((key && value !== undefined && lastIndex) || data.value !== undefined) {
-
-                if (data.path !== undefined) return toArray(data.path).reduce((o, k, i) => {
-                    if (i === data.path.length - 1) return o[k] = data.value !== undefined ? data.value : value
-                    else return o[k]
-                }, o)
-
-                else return o.__dataPath__
-
-            } else {
-
-                if (data.path !== undefined) return toArray(data.path).reduce((o, k) => o[k], o)
-                else return o.__dataPath__
-            }
-
-        } else if (k0 === "reload()") {
-
-            document.location.reload(true)
-
-        } else if (k0 === "contains()") {
-
-            var first = o, next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            if (!first || !next) return
-
-            if (typeof first === "string") first = views[first]
-            if (typeof next === "string") next = views[next]
-
-            if (first.nodeType === Node.ELEMENT_NODE) first = views[first.id]
-            if (next.nodeType === Node.ELEMENT_NODE) next = views[next.id]
-
-            if (!first.__view__ || !next.__view__) return
-
-            if (first.__element__.nodeType === Node.ELEMENT_NODE && next.__element__.nodeType === Node.ELEMENT_NODE) {
-                answer = first.__element__.contains(next.__element__)
-                if (!answer) answer = first.__element__.id === next.__element__.id
-            }
-
-        } else if (k0 === "in()") {
-
-            var next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-
-            if (next) {
-                if (typeof o === "string" || Array.isArray(o) || typeof o === "number") return answer = next.includes(o)
-                else if (typeof o === "object") answer = next[o] !== undefined
-                else if (o.nodeType === Node.ELEMENT_NODE && next.nodeType === Node.ELEMENT_NODE) return answer = next.contains(o)
-            } else return false
-
-        } else if (k0 === "is()") {
-
-            var b = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            answer = isEqual(o, b)
-
-        } else if (k0 === "opp()") {
-
-            if (typeof o === "number") answer = -1 * o
-            else if (typeof o === "boolean") answer = !o
-            else if (typeof o === "string" && o === "true" || o === "false") {
-                if (o === "true") answer = false
-                else answer = true
-            }
-
-        } else if (k0 === "neg()") {
-
-            answer = o < 0 ? o : -o
-
-        } else if (k0 === "pos()") {
-
-            answer = o > 0 ? o : o < 0 ? -o : o
-
-        } else if (k0 === "sum()") {
-
-            answer = o.reduce((o, k) => o + toNumber(k), 0)
-
-        } else if (k0 === "src()") {
-
-            if (!o.__view__) return
-
-            if (lastIndex && key && value !== undefined) answer = o.__element__.src = value
-            else answer = o.__element__.src
-
-        } else if (k0 === "clear()") {
-
-            if (!o.__view__) return
-            o.__element__.value = null
-            o.__element__.text = null
-            o.__element__.files = null
-
-        } else if (k0 === "list()") {
-
-            answer = toArray(o)
-            answer = [...answer]
-
-        } else if (k0 === "notify()") {
-
-            var notify = () => {
-                if (isParam({ _window, string: args[1] })) {
-
-                    var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    new Notification(_params.title || "", _params)
-
-                } else {
-
-                    var title = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    new Notification(title || "")
-                }
-            }
-
-            if (!("Notification" in window)) {
-                // Check if the browser supports notifications
-                alert("This browser does not support notification");
-            } else if (Notification.permission === "granted") {
-                // Check whether notification permissions have already been granted;
-                // if so, create a notification
-                notify()
-                // …
-            } else if (Notification.permission !== "denied") {
-
-                // We need to ask the user for permission
-                Notification.requestPermission().then((permission) => {
-                    // If the user accepts, let's create a notification
-                    if (permission === "granted") {
-                        notify()
-                        // …
-                    }
-                });
-            }
-
-        } else if (k0 === "alert()") {
-
-            var text = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            alert(text)
-
-        } else if (k0 === "clone()") {
-
-            answer = clone(o)
-
-        } else if (k0 === "override()") {
-
-            var obj1 = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            override(o, obj1)
-
-        } else if (k0 === "txt()") {
-
-            if (!o.__view__) return
-
-            var el
-            if ((o.__islabel__ || o.__labeled__) && o.__name__ !== "Input") el = o.__element__.getElementsByTagName("INPUT")[0]
-            else if (views[o.id].__status__ === "Mounted") el = o.__element__
-
-            if (value) value = replaceNbsps(value)
-
-            if (el) {
-
-                if (views[el.id].__name__ === "Input") {
-
-                    answer = el.value
-                    if (i === lastIndex && key && value !== undefined && o.__element__) answer = el.value = value
-                    else if (path[i + 1] === "del()") {
-                        breakRequest = i + 1
-                        answer = el.value = ""
-                    }
-
-                } else {
-
-                    answer = (el.textContent === undefined) ? el.innerText : el.textContent
-                    if (i === lastIndex && key && value !== undefined) answer = el.innerHTML = value
-                    else if (path[i + 1] === "del()") {
-                        breakRequest = i + 1
-                        answer = el.innerHTML = ""
-                    }
-                }
-
-            } else {
-
-                if (i === lastIndex && key && value !== undefined) answer = views[o.id].text = value
-                else if (path[i + 1] === "del()") {
-                    breakRequest = i + 1
-                    answer = views[o.id].text = ""
-                }
-                answer = views[o.id].text
-            }
-
-        } else if (k0 === "min()") {
-
-            if (!o.__view__) return
-
-            answer = o.min
-            if (i === lastIndex && key && value !== undefined) o.min = value
-
-        } else if (k0 === "max()") {
-
-            if (!o.__view__) return
-
-            answer = o.max
-            if (i === lastIndex && key && value !== undefined) o.max = value
-
-        } else if (k0 === "push()") {
-
-            if (!Array.isArray(o)) o = kernel({ req, res, _window, id, data: { data: _object, path: path.slice(0, i), value: [], key: true, object }, __, e })
-
-            var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
-            var index = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
-
-            if (!Array.isArray(o)) return
-            if (index === undefined) index = o.length || 0
-
-            if (Array.isArray(item)) {
-
-                item.map(item => {
-                    o.splice(index, 0, item)
-                    index += 1
-                })
-
-            } else if (Array.isArray(o)) o.splice(index, 0, item)
-
-            answer = o
-
-        } else if (k0 === "pushItems()") {
-
-            args.slice(1).map(arg => {
-                arg = toValue({ req, res, _window, id, data: args[1], __, e, object })
-                o.splice(o.length, 0, arg)
-            })
-
-        } else if (k0 === "pullIndex()") { // pull by index
-
-            // if no index pull the last element
-            var lastIndex = 1, firstIndex = 0
-            if (args[1]) firstIndex = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack })
-            if (args[2]) lastIndex = toValue({ _window, id, data: args[2], __, e, object, lookupActions, stack })
-
-            o.splice(firstIndex, lastIndex || 1)
-            answer = o
-
-        } else if (k0 === "pull()") { // pull by conditions
-
-            var items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __, lookupActions, stack }))
-
-            items.filter(data => data !== undefined && data !== null).map(_item => {
-                var _index = o.findIndex(item => isEqual(item, _item))
-                if (_index !== -1) o.splice(_index, 1)
-            })
-
-            return answer = o
-
-        } else if (k0 === "pullItem()") { // pull by item
-
-            var item = toValue({ _window, id, data: args[1], __, e, object })
-            var index = o.findIndex(_item => isEqual(_item, item))
-            if (index !== -1) o.splice(index, 1)
-            answer = o
-
-        } else if (k0 === "pullLast()") {
-
-            // if no it pulls the last element
-            o.splice(o.length - 1, 1)
-            answer = o
-
-        } else if (k0 === "rem()") {
-
-            if (!o.__view__) return
-            remove({ id: o.id, __, stack })
-
-        } else if (k0 === "keys()") {
-
-            answer = Object.keys(o)
-
-        } else if (k0 === "key()") {
-
-            if (i === lastIndex && value !== undefined && key) answer = Object.keys(o)[0] = value
-            else answer = Object.keys(o)[0]
-
-        } else if (k0 === "values()") { // values in an object
-
-            if (Array.isArray(o)) answer = o
-            else answer = Object.values(o)
-
-        } else if (k0 === "value()") { // value 0 in an object
-
-            if (i === lastIndex && value !== undefined && key) answer = o[Object.keys(o)[0]] = value
-            else answer = Object.values(o)[0]
-
-        } else if (k0 === "gen()") {
-
-            if (isParam({ _window, string: args[1] })) {
-
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                answer = generate(data)
-
-            } else {
-
-                var length = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 5
-                answer = generate({ length })
-            }
-
-        } else if (k0 === "inc()") {
-
-            var item = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-
-            if (typeof o === "string") answer = o.split(item).length > 1
-            else if (Array.isArray(o)) answer = o.find(_item => isEqual(_item, item)) ? true : false
-
-        } else if (k0 === "incAny()") {
-
-            var items = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            answer = false
-
-            if (typeof o === "string") {
-
-                items.map(item => {
-
-                    if (answer) return
-                    answer = o.split(item).length > 1
-                })
-
-            } else if (Array.isArray(o)) {
-
-                items.map(item => {
-
-                    if (answer) return
-                    answer = o.find(_item => isEqual(_item, item)) ? true : false
-                })
-            }
-
-        } else if (k0 === "capitalize()") {
-
-            answer = capitalize(o)
-
-        } else if (k0 === "capitalizeFirst()") {
-
-            answer = capitalizeFirst(o)
-
-        } else if (k0 === "len()") {
-
-            if (Array.isArray(o)) answer = o.length
-            else if (typeof o === "string") answer = o.split("").length
-            else if (typeof o === "object") answer = Object.keys(o).length
-
-        } else if (k0 === "require()") {
-
-            require(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
-
-        } else if (k0 === "new()") {
-
-            var data = [], className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            args.slice(1).map(arg => {
-                data.push(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg || "" }))
-            })
-            if (className && typeof (new [className]()) === "object") answer = new [className](...data)
-
-        } else if (k0 === "today()" || k0 === "now()") {
-
-            answer = new Date()
-
-        } else if (k0 === "todayEnd()") {
-
-            answer = new Date()
-            answer.setUTCHours(23, 59, 59, 999)
-
-        } else if (k0 === "timezone()") {
-
-            var _date = new Date()
-            var timeZone = Math.abs(_date.getTimezoneOffset()) * 60 * 1000
-            return timeZone
-
-        } else if (k0 === "clock()") { // dd:hh:mm:ss
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            if (!data.timestamp) data.timestamp = o
-
-            answer = toClock(data)
-
-        } else if (k0 === "toSimplifiedDate()") {
-
-            var data = toParam({ _window, req, res, lookupActions, stack, id, e, data: args[1], __ })
-            answer = toSimplifiedDate({ timestamp: o, lang: data.lang || "en", timer: data.time || false })
-
-        } else if (k0 === "ar()") {
-            //
-            if (Array.isArray(o)) answer = o.map(o => o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
-            else answer = o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d])
-
-        } else if (k0 === "date()") {
-
-            var data = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack })
-            if (isNumber(data) && typeof data === "string") data = parseInt(data)
-            answer = new Date(data)
-
-        } else if (k0 === "toDateFormat()") { // returns date for input
-
-            if (isParam({ _window, string: args[1] })) {
-
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                var format = data.format, day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
-
-                if (typeof o === "string") {
-
-                    if (format.split("/").length > 1) {
-
-                        var date = o.split("/")
-                        format.split("/").map((format, i) => {
-                            if (format === "dd") day = date[i]
-                            else if (format === "mm") month = date[i]
-                            else if (format === "yyyy") year = date[i]
-                            else if (format === "hh") hour = date[i]
-                            else if (format === "mm") min = date[i]
-                            else if (format === "ss") sec = date[i]
-                        })
-                    }
-
-                    return new Date(year, month, day, hour, min, sec)
-
-                } else if (data.excel && typeof o === "number") {
-
-                    function ExcelDateToJSDate(serial) {
-
-                        var utc_days = Math.floor(serial - 25569)
-                        var utc_value = utc_days * 86400
-                        var date_info = new Date(utc_value * 1000)
-
-                        var fractional_day = serial - Math.floor(serial) + 0.0000001
-
-                        var total_seconds = Math.floor(86400 * fractional_day)
-
-                        var seconds = total_seconds % 60
-
-                        total_seconds -= seconds
-
-                        var hours = Math.floor(total_seconds / (60 * 60))
-                        var minutes = Math.floor(total_seconds / 60) % 60
-
-                        return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds)
-                    }
-
-                    return ExcelDateToJSDate(o)
-                }
-
-            } else {
-
-                var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) || "format1"
-
-                if (!isNaN(o) && typeof o === "string") o = parseInt(o)
-                var date = new Date(o)
-                var _year = date.getFullYear()
-                var _month = date.getMonth() + 1
-                var _day = date.getDate()
-                var _dayofWeek = date.getDay()
-                var _hour = date.getHours()
-                var _mins = date.getMinutes()
-                var _daysofWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-                var monthsCode = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
-
-                if (format.replace(" ", "") === "format1") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${args[1] === "time" ? ` ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}` : ""}`
-                else if (format.replace(" ", "") === "format2") return `${_year.toString()}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
-                else if (format.replace(" ", "") === "format3") return `${_day.toString().length === 2 ? _day : `0${_day}`}${monthsCode[_month - 1]}${_year.toString().slice(2)}`
-                else if (format.replace(" ", "") === "format4") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${` | ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}`}`
-            }
-
-        } else if (k0 === "toDateInputFormat()") { // returns date for input in a specific format
-
-            var data = {}
-            if (isParam({ _window, string: args[1] })) {
-
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            } else if (args[1]) {
-                data = { date: toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) }
-            } else data = { date: o }
-
-            var format = data.format || "yyyy-mm-dd"
-            var date = new Date(data.date || o)
-            if (!date) return
-
-            var day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
-            var newDate = ""
-
-            if (format.split("/").length === 3) {
-
-                format.split("/").map((format, i) => {
-                    if (i !== 0) newDate += "-"
-                    format = format.toLowerCase()
-                    if (format === "dd") {
-                        day = date.getDate()
-                        newDate += day.toString().length === 2 ? day : `0${day}`
-                    } else if (format === "mm") {
-                        month = date.getMonth() + 1
-                        newDate += month.toString().length === 2 ? month : `0${month}`
-                    } else if (format === "yyyy") {
-                        year = date.getFullYear()
-                        newDate += year
-                    } else if (format === "hh") {
-                        hour = date.getHours() || 0
-                        newDate += hour.toString().length === 2 ? hour : `0${hour}`
-                    } else if (format === "mm") {
-                        min = date.getMinutes() || 0
-                        newDate += min.toString().length === 2 ? min : `0${min}`
-                    } else if (format === "ss") {
-                        sec = date.getSeconds() || 0
-                        newDate += sec.toString().length === 2 ? sec : `0${sec}`
-                    } else if (format === "hh:mm:ss") {
-                        hour = date.getHours() || 0
-                        min = date.getMinutes() || 0
-                        sec = date.getSeconds() || 0
-                        newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`) + ":" + (sec.toString().length === 2 ? sec : `0${sec}`)
-                    } else if (format === "hh:mm") {
-                        hour = date.getHours() || 0
-                        min = date.getMinutes() || 0
-                        newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`)
-                    }
-                })
-
-            } else if (format.split("T").length === 2 || format.split("T")[0].split("-").length === 3) {
-
-                var length = format.split("T").length
-                format.split("T").map((format, i) => {
-                    format.split("-").map((format, i) => {
-                        format = format.toLowerCase()
-                        if (i !== 0) newDate += "-"
-                        if (format === "dd") {
-                            day = date.getDate()
-                            newDate += day.toString().length === 2 ? day : `0${day}`
-                        } else if (format === "mm") {
-                            month = date.getMonth() + 1
-                            newDate += month.toString().length === 2 ? month : `0${month}`
-                        } else if (format === "yyyy") {
-                            year = date.getFullYear()
-                            newDate += year
-                        } else if (format === "hh") {
-                            hour = date.getHours() || 0
-                            newDate += (hour.toString().length === 2 ? hour : `0${hour}`)
-                        } else if (format === "mm") {
-                            min = date.getMinutes() || 0
-                            newDate += (min.toString().length === 2 ? min : `0${min}`)
-                        } else if (format === "ss") {
-                            sec = date.getSeconds() || 0
-                            newDate += (sec.toString().length === 2 ? sec : `0${sec}`)
-                        } else if (format === "hh:mm:ss") {
-                            hour = date.getHours() || 0
-                            min = date.getMinutes() || 0
-                            sec = date.getSeconds() || 0
-                            newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`) + ":" + (sec.toString().length === 2 ? sec : `0${sec}`)
-                        } else if (format === "hh:mm") {
-                            hour = date.getHours() || 0
-                            min = date.getMinutes() || 0
-                            newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`)
-                        }
-                    })
-                    if (length === 2 && i === 0) newDate += "T"
-                })
-
-            }
-
-            return newDate
-
-        } else if (k0 === "getGeoLocation") {
-
-            navigator.geolocation.getCurrentPosition((position) => { answer = position })
-
-        } else if (k0 === "counter()") {
-
-            var data = {}
-            if (isParam({ _window, string: args[1] })) data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-
-            data.counter = data.counter || data.start || data.count || 0
-            data.length = data.length || data.len || data.maxLength || 0
-            data.end = data.end || data.max || data.maximum || 999999999999
-
-            answer = require("./counter").counter({ ...data })
-
-        } else if (k0 === "time()") {
-
-            if (isNumber(o)) {
-
-                var _1Day = 24 * 60 * 60 * 1000, _1Hr = 60 * 60 * 1000, _1Min = 60 * 1000
-                o = parseInt(o)
-
-                var _days = Math.floor(o / _1Day).toString()
-                _days = _days.length === 1 ? ("0" + _days) : _days
-
-                var _hrs = Math.floor(o % _1Day, _1Hr).toString()
-                _hrs = _hrs.length === 1 ? ("0" + _hrs) : _hrs
-
-                var _mins = Math.floor(o % _1Hr, _1Min).toString()
-                _mins = _mins.length === 1 ? ("0" + _mins) : _mins
-
-                answer = _days + ":" + _hrs + ":" + _mins
-            }
-
-        } else if (k0 === "timestamp()") {
-
-            if (o instanceof Date) answer = o.getTime()
-            else if (o.length === 5 && o.split(":").length === 2) {
-
-                var _hrs = parseInt(o.split(":")[0]) * 60 * 60 * 1000
-                var _mins = parseInt(o.split(":")[1]) * 60 * 1000
-                answer = _hrs + _mins
-
-            } else if (o.length === 8 && o.split(":").length === 3) {
-
-                var _days = parseInt(o.split(":")[0]) * 24 * 60 * 60 * 1000
-                var _hrs = parseInt(o.split(":")[1]) * 60 * 60 * 1000
-                var _mins = parseInt(o.split(":")[2]) * 60 * 1000
-                answer = _days + _hrs + _mins
-
-            } else {
-
-                o = new Date(o)
-                if (o.getTime()) return answer = o.getTime()
-                o = new Date()
-                answer = o.getTime()
-            }
-
-        } else if (k0 === "getDateTime()") {
-
-            var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            answer = getDateTime(o, format)
-
-        } else if (k0 === "getDaysInMonth()") {
-
-            if (o instanceof Date) answer = new Date(o.getFullYear(), o.getMonth() + 1, 0).getDate()
-
-        } else if (k0 === "1MonthLater()") {
-
-            var date = o instanceof Date ? o : new Date()
-            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
-            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-
-            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
-
-        } else if (k0 === "2MonthLater()") {
-
-            var date = o instanceof Date ? o : new Date()
-            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
-            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-            month = month + 1 > 11 ? 1 : month + 1
-            year = month === 1 ? year + 1 : year
-
-            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
-
-        } else if (k0 === "3MonthLater()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
-            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-            month = month + 1 > 11 ? 1 : month + 1
-            year = month === 1 ? year + 1 : year
-            month = month + 1 > 11 ? 1 : month + 1
-            year = month === 1 ? year + 1 : year
-            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
-
-        } else if (k0 === "1MonthEarlier") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
-            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
-
-        } else if (k0 === "2MonthEarlier") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
-            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-            month = month - 1 < 0 ? 11 : month - 1
-            year = month === 11 ? year - 1 : year
-            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
-
-        } else if (k0 === "3MonthEarlier") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
-            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-            month = month - 1 < 0 ? 11 : month - 1
-            year = month === 11 ? year - 1 : year
-            month = month - 1 < 0 ? 11 : month - 1
-            year = month === 11 ? year - 1 : year
-            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
-
-        } else if (k0 === "todayStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = date.setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "todayEnd()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = date.setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "monthStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(_date.setMonth(_date.getMonth(), 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "monthEnd()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(date.setMonth(date.getMonth(), getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "nextMonthStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
-            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "nextMonthEnd()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
-            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "2ndNextMonthStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = o.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
-            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-            month = month + 1 > 11 ? 1 : month + 1
-            year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "2ndNextMonthEnd()") {
-
-            var date
-            if (typeof o.getMonth === 'function') date = o
-            else date = new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
-            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-            month = month + 1 > 11 ? 1 : month + 1
-            year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "prevMonthStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
-            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "prevMonthEnd()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
-            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "2ndPrevMonthStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
-            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-            month = month - 1 < 0 ? 11 : month - 1
-            year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "2ndPrevMonthEnd()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
-            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-            month = month - 1 < 0 ? 11 : month - 1
-            year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "yearStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "yearEnd()") {
-
-            var date
-            if (typeof o.getMonth === 'function') date = o
-            else date = new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "nextYearStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "nextYearEnd()") {
-
-            var date
-            if (typeof o.getMonth === 'function') date = o
-            else date = new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "prevYearStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "prevYearEnd()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "removeDuplicates()") { // without condition and by condition. ex: removeDuplicates():number (it will remove items that has the same number value)
-
-            if (args[1]) {
-
-                var keys = toValue({ _window, e, data: args[1], id, __, lookupActions, stack })
-                var list = []
-
-                toArray(keys).map(key => {
-
-                    var seen = new Set()
-
-                    o.map(item => {
-                        if (!seen.has(item[key])) {
-                            seen.add(item[key])
-                            list.push(item)
-                        }
-                    })
-                })
-
-                return answer = o = list
-
-            } else {
-
-                if (!Array.isArray(o)) return o
-                var removeDuplicates = (array) => {
-                    for (let i = 0; i < array.length; i++) {
-                        if (array.filter(el => isEqual(el, array[i])).length > 1) {
-
-                            array.splice(i, 1);
-                            removeDuplicates(array);
-                            break;
-                        }
-                    }
-                }
-
-                removeDuplicates(o);
-                return o
-            }
-
-        } else if (k0 === "replace()") { // replace():prev:new
-
-            if (!Array.isArray(o) && typeof o !== "string") o = kernel({ req, res, _window, id, data: { data: _object, path: path.slice(0, i), value: [], key: true, object }, __, e })
-
-            var rec0, rec1
-
-            rec0 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
-            rec1 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] || "" })
-
-            if (typeof o === "string") {
-
-                if (rec1 !== undefined) answer = o.replace(rec0, rec1)
-                else answer = o.replace(rec0)
-
-            } else if (Array.isArray(o)) {
-
-                var _itemIndex = o.findIndex(item => isEqual(item, rec0)), rec2 = rec1 || rec0 // replace():rec0:rec1 || replace():rec0 (if rec0 doesnot exist push it)
-                if (_itemIndex >= 0) o[_itemIndex] = rec2
-                else o.push(rec2)
-                return o
-            }
-
-        } else if (k0 === "replaceItem()") { // replace by condition
-
-            if (!Array.isArray(o)) return
-            if (isParam({ _window, string: args[1] })) {
-
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                var _path = data.path, _data = data.data
-                var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, data: item }, e, __: [o, ...__] }), kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, data: _data }, __: [o, ...__], e })))
-                if (_index >= 0) o[_index] = _data
-                else o.push(_data)
-
-            } else if (args[1]) {
-
-                var data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-
-                if (typeof o[0] === "object" || (typeof o[0] === "undefined" && typeof data === "object")) {
-
-                    var _index = o.findIndex(item => item.id === data.id)
-                    if (_index >= 0) o[_index] = data
-                    else o.push(data)
-
-                } else if ((typeof o[0] === "undefined" && typeof data !== "object") || typeof o[0] === "number" || typeof o[0] === "string") {
-
-                    var _index = o.findIndex(item => item === data)
-                    if (_index < 0) o.push(data)
-                }
-            }
-
-        } else if (k0 === "replaceItems()") {
-
-            if (isParam({ _window, string: args[1] })) {
-
-                var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                var _path = _params.path, _data = _params.data.filter(data => data !== undefined && data !== null)
-                toArray(_data).map(_data => {
-
-                    var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], data: item }, __: [o, ...__], e }), kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], data: _data }, __: [o, ...__], e })))
-                    if (_index >= 0) o[_index] = _data
-                    else o.push(_data)
-                })
-
-            } else if (args[1]) {
-
-                var _data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }).filter(data => data !== undefined && data !== null)
-                if (typeof o[0] === "object") {
-
-                    toArray(_data).map(_data => {
-
-                        var _index = o.findIndex(item => item.id === _data.id)
-                        if (_index >= 0) o[_index] = _data
-                        else o.push(_data)
-                    })
-
-                } else if (typeof o[0] === "number" || typeof o[0] === "string") {
-
-                    toArray(_data).map(_data => {
-
-                        var _index = o.findIndex(item => item === _data)
-                        if (_index >= 0) o[_index] = _data
-                        else o.push(_data)
-                    })
-                }
-            }
-
-        } else if (k0 === "terminate()") {
-
-            stack.terminated = true
-
-        } else if (k0 === "break()") {
-
-            if (stack.loop) stack.broke = true
-
-        } else if (k0 === "return()") {
-
-            stack.returns[0].data = answer = toValue({ _window, data: args[1], e, id, object, __, stack, lookupActions })
-            stack.returns[0].returned = true
-
-        } else if (k0 === "toggleMode()") {
-
-            document.documentElement.classList.toggle("darkmode")
-
-        } else if (k0 === "export()") {
-
-            var data = toLine({ _window, req, res, _window, id, e, __, data: { string: args[1] } }).data
-
-            if (data.json) data.type = "json"
-            if (data.csv) data.type = "csv"
-            if (data.excel) data.type = "excel"
-            if (data.pdf) data.type = "pdf"
-
-            if (data.type === "json") exportJson(data)
-            else if (data.type === "csv") require("./toCSV").toCSV(data)
-            else if (data.type === "excel") require("./toExcel").toExcel(data)
-            else if (data.type === "pdf") require("./toPdf").toPdf(data)
-
-        } else if (k0 === "flat()") {
-
-            if (typeof o === "object") {
-                if (Array.isArray(o)) {
-                    o = [...o]
-                    answer = o.flat()
-                } else {
-
-                    if (typeof _object === "object") Object.entries(o).map(([key, value]) => _object[key] = value)
-                    return _object
-                }
-            } else return o
-
-        } else if (k0 === "action()") {
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            if (typeof data.path === "string") data.path = data.path.split(".")
-            toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { path: data.path || data.action.split("."), view: data.view, data: data.data }, condition, object })
-
-        } else if (k0 === "getDeepChildrenId()") {
-
-            answer = getDeepChildrenId({ _window, id: o.id })
-
-        } else if (k0 === "deep()" || k0 === "deepChildren()") {
-
-            answer = getDeepChildren({ _window, id: o.id })
-
-        } else if (k0 === "filter()") {
-
-            var args = k.split(":").slice(1), isnot
-            if (!args[0]) isnot = true
-
-            if (isnot) answer = toArray(o).filter(o => o !== "" && o !== undefined && o !== null)
-            else args.map(arg => {
-
-                if (underScored) answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: arg, id, __: [o, ...__], req, res }))
-                else answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: arg, id, object: o, req, res, __ }))
-            })
-
-        } else if (k0 === "find()") {
-
-            if (i === lastIndex && key && value !== undefined) {
-
-                var index
-                if (underScored) index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-                else index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
-                if (index !== undefined && index !== -1) o[index] = answer = value
-
-            } else {
-
-                if (underScored) answer = toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-                else answer = toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
-            }
-
-        } else if (k0 === "sort()") {
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            if (!data.data) data.data = o
-
-            // else return o
-            data.data = answer = require("./sort").sort({ _window, lookupActions, stack, __, sort: data, id, e })
-
-            return answer
-
-        } else if (k0 === "findIndex()") {
-
-            if (typeof o !== "object") return
-
-            if (underScored) answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-            else answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
-
-        } else if (k0 === "()") { // map()
-
-            var notArray = false
-            if (args[1] && args[1].charAt(0) === "@" && args[1].length == 6) args[1] = global.__refs__[args[1]].data
-            if (args[2] && args[2].charAt(0) === "@" && args[2].length == 6) args[2] = global.__refs__[args[2]].data
-
-            if (typeof o === "object" && !Array.isArray(o)) notArray = true
-
-            stack.loop = true
-
-            if (args[1] && underScored) {
-
-                toArray(o).map(o => toValue({ req, res, _window, lookupActions, stack, id, data: args[1] || "", object, __: [o, ...__], e }))
-                answer = o
-
-            } else if (args[1]) {
-
-                answer = toArray(o).map(o => toValue({ req, res, _window, lookupActions, stack, id, data: args[1] || "", object: o, __, e }))
-
-            } else if (args[2] && underScored) {
-
-                breakRequest = true
-                var address;
-                ([...toArray(o)]).reverse().map(o => {
-                    // address
-                    address = addresser({ _window, id, stack, nextAddress: address, __: [o, ...__], lookupActions, data: { string: args[2] }, object }).address
-                })
-
-                // address
-                if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
-
-            } else if (args[2]) {
-
-                breakRequest = true
-                var address;
-                ([...toArray(o)]).reverse().map(o => {
-                    // address
-                    address = addresser({ _window, id, stack, nextAddress: address, __, lookupActions, data: { string: args[2] }, object: o }).address
-                })
-
-                // address
-                if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
-            }
-
-            stack.loop = false
-            stack.broke = false
-
-            if (notArray) return o
-
-        } else if (k0 === "html2pdf()") {
-
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, status: "Start", action: "html2pdf()", object, lookupActions, __, id })
-
-            var options = {
-                margin: .25,
-                filename: data.name || generate({ length: 20 }),
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, dpi: 300, letterRendering: true },
-                jsPDF: { unit: 'mm', format: data.format || 'a4', orientation: 'portrait' }
-            }
-
-            data.view = data.view || o
-            var exporter = new html2pdf(data.view.__element__, options)
-
-            exporter.getPdf(true).then((pdf) => {
-                console.log('pdf file downloaded')
-            })
-
-            /*exporter.getPdf(false).then((pdf) => {
-                console.log('doing something before downloading pdf file');
-                pdf.save();
-              });*/
-
-            /*pages.map(page => {
-
-                var _element
-                if (typeof page === "object" && page.id) _element = views[page.id].__element__
-                else if (page.nodeType === Node.ELEMENT_NODE) _element = page
-                else if (typeof page === "string") _element = views[page].__element__
-
-                _elements.push(_element)
-                var images = [..._element.getElementsByTagName("IMG")]
-
-                if (images.length > 0) {
-
-                    images.map((image, i) => {
-                        toDataURL(image.src).then(dataUrl => {
-
-                            image.src = dataUrl
-                            if (images.length === i + 1) {
-
-                                if (!once && pages.length > 1 && pages.length === _elements.length) {
-
-                                    once = true
-                                    exportHTMLToPDF({ _window, pages: _elements, opt, lookupActions, stack, address, req, res, id, e, __, args })
-
-                                } else if (pages.length === 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then(pdf => {
-
-                                    var totalPages = pdf.internal.getNumberOfPages()
-
-                                    for (i = 1; i <= totalPages; i++) {
-
-                                        pdf.setPage(i)
-                                        pdf.setFontSize(9)
-                                        pdf.setTextColor(150)
-                                        pdf.text('page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.1), (pdf.internal.pageSize.getHeight() - 0.08))
-                                    }
-
-                                }).save().then((pdf) => {
-
-                                    // await params
-                                    if (args[2]) require("./kernel").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __: [pdf, ...__] })
-                                    window.devicePixelRatio = 1
-                                })
-                            }
-                        })
-                    })
-
-                } else html2pdf().set(opt).from(_element).save().then((pdf) => {
-
-
-                    // await params
-                    if (args[2]) require("./kernel").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __: [pdf, ...__] })
-                    window.devicePixelRatio = 1
-                })
-            })*/
-
-        } else if (k0 === "share()") {
-
-            if (isParam({ _window, string: args[1] })) { // share():[text;title;url;files]
-
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || {}, images = []
-                data.files = toArray(data.file || data.files) || []
-                if (data.image || data.images) data.images = toArray(data.image || data.images)
-
-                var getFileFromUrl = async (url, name) => {
-
-                    const response = await fetch(url)
-                    const blob = await response.blob()
-                    images.push(new File([blob], 'rick.jpg', { type: blob.type }))
-
-                    if (images.length === data.images.length)
-                        await navigator.share({ title: data.title, text: data.text, url: data.url, files: images })
-                }
-
-                if (data.images) data.images.map(async url => getFileFromUrl(url, data.title))
-                else {
-                    console.log(data);
-                    navigator.share(data)
-                }
-
-            } else if (args[1]) { // share():url
-                navigator.share({ url: toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) })
-            }
-
-        } else if (k0 === "loader()") {
-
-            var data = {}
-
-            if (isParam({ _window, string: args[1] })) {
-
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                if (data.hide) data.show = false
-
-            } else {
-
-                var show = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                if (show === "show") data.show = true
-                else if (show === "hide") data.show = false
-            }
-
-            var _o
-            if (data.id) _o = views[data.id]
-            else if (data.window) _o = views.body
-            else _o = o
-
-            if (typeof _o !== "object") return
-            if (_o.__status__ === "Loading") {
-                return _o.__controls__.push({
-                    event: "loaded?" + k
-                })
-            }
-
-            if (data.show) {
-
-                var lDiv = document.createElement("div")
-                document.body.appendChild(lDiv)
-                lDiv.classList.add("loader-container")
-                lDiv.setAttribute("id", _o.id + "-loader")
-                if (_o.id !== "body") {
-
-                    lDiv.style.position = "absolute"
-                    var coords = require("./getCoords")({ id: _o.id || id })
-                    lDiv.style.top = coords.top + "px"
-                    lDiv.style.bottom = coords.bottom + "px"
-                    lDiv.style.height = coords.height + "px"
-                    lDiv.style.left = coords.left + "px"
-                    lDiv.style.right = coords.right + "px"
-                    lDiv.style.width = coords.width + "px"
-                }
-
-                var loader = document.createElement("div")
-                lDiv.appendChild(loader)
-                loader.classList.add("loader")
-                lDiv.style.display = "flex"
-
-                if (data.style) {
-                    Object.entries(data.style).map(([key, value]) => {
-                        loader.style[key] = value
-                    })
-                }
-
-                if (data.background && data.background.style) {
-                    Object.entries(data.background.style).map(([key, value]) => {
-                        lDiv.style[key] = value
-                    })
-                }
-
-                return sleep(10)
-
-            } else if (data.show === false) {
-
-                var lDiv = document.getElementById(_o.id + "-loader")
-                if (lDiv) lDiv.parentNode.removeChild(lDiv)
-                else console.log("Loader doesnot exist!")
-            }
-
-        } else if (k0 === "type()") {
-
-            if (args[1]) answer = getType(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
-            else answer = getType(o)
-
-        } else if (k0 === "coords()") {
-
-            if (!o.__view__) return
-            require("./getCoords")({ id: o.id })
-
-        } else if (k0 === "price()") {
-
-            if (!isNumber(o)) return
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            if (!data.decimal) data.decimal = 2
-            var formatter = new Intl.NumberFormat("en", {
-                style: 'decimal',
-                decimal: data.decimal,
-            })
-
-            answer = formatter.format(parseFloat(o))
-
-        } else if (k0 === "bool()") {
-
-            answer = typeof o === "boolean" ? o : (o === "true" ? true : o === "false" ? false : undefined)
-
-        } else if (k0 === "num()") {
-
-            answer = toNumber(o)
-
-        } else if (k0 === "isNum()") {
-
-            answer = isNumber(o)
-
-        } else if (k0 === "round()") {
-
-            if (isNumber(o)) {
-                var nth = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 2
-                answer = parseFloat(o || 0).toFixed(nth)
-            }
-
-        } else if (k0 === "str()") {
-
-            if (typeof o !== "object") answer = o + ""
-            else answer = toString(o)
-
-        } else if (k0 === "lastIndex()") {
-
-            answer = o.length ? o.length - 1 : 0
-
-        } else if (k0 === "2ndLastIndex()") {
-
-            answer = o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
-
-        } else if (k0 === "2ndLastIndex()") {
-
-            answer = o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
-
-        } else if (k0 === "nthLastIndex()") {
-
-            answer = o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
-
-        } else if (k0 === "el()") {
-
-            answer = o.__element__
-
-        } else if (k0 === "index()") {
-
-            if (!o.__indexed__ && o.__loop__) answer = o.__loopIndex__
-            else if (!o.__indexed__) answer = o.__childIndex__
-            else answer = o.__index__
-
-        } else if (k0 === "checked()") {
-
-            if (!o.__view__) return
-
-            if (value !== undefined && key) answer = o.checked.checked = o.__element__.checked = value
-            else answer = o.checked.checked || o.__element__.checked || false
-
-        } else if (k0 === "check()") {
-
-            breakRequest = true
-            if (!o.__view__) return
-
-            answer = o.checked.checked = o.__element__.checked = value || false
-
-        } else if (k0 === "parseFloat()") {
-
-            answer = parseFloat(o)
-
-        } else if (k0 === "parseInt()") {
-
-            answer = parseInt(o)
-
-        } else if (k0 === "stringify()") {
-
-            answer = JSON.stringify(o)
-
-        } else if (k0 === "parse()") {
-
-            answer = JSON.parse(o)
-
-        } else if (k0 === "getCookie()") {
-
-            // getCookie():name
-            if (isParam({ _window, string: args[1], req, res })) {
-
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                return getCookie({ ...data, req, res, _window })
-            }
-
-            var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            var _cookie = getCookie({ name: _name, req, res, _window })
-            return _cookie
-
-        } else if (k0 === "eraseCookie()") {
-
-            if (_window) return views.root.__controls__.push({ event: `loading?${pathJoined}` })
-
-            // getCookie():name
-            if (isParam({ _window, req, res, string: args[1] })) {
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                return eraseCookie({ ...data, req, res, _window })
-            }
-
-            var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            var _cookie = eraseCookie({ name: _name, req, res, _window })
-            return _cookie
-
-        } else if (k0 === "setCookie()") {
-
-            if (_window) return views.root.__controls__.push({ event: `loading?${pathJoined}` })
-
-            // X setCookie():value:name:expiry-date X // setCookie():[value;name;expiry]
-            var cookies = []
-            if (isParam({ _window, req, res, string: args[1] })) {
-
-                args.slice(1).map(arg => {
-
-                    var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: arg })
-                    setCookie({ ...data, req, res, _window })
-
-                    cookies.push(data)
-                })
-
-            } else {
-
-                var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                var _value = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] })
-                var _expiryDate = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[3] })
-
-                setCookie({ name: _name, value: _value, expires: _expiryDate, req, res, _window })
-            }
-
-
-            if (cookies.length === 1) return cookies[0]
-            else return cookies
-
-        } else if (k0 === "cookie()") {
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-
-            if (_window && data.method === "post" || data.method === "delete") return views.root.__controls__.push({ event: `loading?${pathJoined}` })
-            if (data.method === "post") return setCookie({ ...data, req, res, _window })
-            if (data.method === "delete") return eraseCookie({ ...data, req, res, _window })
-            if (data.method === "get") return getCookie({ ...data, req, res, _window })
-
-        } else if (k0 === "clean()") {
-
-            answer = o.filter(o => o !== undefined && !Number.isNaN(o) && o !== "")
-
-        } else if (k0 === "colorize()") {
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1] || "", __ })
-            answer = colorize({ _window, string: o, ...data })
-
-        } else if (k0 === "deepChildren()") {
-
-            answer = getDeepChildren({ _window, lookupActions, stack, id: o.id })
-
-        } else if (k0 === "note()") { // note
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            note({ note: data })
-
-        } else if (k0 === "readonly()") {
-
-            if (!o.__view__) return
-            var children = getDeepChildren({ _window, id: o.id })
-
-            children.map(child => {
-
-                child.__element__.setAttribute("readOnly", true)
-                child.readonly = true
-
-                child.__element__.setAttribute("contenteditable", false)
-                child.editable = false
-            })
-
-        } else if (k0 === "editable()") {
-
-            if (!o.__view__) return
-            var children = getDeepChildren({ _window, id: o.id })
-
-            children.map(child => {
-
-                child.__element__.setAttribute("readOnly", false)
-                child.readonly = false
-
-                child.__element__.setAttribute("contenteditable", true)
-                child.editable = true
-            })
-
-        } else if (k0 === "range()") {
-
-            var index = 0
-            var range = []
-            var startIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) : 0 || 0
-            var endIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] }) : toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            var steps = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[3] }) || 1
-            var lang = args[4] || ""
-            index = startIndex
-
-            while (index <= endIndex) {
-                if ((index - startIndex) % steps === 0) {
-                    range.push(index)
-                    index += steps
-                }
-            }
-
-            if (lang === "ar") range = range.map(num => num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
-            answer = range
-
-        } else if (k0 === "droplist()") {
-
-            var { address, data } = addresser({ _window, stack, args, id: o.id, interpreting: true, status: "Start", action: "droplist()", object, lookupActions, __, id })
-            require("./droplist").droplist({ id, e, data, __, stack, lookupActions, address })
-
-        } else if (k0 === "route()") {
-
-            var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", asynchronous: true, id: o.id, action: "route()", object, lookupActions, __, id })
-            if (typeof data === "string") data = { route: data }
-
-            require("./route").route({ _window, lookupActions, stack, address, id, req, res, data: { type: "route", route: { __: data.data !== undefined ? [data.data] : [] } }, __ })
-
-        } else if (k0 === "root()") {
-
-            var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id: o.id, action: "root()", object, lookupActions, __, id })
-            if (typeof data === "string") data = { page: data }
-
-            require("./root").root({ _window, lookupActions, stack, address, id, req, res, root: data, __ })
-
-        } else if (k0 === "update()") {
-
-            if (!o.__view__) return o
-
-            var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", renderer: true, blockable: false, id: o.id, action: "update()", object, lookupActions, __, id })
-            update({ _window, lookupActions, stack, req, res, id, address, __, data: { id: data.id || o.id, ...data } })
-
-        } else if (k0 === "insert()") {
-
-            if (!o.__view__) return o
-
-            // wait address
-            var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", renderer: true, id: o.id, action: "insert()", lookupActions, __, id })
-            insert({ id, lookupActions, stack, address, __, insert: { ...data, parent: o.id } })
-
-        } else if (k0 === "confirmEmail()") {
-
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "confirmEmail()", object, lookupActions, __, id })
-            data.store = "confirmEmail"
-            require("./save").save({ id, lookupActions, stack, address, e, __, save: data })
-
-        } else if (k0 === "mail()") {
-
-            if (!o.__view__) return o
-
-            // wait address
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "mail()", object, lookupActions, __, id })
-
-            require("./mail").mail({ req, res, _window, lookupActions, stack, address, id, e, __, data })
-            return true
-
-        } else if (k0 === "print()") {
-
-        } else if (k0 === "files()") {
-
-            return [...(o.__element__.files || [])]
-
-        } else if (k0 === "file()") {
-
-            return (o.__element__.files || [])[0]
-
-        } else if (k0 === "read()") {
-
-            // wait address
-            var { address, data, action } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "mail()", object, lookupActions, __, id, dataInterpretAction: "conditional" })
-
-            if (!data) return
-            if (action === "toValue") data.file = data
-
-            fileReader({ req, res, _window, lookupActions, stack, address, id, e, __, data })
-
-        } else if (k0 === "upload()") {
-
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "upload()", object, lookupActions, __, id })
-            require("./upload")({ _window, lookupActions, stack, address, req, res, id, e, upload: data, __ })
-
-        } else if (k0 === "search()") {
-
-            var { address, data } = addresser({ _window, stack, args, req, res, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "search()", object, lookupActions, __, id })
-            // var data = searchParams({ _window, lookupActions, stack, address, id, e, __, req, res, string: args[1], object })
-            require("./search").search({ _window, lookupActions, stack, address, id, e, __, req, res, data })
-            return true
-
-        } else if (k0 === "erase()") {
-
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "erase()", object, lookupActions, __, id })
-            require("./erase").erase({ _window, lookupActions, stack, address, id, e, __, req, res, erase: data })
-            return true
-
-        } else if (k0 === "save()") {
-
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "save()", object, lookupActions, __, id })
-            require("./save").save({ _window, lookupActions, stack, address, id, e, __, req, res, save: data })
-            return true
-
-        } else if (k0 === "start()") {
-
-            var address = stack.addresses.find(address => address.id === stack.interpretingAddressID)
-            address.starter = true
-            var startID = generate()
-            global.__startAddresses__[startID] = { id: startID, address }
-
-            stack.logs.push(`${stack.logs.length} Starter STACK ${stack.id} ${stack.event.toUpperCase()} ${stack.string}`)
-
-            return startID
-
-        } else if (k0 === "end()") {
-
-            var { data = {} } = toLine({ req, res, _window, lookupActions, stack, id, e, __, data: { string: args[1] }, action: "toParam" })
-            endAddress({ req, res, _window, lookupActions, stack, id, e, __, data })
-
-        } else if (k0 === "send()") {
-
-            breakRequest = true
-            if (!res || res.headersSent) return
-
-            var executionDuration = (new Date()).getTime() - stack.executionStartTime, response
-
-            if (isParam({ _window, string: args[1] })) {
-
-                response = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                response.success = response.success !== undefined ? response.success : true
-                response.message = response.message || response.msg || "Action executed successfully!"
-                response.executionDuration = executionDuration
-                delete response.msg
-
-            } else {
-
-                var data = toValue({ req, res, _window, lookupActions, id, e, __, data: args[1] })
-                response = { success: true, message: "Action executed successfully!", data, executionDuration }
-            }
-
-            stack.terminated = true
-
-            // logs
-            console.log("Send " + stack.route + " (" + executionDuration + ")")
-            stack.logs.push(stack.logs.length + " Send " + stack.route + " (" + executionDuration + ")")
-            response.logs = stack.logs
-
-            // respond
-            res.setHeader('Content-Type', 'application/json')
-            res.write(JSON.stringify(response));
-            res.end()
-
-        } else if (k0 === "sent()") {
-
-            if (!res || res.headersSent) return true
-            else return false
-
-        } else if (k0 === "setPosition()" || k0 === "position()") {
-
-            var position = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            return require("./setPosition").setPosition({ position, id: o.id || id, e })
-
-        } else if (k0 === "csvToJson()") {
-
-            var file = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            require("./csvToJson").csvToJson({ id, lookupActions, stack, e, file, onload: args[2] || "", __ })
-
-        } else if (k0 === "copyToClipBoard()") {
-
-            var text
-            if (args[1]) text = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            else text = o
-
-            if (navigator.clipboard) answer = navigator.clipboard.writeText(text)
-            else {
-                var textArea = document.createElement("textarea")
-                textArea.value = text
-                document.body.appendChild(textArea)
-                textArea.focus()
-                textArea.select()
-                textArea.setSelectionRange(0, 99999)
-                if (navigator.clipboard) navigator.clipboard.writeText(text)
-                else document.execCommand("copy")
-                document.body.removeChild(textArea)
-            }
-
-        } else if (k0 === "addClass()") {
-
-            if (!o.__view__) return o
-            var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
-            if (o.__element__) answer = o.__element__.classList.add(_class)
-
-        } else if (k0 === "remClass()") {
-
-            if (!o.__view__) return o
-            var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
-            if (o.__element__) answer = o.__element__.classList.remove(_class)
-
-        } else if (k0 === "toggleClass()") {
-
-            if (!o.__view__) return o
-            var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
-            if (o.__element__) answer = o.__element__.classList.toggle(_class)
-
-        } else if (k0 === "encodeURI()") {
-
-            answer = encodeURI(o)
-
-        } else if (k0 === "preventDefault()") {
-
-            e.preventDefault()
-
-        } else if (k0 === "decodeURI()") {
-
-            answer = decodeURI(o)
-
-        } else if (k0.slice(-2) === "()" && typeof o[k0.slice(0, -2)] === "function") {
+        else if (actions[k0]) return actions[k0]({ _window, req, res, global, views, view, o, stack, pathJoined, lookupActions, id, e, __, args, k, underScored, object, i, lastIndex, value, key, path, breakRequest, condition, _object, answer })
+            
+        // methods
+        else if (k0.slice(-2) === "()" && typeof o[k0.slice(0, -2)] === "function") {
 
             var data = []
             args.slice(1).map(arg => {
@@ -2584,7 +2597,10 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             answer = o[k0.slice(0, -2)](...data)
 
-        } else if (k0.slice(-2) === "()") { // action_name()
+        } 
+
+        // action_name()
+        else if (k0.slice(-2) === "()") { 
 
             if (k0.charAt(0) === "@" && k0.length == 6) k0 = toValue({ req, res, _window, id, e, __, data: k0, object })
 
@@ -2594,30 +2610,35 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 answer = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: k }, condition, object: object || o })
             }
 
-        } else if (k.includes(":@")) {
+        } 
+        
+        // endoced params
+        else if (k.includes(":@")) {
 
-            breakRequest = true
+            breakRequest.break = true
 
             // decode
             if (k0.charAt(0) === "@" && k0.length == 6) k0 = global.__refs__["@" + k0.slice(-5)].data
 
             o[k0] = o[k0] || {}
-
+            
             if (events.includes(k0)) {
 
                 if (!o.__view__) return
 
                 var data = global.__refs__["@" + args[1].slice(-5)].data
 
-                /*if (views[id].__status__ === "Mounted") return require("./event").addEventListener({ event: k0 + "?" + data, id, __, lookupActions, eventID: o.id })
-                else*/ return views[id].__controls__.push({ event: k0 + "?" + data, id, __, lookupActions, eventID: o.id })
+                return views[id].__controls__.push({ event: k0 + "?" + data, id, __, lookupActions, eventID: o.id })
             }
 
             args[1] = (global.__refs__[args[1]].data || "").split(".")
             if (args[1]) answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { path: [...args.slice(1).flat(), ...path.slice(i + 1)], object: o[k0] }, __ })
             else return
 
-        } else if (key && value !== undefined && i === lastIndex) {
+        } 
+        
+        // lastindex
+        else if (key && value !== undefined && i === lastIndex) {
 
             if (Array.isArray(o)) {
                 if (!isNumber(k)) {
@@ -2627,7 +2648,10 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             }
             answer = o[k] = value
 
-        } else if (key && o[k] === undefined && i !== lastIndex) {
+        } 
+        
+        // assign {} of []
+        else if (key && o[k] === undefined && i !== lastIndex) {
 
             var path1 = path[i + 1]
             if (path1 && (isNumber(path1) || path1.slice(0, 3) === "():" || path1.includes("find()") || path1.includes("filter()") || path1.includes("push()"))) answer = o[k] = []
@@ -2641,7 +2665,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 }
                 answer = o[k] = {}
             }
-        } else answer = o[k]
+        } 
+        
+        else answer = o[k]
 
         return answer
 
@@ -2652,8 +2678,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
 const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id, e, req, res, object, mount, condition, isValue }) => {
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
 
     if (!value) return value
 
@@ -2838,8 +2864,8 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
 
 const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req, res, mount, object, __, condition }) => {
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
     var view = views[id] || { id, __view__: true }
 
     var params = object || {}
@@ -2981,6 +3007,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
         // action()
         if (path0.slice(-2) === "()") {
+            
             var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: path[0] }, condition, mount, object })
             if (action !== "__continue__" && typeof action === "object" && !Array.isArray(action)) override(params, action)
             if (action !== "__continue__") return
@@ -3077,8 +3104,8 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
 
     if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.blocked || stack.broke) return
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
     var view = views[id] || { id, __view__: true }
 
     // path is a string
@@ -3087,7 +3114,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     if (typeof path === "number") path = [path]
 
     var pathJoined = path.join(".")
-
+    
     // init
     var path0 = path[0] ? path[0].toString().split(":")[0] : "", args
     if (path[0] !== undefined) args = path[0].toString().split(":")
@@ -3101,9 +3128,22 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // [actions?conditions?elseActions]():[params]:[waits]
     else if (path0.length === 8 && path0.slice(-2) === "()" && path0.charAt(0) === "@") {
 
+        var myLookupActions = lookupActions
         var { address, data } = addresser({ _window, stack, args, id, type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, lookupActions, id, object })
 
-        return toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: data }).data
+        // view & path
+        if (typeof data === "object" && data.__view__) myLookupActions = data.__lookupViewActions__
+        else if (typeof data === "object") {
+            if (typeof data.view === "object" && data.view.__view__) myLookupActions = data.view.__lookupViewActions__
+            else {
+                if (!data.view) data.view = view.__customViewPath__.at(-1)
+                if (typeof data.path === "string") data.path = data.path.split(".")
+                myLookupActions = [{ type: "customView", view: data.view, path: data.path }, ...lookupActions]
+            }
+        } else if (typeof data === "string") myLookupActions = [{ type: "customView", view: data }, ...lookupActions]
+        address.params = { ...address.params, lookupActions: myLookupActions }
+
+        return toAwait({ _window, lookupActions: myLookupActions, stack, address, id, e, req, res, __ }).data
     }
 
     // if()
@@ -3158,7 +3198,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // global:()
     else if (path0 && args[1] === "()" && !args[2]) {
 
-        const globalVariable = toValue({ req, res, _window, id, e, data: args[0], __, stack, lookupActions })
+        var globalVariable = toValue({ req, res, _window, id, e, data: args[0], __, stack, lookupActions })
         if (path.length === 1 && key && globalVariable) return global[globalVariable] = value
 
         path.splice(0, 1, globalVariable)
@@ -3306,8 +3346,8 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
     // no string
     if (!string || typeof string !== "string") return true
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
     var view = views[id], approval = true
 
     if ((stack.returns && stack.returns[0] || {}).returned) return
@@ -3317,7 +3357,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
 
     // ==
     string = string.replace("==", "=")
-
+    
     string.split(";").map(condition => {
 
         // no condition
@@ -3398,7 +3438,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
         // get key
         if (object || key.includes("()")) key = toValue({ _window, lookupActions, stack, id, data: key, e, __, req, res, object, condition: true })
         else key = toValue({ _window, lookupActions, stack, id, data: key, e, __, req, res, object: object !== undefined ? object : view, condition: true })
-
+        
         // evaluate
         if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !key : (key === 0 ? true : key)
         else {
@@ -3413,17 +3453,15 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
 
 const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: customViewName, data: passedData }, condition, mount, object, lookupActions = {}, stack }) => {
 
-    const global = _window ? _window.global : window.global
-    const views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
     var view = views[id]
+    if (!view) return
 
-    var serverAction = false, actionFound = false, serverActionView
+    var serverAction = false, actionFound = false, newLookupActions = lookupActions, serverActionView, queryNonExistingView
     var action0 = path ? (path.at(-1) + "()") : action.split(":")[0], name = action0.slice(0, -2)
 
     if (path || (action0.slice(-2) === "()" && action0 !== "()" && action0 !== "_()" && !require("./actions.json").includes(action0) && action0.charAt(0) !== "@")) {
-
-        if (!view) return
-        var newLookupActions
 
         // call by action():[path;view;data]
         if (path) {
@@ -3462,78 +3500,75 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
 
         // lookup through parent map actions
         if (!actionFound) {
-            toArray(lookupActions).map((lookupActions, indexx) => {
 
-                if (lookupActions.path) {
+            toArray(lookupActions).map((lookupAction, indexx) => {
 
-                    var path = lookupActions.path
+                if (!lookupAction.view || queryNonExistingView || actionFound) return
+
+                if (!global.data.view[lookupAction.view] && global.data.views.includes(lookupAction.view) && !global.__queries__.views.includes(lookupAction.view)) {
+
+                    queryNonExistingView = true
+                    var { address, data } = addresser({ _window, id, stack, __, lookupActions: lookupActions.slice(indexx), stack, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${lookupAction.view}`, waits: `loader.hide;__queries__:().views.push():[${lookupAction.view}];data:().view.${lookupAction.view}=_.data;${action}` })
+                    return require("./search").search({ _window, lookupActions, stack, address, id, __, req, res, data })
+                }
+
+                // get view actions
+                var actions = global.data.view[lookupAction.view].functions
+                if (!actions) return
+
+                if (lookupAction.path) {
+
+                    var path = lookupAction.path
                     clone(path).reverse().map((x, i) => {
 
-                        if (!actionFound) {
+                        if (actionFound) return
 
-                            var actions = global.data.view[lookupActions.view].functions || {}
-                            actionFound = clone(path.slice(0, path.length - i).reduce((o, k) => o[k], actions)[name])
+                        actionFound = clone(path.slice(0, path.length - i).reduce((o, k) => o[k], actions)[name])
 
-                            if (actionFound) {
+                        if (actionFound) {
 
-                                if (typeof actionFound === "object" && actionFound._) {
+                            if (typeof actionFound === "object" && actionFound._) {
 
-                                    actionFound = actionFound._ || ""
-                                    newLookupActions = [{ type: "customView", view: lookupActions.view, path: [...path.slice(0, path.length - i), name] }]
-                                    if (toArray(lookupActions).length > 1) newLookupActions = [...newLookupActions, ...toArray(lookupActions).slice(indexx)]
+                                actionFound = actionFound._ || ""
+                                newLookupActions = [{ type: "customView", view: lookupAction.view, path: [...path.slice(0, path.length - i), name] }, ...lookupActions.slice(indexx)]
 
-                                } else if (toArray(lookupActions).length > 1) toArray(lookupActions).slice(indexx)
+                            } else if (lookupActions.length > 1) lookupActions.slice(indexx)
 
-                            }
                         }
                     })
-                }
-            })
-        }
 
-        // lookup through head customView actions => server actions
-        if (!actionFound) {
-            clone(view.__lookupViewActions__).reverse().map(lookupViewActions => {
+                } else {
+                    
+                    if (name in actions) {
 
-                if (!actionFound) {
+                        if (global.data.view[lookupAction.view]._secure_ && !stack.server) {
 
-                    var actions = {}
-                    if (lookupViewActions.type === "customView") {
+                            // server action
+                            actionFound = true
+                            serverAction = true
+                            serverActionView = lookupAction.view
+                            newLookupActions = []
 
-                        var customView = global.data.view[lookupViewActions.view]
+                        } else {
 
-                        actions = customView.functions || {}
+                            actionFound = clone(actions[name])
 
-                        if (name in actions) {
+                            if (typeof actionFound === "object") {
 
-                            if (customView._secure_ && !stack.server) {
-
-                                // server action
-                                actionFound = true
-                                serverAction = true
-                                serverActionView = lookupViewActions.view
-                                newLookupActions = []
-
-                            } else {
-
-                                actionFound = clone(actions[name])
-
-                                if (typeof actionFound === "object") {
-
-                                    actionFound = actionFound._ || ""
-                                    newLookupActions = [{ type: lookupViewActions.type, view: lookupViewActions.view, path: [name] }]
-                                }
+                                actionFound = actionFound._ || ""
+                                newLookupActions = [{ type: lookupAction.type, view: lookupAction.view, path: [name] }, ...lookupActions]
                             }
                         }
-
-                    } else if (lookupViewActions.type === "view") { }
+                    }
                 }
             })
+
+            if (queryNonExistingView) return
         }
 
         if (actionFound) {
 
-            var { address, data } = addresser({ _window, req, res, stack, args: action.split(":"), newLookupActions: newLookupActions || lookupActions, asynchronous: serverAction, e, id, data: { string: serverAction ? "" : actionFound }, action: action0, __, id, object, mount, condition, lookupActions })
+            var { address, data } = addresser({ _window, req, res, stack, args: action.split(":"), newLookupActions, asynchronous: serverAction, e, id, data: { string: serverAction ? "" : actionFound }, action: action0, __, id, object, mount, condition, lookupActions })
 
             // data passed from action():[action;path;data]
             if (passedData !== undefined) data = passedData
@@ -3555,7 +3590,7 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
 
 const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { string, dblExecute, index: i = 0, splitter = "?" }, req, res, __, mount, condition, object, action }) => {
 
-    const global = _window ? _window.global : window.global
+    var global = _window ? _window.global : window.global
     var view = _window ? _window.views[id] : window.views[id]
 
     // missing stack or __
@@ -3672,7 +3707,7 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
         if (isParam({ _window, string })) action = "toParam"
         else action = "toValue"
     }
-
+    
     if (action === "toValue") data = toValue({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object })
     else if (action === "toApproval") data = toApproval({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object })
     else if (action === "toParam") data = toParam({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object })
@@ -3691,23 +3726,16 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
     return terminator({ data: { success, message, data, action, conditionsNotApplied, executionDuration: (new Date()).getTime() - startTime }, order: 5 })
 }
 
-const addresser = ({ _window, addressID = generate(), index = 0, switchWithAddress, switchWithRunningAddress, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, hasWaits, params, function: func, newLookupActions, nextAddressID, nextAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition }) => {
+const addresser = ({ _window, addressID = generate(), index = 0, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, hasWaits, params, function: func, newLookupActions, nextAddressID, nextAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition, logger, switchNextAddressIDWith }) => {
 
-    if (switchWithAddress) {
+    if (switchNextAddressIDWith) {
 
-        nextAddressID = switchWithAddress.nextAddressID
-        hasWaits = switchWithAddress.hasWaits
-        switchWithAddress.nextAddressID = addressID
-        switchWithAddress.hasWaits = false
-        switchWithAddress.interpreting = false
-        // switchWithAddress.status = "Wait"
-
-    } else if (switchWithRunningAddress) {
-
-        nextAddressID = switchWithRunningAddress.nextAddressID
-        hasWaits = switchWithRunningAddress.hasWaits
-        switchWithRunningAddress.nextAddressID = addressID
-        switchWithRunningAddress.hasWaits = false
+        nextAddressID = switchNextAddressIDWith.nextAddressID
+        hasWaits = switchNextAddressIDWith.hasWaits
+        switchNextAddressIDWith.nextAddressID = addressID
+        switchNextAddressIDWith.hasWaits = false
+        switchNextAddressIDWith.interpreting = false
+        // switchNextAddressIDWith.status = "Wait"
     }
 
     // find nextAddress by nextAddressID
@@ -3719,7 +3747,7 @@ const addresser = ({ _window, addressID = generate(), index = 0, switchWithAddre
     // address waits
     if (waits) nextAddress = addresser({ _window, stack, req, res, e, type: "waits", action: action + "::[...]", data: { string: waits }, nextAddress, blockable, __, id, object, mount, lookupActions, condition }).address
 
-    var address = { id: addressID, stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: hasWaits !== undefined ? hasWaits : (waits ? true : false), nextAddressID: nextAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
+    var address = { id: addressID, stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: hasWaits !== undefined ? hasWaits : (waits ? true : false), nextAddressID: nextAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, logger, executionStartTime: (new Date()).getTime() }
     var stackLength = stack.addresses.length
 
     // find and lock the head address
@@ -3775,7 +3803,7 @@ const addresser = ({ _window, addressID = generate(), index = 0, switchWithAddre
 
 const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, stack, id, e, _, __, action }) => {
 
-    const global = _window ? _window.global : window.global
+    var global = _window ? _window.global : window.global
 
     if (addressID && !address.id) address = stack.addresses.find(address => address.id === addressID)
     if (!address.id || stack.terminated || address.hold || address.starter || address.end) return
@@ -3804,7 +3832,10 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
         if (index !== -1) stack.addresses.splice(index, 1)
 
         // pass underscores to waits
-        if (address.hasWaits && nextAddress.params) nextAddress.params.__ = my__
+        if (address.hasWaits && nextAddress.params) {
+            nextAddress.params.__ = my__
+            nextAddress.params.id = address.params.id
+        }
 
         // logger
         if (address.logger && address.logger.end) logger({ _window, data: { key: address.logger.key, end: true } })
@@ -3823,12 +3854,12 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
         if (address.function) {
 
             var func = address.function || "toLine"
-            var file = address.file || func
             var data = { _window, lookupActions, stack, id, e, req, res, address, nextAddress, ...(address.params || {}), data: address.data, __: my__, action }
 
             if (func === "toView") toView(data)
             else if (func === "toHTML") toHTML(data)
             else if (func === "update") update(data)
+            else if (func === "blockRelatedAddressesByViewID") blockRelatedAddressesByViewID(data)
             else if (func === "documenter") documenter(data)
 
             address.interpreting = false
@@ -3862,8 +3893,8 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
     var { index, view, path, data, doc, viewPath = [], parent, preventDefault } = insert
 
-    const views = window.views
-    const global = window.global
+    var views = window.views
+    var global = window.global
     var parent = views[parent]
     var passData = {}
     var __childIndex__
@@ -3943,7 +3974,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
         passData = {
             __viewPath__: [genView, ...viewPath],
             __customViewPath__: [...parent.__customViewPath__, genView],
-            __lookupViewActions__: [...parent.__lookupViewActions__, { type: "customView", view: genView }]
+            __lookupViewActions__: [{ type: "customView", view: genView }, ...parent.__lookupViewActions__]
         }
     }
 
@@ -3963,8 +3994,8 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
 const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data = {} }) => {
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
     var view = data.view || views[id]
 
     // interpret view
@@ -4015,6 +4046,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
         // executable view name
         if (executable({ _window, string: view.__name__ })) {
+
             toValue({ _window, id, req, res, data: view.__name__, lookupActions, __, stack })
             view.__name__ = "Action"
         }
@@ -4081,7 +4113,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
         if (address.blocked) return// toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
 
         // asynchronous actions within view params
-        if (address.hold) return addresser({ _window, id, stack, switchWithAddress: address, type: "function", function: "toView", __, lookupActions, stack, data: { view } })
+        if (address.hold) return addresser({ _window, id, stack, switchNextAddressIDWith: address, type: "function", function: "toView", __, lookupActions, stack, data: { view } })
     }
 
     // custom View
@@ -4107,7 +4139,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
                 __customView__: view.__name__,
                 __viewPath__: [view.__name__],
                 __customViewPath__: [...view.__customViewPath__, view.__name__],
-                __lookupViewActions__: [...view.__lookupViewActions__, { type: "customView", view: view.__name__ }]
+                __lookupViewActions__: [{ type: "customView", view: view.__name__ }, ...view.__lookupViewActions__]
             }
 
             // id
@@ -4127,7 +4159,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
                 logger({ _window, data: { key: "documenter", start: true } })
 
                 // address: document
-                address = addresser({ _window, id: child.id, nextAddress: address, type: "function", file: "toView", function: "documenter", stack, __, logger: { key: "documenter", end: true } }).address
+                address = addresser({ _window, id: child.id, nextAddress: address, type: "function", function: "documenter", stack, __, logger: { key: "documenter", end: true } }).address
 
                 // get shared public views
                 Object.entries(getJsonFiles({ search: { collection: "public/view" } })).map(([doc, data]) => {
@@ -4141,7 +4173,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
             }
 
             // address
-            return toView({ _window, stack, address, req, res, lookupActions, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
+            return toView({ _window, stack, address, req, res, lookupActions: child.__lookupViewActions__, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
         }
     }
 
@@ -4170,11 +4202,11 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
     toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
 }
 
-const update = ({ _window, id, lookupActions, stack, address, req, res, __, data = {} }) => {
+const update = ({ _window, id, lookupActions, stack, nextAddress, address, req, res, __, data = {} }) => {
 
     // address.blockable = false
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
 
     var view = views[data.id]
 
@@ -4228,11 +4260,14 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
         if (!data.insert && parent.__rendered__) parent.__childrenRef__.filter(({ childIndex }) => childIndex === __childIndex__).map(({ id }) => elements.push(removeView({ _window, global, views, id, stack, main: true, insert: data.insert })))
         else if (!parent.__rendered__) removeView({ _window, global, views, id: data.id, stack, main: true })
 
+        // address delete block views (switch with second next address => execute after end of update waits)
+        addresser({ _window, id, stack, switchNextAddressIDWith: stack.addresses.find(add => add.id === address.nextAddressID), type: "function", function: "blockRelatedAddressesByViewID", __, lookupActions, stack, data: { stack, id } })
+
         // address for post update
-        addresser({ _window, id, stack, switchWithAddress: address, type: "function", function: "update", file: "toView", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent, postUpdate: true } })
+        addresser({ _window, id, stack, switchNextAddressIDWith: address, type: "function", function: "update", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent, postUpdate: true } })
 
         // address
-        address = addresser({ _window, id, stack, status: "Start", type: "function", function: "toView", __: my__, lookupActions: __lookupViewActions__, nextAddress: address, data: { view: reducedView, parent: parent.id } }).address
+        address = addresser({ _window, id, stack, nextAddress: address, status: "Start", type: "function", function: "toView", __: my__, lookupActions: __lookupViewActions__, data: { view: reducedView, parent: parent.id } }).address
 
         // render
         toView({ _window, lookupActions: __lookupViewActions__, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
@@ -4323,7 +4358,6 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
         toParam({ _window, data: "loader.hide" })
 
         if (address) {
-
             address.params.__ = [data, ...address.params.__]
             address.params.id = views[address.params.id] ? address.params.id : updatedViews[0].id
         }
@@ -4332,8 +4366,8 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
 
 const addEventListener = ({ event, id, __, stack, lookupActions, address, eventID: mainEventID }) => {
 
-    const views = window.views
-    const global = window.global
+    var views = window.views
+    var global = window.global
     var view = views[id]
 
     if (!view || !event) return
@@ -4368,7 +4402,7 @@ const addEventListener = ({ event, id, __, stack, lookupActions, address, eventI
 
             // event id
             var genID = generate()
-            var eventAddress = { genID, event, eventListener: (e) => eventExecuter({ string, event, eventID, id, stack, lookupActions, __, address, e }) }
+            var eventAddress = { genID, event, id, eventListener: (e) => eventExecuter({ string, event, eventID, id, stack, lookupActions, __, address, e }) }
 
             //
             if (id !== eventID) {
@@ -4382,8 +4416,8 @@ const addEventListener = ({ event, id, __, stack, lookupActions, address, eventI
 
             } else {
 
-                views[eventID].__events__.unshift(eventAddress)
-                views[eventID].__element__.addEventListener(event, eventAddress.eventListener)
+                views[id].__events__.unshift(eventAddress)
+                views[id].__element__.addEventListener(event, eventAddress.eventListener)
             }
         })
     })
@@ -4393,7 +4427,7 @@ const addEventListener = ({ event, id, __, stack, lookupActions, address, eventI
 
 const getDeepChildren = ({ _window, id }) => {
 
-    const views = _window ? _window.views : window.views
+    var views = _window ? _window.views : window.views
     var view = views[id]
     var all = [view]
     if (!view) return []
@@ -4415,7 +4449,7 @@ const getDeepChildren = ({ _window, id }) => {
 
 const getDeepChildrenId = ({ _window, id }) => {
 
-    const views = _window ? _window.views : window.views
+    var views = _window ? _window.views : window.views
     var view = views[id]
     var all = [id]
     if (!view) return []
@@ -4437,7 +4471,7 @@ const getDeepChildrenId = ({ _window, id }) => {
 
 const getDeepParentId = ({ _window, lookupActions, stack, id }) => {
 
-    const views = _window ? _window.views : window.views
+    var views = _window ? _window.views : window.views
     var view = views[id]
 
     if (!view) return []
@@ -4636,7 +4670,7 @@ const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res,
 const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }) => {
 
     const { toAwait } = require("./kernel");
-    const global = _window ? _window.global : window.global
+    var global = _window ? _window.global : window.global
 
     var executionDuration = (new Date()).getTime() - stack.executionStartTime
 
@@ -4730,20 +4764,19 @@ const closePublicViews = ({ _window, id, __, lookupActions }) => {
     if (_window) return
 
     // close droplist
-    if (id !== "droplist")
-        toLine({ id: "droplist", data: { string: "__droplistMouseleaveTimer__:()=0;():droplist.mouseleave()" }, __, lookupActions })
+    if (id !== "droplist") toParam({ id: "droplist", data: toCode({ string: "__droplistMouseleaveTimer__:()=0;():droplist.mouseleave()" }), __, lookupActions })
 
     // close tooltip
-    toLine({ id: "tooltip", data: { string: "clearTimer():[__tooltipTimer__:()];__tooltipTimer__:().del();():tooltip.style().opacity=0" }, __, lookupActions })
+    toParam({ id: "tooltip", data: toCode({ string: "clearTimer():[__tooltipTimer__:()];__tooltipTimer__:().del();():tooltip.style().opacity=0" }), __, lookupActions })
 
     // close mininote
-    toLine({ id: "mininote", data: { string: "():mininote.style():[opacity=0;transform=scale(0)]" }, __, lookupActions })
+    toParam({ id: "mininote", data: toCode({ string: "():mininote.style():[opacity=0;transform=scale(0)]" }), __, lookupActions })
 }
 
 const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
 
-    const global = window.global
-    const views = window.views
+    var global = window.global
+    var views = window.views
     var view = window.views[id]
 
     var path = data.path, __dataPath__ = []
@@ -4787,7 +4820,7 @@ const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
 
 const updateDataPath = ({ id, index, decrement, increment }) => {
 
-    const views = window.views
+    var views = window.views
     var view = views[id]
 
     if (!view) return
@@ -4896,8 +4929,8 @@ const componentModifier = ({ _window, id }) => {
 
 const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {}, req, res }) => {
 
-    const global = _window ? _window.global : window.global
-    const views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
     var view = views[id]
 
     // mount
@@ -4962,8 +4995,8 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
 
 const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ }) => {
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
     var view = views[id]
 
     views[id] = Input(view)
@@ -4985,7 +5018,7 @@ const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ })
 
 const toHTML = ({ _window, id, stack, __ }) => {
 
-    const views = _window ? _window.views : window.views
+    var views = _window ? _window.views : window.views
 
     var view = views[id], parent = views[view.__parent__]
     var name = view.__name__, html = ""
@@ -5101,7 +5134,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
     }
 
     // init element
-    view.__element__ = view.__element__ || { text, id, innerHTML, index }
+    view.__element__ = view.__element__ || { text, id, innerHTML, index, style: {} }
 
     // label
     // if (view.label && !view.__labeled__) html = labelHandler({ _window, id, tag })
@@ -5115,8 +5148,8 @@ const toHTML = ({ _window, id, stack, __ }) => {
 
 const link = ({ _window, id, stack, __ }) => {
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
 
     var view = views[id]
 
@@ -5302,6 +5335,8 @@ const removeView = ({ _window, global, views, id, stack, self = true, main, inse
     if (!view) return
     var parent = views[view.__parent__], element = {}
 
+    view.__childrenRef__.map(({ id }) => id).map(id => removeView({ _window, global, views, id, stack, insert }))
+
     // remove events
     view.__events__.map(event => view.__element__.removeEventListener(event.event, event.eventListener))
 
@@ -5312,8 +5347,6 @@ const removeView = ({ _window, global, views, id, stack, self = true, main, inse
             delete global.__events__[eventID][genID]
         })
     })
-
-    view.__childrenRef__.map(({ id }) => id).map(id => removeView({ _window, global, views, id, stack, insert }))
 
     if (!self) return element
 
@@ -5333,25 +5366,26 @@ const removeView = ({ _window, global, views, id, stack, self = true, main, inse
 
     if (main) element = view.__element__
 
-    blockRelatedAddressesByViewID({ stack, id })
+    // blockRelatedAddressesByViewID({ stack, id })
 
-    // deepDelete({ obj: global.__events__, key: id })
+    // deepDelete({ obj: views, key: id })
     // Object.keys(view).map(key => delete view[key])
 
-    delete views[id]
+    views[id] = null
+    index = null
 
     return element
 }
 
 const deepDelete = ({ obj, key }) => {
 
-    if (typeof obj !== "object") return obj
+    if (typeof obj !== "object" || obj[key] === null) return
     if (typeof obj[key] === "object")
         Object.keys(obj[key]).map(key => {
             deepDelete({ obj: obj[key], key })
         })
 
-    delete obj[key]
+    obj[key] = null
 }
 
 const blockRelatedAddressesBynextAddress = ({ stack, index }) => {
@@ -5380,8 +5414,8 @@ const launcher = () => {
     window.global = JSON.parse(document.getElementById("global").textContent)
 
     //
-    const views = window.views
-    const global = window.global
+    var views = window.views
+    var global = window.global
 
     views.document.__element__ = document
 
@@ -5415,8 +5449,8 @@ const launcher = () => {
 
 const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: headStack, address: nextAddress, __ }) => {
 
-    const views = window.views
-    const global = window.global
+    var views = window.views
+    var global = window.global
 
     var view = views[id]
 
@@ -5444,7 +5478,7 @@ const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: he
 
 const defaultEventHandler = ({ id }) => {
 
-    const views = window.views
+    var views = window.views
     var view = views[id]
 
     view.focused = false
@@ -5515,14 +5549,17 @@ const starter = ({ lookupActions, stack, __, address, id }) => {
 
     var view = window.views[id]
     var global = window.global
-    if (!view) return
+    if (!view) return {}
 
     // status
     view.__status__ = "Mounted"
     view.__rendered__ = true
 
     view.__element__ = document.getElementById(id)
-    if (!view.__element__) return delete window.views[id]
+    if (!view.__element__) {
+        delete window.views[id]
+        return {}
+    }
     view.__element__.setAttribute("index", view.__index__)
 
     // default input handlers
@@ -5548,8 +5585,8 @@ const starter = ({ lookupActions, stack, __, address, id }) => {
 
 const defaultInputHandler = ({ id }) => {
 
-    const views = window.views
-    const global = window.global
+    var views = window.views
+    var global = window.global
     var view = views[id]
 
     if (!view) return
@@ -5735,8 +5772,8 @@ const toNumber = (string) => {
 
 const defaultAppEvents = () => {
 
-    const views = window.views
-    const global = window.global
+    var views = window.views
+    var global = window.global
 
     // document default event listeners
 
@@ -5765,7 +5802,7 @@ const defaultAppEvents = () => {
 
     window.addEventListener("focus", (e) => {
 
-        views.root.__element__.click()
+        // views.root.__element__.click()
         document.activeElement.blur()
     })
 
@@ -5802,7 +5839,7 @@ const defaultAppEvents = () => {
 const setData = ({ id, data, __, stack = {} }) => {
 
     var view = window.views[id]
-    const global = window.global
+    var global = window.global
 
     if (!global[view.doc]) return
 

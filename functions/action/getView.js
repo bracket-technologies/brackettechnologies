@@ -1,7 +1,7 @@
 const nthParent = ({ _window, nth, o }) => {
 
   if (!o.__view__) return o
-  const views = _window ? _window.views : window.views
+  var views = _window ? _window.views : window.views
 
   var n = 0, parent = o.id
   
@@ -16,7 +16,7 @@ const nthParent = ({ _window, nth, o }) => {
 const nthNext = ({ _window, nth, o }) => {
 
   if (!o.__view__) return o
-  const views = _window ? _window.views : window.views
+  var views = _window ? _window.views : window.views
 
   var n = 0, next = o.id
   while (n < nth) {
@@ -30,7 +30,7 @@ const nthNext = ({ _window, nth, o }) => {
 const nthPrev = ({ _window, nth, o }) => {
 
   if (!o.__view__) return o
-  const views = _window ? _window.views : window.views
+  var views = _window ? _window.views : window.views
 
   var n = 0, prev = o.id
   while (n < nth) {
@@ -43,7 +43,7 @@ const nthPrev = ({ _window, nth, o }) => {
 
 const getAllParents = ({ _window, id }) => {
 
-  const views = _window ? _window.views : window.views
+  var views = _window ? _window.views : window.views
   var view = views[id]
   if (!view.__parent__) return []
 

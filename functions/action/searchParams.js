@@ -4,7 +4,7 @@ const { toCode } = require("./toCode")
 
 const searchParams = ({ _window, lookupActions, stack, req, res, id, e, __, string, object }) => {
 
-    const global = _window ? _window.global : window.global
+    var global = _window ? _window.global : window.global
 
     if (string.charAt(0) === "@" && string.length === 6) string = global.__refs__[string].data
 

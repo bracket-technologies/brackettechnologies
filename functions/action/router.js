@@ -30,15 +30,13 @@ module.exports = async ({ req, res, data }) => {
     return res.end()
   }
 
-  const global = _window.global
+  var global = _window.global
 
   // database
   if (global.manifest.server === "database") return require("./database").database({ _window, req, res, id })
 
   // storage
   if (global.manifest.server === "storage") return require("./storage").storage({ _window, req, res, id })
-
-  const __ = global.__, lookupAction = []
 
   // open stack
   var stack = openStack({ _window, id, event: req.method.toLowerCase(), server: global.manifest.server, route: global.manifest.route })
@@ -54,10 +52,10 @@ module.exports = async ({ req, res, data }) => {
   logger({ _window, data: { key: "route", start: true } })
 
   // address toView
-  var address = addresser({ _window, id, interpreting: true, status: "Start", type: "function", function: "toView", stack, renderer: true, __, data: { view }, logger: { key: "route", end: true } }).address
+  var address = addresser({ _window, id, interpreting: true, status: "Start", type: "function", function: "toView", stack, renderer: true, __: global.__, data: { view }, logger: { key: "route", end: true } }).address
 
   // render route
-  toView({ _window, req, res, stack, __, address, lookupAction, data: { view } })
+  toView({ _window, req, res, stack, __: global.__, address, lookupActions: view.__lookupViewActions__, data: { view } })
 
   // end stack
   endStack({ _window, stack, end: true })

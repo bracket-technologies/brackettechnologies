@@ -4,7 +4,7 @@ const { toStyle } = require("./toStyle")
 module.exports = {
   labelHandler: ({ _window, tag, id }) => {
 
-    const views = _window ? _window.views : window.views
+    var views = _window ? _window.views : window.views
     var view = views[id]
 
     if (typeof view.label === "string") view.label = { text: view.label }

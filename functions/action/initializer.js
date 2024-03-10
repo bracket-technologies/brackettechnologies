@@ -35,7 +35,7 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
         // documenter
         : "document"
 
-    const global = {
+    var global = {
         __,
         __queries__: { views: [] },
         __stacks__: {},
@@ -69,7 +69,7 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
         data: { view: {} }
     }
 
-    const views = { [id]: { id } }
+    var views = { [id]: { id } }
     var _window = { views, global }
 
     // log

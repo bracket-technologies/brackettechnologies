@@ -1,8 +1,8 @@
-const { toComponent } = require('../action/toComponent')
 const { jsonToBracket } = require('../action/jsonToBracket')
 const { override } = require('../action/merge')
 const { clone } = require('../action/clone')
 const { generate } = require('../action/generate')
+const { toArray } = require('../action/toArray')
 
 const Input = (component) => {
 
@@ -32,7 +32,28 @@ const Input = (component) => {
   // required
   if (component.required) component.required = typeof component.required === "object" ? component.required : {}
 
-  component = toComponent(component)
+  
+  // class
+  component.class = component.class || ""
+
+  // id
+  component.id = component.id || generate()
+
+  // style
+  component.style = component.style || {}
+
+  // controls
+  component.controls = toArray(component.controls)
+
+  // children
+  component.children = toArray(component.children)
+
+  // model
+  if (!component.model || component.classic) component.model = "classic"
+  if (component.featured) component.model = "featured"
+
+  // component
+  component.component = true
 
   var {
     id, input, model, droplist, readonly, style, __controls__, duplicated, duration, required, preventDefault,

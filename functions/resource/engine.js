@@ -152,7 +152,7 @@ const colorize = ({ _window, string, start = "[", index = 0, colors = _colors })
 
 const colorizeCoded = ({ _window, index, string, colors }) => {
 
-  const global = _window ? _window.global : window.global
+  var global = _window ? _window.global : window.global
   var slicer = string.split("@")
   if (slicer.length < 2) return string
   
@@ -994,10 +994,10 @@ module.exports = {
   deletedb,
   deleteData
 }
-},{"./clone":3,"./generate":18,"./toArray":49,"./toFirebaseOperator":56,"./toOperator":57,"axios":68}],10:[function(require,module,exports){
+},{"./clone":3,"./generate":18,"./toArray":49,"./toFirebaseOperator":55,"./toOperator":56,"axios":67}],10:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
-  const global = _window ? _window.global : window.global
+  var global = _window ? _window.global : window.global
   if (typeof string !== "string") return string
 
   string.split("@").map((state, i) => {
@@ -1033,11 +1033,15 @@ const { update, toLine, kernel } = require("./kernel")
 
 const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   
-  const views = window.views
-  const global = window.global
+  var views = window.views
+  var global = window.global
   var view = views[id]
 
-  if (!view.droplist) return
+  if (!view.droplist) {
+    views = null
+    global = null
+    return
+  }
   if (view.droplist.searchable !== false) view.droplist.searchable = {}
 
   // closedroplist
@@ -1111,7 +1115,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   
   droplistView.positioner = id
   
-  update({ stack, lookupActions, __, address, data: { id: "droplist", view: droplistView } })
+  update({ stack, lookupActions, __, address, id, data: { id: "droplist", view: droplistView } })
   droplistView = views.droplist
   
   // searchable
@@ -1210,7 +1214,7 @@ const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase
 }
 
 module.exports = { erase }
-},{"./database":9,"./kernel":32,"axios":68}],13:[function(require,module,exports){
+},{"./database":9,"./kernel":32,"axios":67}],13:[function(require,module,exports){
 module.exports=[
   "mouseenter", "mouseleave",  "mouseover", "mousemove", "mousedown", "mouseup", "touchstart", 
   "touchend", "touchmove", "touchcancel", "click", "change", "focus", "blur", "keypress", "keyup", 
@@ -1356,25 +1360,32 @@ const numbers = "1234567890"
 
 const generate = (params = {}) => {
 
-  var { length, number, unique } = params
+  var { length, number, unique, universal } = params
 
   var result = "", chars = number ? numbers : characters
 
   var charactersLength = chars.length
   var time = (new Date()).getTime() + ""
-  
+
   if (unique) length = 26
   else if (!unique && !length) length = 5
 
-  for (let i = 0; i < (unique && length >= 26 ? length - 13 : length); i++) {
-    result += chars.charAt(Math.floor(Math.random() * charactersLength))
-    if (unique && length >= 26 && i <= 13) result += time[i]
-  }
-  
+  if (universal)
+    for (let i = 0; i < 13; i++) {
+      result += chars.charAt(Math.floor(Math.random() * charactersLength)) + chars.charAt(Math.floor(Math.random() * charactersLength))
+      result += time[i]
+    }
+
+  else
+    for (let i = 0; i < (unique && length >= 26 ? length - 13 : length); i++) {
+      result += chars.charAt(Math.floor(Math.random() * charactersLength))
+      if (unique && length >= 26 && i <= 13) result += time[i]
+    }
+
   return result
 }
 
-module.exports = {generate}
+module.exports = { generate }
 
 },{}],19:[function(require,module,exports){
 module.exports = ({ el, id }) => {
@@ -1454,7 +1465,7 @@ module.exports = { getType }
 const nthParent = ({ _window, nth, o }) => {
 
   if (!o.__view__) return o
-  const views = _window ? _window.views : window.views
+  var views = _window ? _window.views : window.views
 
   var n = 0, parent = o.id
   
@@ -1469,7 +1480,7 @@ const nthParent = ({ _window, nth, o }) => {
 const nthNext = ({ _window, nth, o }) => {
 
   if (!o.__view__) return o
-  const views = _window ? _window.views : window.views
+  var views = _window ? _window.views : window.views
 
   var n = 0, next = o.id
   while (n < nth) {
@@ -1483,7 +1494,7 @@ const nthNext = ({ _window, nth, o }) => {
 const nthPrev = ({ _window, nth, o }) => {
 
   if (!o.__view__) return o
-  const views = _window ? _window.views : window.views
+  var views = _window ? _window.views : window.views
 
   var n = 0, prev = o.id
   while (n < nth) {
@@ -1496,7 +1507,7 @@ const nthPrev = ({ _window, nth, o }) => {
 
 const getAllParents = ({ _window, id }) => {
 
-  const views = _window ? _window.views : window.views
+  var views = _window ? _window.views : window.views
   var view = views[id]
   if (!view.__parent__) return []
 
@@ -1548,7 +1559,7 @@ const isCalc = ({ _window, string }) => {
 
     if (typeof string !== "string") return false
     
-    const global = _window ? _window.global : window.global
+    var global = _window ? _window.global : window.global
     if (string.charAt(0) === "@" && string.length === 6) string = global.__refs__[string].data
 
     // recheck after decoding
@@ -1574,7 +1585,7 @@ module.exports = {
         
         if (typeof string !== "string") return false
 
-        const global = _window ? _window.global : window.global
+        var global = _window ? _window.global : window.global
         if (string.charAt(0) === "@" && string.length === 6) string = global.__refs__[string].data
 
         // recheck after decoding
@@ -1908,7 +1919,7 @@ const uploadJsonFile = ({ upload = {} }) => {
 }
 
 module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }
-},{"./toArray":49,"./toOperator":57,"fs":98}],31:[function(require,module,exports){
+},{"./toArray":49,"./toOperator":56,"fs":97}],31:[function(require,module,exports){
 const jsonToBracket = (object, field) => {
 
   if (!object) return ""
@@ -1986,22 +1997,24 @@ const events = require("./events.json")
 
 var actions = {
     "caret()": ({ o }) => ({ index: getCaretIndex(o) }),
+    "device()": ({ global }) => global.manifest.device.device,
+    "mobile()": ({ global }) => global.manifest.device.device.type === "smartphone",
+    "desktop()": ({ global }) => global.manifest.device.device.type === "desktop",
+    "tablet()": ({ global }) => global.manifest.device.device.type === "tablet",
+    "stack()": ({ stack }) => stack,
     "toInt()": ({ o }) => {
 
         if (!isNumber(o)) return
         var integer = o
         return Math.round(toNumber(integer))
-    },
-    "clicked()": ({ global }) => {
+    }, "clicked()": ({ global }) => {
 
         return global.__clicked__
-    },
-    "focused()": ({ global }) => {
+    }, "focused()": ({ global }) => {
 
         return global.__focused__
-    },
-    "click()": ({ _window, global, o, view, pathJoined }) => {
-
+    }, "click()": ({ _window, global, view, o, pathJoined }) => {
+        
         if (!o.__view__ || !o.__rendered__) return
 
         if (_window) return view.__controls__.push({
@@ -2010,8 +2023,7 @@ var actions = {
 
         global.__clicked__ = o
         o.__element__.click()
-    },
-    "focus()": ({ _window, o, view, pathJoined }) => {
+    }, "focus()": ({ _window, view, o, pathJoined }) => {
 
         if (!o.__view__) return
 
@@ -2020,8 +2032,7 @@ var actions = {
         })
 
         focus({ id: o.id })
-    },
-    "blur()": ({ _window, o, view, pathJoined }) => {
+    }, "blur()": ({ _window, view, o, pathJoined }) => {
 
         if (!o.__view__) return
 
@@ -2030,73 +2041,57 @@ var actions = {
         })
 
         o.__element__.blur()
-    },
-    "mousedown()": ({ o }) => {
+    }, "mousedown()": ({ o }) => {
 
         if (!o.__view__) return
         var mousedownEvent = new Event("mousedown")
         o.__element__.dispatchEvent(mousedownEvent)
-    },
-    "mouseup()": ({ o }) => {
+    }, "mouseup()": ({ o }) => {
         if (!o.__view__) return
         var mouseupEvent = new Event("mouseup")
         o.__element__.dispatchEvent(mouseupEvent)
-    },
-    "mouseenter()": ({ o }) => {
+    }, "mouseenter()": ({ o }) => {
 
         if (!o.__view__) return
         var mouseenterEvent = new Event("mouseenter")
         o.__element__.dispatchEvent(mouseenterEvent)
-    },
-    "mouseleave()": ({ o }) => {
+    }, "mouseleave()": ({ o }) => {
 
-        if (!o.__view__) return
+        if (!o.__view__ || !o.__rendered__) return
         var mouseleaveEvent = new Event("mouseleave")
         o.__element__.dispatchEvent(mouseleaveEvent)
-    },
-    "keyup()": ({ o }) => {
+    }, "keyup()": ({ o }) => {
         if (!o.__view__) return
         var keyupevent = new Event("keyup")
         o.__element__.dispatchEvent(keyupevent)
-    },
-    "keydown()": ({ o }) => {
+    }, "keydown()": ({ o }) => {
         if (!o.__view__) return
         var keyupevent = new Event("keydown")
         o.__element__.dispatchEvent(keyupevent)
-    },
-    "device()": ({ global }) => global.manifest.device.device,
-    "mobile()": ({ global }) => global.manifest.device.device.type === "smartphone",
-    "desktop()": ({ global }) => global.manifest.device.device.type === "desktop",
-    "tablet()": ({ global }) => global.manifest.device.device.type === "tablet",
-    "stack()": ({ stack }) => stack,
-    "name()": ({ _window, id, e, object, args, o }) => {
+    }, "name()": ({ _window, o, id, e, __, args, object }) => {
 
         var name = toValue({ _window, id, e, object, value: args[1], __ })
         if (name === o.__name__) return o
         var children = getDeepChildren({ _window, id: o.id })
         return children.find(view => view.__name__ === name)
 
-    },
-    "names()": ({ _window, id, e, object, args, o }) => {
+    }, "names()": ({ _window, o, id, e, __, args, object }) => {
 
         var name = toValue({ _window, id, e, object, value: args[1], __ })
         var children = getDeepChildren({ _window, id: o.id })
         return children.filter(view => view.__name__ === name)
 
-    },
-    "display()": ({ o }) => {
+    }, "display()": ({ o }) => {
 
         if (!o.__view__) return
         o.__element__.style.display = "flex"
 
-    },
-    "hide()": ({ o }) => {
+    }, "hide()": ({ o }) => {
 
         if (!o.__view__) return
         o.__element__.style.display = "none"
 
-    },
-    "style()": ({ req, res, _window, lookupActions, stack, id, e, __, args, o, pathJoined }) => {
+    }, "style()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
 
         if (!o.__view__) return
         if (!args[1]) {
@@ -2118,28 +2113,24 @@ var actions = {
             })
         }
 
-    },
-    "qr()": ({ req, res, _window, lookupActions, stack, id, e, __, args, o }) => {
+    }, "qr()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
 
         // wait address
         var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "qr()", object, lookupActions, __, id })
         qr({ _window, id, req, res, data, e, __, stack, address, lookupActions })
 
-    },
-    "contact()": ({ req, res, _window, lookupActions, stack, id, e, __, args, o }) => {
+    }, "contact()": ({ _window, req, res, o, id, e, __, args }) => {
 
         var data = toValue({ req, res, _window, id, e, __, data: args[1] })
         if (typeof data !== "obejct") return o
 
         vcard({ _window, id, req, res, data, e, __ })
 
-    },
-    "bracket()": ({ o }) => {
+    }, "bracket()": ({ o }) => {
 
         if (typeof o === "object") return require("./jsonToBracket").jsonToBracket(o)
 
-    },
-    "inputs()": ({ _window, lookupActions, stack, o }) => {
+    }, "inputs()": ({ _window, views, o, stack, lookupActions }) => {
 
         if (!o.__view__) return
         var inputs = [], textareas = [], editables = []
@@ -2151,8 +2142,7 @@ var actions = {
 
         return [...inputs, ...textareas, ...editables].map(o => views[o.id])
 
-    },
-    "input()": ({ req, res, _window, lookupActions, stack, id, e, __, args, o }) => {
+    }, "input()": ({ _window, views, o, stack, lookupActions }) => {
 
         if (!o.__view__) return
         var inputs = [], textareas = [], editables = []
@@ -2163,22 +2153,19 @@ var actions = {
         if (o.editable) editables.push(o)
 
         if ([...inputs, ...textareas, ...editables].length === 0) return
-        answer = views[[...inputs, ...textareas, ...editables][0].id]
+        return views[[...inputs, ...textareas, ...editables][0].id]
 
-    },
-    "px()": ({ req, res, _window, lookupActions, stack, id, e, __, args, o }) => {
+    }, "px()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
 
         if (args[1]) return lengthConverter(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
         return lengthConverter(o)
 
-    },
-    "touchable()": ({ _window, global }) => {
+    }, "touchable()": ({ _window, global }) => {
 
         if (_window) return global.manifest.device.device.type === "smartphone"
         else return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0))
 
-    },
-    "className()": ({ req, res, _window, lookupActions, stack, id, e, __, args, o }) => {
+    }, "className()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, i, lastIndex, value, key, path, breakRequest, condition, _object, answer }) => {
 
         if (!o.__view__) return
         var className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
@@ -2191,21 +2178,2269 @@ var actions = {
         if (!o.__view__) return
         return [...o.__element__.classList]
 
-    }
+    }, "log()": ({ _window, req, res, o, stack, pathJoined, lookupActions, id, e, __, args, k, underScored, object, i }) => {
+
+        var logs = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: underScored ? [o, ...__] : __, data: arg, object: underScored ? object : (i === 0 ? ((pathJoined || "").split(".")[0] !== k ? o : undefined) : o) }))
+        if (args.slice(1).length === 0 && pathJoined !== "log()") logs = [o]
+
+        console.log("LOG:" + (o.id || id), decode({ _window, string: pathJoined }), ...logs)
+        stack.logs.push(stack.logs.length + " LOG:" + (o.id || id) + " " + logs.join(" "))
+
+        return o
+    }, "parent()": ({ _window, o }) => {
+
+        return nthParent({ _window, nth: 1, o })
+
+    }, "2ndParent()": ({ _window, o }) => {
+
+        return nthParent({ _window, nth: 2, o })
+
+    }, "3rdParent()": ({ _window, o }) => {
+
+        return nthParent({ _window, nth: 3, o })
+
+    }, "nthParent()": ({ _window, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__ || !o.id) return
+        var nth = toValue({ _window, id, e, lookupActions, stack, __, data: args[1] })
+        return nthParent({ _window, nth, o })
+
+    }, "prevSiblings()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return o
+        return views[o.__parent__].__childrenRef__.slice(0, o.__index__ + 1).map(({ id }) => views[id])
+
+    }, "nextSiblings()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return o
+        return views[o.__parent__].__childrenRef__.slice(o.__index__ + 1).map(({ id }) => views[id])
+
+    }, "siblings()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return o
+        var children = clone(views[o.__parent__].__childrenRef__)
+        children.splice(o.__index__, 1)
+        return children.map(({ id }) => views[id])
+
+    }, "next()": ({ _window, o }) => {
+
+        return nthNext({ _window, nth: 1, o })
+
+    }, "2ndNext()": ({ _window, o }) => {
+
+        return nthNext({ _window, nth: 2, o })
+
+    }, "3rdNext()": ({ _window, o }) => {
+
+        return nthNext({ _window, nth: 3, o })
+
+    }, "nthNext()": ({ _window, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__ || !o.id) return
+        var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
+        return nthNext({ _window, nth, o })
+
+    }, "last()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[views[o.__parent__].__childrenRef__.slice(-1)[0].id]
+
+    }, "2ndLast()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[views[o.__parent__].__childrenRef__.slice(-2)[0].id]
+
+    }, "3rdLast()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[views[o.__parent__].__childrenRef__.slice(-3)[0].id]
+
+    }, "nthLast()": ({ _window, views, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__ || !o.id) return
+        var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
+        if (!isNumber(nth)) return
+        return views[views[o.__parent__].__childrenRef__.slice(-1 * nth)[0].id]
+
+    }, "1stSibling()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return o
+        return views[views[o.__parent__].__childrenRef__[0].id]
+
+    }, "2ndSibling()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return o
+        return views[views[o.__parent__].__childrenRef__[1].id]
+
+    }, "3rdSibling()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return o
+        return views[views[o.__parent__].__childrenRef__[2].id]
+
+    }, "nthSibling()": ({ _window, views, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__ || !o.id) return o
+        var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
+        return views[views[o.__parent__].__childrenRef__[nth - 1].id]
+
+    }, "grandChild()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[views[o.__childrenRef__[0].id].__childrenRef__[0].id]
+
+    }, "grandChildren()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[o.__childrenRef__[0].id].__childrenRef__.map(({ id }) => views[id])
+
+    }, "prev()": ({ _window, o }) => {
+
+        return nthPrev({ _window, nth: 1, o })
+
+    }, "2ndPrev()": ({ _window, o }) => {
+
+        return nthPrev({ _window, nth: 2, o })
+
+    }, "3rdPrev()": ({ _window, o }) => {
+
+        return nthPrev({ _window, nth: 3, o })
+
+    }, "nthPrev()": ({ _window, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__ || !o.id) return
+        var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
+        return nthPrev({ _window, nth, o })
+
+    }, "1stChild()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id || !o.__childrenRef__[0]) return
+        return views[o.__childrenRef__[0].id]
+
+    }, "child()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id || !o.__childrenRef__[0]) return
+        return views[o.__childrenRef__[0].id]
+
+    }, "2ndChild()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id || !o.__childrenRef__[1]) return
+        return views[o.__childrenRef__[1].id]
+
+    }, "3rdChild()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id || !o.__childrenRef__[2]) return
+        return views[o.__childrenRef__[2].id]
+
+    }, "nthChild()": ({ _window, views, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__ || !o.id) return
+        var nth = toValue({ _window, __, value: args[1], e, id, stack, lookupActions })
+        if (!isNumber(nth)) return
+        if (!o.__childrenRef__[nth - 1]) return
+        return views[o.__childrenRef__[nth - 1].id]
+
+    }, "3rdLastChild()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[o.__childrenRef__.slice(-3)[0].id]
+
+    }, "2ndLastChild()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[o.__childrenRef__.slice(-2)[0].id]
+
+    }, "lastChild()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return views[o.__childrenRef__.slice(-1)[0].id]
+
+    }, "nthLastChild()": ({ _window, views, o, id, e, __, args }) => {
+
+        if (!o.__view__ || !o.id) return
+        var nth = toValue({ _window, __, value: args[1], e, id })
+        if (!isNumber(nth)) return
+        return views[o.__childrenRef__.slice(-1 * nth)[0].id]
+
+    }, "children()": ({ views, o }) => {
+
+        if (!o.__view__ || !o.id) return
+        return o.__childrenRef__.map(({ id }) => views[id])
+
+    }, "lastEl()": ({ o }) => {
+
+        return o[o.length - 1]
+
+    }, "2ndLastEl()": ({ o }) => {
+
+        return o[o.length - 2]
+
+    }, "3rdLastEl()": ({ o }) => {
+
+        return o[o.length - 3]
+
+    }, "nthLastEl()": ({ _window, o, stack, lookupActions, id, e, __, args }) => {
+
+        var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
+        return o[o.length - nth]
+
+    }, "while()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        while (toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })) {
+            toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e })
+        }
+
+    }, "data()": ({ _window, req, res, global, o, stack, lookupActions, id, e, __, args, object, i, value, key, path, breakRequest }) => {
+
+        if (!o.__view__) return
+
+        breakRequest.break = true
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
+
+        if (data.path) return answer = kernel({ req, res, _window, lookupActions, stack, id, e, data: { data: data.data || global[data.doc || o.doc], value, key, path: data.path, object }, __ })
+
+        if (!o.doc) return
+
+        return kernel({ req, res, _window, lookupActions, stack, id, data: { path: [...o.__dataPath__, ...path.slice(i + 1)], object, data: global[o.doc], value, key }, __, e })
+
+    }, "doc()": ({ _window, req, res, global, views, o, stack, lookupActions, id, e, __, args, object, i, value, key, path, breakRequest, answer }) => {
+
+        breakRequest.break = true
+        var doc = o.__view__ ? o.doc : views[id].doc
+
+        if (args[1]) {
+
+            if (isParam({ _window, string: args[1] })) {
+
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                args[1] = data.path || data.__dataPath__ || []
+                if (typeof args[1] === "string") args[1] = args[1].split(".")
+
+                return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
+            }
+
+            if (args[1].charAt(0) === "@") args[1] = global.__refs__[args[1]].data
+            args[1] = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            if (typeof args[1] === "string") args[1] = args[1].split(".")
+
+            return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
+        }
+
+        if (path[i + 1] !== undefined) {
+
+            if (path[i + 1] && path[i + 1].charAt(0) === "@") path[i + 1] = toValue({ req, res, _window, lookupActions, stack, id, data: global.__refs__[path[i + 1]].data, __, e })
+            answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...path.slice(i + 1)], object }, __ })
+
+        } else if (key && value !== undefined) answer = global[doc] = value
+        else answer = global[doc]
+
+        return answer
+
+    }, "installApp()": ({ global }) => {
+
+        const installApp = async () => {
+
+            global.__installApp__.prompt();
+            const { outcome } = await global.__installApp__.userChoice;
+            console.log(`User response to the install prompt: ${outcome}`);
+        }
+
+        installApp()
+
+    }, "clearTimer()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var timer = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e }) || o
+        return clearTimeout(timer)
+
+    }, "clearInterval()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var timer = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e }) || o
+        return clearInterval(timer)
+
+    }, "interval()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        if (!o.__view__) return
+        if (!isNaN(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))) { // interval():params:timer
+
+            var timer = parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))
+            var myFn = () => toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], object })
+            return setInterval(myFn, timer)
+        }
+
+    }, "repeat()": ({ _window, req, res, stack, lookupActions, id, e, __, args, object, i }) => {
+
+        var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
+        var times = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
+        var loop = []
+        for (var i = 0; i < times; i++) {
+            loop.push(item)
+        }
+        return loop
+
+    }, "timer()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object, answer }) => { // timer():params:timer:repeats
+
+        var timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })) : 0
+        var repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object })) : false
+        var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object }) }
+
+        if (typeof repeats === "boolean") {
+
+            if (repeats === true) answer = setInterval(myFn, timer)
+            else if (repeats === false) answer = setTimeout(myFn, timer)
+
+        } else if (typeof repeats === "number") {
+
+            answer = []
+            answer.push(setTimeout(myFn, timer))
+            if (repeats > 1) {
+                for (let index = 0; index < repeats; index++) {
+                    answer.push(setTimeout(myFn, timer))
+                }
+            }
+        }
+
+        if (o.__view__) toArray(answer).map(timer => o.__timers__.push(timer))
+        return answer
+
+    }, "slice()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object, answer }) => { // slice by text or by number
+
+        if (!Array.isArray(o) && typeof o !== "string" && typeof o !== "number") return
+
+        var start = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object })
+        var end = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[2], __, object })
+
+        if (end !== undefined) {
+
+            if (!isNaN(end)) {
+
+                if (!isNaN(start)) answer = o.slice(parseInt(start), parseInt(end))
+                else {
+                    answer = o.split(start)[1]
+                    answer = answer.slice(0, end)
+                }
+
+            } else {
+
+                if (!isNaN(start)) answer = o.slice(parseInt(start))
+                else answer = o.split(start)[1]
+                answer = answer.split(end)[0]
+            }
+
+        } else {
+
+            if (!isNaN(start)) answer = o.slice(parseInt(start) || 0)
+            else answer = o.split(start)[1]
+        }
+        return answer
+
+    }, "reduce()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, value, key }) => { // o.reduce():[path=]
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        if (Array.isArray(data)) data = { path: data }
+        return reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.data !== undefined ? true : key, value: data.data !== undefined ? data.data : value }, e, req, res, __ })
+
+    }, "path()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, lastIndex, value, key }) => {
+
+        var data = {}
+        if (args[1]) {
+
+            if (isParam({ _window, string: args[1] })) {
+
+                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+
+            } else data.path = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        }
+
+        if ((key && value !== undefined && lastIndex) || data.value !== undefined) {
+
+            if (data.path !== undefined) return toArray(data.path).reduce((o, k, i) => {
+                if (i === data.path.length - 1) return o[k] = data.value !== undefined ? data.value : value
+                else return o[k]
+            }, o)
+
+            else return o.__dataPath__
+
+        } else {
+
+            if (data.path !== undefined) return toArray(data.path).reduce((o, k) => o[k], o)
+            else return o.__dataPath__
+        }
+
+    }, "reload()": () => {
+
+        document.location.reload(true)
+
+    }, "contains()": ({ _window, req, res, views, o, stack, lookupActions, id, e, __, args, answer }) => {
+
+        var first = o, next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+        if (!first || !next) return
+
+        if (typeof first === "string") first = views[first]
+        if (typeof next === "string") next = views[next]
+
+        if (first.nodeType === Node.ELEMENT_NODE) first = views[first.id]
+        if (next.nodeType === Node.ELEMENT_NODE) next = views[next.id]
+
+        if (!first.__view__ || !next.__view__) return
+
+        if (first.__element__.nodeType === Node.ELEMENT_NODE && next.__element__.nodeType === Node.ELEMENT_NODE) {
+            answer = first.__element__.contains(next.__element__)
+            if (!answer) answer = first.__element__.id === next.__element__.id
+        }
+        return answer
+
+    }, "in()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+
+        if (next) {
+            if (typeof o === "string" || Array.isArray(o) || typeof o === "number") return next.includes(o)
+            else if (typeof o === "object") return next[o] !== undefined
+            else if (o.nodeType === Node.ELEMENT_NODE && next.nodeType === Node.ELEMENT_NODE) return next.contains(o)
+        } else return false
+
+    }, "is()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var b = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+        return isEqual(o, b)
+
+    }, "opp()": ({ o }) => {
+
+        if (typeof o === "number") return -1 * o
+        else if (typeof o === "boolean") return !o
+        else if (typeof o === "string" && o === "true" || o === "false") {
+            if (o === "true") return false
+            else return true
+        }
+
+    }, "neg()": ({ o }) => {
+
+        return o < 0 ? o : -o
+
+    }, "pos()": ({ o }) => {
+
+        return o > 0 ? o : o < 0 ? -o : o
+
+    }, "sum()": ({ o }) => {
+
+        return o.reduce((o, k) => o + toNumber(k), 0)
+
+    }, "src()": ({ o, lastIndex, value, key }) => {
+
+        if (!o.__view__) return
+
+        if (lastIndex && key && value !== undefined) return o.__element__.src = value
+        else return o.__element__.src
+
+    }, "clear()": ({ o }) => {
+
+        if (!o.__view__) return
+        o.__element__.value = null
+        o.__element__.text = null
+        o.__element__.files = null
+        return o
+
+    }, "list()": ({ o, answer }) => {
+
+        answer = toArray(o)
+        return [...answer]
+
+    }, "notify()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        var notify = () => {
+            if (isParam({ _window, string: args[1] })) {
+
+                var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                new Notification(_params.title || "", _params)
+
+            } else {
+
+                var title = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                new Notification(title || "")
+            }
+        }
+
+        if (!("Notification" in window)) {
+            // Check if the browser supports notifications
+            alert("This browser does not support notification");
+        } else if (Notification.permission === "granted") {
+            // Check whether notification permissions have already been granted;
+            // if so, create a notification
+            notify()
+            // …
+        } else if (Notification.permission !== "denied") {
+
+            // We need to ask the user for permission
+            Notification.requestPermission().then((permission) => {
+                // If the user accepts, let's create a notification
+                if (permission === "granted") {
+                    notify()
+                    // …
+                }
+            });
+        }
+
+    }, "alert()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        var text = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+        alert(text)
+
+    }, "clone()": ({ o }) => {
+
+        return clone(o)
+
+    }, "override()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var obj1 = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+        override(o, obj1)
+
+    }, "txt()": ({ views, o, i, lastIndex, value, key, path, breakRequest, answer }) => {
+
+        if (!o.__view__) return
+
+        var el
+        if ((o.__islabel__ || o.__labeled__) && o.__name__ !== "Input") el = o.__element__.getElementsByTagName("INPUT")[0]
+        else if (views[o.id].__status__ === "Mounted") el = o.__element__
+
+        if (value) value = replaceNbsps(value)
+
+        if (el) {
+
+            if (views[el.id].__name__ === "Input") {
+
+                answer = el.value
+                if (i === lastIndex && key && value !== undefined && o.__element__) answer = el.value = value
+                else if (path[i + 1] === "del()") {
+                    breakRequest.index = i + 1
+                    answer = el.value = ""
+                }
+
+            } else {
+
+                answer = (el.textContent === undefined) ? el.innerText : el.textContent
+                if (i === lastIndex && key && value !== undefined) answer = el.innerHTML = value
+                else if (path[i + 1] === "del()") {
+                    breakRequest.index = i + 1
+                    answer = el.innerHTML = ""
+                }
+            }
+
+        } else {
+
+            if (i === lastIndex && key && value !== undefined) answer = views[o.id].text = value
+            else if (path[i + 1] === "del()") {
+                breakRequest.index = i + 1
+                answer = views[o.id].text = ""
+            }
+            answer = views[o.id].text
+        }
+        return answer
+
+    }, "min()": ({ o, i, lastIndex, value, key }) => {
+
+        if (!o.__view__) return
+
+        if (i === lastIndex && key && value !== undefined) o.min = value
+        return o.min
+
+    }, "max()": ({ o, i, lastIndex, value, key }) => {
+
+        if (!o.__view__) return
+
+        if (i === lastIndex && key && value !== undefined) o.max = value
+        return o.max
+
+    }, "push()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object, i, path, _object }) => {
+
+        if (!Array.isArray(o)) o = kernel({ req, res, _window, id, data: { data: _object, path: path.slice(0, i), value: [], key: true, object }, __, e })
+
+        var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
+        var index = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
+
+        if (!Array.isArray(o)) return
+        if (index === undefined) index = o.length || 0
+
+        if (Array.isArray(item)) {
+
+            item.map(item => {
+                o.splice(index, 0, item)
+                index += 1
+            })
+
+        } else if (Array.isArray(o)) o.splice(index, 0, item)
+
+        return o
+
+    }, "pushItems()": ({ _window, req, res, o, id, e, __, args, object }) => {
+
+        args.slice(1).map(arg => {
+            arg = toValue({ req, res, _window, id, data: args[1], __, e, object })
+            o.splice(o.length, 0, arg)
+        })
+        return o
+
+    }, "pullIndex()": ({ _window, o, stack, lookupActions, id, e, __, args, object, i, lastIndex }) => { // pull by index
+
+        // if no index pull the last element
+        var lastIndex = 1, firstIndex = 0
+        if (args[1]) firstIndex = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack })
+        if (args[2]) lastIndex = toValue({ _window, id, data: args[2], __, e, object, lookupActions, stack })
+
+        o.splice(firstIndex, lastIndex || 1)
+        return o
+
+    }, "pull()": ({ _window, o, stack, lookupActions, id, e, __, args, object }) => { // pull by conditions
+
+        var items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __, lookupActions, stack }))
+
+        items.filter(data => data !== undefined && data !== null).map(_item => {
+            var _index = o.findIndex(item => isEqual(item, _item))
+            if (_index !== -1) o.splice(_index, 1)
+        })
+
+        return o
+
+    }, "pullItem()": ({ _window, o, id, e, __, args, object }) => { // pull by item
+
+        var item = toValue({ _window, id, data: args[1], __, e, object })
+        var index = o.findIndex(_item => isEqual(_item, item))
+        if (index !== -1) o.splice(index, 1)
+        return o
+
+    }, "pullLast()": ({ o }) => {
+
+        // if no it pulls the last element
+        o.splice(o.length - 1, 1)
+        return o
+
+    }, "rem()": ({ o, stack }) => {
+
+        if (!o.__view__) return
+        remove({ id: o.id, __, stack })
+
+    }, "keys()": ({ o }) => {
+
+        return Object.keys(o)
+
+    }, "key()": ({ o, i, lastIndex, value, key }) => {
+
+        if (i === lastIndex && value !== undefined && key) return Object.keys(o)[0] = value
+        else return Object.keys(o)[0]
+
+    }, "values()": ({ o }) => { // values in an object
+
+        if (Array.isArray(o)) return o
+        else return Object.values(o)
+
+    }, "value()": ({ o, i, lastIndex, value, key }) => { // value 0 in an object
+
+        if (i === lastIndex && value !== undefined && key) return o[Object.keys(o)[0]] = value
+        else return Object.values(o)[0]
+
+    }, "gen()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        if (isParam({ _window, string: args[1] })) {
+
+            data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            return generate(data)
+
+        } else {
+
+            var length = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 5
+            return generate({ length })
+        }
+
+    }, "inc()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var item = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+
+        if (typeof o === "string") return o.split(item).length > 1
+        else if (Array.isArray(o)) return o.find(_item => isEqual(_item, item)) ? true : false
+
+    }, "incAny()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, answer }) => {
+
+        var items = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        answer = false
+
+        if (typeof o === "string") {
+
+            items.map(item => {
+
+                if (answer) return
+                answer = o.split(item).length > 1
+            })
+
+        } else if (Array.isArray(o)) {
+
+            items.map(item => {
+
+                if (answer) return
+                answer = o.find(_item => isEqual(_item, item)) ? true : false
+            })
+        }
+        return answer
+
+    }, "capitalize()": ({ o }) => {
+
+        return capitalize(o)
+
+    }, "capitalizeFirst()": ({ o }) => {
+
+        return capitalizeFirst(o)
+
+    }, "len()": ({ o }) => {
+
+        if (Array.isArray(o)) return o.length
+        else if (typeof o === "string") return o.split("").length
+        else if (typeof o === "object") return Object.keys(o).length
+
+    }, "require()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        require(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
+
+    }, "new()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        var data = [], className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        args.slice(1).map(arg => {
+            data.push(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg || "" }))
+        })
+        if (className && typeof (new [className]()) === "object") return new [className](...data)
+
+    }, "today()": () => {
+
+        return new Date()
+
+    }, "now()": () => {
+
+        return new Date()
+
+    }, "todayEnd()": ({ answer }) => {
+
+        answer = new Date()
+        answer.setUTCHours(23, 59, 59, 999)
+        return answer
+
+    }, "timezone()": () => {
+
+        var _date = new Date()
+        var timeZone = Math.abs(_date.getTimezoneOffset()) * 60 * 1000
+        return timeZone
+
+    }, "clock()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, answer }) => { // dd:hh:mm:ss
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        if (!data.timestamp) data.timestamp = o
+
+        return toClock(data)
+
+    }, "toSimplifiedDate()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, answer }) => {
+
+        var data = toParam({ _window, req, res, lookupActions, stack, id, e, data: args[1], __ })
+        return toSimplifiedDate({ timestamp: o, lang: data.lang || "en", timer: data.time || false })
+
+    }, "ar()": ({ o }) => {
+        //
+        if (Array.isArray(o)) return o.map(o => o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
+        else return o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d])
+
+    }, "date()": ({ _window, stack, lookupActions, id, e, __, args, object }) => {
+
+        var data = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack })
+        if (isNumber(data) && typeof data === "string") data = parseInt(data)
+        return new Date(data)
+
+    }, "toDateFormat()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => { // returns date for input
+
+        if (isParam({ _window, string: args[1] })) {
+
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var format = data.format, day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
+
+            if (typeof o === "string") {
+
+                if (format.split("/").length > 1) {
+
+                    var date = o.split("/")
+                    format.split("/").map((format, i) => {
+                        if (format === "dd") day = date[i]
+                        else if (format === "mm") month = date[i]
+                        else if (format === "yyyy") year = date[i]
+                        else if (format === "hh") hour = date[i]
+                        else if (format === "mm") min = date[i]
+                        else if (format === "ss") sec = date[i]
+                    })
+                }
+
+                return new Date(year, month, day, hour, min, sec)
+
+            } else if (data.excel && typeof o === "number") {
+
+                function ExcelDateToJSDate(serial) {
+
+                    var utc_days = Math.floor(serial - 25569)
+                    var utc_value = utc_days * 86400
+                    var date_info = new Date(utc_value * 1000)
+
+                    var fractional_day = serial - Math.floor(serial) + 0.0000001
+
+                    var total_seconds = Math.floor(86400 * fractional_day)
+
+                    var seconds = total_seconds % 60
+
+                    total_seconds -= seconds
+
+                    var hours = Math.floor(total_seconds / (60 * 60))
+                    var minutes = Math.floor(total_seconds / 60) % 60
+
+                    return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds)
+                }
+
+                return ExcelDateToJSDate(o)
+            }
+
+        } else {
+
+            var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) || "format1"
+
+            if (!isNaN(o) && typeof o === "string") o = parseInt(o)
+            var date = new Date(o)
+            var _year = date.getFullYear()
+            var _month = date.getMonth() + 1
+            var _day = date.getDate()
+            var _dayofWeek = date.getDay()
+            var _hour = date.getHours()
+            var _mins = date.getMinutes()
+            var _daysofWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+            var monthsCode = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
+
+            if (format.replace(" ", "") === "format1") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${args[1] === "time" ? ` ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}` : ""}`
+            else if (format.replace(" ", "") === "format2") return `${_year.toString()}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
+            else if (format.replace(" ", "") === "format3") return `${_day.toString().length === 2 ? _day : `0${_day}`}${monthsCode[_month - 1]}${_year.toString().slice(2)}`
+            else if (format.replace(" ", "") === "format4") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${` | ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}`}`
+        }
+
+    }, "toDateInputFormat()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => { // returns date for input in a specific format
+
+        var data = {}
+        if (isParam({ _window, string: args[1] })) {
+
+            data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        } else if (args[1]) {
+            data = { date: toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) }
+        } else data = { date: o }
+
+        var format = data.format || "yyyy-mm-dd"
+        var date = new Date(data.date || o)
+        if (!date) return
+
+        var day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
+        var newDate = ""
+
+        if (format.split("/").length === 3) {
+
+            format.split("/").map((format, i) => {
+                if (i !== 0) newDate += "-"
+                format = format.toLowerCase()
+                if (format === "dd") {
+                    day = date.getDate()
+                    newDate += day.toString().length === 2 ? day : `0${day}`
+                } else if (format === "mm") {
+                    month = date.getMonth() + 1
+                    newDate += month.toString().length === 2 ? month : `0${month}`
+                } else if (format === "yyyy") {
+                    year = date.getFullYear()
+                    newDate += year
+                } else if (format === "hh") {
+                    hour = date.getHours() || 0
+                    newDate += hour.toString().length === 2 ? hour : `0${hour}`
+                } else if (format === "mm") {
+                    min = date.getMinutes() || 0
+                    newDate += min.toString().length === 2 ? min : `0${min}`
+                } else if (format === "ss") {
+                    sec = date.getSeconds() || 0
+                    newDate += sec.toString().length === 2 ? sec : `0${sec}`
+                } else if (format === "hh:mm:ss") {
+                    hour = date.getHours() || 0
+                    min = date.getMinutes() || 0
+                    sec = date.getSeconds() || 0
+                    newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`) + ":" + (sec.toString().length === 2 ? sec : `0${sec}`)
+                } else if (format === "hh:mm") {
+                    hour = date.getHours() || 0
+                    min = date.getMinutes() || 0
+                    newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`)
+                }
+            })
+
+        } else if (format.split("T").length === 2 || format.split("T")[0].split("-").length === 3) {
+
+            var length = format.split("T").length
+            format.split("T").map((format, i) => {
+                format.split("-").map((format, i) => {
+                    format = format.toLowerCase()
+                    if (i !== 0) newDate += "-"
+                    if (format === "dd") {
+                        day = date.getDate()
+                        newDate += day.toString().length === 2 ? day : `0${day}`
+                    } else if (format === "mm") {
+                        month = date.getMonth() + 1
+                        newDate += month.toString().length === 2 ? month : `0${month}`
+                    } else if (format === "yyyy") {
+                        year = date.getFullYear()
+                        newDate += year
+                    } else if (format === "hh") {
+                        hour = date.getHours() || 0
+                        newDate += (hour.toString().length === 2 ? hour : `0${hour}`)
+                    } else if (format === "mm") {
+                        min = date.getMinutes() || 0
+                        newDate += (min.toString().length === 2 ? min : `0${min}`)
+                    } else if (format === "ss") {
+                        sec = date.getSeconds() || 0
+                        newDate += (sec.toString().length === 2 ? sec : `0${sec}`)
+                    } else if (format === "hh:mm:ss") {
+                        hour = date.getHours() || 0
+                        min = date.getMinutes() || 0
+                        sec = date.getSeconds() || 0
+                        newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`) + ":" + (sec.toString().length === 2 ? sec : `0${sec}`)
+                    } else if (format === "hh:mm") {
+                        hour = date.getHours() || 0
+                        min = date.getMinutes() || 0
+                        newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`)
+                    }
+                })
+                if (length === 2 && i === 0) newDate += "T"
+            })
+
+        }
+
+        return newDate
+
+    }, "getGeoLocation()": ({ answer }) => {
+
+        navigator.geolocation.getCurrentPosition((position) => { answer = position })
+        return answer
+
+    }, "counter()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        var data = {}
+        if (isParam({ _window, string: args[1] })) data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+
+        data.counter = data.counter || data.start || data.count || 0
+        data.length = data.length || data.len || data.maxLength || 0
+        data.end = data.end || data.max || data.maximum || 999999999999
+
+        return require("./counter").counter({ ...data })
+
+    }, "time()": ({ o }) => {
+
+        if (isNumber(o)) {
+
+            var _1Day = 24 * 60 * 60 * 1000, _1Hr = 60 * 60 * 1000, _1Min = 60 * 1000
+            o = parseInt(o)
+
+            var _days = Math.floor(o / _1Day).toString()
+            _days = _days.length === 1 ? ("0" + _days) : _days
+
+            var _hrs = Math.floor(o % _1Day, _1Hr).toString()
+            _hrs = _hrs.length === 1 ? ("0" + _hrs) : _hrs
+
+            var _mins = Math.floor(o % _1Hr, _1Min).toString()
+            _mins = _mins.length === 1 ? ("0" + _mins) : _mins
+
+            return _days + ":" + _hrs + ":" + _mins
+        }
+
+    }, "timestamp()": ({ o }) => {
+
+        if (o instanceof Date) return o.getTime()
+        else if (o.length === 5 && o.split(":").length === 2) {
+
+            var _hrs = parseInt(o.split(":")[0]) * 60 * 60 * 1000
+            var _mins = parseInt(o.split(":")[1]) * 60 * 1000
+            return _hrs + _mins
+
+        } else if (o.length === 8 && o.split(":").length === 3) {
+
+            var _days = parseInt(o.split(":")[0]) * 24 * 60 * 60 * 1000
+            var _hrs = parseInt(o.split(":")[1]) * 60 * 60 * 1000
+            var _mins = parseInt(o.split(":")[2]) * 60 * 1000
+            return _days + _hrs + _mins
+
+        } else {
+
+            o = new Date(o)
+            if (o.getTime()) return o.getTime()
+            o = new Date()
+            return o.getTime()
+        }
+
+    }, "getDateTime()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, k, underScored, i, lastIndex, value, key, path, breakRequest, condition, _object, answer }) => {
+
+        var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        return getDateTime(o, format)
+
+    }, "getDaysInMonth()": ({ o }) => {
+
+        if (o instanceof Date) return new Date(o.getFullYear(), o.getMonth() + 1, 0).getDate()
+
+    }, "1MonthLater()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+        var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+        var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+
+        return new Date(date.setYear(year)).setMonth(month, date.getDays())
+
+    }, "2MonthLater()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+        var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+        var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+        month = month + 1 > 11 ? 1 : month + 1
+        year = month === 1 ? year + 1 : year
+
+        return new Date(date.setYear(year)).setMonth(month, date.getDays())
+
+    }, "3MonthLater()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+        var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+        month = month + 1 > 11 ? 1 : month + 1
+        year = month === 1 ? year + 1 : year
+        month = month + 1 > 11 ? 1 : month + 1
+        year = month === 1 ? year + 1 : year
+        return new Date(date.setYear(year)).setMonth(month, date.getDays())
+
+    }, "1MonthEarlier()" : ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+        var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+        return new Date(date.setYear(year)).setMonth(month, date.getDays())
+
+    }, "2MonthEarlier()" : ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+        var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+        month = month - 1 < 0 ? 11 : month - 1
+        year = month === 11 ? year - 1 : year
+        return new Date(date.setYear(year)).setMonth(month, date.getDays())
+
+    }, "3MonthEarlier()" : ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+        var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+        month = month - 1 < 0 ? 11 : month - 1
+        year = month === 11 ? year - 1 : year
+        month = month - 1 < 0 ? 11 : month - 1
+        year = month === 11 ? year - 1 : year
+        return new Date(date.setYear(year)).setMonth(month, date.getDays())
+
+    }, "todayStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return date.setHours(_hrs, _min, 0, 0)
+
+    }, "todayEnd()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return date.setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "monthStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = _date.getTimezoneOffset() % 60
+        var _hrs = (_date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(_date.setMonth(_date.getMonth(), 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "monthEnd()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(date.setMonth(date.getMonth(), getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "nextMonthStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+        var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "nextMonthEnd()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+        var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "2ndNextMonthStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = o.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+        var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+        month = month + 1 > 11 ? 1 : month + 1
+        year = month === 1 ? year + 1 : year
+        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "2ndNextMonthEnd()": ({ o }) => {
+
+        var date
+        if (typeof o.getMonth === 'function') date = o
+        else date = new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
+        var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
+        month = month + 1 > 11 ? 1 : month + 1
+        year = month === 1 ? year + 1 : year
+        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "prevMonthStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+        var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "prevMonthEnd()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+        var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "2ndPrevMonthStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+        var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+        month = month - 1 < 0 ? 11 : month - 1
+        year = month === 11 ? year - 1 : year
+        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "2ndPrevMonthEnd()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
+        var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
+        month = month - 1 < 0 ? 11 : month - 1
+        year = month === 11 ? year - 1 : year
+        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "yearStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "yearEnd()": ({ o }) => {
+
+        var date
+        if (typeof o.getMonth === 'function') date = o
+        else date = new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "nextYearStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "nextYearEnd()": ({ o }) => {
+
+        var date
+        if (typeof o.getMonth === 'function') date = o
+        else date = new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "prevYearStart()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
+
+    }, "prevYearEnd()": ({ o }) => {
+
+        var date = o instanceof Date ? o : new Date()
+
+        var _min = date.getTimezoneOffset() % 60
+        var _hrs = (date.getTimezoneOffset() / 60) - _min
+
+        if (_hrs < 0) {
+            _hrs = _hrs * -1
+            _min = _min * -1
+        }
+
+        return new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+
+    }, "removeDuplicates()": ({ _window, o, stack, lookupActions, id, e, __, args }) => { // without condition and by condition. ex: removeDuplicates():number (it will remove items that has the same number value)
+
+        if (args[1]) {
+
+            var keys = toValue({ _window, e, data: args[1], id, __, lookupActions, stack })
+            var list = []
+
+            toArray(keys).map(key => {
+
+                var seen = new Set()
+
+                o.map(item => {
+                    if (!seen.has(item[key])) {
+                        seen.add(item[key])
+                        list.push(item)
+                    }
+                })
+            })
+
+            return answer = o = list
+
+        } else {
+
+            if (!Array.isArray(o)) return o
+            var removeDuplicates = (array) => {
+                for (let i = 0; i < array.length; i++) {
+                    if (array.filter(el => isEqual(el, array[i])).length > 1) {
+
+                        array.splice(i, 1);
+                        removeDuplicates(array);
+                        break;
+                    }
+                }
+            }
+
+            removeDuplicates(o);
+            return o
+        }
+
+    }, "replace()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object, i, path, _object }) => { // replace():prev:new
+
+        if (!Array.isArray(o) && typeof o !== "string") o = kernel({ req, res, _window, id, data: { data: _object, path: path.slice(0, i), value: [], key: true, object }, __, e })
+
+        var rec0, rec1
+
+        rec0 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
+        rec1 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] || "" })
+
+        if (typeof o === "string") {
+
+            if (rec1 !== undefined) return o.replace(rec0, rec1)
+            else return o.replace(rec0)
+
+        } else if (Array.isArray(o)) {
+
+            var _itemIndex = o.findIndex(item => isEqual(item, rec0)), rec2 = rec1 || rec0 // replace():rec0:rec1 || replace():rec0 (if rec0 doesnot exist push it)
+            if (_itemIndex >= 0) o[_itemIndex] = rec2
+            else o.push(rec2)
+            return o
+        }
+
+    }, "replaceItem()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, value, key }) => { // replace by condition
+
+        if (!Array.isArray(o)) return
+        if (isParam({ _window, string: args[1] })) {
+
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var _path = data.path, _data = data.data
+            var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, data: item }, e, __: [o, ...__] }), kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, data: _data }, __: [o, ...__], e })))
+            if (_index >= 0) o[_index] = _data
+            else o.push(_data)
+
+        } else if (args[1]) {
+
+            var data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+
+            if (typeof o[0] === "object" || (typeof o[0] === "undefined" && typeof data === "object")) {
+
+                var _index = o.findIndex(item => item.id === data.id)
+                if (_index >= 0) o[_index] = data
+                else o.push(data)
+
+            } else if ((typeof o[0] === "undefined" && typeof data !== "object") || typeof o[0] === "number" || typeof o[0] === "string") {
+
+                var _index = o.findIndex(item => item === data)
+                if (_index < 0) o.push(data)
+            }
+        }
+        return o
+
+    }, "replaceItems()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (isParam({ _window, string: args[1] })) {
+
+            var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var _path = _params.path, _data = _params.data.filter(data => data !== undefined && data !== null)
+            toArray(_data).map(_data => {
+
+                var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], data: item }, __: [o, ...__], e }), kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], data: _data }, __: [o, ...__], e })))
+                if (_index >= 0) o[_index] = _data
+                else o.push(_data)
+            })
+
+        } else if (args[1]) {
+
+            var _data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }).filter(data => data !== undefined && data !== null)
+            if (typeof o[0] === "object") {
+
+                toArray(_data).map(_data => {
+
+                    var _index = o.findIndex(item => item.id === _data.id)
+                    if (_index >= 0) o[_index] = _data
+                    else o.push(_data)
+                })
+
+            } else if (typeof o[0] === "number" || typeof o[0] === "string") {
+
+                toArray(_data).map(_data => {
+
+                    var _index = o.findIndex(item => item === _data)
+                    if (_index >= 0) o[_index] = _data
+                    else o.push(_data)
+                })
+            }
+        }
+
+        return o
+
+    }, "terminate()": ({ stack,  }) => {
+
+        stack.terminated = true
+
+    }, "break()": ({ stack,  }) => {
+
+        if (stack.loop) stack.broke = true
+
+    }, "return()": ({ _window, stack, lookupActions, id, e, __, args, object, answer }) => {
+
+        stack.returns[0].data = answer = toValue({ _window, data: args[1], e, id, object, __, stack, lookupActions })
+        stack.returns[0].returned = true
+        return answer
+
+    }, "export()": ({ _window, req, res, id, e, __, args }) => {
+
+        var data = toLine({ _window, req, res, _window, id, e, __, data: { string: args[1] } }).data
+
+        if (data.json) data.type = "json"
+        if (data.csv) data.type = "csv"
+        if (data.excel) data.type = "excel"
+        if (data.pdf) data.type = "pdf"
+
+        if (data.type === "json") exportJson(data)
+        else if (data.type === "csv") require("./toCSV").toCSV(data)
+        else if (data.type === "excel") require("./toExcel").toExcel(data)
+        else if (data.type === "pdf") require("./toPdf").toPdf(data)
+
+    }, "flat()": ({ o, _object }) => {
+
+        if (typeof o === "object") {
+            if (Array.isArray(o)) {
+                o = [...o]
+                return o.flat()
+            } else {
+
+                if (typeof _object === "object") Object.entries(o).map(([key, value]) => _object[key] = value)
+                return _object
+            }
+        } else return o
+
+    }, "action()": ({ _window, req, res, stack, lookupActions, id, e, __, args, object, condition }) => {
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        if (typeof data.path === "string") data.path = data.path.split(".")
+        toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { path: data.path || data.action.split("."), view: data.view, data: data.data }, condition, object })
+
+    }, "getDeepChildrenId()": ({ _window, o }) => {
+
+        return getDeepChildrenId({ _window, id: o.id })
+
+    }, "deep()": ({ _window, o }) => {
+
+        return getDeepChildren({ _window, id: o.id })
+
+    }, "deepChildren()": ({ _window, o }) => {
+
+        return getDeepChildren({ _window, id: o.id })
+
+    }, "filter()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, underScored }) => {
+
+        args = args.slice(1), isnot
+        if (!args[0]) isnot = true
+
+        if (isnot) return toArray(o).filter(o => o !== "" && o !== undefined && o !== null)
+
+        if (underScored) return toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: args[0], id, __: [o, ...__], req, res }))
+        else return toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: args[0], id, object: o, req, res, __ }))
+
+    }, "find()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, underScored, i, lastIndex, value, key, answer }) => {
+
+        if (i === lastIndex && key && value !== undefined) {
+
+            var index
+            if (underScored) index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
+            else index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+            if (index !== undefined && index !== -1) o[index] = answer = value
+            return answer
+
+        } else {
+
+            if (underScored) return toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
+            else return toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+        }
+
+    }, "sort()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, answer }) => {
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        if (!data.data) data.data = o
+
+        // else return o
+        data.data = answer = require("./sort").sort({ _window, lookupActions, stack, __, sort: data, id, e })
+
+        return answer
+
+    }, "findIndex()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, underScored }) => {
+
+        if (typeof o !== "object") return
+
+        if (underScored) return toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
+        else return toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+
+    }, "()": ({ _window, req, res, global, o, stack, lookupActions, id, e, __, args, underScored, object, breakRequest }) => {// map()
+
+        var notArray = false
+        if (args[1] && args[1].charAt(0) === "@" && args[1].length == 6) args[1] = global.__refs__[args[1]].data
+        if (args[2] && args[2].charAt(0) === "@" && args[2].length == 6) args[2] = global.__refs__[args[2]].data
+
+        if (typeof o === "object" && !Array.isArray(o)) notArray = true
+
+        stack.loop = true
+
+        if (args[1] && underScored) {
+
+            toArray(o).map(o => toValue({ req, res, _window, lookupActions, stack, id, data: args[1] || "", object, __: [o, ...__], e }))
+            return o
+
+        } else if (args[1]) {
+
+            return toArray(o).map(o => toValue({ req, res, _window, lookupActions, stack, id, data: args[1] || "", object: o, __, e }))
+
+        } else if (args[2] && underScored) {
+
+            breakRequest.break = true
+            var address;
+            ([...toArray(o)]).reverse().map(o => {
+                // address
+                address = addresser({ _window, id, stack, nextAddress: address, __: [o, ...__], lookupActions, data: { string: args[2] }, object }).address
+            })
+
+            // address
+            if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+
+        } else if (args[2]) {
+
+            breakRequest.break = true
+            var address;
+            ([...toArray(o)]).reverse().map(o => {
+                // address
+                address = addresser({ _window, id, stack, nextAddress: address, __, lookupActions, data: { string: args[2] }, object: o }).address
+            })
+
+            // address
+            if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+        }
+
+        stack.loop = false
+        stack.broke = false
+
+        if (notArray) return o
+
+    }, "html2pdf()": ({ _window, o, stack, lookupActions, id, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, status: "Start", action: "html2pdf()", object, lookupActions, __, id })
+
+        var options = {
+            margin: .25,
+            filename: data.name || generate({ length: 20 }),
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, dpi: 300, letterRendering: true },
+            jsPDF: { unit: 'mm', format: data.format || 'a4', orientation: 'portrait' }
+        }
+
+        data.view = data.view || o
+        var exporter = new html2pdf(data.view.__element__, options)
+
+        exporter.getPdf(true).then((pdf) => {
+            console.log('pdf file downloaded')
+        })
+
+        /*exporter.getPdf(false).then((pdf) => {
+            console.log('doing something before downloading pdf file');
+            pdf.save();
+          });*/
+
+        /*pages.map(page => {
+
+            var _element
+            if (typeof page === "object" && page.id) _element = views[page.id].__element__
+            else if (page.nodeType === Node.ELEMENT_NODE) _element = page
+            else if (typeof page === "string") _element = views[page].__element__
+
+            _elements.push(_element)
+            var images = [..._element.getElementsByTagName("IMG")]
+
+            if (images.length > 0) {
+
+                images.map((image, i) => {
+                    toDataURL(image.src).then(dataUrl => {
+
+                        image.src = dataUrl
+                        if (images.length === i + 1) {
+
+                            if (!once && pages.length > 1 && pages.length === _elements.length) {
+
+                                once = true
+                                exportHTMLToPDF({ _window, pages: _elements, opt, lookupActions, stack, address, req, res, id, e, __, args })
+
+                            } else if (pages.length === 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then(pdf => {
+
+                                var totalPages = pdf.internal.getNumberOfPages()
+
+                                for (i = 1; i <= totalPages; i++) {
+
+                                    pdf.setPage(i)
+                                    pdf.setFontSize(9)
+                                    pdf.setTextColor(150)
+                                    pdf.text('page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.1), (pdf.internal.pageSize.getHeight() - 0.08))
+                                }
+
+                            }).save().then((pdf) => {
+
+                                // await params
+                                if (args[2]) require("./kernel").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __: [pdf, ...__] })
+                                window.devicePixelRatio = 1
+                            })
+                        }
+                    })
+                })
+
+            } else html2pdf().set(opt).from(_element).save().then((pdf) => {
+
+
+                // await params
+                if (args[2]) require("./kernel").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __: [pdf, ...__] })
+                window.devicePixelRatio = 1
+            })
+        })*/
+
+    }, "share()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        if (isParam({ _window, string: args[1] })) { // share():[text;title;url;files]
+
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || {}, images = []
+            data.files = toArray(data.file || data.files) || []
+            if (data.image || data.images) data.images = toArray(data.image || data.images)
+
+            var getFileFromUrl = async (url, name) => {
+
+                const response = await fetch(url)
+                const blob = await response.blob()
+                images.push(new File([blob], 'rick.jpg', { type: blob.type }))
+
+                if (images.length === data.images.length)
+                    await navigator.share({ title: data.title, text: data.text, url: data.url, files: images })
+            }
+
+            if (data.images) data.images.map(async url => getFileFromUrl(url, data.title))
+            else {
+                console.log(data);
+                navigator.share(data)
+            }
+
+        } else if (args[1]) { // share():url
+            navigator.share({ url: toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) })
+        }
+
+    }, "loader()": ({ _window, req, res, views, o, stack, lookupActions, id, e, __, args, k }) => {
+
+        var data = {}
+
+        if (isParam({ _window, string: args[1] })) {
+
+            data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            if (data.hide) data.show = false
+
+        } else {
+
+            var show = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            if (show === "show") data.show = true
+            else if (show === "hide") data.show = false
+        }
+
+        var _o
+        if (data.id) _o = views[data.id]
+        else if (data.window) _o = views.body
+        else _o = o
+
+        if (typeof _o !== "object") return
+        if (_o.__status__ === "Loading") {
+            return _o.__controls__.push({
+                event: "loaded?" + k
+            })
+        }
+
+        if (data.show) {
+
+            var lDiv = document.createElement("div")
+            document.body.appendChild(lDiv)
+            lDiv.classList.add("loader-container")
+            lDiv.setAttribute("id", _o.id + "-loader")
+            if (_o.id !== "body") {
+
+                lDiv.style.position = "absolute"
+                var coords = require("./getCoords")({ id: _o.id || id })
+                lDiv.style.top = coords.top + "px"
+                lDiv.style.bottom = coords.bottom + "px"
+                lDiv.style.height = coords.height + "px"
+                lDiv.style.left = coords.left + "px"
+                lDiv.style.right = coords.right + "px"
+                lDiv.style.width = coords.width + "px"
+            }
+
+            var loader = document.createElement("div")
+            lDiv.appendChild(loader)
+            loader.classList.add("loader")
+            lDiv.style.display = "flex"
+
+            if (data.style) {
+                Object.entries(data.style).map(([key, value]) => {
+                    loader.style[key] = value
+                })
+            }
+
+            if (data.background && data.background.style) {
+                Object.entries(data.background.style).map(([key, value]) => {
+                    lDiv.style[key] = value
+                })
+            }
+
+            return sleep(10)
+
+        } else if (data.show === false) {
+
+            var lDiv = document.getElementById(_o.id + "-loader")
+            if (lDiv) lDiv.parentNode.removeChild(lDiv)
+            else console.log("Loader doesnot exist!")
+        }
+
+    }, "type()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (args[1]) return getType(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
+        else return getType(o)
+
+    }, "coords()": ({ o }) => {
+
+        if (!o.__view__) return
+        require("./getCoords")({ id: o.id })
+
+    }, "price()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!isNumber(o)) return
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        if (!data.decimal) data.decimal = 2
+        var formatter = new Intl.NumberFormat("en", {
+            style: 'decimal',
+            decimal: data.decimal,
+        })
+
+        return formatter.format(parseFloat(o))
+
+    }, "bool()": ({ o }) => {
+
+        return typeof o === "boolean" ? o : (o === "true" ? true : o === "false" ? false : undefined)
+
+    }, "num()": ({ o }) => {
+
+        return toNumber(o)
+
+    }, "isNum()": ({ o }) => {
+
+        return isNumber(o)
+
+    }, "round()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (isNumber(o)) {
+            var nth = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 2
+            return parseFloat(o || 0).toFixed(nth)
+        }
+
+    }, "str()": ({ o }) => {
+
+        if (typeof o !== "object") return o + ""
+        else return toString(o)
+
+    }, "lastIndex()": ({ o }) => {
+
+        return o.length ? o.length - 1 : 0
+
+    }, "2ndLastIndex()": ({ o }) => {
+
+        return o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
+
+    }, "2ndLastIndex()": ({ o }) => {
+
+        return o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
+
+    }, "nthLastIndex()": ({ o }) => {
+
+        return o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
+
+    }, "el()": ({ o }) => {
+
+        return o.__element__
+
+    }, "index()": ({ o }) => {
+
+        if (!o.__indexed__ && o.__loop__) return o.__loopIndex__
+        else if (!o.__indexed__) return o.__childIndex__
+        else return o.__index__
+
+    }, "checked()": ({ o, value, key }) => {
+
+        if (!o.__view__) return
+
+        if (value !== undefined && key) return o.checked.checked = o.__element__.checked = value
+        else return o.checked.checked || o.__element__.checked || false
+
+    }, "check()": ({ o, value, breakRequest }) => {
+
+        breakRequest.break = true
+        if (!o.__view__) return
+
+        return o.checked.checked = o.__element__.checked = value || false
+
+    }, "parseFloat()": ({ o }) => {
+
+        return parseFloat(o)
+
+    }, "parseInt()": ({ o }) => {
+
+        return parseInt(o)
+
+    }, "stringify()": ({ o }) => {
+
+        return JSON.stringify(o)
+
+    }, "parse()": ({ o }) => {
+
+        return JSON.parse(o)
+
+    }, "getCookie()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        // getCookie():name
+        if (isParam({ _window, string: args[1], req, res })) {
+
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            return getCookie({ ...data, req, res, _window })
+        }
+
+        var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        var _cookie = getCookie({ name: _name, req, res, _window })
+        return _cookie
+
+    }, "eraseCookie()": ({ _window, req, res, views, stack, pathJoined, lookupActions, id, e, __, args }) => {
+
+        if (_window) return views.root.__controls__.push({ event: `loading?${pathJoined}` })
+
+        // getCookie():name
+        if (isParam({ _window, req, res, string: args[1] })) {
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            return eraseCookie({ ...data, req, res, _window })
+        }
+
+        var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        var _cookie = eraseCookie({ name: _name, req, res, _window })
+        return _cookie
+
+    }, "setCookie()": ({ _window, req, res, views, stack, pathJoined, lookupActions, id, e, __, args }) => {
+
+        if (_window) return views.root.__controls__.push({ event: `loading?${pathJoined}` })
+
+        // X setCookie():value:name:expiry-date X // setCookie():[value;name;expiry]
+        var cookies = []
+        if (isParam({ _window, req, res, string: args[1] })) {
+
+            args.slice(1).map(arg => {
+
+                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: arg })
+                setCookie({ ...data, req, res, _window })
+
+                cookies.push(data)
+            })
+
+        } else {
+
+            var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var _value = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] })
+            var _expiryDate = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[3] })
+
+            setCookie({ name: _name, value: _value, expires: _expiryDate, req, res, _window })
+        }
+
+
+        if (cookies.length === 1) return cookies[0]
+        else return cookies
+
+    }, "cookie()": ({ _window, req, res, views, stack, pathJoined, lookupActions, id, e, __, args }) => {
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+
+        if (_window && data.method === "post" || data.method === "delete") return views.root.__controls__.push({ event: `loading?${pathJoined}` })
+        if (data.method === "post") return setCookie({ ...data, req, res, _window })
+        if (data.method === "delete") return eraseCookie({ ...data, req, res, _window })
+        if (data.method === "get") return getCookie({ ...data, req, res, _window })
+
+    }, "clean()": ({ o }) => {
+
+        return o.filter(o => o !== undefined && !Number.isNaN(o) && o !== "")
+
+    }, "colorize()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1] || "", __ })
+        return colorize({ _window, string: o, ...data })
+
+    }, "deepChildren()": ({ _window, o, stack, lookupActions }) => {
+
+        return getDeepChildren({ _window, lookupActions, stack, id: o.id })
+
+    }, "note()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => { // note
+
+        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        note({ note: data })
+
+    }, "readonly()": ({ _window, o }) => {
+
+        if (!o.__view__) return
+        var children = getDeepChildren({ _window, id: o.id })
+
+        children.map(child => {
+
+            child.__element__.setAttribute("readOnly", true)
+            child.readonly = true
+
+            child.__element__.setAttribute("contenteditable", false)
+            child.editable = false
+        })
+
+    }, "editable()": ({ _window, o }) => {
+
+        if (!o.__view__) return
+        var children = getDeepChildren({ _window, id: o.id })
+
+        children.map(child => {
+
+            child.__element__.setAttribute("readOnly", false)
+            child.readonly = false
+
+            child.__element__.setAttribute("contenteditable", true)
+            child.editable = true
+        })
+
+    }, "range()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        var index = 0
+        var range = []
+        var startIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) : 0 || 0
+        var endIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] }) : toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        var steps = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[3] }) || 1
+        var lang = args[4] || ""
+        index = startIndex
+
+        while (index <= endIndex) {
+            if ((index - startIndex) % steps === 0) {
+                range.push(index)
+                index += steps
+            }
+        }
+
+        if (lang === "ar") range = range.map(num => num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
+        return range
+
+    }, "droplist()": ({ _window, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, id: o.id, interpreting: true, status: "Start", action: "droplist()", object, lookupActions, __ })
+        require("./droplist").droplist({ id, e, data, __, stack, lookupActions, address })
+
+    }, "route()": ({ _window, req, res, o, stack, lookupActions, id, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", asynchronous: true, id: o.id, action: "route()", object, lookupActions, __ })
+        if (typeof data === "string") data = { route: data }
+
+        require("./route").route({ _window, lookupActions, stack, address, id, req, res, data: { type: "route", route: { __: data.data !== undefined ? [data.data] : [] } }, __ })
+
+    }, "root()": ({ _window, req, res, o, stack, lookupActions, id, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id: o.id, action: "root()", object, lookupActions, __ })
+        if (typeof data === "string") data = { page: data }
+
+        require("./root").root({ _window, lookupActions, stack, address, id, req, res, root: data, __ })
+
+    }, "update()": ({ _window, req, res, o, stack, lookupActions, id, __, args, object }) => {
+
+        if (!o.__view__) return o
+
+        var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", renderer: true, blockable: false, id: o.id, action: "update()", object, lookupActions, __ })
+        update({ _window, lookupActions, stack, req, res, id, address, __, data: { id: data.id || o.id, ...data } })
+
+    }, "insert()": ({ _window, o, stack, lookupActions, id, __, args }) => {
+
+        if (!o.__view__) return o
+
+        // wait address
+        var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", renderer: true, id: o.id, action: "insert()", lookupActions, __ })
+        insert({ id, lookupActions, stack, address, __, insert: { ...data, parent: o.id } })
+
+    }, "confirmEmail()": ({ _window, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "confirmEmail()", object, lookupActions, __ })
+        data.store = "confirmEmail"
+        require("./save").save({ id, lookupActions, stack, address, e, __, save: data })
+
+    }, "mail()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        if (!o.__view__) return o
+
+        // wait address
+        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "mail()", object, lookupActions, __ })
+
+        require("./mail").mail({ req, res, _window, lookupActions, stack, address, id, e, __, data })
+        return true
+
+    }, "print()": () => {
+
+    }, "files()": ({ o }) => {
+
+        return [...(o.__element__.files || [])]
+
+    }, "file()": ({ o }) => {
+
+        return (o.__element__.files || [])[0]
+
+    }, "read()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        // wait address
+        var { address, data, action } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "mail()", object, lookupActions, __, id, dataInterpretAction: "conditional" })
+
+        if (!data) return
+        if (action === "toValue") data.file = data
+
+        fileReader({ req, res, _window, lookupActions, stack, address, id, e, __, data })
+
+    }, "upload()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "upload()", object, lookupActions, __, id })
+        require("./upload")({ _window, lookupActions, stack, address, req, res, id, e, upload: data, __ })
+
+    }, "search()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, req, res, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "search()", object, lookupActions, __, id })
+        // var data = searchParams({ _window, lookupActions, stack, address, id, e, __, req, res, string: args[1], object })
+        require("./search").search({ _window, lookupActions, stack, address, id, e, __, req, res, data })
+        return true
+
+    }, "erase()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "erase()", object, lookupActions, __, id })
+        require("./erase").erase({ _window, lookupActions, stack, address, id, e, __, req, res, erase: data })
+        return true
+
+    }, "save()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "save()", object, lookupActions, __, id })
+        require("./save").save({ _window, lookupActions, stack, address, id, e, __, req, res, save: data })
+        return true
+
+    }, "start()": ({ global, stack }) => {
+
+        var address = stack.addresses.find(address => address.id === stack.interpretingAddressID)
+        address.starter = true
+        var startID = generate()
+        global.__startAddresses__[startID] = { id: startID, address }
+
+        stack.logs.push(`${stack.logs.length} Starter STACK ${stack.id} ${stack.event.toUpperCase()} ${stack.string}`)
+
+        return startID
+
+    }, "end()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        var { data = {} } = toLine({ req, res, _window, lookupActions, stack, id, e, __, data: { string: args[1] }, action: "toParam" })
+        endAddress({ req, res, _window, lookupActions, stack, id, e, __, data })
+
+    }, "send()": ({ _window, req, res, stack, lookupActions, id, e, __, args, breakRequest }) => {
+
+        breakRequest.break = true
+        if (!res || res.headersSent) return
+
+        var executionDuration = (new Date()).getTime() - stack.executionStartTime, response
+
+        if (isParam({ _window, string: args[1] })) {
+
+            response = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            response.success = response.success !== undefined ? response.success : true
+            response.message = response.message || response.msg || "Action executed successfully!"
+            response.executionDuration = executionDuration
+            delete response.msg
+
+        } else {
+
+            var data = toValue({ req, res, _window, lookupActions, id, e, __, data: args[1] })
+            response = { success: true, message: "Action executed successfully!", data, executionDuration }
+        }
+
+        stack.terminated = true
+
+        // logs
+        console.log("Send " + stack.route, executionDuration)
+        stack.logs.push(stack.logs.length + " Send " + stack.route + " (" + executionDuration + ")")
+        response.logs = stack.logs
+
+        // respond
+        res.setHeader('Content-Type', 'application/json')
+        res.write(JSON.stringify(response));
+        res.end()
+
+    }, "sent()": ({ res }) => {
+
+        if (!res || res.headersSent) return true
+        else return false
+
+    }, "position()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var position = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        return require("./setPosition").setPosition({ position, id: o.id || id, e })
+
+    }, "csvToJson()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+
+        var file = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        require("./csvToJson").csvToJson({ id, lookupActions, stack, e, file, onload: args[2] || "", __ })
+
+    }, "copyToClipBoard()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        var text
+        if (args[1]) text = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        else text = o
+
+        if (navigator.clipboard) answer = navigator.clipboard.writeText(text)
+        else {
+            var textArea = document.createElement("textarea")
+            textArea.value = text
+            document.body.appendChild(textArea)
+            textArea.focus()
+            textArea.select()
+            textArea.setSelectionRange(0, 99999)
+            if (navigator.clipboard) navigator.clipboard.writeText(text)
+            else document.execCommand("copy")
+            document.body.removeChild(textArea)
+        }
+
+    }, "addClass()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__) return o
+        var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
+        if (o.__element__) return o.__element__.classList.add(_class)
+
+    }, "remClass()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__) return o
+        var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
+        if (o.__element__) return o.__element__.classList.remove(_class)
+
+    }, "toggleClass()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__) return o
+        var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
+        if (o.__element__) return o.__element__.classList.toggle(_class)
+
+    }, "encodeURI()": ({ o }) => {
+
+        return  encodeURI(o)
+
+    }, "preventDefault()": ({ e }) => {
+
+        e.preventDefault()
+
+    }, "decodeURI()": ({ o }) => {
+
+        return decodeURI(o)
+
+    } 
 }
 
 const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: _object, path, pathJoined, value, key, object } }) => {
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
     var view = views[id]
 
-    var pathJoined = pathJoined || path.join("."), breakRequest
+    var pathJoined = pathJoined || path.join("."), breakRequest = { break: false, index: -1 }
 
     // no path but there is value
     if (path.length === 0 && key && value !== undefined) return value
 
     var answer = path.reduce((o, k, i) => {
+
+        // break
+        if (breakRequest.break === true || breakRequest.index >= i) return o
 
         var lastIndex = path.length - 1
 
@@ -2214,7 +4449,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
         k = k.toString()
         var k0 = k.split(":")[0]
         var args = k.split(":")
-
+        
         // get underscores
         var underScored = 0
         while (k0.charAt(0) === "_") {
@@ -2231,24 +4466,13 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             }
         }
 
-        // break
-        if (breakRequest === true || breakRequest >= i) return o
-
+        // undefined
         if ((o === undefined || o === null) && k0 !== "push()" && k0 !== "replace()") return o
 
-        if (k0 === "log()") { // log
+        // delete
+        if (k0 !== "data()" && k0 !== "doc()" && path[i + 1] === "del()") {
 
-            var logs = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: underScored ? [o, ...__] : __, data: arg, object: underScored ? object : (i === 0 ? ((pathJoined || "").split(".")[0] !== k ? o : undefined) : o) }))
-            if (args.slice(1).length === 0 && pathJoined !== "log()") logs = [o]
-
-            console.log("LOG:" + (o.id || id), decode({ _window, string: pathJoined }), ...logs)
-            stack.logs.push(stack.logs.length + " LOG:" + (o.id || id) + " " + logs.join(" "))
-
-            return o
-
-        } else if (k0 !== "data()" && k0 !== "doc()" && path[i + 1] === "del()") {
-
-            breakRequest = i + 1
+            breakRequest.index = i + 1
             if (k.charAt(0) === "@" && k.length === 6) k = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: k, object })
 
             if (Array.isArray(o)) {
@@ -2263,13 +4487,10 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             return o
 
-        } else if (k0 === "while()") {
-
-            while (toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })) {
-                toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e })
-            }
-
-        } else if (underScored && !k0) { // _
+        } 
+        
+        // underscore
+        else if (underScored && !k0) { // _
 
             if (o.__view__) {
 
@@ -2288,7 +4509,10 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 else answer = o[underscores]
             }
 
-        } else if (k.charAt(0) === "@" && k.length === 6) { // k not k0
+        } 
+        
+        // encoded
+        else if (k.charAt(0) === "@" && k.length === 6) { // k not k0
 
             var data
             if (k0.charAt(0) === "@" && global.__refs__[k0].type === "text") data = global.__refs__[k0].data
@@ -2315,2213 +4539,13 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             } else answer = data
 
-        } else if (k0 === "data()") {
-
-            if (!o.__view__) return
-
-            breakRequest = true
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
-
-            if (data.path) return answer = kernel({ req, res, _window, lookupActions, stack, id, e, data: { data: data.data || global[data.doc || o.doc], value, key, path: data.path, object }, __ })
-
-            if (!o.doc) return
-
-            answer = kernel({ req, res, _window, lookupActions, stack, id, data: { path: [...o.__dataPath__, ...path.slice(i + 1)], object, data: global[o.doc], value, key }, __, e })
-
-        } else if (k0 === "doc()") {
-
-            breakRequest = true
-            var doc = o.__view__ ? o.doc : views[id].doc
-
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    args[1] = data.path || data.__dataPath__ || []
-                    if (typeof args[1] === "string") args[1] = args[1].split(".")
-
-                    return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
-                }
-
-                if (args[1].charAt(0) === "@") args[1] = global.__refs__[args[1]].data
-                args[1] = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-                if (typeof args[1] === "string") args[1] = args[1].split(".")
-
-                return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
-            }
-
-            if (path[i + 1] !== undefined) {
-
-                if (path[i + 1] && path[i + 1].charAt(0) === "@") path[i + 1] = toValue({ req, res, _window, lookupActions, stack, id, data: global.__refs__[path[i + 1]].data, __, e })
-                answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...path.slice(i + 1)], object }, __ })
-
-            } else if (key && value !== undefined) {
-                answer = global[doc] = value
-            } else answer = global[doc]
-
-        } else if (k0 === "parent()") {
-
-            return nthParent({ _window, nth: 1, o })
-
-        } else if (k0 === "2ndParent()") {
-
-            return nthParent({ _window, nth: 2, o })
-
-        } else if (k0 === "3rdParent()") {
-
-            return nthParent({ _window, nth: 3, o })
-
-        } else if (k0 === "nthParent()") {
-
-            if (!o.__view__ || !o.id) return
-            var nth = toValue({ _window, id, e, lookupActions, stack, __, data: args[1] })
-            return nthParent({ _window, nth, o })
-
-        } else if (k0 === "prevSiblings()") {
-
-            if (!o.__view__ || !o.id) return o
-            return views[o.__parent__].__childrenRef__.slice(0, o.__index__ + 1).map(({ id }) => views[id])
-
-        } else if (k0 === "nextSiblings()") {
-
-            if (!o.__view__ || !o.id) return o
-            return views[o.__parent__].__childrenRef__.slice(o.__index__ + 1).map(({ id }) => views[id])
-
-        } else if (k0 === "siblings()") {
-
-            if (!o.__view__ || !o.id) return o
-            var children = clone(views[o.__parent__].__childrenRef__)
-            children.splice(o.__index__, 1)
-            return children.map(({ id }) => views[id])
-
-        } else if (k0 === "next()") {
-
-            return nthNext({ _window, nth: 1, o })
-
-        } else if (k0 === "2ndNext()") {
-
-            return nthNext({ _window, nth: 2, o })
-
-        } else if (k0 === "3rdNext()") {
-
-            return nthNext({ _window, nth: 3, o })
-
-        } else if (k0 === "nthNext()") {
-
-            if (!o.__view__ || !o.id) return
-            var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
-            return nthNext({ _window, nth, o })
-
-        } else if (k0 === "last()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[views[o.__parent__].__childrenRef__.slice(-1)[0].id]
-
-        } else if (k0 === "2ndLast()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[views[o.__parent__].__childrenRef__.slice(-2)[0].id]
-
-        } else if (k0 === "3rdLast()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[views[o.__parent__].__childrenRef__.slice(-3)[0].id]
-
-        } else if (k0 === "nthLast()") {
-
-            if (!o.__view__ || !o.id) return
-            var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
-            if (!isNumber(nth)) return
-            return views[views[o.__parent__].__childrenRef__.slice(-1 * nth)[0].id]
-
-        } else if (k0 === "1stSibling()") {
-
-            if (!o.__view__ || !o.id) return o
-            return views[views[o.__parent__].__childrenRef__[0].id]
-
-        } else if (k0 === "2ndSibling()") {
-
-            if (!o.__view__ || !o.id) return o
-            return views[views[o.__parent__].__childrenRef__[1].id]
-
-        } else if (k0 === "3rdSibling()") {
-
-            if (!o.__view__ || !o.id) return o
-            return views[views[o.__parent__].__childrenRef__[2].id]
-
-        } else if (k0 === "nthSibling()") {
-
-            if (!o.__view__ || !o.id) return o
-            var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
-            return views[views[o.__parent__].__childrenRef__[nth - 1].id]
-
-        } else if (k0 === "grandChild()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[views[o.__childrenRef__[0].id].__childrenRef__[0].id]
-
-        } else if (k0 === "grandChildren()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[o.__childrenRef__[0].id].__childrenRef__.map(({ id }) => views[id])
-
-        } else if (k0 === "prev()") {
-
-            return nthPrev({ _window, nth: 1, o })
-
-        } else if (k0 === "2ndPrev()") {
-
-            return nthPrev({ _window, nth: 2, o })
-
-        } else if (k0 === "3rdPrev()") {
-
-            return nthPrev({ _window, nth: 3, o })
-
-        } else if (k0 === "nthPrev()") {
-
-            if (!o.__view__ || !o.id) return
-            var nth = toValue({ _window, id, e, __, value: args[1], lookupActions, stack })
-            return nthPrev({ _window, nth, o })
-
-        } else if (k0 === "1stChild()" || k0 === "child()") {
-
-            if (!o.__view__ || !o.id || !o.__childrenRef__[0]) return
-            return views[o.__childrenRef__[0].id]
-
-        } else if (k0 === "2ndChild()") {
-
-            if (!o.__view__ || !o.id || !o.__childrenRef__[1]) return
-            return views[o.__childrenRef__[1].id]
-
-        } else if (k0 === "3rdChild()") {
-
-            if (!o.__view__ || !o.id || !o.__childrenRef__[2]) return
-            return views[o.__childrenRef__[2].id]
-
-        } else if (k0 === "nthChild()") {
-
-            if (!o.__view__ || !o.id) return
-            var nth = toValue({ _window, __, value: args[1], e, id, stack, lookupActions })
-            if (!isNumber(nth)) return
-            if (!o.__childrenRef__[nth - 1]) return
-            return views[o.__childrenRef__[nth - 1].id]
-
-        } else if (k0 === "3rdLastChild()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[o.__childrenRef__.slice(-3)[0].id]
-
-        } else if (k0 === "2ndLastChild()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[o.__childrenRef__.slice(-2)[0].id]
-
-        } else if (k0 === "lastChild()") {
-
-            if (!o.__view__ || !o.id) return
-            return views[o.__childrenRef__.slice(-1)[0].id]
-
-        } else if (k0 === "nthLastChild()") {
-
-            if (!o.__view__ || !o.id) return
-            var nth = toValue({ _window, __, value: args[1], e, id })
-            if (!isNumber(nth)) return
-            return views[o.__childrenRef__.slice(-1 * nth)[0].id]
-
-        } else if (k0 === "children()") {
-
-            if (!o.__view__ || !o.id) return
-            return o.__childrenRef__.map(({ id }) => views[id])
-
-        } else if (k0 === "lastEl()") {
-            return o[o.length - 1]
-        } else if (k0 === "2ndLastEl()") {
-            return o[o.length - 2]
-        } else if (k0 === "3rdLastEl()") {
-            return o[o.length - 3]
-        } else if (k0 === "nthLastEl()") {
-            var nth = toValue({ _window, __, value: args[1], e, id, lookupActions, stack })
-            return o[o.length - nth]
-        }
+        } 
 
         // OOP
-        else if (actions[k0]) return actions[k0]({ _window, req, res, global, views, view, o, stack, pathJoined, lookupActions, id, e, __, args })
-
-
-        else if (k0 === "installApp()") {
-
-            const installApp = async () => {
-
-                global.__installApp__.prompt();
-                const { outcome } = await global.__installApp__.userChoice;
-                console.log(`User response to the install prompt: ${outcome}`);
-            }
-
-            installApp()
-
-        } else if (k0 === "clearTimer()") {
-
-            var timer = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e }) || o
-            answer = clearTimeout(timer)
-
-        } else if (k0 === "clearInterval()") {
-
-            var timer = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e }) || o
-            answer = clearInterval(timer)
-
-        } else if (k0 === "interval()") {
-
-            if (!o.__view__) return
-            if (!isNaN(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))) { // interval():params:timer
-
-                var timer = parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))
-                var myFn = () => toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], object })
-                answer = setInterval(myFn, timer)
-            }
-
-        } else if (k0 === "repeat()") {
-
-            var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
-            var times = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
-            var loop = []
-            for (var i = 0; i < times; i++) {
-                loop.push(item)
-            }
-            return loop
-
-        } else if (k0 === "timer()") { // timer():params:timer:repeats
-
-            var timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })) : 0
-            var repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object })) : false
-            var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object }) }
-
-            if (typeof repeats === "boolean") {
-
-                if (repeats === true) answer = setInterval(myFn, timer)
-                else if (repeats === false) answer = setTimeout(myFn, timer)
-
-            } else if (typeof repeats === "number") {
-
-                answer = []
-                answer.push(setTimeout(myFn, timer))
-                if (repeats > 1) {
-                    for (let index = 0; index < repeats; index++) {
-                        answer.push(setTimeout(myFn, timer))
-                    }
-                }
-            }
-
-            if (o.__view__) toArray(answer).map(timer => o.__timers__.push(timer))
-
-        } else if (k0 === "slice()") { // slice by text or by number
-
-            if (!Array.isArray(o) && typeof o !== "string" && typeof o !== "number") return
-
-            var start = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object })
-            var end = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[2], __, object })
-
-            if (end !== undefined) {
-
-                if (!isNaN(end)) {
-
-                    if (!isNaN(start)) answer = o.slice(parseInt(start), parseInt(end))
-                    else {
-                        answer = o.split(start)[1]
-                        answer = answer.slice(0, end)
-                    }
-
-                } else {
-
-                    if (!isNaN(start)) answer = o.slice(parseInt(start))
-                    else answer = o.split(start)[1]
-                    answer = answer.split(end)[0]
-                }
-
-            } else {
-
-                if (!isNaN(start)) answer = o.slice(parseInt(start) || 0)
-                else answer = o.split(start)[1]
-            }
-
-        } else if (k0 === "reduce()") { // o.reduce():[path=]
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            if (Array.isArray(data)) data = { path: data }
-            answer = reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.data !== undefined ? true : key, value: data.data !== undefined ? data.data : value }, e, req, res, __ })
-
-        } else if (k0 === "path()") {
-
-            var data = {}
-            if (args[1]) {
-
-                if (isParam({ _window, string: args[1] })) {
-
-                    data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-
-                } else data.path = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            }
-
-            if ((key && value !== undefined && lastIndex) || data.value !== undefined) {
-
-                if (data.path !== undefined) return toArray(data.path).reduce((o, k, i) => {
-                    if (i === data.path.length - 1) return o[k] = data.value !== undefined ? data.value : value
-                    else return o[k]
-                }, o)
-
-                else return o.__dataPath__
-
-            } else {
-
-                if (data.path !== undefined) return toArray(data.path).reduce((o, k) => o[k], o)
-                else return o.__dataPath__
-            }
-
-        } else if (k0 === "reload()") {
-
-            document.location.reload(true)
-
-        } else if (k0 === "contains()") {
-
-            var first = o, next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            if (!first || !next) return
-
-            if (typeof first === "string") first = views[first]
-            if (typeof next === "string") next = views[next]
-
-            if (first.nodeType === Node.ELEMENT_NODE) first = views[first.id]
-            if (next.nodeType === Node.ELEMENT_NODE) next = views[next.id]
-
-            if (!first.__view__ || !next.__view__) return
-
-            if (first.__element__.nodeType === Node.ELEMENT_NODE && next.__element__.nodeType === Node.ELEMENT_NODE) {
-                answer = first.__element__.contains(next.__element__)
-                if (!answer) answer = first.__element__.id === next.__element__.id
-            }
-
-        } else if (k0 === "in()") {
-
-            var next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-
-            if (next) {
-                if (typeof o === "string" || Array.isArray(o) || typeof o === "number") return answer = next.includes(o)
-                else if (typeof o === "object") answer = next[o] !== undefined
-                else if (o.nodeType === Node.ELEMENT_NODE && next.nodeType === Node.ELEMENT_NODE) return answer = next.contains(o)
-            } else return false
-
-        } else if (k0 === "is()") {
-
-            var b = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            answer = isEqual(o, b)
-
-        } else if (k0 === "opp()") {
-
-            if (typeof o === "number") answer = -1 * o
-            else if (typeof o === "boolean") answer = !o
-            else if (typeof o === "string" && o === "true" || o === "false") {
-                if (o === "true") answer = false
-                else answer = true
-            }
-
-        } else if (k0 === "neg()") {
-
-            answer = o < 0 ? o : -o
-
-        } else if (k0 === "pos()") {
-
-            answer = o > 0 ? o : o < 0 ? -o : o
-
-        } else if (k0 === "sum()") {
-
-            answer = o.reduce((o, k) => o + toNumber(k), 0)
-
-        } else if (k0 === "src()") {
-
-            if (!o.__view__) return
-
-            if (lastIndex && key && value !== undefined) answer = o.__element__.src = value
-            else answer = o.__element__.src
-
-        } else if (k0 === "clear()") {
-
-            if (!o.__view__) return
-            o.__element__.value = null
-            o.__element__.text = null
-            o.__element__.files = null
-
-        } else if (k0 === "list()") {
-
-            answer = toArray(o)
-            answer = [...answer]
-
-        } else if (k0 === "notify()") {
-
-            var notify = () => {
-                if (isParam({ _window, string: args[1] })) {
-
-                    var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    new Notification(_params.title || "", _params)
-
-                } else {
-
-                    var title = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                    new Notification(title || "")
-                }
-            }
-
-            if (!("Notification" in window)) {
-                // Check if the browser supports notifications
-                alert("This browser does not support notification");
-            } else if (Notification.permission === "granted") {
-                // Check whether notification permissions have already been granted;
-                // if so, create a notification
-                notify()
-                // …
-            } else if (Notification.permission !== "denied") {
-
-                // We need to ask the user for permission
-                Notification.requestPermission().then((permission) => {
-                    // If the user accepts, let's create a notification
-                    if (permission === "granted") {
-                        notify()
-                        // …
-                    }
-                });
-            }
-
-        } else if (k0 === "alert()") {
-
-            var text = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            alert(text)
-
-        } else if (k0 === "clone()") {
-
-            answer = clone(o)
-
-        } else if (k0 === "override()") {
-
-            var obj1 = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
-            override(o, obj1)
-
-        } else if (k0 === "txt()") {
-
-            if (!o.__view__) return
-
-            var el
-            if ((o.__islabel__ || o.__labeled__) && o.__name__ !== "Input") el = o.__element__.getElementsByTagName("INPUT")[0]
-            else if (views[o.id].__status__ === "Mounted") el = o.__element__
-
-            if (value) value = replaceNbsps(value)
-
-            if (el) {
-
-                if (views[el.id].__name__ === "Input") {
-
-                    answer = el.value
-                    if (i === lastIndex && key && value !== undefined && o.__element__) answer = el.value = value
-                    else if (path[i + 1] === "del()") {
-                        breakRequest = i + 1
-                        answer = el.value = ""
-                    }
-
-                } else {
-
-                    answer = (el.textContent === undefined) ? el.innerText : el.textContent
-                    if (i === lastIndex && key && value !== undefined) answer = el.innerHTML = value
-                    else if (path[i + 1] === "del()") {
-                        breakRequest = i + 1
-                        answer = el.innerHTML = ""
-                    }
-                }
-
-            } else {
-
-                if (i === lastIndex && key && value !== undefined) answer = views[o.id].text = value
-                else if (path[i + 1] === "del()") {
-                    breakRequest = i + 1
-                    answer = views[o.id].text = ""
-                }
-                answer = views[o.id].text
-            }
-
-        } else if (k0 === "min()") {
-
-            if (!o.__view__) return
-
-            answer = o.min
-            if (i === lastIndex && key && value !== undefined) o.min = value
-
-        } else if (k0 === "max()") {
-
-            if (!o.__view__) return
-
-            answer = o.max
-            if (i === lastIndex && key && value !== undefined) o.max = value
-
-        } else if (k0 === "push()") {
-
-            if (!Array.isArray(o)) o = kernel({ req, res, _window, id, data: { data: _object, path: path.slice(0, i), value: [], key: true, object }, __, e })
-
-            var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
-            var index = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
-
-            if (!Array.isArray(o)) return
-            if (index === undefined) index = o.length || 0
-
-            if (Array.isArray(item)) {
-
-                item.map(item => {
-                    o.splice(index, 0, item)
-                    index += 1
-                })
-
-            } else if (Array.isArray(o)) o.splice(index, 0, item)
-
-            answer = o
-
-        } else if (k0 === "pushItems()") {
-
-            args.slice(1).map(arg => {
-                arg = toValue({ req, res, _window, id, data: args[1], __, e, object })
-                o.splice(o.length, 0, arg)
-            })
-
-        } else if (k0 === "pullIndex()") { // pull by index
-
-            // if no index pull the last element
-            var lastIndex = 1, firstIndex = 0
-            if (args[1]) firstIndex = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack })
-            if (args[2]) lastIndex = toValue({ _window, id, data: args[2], __, e, object, lookupActions, stack })
-
-            o.splice(firstIndex, lastIndex || 1)
-            answer = o
-
-        } else if (k0 === "pull()") { // pull by conditions
-
-            var items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __, lookupActions, stack }))
-
-            items.filter(data => data !== undefined && data !== null).map(_item => {
-                var _index = o.findIndex(item => isEqual(item, _item))
-                if (_index !== -1) o.splice(_index, 1)
-            })
-
-            return answer = o
-
-        } else if (k0 === "pullItem()") { // pull by item
-
-            var item = toValue({ _window, id, data: args[1], __, e, object })
-            var index = o.findIndex(_item => isEqual(_item, item))
-            if (index !== -1) o.splice(index, 1)
-            answer = o
-
-        } else if (k0 === "pullLast()") {
-
-            // if no it pulls the last element
-            o.splice(o.length - 1, 1)
-            answer = o
-
-        } else if (k0 === "rem()") {
-
-            if (!o.__view__) return
-            remove({ id: o.id, __, stack })
-
-        } else if (k0 === "keys()") {
-
-            answer = Object.keys(o)
-
-        } else if (k0 === "key()") {
-
-            if (i === lastIndex && value !== undefined && key) answer = Object.keys(o)[0] = value
-            else answer = Object.keys(o)[0]
-
-        } else if (k0 === "values()") { // values in an object
-
-            if (Array.isArray(o)) answer = o
-            else answer = Object.values(o)
-
-        } else if (k0 === "value()") { // value 0 in an object
-
-            if (i === lastIndex && value !== undefined && key) answer = o[Object.keys(o)[0]] = value
-            else answer = Object.values(o)[0]
-
-        } else if (k0 === "gen()") {
-
-            if (isParam({ _window, string: args[1] })) {
-
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                answer = generate(data)
-
-            } else {
-
-                var length = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 5
-                answer = generate({ length })
-            }
-
-        } else if (k0 === "inc()") {
-
-            var item = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-
-            if (typeof o === "string") answer = o.split(item).length > 1
-            else if (Array.isArray(o)) answer = o.find(_item => isEqual(_item, item)) ? true : false
-
-        } else if (k0 === "incAny()") {
-
-            var items = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            answer = false
-
-            if (typeof o === "string") {
-
-                items.map(item => {
-
-                    if (answer) return
-                    answer = o.split(item).length > 1
-                })
-
-            } else if (Array.isArray(o)) {
-
-                items.map(item => {
-
-                    if (answer) return
-                    answer = o.find(_item => isEqual(_item, item)) ? true : false
-                })
-            }
-
-        } else if (k0 === "capitalize()") {
-
-            answer = capitalize(o)
-
-        } else if (k0 === "capitalizeFirst()") {
-
-            answer = capitalizeFirst(o)
-
-        } else if (k0 === "len()") {
-
-            if (Array.isArray(o)) answer = o.length
-            else if (typeof o === "string") answer = o.split("").length
-            else if (typeof o === "object") answer = Object.keys(o).length
-
-        } else if (k0 === "require()") {
-
-            require(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
-
-        } else if (k0 === "new()") {
-
-            var data = [], className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            args.slice(1).map(arg => {
-                data.push(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg || "" }))
-            })
-            if (className && typeof (new [className]()) === "object") answer = new [className](...data)
-
-        } else if (k0 === "today()" || k0 === "now()") {
-
-            answer = new Date()
-
-        } else if (k0 === "todayEnd()") {
-
-            answer = new Date()
-            answer.setUTCHours(23, 59, 59, 999)
-
-        } else if (k0 === "timezone()") {
-
-            var _date = new Date()
-            var timeZone = Math.abs(_date.getTimezoneOffset()) * 60 * 1000
-            return timeZone
-
-        } else if (k0 === "clock()") { // dd:hh:mm:ss
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            if (!data.timestamp) data.timestamp = o
-
-            answer = toClock(data)
-
-        } else if (k0 === "toSimplifiedDate()") {
-
-            var data = toParam({ _window, req, res, lookupActions, stack, id, e, data: args[1], __ })
-            answer = toSimplifiedDate({ timestamp: o, lang: data.lang || "en", timer: data.time || false })
-
-        } else if (k0 === "ar()") {
-            //
-            if (Array.isArray(o)) answer = o.map(o => o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
-            else answer = o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d])
-
-        } else if (k0 === "date()") {
-
-            var data = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack })
-            if (isNumber(data) && typeof data === "string") data = parseInt(data)
-            answer = new Date(data)
-
-        } else if (k0 === "toDateFormat()") { // returns date for input
-
-            if (isParam({ _window, string: args[1] })) {
-
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                var format = data.format, day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
-
-                if (typeof o === "string") {
-
-                    if (format.split("/").length > 1) {
-
-                        var date = o.split("/")
-                        format.split("/").map((format, i) => {
-                            if (format === "dd") day = date[i]
-                            else if (format === "mm") month = date[i]
-                            else if (format === "yyyy") year = date[i]
-                            else if (format === "hh") hour = date[i]
-                            else if (format === "mm") min = date[i]
-                            else if (format === "ss") sec = date[i]
-                        })
-                    }
-
-                    return new Date(year, month, day, hour, min, sec)
-
-                } else if (data.excel && typeof o === "number") {
-
-                    function ExcelDateToJSDate(serial) {
-
-                        var utc_days = Math.floor(serial - 25569)
-                        var utc_value = utc_days * 86400
-                        var date_info = new Date(utc_value * 1000)
-
-                        var fractional_day = serial - Math.floor(serial) + 0.0000001
-
-                        var total_seconds = Math.floor(86400 * fractional_day)
-
-                        var seconds = total_seconds % 60
-
-                        total_seconds -= seconds
-
-                        var hours = Math.floor(total_seconds / (60 * 60))
-                        var minutes = Math.floor(total_seconds / 60) % 60
-
-                        return new Date(date_info.getFullYear(), date_info.getMonth(), date_info.getDate(), hours, minutes, seconds)
-                    }
-
-                    return ExcelDateToJSDate(o)
-                }
-
-            } else {
-
-                var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) || "format1"
-
-                if (!isNaN(o) && typeof o === "string") o = parseInt(o)
-                var date = new Date(o)
-                var _year = date.getFullYear()
-                var _month = date.getMonth() + 1
-                var _day = date.getDate()
-                var _dayofWeek = date.getDay()
-                var _hour = date.getHours()
-                var _mins = date.getMinutes()
-                var _daysofWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
-                var monthsCode = ["JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"]
-
-                if (format.replace(" ", "") === "format1") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${args[1] === "time" ? ` ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}` : ""}`
-                else if (format.replace(" ", "") === "format2") return `${_year.toString()}-${_month.toString().length === 2 ? _month : `0${_month}`}-${_day.toString().length === 2 ? _day : `0${_day}`}`
-                else if (format.replace(" ", "") === "format3") return `${_day.toString().length === 2 ? _day : `0${_day}`}${monthsCode[_month - 1]}${_year.toString().slice(2)}`
-                else if (format.replace(" ", "") === "format4") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${` | ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}`}`
-            }
-
-        } else if (k0 === "toDateInputFormat()") { // returns date for input in a specific format
-
-            var data = {}
-            if (isParam({ _window, string: args[1] })) {
-
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            } else if (args[1]) {
-                data = { date: toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) }
-            } else data = { date: o }
-
-            var format = data.format || "yyyy-mm-dd"
-            var date = new Date(data.date || o)
-            if (!date) return
-
-            var day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
-            var newDate = ""
-
-            if (format.split("/").length === 3) {
-
-                format.split("/").map((format, i) => {
-                    if (i !== 0) newDate += "-"
-                    format = format.toLowerCase()
-                    if (format === "dd") {
-                        day = date.getDate()
-                        newDate += day.toString().length === 2 ? day : `0${day}`
-                    } else if (format === "mm") {
-                        month = date.getMonth() + 1
-                        newDate += month.toString().length === 2 ? month : `0${month}`
-                    } else if (format === "yyyy") {
-                        year = date.getFullYear()
-                        newDate += year
-                    } else if (format === "hh") {
-                        hour = date.getHours() || 0
-                        newDate += hour.toString().length === 2 ? hour : `0${hour}`
-                    } else if (format === "mm") {
-                        min = date.getMinutes() || 0
-                        newDate += min.toString().length === 2 ? min : `0${min}`
-                    } else if (format === "ss") {
-                        sec = date.getSeconds() || 0
-                        newDate += sec.toString().length === 2 ? sec : `0${sec}`
-                    } else if (format === "hh:mm:ss") {
-                        hour = date.getHours() || 0
-                        min = date.getMinutes() || 0
-                        sec = date.getSeconds() || 0
-                        newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`) + ":" + (sec.toString().length === 2 ? sec : `0${sec}`)
-                    } else if (format === "hh:mm") {
-                        hour = date.getHours() || 0
-                        min = date.getMinutes() || 0
-                        newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`)
-                    }
-                })
-
-            } else if (format.split("T").length === 2 || format.split("T")[0].split("-").length === 3) {
-
-                var length = format.split("T").length
-                format.split("T").map((format, i) => {
-                    format.split("-").map((format, i) => {
-                        format = format.toLowerCase()
-                        if (i !== 0) newDate += "-"
-                        if (format === "dd") {
-                            day = date.getDate()
-                            newDate += day.toString().length === 2 ? day : `0${day}`
-                        } else if (format === "mm") {
-                            month = date.getMonth() + 1
-                            newDate += month.toString().length === 2 ? month : `0${month}`
-                        } else if (format === "yyyy") {
-                            year = date.getFullYear()
-                            newDate += year
-                        } else if (format === "hh") {
-                            hour = date.getHours() || 0
-                            newDate += (hour.toString().length === 2 ? hour : `0${hour}`)
-                        } else if (format === "mm") {
-                            min = date.getMinutes() || 0
-                            newDate += (min.toString().length === 2 ? min : `0${min}`)
-                        } else if (format === "ss") {
-                            sec = date.getSeconds() || 0
-                            newDate += (sec.toString().length === 2 ? sec : `0${sec}`)
-                        } else if (format === "hh:mm:ss") {
-                            hour = date.getHours() || 0
-                            min = date.getMinutes() || 0
-                            sec = date.getSeconds() || 0
-                            newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`) + ":" + (sec.toString().length === 2 ? sec : `0${sec}`)
-                        } else if (format === "hh:mm") {
-                            hour = date.getHours() || 0
-                            min = date.getMinutes() || 0
-                            newDate += (hour.toString().length === 2 ? hour : `0${hour}`) + ":" + (min.toString().length === 2 ? min : `0${min}`)
-                        }
-                    })
-                    if (length === 2 && i === 0) newDate += "T"
-                })
-
-            }
-
-            return newDate
-
-        } else if (k0 === "getGeoLocation") {
-
-            navigator.geolocation.getCurrentPosition((position) => { answer = position })
-
-        } else if (k0 === "counter()") {
-
-            var data = {}
-            if (isParam({ _window, string: args[1] })) data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-
-            data.counter = data.counter || data.start || data.count || 0
-            data.length = data.length || data.len || data.maxLength || 0
-            data.end = data.end || data.max || data.maximum || 999999999999
-
-            answer = require("./counter").counter({ ...data })
-
-        } else if (k0 === "time()") {
-
-            if (isNumber(o)) {
-
-                var _1Day = 24 * 60 * 60 * 1000, _1Hr = 60 * 60 * 1000, _1Min = 60 * 1000
-                o = parseInt(o)
-
-                var _days = Math.floor(o / _1Day).toString()
-                _days = _days.length === 1 ? ("0" + _days) : _days
-
-                var _hrs = Math.floor(o % _1Day, _1Hr).toString()
-                _hrs = _hrs.length === 1 ? ("0" + _hrs) : _hrs
-
-                var _mins = Math.floor(o % _1Hr, _1Min).toString()
-                _mins = _mins.length === 1 ? ("0" + _mins) : _mins
-
-                answer = _days + ":" + _hrs + ":" + _mins
-            }
-
-        } else if (k0 === "timestamp()") {
-
-            if (o instanceof Date) answer = o.getTime()
-            else if (o.length === 5 && o.split(":").length === 2) {
-
-                var _hrs = parseInt(o.split(":")[0]) * 60 * 60 * 1000
-                var _mins = parseInt(o.split(":")[1]) * 60 * 1000
-                answer = _hrs + _mins
-
-            } else if (o.length === 8 && o.split(":").length === 3) {
-
-                var _days = parseInt(o.split(":")[0]) * 24 * 60 * 60 * 1000
-                var _hrs = parseInt(o.split(":")[1]) * 60 * 60 * 1000
-                var _mins = parseInt(o.split(":")[2]) * 60 * 1000
-                answer = _days + _hrs + _mins
-
-            } else {
-
-                o = new Date(o)
-                if (o.getTime()) return answer = o.getTime()
-                o = new Date()
-                answer = o.getTime()
-            }
-
-        } else if (k0 === "getDateTime()") {
-
-            var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
-            answer = getDateTime(o, format)
-
-        } else if (k0 === "getDaysInMonth()") {
-
-            if (o instanceof Date) answer = new Date(o.getFullYear(), o.getMonth() + 1, 0).getDate()
-
-        } else if (k0 === "1MonthLater()") {
-
-            var date = o instanceof Date ? o : new Date()
-            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
-            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-
-            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
-
-        } else if (k0 === "2MonthLater()") {
-
-            var date = o instanceof Date ? o : new Date()
-            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
-            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-            month = month + 1 > 11 ? 1 : month + 1
-            year = month === 1 ? year + 1 : year
-
-            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
-
-        } else if (k0 === "3MonthLater()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
-            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-            month = month + 1 > 11 ? 1 : month + 1
-            year = month === 1 ? year + 1 : year
-            month = month + 1 > 11 ? 1 : month + 1
-            year = month === 1 ? year + 1 : year
-            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
-
-        } else if (k0 === "1MonthEarlier") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
-            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
-
-        } else if (k0 === "2MonthEarlier") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
-            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-            month = month - 1 < 0 ? 11 : month - 1
-            year = month === 11 ? year - 1 : year
-            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
-
-        } else if (k0 === "3MonthEarlier") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
-            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-            month = month - 1 < 0 ? 11 : month - 1
-            year = month === 11 ? year - 1 : year
-            month = month - 1 < 0 ? 11 : month - 1
-            year = month === 11 ? year - 1 : year
-            answer = new Date(date.setYear(year)).setMonth(month, date.getDays())
-
-        } else if (k0 === "todayStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = date.setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "todayEnd()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = date.setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "monthStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = _date.getTimezoneOffset() % 60
-            var _hrs = (_date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(_date.setMonth(_date.getMonth(), 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "monthEnd()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(date.setMonth(date.getMonth(), getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "nextMonthStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
-            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "nextMonthEnd()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
-            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "2ndNextMonthStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = o.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
-            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-            month = month + 1 > 11 ? 1 : month + 1
-            year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "2ndNextMonthEnd()") {
-
-            var date
-            if (typeof o.getMonth === 'function') date = o
-            else date = new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
-            var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-            month = month + 1 > 11 ? 1 : month + 1
-            year = month === 1 ? year + 1 : year
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "prevMonthStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
-            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "prevMonthEnd()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
-            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "2ndPrevMonthStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
-            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-            month = month - 1 < 0 ? 11 : month - 1
-            year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "2ndPrevMonthEnd()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
-            var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-            month = month - 1 < 0 ? 11 : month - 1
-            year = month === 11 ? year - 1 : year
-            answer = new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "yearStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "yearEnd()") {
-
-            var date
-            if (typeof o.getMonth === 'function') date = o
-            else date = new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "nextYearStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "nextYearEnd()") {
-
-            var date
-            if (typeof o.getMonth === 'function') date = o
-            else date = new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "prevYearStart()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
-
-        } else if (k0 === "prevYearEnd()") {
-
-            var date = o instanceof Date ? o : new Date()
-
-            var _min = date.getTimezoneOffset() % 60
-            var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-            if (_hrs < 0) {
-                _hrs = _hrs * -1
-                _min = _min * -1
-            }
-
-            answer = new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
-
-        } else if (k0 === "removeDuplicates()") { // without condition and by condition. ex: removeDuplicates():number (it will remove items that has the same number value)
-
-            if (args[1]) {
-
-                var keys = toValue({ _window, e, data: args[1], id, __, lookupActions, stack })
-                var list = []
-
-                toArray(keys).map(key => {
-
-                    var seen = new Set()
-
-                    o.map(item => {
-                        if (!seen.has(item[key])) {
-                            seen.add(item[key])
-                            list.push(item)
-                        }
-                    })
-                })
-
-                return answer = o = list
-
-            } else {
-
-                if (!Array.isArray(o)) return o
-                var removeDuplicates = (array) => {
-                    for (let i = 0; i < array.length; i++) {
-                        if (array.filter(el => isEqual(el, array[i])).length > 1) {
-
-                            array.splice(i, 1);
-                            removeDuplicates(array);
-                            break;
-                        }
-                    }
-                }
-
-                removeDuplicates(o);
-                return o
-            }
-
-        } else if (k0 === "replace()") { // replace():prev:new
-
-            if (!Array.isArray(o) && typeof o !== "string") o = kernel({ req, res, _window, id, data: { data: _object, path: path.slice(0, i), value: [], key: true, object }, __, e })
-
-            var rec0, rec1
-
-            rec0 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
-            rec1 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] || "" })
-
-            if (typeof o === "string") {
-
-                if (rec1 !== undefined) answer = o.replace(rec0, rec1)
-                else answer = o.replace(rec0)
-
-            } else if (Array.isArray(o)) {
-
-                var _itemIndex = o.findIndex(item => isEqual(item, rec0)), rec2 = rec1 || rec0 // replace():rec0:rec1 || replace():rec0 (if rec0 doesnot exist push it)
-                if (_itemIndex >= 0) o[_itemIndex] = rec2
-                else o.push(rec2)
-                return o
-            }
-
-        } else if (k0 === "replaceItem()") { // replace by condition
-
-            if (!Array.isArray(o)) return
-            if (isParam({ _window, string: args[1] })) {
-
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                var _path = data.path, _data = data.data
-                var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, data: item }, e, __: [o, ...__] }), kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], key, value, data: _data }, __: [o, ...__], e })))
-                if (_index >= 0) o[_index] = _data
-                else o.push(_data)
-
-            } else if (args[1]) {
-
-                var data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-
-                if (typeof o[0] === "object" || (typeof o[0] === "undefined" && typeof data === "object")) {
-
-                    var _index = o.findIndex(item => item.id === data.id)
-                    if (_index >= 0) o[_index] = data
-                    else o.push(data)
-
-                } else if ((typeof o[0] === "undefined" && typeof data !== "object") || typeof o[0] === "number" || typeof o[0] === "string") {
-
-                    var _index = o.findIndex(item => item === data)
-                    if (_index < 0) o.push(data)
-                }
-            }
-
-        } else if (k0 === "replaceItems()") {
-
-            if (isParam({ _window, string: args[1] })) {
-
-                var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                var _path = _params.path, _data = _params.data.filter(data => data !== undefined && data !== null)
-                toArray(_data).map(_data => {
-
-                    var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], data: item }, __: [o, ...__], e }), kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], data: _data }, __: [o, ...__], e })))
-                    if (_index >= 0) o[_index] = _data
-                    else o.push(_data)
-                })
-
-            } else if (args[1]) {
-
-                var _data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }).filter(data => data !== undefined && data !== null)
-                if (typeof o[0] === "object") {
-
-                    toArray(_data).map(_data => {
-
-                        var _index = o.findIndex(item => item.id === _data.id)
-                        if (_index >= 0) o[_index] = _data
-                        else o.push(_data)
-                    })
-
-                } else if (typeof o[0] === "number" || typeof o[0] === "string") {
-
-                    toArray(_data).map(_data => {
-
-                        var _index = o.findIndex(item => item === _data)
-                        if (_index >= 0) o[_index] = _data
-                        else o.push(_data)
-                    })
-                }
-            }
-
-        } else if (k0 === "terminate()") {
-
-            stack.terminated = true
-
-        } else if (k0 === "break()") {
-
-            if (stack.loop) stack.broke = true
-
-        } else if (k0 === "return()") {
-
-            stack.returns[0].data = answer = toValue({ _window, data: args[1], e, id, object, __, stack, lookupActions })
-            stack.returns[0].returned = true
-
-        } else if (k0 === "toggleMode()") {
-
-            document.documentElement.classList.toggle("darkmode")
-
-        } else if (k0 === "export()") {
-
-            var data = toLine({ _window, req, res, _window, id, e, __, data: { string: args[1] } }).data
-
-            if (data.json) data.type = "json"
-            if (data.csv) data.type = "csv"
-            if (data.excel) data.type = "excel"
-            if (data.pdf) data.type = "pdf"
-
-            if (data.type === "json") exportJson(data)
-            else if (data.type === "csv") require("./toCSV").toCSV(data)
-            else if (data.type === "excel") require("./toExcel").toExcel(data)
-            else if (data.type === "pdf") require("./toPdf").toPdf(data)
-
-        } else if (k0 === "flat()") {
-
-            if (typeof o === "object") {
-                if (Array.isArray(o)) {
-                    o = [...o]
-                    answer = o.flat()
-                } else {
-
-                    if (typeof _object === "object") Object.entries(o).map(([key, value]) => _object[key] = value)
-                    return _object
-                }
-            } else return o
-
-        } else if (k0 === "action()") {
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            if (typeof data.path === "string") data.path = data.path.split(".")
-            toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { path: data.path || data.action.split("."), view: data.view, data: data.data }, condition, object })
-
-        } else if (k0 === "getDeepChildrenId()") {
-
-            answer = getDeepChildrenId({ _window, id: o.id })
-
-        } else if (k0 === "deep()" || k0 === "deepChildren()") {
-
-            answer = getDeepChildren({ _window, id: o.id })
-
-        } else if (k0 === "filter()") {
-
-            var args = k.split(":").slice(1), isnot
-            if (!args[0]) isnot = true
-
-            if (isnot) answer = toArray(o).filter(o => o !== "" && o !== undefined && o !== null)
-            else args.map(arg => {
-
-                if (underScored) answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: arg, id, __: [o, ...__], req, res }))
-                else answer = toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: arg, id, object: o, req, res, __ }))
-            })
-
-        } else if (k0 === "find()") {
-
-            if (i === lastIndex && key && value !== undefined) {
-
-                var index
-                if (underScored) index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-                else index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
-                if (index !== undefined && index !== -1) o[index] = answer = value
-
-            } else {
-
-                if (underScored) answer = toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-                else answer = toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
-            }
-
-        } else if (k0 === "sort()") {
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            if (!data.data) data.data = o
-
-            // else return o
-            data.data = answer = require("./sort").sort({ _window, lookupActions, stack, __, sort: data, id, e })
-
-            return answer
-
-        } else if (k0 === "findIndex()") {
-
-            if (typeof o !== "object") return
-
-            if (underScored) answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-            else answer = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
-
-        } else if (k0 === "()") { // map()
-
-            var notArray = false
-            if (args[1] && args[1].charAt(0) === "@" && args[1].length == 6) args[1] = global.__refs__[args[1]].data
-            if (args[2] && args[2].charAt(0) === "@" && args[2].length == 6) args[2] = global.__refs__[args[2]].data
-
-            if (typeof o === "object" && !Array.isArray(o)) notArray = true
-
-            stack.loop = true
-
-            if (args[1] && underScored) {
-
-                toArray(o).map(o => toValue({ req, res, _window, lookupActions, stack, id, data: args[1] || "", object, __: [o, ...__], e }))
-                answer = o
-
-            } else if (args[1]) {
-
-                answer = toArray(o).map(o => toValue({ req, res, _window, lookupActions, stack, id, data: args[1] || "", object: o, __, e }))
-
-            } else if (args[2] && underScored) {
-
-                breakRequest = true
-                var address;
-                ([...toArray(o)]).reverse().map(o => {
-                    // address
-                    address = addresser({ _window, id, stack, nextAddress: address, __: [o, ...__], lookupActions, data: { string: args[2] }, object }).address
-                })
-
-                // address
-                if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
-
-            } else if (args[2]) {
-
-                breakRequest = true
-                var address;
-                ([...toArray(o)]).reverse().map(o => {
-                    // address
-                    address = addresser({ _window, id, stack, nextAddress: address, __, lookupActions, data: { string: args[2] }, object: o }).address
-                })
-
-                // address
-                if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
-            }
-
-            stack.loop = false
-            stack.broke = false
-
-            if (notArray) return o
-
-        } else if (k0 === "html2pdf()") {
-
-            var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, status: "Start", action: "html2pdf()", object, lookupActions, __, id })
-
-            var options = {
-                margin: .25,
-                filename: data.name || generate({ length: 20 }),
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, dpi: 300, letterRendering: true },
-                jsPDF: { unit: 'mm', format: data.format || 'a4', orientation: 'portrait' }
-            }
-
-            data.view = data.view || o
-            var exporter = new html2pdf(data.view.__element__, options)
-
-            exporter.getPdf(true).then((pdf) => {
-                console.log('pdf file downloaded')
-            })
-
-            /*exporter.getPdf(false).then((pdf) => {
-                console.log('doing something before downloading pdf file');
-                pdf.save();
-              });*/
-
-            /*pages.map(page => {
-
-                var _element
-                if (typeof page === "object" && page.id) _element = views[page.id].__element__
-                else if (page.nodeType === Node.ELEMENT_NODE) _element = page
-                else if (typeof page === "string") _element = views[page].__element__
-
-                _elements.push(_element)
-                var images = [..._element.getElementsByTagName("IMG")]
-
-                if (images.length > 0) {
-
-                    images.map((image, i) => {
-                        toDataURL(image.src).then(dataUrl => {
-
-                            image.src = dataUrl
-                            if (images.length === i + 1) {
-
-                                if (!once && pages.length > 1 && pages.length === _elements.length) {
-
-                                    once = true
-                                    exportHTMLToPDF({ _window, pages: _elements, opt, lookupActions, stack, address, req, res, id, e, __, args })
-
-                                } else if (pages.length === 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then(pdf => {
-
-                                    var totalPages = pdf.internal.getNumberOfPages()
-
-                                    for (i = 1; i <= totalPages; i++) {
-
-                                        pdf.setPage(i)
-                                        pdf.setFontSize(9)
-                                        pdf.setTextColor(150)
-                                        pdf.text('page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() / 1.1), (pdf.internal.pageSize.getHeight() - 0.08))
-                                    }
-
-                                }).save().then((pdf) => {
-
-                                    // await params
-                                    if (args[2]) require("./kernel").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __: [pdf, ...__] })
-                                    window.devicePixelRatio = 1
-                                })
-                            }
-                        })
-                    })
-
-                } else html2pdf().set(opt).from(_element).save().then((pdf) => {
-
-
-                    // await params
-                    if (args[2]) require("./kernel").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __: [pdf, ...__] })
-                    window.devicePixelRatio = 1
-                })
-            })*/
-
-        } else if (k0 === "share()") {
-
-            if (isParam({ _window, string: args[1] })) { // share():[text;title;url;files]
-
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || {}, images = []
-                data.files = toArray(data.file || data.files) || []
-                if (data.image || data.images) data.images = toArray(data.image || data.images)
-
-                var getFileFromUrl = async (url, name) => {
-
-                    const response = await fetch(url)
-                    const blob = await response.blob()
-                    images.push(new File([blob], 'rick.jpg', { type: blob.type }))
-
-                    if (images.length === data.images.length)
-                        await navigator.share({ title: data.title, text: data.text, url: data.url, files: images })
-                }
-
-                if (data.images) data.images.map(async url => getFileFromUrl(url, data.title))
-                else {
-                    console.log(data);
-                    navigator.share(data)
-                }
-
-            } else if (args[1]) { // share():url
-                navigator.share({ url: toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) })
-            }
-
-        } else if (k0 === "loader()") {
-
-            var data = {}
-
-            if (isParam({ _window, string: args[1] })) {
-
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                if (data.hide) data.show = false
-
-            } else {
-
-                var show = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                if (show === "show") data.show = true
-                else if (show === "hide") data.show = false
-            }
-
-            var _o
-            if (data.id) _o = views[data.id]
-            else if (data.window) _o = views.body
-            else _o = o
-
-            if (typeof _o !== "object") return
-            if (_o.__status__ === "Loading") {
-                return _o.__controls__.push({
-                    event: "loaded?" + k
-                })
-            }
-
-            if (data.show) {
-
-                var lDiv = document.createElement("div")
-                document.body.appendChild(lDiv)
-                lDiv.classList.add("loader-container")
-                lDiv.setAttribute("id", _o.id + "-loader")
-                if (_o.id !== "body") {
-
-                    lDiv.style.position = "absolute"
-                    var coords = require("./getCoords")({ id: _o.id || id })
-                    lDiv.style.top = coords.top + "px"
-                    lDiv.style.bottom = coords.bottom + "px"
-                    lDiv.style.height = coords.height + "px"
-                    lDiv.style.left = coords.left + "px"
-                    lDiv.style.right = coords.right + "px"
-                    lDiv.style.width = coords.width + "px"
-                }
-
-                var loader = document.createElement("div")
-                lDiv.appendChild(loader)
-                loader.classList.add("loader")
-                lDiv.style.display = "flex"
-
-                if (data.style) {
-                    Object.entries(data.style).map(([key, value]) => {
-                        loader.style[key] = value
-                    })
-                }
-
-                if (data.background && data.background.style) {
-                    Object.entries(data.background.style).map(([key, value]) => {
-                        lDiv.style[key] = value
-                    })
-                }
-
-                return sleep(10)
-
-            } else if (data.show === false) {
-
-                var lDiv = document.getElementById(_o.id + "-loader")
-                if (lDiv) lDiv.parentNode.removeChild(lDiv)
-                else console.log("Loader doesnot exist!")
-            }
-
-        } else if (k0 === "type()") {
-
-            if (args[1]) answer = getType(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
-            else answer = getType(o)
-
-        } else if (k0 === "coords()") {
-
-            if (!o.__view__) return
-            require("./getCoords")({ id: o.id })
-
-        } else if (k0 === "price()") {
-
-            if (!isNumber(o)) return
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            if (!data.decimal) data.decimal = 2
-            var formatter = new Intl.NumberFormat("en", {
-                style: 'decimal',
-                decimal: data.decimal,
-            })
-
-            answer = formatter.format(parseFloat(o))
-
-        } else if (k0 === "bool()") {
-
-            answer = typeof o === "boolean" ? o : (o === "true" ? true : o === "false" ? false : undefined)
-
-        } else if (k0 === "num()") {
-
-            answer = toNumber(o)
-
-        } else if (k0 === "isNum()") {
-
-            answer = isNumber(o)
-
-        } else if (k0 === "round()") {
-
-            if (isNumber(o)) {
-                var nth = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 2
-                answer = parseFloat(o || 0).toFixed(nth)
-            }
-
-        } else if (k0 === "str()") {
-
-            if (typeof o !== "object") answer = o + ""
-            else answer = toString(o)
-
-        } else if (k0 === "lastIndex()") {
-
-            answer = o.length ? o.length - 1 : 0
-
-        } else if (k0 === "2ndLastIndex()") {
-
-            answer = o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
-
-        } else if (k0 === "2ndLastIndex()") {
-
-            answer = o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
-
-        } else if (k0 === "nthLastIndex()") {
-
-            answer = o.length ? (o.length - 1 ? o.length - 2 : o.length - 1) : o.length
-
-        } else if (k0 === "el()") {
-
-            answer = o.__element__
-
-        } else if (k0 === "index()") {
-
-            if (!o.__indexed__ && o.__loop__) answer = o.__loopIndex__
-            else if (!o.__indexed__) answer = o.__childIndex__
-            else answer = o.__index__
-
-        } else if (k0 === "checked()") {
-
-            if (!o.__view__) return
-
-            if (value !== undefined && key) answer = o.checked.checked = o.__element__.checked = value
-            else answer = o.checked.checked || o.__element__.checked || false
-
-        } else if (k0 === "check()") {
-
-            breakRequest = true
-            if (!o.__view__) return
-
-            answer = o.checked.checked = o.__element__.checked = value || false
-
-        } else if (k0 === "parseFloat()") {
-
-            answer = parseFloat(o)
-
-        } else if (k0 === "parseInt()") {
-
-            answer = parseInt(o)
-
-        } else if (k0 === "stringify()") {
-
-            answer = JSON.stringify(o)
-
-        } else if (k0 === "parse()") {
-
-            answer = JSON.parse(o)
-
-        } else if (k0 === "getCookie()") {
-
-            // getCookie():name
-            if (isParam({ _window, string: args[1], req, res })) {
-
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                return getCookie({ ...data, req, res, _window })
-            }
-
-            var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            var _cookie = getCookie({ name: _name, req, res, _window })
-            return _cookie
-
-        } else if (k0 === "eraseCookie()") {
-
-            if (_window) return views.root.__controls__.push({ event: `loading?${pathJoined}` })
-
-            // getCookie():name
-            if (isParam({ _window, req, res, string: args[1] })) {
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                return eraseCookie({ ...data, req, res, _window })
-            }
-
-            var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            var _cookie = eraseCookie({ name: _name, req, res, _window })
-            return _cookie
-
-        } else if (k0 === "setCookie()") {
-
-            if (_window) return views.root.__controls__.push({ event: `loading?${pathJoined}` })
-
-            // X setCookie():value:name:expiry-date X // setCookie():[value;name;expiry]
-            var cookies = []
-            if (isParam({ _window, req, res, string: args[1] })) {
-
-                args.slice(1).map(arg => {
-
-                    var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: arg })
-                    setCookie({ ...data, req, res, _window })
-
-                    cookies.push(data)
-                })
-
-            } else {
-
-                var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                var _value = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] })
-                var _expiryDate = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[3] })
-
-                setCookie({ name: _name, value: _value, expires: _expiryDate, req, res, _window })
-            }
-
-
-            if (cookies.length === 1) return cookies[0]
-            else return cookies
-
-        } else if (k0 === "cookie()") {
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-
-            if (_window && data.method === "post" || data.method === "delete") return views.root.__controls__.push({ event: `loading?${pathJoined}` })
-            if (data.method === "post") return setCookie({ ...data, req, res, _window })
-            if (data.method === "delete") return eraseCookie({ ...data, req, res, _window })
-            if (data.method === "get") return getCookie({ ...data, req, res, _window })
-
-        } else if (k0 === "clean()") {
-
-            answer = o.filter(o => o !== undefined && !Number.isNaN(o) && o !== "")
-
-        } else if (k0 === "colorize()") {
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1] || "", __ })
-            answer = colorize({ _window, string: o, ...data })
-
-        } else if (k0 === "deepChildren()") {
-
-            answer = getDeepChildren({ _window, lookupActions, stack, id: o.id })
-
-        } else if (k0 === "note()") { // note
-
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            note({ note: data })
-
-        } else if (k0 === "readonly()") {
-
-            if (!o.__view__) return
-            var children = getDeepChildren({ _window, id: o.id })
-
-            children.map(child => {
-
-                child.__element__.setAttribute("readOnly", true)
-                child.readonly = true
-
-                child.__element__.setAttribute("contenteditable", false)
-                child.editable = false
-            })
-
-        } else if (k0 === "editable()") {
-
-            if (!o.__view__) return
-            var children = getDeepChildren({ _window, id: o.id })
-
-            children.map(child => {
-
-                child.__element__.setAttribute("readOnly", false)
-                child.readonly = false
-
-                child.__element__.setAttribute("contenteditable", true)
-                child.editable = true
-            })
-
-        } else if (k0 === "range()") {
-
-            var index = 0
-            var range = []
-            var startIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) : 0 || 0
-            var endIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] }) : toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            var steps = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[3] }) || 1
-            var lang = args[4] || ""
-            index = startIndex
-
-            while (index <= endIndex) {
-                if ((index - startIndex) % steps === 0) {
-                    range.push(index)
-                    index += steps
-                }
-            }
-
-            if (lang === "ar") range = range.map(num => num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
-            answer = range
-
-        } else if (k0 === "droplist()") {
-
-            var { address, data } = addresser({ _window, stack, args, id: o.id, interpreting: true, status: "Start", action: "droplist()", object, lookupActions, __, id })
-            require("./droplist").droplist({ id, e, data, __, stack, lookupActions, address })
-
-        } else if (k0 === "route()") {
-
-            var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", asynchronous: true, id: o.id, action: "route()", object, lookupActions, __, id })
-            if (typeof data === "string") data = { route: data }
-
-            require("./route").route({ _window, lookupActions, stack, address, id, req, res, data: { type: "route", route: { __: data.data !== undefined ? [data.data] : [] } }, __ })
-
-        } else if (k0 === "root()") {
-
-            var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id: o.id, action: "root()", object, lookupActions, __, id })
-            if (typeof data === "string") data = { page: data }
-
-            require("./root").root({ _window, lookupActions, stack, address, id, req, res, root: data, __ })
-
-        } else if (k0 === "update()") {
-
-            if (!o.__view__) return o
-
-            var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", renderer: true, blockable: false, id: o.id, action: "update()", object, lookupActions, __, id })
-            update({ _window, lookupActions, stack, req, res, id, address, __, data: { id: data.id || o.id, ...data } })
-
-        } else if (k0 === "insert()") {
-
-            if (!o.__view__) return o
-
-            // wait address
-            var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", renderer: true, id: o.id, action: "insert()", lookupActions, __, id })
-            insert({ id, lookupActions, stack, address, __, insert: { ...data, parent: o.id } })
-
-        } else if (k0 === "confirmEmail()") {
-
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "confirmEmail()", object, lookupActions, __, id })
-            data.store = "confirmEmail"
-            require("./save").save({ id, lookupActions, stack, address, e, __, save: data })
-
-        } else if (k0 === "mail()") {
-
-            if (!o.__view__) return o
-
-            // wait address
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "mail()", object, lookupActions, __, id })
-
-            require("./mail").mail({ req, res, _window, lookupActions, stack, address, id, e, __, data })
-            return true
-
-        } else if (k0 === "print()") {
-
-        } else if (k0 === "files()") {
-
-            return [...(o.__element__.files || [])]
-
-        } else if (k0 === "file()") {
-
-            return (o.__element__.files || [])[0]
-
-        } else if (k0 === "read()") {
-
-            // wait address
-            var { address, data, action } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "mail()", object, lookupActions, __, id, dataInterpretAction: "conditional" })
-
-            if (!data) return
-            if (action === "toValue") data.file = data
-
-            fileReader({ req, res, _window, lookupActions, stack, address, id, e, __, data })
-
-        } else if (k0 === "upload()") {
-
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "upload()", object, lookupActions, __, id })
-            require("./upload")({ _window, lookupActions, stack, address, req, res, id, e, upload: data, __ })
-
-        } else if (k0 === "search()") {
-
-            var { address, data } = addresser({ _window, stack, args, req, res, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "search()", object, lookupActions, __, id })
-            // var data = searchParams({ _window, lookupActions, stack, address, id, e, __, req, res, string: args[1], object })
-            require("./search").search({ _window, lookupActions, stack, address, id, e, __, req, res, data })
-            return true
-
-        } else if (k0 === "erase()") {
-
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "erase()", object, lookupActions, __, id })
-            require("./erase").erase({ _window, lookupActions, stack, address, id, e, __, req, res, erase: data })
-            return true
-
-        } else if (k0 === "save()") {
-
-            var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "save()", object, lookupActions, __, id })
-            require("./save").save({ _window, lookupActions, stack, address, id, e, __, req, res, save: data })
-            return true
-
-        } else if (k0 === "start()") {
-
-            var address = stack.addresses.find(address => address.id === stack.interpretingAddressID)
-            address.starter = true
-            var startID = generate()
-            global.__startAddresses__[startID] = { id: startID, address }
-
-            stack.logs.push(`${stack.logs.length} Starter STACK ${stack.id} ${stack.event.toUpperCase()} ${stack.string}`)
-
-            return startID
-
-        } else if (k0 === "end()") {
-
-            var { data = {} } = toLine({ req, res, _window, lookupActions, stack, id, e, __, data: { string: args[1] }, action: "toParam" })
-            endAddress({ req, res, _window, lookupActions, stack, id, e, __, data })
-
-        } else if (k0 === "send()") {
-
-            breakRequest = true
-            if (!res || res.headersSent) return
-
-            var executionDuration = (new Date()).getTime() - stack.executionStartTime, response
-
-            if (isParam({ _window, string: args[1] })) {
-
-                response = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-                response.success = response.success !== undefined ? response.success : true
-                response.message = response.message || response.msg || "Action executed successfully!"
-                response.executionDuration = executionDuration
-                delete response.msg
-
-            } else {
-
-                var data = toValue({ req, res, _window, lookupActions, id, e, __, data: args[1] })
-                response = { success: true, message: "Action executed successfully!", data, executionDuration }
-            }
-
-            stack.terminated = true
-
-            // logs
-            console.log("Send " + stack.route + " (" + executionDuration + ")")
-            stack.logs.push(stack.logs.length + " Send " + stack.route + " (" + executionDuration + ")")
-            response.logs = stack.logs
-
-            // respond
-            res.setHeader('Content-Type', 'application/json')
-            res.write(JSON.stringify(response));
-            res.end()
-
-        } else if (k0 === "sent()") {
-
-            if (!res || res.headersSent) return true
-            else return false
-
-        } else if (k0 === "setPosition()" || k0 === "position()") {
-
-            var position = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            return require("./setPosition").setPosition({ position, id: o.id || id, e })
-
-        } else if (k0 === "csvToJson()") {
-
-            var file = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            require("./csvToJson").csvToJson({ id, lookupActions, stack, e, file, onload: args[2] || "", __ })
-
-        } else if (k0 === "copyToClipBoard()") {
-
-            var text
-            if (args[1]) text = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            else text = o
-
-            if (navigator.clipboard) answer = navigator.clipboard.writeText(text)
-            else {
-                var textArea = document.createElement("textarea")
-                textArea.value = text
-                document.body.appendChild(textArea)
-                textArea.focus()
-                textArea.select()
-                textArea.setSelectionRange(0, 99999)
-                if (navigator.clipboard) navigator.clipboard.writeText(text)
-                else document.execCommand("copy")
-                document.body.removeChild(textArea)
-            }
-
-        } else if (k0 === "addClass()") {
-
-            if (!o.__view__) return o
-            var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
-            if (o.__element__) answer = o.__element__.classList.add(_class)
-
-        } else if (k0 === "remClass()") {
-
-            if (!o.__view__) return o
-            var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
-            if (o.__element__) answer = o.__element__.classList.remove(_class)
-
-        } else if (k0 === "toggleClass()") {
-
-            if (!o.__view__) return o
-            var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
-            if (o.__element__) answer = o.__element__.classList.toggle(_class)
-
-        } else if (k0 === "encodeURI()") {
-
-            answer = encodeURI(o)
-
-        } else if (k0 === "preventDefault()") {
-
-            e.preventDefault()
-
-        } else if (k0 === "decodeURI()") {
-
-            answer = decodeURI(o)
-
-        } else if (k0.slice(-2) === "()" && typeof o[k0.slice(0, -2)] === "function") {
+        else if (actions[k0]) return actions[k0]({ _window, req, res, global, views, view, o, stack, pathJoined, lookupActions, id, e, __, args, k, underScored, object, i, lastIndex, value, key, path, breakRequest, condition, _object, answer })
+            
+        // methods
+        else if (k0.slice(-2) === "()" && typeof o[k0.slice(0, -2)] === "function") {
 
             var data = []
             args.slice(1).map(arg => {
@@ -4530,7 +4554,10 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             answer = o[k0.slice(0, -2)](...data)
 
-        } else if (k0.slice(-2) === "()") { // action_name()
+        } 
+
+        // action_name()
+        else if (k0.slice(-2) === "()") { 
 
             if (k0.charAt(0) === "@" && k0.length == 6) k0 = toValue({ req, res, _window, id, e, __, data: k0, object })
 
@@ -4540,30 +4567,35 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 answer = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: k }, condition, object: object || o })
             }
 
-        } else if (k.includes(":@")) {
+        } 
+        
+        // endoced params
+        else if (k.includes(":@")) {
 
-            breakRequest = true
+            breakRequest.break = true
 
             // decode
             if (k0.charAt(0) === "@" && k0.length == 6) k0 = global.__refs__["@" + k0.slice(-5)].data
 
             o[k0] = o[k0] || {}
-
+            
             if (events.includes(k0)) {
 
                 if (!o.__view__) return
 
                 var data = global.__refs__["@" + args[1].slice(-5)].data
 
-                /*if (views[id].__status__ === "Mounted") return require("./event").addEventListener({ event: k0 + "?" + data, id, __, lookupActions, eventID: o.id })
-                else*/ return views[id].__controls__.push({ event: k0 + "?" + data, id, __, lookupActions, eventID: o.id })
+                return views[id].__controls__.push({ event: k0 + "?" + data, id, __, lookupActions, eventID: o.id })
             }
 
             args[1] = (global.__refs__[args[1]].data || "").split(".")
             if (args[1]) answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { path: [...args.slice(1).flat(), ...path.slice(i + 1)], object: o[k0] }, __ })
             else return
 
-        } else if (key && value !== undefined && i === lastIndex) {
+        } 
+        
+        // lastindex
+        else if (key && value !== undefined && i === lastIndex) {
 
             if (Array.isArray(o)) {
                 if (!isNumber(k)) {
@@ -4573,7 +4605,10 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             }
             answer = o[k] = value
 
-        } else if (key && o[k] === undefined && i !== lastIndex) {
+        } 
+        
+        // assign {} of []
+        else if (key && o[k] === undefined && i !== lastIndex) {
 
             var path1 = path[i + 1]
             if (path1 && (isNumber(path1) || path1.slice(0, 3) === "():" || path1.includes("find()") || path1.includes("filter()") || path1.includes("push()"))) answer = o[k] = []
@@ -4587,7 +4622,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 }
                 answer = o[k] = {}
             }
-        } else answer = o[k]
+        } 
+        
+        else answer = o[k]
 
         return answer
 
@@ -4598,8 +4635,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
 const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id, e, req, res, object, mount, condition, isValue }) => {
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
 
     if (!value) return value
 
@@ -4784,8 +4821,8 @@ const toValue = ({ _window, lookupActions = [], stack = {}, data: value, __, id,
 
 const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req, res, mount, object, __, condition }) => {
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
     var view = views[id] || { id, __view__: true }
 
     var params = object || {}
@@ -4927,6 +4964,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
         // action()
         if (path0.slice(-2) === "()") {
+            
             var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: path[0] }, condition, mount, object })
             if (action !== "__continue__" && typeof action === "object" && !Array.isArray(action)) override(params, action)
             if (action !== "__continue__") return
@@ -5023,8 +5061,8 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
 
     if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.blocked || stack.broke) return
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
     var view = views[id] || { id, __view__: true }
 
     // path is a string
@@ -5033,7 +5071,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     if (typeof path === "number") path = [path]
 
     var pathJoined = path.join(".")
-
+    
     // init
     var path0 = path[0] ? path[0].toString().split(":")[0] : "", args
     if (path[0] !== undefined) args = path[0].toString().split(":")
@@ -5047,9 +5085,22 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // [actions?conditions?elseActions]():[params]:[waits]
     else if (path0.length === 8 && path0.slice(-2) === "()" && path0.charAt(0) === "@") {
 
+        var myLookupActions = lookupActions
         var { address, data } = addresser({ _window, stack, args, id, type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, lookupActions, id, object })
 
-        return toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: data }).data
+        // view & path
+        if (typeof data === "object" && data.__view__) myLookupActions = data.__lookupViewActions__
+        else if (typeof data === "object") {
+            if (typeof data.view === "object" && data.view.__view__) myLookupActions = data.view.__lookupViewActions__
+            else {
+                if (!data.view) data.view = view.__customViewPath__.at(-1)
+                if (typeof data.path === "string") data.path = data.path.split(".")
+                myLookupActions = [{ type: "customView", view: data.view, path: data.path }, ...lookupActions]
+            }
+        } else if (typeof data === "string") myLookupActions = [{ type: "customView", view: data }, ...lookupActions]
+        address.params = { ...address.params, lookupActions: myLookupActions }
+
+        return toAwait({ _window, lookupActions: myLookupActions, stack, address, id, e, req, res, __ }).data
     }
 
     // if()
@@ -5104,7 +5155,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // global:()
     else if (path0 && args[1] === "()" && !args[2]) {
 
-        const globalVariable = toValue({ req, res, _window, id, e, data: args[0], __, stack, lookupActions })
+        var globalVariable = toValue({ req, res, _window, id, e, data: args[0], __, stack, lookupActions })
         if (path.length === 1 && key && globalVariable) return global[globalVariable] = value
 
         path.splice(0, 1, globalVariable)
@@ -5252,8 +5303,8 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
     // no string
     if (!string || typeof string !== "string") return true
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
     var view = views[id], approval = true
 
     if ((stack.returns && stack.returns[0] || {}).returned) return
@@ -5263,7 +5314,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
 
     // ==
     string = string.replace("==", "=")
-
+    
     string.split(";").map(condition => {
 
         // no condition
@@ -5344,7 +5395,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
         // get key
         if (object || key.includes("()")) key = toValue({ _window, lookupActions, stack, id, data: key, e, __, req, res, object, condition: true })
         else key = toValue({ _window, lookupActions, stack, id, data: key, e, __, req, res, object: object !== undefined ? object : view, condition: true })
-
+        
         // evaluate
         if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !key : (key === 0 ? true : key)
         else {
@@ -5359,17 +5410,15 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
 
 const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: customViewName, data: passedData }, condition, mount, object, lookupActions = {}, stack }) => {
 
-    const global = _window ? _window.global : window.global
-    const views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
     var view = views[id]
+    if (!view) return
 
-    var serverAction = false, actionFound = false, serverActionView
+    var serverAction = false, actionFound = false, newLookupActions = lookupActions, serverActionView, queryNonExistingView
     var action0 = path ? (path.at(-1) + "()") : action.split(":")[0], name = action0.slice(0, -2)
 
     if (path || (action0.slice(-2) === "()" && action0 !== "()" && action0 !== "_()" && !require("./actions.json").includes(action0) && action0.charAt(0) !== "@")) {
-
-        if (!view) return
-        var newLookupActions
 
         // call by action():[path;view;data]
         if (path) {
@@ -5408,78 +5457,75 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
 
         // lookup through parent map actions
         if (!actionFound) {
-            toArray(lookupActions).map((lookupActions, indexx) => {
 
-                if (lookupActions.path) {
+            toArray(lookupActions).map((lookupAction, indexx) => {
 
-                    var path = lookupActions.path
+                if (!lookupAction.view || queryNonExistingView || actionFound) return
+
+                if (!global.data.view[lookupAction.view] && global.data.views.includes(lookupAction.view) && !global.__queries__.views.includes(lookupAction.view)) {
+
+                    queryNonExistingView = true
+                    var { address, data } = addresser({ _window, id, stack, __, lookupActions: lookupActions.slice(indexx), stack, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${lookupAction.view}`, waits: `loader.hide;__queries__:().views.push():[${lookupAction.view}];data:().view.${lookupAction.view}=_.data;${action}` })
+                    return require("./search").search({ _window, lookupActions, stack, address, id, __, req, res, data })
+                }
+
+                // get view actions
+                var actions = global.data.view[lookupAction.view].functions
+                if (!actions) return
+
+                if (lookupAction.path) {
+
+                    var path = lookupAction.path
                     clone(path).reverse().map((x, i) => {
 
-                        if (!actionFound) {
+                        if (actionFound) return
 
-                            var actions = global.data.view[lookupActions.view].functions || {}
-                            actionFound = clone(path.slice(0, path.length - i).reduce((o, k) => o[k], actions)[name])
+                        actionFound = clone(path.slice(0, path.length - i).reduce((o, k) => o[k], actions)[name])
 
-                            if (actionFound) {
+                        if (actionFound) {
 
-                                if (typeof actionFound === "object" && actionFound._) {
+                            if (typeof actionFound === "object" && actionFound._) {
 
-                                    actionFound = actionFound._ || ""
-                                    newLookupActions = [{ type: "customView", view: lookupActions.view, path: [...path.slice(0, path.length - i), name] }]
-                                    if (toArray(lookupActions).length > 1) newLookupActions = [...newLookupActions, ...toArray(lookupActions).slice(indexx)]
+                                actionFound = actionFound._ || ""
+                                newLookupActions = [{ type: "customView", view: lookupAction.view, path: [...path.slice(0, path.length - i), name] }, ...lookupActions.slice(indexx)]
 
-                                } else if (toArray(lookupActions).length > 1) toArray(lookupActions).slice(indexx)
+                            } else if (lookupActions.length > 1) lookupActions.slice(indexx)
 
-                            }
                         }
                     })
-                }
-            })
-        }
 
-        // lookup through head customView actions => server actions
-        if (!actionFound) {
-            clone(view.__lookupViewActions__).reverse().map(lookupViewActions => {
+                } else {
+                    
+                    if (name in actions) {
 
-                if (!actionFound) {
+                        if (global.data.view[lookupAction.view]._secure_ && !stack.server) {
 
-                    var actions = {}
-                    if (lookupViewActions.type === "customView") {
+                            // server action
+                            actionFound = true
+                            serverAction = true
+                            serverActionView = lookupAction.view
+                            newLookupActions = []
 
-                        var customView = global.data.view[lookupViewActions.view]
+                        } else {
 
-                        actions = customView.functions || {}
+                            actionFound = clone(actions[name])
 
-                        if (name in actions) {
+                            if (typeof actionFound === "object") {
 
-                            if (customView._secure_ && !stack.server) {
-
-                                // server action
-                                actionFound = true
-                                serverAction = true
-                                serverActionView = lookupViewActions.view
-                                newLookupActions = []
-
-                            } else {
-
-                                actionFound = clone(actions[name])
-
-                                if (typeof actionFound === "object") {
-
-                                    actionFound = actionFound._ || ""
-                                    newLookupActions = [{ type: lookupViewActions.type, view: lookupViewActions.view, path: [name] }]
-                                }
+                                actionFound = actionFound._ || ""
+                                newLookupActions = [{ type: lookupAction.type, view: lookupAction.view, path: [name] }, ...lookupActions]
                             }
                         }
-
-                    } else if (lookupViewActions.type === "view") { }
+                    }
                 }
             })
+
+            if (queryNonExistingView) return
         }
 
         if (actionFound) {
 
-            var { address, data } = addresser({ _window, req, res, stack, args: action.split(":"), newLookupActions: newLookupActions || lookupActions, asynchronous: serverAction, e, id, data: { string: serverAction ? "" : actionFound }, action: action0, __, id, object, mount, condition, lookupActions })
+            var { address, data } = addresser({ _window, req, res, stack, args: action.split(":"), newLookupActions, asynchronous: serverAction, e, id, data: { string: serverAction ? "" : actionFound }, action: action0, __, id, object, mount, condition, lookupActions })
 
             // data passed from action():[action;path;data]
             if (passedData !== undefined) data = passedData
@@ -5501,7 +5547,7 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
 
 const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { string, dblExecute, index: i = 0, splitter = "?" }, req, res, __, mount, condition, object, action }) => {
 
-    const global = _window ? _window.global : window.global
+    var global = _window ? _window.global : window.global
     var view = _window ? _window.views[id] : window.views[id]
 
     // missing stack or __
@@ -5618,7 +5664,7 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
         if (isParam({ _window, string })) action = "toParam"
         else action = "toValue"
     }
-
+    
     if (action === "toValue") data = toValue({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object })
     else if (action === "toApproval") data = toApproval({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object })
     else if (action === "toParam") data = toParam({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object })
@@ -5637,23 +5683,16 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
     return terminator({ data: { success, message, data, action, conditionsNotApplied, executionDuration: (new Date()).getTime() - startTime }, order: 5 })
 }
 
-const addresser = ({ _window, addressID = generate(), index = 0, switchWithAddress, switchWithRunningAddress, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, hasWaits, params, function: func, newLookupActions, nextAddressID, nextAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition }) => {
+const addresser = ({ _window, addressID = generate(), index = 0, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, hasWaits, params, function: func, newLookupActions, nextAddressID, nextAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition, logger, switchNextAddressIDWith }) => {
 
-    if (switchWithAddress) {
+    if (switchNextAddressIDWith) {
 
-        nextAddressID = switchWithAddress.nextAddressID
-        hasWaits = switchWithAddress.hasWaits
-        switchWithAddress.nextAddressID = addressID
-        switchWithAddress.hasWaits = false
-        switchWithAddress.interpreting = false
-        // switchWithAddress.status = "Wait"
-
-    } else if (switchWithRunningAddress) {
-
-        nextAddressID = switchWithRunningAddress.nextAddressID
-        hasWaits = switchWithRunningAddress.hasWaits
-        switchWithRunningAddress.nextAddressID = addressID
-        switchWithRunningAddress.hasWaits = false
+        nextAddressID = switchNextAddressIDWith.nextAddressID
+        hasWaits = switchNextAddressIDWith.hasWaits
+        switchNextAddressIDWith.nextAddressID = addressID
+        switchNextAddressIDWith.hasWaits = false
+        switchNextAddressIDWith.interpreting = false
+        // switchNextAddressIDWith.status = "Wait"
     }
 
     // find nextAddress by nextAddressID
@@ -5665,7 +5704,7 @@ const addresser = ({ _window, addressID = generate(), index = 0, switchWithAddre
     // address waits
     if (waits) nextAddress = addresser({ _window, stack, req, res, e, type: "waits", action: action + "::[...]", data: { string: waits }, nextAddress, blockable, __, id, object, mount, lookupActions, condition }).address
 
-    var address = { id: addressID, stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: hasWaits !== undefined ? hasWaits : (waits ? true : false), nextAddressID: nextAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, executionStartTime: (new Date()).getTime() }
+    var address = { id: addressID, stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: hasWaits !== undefined ? hasWaits : (waits ? true : false), nextAddressID: nextAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, logger, executionStartTime: (new Date()).getTime() }
     var stackLength = stack.addresses.length
 
     // find and lock the head address
@@ -5721,7 +5760,7 @@ const addresser = ({ _window, addressID = generate(), index = 0, switchWithAddre
 
 const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, stack, id, e, _, __, action }) => {
 
-    const global = _window ? _window.global : window.global
+    var global = _window ? _window.global : window.global
 
     if (addressID && !address.id) address = stack.addresses.find(address => address.id === addressID)
     if (!address.id || stack.terminated || address.hold || address.starter || address.end) return
@@ -5750,7 +5789,10 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
         if (index !== -1) stack.addresses.splice(index, 1)
 
         // pass underscores to waits
-        if (address.hasWaits && nextAddress.params) nextAddress.params.__ = my__
+        if (address.hasWaits && nextAddress.params) {
+            nextAddress.params.__ = my__
+            nextAddress.params.id = address.params.id
+        }
 
         // logger
         if (address.logger && address.logger.end) logger({ _window, data: { key: address.logger.key, end: true } })
@@ -5769,12 +5811,12 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
         if (address.function) {
 
             var func = address.function || "toLine"
-            var file = address.file || func
             var data = { _window, lookupActions, stack, id, e, req, res, address, nextAddress, ...(address.params || {}), data: address.data, __: my__, action }
 
             if (func === "toView") toView(data)
             else if (func === "toHTML") toHTML(data)
             else if (func === "update") update(data)
+            else if (func === "blockRelatedAddressesByViewID") blockRelatedAddressesByViewID(data)
             else if (func === "documenter") documenter(data)
 
             address.interpreting = false
@@ -5808,8 +5850,8 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
     var { index, view, path, data, doc, viewPath = [], parent, preventDefault } = insert
 
-    const views = window.views
-    const global = window.global
+    var views = window.views
+    var global = window.global
     var parent = views[parent]
     var passData = {}
     var __childIndex__
@@ -5889,7 +5931,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
         passData = {
             __viewPath__: [genView, ...viewPath],
             __customViewPath__: [...parent.__customViewPath__, genView],
-            __lookupViewActions__: [...parent.__lookupViewActions__, { type: "customView", view: genView }]
+            __lookupViewActions__: [{ type: "customView", view: genView }, ...parent.__lookupViewActions__]
         }
     }
 
@@ -5909,8 +5951,8 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
 const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data = {} }) => {
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
     var view = data.view || views[id]
 
     // interpret view
@@ -5961,6 +6003,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
         // executable view name
         if (executable({ _window, string: view.__name__ })) {
+
             toValue({ _window, id, req, res, data: view.__name__, lookupActions, __, stack })
             view.__name__ = "Action"
         }
@@ -6027,7 +6070,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
         if (address.blocked) return// toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
 
         // asynchronous actions within view params
-        if (address.hold) return addresser({ _window, id, stack, switchWithAddress: address, type: "function", function: "toView", __, lookupActions, stack, data: { view } })
+        if (address.hold) return addresser({ _window, id, stack, switchNextAddressIDWith: address, type: "function", function: "toView", __, lookupActions, stack, data: { view } })
     }
 
     // custom View
@@ -6053,7 +6096,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
                 __customView__: view.__name__,
                 __viewPath__: [view.__name__],
                 __customViewPath__: [...view.__customViewPath__, view.__name__],
-                __lookupViewActions__: [...view.__lookupViewActions__, { type: "customView", view: view.__name__ }]
+                __lookupViewActions__: [{ type: "customView", view: view.__name__ }, ...view.__lookupViewActions__]
             }
 
             // id
@@ -6073,7 +6116,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
                 logger({ _window, data: { key: "documenter", start: true } })
 
                 // address: document
-                address = addresser({ _window, id: child.id, nextAddress: address, type: "function", file: "toView", function: "documenter", stack, __, logger: { key: "documenter", end: true } }).address
+                address = addresser({ _window, id: child.id, nextAddress: address, type: "function", function: "documenter", stack, __, logger: { key: "documenter", end: true } }).address
 
                 // get shared public views
                 Object.entries(getJsonFiles({ search: { collection: "public/view" } })).map(([doc, data]) => {
@@ -6087,7 +6130,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
             }
 
             // address
-            return toView({ _window, stack, address, req, res, lookupActions, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
+            return toView({ _window, stack, address, req, res, lookupActions: child.__lookupViewActions__, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
         }
     }
 
@@ -6116,11 +6159,11 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
     toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
 }
 
-const update = ({ _window, id, lookupActions, stack, address, req, res, __, data = {} }) => {
+const update = ({ _window, id, lookupActions, stack, nextAddress, address, req, res, __, data = {} }) => {
 
     // address.blockable = false
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
 
     var view = views[data.id]
 
@@ -6174,11 +6217,14 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
         if (!data.insert && parent.__rendered__) parent.__childrenRef__.filter(({ childIndex }) => childIndex === __childIndex__).map(({ id }) => elements.push(removeView({ _window, global, views, id, stack, main: true, insert: data.insert })))
         else if (!parent.__rendered__) removeView({ _window, global, views, id: data.id, stack, main: true })
 
+        // address delete block views (switch with second next address => execute after end of update waits)
+        addresser({ _window, id, stack, switchNextAddressIDWith: stack.addresses.find(add => add.id === address.nextAddressID), type: "function", function: "blockRelatedAddressesByViewID", __, lookupActions, stack, data: { stack, id } })
+
         // address for post update
-        addresser({ _window, id, stack, switchWithAddress: address, type: "function", function: "update", file: "toView", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent, postUpdate: true } })
+        addresser({ _window, id, stack, switchNextAddressIDWith: address, type: "function", function: "update", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent, postUpdate: true } })
 
         // address
-        address = addresser({ _window, id, stack, status: "Start", type: "function", function: "toView", __: my__, lookupActions: __lookupViewActions__, nextAddress: address, data: { view: reducedView, parent: parent.id } }).address
+        address = addresser({ _window, id, stack, nextAddress: address, status: "Start", type: "function", function: "toView", __: my__, lookupActions: __lookupViewActions__, data: { view: reducedView, parent: parent.id } }).address
 
         // render
         toView({ _window, lookupActions: __lookupViewActions__, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
@@ -6269,7 +6315,6 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
         toParam({ _window, data: "loader.hide" })
 
         if (address) {
-
             address.params.__ = [data, ...address.params.__]
             address.params.id = views[address.params.id] ? address.params.id : updatedViews[0].id
         }
@@ -6278,8 +6323,8 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
 
 const addEventListener = ({ event, id, __, stack, lookupActions, address, eventID: mainEventID }) => {
 
-    const views = window.views
-    const global = window.global
+    var views = window.views
+    var global = window.global
     var view = views[id]
 
     if (!view || !event) return
@@ -6314,7 +6359,7 @@ const addEventListener = ({ event, id, __, stack, lookupActions, address, eventI
 
             // event id
             var genID = generate()
-            var eventAddress = { genID, event, eventListener: (e) => eventExecuter({ string, event, eventID, id, stack, lookupActions, __, address, e }) }
+            var eventAddress = { genID, event, id, eventListener: (e) => eventExecuter({ string, event, eventID, id, stack, lookupActions, __, address, e }) }
 
             //
             if (id !== eventID) {
@@ -6328,8 +6373,8 @@ const addEventListener = ({ event, id, __, stack, lookupActions, address, eventI
 
             } else {
 
-                views[eventID].__events__.unshift(eventAddress)
-                views[eventID].__element__.addEventListener(event, eventAddress.eventListener)
+                views[id].__events__.unshift(eventAddress)
+                views[id].__element__.addEventListener(event, eventAddress.eventListener)
             }
         })
     })
@@ -6339,7 +6384,7 @@ const addEventListener = ({ event, id, __, stack, lookupActions, address, eventI
 
 const getDeepChildren = ({ _window, id }) => {
 
-    const views = _window ? _window.views : window.views
+    var views = _window ? _window.views : window.views
     var view = views[id]
     var all = [view]
     if (!view) return []
@@ -6361,7 +6406,7 @@ const getDeepChildren = ({ _window, id }) => {
 
 const getDeepChildrenId = ({ _window, id }) => {
 
-    const views = _window ? _window.views : window.views
+    var views = _window ? _window.views : window.views
     var view = views[id]
     var all = [id]
     if (!view) return []
@@ -6383,7 +6428,7 @@ const getDeepChildrenId = ({ _window, id }) => {
 
 const getDeepParentId = ({ _window, lookupActions, stack, id }) => {
 
-    const views = _window ? _window.views : window.views
+    var views = _window ? _window.views : window.views
     var view = views[id]
 
     if (!view) return []
@@ -6582,7 +6627,7 @@ const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res,
 const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }) => {
 
     const { toAwait } = require("./kernel");
-    const global = _window ? _window.global : window.global
+    var global = _window ? _window.global : window.global
 
     var executionDuration = (new Date()).getTime() - stack.executionStartTime
 
@@ -6676,20 +6721,19 @@ const closePublicViews = ({ _window, id, __, lookupActions }) => {
     if (_window) return
 
     // close droplist
-    if (id !== "droplist")
-        toLine({ id: "droplist", data: { string: "__droplistMouseleaveTimer__:()=0;():droplist.mouseleave()" }, __, lookupActions })
+    if (id !== "droplist") toParam({ id: "droplist", data: toCode({ string: "__droplistMouseleaveTimer__:()=0;():droplist.mouseleave()" }), __, lookupActions })
 
     // close tooltip
-    toLine({ id: "tooltip", data: { string: "clearTimer():[__tooltipTimer__:()];__tooltipTimer__:().del();():tooltip.style().opacity=0" }, __, lookupActions })
+    toParam({ id: "tooltip", data: toCode({ string: "clearTimer():[__tooltipTimer__:()];__tooltipTimer__:().del();():tooltip.style().opacity=0" }), __, lookupActions })
 
     // close mininote
-    toLine({ id: "mininote", data: { string: "():mininote.style():[opacity=0;transform=scale(0)]" }, __, lookupActions })
+    toParam({ id: "mininote", data: toCode({ string: "():mininote.style():[opacity=0;transform=scale(0)]" }), __, lookupActions })
 }
 
 const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
 
-    const global = window.global
-    const views = window.views
+    var global = window.global
+    var views = window.views
     var view = window.views[id]
 
     var path = data.path, __dataPath__ = []
@@ -6733,7 +6777,7 @@ const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
 
 const updateDataPath = ({ id, index, decrement, increment }) => {
 
-    const views = window.views
+    var views = window.views
     var view = views[id]
 
     if (!view) return
@@ -6842,8 +6886,8 @@ const componentModifier = ({ _window, id }) => {
 
 const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {}, req, res }) => {
 
-    const global = _window ? _window.global : window.global
-    const views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
     var view = views[id]
 
     // mount
@@ -6908,8 +6952,8 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
 
 const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ }) => {
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
     var view = views[id]
 
     views[id] = Input(view)
@@ -6931,7 +6975,7 @@ const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ })
 
 const toHTML = ({ _window, id, stack, __ }) => {
 
-    const views = _window ? _window.views : window.views
+    var views = _window ? _window.views : window.views
 
     var view = views[id], parent = views[view.__parent__]
     var name = view.__name__, html = ""
@@ -7047,7 +7091,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
     }
 
     // init element
-    view.__element__ = view.__element__ || { text, id, innerHTML, index }
+    view.__element__ = view.__element__ || { text, id, innerHTML, index, style: {} }
 
     // label
     // if (view.label && !view.__labeled__) html = labelHandler({ _window, id, tag })
@@ -7061,8 +7105,8 @@ const toHTML = ({ _window, id, stack, __ }) => {
 
 const link = ({ _window, id, stack, __ }) => {
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
 
     var view = views[id]
 
@@ -7248,6 +7292,8 @@ const removeView = ({ _window, global, views, id, stack, self = true, main, inse
     if (!view) return
     var parent = views[view.__parent__], element = {}
 
+    view.__childrenRef__.map(({ id }) => id).map(id => removeView({ _window, global, views, id, stack, insert }))
+
     // remove events
     view.__events__.map(event => view.__element__.removeEventListener(event.event, event.eventListener))
 
@@ -7258,8 +7304,6 @@ const removeView = ({ _window, global, views, id, stack, self = true, main, inse
             delete global.__events__[eventID][genID]
         })
     })
-
-    view.__childrenRef__.map(({ id }) => id).map(id => removeView({ _window, global, views, id, stack, insert }))
 
     if (!self) return element
 
@@ -7279,25 +7323,26 @@ const removeView = ({ _window, global, views, id, stack, self = true, main, inse
 
     if (main) element = view.__element__
 
-    blockRelatedAddressesByViewID({ stack, id })
+    // blockRelatedAddressesByViewID({ stack, id })
 
-    // deepDelete({ obj: global.__events__, key: id })
+    // deepDelete({ obj: views, key: id })
     // Object.keys(view).map(key => delete view[key])
 
-    delete views[id]
+    views[id] = null
+    index = null
 
     return element
 }
 
 const deepDelete = ({ obj, key }) => {
 
-    if (typeof obj !== "object") return obj
+    if (typeof obj !== "object" || obj[key] === null) return
     if (typeof obj[key] === "object")
         Object.keys(obj[key]).map(key => {
             deepDelete({ obj: obj[key], key })
         })
 
-    delete obj[key]
+    obj[key] = null
 }
 
 const blockRelatedAddressesBynextAddress = ({ stack, index }) => {
@@ -7326,8 +7371,8 @@ const launcher = () => {
     window.global = JSON.parse(document.getElementById("global").textContent)
 
     //
-    const views = window.views
-    const global = window.global
+    var views = window.views
+    var global = window.global
 
     views.document.__element__ = document
 
@@ -7361,8 +7406,8 @@ const launcher = () => {
 
 const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: headStack, address: nextAddress, __ }) => {
 
-    const views = window.views
-    const global = window.global
+    var views = window.views
+    var global = window.global
 
     var view = views[id]
 
@@ -7390,7 +7435,7 @@ const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: he
 
 const defaultEventHandler = ({ id }) => {
 
-    const views = window.views
+    var views = window.views
     var view = views[id]
 
     view.focused = false
@@ -7461,14 +7506,17 @@ const starter = ({ lookupActions, stack, __, address, id }) => {
 
     var view = window.views[id]
     var global = window.global
-    if (!view) return
+    if (!view) return {}
 
     // status
     view.__status__ = "Mounted"
     view.__rendered__ = true
 
     view.__element__ = document.getElementById(id)
-    if (!view.__element__) return delete window.views[id]
+    if (!view.__element__) {
+        delete window.views[id]
+        return {}
+    }
     view.__element__.setAttribute("index", view.__index__)
 
     // default input handlers
@@ -7494,8 +7542,8 @@ const starter = ({ lookupActions, stack, __, address, id }) => {
 
 const defaultInputHandler = ({ id }) => {
 
-    const views = window.views
-    const global = window.global
+    var views = window.views
+    var global = window.global
     var view = views[id]
 
     if (!view) return
@@ -7681,8 +7729,8 @@ const toNumber = (string) => {
 
 const defaultAppEvents = () => {
 
-    const views = window.views
-    const global = window.global
+    var views = window.views
+    var global = window.global
 
     // document default event listeners
 
@@ -7711,7 +7759,7 @@ const defaultAppEvents = () => {
 
     window.addEventListener("focus", (e) => {
 
-        views.root.__element__.click()
+        // views.root.__element__.click()
         document.activeElement.blur()
     })
 
@@ -7748,7 +7796,7 @@ const defaultAppEvents = () => {
 const setData = ({ id, data, __, stack = {} }) => {
 
     var view = window.views[id]
-    const global = window.global
+    var global = window.global
 
     if (!global[view.doc]) return
 
@@ -7781,7 +7829,7 @@ module.exports = {
     closePublicViews, updateDataPath, remove, toHTML, documenter, initView, getViewParams, removeView, launcher, defaultEventHandler,
     toNumber, defaultAppEvents
 }
-},{"../event/event":64,"../view/Input":136,"./actions.json":1,"./capitalize":2,"./clone":3,"./colorize":4,"./cookie":5,"./counter":6,"./cssStyleKeyNames":7,"./csvToJson":8,"./decode":10,"./droplist":11,"./erase":12,"./events.json":13,"./executable":14,"./exportJson":15,"./fileReader":16,"./focus":17,"./generate":18,"./getCoords":19,"./getDateTime":20,"./getDaysInMonth":21,"./getType":22,"./getView":23,"./isArabic":24,"./isCalc":25,"./isCondition":26,"./isEqual":27,"./isEvent":28,"./isParam":29,"./jsonFiles":30,"./jsonToBracket":31,"./kernel":32,"./logger":33,"./mail":34,"./merge":35,"./note":36,"./qr":37,"./replaceNbsps":38,"./resize":39,"./root":40,"./route":41,"./save":42,"./search":43,"./searchParams":44,"./setPosition":45,"./sort":46,"./stack":47,"./toArray":49,"./toCSV":50,"./toClock":51,"./toCode":52,"./toEvent":54,"./toExcel":55,"./toPdf":58,"./toSimplifiedDate":59,"./upload":60,"./vcard":61,"./watch":62}],33:[function(require,module,exports){
+},{"../event/event":63,"../view/Input":135,"./actions.json":1,"./capitalize":2,"./clone":3,"./colorize":4,"./cookie":5,"./counter":6,"./cssStyleKeyNames":7,"./csvToJson":8,"./decode":10,"./droplist":11,"./erase":12,"./events.json":13,"./executable":14,"./exportJson":15,"./fileReader":16,"./focus":17,"./generate":18,"./getCoords":19,"./getDateTime":20,"./getDaysInMonth":21,"./getType":22,"./getView":23,"./isArabic":24,"./isCalc":25,"./isCondition":26,"./isEqual":27,"./isEvent":28,"./isParam":29,"./jsonFiles":30,"./jsonToBracket":31,"./kernel":32,"./logger":33,"./mail":34,"./merge":35,"./note":36,"./qr":37,"./replaceNbsps":38,"./resize":39,"./root":40,"./route":41,"./save":42,"./search":43,"./searchParams":44,"./setPosition":45,"./sort":46,"./stack":47,"./toArray":49,"./toCSV":50,"./toClock":51,"./toCode":52,"./toEvent":53,"./toExcel":54,"./toPdf":57,"./toSimplifiedDate":58,"./upload":59,"./vcard":60,"./watch":61}],33:[function(require,module,exports){
 const logger = ({ _window: { global }, data: { key, start, end } }) => {
     
     if (!key) return
@@ -7806,7 +7854,7 @@ module.exports = {
         const nodemailer = _window.__package__.nodemailer
         const OAuth2 = google.auth.OAuth2;
         var data = req.body.data
-        const global = _window.global
+        var global = _window.global
         var project = global.data.project
 
         // no recipient
@@ -7926,7 +7974,7 @@ const { isArabic } = require("./isArabic")
 
 const note = ({ note: data }) => {
 
-  const views = window.views
+  var views = window.views
   var note = views["note"]
   var type = (data.type || (data.danger && "danger") || (data.info && "info") || (data.warning && "warning") || "success").toLowerCase()
   var noteText = views["note-text"]
@@ -7993,7 +8041,7 @@ const wifiQrText = ({ data }) => {
 }
 
 module.exports = { qr }
-},{"./kernel":32,"easyqrcodejs":101,"qrcode":106}],38:[function(require,module,exports){
+},{"./kernel":32,"easyqrcodejs":100,"qrcode":105}],38:[function(require,module,exports){
 const replaceNbsps = (str) => {
   if (typeof str !== "string") return str
     var re = new RegExp(String.fromCharCode(160), "g");
@@ -8111,8 +8159,8 @@ const { update } = require("./kernel")
 module.exports = {
   root: ({ id, _window, root = {}, stack, lookupActions, address, req, res, __ }) => {
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
 
     // path
     var path = root.path || (root.page.includes("/") ? root.page : global.manifest.path.join("/"))
@@ -8152,7 +8200,7 @@ const route = async ({ _window, lookupActions, stack, address, id, req, __, res,
 }
 
 module.exports = { route }
-},{"./kernel":32,"axios":68}],42:[function(require,module,exports){
+},{"./kernel":32,"axios":67}],42:[function(require,module,exports){
 const axios = require('axios')
 const { postData } = require('./database')
 
@@ -8181,7 +8229,7 @@ module.exports = {
     require("./kernel").toAwait({ _window, lookupActions, stack, id, address, e, req, res, _: data, __ })
   }
 }
-},{"./database":9,"./kernel":32,"axios":68}],43:[function(require,module,exports){
+},{"./database":9,"./kernel":32,"axios":67}],43:[function(require,module,exports){
 module.exports = {
   search: async ({ _window, lookupActions, stack, id, req, res, e, __, data: search = {}, address }) => {
     
@@ -8205,14 +8253,14 @@ module.exports = {
     require("./kernel").toAwait({ _window, lookupActions, stack, id, e, address, req, res, _: data, __ })
   }
 }
-},{"./database":9,"./kernel":32,"axios":68}],44:[function(require,module,exports){
+},{"./database":9,"./kernel":32,"axios":67}],44:[function(require,module,exports){
 const { decode } = require("./decode")
 const { toLine } = require("./kernel")
 const { toCode } = require("./toCode")
 
 const searchParams = ({ _window, lookupActions, stack, req, res, id, e, __, string, object }) => {
 
-    const global = _window ? _window.global : window.global
+    var global = _window ? _window.global : window.global
 
     if (string.charAt(0) === "@" && string.length === 6) string = global.__refs__[string].data
 
@@ -8273,7 +8321,7 @@ module.exports = { searchParams }
 },{"./decode":10,"./kernel":32,"./toCode":52}],45:[function(require,module,exports){
 const setPosition = ({ position = {}, id, e }) => {
 
-  const views = window.views
+  var views = window.views
   var align = position.align || "center"
   var element = views[position.id || id].__element__
   var mousePos = position.positioner === "mouse"
@@ -8580,7 +8628,7 @@ const openStack = ({ _window, id: viewID, string = "", nextAddress, headStack, .
   stack.logs.push(`# Status TYPE ID Index Action => HeadID HeadIndex HeadAction`)
   stack.logs.push(`1 Start STACK ${stack.id} ${stack.event.toUpperCase()} ${stack.string}`)
 
-  const global = _window ? _window.global : window.global
+  var global = _window ? _window.global : window.global
   global.__stacks__[stack.id] = stack
 
   return stack
@@ -8605,7 +8653,7 @@ const endStack = ({ _window, stack, end }) => {
     delete (_window ? _window.global : window.global).__stacks__[stack.id]
 
     // print stack
-    stack.print && !stack.printed && console.log(logs, "color: blue", stack.logs)
+    stack.print && !stack.printed && console.log("STACK:" + stack.event, logs, "color: blue", stack.logs)
     stack.printed = true
   }
 }
@@ -8716,7 +8764,7 @@ const deleteFile = async ({ req, res }) => {
 
 module.exports = { storeFile, deleteFile, storage }
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./generate":18,"./toArray":49,"buffer":99,"fs":98}],49:[function(require,module,exports){
+},{"./generate":18,"./toArray":49,"buffer":98,"fs":97}],49:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? data : [data]) : [];
 }
@@ -8823,16 +8871,20 @@ module.exports = {
 const { generate } = require("./generate")
 const { replaceNbsps } = require("./replaceNbsps")
 
-const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) => {
+const toCode = ({ _window, id, string, e, start = "[", end = "]", ignoreReplace = true }) => {
 
   if (typeof string !== "string") return string
-  const global = _window ? _window.global : window.global
+  var global = _window ? _window.global : window.global
 
   // text
   if (start === "'") end = "'"
   
-  // do not encode []
-  if (!subCoding) string = replaceNbsps(string.replaceAll("[]", "__map__"))
+  // ignoreReplace
+  if (ignoreReplace) string = replaceNbsps(string)
+    .replaceAll("[]", "__map__")
+    .replaceAll(/\\'(?!['])/g, "__quote__")
+    .replace(/\\\[/g, "__openSquareBracket__")
+    .replace(/\\\]/g, "__closeSquareBracket__")
 
   // init
   var type = start === "'" ? "text" : "code"
@@ -8848,7 +8900,7 @@ const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) =
 
       keys[1] += `${start}${keys[2]}`
       if (keys[1].includes(end) && keys[2]) {
-        keys[1] = toCode({ _window, id, string: keys[1], e, start, subCoding: true })
+        keys[1] = toCode({ _window, id, string: keys[1], e, start, ignoreReplace: false })
       }
       keys.splice(2, 1)
       subKey = keys[1].split(end)
@@ -8861,7 +8913,15 @@ const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) =
     if (subKey[0].split("'").length > 1) subKey[0] = toCode({ _window, id, string: subKey[0], start: "'" })
 
     // reference
-    global.__refs__[key] = { id, data: subKey[0].replaceAll("__map__", "[]"), type }
+    global.__refs__[key] = { 
+      id, 
+      type, 
+      data: subKey[0]
+      .replaceAll("__map__", "[]")
+      .replaceAll("__quote__", "'")
+      .replace("__openSquareBracket__", "[")
+      .replace("__closeSquareBracket__", "]")
+    }
 
     var value = key
     var before = keys[0]
@@ -8872,47 +8932,19 @@ const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) =
     string = `${before}${value}${subKey.join(end)}${after}`
   }
 
-  if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0) string = toCode({ _window, id, string, e, start, subCoding: true })
+  if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0) string = toCode({ _window, id, string, e, start, ignoreReplace: false })
 
-  if (!subCoding) string = string.replaceAll("__map__", "[]")
+  if (ignoreReplace) string = string
+    .replaceAll("__map__", "[]")
+    .replaceAll("__quote__", "'")
+    .replace("__openSquareBracket__", "[")
+    .replace("__closeSquareBracket__", "]")
 
   return string
 }
 
 module.exports = { toCode }
 },{"./generate":18,"./replaceNbsps":38}],53:[function(require,module,exports){
-const {generate} = require("./generate")
-const {toArray} = require("./toArray")
-
-const toComponent = (obj) => {
-  // class
-  obj.class = obj.class || ""
-
-  // id
-  obj.id = obj.id || generate()
-
-  // style
-  obj.style = obj.style || {}
-
-  // controls
-  obj.controls = toArray(obj.controls)
-
-  // children
-  obj.children = toArray(obj.children)
-
-  // model
-  if (!obj.model || obj.classic) obj.model = "classic"
-  if (obj.featured) obj.model = "featured"
-
-  // component
-  obj.component = true
-
-  return obj
-}
-
-module.exports = {toComponent}
-
-},{"./generate":18,"./toArray":49}],54:[function(require,module,exports){
 const { toArray } = require("./toArray")
 
 const toEvent = ({ _window, id, string, __, lookupActions }) => {
@@ -8924,7 +8956,7 @@ const toEvent = ({ _window, id, string, __, lookupActions }) => {
 }
 
 module.exports = { toEvent }
-},{"./toArray":49}],55:[function(require,module,exports){
+},{"./toArray":49}],54:[function(require,module,exports){
 // const XLSX = require("xlsx")
 
 module.exports = {
@@ -8949,7 +8981,7 @@ module.exports = {
         XLSX.writeFile(myWorkBook, myFile)
     }
 }
-},{}],56:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 module.exports = {
     toFirebaseOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -8964,7 +8996,7 @@ module.exports = {
         else return string
     }
 }
-},{}],57:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 module.exports = {
     toOperator: (string) => {
         if (!string || string === 'equal' || string === 'eq') return '=='
@@ -8981,7 +9013,7 @@ module.exports = {
 }
 
 // in, notin, 
-},{}],58:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 module.exports = {
     toPdf: async (options) => {
 
@@ -9010,7 +9042,7 @@ module.exports = {
         }
     }
 }
-},{}],59:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -9058,7 +9090,7 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],60:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
@@ -9129,7 +9161,7 @@ const readFile = (file) => new Promise(res => {
     myReader.readAsDataURL(file)
   }
 })
-},{"./clone":3,"./generate":18,"./kernel":32,"./storage":48,"./toArray":49,"axios":68}],61:[function(require,module,exports){
+},{"./clone":3,"./generate":18,"./kernel":32,"./storage":48,"./toArray":49,"axios":67}],60:[function(require,module,exports){
 'use strict';
 
 const downloadToFile = (content, filename, contentType) => {
@@ -9202,7 +9234,7 @@ const vcardServer = ({ res, data }) => {
 }
 
 module.exports = { vcard }
-},{"vcards-js":133}],62:[function(require,module,exports){
+},{"vcards-js":132}],61:[function(require,module,exports){
 const { toApproval } = require("./kernel")
 const { clone } = require("./clone")
 const { toParam } = require("./kernel")
@@ -9250,7 +9282,7 @@ const watch = ({ lookupActions, __, string, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":3,"./generate":18,"./isEqual":27,"./kernel":32,"./toCode":52}],63:[function(require,module,exports){
+},{"./clone":3,"./generate":18,"./isEqual":27,"./kernel":32,"./toCode":52}],62:[function(require,module,exports){
 module.exports = () => {
   
   return [{ // close droplist
@@ -9269,14 +9301,14 @@ module.exports = () => {
     event: `keyup:input()?():droplist.children().[__keyupIndex__:()||0].mouseleave();__keyupIndex__:()=if():[e().keyCode=40]:[__keyupIndex__:()+1]:[__keyupIndex__:()-1];():droplist.children().[__keyupIndex__:()].mouseenter()?e().keyCode=40||=38;__droplistPositioner__:();if():[e().keyCode=38]:[__keyupIndex__:()>0].elif():[e().keyCode=40]:[__keyupIndex__:()<():droplist.children().len()-1]`
   }]
 }
-},{}],64:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 module.exports = {
   droplist: require("./droplist"),
   tooltip: require("./tooltip"),
   mininote: require("./mininote"),
   hover: require("./hover")
 }
-},{"./droplist":63,"./hover":65,"./mininote":66,"./tooltip":67}],65:[function(require,module,exports){
+},{"./droplist":62,"./hover":64,"./mininote":65,"./tooltip":66}],64:[function(require,module,exports){
 module.exports = ({ data, id }) => {
 
     var view = window.views[id]
@@ -9297,14 +9329,14 @@ module.exports = ({ data, id }) => {
         "event": `mouseleave:${_id}?hover.default.style.keys()._():[style().[_]=.hover.default.style.[_]]?!hover.disable`
     }]
 }
-},{}],66:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 module.exports = () => {
   
   return [{
     event: `click?():mininote-text.txt()=[.mininote.text||.mininote.note||''];clearTimeout():[mininote-timer:()];():mininote.style():[opacity=1;transform='scale(1)'];mininote-timer:()=():root.timer():[():mininote.style():[opacity=0;transform=scale(0)]]:[.mininote.timer||3000]`
   }]
 }
-},{}],67:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[a-zA-Z]/
 
@@ -9314,16 +9346,16 @@ module.exports = ({ data, id }) => {
   var text = data.text || ""
   
   return [{
-    event: `mousemove?if():[!__tooltipTimer__:()]:[__tooltipTimer__:()=timer():[():tooltip.style().opacity=1?mouseentered]:500];():tooltip-text.txt()=.tooltip.text;():tooltip-text.removeClass():ar;if():[${arabic.test(text) && !english.test(text)}]:[():tooltip-text.addClass():ar];():tooltip.position():[positioner=mouse;placement=[.tooltip.placement||left];distance=[.tooltip.distance||0]]?mouseentered`
+    event: `mousemove?if():[!__tooltipTimer__:()]:[__tooltipTimer__:()=timer():[():tooltip.style().opacity=1?mouseentered]:500];():'tooltip-text'.txt()=.tooltip.text;#():tooltip-text.removeClass():ar;#if():[${arabic.test(text) && !english.test(text)}]:[():tooltip-text.addClass():ar];():tooltip.position():[positioner=mouse;placement=[.tooltip.placement||left];distance=[.tooltip.distance||0]]?mouseentered`
   }, {
     event: "mouseleave?mouseentered=false;clearTimer():[__tooltipTimer__:()];__tooltipTimer__:().del();():tooltip.style().opacity=0"
   }, {
     event: "mouseenter?mouseentered=true"
   }]
 }
-},{}],68:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":70}],69:[function(require,module,exports){
+},{"./lib/axios":69}],68:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9514,7 +9546,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":76,"../core/createError":77,"./../core/settle":81,"./../helpers/buildURL":85,"./../helpers/cookies":87,"./../helpers/isURLSameOrigin":90,"./../helpers/parseHeaders":92,"./../utils":95}],70:[function(require,module,exports){
+},{"../core/buildFullPath":75,"../core/createError":76,"./../core/settle":80,"./../helpers/buildURL":84,"./../helpers/cookies":86,"./../helpers/isURLSameOrigin":89,"./../helpers/parseHeaders":91,"./../utils":94}],69:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -9572,7 +9604,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":71,"./cancel/CancelToken":72,"./cancel/isCancel":73,"./core/Axios":74,"./core/mergeConfig":80,"./defaults":83,"./helpers/bind":84,"./helpers/isAxiosError":89,"./helpers/spread":93,"./utils":95}],71:[function(require,module,exports){
+},{"./cancel/Cancel":70,"./cancel/CancelToken":71,"./cancel/isCancel":72,"./core/Axios":73,"./core/mergeConfig":79,"./defaults":82,"./helpers/bind":83,"./helpers/isAxiosError":88,"./helpers/spread":92,"./utils":94}],70:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9593,7 +9625,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],72:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -9652,14 +9684,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":71}],73:[function(require,module,exports){
+},{"./Cancel":70}],72:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],74:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9809,7 +9841,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":85,"../helpers/validator":94,"./../utils":95,"./InterceptorManager":75,"./dispatchRequest":78,"./mergeConfig":80}],75:[function(require,module,exports){
+},{"../helpers/buildURL":84,"../helpers/validator":93,"./../utils":94,"./InterceptorManager":74,"./dispatchRequest":77,"./mergeConfig":79}],74:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9865,7 +9897,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":95}],76:[function(require,module,exports){
+},{"./../utils":94}],75:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -9887,7 +9919,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":86,"../helpers/isAbsoluteURL":88}],77:[function(require,module,exports){
+},{"../helpers/combineURLs":85,"../helpers/isAbsoluteURL":87}],76:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -9907,7 +9939,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":79}],78:[function(require,module,exports){
+},{"./enhanceError":78}],77:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9991,7 +10023,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":73,"../defaults":83,"./../utils":95,"./transformData":82}],79:[function(require,module,exports){
+},{"../cancel/isCancel":72,"../defaults":82,"./../utils":94,"./transformData":81}],78:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10035,7 +10067,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],80:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -10124,7 +10156,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":95}],81:[function(require,module,exports){
+},{"../utils":94}],80:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -10151,7 +10183,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":77}],82:[function(require,module,exports){
+},{"./createError":76}],81:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10175,7 +10207,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":83,"./../utils":95}],83:[function(require,module,exports){
+},{"./../defaults":82,"./../utils":94}],82:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -10313,7 +10345,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":69,"./adapters/xhr":69,"./core/enhanceError":79,"./helpers/normalizeHeaderName":91,"./utils":95,"_process":105}],84:[function(require,module,exports){
+},{"./adapters/http":68,"./adapters/xhr":68,"./core/enhanceError":78,"./helpers/normalizeHeaderName":90,"./utils":94,"_process":104}],83:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -10326,7 +10358,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],85:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10398,7 +10430,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":95}],86:[function(require,module,exports){
+},{"./../utils":94}],85:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10414,7 +10446,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],87:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10469,7 +10501,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":95}],88:[function(require,module,exports){
+},{"./../utils":94}],87:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10485,7 +10517,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],89:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10498,7 +10530,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],90:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10568,7 +10600,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":95}],91:[function(require,module,exports){
+},{"./../utils":94}],90:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -10582,7 +10614,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":95}],92:[function(require,module,exports){
+},{"../utils":94}],91:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10637,7 +10669,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":95}],93:[function(require,module,exports){
+},{"./../utils":94}],92:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10666,7 +10698,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],94:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -10773,7 +10805,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":96}],95:[function(require,module,exports){
+},{"./../../package.json":95}],94:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -11124,7 +11156,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":84}],96:[function(require,module,exports){
+},{"./helpers/bind":83}],95:[function(require,module,exports){
 module.exports={
   "name": "axios",
   "version": "0.21.4",
@@ -11210,7 +11242,7 @@ module.exports={
   ]
 }
 
-},{}],97:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -11362,9 +11394,9 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],98:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 
-},{}],99:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 (function (Buffer){(function (){
 /*!
  * The buffer module from node.js, for the browser.
@@ -13145,7 +13177,7 @@ function numberIsNaN (obj) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"base64-js":97,"buffer":99,"ieee754":103}],100:[function(require,module,exports){
+},{"base64-js":96,"buffer":98,"ieee754":102}],99:[function(require,module,exports){
 'use strict';
 
 /******************************************************************************
@@ -13312,7 +13344,7 @@ if (typeof module !== 'undefined') {
   module.exports = dijkstra;
 }
 
-},{}],101:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 (function (global){(function (){
 /**
  * EasyQRCodeJS
@@ -13336,7 +13368,7 @@ if (typeof module !== 'undefined') {
 !function(){"use strict";function a(a,b){var c,d=Object.keys(b);for(c=0;c<d.length;c++)a=a.replace(new RegExp("\\{"+d[c]+"\\}","gi"),b[d[c]]);return a}function b(a){var b,c,d;if(!a)throw new Error("cannot create a random attribute name for an undefined object");b="ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz",c="";do{for(c="",d=0;d<12;d++)c+=b[Math.floor(Math.random()*b.length)]}while(a[c]);return c}function c(a){var b={left:"start",right:"end",center:"middle",start:"start",end:"end"};return b[a]||b.start}function d(a){var b={alphabetic:"alphabetic",hanging:"hanging",top:"text-before-edge",bottom:"text-after-edge",middle:"central"};return b[a]||b.alphabetic}var e,f,g,h,i;i=function(a,b){var c,d,e,f={};for(a=a.split(","),b=b||10,c=0;c<a.length;c+=2)d="&"+a[c+1]+";",e=parseInt(a[c],b),f[d]="&#"+e+";";return f["\\xa0"]="&#160;",f}("50,nbsp,51,iexcl,52,cent,53,pound,54,curren,55,yen,56,brvbar,57,sect,58,uml,59,copy,5a,ordf,5b,laquo,5c,not,5d,shy,5e,reg,5f,macr,5g,deg,5h,plusmn,5i,sup2,5j,sup3,5k,acute,5l,micro,5m,para,5n,middot,5o,cedil,5p,sup1,5q,ordm,5r,raquo,5s,frac14,5t,frac12,5u,frac34,5v,iquest,60,Agrave,61,Aacute,62,Acirc,63,Atilde,64,Auml,65,Aring,66,AElig,67,Ccedil,68,Egrave,69,Eacute,6a,Ecirc,6b,Euml,6c,Igrave,6d,Iacute,6e,Icirc,6f,Iuml,6g,ETH,6h,Ntilde,6i,Ograve,6j,Oacute,6k,Ocirc,6l,Otilde,6m,Ouml,6n,times,6o,Oslash,6p,Ugrave,6q,Uacute,6r,Ucirc,6s,Uuml,6t,Yacute,6u,THORN,6v,szlig,70,agrave,71,aacute,72,acirc,73,atilde,74,auml,75,aring,76,aelig,77,ccedil,78,egrave,79,eacute,7a,ecirc,7b,euml,7c,igrave,7d,iacute,7e,icirc,7f,iuml,7g,eth,7h,ntilde,7i,ograve,7j,oacute,7k,ocirc,7l,otilde,7m,ouml,7n,divide,7o,oslash,7p,ugrave,7q,uacute,7r,ucirc,7s,uuml,7t,yacute,7u,thorn,7v,yuml,ci,fnof,sh,Alpha,si,Beta,sj,Gamma,sk,Delta,sl,Epsilon,sm,Zeta,sn,Eta,so,Theta,sp,Iota,sq,Kappa,sr,Lambda,ss,Mu,st,Nu,su,Xi,sv,Omicron,t0,Pi,t1,Rho,t3,Sigma,t4,Tau,t5,Upsilon,t6,Phi,t7,Chi,t8,Psi,t9,Omega,th,alpha,ti,beta,tj,gamma,tk,delta,tl,epsilon,tm,zeta,tn,eta,to,theta,tp,iota,tq,kappa,tr,lambda,ts,mu,tt,nu,tu,xi,tv,omicron,u0,pi,u1,rho,u2,sigmaf,u3,sigma,u4,tau,u5,upsilon,u6,phi,u7,chi,u8,psi,u9,omega,uh,thetasym,ui,upsih,um,piv,812,bull,816,hellip,81i,prime,81j,Prime,81u,oline,824,frasl,88o,weierp,88h,image,88s,real,892,trade,89l,alefsym,8cg,larr,8ch,uarr,8ci,rarr,8cj,darr,8ck,harr,8dl,crarr,8eg,lArr,8eh,uArr,8ei,rArr,8ej,dArr,8ek,hArr,8g0,forall,8g2,part,8g3,exist,8g5,empty,8g7,nabla,8g8,isin,8g9,notin,8gb,ni,8gf,prod,8gh,sum,8gi,minus,8gn,lowast,8gq,radic,8gt,prop,8gu,infin,8h0,ang,8h7,and,8h8,or,8h9,cap,8ha,cup,8hb,int,8hk,there4,8hs,sim,8i5,cong,8i8,asymp,8j0,ne,8j1,equiv,8j4,le,8j5,ge,8k2,sub,8k3,sup,8k4,nsub,8k6,sube,8k7,supe,8kl,oplus,8kn,otimes,8l5,perp,8m5,sdot,8o8,lceil,8o9,rceil,8oa,lfloor,8ob,rfloor,8p9,lang,8pa,rang,9ea,loz,9j0,spades,9j3,clubs,9j5,hearts,9j6,diams,ai,OElig,aj,oelig,b0,Scaron,b1,scaron,bo,Yuml,m6,circ,ms,tilde,802,ensp,803,emsp,809,thinsp,80c,zwnj,80d,zwj,80e,lrm,80f,rlm,80j,ndash,80k,mdash,80o,lsquo,80p,rsquo,80q,sbquo,80s,ldquo,80t,rdquo,80u,bdquo,810,dagger,811,Dagger,81g,permil,81p,lsaquo,81q,rsaquo,85c,euro",32),e={strokeStyle:{svgAttr:"stroke",canvas:"#000000",svg:"none",apply:"stroke"},fillStyle:{svgAttr:"fill",canvas:"#000000",svg:null,apply:"fill"},lineCap:{svgAttr:"stroke-linecap",canvas:"butt",svg:"butt",apply:"stroke"},lineJoin:{svgAttr:"stroke-linejoin",canvas:"miter",svg:"miter",apply:"stroke"},miterLimit:{svgAttr:"stroke-miterlimit",canvas:10,svg:4,apply:"stroke"},lineWidth:{svgAttr:"stroke-width",canvas:1,svg:1,apply:"stroke"},globalAlpha:{svgAttr:"opacity",canvas:1,svg:1,apply:"fill stroke"},font:{canvas:"10px sans-serif"},shadowColor:{canvas:"#000000"},shadowOffsetX:{canvas:0},shadowOffsetY:{canvas:0},shadowBlur:{canvas:0},textAlign:{canvas:"start"},textBaseline:{canvas:"alphabetic"},lineDash:{svgAttr:"stroke-dasharray",canvas:[],svg:null,apply:"stroke"}},g=function(a,b){this.__root=a,this.__ctx=b},g.prototype.addColorStop=function(b,c){var d,e,f=this.__ctx.__createElement("stop");f.setAttribute("offset",b),-1!==c.indexOf("rgba")?(d=/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d?\.?\d*)\s*\)/gi,e=d.exec(c),f.setAttribute("stop-color",a("rgb({r},{g},{b})",{r:e[1],g:e[2],b:e[3]})),f.setAttribute("stop-opacity",e[4])):f.setAttribute("stop-color",c),this.__root.appendChild(f)},h=function(a,b){this.__root=a,this.__ctx=b},f=function(a){var b,c={width:500,height:500,enableMirroring:!1};if(arguments.length>1?(b=c,b.width=arguments[0],b.height=arguments[1]):b=a||c,!(this instanceof f))return new f(b);this.width=b.width||c.width,this.height=b.height||c.height,this.enableMirroring=void 0!==b.enableMirroring?b.enableMirroring:c.enableMirroring,this.canvas=this,this.__document=b.document||document,b.ctx?this.__ctx=b.ctx:(this.__canvas=this.__document.createElement("canvas"),this.__ctx=this.__canvas.getContext("2d")),this.__setDefaultStyles(),this.__stack=[this.__getStyleState()],this.__groupStack=[],this.__root=this.__document.createElementNS("http://www.w3.org/2000/svg","svg"),this.__root.setAttribute("version",1.1),this.__root.setAttribute("xmlns","http://www.w3.org/2000/svg"),this.__root.setAttributeNS("http://www.w3.org/2000/xmlns/","xmlns:xlink","http://www.w3.org/1999/xlink"),this.__root.setAttribute("width",this.width),this.__root.setAttribute("height",this.height),this.__ids={},this.__defs=this.__document.createElementNS("http://www.w3.org/2000/svg","defs"),this.__root.appendChild(this.__defs),this.__currentElement=this.__document.createElementNS("http://www.w3.org/2000/svg","g"),this.__root.appendChild(this.__currentElement)},f.prototype.__createElement=function(a,b,c){void 0===b&&(b={});var d,e,f=this.__document.createElementNS("http://www.w3.org/2000/svg",a),g=Object.keys(b);for(c&&(f.setAttribute("fill","none"),f.setAttribute("stroke","none")),d=0;d<g.length;d++)e=g[d],f.setAttribute(e,b[e]);return f},f.prototype.__setDefaultStyles=function(){var a,b,c=Object.keys(e);for(a=0;a<c.length;a++)b=c[a],this[b]=e[b].canvas},f.prototype.__applyStyleState=function(a){var b,c,d=Object.keys(a);for(b=0;b<d.length;b++)c=d[b],this[c]=a[c]},f.prototype.__getStyleState=function(){var a,b,c={},d=Object.keys(e);for(a=0;a<d.length;a++)b=d[a],c[b]=this[b];return c},f.prototype.__applyStyleToCurrentElement=function(b){var c=this.__currentElement,d=this.__currentElementsToStyle;d&&(c.setAttribute(b,""),c=d.element,d.children.forEach(function(a){a.setAttribute(b,"")}));var f,i,j,k,l,m,n=Object.keys(e);for(f=0;f<n.length;f++)if(i=e[n[f]],j=this[n[f]],i.apply)if(j instanceof h){if(j.__ctx)for(;j.__ctx.__defs.childNodes.length;)k=j.__ctx.__defs.childNodes[0].getAttribute("id"),this.__ids[k]=k,this.__defs.appendChild(j.__ctx.__defs.childNodes[0]);c.setAttribute(i.apply,a("url(#{id})",{id:j.__root.getAttribute("id")}))}else if(j instanceof g)c.setAttribute(i.apply,a("url(#{id})",{id:j.__root.getAttribute("id")}));else if(-1!==i.apply.indexOf(b)&&i.svg!==j)if("stroke"!==i.svgAttr&&"fill"!==i.svgAttr||-1===j.indexOf("rgba")){var o=i.svgAttr;if("globalAlpha"===n[f]&&(o=b+"-"+i.svgAttr,c.getAttribute(o)))continue;c.setAttribute(o,j)}else{l=/rgba\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d?\.?\d*)\s*\)/gi,m=l.exec(j),c.setAttribute(i.svgAttr,a("rgb({r},{g},{b})",{r:m[1],g:m[2],b:m[3]}));var p=m[4],q=this.globalAlpha;null!=q&&(p*=q),c.setAttribute(i.svgAttr+"-opacity",p)}},f.prototype.__closestGroupOrSvg=function(a){return a=a||this.__currentElement,"g"===a.nodeName||"svg"===a.nodeName?a:this.__closestGroupOrSvg(a.parentNode)},f.prototype.getSerializedSvg=function(a){var b,c,d,e,f,g,h=(new XMLSerializer).serializeToString(this.__root);if(g=/xmlns="http:\/\/www\.w3\.org\/2000\/svg".+xmlns="http:\/\/www\.w3\.org\/2000\/svg/gi,g.test(h)&&(h=h.replace('xmlns="http://www.w3.org/2000/svg','xmlns:xlink="http://www.w3.org/1999/xlink')),a)for(b=Object.keys(i),c=0;c<b.length;c++)d=b[c],e=i[d],f=new RegExp(d,"gi"),f.test(h)&&(h=h.replace(f,e));return h},f.prototype.getSvg=function(){return this.__root},f.prototype.save=function(){var a=this.__createElement("g"),b=this.__closestGroupOrSvg();this.__groupStack.push(b),b.appendChild(a),this.__currentElement=a,this.__stack.push(this.__getStyleState())},f.prototype.restore=function(){this.__currentElement=this.__groupStack.pop(),this.__currentElementsToStyle=null,this.__currentElement||(this.__currentElement=this.__root.childNodes[1]);var a=this.__stack.pop();this.__applyStyleState(a)},f.prototype.__addTransform=function(a){var b=this.__closestGroupOrSvg();if(b.childNodes.length>0){"path"===this.__currentElement.nodeName&&(this.__currentElementsToStyle||(this.__currentElementsToStyle={element:b,children:[]}),this.__currentElementsToStyle.children.push(this.__currentElement),this.__applyCurrentDefaultPath());var c=this.__createElement("g");b.appendChild(c),this.__currentElement=c}var d=this.__currentElement.getAttribute("transform");d?d+=" ":d="",d+=a,this.__currentElement.setAttribute("transform",d)},f.prototype.scale=function(b,c){void 0===c&&(c=b),this.__addTransform(a("scale({x},{y})",{x:b,y:c}))},f.prototype.rotate=function(b){var c=180*b/Math.PI;this.__addTransform(a("rotate({angle},{cx},{cy})",{angle:c,cx:0,cy:0}))},f.prototype.translate=function(b,c){this.__addTransform(a("translate({x},{y})",{x:b,y:c}))},f.prototype.transform=function(b,c,d,e,f,g){this.__addTransform(a("matrix({a},{b},{c},{d},{e},{f})",{a:b,b:c,c:d,d:e,e:f,f:g}))},f.prototype.beginPath=function(){var a,b;this.__currentDefaultPath="",this.__currentPosition={},a=this.__createElement("path",{},!0),b=this.__closestGroupOrSvg(),b.appendChild(a),this.__currentElement=a},f.prototype.__applyCurrentDefaultPath=function(){var a=this.__currentElement;"path"===a.nodeName?a.setAttribute("d",this.__currentDefaultPath):console.error("Attempted to apply path command to node",a.nodeName)},f.prototype.__addPathCommand=function(a){this.__currentDefaultPath+=" ",this.__currentDefaultPath+=a},f.prototype.moveTo=function(b,c){"path"!==this.__currentElement.nodeName&&this.beginPath(),this.__currentPosition={x:b,y:c},this.__addPathCommand(a("M {x} {y}",{x:b,y:c}))},f.prototype.closePath=function(){this.__currentDefaultPath&&this.__addPathCommand("Z")},f.prototype.lineTo=function(b,c){this.__currentPosition={x:b,y:c},this.__currentDefaultPath.indexOf("M")>-1?this.__addPathCommand(a("L {x} {y}",{x:b,y:c})):this.__addPathCommand(a("M {x} {y}",{x:b,y:c}))},f.prototype.bezierCurveTo=function(b,c,d,e,f,g){this.__currentPosition={x:f,y:g},this.__addPathCommand(a("C {cp1x} {cp1y} {cp2x} {cp2y} {x} {y}",{cp1x:b,cp1y:c,cp2x:d,cp2y:e,x:f,y:g}))},f.prototype.quadraticCurveTo=function(b,c,d,e){this.__currentPosition={x:d,y:e},this.__addPathCommand(a("Q {cpx} {cpy} {x} {y}",{cpx:b,cpy:c,x:d,y:e}))};var j=function(a){var b=Math.sqrt(a[0]*a[0]+a[1]*a[1]);return[a[0]/b,a[1]/b]};f.prototype.arcTo=function(a,b,c,d,e){var f=this.__currentPosition&&this.__currentPosition.x,g=this.__currentPosition&&this.__currentPosition.y;if(void 0!==f&&void 0!==g){if(e<0)throw new Error("IndexSizeError: The radius provided ("+e+") is negative.");if(f===a&&g===b||a===c&&b===d||0===e)return void this.lineTo(a,b);var h=j([f-a,g-b]),i=j([c-a,d-b]);if(h[0]*i[1]==h[1]*i[0])return void this.lineTo(a,b);var k=h[0]*i[0]+h[1]*i[1],l=Math.acos(Math.abs(k)),m=j([h[0]+i[0],h[1]+i[1]]),n=e/Math.sin(l/2),o=a+n*m[0],p=b+n*m[1],q=[-h[1],h[0]],r=[i[1],-i[0]],s=function(a){var b=a[0];return a[1]>=0?Math.acos(b):-Math.acos(b)},t=s(q),u=s(r);this.lineTo(o+q[0]*e,p+q[1]*e),this.arc(o,p,e,t,u)}},f.prototype.stroke=function(){"path"===this.__currentElement.nodeName&&this.__currentElement.setAttribute("paint-order","fill stroke markers"),this.__applyCurrentDefaultPath(),this.__applyStyleToCurrentElement("stroke")},f.prototype.fill=function(){"path"===this.__currentElement.nodeName&&this.__currentElement.setAttribute("paint-order","stroke fill markers"),this.__applyCurrentDefaultPath(),this.__applyStyleToCurrentElement("fill")},f.prototype.rect=function(a,b,c,d){"path"!==this.__currentElement.nodeName&&this.beginPath(),this.moveTo(a,b),this.lineTo(a+c,b),this.lineTo(a+c,b+d),this.lineTo(a,b+d),this.lineTo(a,b),this.closePath()},f.prototype.fillRect=function(a,b,c,d){var e,f;e=this.__createElement("rect",{x:a,y:b,width:c,height:d,"shape-rendering":"crispEdges"},!0),f=this.__closestGroupOrSvg(),f.appendChild(e),this.__currentElement=e,this.__applyStyleToCurrentElement("fill")},f.prototype.strokeRect=function(a,b,c,d){var e,f;e=this.__createElement("rect",{x:a,y:b,width:c,height:d},!0),f=this.__closestGroupOrSvg(),f.appendChild(e),this.__currentElement=e,this.__applyStyleToCurrentElement("stroke")},f.prototype.__clearCanvas=function(){for(var a=this.__closestGroupOrSvg(),b=a.getAttribute("transform"),c=this.__root.childNodes[1],d=c.childNodes,e=d.length-1;e>=0;e--)d[e]&&c.removeChild(d[e]);this.__currentElement=c,this.__groupStack=[],b&&this.__addTransform(b)},f.prototype.clearRect=function(a,b,c,d){if(0===a&&0===b&&c===this.width&&d===this.height)return void this.__clearCanvas();var e,f=this.__closestGroupOrSvg();e=this.__createElement("rect",{x:a,y:b,width:c,height:d,fill:"#FFFFFF"},!0),f.appendChild(e)},f.prototype.createLinearGradient=function(a,c,d,e){var f=this.__createElement("linearGradient",{id:b(this.__ids),x1:a+"px",x2:d+"px",y1:c+"px",y2:e+"px",gradientUnits:"userSpaceOnUse"},!1);return this.__defs.appendChild(f),new g(f,this)},f.prototype.createRadialGradient=function(a,c,d,e,f,h){var i=this.__createElement("radialGradient",{id:b(this.__ids),cx:e+"px",cy:f+"px",r:h+"px",fx:a+"px",fy:c+"px",gradientUnits:"userSpaceOnUse"},!1);return this.__defs.appendChild(i),new g(i,this)},f.prototype.__parseFont=function(){var a=/^\s*(?=(?:(?:[-a-z]+\s*){0,2}(italic|oblique))?)(?=(?:(?:[-a-z]+\s*){0,2}(small-caps))?)(?=(?:(?:[-a-z]+\s*){0,2}(bold(?:er)?|lighter|[1-9]00))?)(?:(?:normal|\1|\2|\3)\s*){0,3}((?:xx?-)?(?:small|large)|medium|smaller|larger|[.\d]+(?:\%|in|[cem]m|ex|p[ctx]))(?:\s*\/\s*(normal|[.\d]+(?:\%|in|[cem]m|ex|p[ctx])))?\s*([-,\'\"\sa-z0-9]+?)\s*$/i,b=a.exec(this.font),c={style:b[1]||"normal",size:b[4]||"10px",family:b[6]||"sans-serif",weight:b[3]||"normal",decoration:b[2]||"normal",href:null};return"underline"===this.__fontUnderline&&(c.decoration="underline"),this.__fontHref&&(c.href=this.__fontHref),c},f.prototype.__wrapTextLink=function(a,b){if(a.href){var c=this.__createElement("a");return c.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href",a.href),c.appendChild(b),c}return b},f.prototype.__applyText=function(a,b,e,f){var g=this.__parseFont(),h=this.__closestGroupOrSvg(),i=this.__createElement("text",{"font-family":g.family,"font-size":g.size,"font-style":g.style,"font-weight":g.weight,"text-decoration":g.decoration,x:b,y:e,"text-anchor":c(this.textAlign),"dominant-baseline":d(this.textBaseline)},!0);i.appendChild(this.__document.createTextNode(a)),this.__currentElement=i,this.__applyStyleToCurrentElement(f),h.appendChild(this.__wrapTextLink(g,i))},f.prototype.fillText=function(a,b,c){this.__applyText(a,b,c,"fill")},f.prototype.strokeText=function(a,b,c){this.__applyText(a,b,c,"stroke")},f.prototype.measureText=function(a){return this.__ctx.font=this.font,this.__ctx.measureText(a)},f.prototype.arc=function(b,c,d,e,f,g){if(e!==f){e%=2*Math.PI,f%=2*Math.PI,e===f&&(f=(f+2*Math.PI-.001*(g?-1:1))%(2*Math.PI));var h=b+d*Math.cos(f),i=c+d*Math.sin(f),j=b+d*Math.cos(e),k=c+d*Math.sin(e),l=g?0:1,m=0,n=f-e;n<0&&(n+=2*Math.PI),m=g?n>Math.PI?0:1:n>Math.PI?1:0,this.lineTo(j,k),this.__addPathCommand(a("A {rx} {ry} {xAxisRotation} {largeArcFlag} {sweepFlag} {endX} {endY}",{rx:d,ry:d,xAxisRotation:0,largeArcFlag:m,sweepFlag:l,endX:h,endY:i})),this.__currentPosition={x:h,y:i}}},f.prototype.clip=function(){var c=this.__closestGroupOrSvg(),d=this.__createElement("clipPath"),e=b(this.__ids),f=this.__createElement("g");this.__applyCurrentDefaultPath(),c.removeChild(this.__currentElement),d.setAttribute("id",e),d.appendChild(this.__currentElement),this.__defs.appendChild(d),c.setAttribute("clip-path",a("url(#{id})",{id:e})),c.appendChild(f),this.__currentElement=f},f.prototype.drawImage=function(){var a,b,c,d,e,g,h,i,j,k,l,m,n,o,p=Array.prototype.slice.call(arguments),q=p[0],r=0,s=0;if(3===p.length)a=p[1],b=p[2],e=q.width,g=q.height,c=e,d=g;else if(5===p.length)a=p[1],b=p[2],c=p[3],d=p[4],e=q.width,g=q.height;else{if(9!==p.length)throw new Error("Invalid number of arguments passed to drawImage: "+arguments.length);r=p[1],s=p[2],e=p[3],g=p[4],a=p[5],b=p[6],c=p[7],d=p[8]}h=this.__closestGroupOrSvg(),this.__currentElement;var t="translate("+a+", "+b+")";if(q instanceof f){if(i=q.getSvg().cloneNode(!0),i.childNodes&&i.childNodes.length>1){for(j=i.childNodes[0];j.childNodes.length;)o=j.childNodes[0].getAttribute("id"),this.__ids[o]=o,this.__defs.appendChild(j.childNodes[0]);if(k=i.childNodes[1]){var u,v=k.getAttribute("transform");u=v?v+" "+t:t,k.setAttribute("transform",u),h.appendChild(k)}}}else"CANVAS"!==q.nodeName&&"IMG"!==q.nodeName||(l=this.__createElement("image"),l.setAttribute("width",c),l.setAttribute("height",d),l.setAttribute("preserveAspectRatio","none"),l.setAttribute("opacity",this.globalAlpha),(r||s||e!==q.width||g!==q.height)&&(m=this.__document.createElement("canvas"),m.width=c,m.height=d,n=m.getContext("2d"),n.drawImage(q,r,s,e,g,0,0,c,d),q=m),l.setAttribute("transform",t),l.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href","CANVAS"===q.nodeName?q.toDataURL():q.originalSrc),h.appendChild(l))},f.prototype.createPattern=function(a,c){var d,e=this.__document.createElementNS("http://www.w3.org/2000/svg","pattern"),g=b(this.__ids);return e.setAttribute("id",g),e.setAttribute("width",a.width),e.setAttribute("height",a.height),"CANVAS"===a.nodeName||"IMG"===a.nodeName?(d=this.__document.createElementNS("http://www.w3.org/2000/svg","image"),d.setAttribute("width",a.width),d.setAttribute("height",a.height),d.setAttributeNS("http://www.w3.org/1999/xlink","xlink:href","CANVAS"===a.nodeName?a.toDataURL():a.getAttribute("src")),e.appendChild(d),this.__defs.appendChild(e)):a instanceof f&&(e.appendChild(a.__root.childNodes[1]),this.__defs.appendChild(e)),new h(e,this)},f.prototype.setLineDash=function(a){a&&a.length>0?this.lineDash=a.join(","):this.lineDash=null},f.prototype.drawFocusRing=function(){},f.prototype.createImageData=function(){},f.prototype.getImageData=function(){},f.prototype.putImageData=function(){},f.prototype.globalCompositeOperation=function(){},f.prototype.setTransform=function(){},"object"==typeof window&&(window.C2S=f),"object"==typeof module&&"object"==typeof module.exports&&(module.exports=f)}(),function(){"use strict";function a(a,b,c){if(this.mode=q.MODE_8BIT_BYTE,this.data=a,this.parsedData=[],b){for(var d=0,e=this.data.length;d<e;d++){var f=[],g=this.data.charCodeAt(d);f[0]=g,this.parsedData.push(f)}this.parsedData=Array.prototype.concat.apply([],this.parsedData)}else this.parsedData=function(a){for(var b=[],c=0;c<a.length;c++){var d=a.charCodeAt(c);d<128?b.push(d):d<2048?b.push(192|d>>6,128|63&d):d<55296||d>=57344?b.push(224|d>>12,128|d>>6&63,128|63&d):(c++,d=65536+((1023&d)<<10|1023&a.charCodeAt(c)),b.push(240|d>>18,128|d>>12&63,128|d>>6&63,128|63&d))}return b}(a);this.parsedData=Array.prototype.concat.apply([],this.parsedData),c||this.parsedData.length==this.data.length||(this.parsedData.unshift(191),this.parsedData.unshift(187),this.parsedData.unshift(239))}function b(a,b){this.typeNumber=a,this.errorCorrectLevel=b,this.modules=null,this.moduleCount=0,this.dataCache=null,this.dataList=[]}function c(a,b){if(a.length==i)throw new Error(a.length+"/"+b);for(var c=0;c<a.length&&0==a[c];)c++;this.num=new Array(a.length-c+b);for(var d=0;d<a.length-c;d++)this.num[d]=a[d+c]}function d(a,b){this.totalCount=a,this.dataCount=b}function e(){this.buffer=[],this.length=0}function f(){var a=!1,b=navigator.userAgent;if(/android/i.test(b)){a=!0;var c=b.toString().match(/android ([0-9]\.[0-9])/i);c&&c[1]&&(a=parseFloat(c[1]))}return a}function g(a,b){for(var c=b.correctLevel,d=1,e=h(a),f=0,g=w.length;f<g;f++){var i=0;switch(c){case r.L:i=w[f][0];break;case r.M:i=w[f][1];break;case r.Q:i=w[f][2];break;case r.H:i=w[f][3]}if(e<=i)break;d++}if(d>w.length)throw new Error("Too long data. the CorrectLevel."+["M","L","H","Q"][c]+" limit length is "+i);return 0!=b.version&&(d<=b.version?(d=b.version,b.runVersion=d):(console.warn("QR Code version "+b.version+" too small, run version use "+d),b.runVersion=d)),d}function h(a){return encodeURI(a).toString().replace(/\%[0-9a-fA-F]{2}/g,"a").length}var i,j,k="object"==typeof global&&global&&global.Object===Object&&global,l="object"==typeof self&&self&&self.Object===Object&&self,m=k||l||Function("return this")(),n="object"==typeof exports&&exports&&!exports.nodeType&&exports,o=n&&"object"==typeof module&&module&&!module.nodeType&&module,p=m.QRCode;a.prototype={getLength:function(a){return this.parsedData.length},write:function(a){for(var b=0,c=this.parsedData.length;b<c;b++)a.put(this.parsedData[b],8)}},b.prototype={addData:function(b,c,d){var e=new a(b,c,d);this.dataList.push(e),this.dataCache=null},isDark:function(a,b){if(a<0||this.moduleCount<=a||b<0||this.moduleCount<=b)throw new Error(a+","+b);return this.modules[a][b][0]},getEye:function(a,b){if(a<0||this.moduleCount<=a||b<0||this.moduleCount<=b)throw new Error(a+","+b);var c=this.modules[a][b];if(c[1]){var d="P"+c[1]+"_"+c[2];return"A"==c[2]&&(d="A"+c[1]),{isDark:c[0],type:d}}return null},getModuleCount:function(){return this.moduleCount},make:function(){this.makeImpl(!1,this.getBestMaskPattern())},makeImpl:function(a,c){this.moduleCount=4*this.typeNumber+17,this.modules=new Array(this.moduleCount);for(var d=0;d<this.moduleCount;d++){this.modules[d]=new Array(this.moduleCount);for(var e=0;e<this.moduleCount;e++)this.modules[d][e]=[]}this.setupPositionProbePattern(0,0,"TL"),this.setupPositionProbePattern(this.moduleCount-7,0,"BL"),this.setupPositionProbePattern(0,this.moduleCount-7,"TR"),this.setupPositionAdjustPattern("A"),this.setupTimingPattern(),this.setupTypeInfo(a,c),this.typeNumber>=7&&this.setupTypeNumber(a),null==this.dataCache&&(this.dataCache=b.createData(this.typeNumber,this.errorCorrectLevel,this.dataList)),this.mapData(this.dataCache,c)},setupPositionProbePattern:function(a,b,c){for(var d=-1;d<=7;d++)if(!(a+d<=-1||this.moduleCount<=a+d))for(var e=-1;e<=7;e++)b+e<=-1||this.moduleCount<=b+e||(0<=d&&d<=6&&(0==e||6==e)||0<=e&&e<=6&&(0==d||6==d)||2<=d&&d<=4&&2<=e&&e<=4?(this.modules[a+d][b+e][0]=!0,this.modules[a+d][b+e][2]=c,this.modules[a+d][b+e][1]=-0==d||-0==e||6==d||6==e?"O":"I"):this.modules[a+d][b+e][0]=!1)},getBestMaskPattern:function(){for(var a=0,b=0,c=0;c<8;c++){this.makeImpl(!0,c);var d=t.getLostPoint(this);(0==c||a>d)&&(a=d,b=c)}return b},createMovieClip:function(a,b,c){var d=a.createEmptyMovieClip(b,c);this.make();for(var e=0;e<this.modules.length;e++)for(var f=1*e,g=0;g<this.modules[e].length;g++){var h=1*g,i=this.modules[e][g][0];i&&(d.beginFill(0,100),d.moveTo(h,f),d.lineTo(h+1,f),d.lineTo(h+1,f+1),d.lineTo(h,f+1),d.endFill())}return d},setupTimingPattern:function(){for(var a=8;a<this.moduleCount-8;a++)null==this.modules[a][6][0]&&(this.modules[a][6][0]=a%2==0);for(var b=8;b<this.moduleCount-8;b++)null==this.modules[6][b][0]&&(this.modules[6][b][0]=b%2==0)},setupPositionAdjustPattern:function(a){for(var b=t.getPatternPosition(this.typeNumber),c=0;c<b.length;c++)for(var d=0;d<b.length;d++){var e=b[c],f=b[d];if(null==this.modules[e][f][0])for(var g=-2;g<=2;g++)for(var h=-2;h<=2;h++)-2==g||2==g||-2==h||2==h||0==g&&0==h?(this.modules[e+g][f+h][0]=!0,this.modules[e+g][f+h][2]=a,this.modules[e+g][f+h][1]=-2==g||-2==h||2==g||2==h?"O":"I"):this.modules[e+g][f+h][0]=!1}},setupTypeNumber:function(a){for(var b=t.getBCHTypeNumber(this.typeNumber),c=0;c<18;c++){var d=!a&&1==(b>>c&1);this.modules[Math.floor(c/3)][c%3+this.moduleCount-8-3][0]=d}for(var c=0;c<18;c++){var d=!a&&1==(b>>c&1);this.modules[c%3+this.moduleCount-8-3][Math.floor(c/3)][0]=d}},setupTypeInfo:function(a,b){for(var c=this.errorCorrectLevel<<3|b,d=t.getBCHTypeInfo(c),e=0;e<15;e++){var f=!a&&1==(d>>e&1);e<6?this.modules[e][8][0]=f:e<8?this.modules[e+1][8][0]=f:this.modules[this.moduleCount-15+e][8][0]=f}for(var e=0;e<15;e++){var f=!a&&1==(d>>e&1);e<8?this.modules[8][this.moduleCount-e-1][0]=f:e<9?this.modules[8][15-e-1+1][0]=f:this.modules[8][15-e-1][0]=f}this.modules[this.moduleCount-8][8][0]=!a},mapData:function(a,b){for(var c=-1,d=this.moduleCount-1,e=7,f=0,g=this.moduleCount-1;g>0;g-=2)for(6==g&&g--;;){for(var h=0;h<2;h++)if(null==this.modules[d][g-h][0]){var i=!1;f<a.length&&(i=1==(a[f]>>>e&1));var j=t.getMask(b,d,g-h);j&&(i=!i),this.modules[d][g-h][0]=i,e--,-1==e&&(f++,e=7)}if((d+=c)<0||this.moduleCount<=d){d-=c,c=-c;break}}}},b.PAD0=236,b.PAD1=17,b.createData=function(a,c,f){for(var g=d.getRSBlocks(a,c),h=new e,i=0;i<f.length;i++){var j=f[i];h.put(j.mode,4),h.put(j.getLength(),t.getLengthInBits(j.mode,a)),j.write(h)}for(var k=0,i=0;i<g.length;i++)k+=g[i].dataCount;if(h.getLengthInBits()>8*k)throw new Error("code length overflow. ("+h.getLengthInBits()+">"+8*k+")");for(h.getLengthInBits()+4<=8*k&&h.put(0,4);h.getLengthInBits()%8!=0;)h.putBit(!1);for(;;){if(h.getLengthInBits()>=8*k)break;if(h.put(b.PAD0,8),h.getLengthInBits()>=8*k)break;h.put(b.PAD1,8)}return b.createBytes(h,g)},b.createBytes=function(a,b){for(var d=0,e=0,f=0,g=new Array(b.length),h=new Array(b.length),i=0;i<b.length;i++){var j=b[i].dataCount,k=b[i].totalCount-j;e=Math.max(e,j),f=Math.max(f,k),g[i]=new Array(j);for(var l=0;l<g[i].length;l++)g[i][l]=255&a.buffer[l+d];d+=j;var m=t.getErrorCorrectPolynomial(k),n=new c(g[i],m.getLength()-1),o=n.mod(m);h[i]=new Array(m.getLength()-1);for(var l=0;l<h[i].length;l++){var p=l+o.getLength()-h[i].length;h[i][l]=p>=0?o.get(p):0}}for(var q=0,l=0;l<b.length;l++)q+=b[l].totalCount;for(var r=new Array(q),s=0,l=0;l<e;l++)for(var i=0;i<b.length;i++)l<g[i].length&&(r[s++]=g[i][l]);for(var l=0;l<f;l++)for(var i=0;i<b.length;i++)l<h[i].length&&(r[s++]=h[i][l]);return r};for(var q={MODE_NUMBER:1,MODE_ALPHA_NUM:2,MODE_8BIT_BYTE:4,MODE_KANJI:8},r={L:1,M:0,Q:3,H:2},s={PATTERN000:0,PATTERN001:1,PATTERN010:2,PATTERN011:3,PATTERN100:4,PATTERN101:5,PATTERN110:6,PATTERN111:7},t={PATTERN_POSITION_TABLE:[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],G15:1335,G18:7973,G15_MASK:21522,getBCHTypeInfo:function(a){for(var b=a<<10;t.getBCHDigit(b)-t.getBCHDigit(t.G15)>=0;)b^=t.G15<<t.getBCHDigit(b)-t.getBCHDigit(t.G15);return(a<<10|b)^t.G15_MASK},getBCHTypeNumber:function(a){for(var b=a<<12;t.getBCHDigit(b)-t.getBCHDigit(t.G18)>=0;)b^=t.G18<<t.getBCHDigit(b)-t.getBCHDigit(t.G18);return a<<12|b},getBCHDigit:function(a){for(var b=0;0!=a;)b++,a>>>=1;return b},getPatternPosition:function(a){return t.PATTERN_POSITION_TABLE[a-1]},getMask:function(a,b,c){switch(a){case s.PATTERN000:return(b+c)%2==0;case s.PATTERN001:return b%2==0;case s.PATTERN010:return c%3==0;case s.PATTERN011:return(b+c)%3==0;case s.PATTERN100:return(Math.floor(b/2)+Math.floor(c/3))%2==0;case s.PATTERN101:return b*c%2+b*c%3==0;case s.PATTERN110:return(b*c%2+b*c%3)%2==0;case s.PATTERN111:return(b*c%3+(b+c)%2)%2==0;default:throw new Error("bad maskPattern:"+a)}},getErrorCorrectPolynomial:function(a){for(var b=new c([1],0),d=0;d<a;d++)b=b.multiply(new c([1,u.gexp(d)],0));return b},getLengthInBits:function(a,b){if(1<=b&&b<10)switch(a){case q.MODE_NUMBER:return 10;case q.MODE_ALPHA_NUM:return 9;case q.MODE_8BIT_BYTE:case q.MODE_KANJI:return 8;default:throw new Error("mode:"+a)}else if(b<27)switch(a){case q.MODE_NUMBER:return 12;case q.MODE_ALPHA_NUM:return 11;case q.MODE_8BIT_BYTE:return 16;case q.MODE_KANJI:return 10;default:throw new Error("mode:"+a)}else{if(!(b<41))throw new Error("type:"+b);switch(a){case q.MODE_NUMBER:return 14;case q.MODE_ALPHA_NUM:return 13;case q.MODE_8BIT_BYTE:return 16;case q.MODE_KANJI:return 12;default:throw new Error("mode:"+a)}}},getLostPoint:function(a){for(var b=a.getModuleCount(),c=0,d=0;d<b;d++)for(var e=0;e<b;e++){for(var f=0,g=a.isDark(d,e),h=-1;h<=1;h++)if(!(d+h<0||b<=d+h))for(var i=-1;i<=1;i++)e+i<0||b<=e+i||0==h&&0==i||g==a.isDark(d+h,e+i)&&f++;f>5&&(c+=3+f-5)}for(var d=0;d<b-1;d++)for(var e=0;e<b-1;e++){var j=0;a.isDark(d,e)&&j++,a.isDark(d+1,e)&&j++,a.isDark(d,e+1)&&j++,a.isDark(d+1,e+1)&&j++,0!=j&&4!=j||(c+=3)}for(var d=0;d<b;d++)for(var e=0;e<b-6;e++)a.isDark(d,e)&&!a.isDark(d,e+1)&&a.isDark(d,e+2)&&a.isDark(d,e+3)&&a.isDark(d,e+4)&&!a.isDark(d,e+5)&&a.isDark(d,e+6)&&(c+=40);for(var e=0;e<b;e++)for(var d=0;d<b-6;d++)a.isDark(d,e)&&!a.isDark(d+1,e)&&a.isDark(d+2,e)&&a.isDark(d+3,e)&&a.isDark(d+4,e)&&!a.isDark(d+5,e)&&a.isDark(d+6,e)&&(c+=40);for(var k=0,e=0;e<b;e++)for(var d=0;d<b;d++)a.isDark(d,e)&&k++;return c+=Math.abs(100*k/b/b-50)/5*10}},u={glog:function(a){if(a<1)throw new Error("glog("+a+")");return u.LOG_TABLE[a]},gexp:function(a){for(;a<0;)a+=255;for(;a>=256;)a-=255;return u.EXP_TABLE[a]},EXP_TABLE:new Array(256),LOG_TABLE:new Array(256)},v=0;v<8;v++)u.EXP_TABLE[v]=1<<v;for(var v=8;v<256;v++)u.EXP_TABLE[v]=u.EXP_TABLE[v-4]^u.EXP_TABLE[v-5]^u.EXP_TABLE[v-6]^u.EXP_TABLE[v-8];for(var v=0;v<255;v++)u.LOG_TABLE[u.EXP_TABLE[v]]=v;c.prototype={get:function(a){return this.num[a]},getLength:function(){return this.num.length},multiply:function(a){for(var b=new Array(this.getLength()+a.getLength()-1),d=0;d<this.getLength();d++)for(var e=0;e<a.getLength();e++)b[d+e]^=u.gexp(u.glog(this.get(d))+u.glog(a.get(e)));return new c(b,0)},mod:function(a){if(this.getLength()-a.getLength()<0)return this;for(var b=u.glog(this.get(0))-u.glog(a.get(0)),d=new Array(this.getLength()),e=0;e<this.getLength();e++)d[e]=this.get(e);for(var e=0;e<a.getLength();e++)d[e]^=u.gexp(u.glog(a.get(e))+b);return new c(d,0).mod(a)}},
 d.RS_BLOCK_TABLE=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12,7,37,13],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],d.getRSBlocks=function(a,b){var c=d.getRsBlockTable(a,b);if(c==i)throw new Error("bad rs block @ typeNumber:"+a+"/errorCorrectLevel:"+b);for(var e=c.length/3,f=[],g=0;g<e;g++)for(var h=c[3*g+0],j=c[3*g+1],k=c[3*g+2],l=0;l<h;l++)f.push(new d(j,k));return f},d.getRsBlockTable=function(a,b){switch(b){case r.L:return d.RS_BLOCK_TABLE[4*(a-1)+0];case r.M:return d.RS_BLOCK_TABLE[4*(a-1)+1];case r.Q:return d.RS_BLOCK_TABLE[4*(a-1)+2];case r.H:return d.RS_BLOCK_TABLE[4*(a-1)+3];default:return i}},e.prototype={get:function(a){var b=Math.floor(a/8);return 1==(this.buffer[b]>>>7-a%8&1)},put:function(a,b){for(var c=0;c<b;c++)this.putBit(1==(a>>>b-c-1&1))},getLengthInBits:function(){return this.length},putBit:function(a){var b=Math.floor(this.length/8);this.buffer.length<=b&&this.buffer.push(0),a&&(this.buffer[b]|=128>>>this.length%8),this.length++}};var w=[[17,14,11,7],[32,26,20,14],[53,42,32,24],[78,62,46,34],[106,84,60,44],[134,106,74,58],[154,122,86,64],[192,152,108,84],[230,180,130,98],[271,213,151,119],[321,251,177,137],[367,287,203,155],[425,331,241,177],[458,362,258,194],[520,412,292,220],[586,450,322,250],[644,504,364,280],[718,560,394,310],[792,624,442,338],[858,666,482,382],[929,711,509,403],[1003,779,565,439],[1091,857,611,461],[1171,911,661,511],[1273,997,715,535],[1367,1059,751,593],[1465,1125,805,625],[1528,1190,868,658],[1628,1264,908,698],[1732,1370,982,742],[1840,1452,1030,790],[1952,1538,1112,842],[2068,1628,1168,898],[2188,1722,1228,958],[2303,1809,1283,983],[2431,1911,1351,1051],[2563,1989,1423,1093],[2699,2099,1499,1139],[2809,2213,1579,1219],[2953,2331,1663,1273]],x=function(){return"undefined"!=typeof CanvasRenderingContext2D}()?function(){function a(){if("svg"==this._htOption.drawer){var a=this._oContext.getSerializedSvg(!0);this.dataURL=a,this._el.innerHTML=a}else try{var b=this._elCanvas.toDataURL("image/png");this.dataURL=b}catch(a){console.error(a)}this._htOption.onRenderingEnd&&(this.dataURL||console.error("Can not get base64 data, please check: 1. Published the page and image to the server 2. The image request support CORS 3. Configured `crossOrigin:'anonymous'` option"),this._htOption.onRenderingEnd(this._htOption,this.dataURL))}function b(a,b){var c=this;if(c._fFail=b,c._fSuccess=a,null===c._bSupportDataURI){var d=document.createElement("img"),e=function(){c._bSupportDataURI=!1,c._fFail&&c._fFail.call(c)},f=function(){c._bSupportDataURI=!0,c._fSuccess&&c._fSuccess.call(c)};d.onabort=e,d.onerror=e,d.onload=f,d.src="data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg=="}else!0===c._bSupportDataURI&&c._fSuccess?c._fSuccess.call(c):!1===c._bSupportDataURI&&c._fFail&&c._fFail.call(c)}if(m._android&&m._android<=2.1){var c=1/window.devicePixelRatio,d=CanvasRenderingContext2D.prototype.drawImage;CanvasRenderingContext2D.prototype.drawImage=function(a,b,e,f,g,h,i,j,k){if("nodeName"in a&&/img/i.test(a.nodeName))for(var l=arguments.length-1;l>=1;l--)arguments[l]=arguments[l]*c;else void 0===j&&(arguments[1]*=c,arguments[2]*=c,arguments[3]*=c,arguments[4]*=c);d.apply(this,arguments)}}var e=function(a,b){this._bIsPainted=!1,this._android=f(),this._el=a,this._htOption=b,"svg"==this._htOption.drawer?(this._oContext={},this._elCanvas={}):(this._elCanvas=document.createElement("canvas"),this._el.appendChild(this._elCanvas),this._oContext=this._elCanvas.getContext("2d")),this._bSupportDataURI=null,this.dataURL=null};return e.prototype.draw=function(a){function b(){d.quietZone>0&&d.quietZoneColor&&(j.lineWidth=0,j.fillStyle=d.quietZoneColor,j.fillRect(0,0,k._elCanvas.width,d.quietZone),j.fillRect(0,d.quietZone,d.quietZone,k._elCanvas.height-2*d.quietZone),j.fillRect(k._elCanvas.width-d.quietZone,d.quietZone,d.quietZone,k._elCanvas.height-2*d.quietZone),j.fillRect(0,k._elCanvas.height-d.quietZone,k._elCanvas.width,d.quietZone))}function c(a){function c(a){var c=Math.round(d.width/3.5),e=Math.round(d.height/3.5);c!==e&&(c=e),d.logoMaxWidth?c=Math.round(d.logoMaxWidth):d.logoWidth&&(c=Math.round(d.logoWidth)),d.logoMaxHeight?e=Math.round(d.logoMaxHeight):d.logoHeight&&(e=Math.round(d.logoHeight));var f,g;void 0===a.naturalWidth?(f=a.width,g=a.height):(f=a.naturalWidth,g=a.naturalHeight),(d.logoMaxWidth||d.logoMaxHeight)&&(d.logoMaxWidth&&f<=c&&(c=f),d.logoMaxHeight&&g<=e&&(e=g),f<=c&&g<=e&&(c=f,e=g));var h=(d.realWidth-c)/2,i=(d.realHeight-e)/2,k=Math.min(c/f,e/g),l=f*k,m=g*k;(d.logoMaxWidth||d.logoMaxHeight)&&(c=l,e=m,h=(d.realWidth-c)/2,i=(d.realHeight-e)/2),d.logoBackgroundTransparent||(j.fillStyle=d.logoBackgroundColor,j.fillRect(h,i,c,e));var n=j.imageSmoothingQuality,o=j.imageSmoothingEnabled;j.imageSmoothingEnabled=!0,j.imageSmoothingQuality="high",j.drawImage(a,h+(c-l)/2,i+(e-m)/2,l,m),j.imageSmoothingEnabled=o,j.imageSmoothingQuality=n,b(),s._bIsPainted=!0,s.makeImage()}d.onRenderingStart&&d.onRenderingStart(d);for(var h=0;h<e;h++)for(var i=0;i<e;i++){var k=i*f+d.quietZone,l=h*g+d.quietZone,m=a.isDark(h,i),n=a.getEye(h,i),o=d.dotScale;j.lineWidth=0;var p,q;n?(p=d[n.type]||d[n.type.substring(0,2)]||d.colorDark,q=d.colorLight):d.backgroundImage?(q="rgba(0,0,0,0)",6==h?d.autoColor?(p=d.timing_H||d.timing||d.autoColorDark,q=d.autoColorLight):p=d.timing_H||d.timing||d.colorDark:6==i?d.autoColor?(p=d.timing_V||d.timing||d.autoColorDark,q=d.autoColorLight):p=d.timing_V||d.timing||d.colorDark:d.autoColor?(p=d.autoColorDark,q=d.autoColorLight):p=d.colorDark):(p=6==h?d.timing_H||d.timing||d.colorDark:6==i?d.timing_V||d.timing||d.colorDark:d.colorDark,q=d.colorLight),j.strokeStyle=m?p:q,j.fillStyle=m?p:q,n?(o="AO"==n.type?d.dotScaleAO:"AI"==n.type?d.dotScaleAI:1,d.backgroundImage&&d.autoColor?(p=("AO"==n.type?d.AI:d.AO)||d.autoColorDark,q=d.autoColorLight):p=("AO"==n.type?d.AI:d.AO)||p,m=n.isDark,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))):6==h?(o=d.dotScaleTiming_H,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))):6==i?(o=d.dotScaleTiming_V,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))):(d.backgroundImage,j.fillRect(Math.ceil(k+f*(1-o)/2),Math.ceil(d.titleHeight+l+g*(1-o)/2),Math.ceil(f*o),Math.ceil(g*o))),1==d.dotScale||n||(j.strokeStyle=d.colorLight)}if(d.title&&(j.fillStyle=d.titleBackgroundColor,j.fillRect(d.quietZone,d.quietZone,d.width,d.titleHeight),j.font=d.titleFont,j.fillStyle=d.titleColor,j.textAlign="center",j.fillText(d.title,this._elCanvas.width/2,+d.quietZone+d.titleTop)),d.subTitle&&(j.font=d.subTitleFont,j.fillStyle=d.subTitleColor,j.fillText(d.subTitle,this._elCanvas.width/2,+d.quietZone+d.subTitleTop)),d.logo){var r=new Image,s=this;r.onload=function(){c(r)},r.onerror=function(a){console.error(a)},null!=d.crossOrigin&&(r.crossOrigin=d.crossOrigin),r.originalSrc=d.logo,r.src=d.logo}else b(),this._bIsPainted=!0,this.makeImage()}var d=this._htOption,e=a.getModuleCount(),f=d.width/e,g=d.height/e;f<=1&&(f=1),g<=1&&(g=1);var h=f*e,i=g*e;d.heightWithTitle=i+d.titleHeight,d.realHeight=d.heightWithTitle+2*d.quietZone,d.realWidth=h+2*d.quietZone,this._elCanvas.width=d.realWidth,this._elCanvas.height=d.realHeight,"canvas"!=d.drawer&&(this._oContext=new C2S(this._elCanvas.width,this._elCanvas.height)),this.clear();var j=this._oContext;j.lineWidth=0,j.fillStyle=d.colorLight,j.fillRect(0,0,this._elCanvas.width,this._elCanvas.height),j.clearRect(d.quietZone,d.quietZone,d.width,d.titleHeight);var k=this;if(d.backgroundImage){var l=new Image;l.onload=function(){j.globalAlpha=1,j.globalAlpha=d.backgroundImageAlpha;var b=j.imageSmoothingQuality,e=j.imageSmoothingEnabled;j.imageSmoothingEnabled=!0,j.imageSmoothingQuality="high",(d.title||d.subTitle)&&d.titleHeight?j.drawImage(l,d.quietZone,d.quietZone+d.titleHeight,d.width,d.height):j.drawImage(l,0,0,d.realWidth,d.realHeight),j.imageSmoothingEnabled=e,j.imageSmoothingQuality=b,j.globalAlpha=1,c.call(k,a)},null!=d.crossOrigin&&(l.crossOrigin=d.crossOrigin),l.originalSrc=d.backgroundImage,l.src=d.backgroundImage}else c.call(k,a)},e.prototype.makeImage=function(){this._bIsPainted&&b.call(this,a)},e.prototype.isPainted=function(){return this._bIsPainted},e.prototype.clear=function(){this._oContext.clearRect(0,0,this._elCanvas.width,this._elCanvas.height),this._bIsPainted=!1},e.prototype.remove=function(){this._oContext.clearRect(0,0,this._elCanvas.width,this._elCanvas.height),this._bIsPainted=!1,this._el.innerHTML=""},e.prototype.round=function(a){return a?Math.floor(1e3*a)/1e3:a},e}():function(){var a=function(a,b){this._el=a,this._htOption=b};return a.prototype.draw=function(a){var b=this._htOption,c=this._el,d=a.getModuleCount(),e=b.width/d,f=b.height/d;e<=1&&(e=1),f<=1&&(f=1);var g=e*d,h=f*d;b.heightWithTitle=h+b.titleHeight,b.realHeight=b.heightWithTitle+2*b.quietZone,b.realWidth=g+2*b.quietZone;var i=[],j="",k=Math.round(e*b.dotScale),l=Math.round(f*b.dotScale);k<4&&(k=4,l=4);var m=b.colorDark,n=b.colorLight;if(b.backgroundImage){b.autoColor?(b.colorDark="rgba(0, 0, 0, .6);filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#99000000', EndColorStr='#99000000');",b.colorLight="rgba(255, 255, 255, .7);filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0, StartColorStr='#B2FFFFFF', EndColorStr='#B2FFFFFF');"):b.colorLight="rgba(0,0,0,0)";var o='<div style="display:inline-block; z-index:-10;position:absolute;"><img src="'+b.backgroundImage+'" width="'+(b.width+2*b.quietZone)+'" height="'+b.realHeight+'" style="opacity:'+b.backgroundImageAlpha+";filter:alpha(opacity="+100*b.backgroundImageAlpha+'); "/></div>';i.push(o)}if(b.quietZone&&(j="display:inline-block; width:"+(b.width+2*b.quietZone)+"px; height:"+(b.width+2*b.quietZone)+"px;background:"+b.quietZoneColor+"; text-align:center;"),i.push('<div style="font-size:0;'+j+'">'),i.push('<table  style="font-size:0;border:0;border-collapse:collapse; margin-top:'+b.quietZone+'px;" border="0" cellspacing="0" cellspadding="0" align="center" valign="middle">'),i.push('<tr height="'+b.titleHeight+'" align="center"><td style="border:0;border-collapse:collapse;margin:0;padding:0" colspan="'+d+'">'),b.title){var p=b.titleColor,q=b.titleFont;i.push('<div style="width:100%;margin-top:'+b.titleTop+"px;color:"+p+";font:"+q+";background:"+b.titleBackgroundColor+'">'+b.title+"</div>")}b.subTitle&&i.push('<div style="width:100%;margin-top:'+(b.subTitleTop-b.titleTop)+"px;color:"+b.subTitleColor+"; font:"+b.subTitleFont+'">'+b.subTitle+"</div>"),i.push("</td></tr>");for(var r=0;r<d;r++){i.push('<tr style="border:0; padding:0; margin:0;" height="7">');for(var s=0;s<d;s++){var t=a.isDark(r,s),u=a.getEye(r,s);if(u){t=u.isDark;var v=u.type,w=b[v]||b[v.substring(0,2)]||m;i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+'px;"><span style="width:'+e+"px;height:"+f+"px;background-color:"+(t?w:n)+';display:inline-block"></span></td>')}else{var x=b.colorDark;6==r?(x=b.timing_H||b.timing||m,i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+"px;background-color:"+(t?x:n)+';"></td>')):6==s?(x=b.timing_V||b.timing||m,i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+"px;background-color:"+(t?x:n)+';"></td>')):i.push('<td style="border:0;border-collapse:collapse;padding:0;margin:0;width:'+e+"px;height:"+f+'px;"><div style="display:inline-block;width:'+k+"px;height:"+l+"px;background-color:"+(t?x:b.colorLight)+';"></div></td>')}}i.push("</tr>")}if(i.push("</table>"),i.push("</div>"),b.logo){var y=new Image;null!=b.crossOrigin&&(y.crossOrigin=b.crossOrigin),y.src=b.logo;var z=b.width/3.5,A=b.height/3.5;z!=A&&(z=A),b.logoWidth&&(z=b.logoWidth),b.logoHeight&&(A=b.logoHeight);var B="position:relative; z-index:1;display:table-cell;top:-"+(b.height/2+A/2+b.quietZone)+"px;text-align:center; width:"+z+"px; height:"+A+"px;line-height:"+z+"px; vertical-align: middle;";b.logoBackgroundTransparent||(B+="background:"+b.logoBackgroundColor),i.push('<div style="'+B+'"><img  src="'+b.logo+'"  style="max-width: '+z+"px; max-height: "+A+'px;" /> <div style=" display: none; width:1px;margin-left: -1px;"></div></div>')}b.onRenderingStart&&b.onRenderingStart(b),c.innerHTML=i.join("");var C=c.childNodes[0],D=(b.width-C.offsetWidth)/2,E=(b.heightWithTitle-C.offsetHeight)/2;D>0&&E>0&&(C.style.margin=E+"px "+D+"px"),this._htOption.onRenderingEnd&&this._htOption.onRenderingEnd(this._htOption,null)},a.prototype.clear=function(){this._el.innerHTML=""},a}();j=function(a,b){if(this._htOption={width:256,height:256,typeNumber:4,colorDark:"#000000",colorLight:"#ffffff",correctLevel:r.H,dotScale:1,dotScaleTiming:1,dotScaleTiming_H:i,dotScaleTiming_V:i,dotScaleA:1,dotScaleAO:i,dotScaleAI:i,quietZone:0,quietZoneColor:"rgba(0,0,0,0)",title:"",titleFont:"normal normal bold 16px Arial",titleColor:"#000000",titleBackgroundColor:"#ffffff",titleHeight:0,titleTop:30,subTitle:"",subTitleFont:"normal normal normal 14px Arial",subTitleColor:"#4F4F4F",subTitleTop:60,logo:i,logoWidth:i,logoHeight:i,logoMaxWidth:i,logoMaxHeight:i,logoBackgroundColor:"#ffffff",logoBackgroundTransparent:!1,PO:i,PI:i,PO_TL:i,PI_TL:i,PO_TR:i,PI_TR:i,PO_BL:i,PI_BL:i,AO:i,AI:i,timing:i,timing_H:i,timing_V:i,backgroundImage:i,backgroundImageAlpha:1,autoColor:!1,autoColorDark:"rgba(0, 0, 0, .6)",autoColorLight:"rgba(255, 255, 255, .7)",onRenderingStart:i,onRenderingEnd:i,version:0,tooltip:!1,binary:!1,drawer:"canvas",crossOrigin:null,utf8WithoutBOM:!0},"string"==typeof b&&(b={text:b}),b)for(var c in b)this._htOption[c]=b[c];this._htOption.title||this._htOption.subTitle||(this._htOption.titleHeight=0),(this._htOption.version<0||this._htOption.version>40)&&(console.warn("QR Code version '"+this._htOption.version+"' is invalidate, reset to 0"),this._htOption.version=0),(this._htOption.dotScale<0||this._htOption.dotScale>1)&&(console.warn(this._htOption.dotScale+" , is invalidate, dotScale must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScale=1),(this._htOption.dotScaleTiming<0||this._htOption.dotScaleTiming>1)&&(console.warn(this._htOption.dotScaleTiming+" , is invalidate, dotScaleTiming must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleTiming=1),this._htOption.dotScaleTiming_H?(this._htOption.dotScaleTiming_H<0||this._htOption.dotScaleTiming_H>1)&&(console.warn(this._htOption.dotScaleTiming_H+" , is invalidate, dotScaleTiming_H must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleTiming_H=1):this._htOption.dotScaleTiming_H=this._htOption.dotScaleTiming,this._htOption.dotScaleTiming_V?(this._htOption.dotScaleTiming_V<0||this._htOption.dotScaleTiming_V>1)&&(console.warn(this._htOption.dotScaleTiming_V+" , is invalidate, dotScaleTiming_V must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleTiming_V=1):this._htOption.dotScaleTiming_V=this._htOption.dotScaleTiming,(this._htOption.dotScaleA<0||this._htOption.dotScaleA>1)&&(console.warn(this._htOption.dotScaleA+" , is invalidate, dotScaleA must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleA=1),this._htOption.dotScaleAO?(this._htOption.dotScaleAO<0||this._htOption.dotScaleAO>1)&&(console.warn(this._htOption.dotScaleAO+" , is invalidate, dotScaleAO must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleAO=1):this._htOption.dotScaleAO=this._htOption.dotScaleA,this._htOption.dotScaleAI?(this._htOption.dotScaleAI<0||this._htOption.dotScaleAI>1)&&(console.warn(this._htOption.dotScaleAI+" , is invalidate, dotScaleAI must greater than 0, less than or equal to 1, now reset to 1. "),this._htOption.dotScaleAI=1):this._htOption.dotScaleAI=this._htOption.dotScaleA,(this._htOption.backgroundImageAlpha<0||this._htOption.backgroundImageAlpha>1)&&(console.warn(this._htOption.backgroundImageAlpha+" , is invalidate, backgroundImageAlpha must between 0 and 1, now reset to 1. "),this._htOption.backgroundImageAlpha=1),this._htOption.quietZone||(this._htOption.quietZone=0),this._htOption.titleHeight||(this._htOption.titleHeight=0),this._htOption.width=Math.round(this._htOption.width),this._htOption.height=Math.round(this._htOption.height),this._htOption.quietZone=Math.round(this._htOption.quietZone),this._htOption.titleHeight=Math.round(this._htOption.titleHeight),"string"==typeof a&&(a=document.getElementById(a)),(!this._htOption.drawer||"svg"!=this._htOption.drawer&&"canvas"!=this._htOption.drawer)&&(this._htOption.drawer="canvas"),this._android=f(),this._el=a,this._oQRCode=null,this._htOption._element=a;var d={};for(var c in this._htOption)d[c]=this._htOption[c];this._oDrawing=new x(this._el,d),this._htOption.text&&this.makeCode(this._htOption.text)},j.prototype.makeCode=function(a){this._oQRCode=new b(g(a,this._htOption),this._htOption.correctLevel),this._oQRCode.addData(a,this._htOption.binary,this._htOption.utf8WithoutBOM),this._oQRCode.make(),this._htOption.tooltip&&(this._el.title=a),this._oDrawing.draw(this._oQRCode)},j.prototype.makeImage=function(){"function"==typeof this._oDrawing.makeImage&&(!this._android||this._android>=3)&&this._oDrawing.makeImage()},j.prototype.clear=function(){this._oDrawing.remove()},j.prototype.resize=function(a,b){this._oDrawing._htOption.width=a,this._oDrawing._htOption.height=b,this._oDrawing.draw(this._oQRCode)},j.prototype.download=function(a){var b=this._oDrawing.dataURL,c=document.createElement("a");if("svg"==this._htOption.drawer){a+=".svg";var d=new Blob([b],{type:"text/plain"});if(navigator.msSaveBlob)navigator.msSaveBlob(d,a);else{c.download=a;var e=new FileReader;e.onload=function(){c.href=e.result,c.click()},e.readAsDataURL(d)}}else if(a+=".png",navigator.msSaveBlob){var f=function(a){var b=atob(a.split(",")[1]),c=a.split(",")[0].split(":")[1].split(";")[0],d=new ArrayBuffer(b.length),e=new Uint8Array(d);for(v=0;v<b.length;v++)e[v]=b.charCodeAt(v);return new Blob([d],{type:c})}(b);navigator.msSaveBlob(f,a)}else c.download=a,c.href=b,c.click()},j.prototype.noConflict=function(){return m.QRCode===this&&(m.QRCode=p),j},j.CorrectLevel=r,"function"==typeof define&&(define.amd||define.cmd)?define([],function(){return j}):o?((o.exports=j).QRCode=j,n.QRCode=j):m.QRCode=j}.call(this);
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],102:[function(require,module,exports){
+},{}],101:[function(require,module,exports){
 'use strict'
 
 module.exports = function encodeUtf8 (input) {
@@ -13393,7 +13425,7 @@ module.exports = function encodeUtf8 (input) {
   return new Uint8Array(result).buffer
 }
 
-},{}],103:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 /*! ieee754. BSD-3-Clause License. Feross Aboukhadijeh <https://feross.org/opensource> */
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
@@ -13480,7 +13512,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],104:[function(require,module,exports){
+},{}],103:[function(require,module,exports){
 (function (process){(function (){
 // 'path' module extracted from Node.js v8.11.1 (only the posix part)
 // transplited with Babel
@@ -14013,7 +14045,7 @@ posix.posix = posix;
 module.exports = posix;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":105}],105:[function(require,module,exports){
+},{"_process":104}],104:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -14199,7 +14231,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],106:[function(require,module,exports){
+},{}],105:[function(require,module,exports){
 
 const canPromise = require('./can-promise')
 
@@ -14277,7 +14309,7 @@ exports.toString = renderCanvas.bind(null, function (data, _, opts) {
   return SvgRenderer.render(data, opts)
 })
 
-},{"./can-promise":107,"./core/qrcode":123,"./renderer/canvas":130,"./renderer/svg-tag.js":131}],107:[function(require,module,exports){
+},{"./can-promise":106,"./core/qrcode":122,"./renderer/canvas":129,"./renderer/svg-tag.js":130}],106:[function(require,module,exports){
 // can-promise has a crash in some versions of react native that dont have
 // standard global objects
 // https://github.com/soldair/node-qrcode/issues/157
@@ -14286,7 +14318,7 @@ module.exports = function () {
   return typeof Promise === 'function' && Promise.prototype && Promise.prototype.then
 }
 
-},{}],108:[function(require,module,exports){
+},{}],107:[function(require,module,exports){
 /**
  * Alignment pattern are fixed reference pattern in defined positions
  * in a matrix symbology, which enables the decode software to re-synchronise
@@ -14371,7 +14403,7 @@ exports.getPositions = function getPositions (version) {
   return coords
 }
 
-},{"./utils":127}],109:[function(require,module,exports){
+},{"./utils":126}],108:[function(require,module,exports){
 const Mode = require('./mode')
 
 /**
@@ -14432,7 +14464,7 @@ AlphanumericData.prototype.write = function write (bitBuffer) {
 
 module.exports = AlphanumericData
 
-},{"./mode":120}],110:[function(require,module,exports){
+},{"./mode":119}],109:[function(require,module,exports){
 function BitBuffer () {
   this.buffer = []
   this.length = 0
@@ -14471,7 +14503,7 @@ BitBuffer.prototype = {
 
 module.exports = BitBuffer
 
-},{}],111:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 /**
  * Helper class to handle QR Code symbol modules
  *
@@ -14538,7 +14570,7 @@ BitMatrix.prototype.isReserved = function (row, col) {
 
 module.exports = BitMatrix
 
-},{}],112:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 const encodeUtf8 = require('encode-utf8')
 const Mode = require('./mode')
 
@@ -14570,7 +14602,7 @@ ByteData.prototype.write = function (bitBuffer) {
 
 module.exports = ByteData
 
-},{"./mode":120,"encode-utf8":102}],113:[function(require,module,exports){
+},{"./mode":119,"encode-utf8":101}],112:[function(require,module,exports){
 const ECLevel = require('./error-correction-level')
 
 const EC_BLOCKS_TABLE = [
@@ -14707,7 +14739,7 @@ exports.getTotalCodewordsCount = function getTotalCodewordsCount (version, error
   }
 }
 
-},{"./error-correction-level":114}],114:[function(require,module,exports){
+},{"./error-correction-level":113}],113:[function(require,module,exports){
 exports.L = { bit: 1 }
 exports.M = { bit: 0 }
 exports.Q = { bit: 3 }
@@ -14759,7 +14791,7 @@ exports.from = function from (value, defaultValue) {
   }
 }
 
-},{}],115:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 const getSymbolSize = require('./utils').getSymbolSize
 const FINDER_PATTERN_SIZE = 7
 
@@ -14783,7 +14815,7 @@ exports.getPositions = function getPositions (version) {
   ]
 }
 
-},{"./utils":127}],116:[function(require,module,exports){
+},{"./utils":126}],115:[function(require,module,exports){
 const Utils = require('./utils')
 
 const G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0)
@@ -14814,7 +14846,7 @@ exports.getEncodedBits = function getEncodedBits (errorCorrectionLevel, mask) {
   return ((data << 10) | d) ^ G15_MASK
 }
 
-},{"./utils":127}],117:[function(require,module,exports){
+},{"./utils":126}],116:[function(require,module,exports){
 const EXP_TABLE = new Uint8Array(512)
 const LOG_TABLE = new Uint8Array(256)
 /**
@@ -14885,7 +14917,7 @@ exports.mul = function mul (x, y) {
   return EXP_TABLE[LOG_TABLE[x] + LOG_TABLE[y]]
 }
 
-},{}],118:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 const Mode = require('./mode')
 const Utils = require('./utils')
 
@@ -14941,7 +14973,7 @@ KanjiData.prototype.write = function (bitBuffer) {
 
 module.exports = KanjiData
 
-},{"./mode":120,"./utils":127}],119:[function(require,module,exports){
+},{"./mode":119,"./utils":126}],118:[function(require,module,exports){
 /**
  * Data mask pattern reference
  * @type {Object}
@@ -15177,7 +15209,7 @@ exports.getBestMask = function getBestMask (data, setupFormatFunc) {
   return bestPattern
 }
 
-},{}],120:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 const VersionCheck = require('./version-check')
 const Regex = require('./regex')
 
@@ -15346,7 +15378,7 @@ exports.from = function from (value, defaultValue) {
   }
 }
 
-},{"./regex":125,"./version-check":128}],121:[function(require,module,exports){
+},{"./regex":124,"./version-check":127}],120:[function(require,module,exports){
 const Mode = require('./mode')
 
 function NumericData (data) {
@@ -15391,7 +15423,7 @@ NumericData.prototype.write = function write (bitBuffer) {
 
 module.exports = NumericData
 
-},{"./mode":120}],122:[function(require,module,exports){
+},{"./mode":119}],121:[function(require,module,exports){
 const GF = require('./galois-field')
 
 /**
@@ -15455,7 +15487,7 @@ exports.generateECPolynomial = function generateECPolynomial (degree) {
   return poly
 }
 
-},{"./galois-field":117}],123:[function(require,module,exports){
+},{"./galois-field":116}],122:[function(require,module,exports){
 const Utils = require('./utils')
 const ECLevel = require('./error-correction-level')
 const BitBuffer = require('./bit-buffer')
@@ -15952,7 +15984,7 @@ exports.create = function create (data, options) {
   return createSymbol(data, version, errorCorrectionLevel, mask)
 }
 
-},{"./alignment-pattern":108,"./bit-buffer":110,"./bit-matrix":111,"./error-correction-code":113,"./error-correction-level":114,"./finder-pattern":115,"./format-info":116,"./mask-pattern":119,"./mode":120,"./reed-solomon-encoder":124,"./segments":126,"./utils":127,"./version":129}],124:[function(require,module,exports){
+},{"./alignment-pattern":107,"./bit-buffer":109,"./bit-matrix":110,"./error-correction-code":112,"./error-correction-level":113,"./finder-pattern":114,"./format-info":115,"./mask-pattern":118,"./mode":119,"./reed-solomon-encoder":123,"./segments":125,"./utils":126,"./version":128}],123:[function(require,module,exports){
 const Polynomial = require('./polynomial')
 
 function ReedSolomonEncoder (degree) {
@@ -16010,7 +16042,7 @@ ReedSolomonEncoder.prototype.encode = function encode (data) {
 
 module.exports = ReedSolomonEncoder
 
-},{"./polynomial":122}],125:[function(require,module,exports){
+},{"./polynomial":121}],124:[function(require,module,exports){
 const numeric = '[0-9]+'
 const alphanumeric = '[A-Z $%*+\\-./:]+'
 let kanji = '(?:[u3000-u303F]|[u3040-u309F]|[u30A0-u30FF]|' +
@@ -16043,7 +16075,7 @@ exports.testAlphanumeric = function testAlphanumeric (str) {
   return TEST_ALPHANUMERIC.test(str)
 }
 
-},{}],126:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 const Mode = require('./mode')
 const NumericData = require('./numeric-data')
 const AlphanumericData = require('./alphanumeric-data')
@@ -16375,7 +16407,7 @@ exports.rawSplit = function rawSplit (data) {
   )
 }
 
-},{"./alphanumeric-data":109,"./byte-data":112,"./kanji-data":118,"./mode":120,"./numeric-data":121,"./regex":125,"./utils":127,"dijkstrajs":100}],127:[function(require,module,exports){
+},{"./alphanumeric-data":108,"./byte-data":111,"./kanji-data":117,"./mode":119,"./numeric-data":120,"./regex":124,"./utils":126,"dijkstrajs":99}],126:[function(require,module,exports){
 let toSJISFunction
 const CODEWORDS_COUNT = [
   0, // Not used
@@ -16440,7 +16472,7 @@ exports.toSJIS = function toSJIS (kanji) {
   return toSJISFunction(kanji)
 }
 
-},{}],128:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 /**
  * Check if QR Code version is valid
  *
@@ -16451,7 +16483,7 @@ exports.isValid = function isValid (version) {
   return !isNaN(version) && version >= 1 && version <= 40
 }
 
-},{}],129:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 const Utils = require('./utils')
 const ECCode = require('./error-correction-code')
 const ECLevel = require('./error-correction-level')
@@ -16616,7 +16648,7 @@ exports.getEncodedBits = function getEncodedBits (version) {
   return (version << 12) | d
 }
 
-},{"./error-correction-code":113,"./error-correction-level":114,"./mode":120,"./utils":127,"./version-check":128}],130:[function(require,module,exports){
+},{"./error-correction-code":112,"./error-correction-level":113,"./mode":119,"./utils":126,"./version-check":127}],129:[function(require,module,exports){
 const Utils = require('./utils')
 
 function clearCanvas (ctx, canvas, size) {
@@ -16681,7 +16713,7 @@ exports.renderToDataURL = function renderToDataURL (qrData, canvas, options) {
   return canvasEl.toDataURL(type, rendererOpts.quality)
 }
 
-},{"./utils":132}],131:[function(require,module,exports){
+},{"./utils":131}],130:[function(require,module,exports){
 const Utils = require('./utils')
 
 function getColorAttrib (color, attrib) {
@@ -16764,7 +16796,7 @@ exports.render = function render (qrData, options, cb) {
   return svgTag
 }
 
-},{"./utils":132}],132:[function(require,module,exports){
+},{"./utils":131}],131:[function(require,module,exports){
 function hex2rgba (hex) {
   if (typeof hex === 'number') {
     hex = hex.toString()
@@ -16865,7 +16897,7 @@ exports.qrToImageData = function qrToImageData (imgData, qr, opts) {
   }
 }
 
-},{}],133:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 /********************************************************************************
     vCards-js, Eric J Nesser, November 2014
 ********************************************************************************/
@@ -17205,7 +17237,7 @@ var vCard = (function () {
 
 module.exports = vCard;
 
-},{"./lib/vCardFormatter":134,"fs":98,"path":104}],134:[function(require,module,exports){
+},{"./lib/vCardFormatter":133,"fs":97,"path":103}],133:[function(require,module,exports){
 /********************************************************************************
  vCards-js, Eric J Nesser, November 2014,
  ********************************************************************************/
@@ -17603,14 +17635,14 @@ module.exports = vCard;
 		}
 	};
 })();
-},{}],135:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 require("../action/kernel").launcher()
-},{"../action/kernel":32}],136:[function(require,module,exports){
-const { toComponent } = require('../action/toComponent')
+},{"../action/kernel":32}],135:[function(require,module,exports){
 const { jsonToBracket } = require('../action/jsonToBracket')
 const { override } = require('../action/merge')
 const { clone } = require('../action/clone')
 const { generate } = require('../action/generate')
+const { toArray } = require('../action/toArray')
 
 const Input = (component) => {
 
@@ -17640,7 +17672,28 @@ const Input = (component) => {
   // required
   if (component.required) component.required = typeof component.required === "object" ? component.required : {}
 
-  component = toComponent(component)
+  
+  // class
+  component.class = component.class || ""
+
+  // id
+  component.id = component.id || generate()
+
+  // style
+  component.style = component.style || {}
+
+  // controls
+  component.controls = toArray(component.controls)
+
+  // children
+  component.children = toArray(component.children)
+
+  // model
+  if (!component.model || component.classic) component.model = "classic"
+  if (component.featured) component.model = "featured"
+
+  // component
+  component.component = true
 
   var {
     id, input, model, droplist, readonly, style, __controls__, duplicated, duration, required, preventDefault,
@@ -17914,4 +17967,4 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../action/clone":3,"../action/generate":18,"../action/jsonToBracket":31,"../action/merge":35,"../action/toComponent":53}]},{},[135]);
+},{"../action/clone":3,"../action/generate":18,"../action/jsonToBracket":31,"../action/merge":35,"../action/toArray":49}]},{},[134]);

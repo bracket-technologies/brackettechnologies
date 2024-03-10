@@ -9,3 +9,5 @@ layer/
 .env
 ../.env
 .gitignore
+./action/moveData.js
+./action/moveData

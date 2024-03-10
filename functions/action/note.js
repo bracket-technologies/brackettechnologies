@@ -2,7 +2,7 @@ const { isArabic } = require("./isArabic")
 
 const note = ({ note: data }) => {
 
-  const views = window.views
+  var views = window.views
   var note = views["note"]
   var type = (data.type || (data.danger && "danger") || (data.info && "info") || (data.warning && "warning") || "success").toLowerCase()
   var noteText = views["note-text"]

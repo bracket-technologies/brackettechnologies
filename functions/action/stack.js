@@ -25,7 +25,7 @@ const openStack = ({ _window, id: viewID, string = "", nextAddress, headStack, .
   stack.logs.push(`# Status TYPE ID Index Action => HeadID HeadIndex HeadAction`)
   stack.logs.push(`1 Start STACK ${stack.id} ${stack.event.toUpperCase()} ${stack.string}`)
 
-  const global = _window ? _window.global : window.global
+  var global = _window ? _window.global : window.global
   global.__stacks__[stack.id] = stack
 
   return stack
@@ -50,7 +50,7 @@ const endStack = ({ _window, stack, end }) => {
     delete (_window ? _window.global : window.global).__stacks__[stack.id]
 
     // print stack
-    stack.print && !stack.printed && console.log(logs, "color: blue", stack.logs)
+    stack.print && !stack.printed && console.log("STACK:" + stack.event, logs, "color: blue", stack.logs)
     stack.printed = true
   }
 }

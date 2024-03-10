@@ -4,11 +4,15 @@ const { update, toLine, kernel } = require("./kernel")
 
 const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   
-  const views = window.views
-  const global = window.global
+  var views = window.views
+  var global = window.global
   var view = views[id]
 
-  if (!view.droplist) return
+  if (!view.droplist) {
+    views = null
+    global = null
+    return
+  }
   if (view.droplist.searchable !== false) view.droplist.searchable = {}
 
   // closedroplist
@@ -82,7 +86,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   
   droplistView.positioner = id
   
-  update({ stack, lookupActions, __, address, data: { id: "droplist", view: droplistView } })
+  update({ stack, lookupActions, __, address, id, data: { id: "droplist", view: droplistView } })
   droplistView = views.droplist
   
   // searchable

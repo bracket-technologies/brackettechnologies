@@ -9,7 +9,7 @@ module.exports = {
         const nodemailer = _window.__package__.nodemailer
         const OAuth2 = google.auth.OAuth2;
         var data = req.body.data
-        const global = _window.global
+        var global = _window.global
         var project = global.data.project
 
         // no recipient

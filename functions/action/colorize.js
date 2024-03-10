@@ -78,7 +78,7 @@ const colorize = ({ _window, string, start = "[", index = 0, colors = _colors })
 
 const colorizeCoded = ({ _window, index, string, colors }) => {
 
-  const global = _window ? _window.global : window.global
+  var global = _window ? _window.global : window.global
   var slicer = string.split("@")
   if (slicer.length < 2) return string
   

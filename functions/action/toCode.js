@@ -1,16 +1,20 @@
 const { generate } = require("./generate")
 const { replaceNbsps } = require("./replaceNbsps")
 
-const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) => {
+const toCode = ({ _window, id, string, e, start = "[", end = "]", ignoreReplace = true }) => {
 
   if (typeof string !== "string") return string
-  const global = _window ? _window.global : window.global
+  var global = _window ? _window.global : window.global
 
   // text
   if (start === "'") end = "'"
   
-  // do not encode []
-  if (!subCoding) string = replaceNbsps(string.replaceAll("[]", "__map__"))
+  // ignoreReplace
+  if (ignoreReplace) string = replaceNbsps(string)
+    .replaceAll("[]", "__map__")
+    .replaceAll(/\\'(?!['])/g, "__quote__")
+    .replace(/\\\[/g, "__openSquareBracket__")
+    .replace(/\\\]/g, "__closeSquareBracket__")
 
   // init
   var type = start === "'" ? "text" : "code"
@@ -26,7 +30,7 @@ const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) =
 
       keys[1] += `${start}${keys[2]}`
       if (keys[1].includes(end) && keys[2]) {
-        keys[1] = toCode({ _window, id, string: keys[1], e, start, subCoding: true })
+        keys[1] = toCode({ _window, id, string: keys[1], e, start, ignoreReplace: false })
       }
       keys.splice(2, 1)
       subKey = keys[1].split(end)
@@ -39,7 +43,15 @@ const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) =
     if (subKey[0].split("'").length > 1) subKey[0] = toCode({ _window, id, string: subKey[0], start: "'" })
 
     // reference
-    global.__refs__[key] = { id, data: subKey[0].replaceAll("__map__", "[]"), type }
+    global.__refs__[key] = { 
+      id, 
+      type, 
+      data: subKey[0]
+      .replaceAll("__map__", "[]")
+      .replaceAll("__quote__", "'")
+      .replace("__openSquareBracket__", "[")
+      .replace("__closeSquareBracket__", "]")
+    }
 
     var value = key
     var before = keys[0]
@@ -50,9 +62,13 @@ const toCode = ({ _window, id, string, e, start = "[", end = "]", subCoding }) =
     string = `${before}${value}${subKey.join(end)}${after}`
   }
 
-  if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0) string = toCode({ _window, id, string, e, start, subCoding: true })
+  if (string.split(start)[1] !== undefined && string.split(start).slice(1).join(start).length > 0) string = toCode({ _window, id, string, e, start, ignoreReplace: false })
 
-  if (!subCoding) string = string.replaceAll("__map__", "[]")
+  if (ignoreReplace) string = string
+    .replaceAll("__map__", "[]")
+    .replaceAll("__quote__", "'")
+    .replace("__openSquareBracket__", "[")
+    .replace("__closeSquareBracket__", "]")
 
   return string
 }

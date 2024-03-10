@@ -4,8 +4,8 @@ const { update } = require("./kernel")
 module.exports = {
   root: ({ id, _window, root = {}, stack, lookupActions, address, req, res, __ }) => {
 
-    const views = _window ? _window.views : window.views
-    const global = _window ? _window.global : window.global
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
 
     // path
     var path = root.path || (root.page.includes("/") ? root.page : global.manifest.path.join("/"))
