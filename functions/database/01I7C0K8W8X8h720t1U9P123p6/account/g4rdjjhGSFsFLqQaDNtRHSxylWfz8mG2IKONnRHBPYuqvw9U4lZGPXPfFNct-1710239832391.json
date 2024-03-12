@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000062",
+  "ledgerAccount": "6261/1/1",
+  "blockAccount": "No",
+  "name": "Transportation & Communication",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239832391,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "62",
+    "626",
+    "6261"
+  ],
+  "__props__": {
+    "id": "E1j7X1h0U2h4y6C3V522B922Z3",
+    "doc": "g4rdjjhGSFsFLqQaDNtRHSxylWfz8mG2IKONnRHBPYuqvw9U4lZGPXPfFNct-1710239832391",
+    "creationDate": 1710246352923,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

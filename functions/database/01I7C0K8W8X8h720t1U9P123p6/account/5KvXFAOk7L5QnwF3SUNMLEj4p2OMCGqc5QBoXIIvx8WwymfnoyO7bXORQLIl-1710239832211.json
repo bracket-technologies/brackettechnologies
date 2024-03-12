@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000054",
+  "ledgerAccount": "6251/1/1",
+  "blockAccount": "No",
+  "name": "Leasing On Materials",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239832211,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "62",
+    "625",
+    "6251"
+  ],
+  "__props__": {
+    "id": "e1N711H092U4L6Q32512p7l6h9",
+    "doc": "5KvXFAOk7L5QnwF3SUNMLEj4p2OMCGqc5QBoXIIvx8WwymfnoyO7bXORQLIl-1710239832211",
+    "creationDate": 1710246352769,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

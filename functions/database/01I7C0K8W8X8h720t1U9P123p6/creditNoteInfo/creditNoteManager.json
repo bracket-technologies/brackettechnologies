@@ -1,0 +1,24 @@
+{
+  "identifier": "voucher",
+  "searchEngineInputs": "voucherSharedInfo",
+  "createFormInputs": "voucherSharedInfo",
+  "popupInfo": {
+    "docName": "voucherInfo",
+    "title": "Credit Note Form"
+  },
+  "managerName": "creditNoteManager",
+  "title": "Credit Note Manager",
+  "type": "Credit Note",
+  "__props__": {
+    "id": "g1L7m1F0k2w4X6M3Z5T025l2r4",
+    "doc": "creditNoteManager",
+    "creationDate": 1710246350524,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

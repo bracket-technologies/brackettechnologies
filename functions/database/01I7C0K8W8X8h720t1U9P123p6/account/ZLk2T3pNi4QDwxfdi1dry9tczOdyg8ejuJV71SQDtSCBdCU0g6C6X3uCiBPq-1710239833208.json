@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000108",
+  "ledgerAccount": "6551/1/1",
+  "blockAccount": "No",
+  "name": "Prov.For Dimunit.Value Of Intangible F/A",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239833209,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "65",
+    "655",
+    "6551"
+  ],
+  "__props__": {
+    "id": "b1s7j1n0t2m4e653F5b2b8A9k3",
+    "doc": "ZLk2T3pNi4QDwxfdi1dry9tczOdyg8ejuJV71SQDtSCBdCU0g6C6X3uCiBPq-1710239833208",
+    "creationDate": 1710246352893,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "country": "Canada",
+  "createdCurrency": "CAD",
+  "code": "CAD",
+  "systemCurrencyRate": 1,
+  "vatRate": 20,
+  "creationDate": 1706101438342,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "createdCurrencyRate": 3,
+  "ref": "CRN-00000004",
+  "exchangeRate": 3,
+  "decimals": "2",
+  "symbole": "CA$",
+  "name": "Canadian Dollar (CAD)",
+  "creationDay": 1706054400000,
+  "__props__": {
+    "id": "T1m7P1R0k2q4X6B3A419j3Y6N1",
+    "doc": "5PN84BUapumtnJ92KXRnMOYW5a3zOiXDy6Wvgjg7QNFNaPri6GXrd6mZ7dJI-1706101438337",
+    "creationDate": 1710246349361,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

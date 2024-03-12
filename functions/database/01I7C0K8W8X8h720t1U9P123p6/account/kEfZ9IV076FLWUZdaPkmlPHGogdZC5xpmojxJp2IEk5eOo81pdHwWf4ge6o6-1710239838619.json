@@ -1,0 +1,28 @@
+{
+  "ref": "ACC-00000317",
+  "ledgerAccount": "781/1/1",
+  "blockAccount": "No",
+  "name": "Revenues From Fixed Assets Disposals",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239838619,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "7",
+    "78",
+    "781"
+  ],
+  "__props__": {
+    "id": "R1w7y1C0O2m4Q6a3e592i9W4Z3",
+    "doc": "kEfZ9IV076FLWUZdaPkmlPHGogdZC5xpmojxJp2IEk5eOo81pdHwWf4ge6o6-1710239838619",
+    "creationDate": 1710246352943,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

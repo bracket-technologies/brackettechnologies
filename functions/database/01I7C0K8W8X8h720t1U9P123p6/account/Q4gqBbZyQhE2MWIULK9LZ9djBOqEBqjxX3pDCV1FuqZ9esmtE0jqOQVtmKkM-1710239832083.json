@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000046",
+  "ledgerAccount": "6151/1/1",
+  "blockAccount": "No",
+  "name": "Opening Stock",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239832083,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "61",
+    "615",
+    "6151"
+  ],
+  "__props__": {
+    "id": "v1E7i1f0T2y4s6Q3e5B2j8N6H4",
+    "doc": "Q4gqBbZyQhE2MWIULK9LZ9djBOqEBqjxX3pDCV1FuqZ9esmtE0jqOQVtmKkM-1710239832083",
+    "creationDate": 1710246352864,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

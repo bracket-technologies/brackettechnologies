@@ -1,0 +1,31 @@
+{
+  "ref": "ACC-00000217",
+  "ledgerAccount": "651253/1/1",
+  "blockAccount": "No",
+  "name": "Depr.Alloc. - Maritime Tranport Means",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239835683,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6512",
+    "65125",
+    "651253"
+  ],
+  "__props__": {
+    "id": "s1s7t1b072b4r6t3r5h2J9X8d0",
+    "doc": "wcka1QhENjHSlzMgdCZgyv3xN3Sb2C27pXLDm2GEfzWfFEwpJz5Jy6CNFNRG-1710239835641",
+    "creationDate": 1710246352980,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

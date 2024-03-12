@@ -1,0 +1,18 @@
+{
+  "view": "View?class=flexbox;style.backgroundColor=#F6F6F7;style.width=inherit;style.position=relative;style.minHeight=100vh;style.height=fit-content;style.overflowX=hidden;children=data:().view.account_setup1;style.padding=5rem",
+  "__props__": {
+    "db": "views",
+    "collection": "d17770q8A8Z7l0Q0l031g188q9",
+    "id": "V1T7l1q0Z2i4D6W3u4S9A617s4",
+    "doc": "account_setup",
+    "creationDate": 1710246349674,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {},
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "version": 0,
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+  }
+}

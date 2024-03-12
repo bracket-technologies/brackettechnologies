@@ -1,0 +1,36 @@
+{
+  "updateBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+  "difference": [
+    {
+      "new": "Anthi",
+      "path": "country",
+      "old": ""
+    },
+    {
+      "new": "Anthi",
+      "path": "trainName",
+      "old": ""
+    },
+    {
+      "new": "Anthi",
+      "path": "trainStation",
+      "old": ""
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "aRiAoFpuKnap9rZCJcACccDMX29Kai3iT6kFHbYUfHtc2mL9kHAk3wzgai8g1699268378803",
+  "creationDay": 1700611200000,
+  "creationDate": 1700651977736,
+  "__props__": {
+    "id": "J187W1i0u2u466Y3U5L3m3C7s0",
+    "doc": "gIdv5ipcM5wUaypqV2O3sXsGLvgXrJG1mp3ltI0y8lEKTl5vjR5d5csCGHcp1700651977734",
+    "creationDate": 1710246353370,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

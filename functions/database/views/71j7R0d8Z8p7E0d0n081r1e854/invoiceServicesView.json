@@ -1,0 +1,37 @@
+{
+  "view": "View?style:[width=100%;overflowX=auto;paddingBottom=1rem]",
+  "children": [
+    {
+      "view": "[View]:[path=_.path]?class=flex column",
+      "children": [
+        {
+          "view": "View",
+          "children": [
+            {
+              "view": "customFormInputLoop"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "db": "views",
+    "collection": "71j7R0d8Z8p7E0d0n081r1e854",
+    "id": "z1D7X1g0b2a4c6r3L573M4N683",
+    "doc": "invoiceServicesView",
+    "creationDate": 1710246353463,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {},
+    "collapsed": [
+      {
+        "path": []
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "version": 0,
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

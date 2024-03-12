@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000150",
+  "ledgerAccount": "6855/1/1",
+  "blockAccount": "No",
+  "name": "Charges On Capital Operations",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239834202,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "68",
+    "685",
+    "6855"
+  ],
+  "__props__": {
+    "id": "Z1u7H1i0L2O406U37552B9N7g9",
+    "doc": "w0W51rBC1arTjfsf1rfvLvqQ2VdEvLZM5YcZgWF86yGfCyMXRhvKFtVtkIPG-1710239834201",
+    "creationDate": 1710246352979,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

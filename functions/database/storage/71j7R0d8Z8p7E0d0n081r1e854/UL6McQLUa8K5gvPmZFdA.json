@@ -1,0 +1,30 @@
+{
+  "Description": "test",
+  "count": 9,
+  "index": 0,
+  "description": "",
+  "type": "text/css",
+  "creationDate": 1705324598081,
+  "title": "TEXT/CSS",
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "url": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/UL6McQLUa8K5gvPmZFdA?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509461600&Signature=X1%2FIFpYR7l4Z1KJAHV%2FmcuytRLdCEwanpL1zFwj7%2Bw8mTLrv1g2e4ByMZVb9gWV85fZxdwog8TC6IpMXnCqGoLqq56Ihq2ImYytH587pW3CJ6yeDZ6%2F1oRhEJpoLU3EfbWjfsKlwuV9cYLgK8NVGPPiWKTuhasg38WJmh6LKKA9NrkMj9L6d8u3E5gIPkLZM15FHO4E3d1vPqczjB7C2tzfAYuidgVOO4w931vSZl%2FPrh5Z2ooplIbJufAGdX68dBpbSdzNG2%2FmdSR8YvI%2B8UPnbui%2FjZST9VzFGfWvRN2R3e0qxKjPnYKwxaWLaSRdz0p38MV1ZR%2FFnqfGXBFB7NA%3D%3D",
+  "tags": [],
+  "ref": "IMG-00000009",
+  "size": 1876,
+  "name": "styles.css",
+  "lastModified": 1701601168855,
+  "__props__": {
+    "db": "storage",
+    "collection": "71j7R0d8Z8p7E0d0n081r1e854",
+    "id": "g1Z7n1u0U2n4h693g5j3F9M2C8",
+    "creationDate": 1710246353928,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "doc": "UL6McQLUa8K5gvPmZFdA",
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

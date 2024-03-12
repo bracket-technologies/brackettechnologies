@@ -1,0 +1,28 @@
+{
+  "ref": "ACC-00000265",
+  "ledgerAccount": "721/1/1",
+  "blockAccount": "No",
+  "name": "Works In Process (Variation)",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239837683,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "7",
+    "72",
+    "721"
+  ],
+  "__props__": {
+    "id": "H1T7h1h0O2843623L5f2V8I3H5",
+    "doc": "K45R0UJbMaVCLfLTnHSl2iKSNuoUPchnuJmozkDQGtQ0JrEP9TgP3gG6q2GO-1710239837683",
+    "creationDate": 1710246352835,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

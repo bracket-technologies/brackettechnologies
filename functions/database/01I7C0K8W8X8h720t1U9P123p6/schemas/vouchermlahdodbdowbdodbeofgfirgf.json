@@ -1,0 +1,3554 @@
+{
+  "create": {
+    "creditNote": {
+      "keyValue": [
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": true
+        },
+        {
+          "path": "voucherDate",
+          "type": "number",
+          "key": "voucherDate",
+          "required": "true"
+        },
+        {
+          "path": "status",
+          "type": "string",
+          "key": "status",
+          "required": "true"
+        },
+        {
+          "path": "customerAccount",
+          "type": "ledger",
+          "key": "customerAccount",
+          "required": "true"
+        },
+        {
+          "path": "customerAccount",
+          "type": "string",
+          "key": "ledgerCustomerAccount",
+          "required": "true"
+        },
+        {
+          "path": "type",
+          "type": "string",
+          "key": "type"
+        },
+        {
+          "path": "currency",
+          "type": "string",
+          "key": "currency"
+        },
+        {
+          "listPath": "returns",
+          "input": [
+            {
+              "path": "incomeAccount",
+              "type": "ledger",
+              "key": "incomeAccount",
+              "required": true
+            },
+            {
+              "path": "description",
+              "type": "string",
+              "key": "description"
+            },
+            {
+              "path": "vat",
+              "type": "string",
+              "key": "vat",
+              "required": true
+            },
+            {
+              "path": "vatAmount",
+              "condition": [
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "vat"
+                }
+              ],
+              "type": "number",
+              "key": "vatAmount",
+              "required": "true"
+            },
+            {
+              "path": "amount",
+              "type": "number",
+              "key": "amount",
+              "required": "true"
+            },
+            {
+              "path": "totalAmount",
+              "type": "number",
+              "key": "totalAmount",
+              "required": "true"
+            }
+          ]
+        },
+        {
+          "staticDoc": true,
+          "keyValue": [
+            {
+              "path": "customerAccount",
+              "type": "string",
+              "key": "ledgerAccount"
+            },
+            {
+              "path": "customerAccount",
+              "type": "ledger",
+              "key": "account",
+              "required": true
+            },
+            {
+              "path": "branch",
+              "type": "string",
+              "key": "branch",
+              "required": true
+            },
+            {
+              "staticValue": "Credit",
+              "key": "credit-debit"
+            },
+            {
+              "staticValue": "___.data.returns._():[().supplierCredit+=_.totalAmount];return():[().supplierCredit]",
+              "key": "amount"
+            }
+          ],
+          "collection": "transaction",
+          "generateReference": true
+        },
+        {
+          "listPath": "returns",
+          "condition": {
+            "condition": [
+              "Confirmed"
+            ],
+            "conditionReference": "status"
+          },
+          "listOfDocs": "true",
+          "docsKeyValue": [
+            {
+              "input": [
+                {
+                  "path": "incomeAccount",
+                  "type": "string",
+                  "key": "ledgerAccount"
+                },
+                {
+                  "path": "incomeAccount",
+                  "type": "ledger",
+                  "key": "account",
+                  "required": true
+                },
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "amount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Debit",
+                  "key": "credit-debit"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "collection": "transaction"
+            },
+            {
+              "input": [
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "vatAmount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Debit",
+                  "key": "credit-debit"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "customCondition": "if():[__.vat='Yes']:[search():[collection=account;field:[ledgerAccount=mainReceivedData:().customerAccount]]:[if():[_.data.value()]:[if():[_.data.value().vatLedgerAccount]:[search():[collection=account;field:[ledgerAccount=_.data.value().vatLedgerAccount]]:[if():[_.data.value()]:[().indexAsDoc=[account=_.data.value().id;ledgerAccount=__.data.value().vatLedgerAccount]]:[send():[success=false;msg='VAT Account does not exist!']]]:[send():[success=false;msg='Customer does not have a vat account!']]]:[success=false;msg='Customer does not have a VAT account!']]]:[send():[success=false;msg='Customer account does not exist!']]]:[().setDoc=false];#kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+              "collection": "transaction"
+            }
+          ],
+          "generateReference": "true",
+          "collection": "transaction"
+        }
+      ],
+      "generateReference": true
+    },
+    "expenseVoucher": {
+      "keyValue": [
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": true
+        },
+        {
+          "path": "voucherDate",
+          "type": "number",
+          "key": "voucherDate",
+          "required": "true"
+        },
+        {
+          "path": "status",
+          "type": "string",
+          "key": "status",
+          "required": "true"
+        },
+        {
+          "path": "type",
+          "type": "string",
+          "key": "type"
+        },
+        {
+          "path": "currency",
+          "type": "string",
+          "key": "currency"
+        },
+        {
+          "path": "supplier",
+          "condition": [
+            {
+              "condition": [
+                "Expense Voucher"
+              ],
+              "conditionReference": "type"
+            }
+          ],
+          "type": "string",
+          "key": "supplier"
+        },
+        {
+          "path": "supplierAccountb",
+          "condition": [
+            {
+              "condition": [
+                "Expense Voucher"
+              ],
+              "conditionReference": "type"
+            },
+            {
+              "condition": [
+                "Yes"
+              ],
+              "conditionReference": "supplier"
+            }
+          ],
+          "type": "ledger",
+          "key": "supplierAccount",
+          "required": true
+        },
+        {
+          "path": "payNow",
+          "type": "string",
+          "key": "payNow"
+        },
+        {
+          "listPath": "expenses",
+          "input": [
+            {
+              "path": "expenditureAccount",
+              "type": "ledger",
+              "key": "expenditureAccount",
+              "required": true
+            },
+            {
+              "path": "description",
+              "type": "string",
+              "key": "description"
+            },
+            {
+              "path": "vat",
+              "type": "string",
+              "key": "vat"
+            },
+            {
+              "path": "vatAmount",
+              "condition": [
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "vat"
+                }
+              ],
+              "type": "number",
+              "key": "vatAmount",
+              "required": "true"
+            },
+            {
+              "path": "amount",
+              "type": "number",
+              "key": "amount",
+              "required": "true"
+            },
+            {
+              "path": "totalAmount",
+              "type": "number",
+              "key": "totalAmount",
+              "required": "true"
+            }
+          ]
+        },
+        {
+          "listPath": "payments",
+          "input": [
+            {
+              "path": "financialAccount",
+              "type": "ledger",
+              "key": "financialAccount",
+              "required": true
+            },
+            {
+              "path": "description",
+              "type": "string",
+              "key": "description"
+            },
+            {
+              "path": "financialCharges",
+              "type": "string",
+              "key": "financialCharges"
+            },
+            {
+              "path": "chargesAccount",
+              "condition": [
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "financialCharges"
+                }
+              ],
+              "type": "ledger",
+              "key": "chargesAccount",
+              "required": "true"
+            },
+            {
+              "path": "chargesAmount",
+              "condition": [
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "financialCharges"
+                }
+              ],
+              "type": "number",
+              "key": "chargesAmount",
+              "required": "true"
+            },
+            {
+              "path": "amount",
+              "type": "number",
+              "key": "amount",
+              "required": "true"
+            },
+            {
+              "path": "totalAmount",
+              "type": "number",
+              "key": "totalAmount",
+              "required": "true"
+            }
+          ],
+          "orCondition": [
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Confirmed"
+                  ],
+                  "conditionReference": "status"
+                },
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "payNow"
+                }
+              ]
+            },
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Confirmed"
+                  ],
+                  "conditionReference": "status"
+                },
+                {
+                  "condition": [
+                    "No"
+                  ],
+                  "conditionReference": "supplier"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "staticDoc": true,
+          "condition": [
+            {
+              "condition": [
+                "Yes"
+              ],
+              "conditionReference": "supplier"
+            }
+          ],
+          "keyValue": [
+            {
+              "path": "supplierAccountb",
+              "type": "string",
+              "key": "ledgerAccount"
+            },
+            {
+              "path": "supplierAccountb",
+              "type": "ledger",
+              "key": "account",
+              "required": true
+            },
+            {
+              "path": "branch",
+              "type": "string",
+              "key": "branch",
+              "required": true
+            },
+            {
+              "staticValue": "credit",
+              "key": "credit-debit"
+            },
+            {
+              "staticValue": "___.data.expenses._():[().supplierCredit+=_.totalAmount];return():[().supplierCredit]",
+              "key": "amount"
+            }
+          ],
+          "collection": "transaction",
+          "generateReference": true
+        },
+        {
+          "listPath": "expenses",
+          "condition": {
+            "condition": [
+              "Confirmed"
+            ],
+            "conditionReference": "status"
+          },
+          "listOfDocs": "true",
+          "docsKeyValue": [
+            {
+              "input": [
+                {
+                  "path": "expenditureAccount",
+                  "type": "string",
+                  "key": "ledgerAccount"
+                },
+                {
+                  "path": "expenditureAccount",
+                  "type": "ledger",
+                  "key": "account",
+                  "required": true
+                },
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "amount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Debit",
+                  "key": "credit-debit"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "collection": "transaction"
+            },
+            {
+              "input": [
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "vatAmount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Debit",
+                  "key": "credit-debit"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "customCondition": "if():[__.vat='Yes']:[if():[mainReceivedData:().supplier='Yes';mainReceivedData:().supplierAccountb]:[search():[collection=account;field:[ledgerAccount=mainReceivedData:().supplierAccountb]]:[if():[_.data.value()]:[if():[_.data.value().vatLedgerAccount]:[search():[collection=account;field:[ledgerAccount=_.data.value().vatLedgerAccount]]:[if():[_.data.value()]:[().indexAsDoc=[account=_.data.value().id;ledgerAccount=__.data.value().vatLedgerAccount]]:[send():[success=false;msg='VAT Account does not exist!']]]]:[send():[success=false;msg='Supplier does not have a vat account!']]]:[send():[success=false;msg='Supplier account does not exist!']]]]:[search():[collection=account;field:[ledgerAccount='442/1/1']]:[if():[_.data.value()]:[().indexAsDoc=[account=_.data.value().id;ledgerAccount='442/1/1']]:[send():[success=false;msg='VAT Account does not exist!']]]]]:[().setDoc=false];#kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+              "collection": "transaction"
+            }
+          ],
+          "generateReference": "true",
+          "collection": "transaction"
+        },
+        {
+          "staticDoc": true,
+          "condition": [
+            {
+              "condition": [
+                "Yes"
+              ],
+              "conditionReference": "payNow"
+            }
+          ],
+          "keyValue": [
+            {
+              "path": "supplierAccountb",
+              "type": "string",
+              "key": "ledgerAccount"
+            },
+            {
+              "path": "supplierAccountb",
+              "type": "ledger",
+              "key": "account",
+              "required": true
+            },
+            {
+              "path": "branch",
+              "type": "string",
+              "key": "branch",
+              "required": true
+            },
+            {
+              "staticValue": "debit",
+              "key": "credit-debit"
+            },
+            {
+              "staticValue": "___.data.expenses._():[().supplierDebit+=_.totalAmount];return():[().supplierDebit]",
+              "key": "amount"
+            }
+          ],
+          "collection": "transaction",
+          "generateReference": true
+        },
+        {
+          "listPath": "payments",
+          "orCondition": [
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Confirmed"
+                  ],
+                  "conditionReference": "status"
+                },
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "payNow"
+                }
+              ]
+            },
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Confirmed"
+                  ],
+                  "conditionReference": "status"
+                },
+                {
+                  "condition": [
+                    "No"
+                  ],
+                  "conditionReference": "supplier"
+                }
+              ]
+            }
+          ],
+          "listOfDocs": "true",
+          "docsKeyValue": [
+            {
+              "input": [
+                {
+                  "path": "financialAccount",
+                  "type": "string",
+                  "key": "ledgerAccount",
+                  "required": true
+                },
+                {
+                  "path": "financialAccount",
+                  "type": "ledger",
+                  "key": "account",
+                  "required": true
+                },
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "totalAmount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Credit",
+                  "key": "credit-debit"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "collection": "transaction"
+            },
+            {
+              "input": [
+                {
+                  "path": "chargesAccount",
+                  "type": "string",
+                  "key": "ledgerAccount",
+                  "required": true
+                },
+                {
+                  "path": "chargesAccount",
+                  "type": "ledger",
+                  "key": "account",
+                  "required": true
+                },
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "chargesAmount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Debit",
+                  "key": "credit-debit"
+                }
+              ],
+              "condition": [
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "financialCharges"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "collection": "transaction"
+            }
+          ],
+          "generateReference": "true",
+          "collection": "transaction"
+        }
+      ],
+      "customCondition": "if():[_.data.payNow='Yes'||_.data.supplier='No']:[_.data.payments._():[().totalCredits+=_.amount];_.data.expenses._():[().totalDebits+=_.totalAmount];if():[().totalCredits!=().totalDebits]:[send():[success=false;msg='Total expenses must match total payments for accurate processing!']]]",
+      "generateReference": true
+    },
+    "paymentVoucher": {
+      "keyValue": [
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": true
+        },
+        {
+          "path": "voucherDate",
+          "type": "number",
+          "key": "voucherDate",
+          "required": "true"
+        },
+        {
+          "path": "status",
+          "type": "string",
+          "key": "status",
+          "required": "true"
+        },
+        {
+          "path": "type",
+          "type": "string",
+          "key": "type",
+          "required": true
+        },
+        {
+          "path": "currency",
+          "type": "string",
+          "key": "currency",
+          "required": true
+        },
+        {
+          "listPath": "from",
+          "input": [
+            {
+              "path": "financialAccount",
+              "type": "ledger",
+              "key": "financialAccount",
+              "required": true
+            },
+            {
+              "path": "description",
+              "type": "string",
+              "key": "description"
+            },
+            {
+              "path": "amount",
+              "type": "number",
+              "key": "amount",
+              "required": "true"
+            },
+            {
+              "path": "financialCharges",
+              "type": "string",
+              "key": "financialCharges",
+              "required": "true"
+            },
+            {
+              "path": "chargesAccount",
+              "condition": [
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "financialCharges"
+                }
+              ],
+              "type": "ledger",
+              "key": "chargesAccount",
+              "required": "true"
+            },
+            {
+              "path": "chargesAmount",
+              "condition": [
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "financialCharges"
+                }
+              ],
+              "type": "number",
+              "key": "chargesAmount",
+              "required": "true"
+            },
+            {
+              "path": "chargesFeesUnit",
+              "condition": [
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "financialCharges"
+                }
+              ],
+              "type": "string",
+              "key": "chargesFeesUnit",
+              "required": "true"
+            }
+          ]
+        },
+        {
+          "listPath": "to",
+          "input": [
+            {
+              "path": "receivablesAndPayablesAccount",
+              "type": "ledger",
+              "key": "receivablesAndPayablesAccount",
+              "required": true
+            },
+            {
+              "path": "description",
+              "type": "string",
+              "key": "description"
+            },
+            {
+              "path": "amount",
+              "type": "number",
+              "key": "amount",
+              "required": "true"
+            }
+          ]
+        },
+        {
+          "listPath": "from",
+          "condition": [
+            {
+              "condition": [
+                "Confirmed"
+              ],
+              "conditionReference": "status"
+            }
+          ],
+          "listOfDocs": "true",
+          "docsKeyValue": [
+            {
+              "input": [
+                {
+                  "path": "financialAccount",
+                  "type": "string",
+                  "key": "ledgerAccount",
+                  "required": true
+                },
+                {
+                  "path": "financialAccount",
+                  "type": "ledger",
+                  "key": "account",
+                  "required": true
+                },
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "amount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Debit",
+                  "key": "credit-debit"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "collection": "transaction"
+            },
+            {
+              "input": [
+                {
+                  "path": "chargesAccount",
+                  "type": "string",
+                  "key": "ledgerAccount",
+                  "required": true
+                },
+                {
+                  "path": "chargesAccount",
+                  "type": "ledger",
+                  "key": "account",
+                  "required": true
+                },
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "chargesAmount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Debit",
+                  "key": "credit-debit"
+                }
+              ],
+              "condition": [
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "financialCharges"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "collection": "transaction"
+            }
+          ],
+          "generateReference": "true",
+          "collection": "transaction"
+        },
+        {
+          "listPath": "to",
+          "condition": {
+            "condition": [
+              "Confirmed"
+            ],
+            "conditionReference": "status"
+          },
+          "listOfDocs": "true",
+          "docsKeyValue": [
+            {
+              "input": [
+                {
+                  "path": "receivablesAndPayablesAccount",
+                  "type": "string",
+                  "key": "ledgerAccount",
+                  "required": true
+                },
+                {
+                  "path": "receivablesAndPayablesAccount",
+                  "type": "ledger",
+                  "key": "account",
+                  "required": true
+                },
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "amount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Credit",
+                  "key": "credit-debit"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "collection": "transaction"
+            }
+          ],
+          "generateReference": "true",
+          "collection": "transaction"
+        }
+      ],
+      "customCondition": "_.data.from._():[().totalCredits+=[[_.amount]-[_.chargesAmount||0]]];_.data.to._():[().totalDebits+=_.amount];if():[().totalCredits!=().totalDebits]:[send():[success=false;msg='Total credit must match total debit for accurate processing!']]",
+      "generateReference": true
+    },
+    "debitNote": {
+      "keyValue": [
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": true
+        },
+        {
+          "path": "voucherDate",
+          "type": "number",
+          "key": "voucherDate",
+          "required": "true"
+        },
+        {
+          "path": "status",
+          "type": "string",
+          "key": "status",
+          "required": "true"
+        },
+        {
+          "path": "supplierAccount",
+          "type": "ledger",
+          "key": "supplierAccount",
+          "required": "true"
+        },
+        {
+          "path": "supplierAccount",
+          "type": "string",
+          "key": "ledgerSupplierAccount",
+          "required": "true"
+        },
+        {
+          "path": "type",
+          "type": "string",
+          "key": "type"
+        },
+        {
+          "path": "currency",
+          "type": "string",
+          "key": "currency"
+        },
+        {
+          "listPath": "returns",
+          "input": [
+            {
+              "path": "expenditureAccount",
+              "type": "ledger",
+              "key": "expenditureAccount",
+              "required": true
+            },
+            {
+              "path": "description",
+              "type": "string",
+              "key": "description"
+            },
+            {
+              "path": "vat",
+              "type": "string",
+              "key": "vat",
+              "required": true
+            },
+            {
+              "path": "vatAmount",
+              "condition": [
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "vat"
+                }
+              ],
+              "type": "number",
+              "key": "vatAmount",
+              "required": "true"
+            },
+            {
+              "path": "amount",
+              "type": "number",
+              "key": "amount",
+              "required": "true"
+            },
+            {
+              "path": "totalAmount",
+              "type": "number",
+              "key": "totalAmount",
+              "required": "true"
+            }
+          ]
+        },
+        {
+          "staticDoc": true,
+          "keyValue": [
+            {
+              "path": "supplierAccount",
+              "type": "string",
+              "key": "ledgerAccount"
+            },
+            {
+              "path": "supplierAccount",
+              "type": "ledger",
+              "key": "account",
+              "required": true
+            },
+            {
+              "path": "branch",
+              "type": "string",
+              "key": "branch",
+              "required": true
+            },
+            {
+              "staticValue": "Debit",
+              "key": "credit-debit"
+            },
+            {
+              "staticValue": "___.data.returns._():[().supplierDebit+=_.totalAmount];return():[().supplierDebit]",
+              "key": "amount"
+            }
+          ],
+          "collection": "transaction",
+          "generateReference": true
+        },
+        {
+          "listPath": "returns",
+          "condition": {
+            "condition": [
+              "Confirmed"
+            ],
+            "conditionReference": "status"
+          },
+          "listOfDocs": "true",
+          "docsKeyValue": [
+            {
+              "input": [
+                {
+                  "path": "expenditureAccount",
+                  "type": "string",
+                  "key": "ledgerAccount"
+                },
+                {
+                  "path": "expenditureAccount",
+                  "type": "ledger",
+                  "key": "account",
+                  "required": true
+                },
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "amount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Credit",
+                  "key": "credit-debit"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "collection": "transaction"
+            },
+            {
+              "input": [
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "vatAmount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Debit",
+                  "key": "credit-debit"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "customCondition": "if():[__.vat='Yes']:[search():[collection=account;field:[ledgerAccount=mainReceivedData:().supplierAccount]]:[if():[_.data.value()]:[if():[_.data.value().vatLedgerAccount]:[search():[collection=account;field:[ledgerAccount=_.data.value().vatLedgerAccount]]:[if():[_.data.value()]:[().indexAsDoc=[account=_.data.value().id;ledgerAccount=__.data.value().vatLedgerAccount]]:[send():[success=false;msg='VAT Account does not exist!']]]:[send():[success=false;msg='Supplier does not have a vat account!']]]:[success=false;msg='Supplier does not have a VAT account!']]]:[send():[success=false;msg='Supplier account does not exist!']]]:[().setDoc=false];#kkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk",
+              "collection": "transaction"
+            }
+          ],
+          "generateReference": "true",
+          "collection": "transaction"
+        }
+      ],
+      "generateReference": true
+    },
+    "receiptVoucher": {
+      "keyValue": [
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": true
+        },
+        {
+          "path": "voucherDate",
+          "type": "number",
+          "key": "voucherDate",
+          "required": "true"
+        },
+        {
+          "path": "status",
+          "type": "string",
+          "key": "status",
+          "required": "true"
+        },
+        {
+          "path": "type",
+          "type": "string",
+          "key": "type",
+          "required": true
+        },
+        {
+          "path": "currency",
+          "type": "string",
+          "key": "currency",
+          "required": true
+        },
+        {
+          "listPath": "from",
+          "input": [
+            {
+              "path": "receivablesAndPayablesAccount",
+              "type": "ledger",
+              "key": "receivablesAndPayablesAccount",
+              "required": true
+            },
+            {
+              "path": "description",
+              "type": "string",
+              "key": "description"
+            },
+            {
+              "path": "amount",
+              "type": "number",
+              "key": "amount",
+              "required": "true"
+            }
+          ]
+        },
+        {
+          "listPath": "to",
+          "input": [
+            {
+              "path": "financialAccount",
+              "type": "ledger",
+              "key": "financialAccount",
+              "required": true
+            },
+            {
+              "path": "description",
+              "type": "string",
+              "key": "description"
+            },
+            {
+              "path": "amount",
+              "type": "number",
+              "key": "amount",
+              "required": "true"
+            },
+            {
+              "path": "financialCharges",
+              "type": "string",
+              "key": "financialCharges",
+              "required": "true"
+            },
+            {
+              "path": "chargesAccount",
+              "condition": [
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "financialCharges"
+                }
+              ],
+              "type": "ledger",
+              "key": "chargesAccount",
+              "required": "true"
+            },
+            {
+              "path": "chargesAmount",
+              "condition": [
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "financialCharges"
+                }
+              ],
+              "type": "number",
+              "key": "chargesAmount",
+              "required": "true"
+            },
+            {
+              "path": "chargesFeesUnit",
+              "condition": [
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "financialCharges"
+                }
+              ],
+              "type": "string",
+              "key": "chargesFeesUnit",
+              "required": "true"
+            }
+          ]
+        },
+        {
+          "listPath": "from",
+          "condition": [
+            {
+              "condition": [
+                "Confirmed"
+              ],
+              "conditionReference": "status"
+            }
+          ],
+          "listOfDocs": "true",
+          "docsKeyValue": [
+            {
+              "input": [
+                {
+                  "path": "receivablesAndPayablesAccount",
+                  "type": "string",
+                  "key": "ledgerAccount",
+                  "required": true
+                },
+                {
+                  "path": "receivablesAndPayablesAccount",
+                  "type": "ledger",
+                  "key": "account",
+                  "required": true
+                },
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "amount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Credit",
+                  "key": "credit-debit"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "collection": "transaction"
+            }
+          ],
+          "generateReference": "true",
+          "collection": "transaction"
+        },
+        {
+          "listPath": "to",
+          "condition": {
+            "condition": [
+              "Confirmed"
+            ],
+            "conditionReference": "status"
+          },
+          "listOfDocs": "true",
+          "docsKeyValue": [
+            {
+              "input": [
+                {
+                  "path": "financialAccount",
+                  "type": "string",
+                  "key": "ledgerAccount",
+                  "required": true
+                },
+                {
+                  "path": "financialAccount",
+                  "type": "ledger",
+                  "key": "account",
+                  "required": true
+                },
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "amount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Debit",
+                  "key": "credit-debit"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "collection": "transaction"
+            },
+            {
+              "input": [
+                {
+                  "path": "chargesAccount",
+                  "type": "string",
+                  "key": "ledgerAccount",
+                  "required": true
+                },
+                {
+                  "path": "chargesAccount",
+                  "type": "ledger",
+                  "key": "account",
+                  "required": true
+                },
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "chargesAmount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Debit",
+                  "key": "credit-debit"
+                }
+              ],
+              "condition": [
+                {
+                  "condition": [
+                    "Yes"
+                  ],
+                  "conditionReference": "financialCharges"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "collection": "transaction"
+            }
+          ],
+          "generateReference": "true",
+          "collection": "transaction"
+        }
+      ],
+      "customCondition": "_.data.from._():[().totalCredits+=_.amount];_.data.to._():[().totalDebits+=[[_.amount]-[_.chargesAmount||0]]];if():[().totalCredits!=().totalDebits]:[send():[success=false;msg='Total credit must match total debit for accurate processing!']]",
+      "generateReference": true
+    },
+    "journalVoucher": {
+      "keyValue": [
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": true
+        },
+        {
+          "path": "voucherDate",
+          "type": "number",
+          "key": "voucherDate",
+          "required": "true"
+        },
+        {
+          "path": "status",
+          "type": "string",
+          "key": "status",
+          "required": "true"
+        },
+        {
+          "path": "type",
+          "type": "string",
+          "key": "type"
+        },
+        {
+          "path": "currency",
+          "type": "string",
+          "key": "currency"
+        },
+        {
+          "listPath": "from",
+          "input": [
+            {
+              "path": "fromAccount",
+              "type": "string",
+              "key": "fromAccount",
+              "required": true
+            },
+            {
+              "path": "description",
+              "type": "string",
+              "key": "description"
+            },
+            {
+              "path": "amount",
+              "type": "number",
+              "key": "amount",
+              "required": "true"
+            }
+          ]
+        },
+        {
+          "listPath": "to",
+          "input": [
+            {
+              "path": "toAccount",
+              "type": "string",
+              "key": "toAccount",
+              "required": true
+            },
+            {
+              "path": "description",
+              "type": "string",
+              "key": "description"
+            },
+            {
+              "path": "amount",
+              "type": "number",
+              "key": "amount",
+              "required": "true"
+            }
+          ]
+        },
+        {
+          "listPath": "from",
+          "condition": {
+            "condition": [
+              "Confirmed"
+            ],
+            "conditionReference": "status"
+          },
+          "listOfDocs": "true",
+          "docsKeyValue": [
+            {
+              "input": [
+                {
+                  "path": "fromAccount",
+                  "type": "ledger",
+                  "key": "account",
+                  "required": true
+                },
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "amount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Credit",
+                  "key": "credit-debit"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "collection": "transaction"
+            }
+          ],
+          "generateReference": "true",
+          "collection": "transaction"
+        },
+        {
+          "listPath": "to",
+          "condition": {
+            "condition": [
+              "Confirmed"
+            ],
+            "conditionReference": "status"
+          },
+          "listOfDocs": "true",
+          "docsKeyValue": [
+            {
+              "input": [
+                {
+                  "path": "toAccount",
+                  "type": "ledger",
+                  "key": "account",
+                  "required": true
+                },
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "amount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": "true"
+                },
+                {
+                  "path": "branch",
+                  "type": "branch",
+                  "key": "branch"
+                },
+                {
+                  "staticValue": "Debit",
+                  "key": "credit-debit"
+                }
+              ],
+              "beforeSaveStep": {
+                "keyValue": [
+                  {
+                    "path": "id",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucher"
+                  },
+                  {
+                    "path": "ref",
+                    "findKey": "collection",
+                    "findValue": "voucher",
+                    "key": "voucherRef"
+                  }
+                ]
+              },
+              "collection": "transaction"
+            }
+          ],
+          "generateReference": "true",
+          "collection": "transaction"
+        }
+      ],
+      "customCondition": "_.data.from._():[().totalCredits+=_.amount];_.data.to._():[().totalDebits+=_.amount];if():[().totalCredits!=().totalDebits]:[send():[success=false;msg='Total credit must match total debit for accurate processing!']]",
+      "generateReference": true
+    }
+  },
+  "collection": "voucher",
+  "creationDate": 1709125179127,
+  "__props__": {
+    "id": "T1h7D13012T4E6l3k5I1U8L7z1",
+    "doc": "vouchermlahdodbdowbdodbeofgfirgf",
+    "creationDate": 1710246351871,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          0,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          0,
+          "multipleDocs",
+          0,
+          "input",
+          0,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          0,
+          "multipleDocs",
+          0,
+          "input",
+          0,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          0,
+          "multipleDocs",
+          0,
+          "input",
+          0,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          0,
+          "multipleDocs",
+          0,
+          "input",
+          0,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          0,
+          "multipleDocs",
+          2,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          5,
+          "input",
+          7,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          5,
+          "input",
+          8,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          0,
+          "multipleDocs",
+          2,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          0,
+          "multipleDocs",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          0,
+          "multipleDocs",
+          0,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          0,
+          "multipleDocs",
+          0,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          0,
+          "multipleDocs",
+          1,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          0,
+          "#input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          8,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          9,
+          "multipleDocs",
+          0,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          9,
+          "multipleDocs",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucherdd",
+          "keyValue",
+          0,
+          "multipleDocs",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucherdd",
+          "keyValue",
+          0,
+          "multipleDocs",
+          1,
+          "beforeSaveStep",
+          "keyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucherdd",
+          "keyValue",
+          0,
+          "multipleDocs",
+          1,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucherdd",
+          "keyValue",
+          0,
+          "multipleDocs",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucherdd",
+          "keyValue",
+          0,
+          "multipleDocs",
+          2,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucherdd",
+          "keyValue",
+          0,
+          "multipleDocs",
+          2,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucherdd",
+          "keyValue",
+          0,
+          "multipleDocs",
+          2,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucherdd"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          9,
+          "multipleDocs",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          9,
+          "multipleDocs",
+          1,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          9,
+          "multipleDocs",
+          0,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          9,
+          "multipleDocs",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "journalVoucher",
+          "keyValue",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          5,
+          "condition",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucher",
+          "keyValue",
+          7,
+          "multipleDocs",
+          1,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "journalVoucher",
+          "keyValue",
+          7,
+          "multipleDocs",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "journalVoucher",
+          "keyValue",
+          8,
+          "multipleDocs",
+          0,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "expenseVoucher"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucherForExpense",
+          "keyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "voucherForExpense"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          10,
+          "multipleDocs",
+          0,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          10,
+          "multipleDocs",
+          1,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          11,
+          "multipleDocs",
+          0,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          11,
+          "multipleDocs",
+          1,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          11,
+          "multipleDocs",
+          1,
+          "ddcondition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          11,
+          "multipleDocs",
+          0,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          11,
+          "conditiondd"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          11,
+          "orCondition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          3
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          6,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          6
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          9,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          9,
+          "orCondition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          10,
+          "multipleDocs",
+          1,
+          "ddcondition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          11,
+          "multipleDocs",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "#nextStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          10,
+          "multipleDocs",
+          0,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          10,
+          "multipleDocs",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          10,
+          "multipleDocs"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          11,
+          "multipleDocs"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          5
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          11,
+          "docsKeyValue",
+          1,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          10,
+          "docsKeyValue",
+          0,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          13,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          7
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          10,
+          "keyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          13,
+          "docsKeyValue",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          9
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          10,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          10
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          11,
+          "docsKeyValue",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          11
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          12,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          12,
+          "keyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "journalVoucher",
+          "keyValue",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          8,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          8,
+          "docsKeyValue",
+          0,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          7,
+          "multipleDocs",
+          0,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          7,
+          "multipleDocs",
+          0,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          13,
+          "orCondition",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          13,
+          "orCondition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          13,
+          "docsKeyValue",
+          1,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          13,
+          "docsKeyValue",
+          1,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          8,
+          "docsKeyValue",
+          1,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          8,
+          "docsKeyValue",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          8,
+          "docsKeyValue",
+          1,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          8,
+          "docsKeyValue",
+          0,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          7,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "journalVoucher",
+          "keyValue",
+          8,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "journalVoucher",
+          "keyValue",
+          8
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "journalVoucher",
+          "keyValue",
+          7
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          8
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          3
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          6,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          5,
+          "inputb"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          6,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          7,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          7,
+          "docsKeyValuebb",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          8,
+          "condition",
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          8,
+          "docsKeyValue",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          8,
+          "docsKeyValue",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          8,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          7,
+          "docsKeyValue",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          7,
+          "docsKeyValue",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          8,
+          "docsKeyValue",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          7,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          7,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          7,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          7,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          7,
+          "orCondition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          8,
+          "keyValue",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          8,
+          "keyValue",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          8,
+          "keyValue",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          9,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          9,
+          "docsKeyValue",
+          0,
+          "beforeSaveStep",
+          "keyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          9,
+          "docsKeyValue",
+          0,
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          9,
+          "docsKeyValue",
+          1,
+          "beforeSaveStep",
+          "keyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          8
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher",
+          "keyValue",
+          13,
+          "docsKeyValue",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          8,
+          "keyValue",
+          3
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          8,
+          "keyValue",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          8,
+          "keyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote",
+          "keyValue",
+          9,
+          "docsKeyValue",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "debitNote"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          3
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          6
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          5
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          7,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          7,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          7,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          7,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          7
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          8,
+          "keyValue",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          8,
+          "keyValue",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          8,
+          "keyValue",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          8,
+          "keyValue",
+          3
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          8,
+          "keyValue",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          8
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          9,
+          "docsKeyValue",
+          0,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          9,
+          "docsKeyValue",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote",
+          "keyValue",
+          9,
+          "docsKeyValue",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "creditNote"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          7,
+          "docsKeyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          7
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          3
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          6,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          6,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          6
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher",
+          "keyValue",
+          5
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "receiptVoucher"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          5,
+          "input",
+          5,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          5,
+          "input",
+          6,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          5,
+          "input",
+          4,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher",
+          "keyValue",
+          5,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "paymentVoucher"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "journalVoucher",
+          "keyValue",
+          3
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "journalVoucher",
+          "keyValue",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "journalVoucher",
+          "keyValue",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "journalVoucher",
+          "keyValue",
+          5,
+          "input"
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

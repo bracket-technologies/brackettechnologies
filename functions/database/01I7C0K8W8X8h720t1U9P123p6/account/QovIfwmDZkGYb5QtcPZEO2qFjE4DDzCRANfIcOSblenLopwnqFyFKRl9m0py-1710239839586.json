@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000366",
+  "ledgerAccount": "7819/1/1",
+  "blockAccount": "No",
+  "name": "Fixed Assets Disposal Charges",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239839589,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "7",
+    "78",
+    "781",
+    "7819"
+  ],
+  "__props__": {
+    "id": "m177r160m2d48623z5F22816v8",
+    "doc": "QovIfwmDZkGYb5QtcPZEO2qFjE4DDzCRANfIcOSblenLopwnqFyFKRl9m0py-1710239839586",
+    "creationDate": 1710246352868,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

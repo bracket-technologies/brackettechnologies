@@ -1,0 +1,40 @@
+{
+  "stayDuration": [
+    {
+      "nightsDurationInMs": 259200000,
+      "nightsNumber": "3 nights"
+    },
+    {
+      "nightsDurationInMs": 432000000,
+      "nightsNumber": "5 nights"
+    },
+    {
+      "nightsDurationInMs": 604800000,
+      "nightsNumber": "1 week"
+    },
+    {
+      "nightsDurationInMs": 864000000,
+      "nightsNumber": "10 nights"
+    },
+    {
+      "nightsDurationInMs": 1209600000,
+      "nightsNumber": "2 week"
+    },
+    {
+      "nightsDurationInMs": 2592000000,
+      "nightsNumber": "1 month"
+    }
+  ],
+  "__props__": {
+    "id": "D1u7E1m0E2c436B365Y1G0M6Y1",
+    "doc": "stayDuration",
+    "creationDate": 1710246351061,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

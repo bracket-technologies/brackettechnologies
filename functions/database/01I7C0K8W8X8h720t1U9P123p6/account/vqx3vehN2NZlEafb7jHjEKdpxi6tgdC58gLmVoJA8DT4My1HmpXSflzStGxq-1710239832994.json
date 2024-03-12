@@ -1,0 +1,28 @@
+{
+  "ref": "ACC-00000093",
+  "ledgerAccount": "635/1/1",
+  "blockAccount": "No",
+  "name": "Social Security",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239832995,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "63",
+    "635"
+  ],
+  "__props__": {
+    "id": "81r7w1K032e4C6n3x5k2W9k7f9",
+    "doc": "vqx3vehN2NZlEafb7jHjEKdpxi6tgdC58gLmVoJA8DT4My1HmpXSflzStGxq-1710239832994",
+    "creationDate": 1710246352979,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

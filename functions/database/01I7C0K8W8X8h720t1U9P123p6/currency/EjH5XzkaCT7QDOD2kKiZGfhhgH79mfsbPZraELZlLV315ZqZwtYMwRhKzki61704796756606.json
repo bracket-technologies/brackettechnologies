@@ -1,0 +1,28 @@
+{
+  "country": "Lebanon",
+  "createdCurrency": "LBP",
+  "code": "LBP",
+  "systemCurrencyRate": 1,
+  "counter": 2,
+  "creationDate": 1704796756606,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "createdCurrencyRate": 90000,
+  "ref": "CRN-00000002",
+  "exchangeRate": 90000,
+  "decimals": "2",
+  "name": "Lebanese Pound (LBP)",
+  "symbole": "L.L",
+  "creationDay": 1704758400000,
+  "__props__": {
+    "id": "n177c1t0R2w4V6Q3C4p9a3t6j3",
+    "doc": "EjH5XzkaCT7QDOD2kKiZGfhhgH79mfsbPZraELZlLV315ZqZwtYMwRhKzki61704796756606",
+    "creationDate": 1710246349363,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

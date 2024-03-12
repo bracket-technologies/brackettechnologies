@@ -1,0 +1,31 @@
+{
+  "updateBy": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+  "difference": [
+    {
+      "new": "ABdalla",
+      "path": "name",
+      "old": "ABdallah"
+    },
+    {
+      "new": "Editable",
+      "path": "type",
+      "old": "Readonly"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "Z4RW8b99lcjPNpiOdrd6vPNNpA2fE7Br1CXyLRYf8PRRkdlxnKLHrrhPzvSU1700904423690",
+  "creationDay": 1700870400000,
+  "creationDate": 1700910629118,
+  "__props__": {
+    "id": "e1u72190u2d4q6b3e5z3z4v1v1",
+    "doc": "tL9Piba1vk4085pUomXBBQXoziqKFqSV43OJq4MO0X5ksPC9AIMhHkcrmZFw1700910629117",
+    "creationDate": 1710246353411,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

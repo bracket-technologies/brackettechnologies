@@ -1,0 +1,318 @@
+{
+  "identifier": "currency",
+  "searchEngineInputs": [
+    {
+      "clearable": "true",
+      "inputPath": "ref",
+      "inputLabel": "Currency#",
+      "hideSearchIcon": true,
+      "collection": "currency",
+      "searchable": true
+    },
+    {
+      "clearable": true,
+      "inputPath": "name",
+      "readonly": "readonly",
+      "inputLabel": "Name",
+      "items": "userData:().currency.():name"
+    },
+    {
+      "clearable": "true",
+      "inputPath": "country",
+      "readonly": "readonly",
+      "sheetName": "Countries",
+      "inputLabel": "Country",
+      "sheetHeader": "country"
+    },
+    {
+      "clearable": true,
+      "items=": "",
+      "inputPath": "code",
+      "inputLabel": "Code"
+    }
+  ],
+  "createFormInputs": {
+    "subInput": [
+      {
+        "input": [
+          {
+            "inputPath": "country",
+            "sheetName": "Currencies",
+            "readonly": "readonly",
+            "hideInEditForm": "true",
+            "inputLabel": "Country",
+            "sheetHeader": "country",
+            "droplistClickAction": "customUpdate():[section=0]",
+            "required": true
+          },
+          {
+            "inputPath": "name",
+            "readonly": "readonly",
+            "hideInEditForm": "true",
+            "inputLabel": "Name",
+            "inputValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].name]:['']",
+            "executeEveryLoad": true,
+            "required": true
+          },
+          {
+            "inputPath": "code",
+            "readonly": "readonly",
+            "hideInEditForm": "true",
+            "inputLabel": "Code",
+            "inputValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].code]:['']",
+            "executeEveryLoad": true,
+            "required": "true"
+          },
+          {
+            "inputPath": "symbole",
+            "readonly": "readonly",
+            "hideInEditForm": "true",
+            "inputLabel": "Symbole",
+            "inputValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].symbol]:['']",
+            "executeEveryLoad": true,
+            "required": true
+          },
+          {
+            "inputPath": "decimals",
+            "inputLabel": "Decimal digits",
+            "inputValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].decimalDigits]:['']",
+            "executeEveryLoad": true
+          },
+          {
+            "inputPath": "vatRate",
+            "inputLabel": "VAT Rate",
+            "executeUnitEveryLoad": true,
+            "unitValue": "%"
+          },
+          {
+            "multiInput": [
+              {
+                "inputPath": "createdCurrencyRate",
+                "unitPath": "createdCurrency",
+                "inputLabel": "Exchange Rate",
+                "inputValue": 1,
+                "icon": "Equal",
+                "executeUnitEveryLoad": true,
+                "fr": "1.3fr",
+                "blurAction": "calcExchangeRate():[firstRatePath=createdCurrencyRate;secondeRatePath=systemCurrencyRate]",
+                "required": "true",
+                "unitValue": "doc().code"
+              },
+              {
+                "inputPath": "systemCurrencyRate",
+                "inputValue": 1,
+                "executeUnitEveryLoad": true,
+                "#unitPath": "systemCurrency",
+                "fr": "1fr",
+                "blurAction": "calcExchangeRate():[firstRatePath=createdCurrencyRate;secondeRatePath=systemCurrencyRate]",
+                "required": "true",
+                "unitValue": "userData:().defaultCurrency.value"
+              }
+            ],
+            "#hideInEditForm": "false"
+          }
+        ],
+        "grid": "1fr 1fr 1fr 1fr 1fr 1fr 2fr",
+        "title": "General Information"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "note",
+            "inputLabel": "Note",
+            "textarea": "textarea",
+            "height": "12rem"
+          },
+          {
+            "inputPath": "overview",
+            "inputLabel": "Brief Overview",
+            "textarea": "textarea",
+            "height": "12rem"
+          }
+        ],
+        "grid": "1fr 1fr",
+        "title": "Note & Overview"
+      }
+    ],
+    "collection": "currency"
+  },
+  "title": "Currency Manager",
+  "managerName": "currency",
+  "creationDate": 1709032381100,
+  "searchFields": "currencySearchFields",
+  "popupInfo": {
+    "docName": "currencyInfo",
+    "title": "Currency Form"
+  },
+  "table": [
+    {
+      "collection": "currency",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Currency#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1.5fr"
+        },
+        {
+          "path": "country",
+          "header": "Country",
+          "fraction": "1fr"
+        },
+        {
+          "path": "code",
+          "header": "Code",
+          "fraction": "1fr"
+        },
+        {
+          "path": "decimals",
+          "header": "Decimal Digits",
+          "fraction": "1fr"
+        },
+        {
+          "path": "vatRate",
+          "leftUnit": "%",
+          "header": "VAT Rate",
+          "fraction": "1fr"
+        },
+        {
+          "path": "exchangeRate",
+          "header": "Exchange Rate",
+          "currency": "symbole",
+          "formatCell": "toPrice()",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "delete": true,
+          "fraction": ".3fr"
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "n187W1w0v2D4I693q4R8S9T4o5",
+    "doc": "currencyManager",
+    "creationDate": 1710246348945,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          7,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          9,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          8,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          9
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          8
+        ]
+      },
+      {
+        "path": [
+          "popupInfo"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs"
+        ]
+      },
+      {
+        "path": [
+          "table"
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "general information",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0
+        ]
+      },
+      {
+        "note": "note & overview",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "note": "Reference Date",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          8
+        ]
+      },
+      {
+        "note": "Duration",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          9
+        ]
+      }
+    ],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

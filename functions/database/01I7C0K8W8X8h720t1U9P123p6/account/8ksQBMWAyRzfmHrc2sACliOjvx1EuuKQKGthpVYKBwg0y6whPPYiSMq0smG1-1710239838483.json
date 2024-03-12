@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000308",
+  "ledgerAccount": "7751/1/1",
+  "blockAccount": "No",
+  "name": "Current Operations",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239838483,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "7",
+    "77",
+    "775",
+    "7751"
+  ],
+  "__props__": {
+    "id": "p1M7a1V0V2U4S6Z305Z2x7H9q3",
+    "doc": "8ksQBMWAyRzfmHrc2sACliOjvx1EuuKQKGthpVYKBwg0y6whPPYiSMq0smG1-1710239838483",
+    "creationDate": 1710246352793,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

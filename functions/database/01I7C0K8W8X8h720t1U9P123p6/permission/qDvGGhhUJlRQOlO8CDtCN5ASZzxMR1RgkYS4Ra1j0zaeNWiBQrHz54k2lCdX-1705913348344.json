@@ -1,0 +1,74 @@
+{
+  "permission": {
+    "notification": [
+      "Create",
+      "Edit",
+      "Read",
+      "Remove",
+      "Receive"
+    ],
+    "schedule": [
+      "Create",
+      "Edit",
+      "Read",
+      "Remove",
+      "Receive"
+    ],
+    "voucher": [
+      "Create",
+      "Read",
+      "Print"
+    ],
+    "sheet": [
+      "Create",
+      "Edit",
+      "Read",
+      "Import",
+      "Export"
+    ],
+    "invoice": [
+      "Create",
+      "Read",
+      "Print"
+    ],
+    "asset": [
+      "Read"
+    ],
+    "branch": [
+      "Read",
+      "History",
+      "Remove"
+    ],
+    "account": [
+      "Create",
+      "Edit",
+      "Read",
+      "History",
+      "Remove"
+    ],
+    "dashboard": [
+      "Read"
+    ],
+    "gallery": [
+      "Upload",
+      "Read",
+      "Edit",
+      "Remove"
+    ]
+  },
+  "creationDay": 1705881600000,
+  "creationDate": 1705913348350,
+  "user": "zrnrBboXfrOSKy42tm3dYl72PKITQgVmm6RdBEMCluVBEtxo7mCsSj0qa3id-1705913346997",
+  "__props__": {
+    "id": "v1P7s1Z092N496W3b5A0C6O6o0",
+    "doc": "qDvGGhhUJlRQOlO8CDtCN5ASZzxMR1RgkYS4Ra1j0zaeNWiBQrHz54k2lCdX-1705913348344",
+    "creationDate": 1710246350660,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

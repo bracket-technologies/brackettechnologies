@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000315",
+  "ledgerAccount": "7795/1/1",
+  "blockAccount": "No",
+  "name": "Write-Back Of Prov. For Risks & Charges",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239838599,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "7",
+    "77",
+    "779",
+    "7795"
+  ],
+  "__props__": {
+    "id": "n1G7Z1M0q2S4g633Z5y2k8O5V3",
+    "doc": "MStWs46JmWfYNBPVKm76TfwDMJQTBUOSAbobMfroYd2olv8ZhrQIo9ayFfM5-1710239838598",
+    "creationDate": 1710246352853,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

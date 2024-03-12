@@ -1,0 +1,40 @@
+{
+  "difference": [
+    {
+      "new": "UW907",
+      "path": "inputId",
+      "old": "CPupX"
+    },
+    {
+      "new": "m",
+      "path": "country",
+      "old": ""
+    },
+    {
+      "new": "m",
+      "path": "trainName",
+      "old": ""
+    },
+    {
+      "new": "mm",
+      "path": "trainStation",
+      "old": ""
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "aRiAoFpuKnap9rZCJcACccDMX29Kai3iT6kFHbYUfHtc2mL9kHAk3wzgai8g1699268378803",
+  "creationDay": 1700611200000,
+  "creationDate": 1700644456942,
+  "__props__": {
+    "id": "n1p7Q1s0M2D4K6L3Q5o323q9a5",
+    "doc": "o0LeFCSGeJdbgDflGYcZRKpkn1EEp9kuyEy8xgP6vNijda3oms7bM9hgdaiJ1700644456930",
+    "creationDate": 1710246353395,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

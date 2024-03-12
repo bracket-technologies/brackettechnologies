@@ -1,0 +1,28 @@
+{
+  "ref": "ACC-00000138",
+  "ledgerAccount": "681/1/1",
+  "blockAccount": "No",
+  "name": "Net Book Value Of Fixed Assets Disposed",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239833808,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "68",
+    "681"
+  ],
+  "__props__": {
+    "id": "o1w751s0J2e4G633j522j8V727",
+    "doc": "T2HB3Vf5lzo7T0TdaCdzEmGswtV0fBP04IrxmoYmJk37DCVIayknXUvbW1rs-1710239833807",
+    "creationDate": 1710246352877,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

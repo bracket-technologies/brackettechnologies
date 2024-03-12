@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000128",
+  "ledgerAccount": "6750/1/1",
+  "blockAccount": "No",
+  "name": "Negative Exchange Differences",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239833609,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "67",
+    "675",
+    "6750"
+  ],
+  "__props__": {
+    "id": "X1K7Q1t0r2q4Y6R3y522r9z5L6",
+    "doc": "ozgbmJsXgsBSOEBElVIVpjmzcS2GF8xmuRUolWtQBN7RFAeSl50CoeGa3KOq-1710239833609",
+    "creationDate": 1710246352956,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

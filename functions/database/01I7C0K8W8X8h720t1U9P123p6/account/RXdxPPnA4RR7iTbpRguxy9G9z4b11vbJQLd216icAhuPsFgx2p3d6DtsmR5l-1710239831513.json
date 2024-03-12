@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000019",
+  "ledgerAccount": "6019/1/1",
+  "blockAccount": "No",
+  "name": "Discount & Allowances Earned",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239831514,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "60",
+    "601",
+    "6019"
+  ],
+  "__props__": {
+    "id": "p1i7J1P0E264G6Y3P5l2N8B7t0",
+    "doc": "RXdxPPnA4RR7iTbpRguxy9G9z4b11vbJQLd216icAhuPsFgx2p3d6DtsmR5l-1710239831513",
+    "creationDate": 1710246352870,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

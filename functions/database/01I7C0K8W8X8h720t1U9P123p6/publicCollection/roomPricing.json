@@ -1,0 +1,197 @@
+{
+  "seasons": [
+    {
+      "path": "name",
+      "readonly": "readonly",
+      "title": "Season Name",
+      "droplist": [
+        "Standard Season Rate",
+        "Peak Season Rate",
+        "Summer Season Rate",
+        "Winter Season Rate",
+        "Spring Season Rate",
+        "Fall Season Rate",
+        "Holiday Season Rate",
+        "Low Season Rate",
+        "High Season Rate",
+        "Festive Season Rate",
+        "Shoulder Season Rate",
+        "Midweek Rate",
+        "Weekend Rate"
+      ]
+    },
+    {
+      "path": "name",
+      "title": "Custom Name"
+    },
+    {
+      "path": "startDate",
+      "title": "Start date",
+      "type": "date"
+    },
+    {
+      "path": "endDate",
+      "title": "End date",
+      "type": "date"
+    }
+  ],
+  "priceAndTiming": [
+    {
+      "path": "startDate",
+      "title": "Start Date",
+      "type": "date"
+    },
+    {
+      "path": "startTime",
+      "title": "Start Time",
+      "type": "time"
+    },
+    {
+      "path": "endDate",
+      "title": "End Date",
+      "type": "date"
+    },
+    {
+      "path": "endTime",
+      "title": "End Time",
+      "type": "time"
+    }
+  ],
+  "mealsPlan": [
+    "Bed & Breakfast (BB)",
+    "Half Board (HB)",
+    "Full Board (FB)",
+    "All-Inclusive (AI)",
+    "Menu",
+    "Open Buffet (Buffet)",
+    "Modified American Plan (MAP)",
+    "European Plan (EP)",
+    "Continental Plan (CP)"
+  ],
+  "bookingPolicy": [
+    {
+      "path": "dateReference",
+      "readonly": "readonly",
+      "title": "Date Reference",
+      "droplist": [
+        "Booking Date",
+        "Confirmation Date",
+        "Check In"
+      ]
+    },
+    {
+      "path": "beforeOrAfter",
+      "readonly": "readonly",
+      "title": "Before/After",
+      "droplist": [
+        "Before",
+        "After"
+      ]
+    },
+    {
+      "path": "timeLimit",
+      "title": "Time Limit (dd:hh:mm)"
+    }
+  ],
+  "cancellationPolicy": [
+    {
+      "path": "dateReference",
+      "readonly": "readonly",
+      "title": "Date Reference",
+      "droplist": [
+        "Booking Date",
+        "Confirmation Date",
+        "Check In"
+      ]
+    },
+    {
+      "path": "beforeOrAfter",
+      "readonly": "readonly",
+      "title": "Before/After",
+      "droplist": [
+        "Before",
+        "After"
+      ]
+    },
+    {
+      "path": "timeLimit",
+      "title": "Time Limit (dd:hh:mm)"
+    }
+  ],
+  "__props__": {
+    "id": "Z1j7d1g0A2L4h6m3Q581M0y6P0",
+    "doc": "roomPricing",
+    "creationDate": 1710246351060,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "seasons",
+          0,
+          "droplist"
+        ]
+      },
+      {
+        "path": [
+          "priceAndTiming"
+        ]
+      },
+      {
+        "path": [
+          "cancellationPolicy",
+          0
+        ]
+      },
+      {
+        "path": [
+          "cancellationPolicy",
+          1
+        ]
+      },
+      {
+        "path": [
+          "cancellationPolicy",
+          2
+        ]
+      },
+      {
+        "path": [
+          "bookingPolicy",
+          0
+        ]
+      },
+      {
+        "path": [
+          "bookingPolicy",
+          1
+        ]
+      },
+      {
+        "path": [
+          "bookingPolicy",
+          2
+        ]
+      },
+      {
+        "path": [
+          "cancellationPolicy"
+        ]
+      },
+      {
+        "path": [
+          "bookingPolicy"
+        ]
+      },
+      {
+        "path": [
+          "seasons"
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

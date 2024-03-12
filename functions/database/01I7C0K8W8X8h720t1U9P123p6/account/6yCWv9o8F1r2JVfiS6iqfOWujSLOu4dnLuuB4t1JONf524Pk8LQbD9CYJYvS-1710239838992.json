@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000334",
+  "ledgerAccount": "7172/1/1",
+  "blockAccount": "No",
+  "name": "Revenues of Sub. Activities - Works",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239838993,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "7",
+    "71",
+    "717",
+    "7172"
+  ],
+  "__props__": {
+    "id": "f1R701j002z4n6t3b5n297n7m9",
+    "doc": "6yCWv9o8F1r2JVfiS6iqfOWujSLOu4dnLuuB4t1JONf524Pk8LQbD9CYJYvS-1710239838992",
+    "creationDate": 1710246352779,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

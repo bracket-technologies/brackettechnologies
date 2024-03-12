@@ -1,0 +1,30 @@
+{
+  "ref": "ACC-00000029",
+  "ledgerAccount": "61121/1/1",
+  "blockAccount": "No",
+  "name": "Fuel & Gaz",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239831713,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "61",
+    "611",
+    "6112",
+    "61121"
+  ],
+  "__props__": {
+    "id": "j1M7P1b0M2i4q623A5b2k9Z9i1",
+    "doc": "zPPHvH83f6c45Y63qzk6IQdrD6qK5sLuRAE4HtxpW3WEV9g7yzZ6790jV9wv-1710239831713",
+    "creationDate": 1710246352991,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

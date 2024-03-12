@@ -1,0 +1,23 @@
+{
+  "code": "6257",
+  "length": 8,
+  "start": 99999999,
+  "reset": "yearly",
+  "end": 99999999,
+  "creationDay": 1710201600000,
+  "counter": 58,
+  "creationDate": 1710239832313,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "__props__": {
+    "id": "01r7P1l0X234b6F3L5u2j1Z8w7",
+    "doc": "iOUJOnLarc0OGUdpCnRiaE16ZuHo5cnAS64ySF4K7qqcLsS4F8AsgOpYiqXu-1710239832313",
+    "creationDate": 1710246352187,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

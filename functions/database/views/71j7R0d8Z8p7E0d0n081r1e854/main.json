@@ -1,0 +1,736 @@
+{
+  "view": "View:main?class=column;title=Bracket Travel & Tourism Platform;path=/",
+  "children": [
+    {
+      "view": "View?class=column;style:[height=calc(100vh - 4.5rem)]?!mobile()",
+      "children": [
+        {
+          "view": "generalPopup"
+        },
+        {
+          "view": "selectBox"
+        },
+        {
+          "view": "topbar"
+        },
+        {
+          "view": "View?class=flex",
+          "children": [
+            {
+              "view": "View?class=flexbox",
+              "children": [
+                {
+                  "view": "sidebar"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flex;style:[width=100%;overflowY=auto]",
+              "children": [
+                {
+                  "view": "mainbody"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "view": "miniPopup"
+        },
+        {
+          "view": "customDroplist"
+        },
+        {
+          "view": "confirmWindow"
+        }
+      ]
+    },
+    {
+      "view": "View?class=column;style:[height=calc(100vh - 4.5rem)];mainMobilePageInfo:()=data:().collection.mobileMainPage.mainItems?mobile()",
+      "children": [
+        {
+          "view": "generalPopup"
+        },
+        {
+          "view": "customDroplist"
+        },
+        {
+          "view": "#subGeneralPopup"
+        },
+        {
+          "view": "mobileTopbar"
+        },
+        {
+          "view": "#View?class=flex",
+          "children": [
+            {
+              "view": "View?class=flexbox",
+              "children": [
+                {
+                  "view": "sidebar"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flex;style:[width=100%;overflowY=auto]",
+              "children": [
+                {
+                  "view": "mainbody"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "view": "mobileMainPage"
+        },
+        {
+          "view": "#customDroplist"
+        },
+        {
+          "view": "#confirmWindow"
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "db": "views",
+    "collection": "71j7R0d8Z8p7E0d0n081r1e854",
+    "id": "U1c761x0k2h4u61365u3l4I6s5",
+    "doc": "main",
+    "creationDate": 1710246353465,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "fillInSearchboxSelected": {
+        "fillInSelected": "selected:().defaults.currency.push():[id=userData:().currency;code=userData:().currencyCode;ref=userData:().currencyRef];selected:().defaults.branch.push():[id=userData:().branch;ref=userData:().branchRef];selected:().currency.push():[id=userData:().currency;code=userData:().currencyCode;ref=userData:().currencyRef];selected:().branch.push():[id=userData:().branch;ref=userData:().branchRef]",
+        "fillInAllSelected": "allSelected:().push():[id=userData:().currency;code=userData:().currencyCode;ref=userData:().currencyRef];allSelected:().push():[id=userData:().branch;ref=userData:().branchRef]",
+        "[object Object]": "fillInAllSelected();fillInSelected()",
+        "_": "fillInAllSelected();fillInSelected()"
+      },
+      "closeSelectBox": "():selectBox.style():[scale=0.5;opacity=0;pointerEvents=none;];opened=false?opened;!():selectBox.contains():[clicked:()];!selectBox=clicked:().id;!contains():[clicked:()];id!=clicked:().id",
+      "mobileAction": {
+        "updatePage": "():mobileMainPage.update();():mobileTopbar.update()",
+        "titleStack": "if():[!mobileMainPage:().identifier]:[title:()=mobileStack:().mainTitle.[[mobileStack:().mainTitle.len()]-1];mobileStack:().mainTitle.pull():[[mobileStack:().mainTitle.len()]-1]];mobileMainPage:()='';updatePage()",
+        "mainPage": "mobileMainPage:()='';mainMobilePageInfo:()=data:().collection.mobileMainPage.mainItems;updatePage()",
+        "prevPage": "mainMobilePageInfo:()=mobileStack:().pageInfo.[[mobileStack:().pageInfo.len()]-1];mobileStack:().pageInfo.pull():[[mobileStack:().pageInfo.len()]-1];titleStack()",
+        "_": "if():[_.actionName=mainPage]:[mainPage()]:[prevPage()]"
+      }
+    },
+    "collapsed": [
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "4",
+          "children",
+          "2"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "4",
+          "children",
+          "1"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "4",
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "5"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "6"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "1",
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "1",
+          "children",
+          "1"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "2"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "3"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "1"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "4"
+        ]
+      },
+      {
+        "path": [
+          "functions"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          2
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          3
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "fillInSearchboxSelected"
+        ]
+      },
+      {
+        "path": [
+          "mobileAction"
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "sidebar",
+        "path": [
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "timeView",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "time",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "verticalLine",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          "1"
+        ]
+      },
+      {
+        "note": "airplaneView",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "1"
+        ]
+      },
+      {
+        "note": "airplane",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "1",
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "verticalLine",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "1",
+          "children",
+          "1"
+        ]
+      },
+      {
+        "note": "plane + calendar view",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "2"
+        ]
+      },
+      {
+        "note": "verticalLine",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "2",
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "planeview",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "2",
+          "children",
+          "0"
+        ]
+      },
+      {
+        "note": "plane",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "2",
+          "children",
+          "0",
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "verticalLine",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "2",
+          "children",
+          "0",
+          "children",
+          "1"
+        ]
+      },
+      {
+        "note": "calendarView",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "2",
+          "children",
+          "1"
+        ]
+      },
+      {
+        "note": "calendar",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "2",
+          "children",
+          "1",
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "verticalLine",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "2",
+          "children",
+          "1",
+          "children",
+          "1"
+        ]
+      },
+      {
+        "note": "HotelView",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "3"
+        ]
+      },
+      {
+        "note": "Hotel",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "3",
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "verticalLine",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "3",
+          "children",
+          "1"
+        ]
+      },
+      {
+        "note": "home + bed + calendar view",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "4"
+        ]
+      },
+      {
+        "note": "homeView",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "4",
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "verticalLine",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "4",
+          "children",
+          0,
+          "children",
+          "1"
+        ]
+      },
+      {
+        "note": "bedView",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "4",
+          "children",
+          "1"
+        ]
+      },
+      {
+        "note": "bedIcon",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "4",
+          "children",
+          "1",
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "verticalLine",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "4",
+          "children",
+          "1",
+          "children",
+          "1"
+        ]
+      },
+      {
+        "note": "calendarView",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "4",
+          "children",
+          "2"
+        ]
+      },
+      {
+        "note": "calendarIcon",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "4",
+          "children",
+          "2",
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "verticalLine",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "4",
+          "children",
+          "2",
+          "children",
+          "1"
+        ]
+      },
+      {
+        "note": "accountingView",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "5"
+        ]
+      },
+      {
+        "note": "accountingIcon",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "5",
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "verticalLine",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "5",
+          "children",
+          "1"
+        ]
+      },
+      {
+        "note": "settingsView",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "6"
+        ]
+      },
+      {
+        "note": "settingsIcon",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "6",
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "verticalLine",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          "6",
+          "children",
+          "1"
+        ]
+      }
+    ],
+    "folderPath": [],
+    "version": 0,
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

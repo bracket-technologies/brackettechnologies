@@ -1,0 +1,33 @@
+{
+  "updateBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+  "difference": [
+    {
+      "new": "sa",
+      "path": "asd"
+    },
+    {
+      "new": "asd",
+      "path": "titles"
+    },
+    {
+      "new": "asd",
+      "path": "keys"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "Q9lgTCOY2TyNOU5jkd09oTOpJJVWhnR0spUpDGpxAekxs73UjOwuvcmxBBps1700904019340",
+  "creationDay": 1700870400000,
+  "creationDate": 1700904065897,
+  "__props__": {
+    "id": "r1J7p1T0L2940663r5a322w8O9",
+    "doc": "Jaza6wRCIAK4nQ8GyekQBENXSCCyAnZ6ZuuT50mJ43Kcdltng44ohAFZAcii1700904065816",
+    "creationDate": 1710246353289,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

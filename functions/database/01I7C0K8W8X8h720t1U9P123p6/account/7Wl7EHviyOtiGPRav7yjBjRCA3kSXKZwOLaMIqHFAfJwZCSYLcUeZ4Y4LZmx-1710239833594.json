@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000125",
+  "ledgerAccount": "6735/1/1",
+  "blockAccount": "No",
+  "name": "Discount Paid",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239833594,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "67",
+    "673",
+    "6735"
+  ],
+  "__props__": {
+    "id": "m1D7Z160d2Q466q3t572o748S1",
+    "doc": "7Wl7EHviyOtiGPRav7yjBjRCA3kSXKZwOLaMIqHFAfJwZCSYLcUeZ4Y4LZmx-1710239833594",
+    "creationDate": 1710246352781,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

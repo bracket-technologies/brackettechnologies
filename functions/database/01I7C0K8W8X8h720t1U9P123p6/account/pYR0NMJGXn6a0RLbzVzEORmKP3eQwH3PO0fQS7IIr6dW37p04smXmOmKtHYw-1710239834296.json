@@ -1,0 +1,30 @@
+{
+  "ref": "ACC-00000153",
+  "ledgerAccount": "68553/1/1",
+  "blockAccount": "No",
+  "name": "Purchases Of The Company Own",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239834299,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "68",
+    "685",
+    "6855",
+    "68553"
+  ],
+  "__props__": {
+    "id": "d1Z711x0p2Y4n6c3P5Y2R9G5J8",
+    "doc": "pYR0NMJGXn6a0RLbzVzEORmKP3eQwH3PO0fQS7IIr6dW37p04smXmOmKtHYw-1710239834296",
+    "creationDate": 1710246352958,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

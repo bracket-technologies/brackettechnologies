@@ -1,0 +1,18 @@
+{
+  "accountID": "21w710Q828V8p7u0J1z9p0n3n7",
+  "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+  "tokenID": "Ci1IP7Kp1Yw0P22L54Ju6yN3cZ4ZD7uW1Ni1fJ8",
+  "blockDate": 1710246347199,
+  "transactionID": "Jb01zikhk6B5gQcORcFC",
+  "status": "Confirmed",
+  "__props__": {
+    "db": "blocks",
+    "collection": "Ci1IP7Kp1Yw0P22L54Ju6yN3cZ4ZD7uW1Ni1fJ8",
+    "id": "z1B7c140u2Z4f6T3o427q1x9R9",
+    "doc": "block582",
+    "creationDate": 1710246347199,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2"
+  },
+  "prevBlockID": "41o7k1R092i4O6W3r4q7k1D9k9"
+}

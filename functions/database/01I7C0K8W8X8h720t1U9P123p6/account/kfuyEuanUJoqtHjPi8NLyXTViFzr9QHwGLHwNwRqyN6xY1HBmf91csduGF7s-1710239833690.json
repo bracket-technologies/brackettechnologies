@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000130",
+  "ledgerAccount": "6752/1/1",
+  "blockAccount": "No",
+  "name": "Capital Operations",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239833690,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "67",
+    "675",
+    "6752"
+  ],
+  "__props__": {
+    "id": "51D7c150g2x466R3H5g2l9x4H4",
+    "doc": "kfuyEuanUJoqtHjPi8NLyXTViFzr9QHwGLHwNwRqyN6xY1HBmf91csduGF7s-1710239833690",
+    "creationDate": 1710246352944,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

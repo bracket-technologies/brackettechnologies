@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000161",
+  "ledgerAccount": "6150/1/1",
+  "blockAccount": "No",
+  "name": "RAW MAT. & CONSUM. INVENTORY VARIANCE",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239834486,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "61",
+    "615",
+    "6150"
+  ],
+  "__props__": {
+    "id": "S1t7B1d0w2c4h6T3i5g2w8V8n3",
+    "doc": "VcOS4t5HvWppqL27QhJ9pnUQC1NDX8GO4A3rGfDklRYBPIpsvX6SSgypsLno-1710239834486",
+    "creationDate": 1710246352883,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

@@ -3,7 +3,7 @@
     "functions": {
         "mouseleaveDroplist": "mouseentered=false;clearTimer():[__droplistTimer__:()];__droplistTimer__:()=timer():[__keyupIndex__:()=0;__droplistMouseenterer__:().del();__droplistPositioner__:().del();():droplist.style():[opacity=0;transform='scale(0.5)';pointerEvents=none]]:[__droplistMouseleaveTimer__:()]",
         "mouseenterDroplist": "mouseentered=true;__droplistMouseleaveTimer__:()=400;clearTimer():[__droplistTimer__:()]",
-        "outClickDroplist": "__droplistMouseleaveTimer__:()=400;mouseleave()?!contains():[clicked()];!():[__droplistPositioner__:()].contains():[clicked()]"
+        "outClickDroplist": "__droplistMouseleaveTimer__:()=400;mouseleave()?!contains():[clicked()];clicked()!=clicker();!():[__droplistPositioner__:()].contains():[clicked()]"
     },
     "__props__": {
         "provider": "bracketDB",

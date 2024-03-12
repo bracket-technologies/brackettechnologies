@@ -1,0 +1,222 @@
+{
+  "createdBy": {
+    "lastName": "chammas",
+    "country": "lebanon",
+    "address": "beirut",
+    "city": "beirut",
+    "permission": {
+      "hezzzyawezzz": [],
+      "creation-date": 1700573235660,
+      "permission": {
+        "voucher": [
+          "Remove",
+          "Create",
+          "Edit",
+          "Read",
+          "Import",
+          "Export"
+        ],
+        "expense": [
+          "Create",
+          "Edit",
+          "Read",
+          "Remove"
+        ],
+        "branch": [
+          "Read",
+          "Edit",
+          "Create",
+          "History",
+          "Remove",
+          "Switch Branches"
+        ],
+        "notification": [
+          "Create",
+          "Edit",
+          "Read",
+          "Remove",
+          "Receive"
+        ],
+        "service": [
+          "Remove",
+          "History",
+          "Create",
+          "Edit",
+          "Read",
+          "Print"
+        ],
+        "sheet": [
+          "Remove",
+          "Create",
+          "Edit",
+          "Read",
+          "Import",
+          "Export"
+        ],
+        "currency": [
+          "Create",
+          "Edit",
+          "Read",
+          "Remove"
+        ],
+        "invoice": [
+          "Remove",
+          "History",
+          "Create",
+          "Edit",
+          "Read",
+          "Print"
+        ],
+        "asset": [
+          "Read",
+          "Remove",
+          "Create",
+          "History",
+          "Edit"
+        ],
+        "user": [
+          "Edit",
+          "Remove",
+          "History",
+          "Create",
+          "Read"
+        ],
+        "account": [
+          "Edit",
+          "Remove",
+          "Transaction Sheet",
+          "History",
+          "Cash Flow",
+          "Income Statement",
+          "Create",
+          "Read"
+        ],
+        "dashboard": [
+          "Read"
+        ],
+        "gallery": [
+          "Upload",
+          "Read",
+          "Edit",
+          "Remove"
+        ]
+      },
+      "id": "qgZpEBDIN2bOI8soQeEXwS2wgcIDl0PsG2sRPmTqIkOSN4kaqox2mpZYpU1r1700573331130",
+      "creationDay": 1700524800000,
+      "creationDate": 1700573331131,
+      "user": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+      "clooossseeed": [
+        {
+          "path": [
+            "permission",
+            "account"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "asset"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "branch"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "currency"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "dashboard"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "expense"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "gallery"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "invoice"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "notification"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "service"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "sheet"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "user"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "voucher"
+          ]
+        }
+      ]
+    },
+    "type": "user",
+    "creationDate": 1699560058407,
+    "birthDate": 1699056000000,
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "firstName": "anthony",
+    "password": "12345",
+    "ref": "USR-00000004",
+    "nationality": "lebanese",
+    "createdBy": "j7neF8CHqumHOGzAXNWi9JcLKTTyx9LRmJptYuYbJeiNWWfSrQMeqwKTZSp01699559755885",
+    "contactNumber": "35325465",
+    "creation-date": 1699560019589,
+    "id": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+    "creationDay": 1699488000000,
+    "position": "Admin User",
+    "email": "anthony@gmail.com",
+    "username": "anthonychammas"
+  },
+  "description": "sheet creation",
+  "sheet": "wcD2fHTtJLtgm5hFPh7sNfQPtkmkHJ3ZDELSfeSBGVgI9OJNw74IkmoyQbLE1700921833460",
+  "creationDay": 1700870400000,
+  "creationDate": 1700921833529,
+  "__props__": {
+    "id": "j1z7B1j0Q2b4p6o3j5d3i4x092",
+    "doc": "py4vLpbmADKb1RXGAO1eRyL97Zldoc7jMU5IeXEdtYyXtifSg6fAs3wIfZg41700921833529",
+    "creationDate": 1710246353402,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

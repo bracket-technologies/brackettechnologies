@@ -1,0 +1,30 @@
+{
+  "ref": "ACC-00000041",
+  "ledgerAccount": "61183/1/1",
+  "blockAccount": "No",
+  "name": "Insurance On Freight",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239831986,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "61",
+    "611",
+    "6118",
+    "61183"
+  ],
+  "__props__": {
+    "id": "k197P1F0g2R4w6y3A5t218I6H5",
+    "doc": "QC5QpgdXR4LVosfVdEjvm2KobLtbm58aonrLle9YseeB2yyPDY5yqij9UPfu-1710239831985",
+    "creationDate": 1710246352865,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000272",
+  "ledgerAccount": "7251/1/1",
+  "blockAccount": "No",
+  "name": "By Products Items",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239837795,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "7",
+    "72",
+    "725",
+    "7251"
+  ],
+  "__props__": {
+    "id": "k1t7b1U0W244Y6F3V562S8K2Z5",
+    "doc": "HsWrDYPjTWcvrJjaSQsX7plBUBTrN8SJYgfwIYR0hFyn6uSlauTBTRxsxYu8-1710239837794",
+    "creationDate": 1710246352825,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

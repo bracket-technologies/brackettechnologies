@@ -1,0 +1,219 @@
+{
+  "createdBy": {
+    "hezzzyawezzz": [],
+    "lastName": "test",
+    "country": "Lebanon",
+    "address": "werwer",
+    "city": "Zgharta",
+    "permission": {
+      "hezzzyawezzz": [],
+      "creation-date": 1700573235660,
+      "permission": {
+        "voucher": [
+          "Remove",
+          "Create",
+          "Edit",
+          "Read",
+          "Import",
+          "Export"
+        ],
+        "expense": [
+          "Create",
+          "Edit",
+          "Read",
+          "Remove"
+        ],
+        "branch": [
+          "Read",
+          "Edit",
+          "Create",
+          "History",
+          "Remove",
+          "Switch Branches"
+        ],
+        "notification": [
+          "Create",
+          "Edit",
+          "Read",
+          "Remove",
+          "Receive"
+        ],
+        "service": [
+          "Remove",
+          "History",
+          "Create",
+          "Edit",
+          "Read",
+          "Print"
+        ],
+        "sheet": [
+          "Remove",
+          "Create",
+          "Edit",
+          "Read",
+          "Import",
+          "Export"
+        ],
+        "currency": [
+          "Create",
+          "Edit",
+          "Read",
+          "Remove"
+        ],
+        "invoice": [
+          "Remove",
+          "History",
+          "Create",
+          "Edit",
+          "Read",
+          "Print"
+        ],
+        "asset": [
+          "Read",
+          "Remove",
+          "Create",
+          "History",
+          "Edit"
+        ],
+        "user": [
+          "Edit",
+          "Remove",
+          "History",
+          "Create",
+          "Read"
+        ],
+        "account": [
+          "Edit",
+          "Remove",
+          "Transaction Sheet",
+          "History",
+          "Cash Flow",
+          "Income Statement",
+          "Create",
+          "Read"
+        ],
+        "dashboard": [
+          "Read"
+        ],
+        "gallery": [
+          "Upload",
+          "Read",
+          "#Edit",
+          "Remove"
+        ]
+      },
+      "id": "qgZpEBDIN2bOI8soQeEXwS2wgcIDl0PsG2sRPmTqIkOSN4kaqox2mpZYpU1r1700573331130",
+      "creationDay": 1700524800000,
+      "creationDate": 1700573331131,
+      "user": "Udf9J6L5mSDwJKGictin1xutMwalegfs9wnDoxKVbXriRv2gupogDCF3MUtG1700573330426",
+      "clooossseeed": [
+        {
+          "path": [
+            "permission",
+            "account"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "asset"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "branch"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "currency"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "dashboard"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "expense"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "gallery"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "invoice"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "notification"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "service"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "sheet"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "user"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "voucher"
+          ]
+        }
+      ]
+    },
+    "creationDate": 1700573330426,
+    "birthDate": 1700697600000,
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "clooossseeed": [],
+    "firstName": "test",
+    "nationality": "lebanese",
+    "createdBy": "j7neF8CHqumHOGzAXNWi9JcLKTTyx9LRmJptYuYbJeiNWWfSrQMeqwKTZSp01699559755885",
+    "contactNumber": "lebanese",
+    "creation-date": 1700573235660,
+    "id": "Udf9J6L5mSDwJKGictin1xutMwalegfs9wnDoxKVbXriRv2gupogDCF3MUtG1700573330426",
+    "creationDay": 1700524800000,
+    "email": "lebanese"
+  },
+  "description": "asset creation",
+  "creationDay": 1701302400000,
+  "asset": "mXKMf8sOPDA3h6GyO1cLjg4e45RctfBrYBtatixU1BRrcNE90fWc9IuzQMim1701351734745",
+  "creationDate": 1701351734865,
+  "__props__": {
+    "id": "G1a7h1Q0u2W4L6C3B5u3R2Y3z1",
+    "doc": "10OnsvXnbmz2iY6PnB2hzp6VrPAtBtxsUPoka2XvkcfOAHIQ4utNnWC6dJNe1701351734849",
+    "creationDate": 1710246353231,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

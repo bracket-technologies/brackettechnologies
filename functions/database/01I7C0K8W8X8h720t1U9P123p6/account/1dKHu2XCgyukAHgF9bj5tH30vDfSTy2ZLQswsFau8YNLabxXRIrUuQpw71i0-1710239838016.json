@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000286",
+  "ledgerAccount": "7611/1/1",
+  "blockAccount": "No",
+  "name": "Royalties - Patents - Licences",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239838017,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "7",
+    "76",
+    "761",
+    "7611"
+  ],
+  "__props__": {
+    "id": "p1d7h1N0P2h4A6E3x5g2x7c5T2",
+    "doc": "1dKHu2XCgyukAHgF9bj5tH30vDfSTy2ZLQswsFau8YNLabxXRIrUuQpw71i0-1710239838016",
+    "creationDate": 1710246352752,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

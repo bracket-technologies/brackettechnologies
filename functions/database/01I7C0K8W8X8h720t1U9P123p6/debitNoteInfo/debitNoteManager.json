@@ -1,0 +1,24 @@
+{
+  "identifier": "voucher",
+  "searchEngineInputs": "voucherSharedInfo",
+  "createFormInputs": "voucherSharedInfo",
+  "popupInfo": {
+    "docName": "voucherInfo",
+    "title": "Debit Note Form"
+  },
+  "managerName": "debitNoteManager",
+  "title": "Debit Note Manager",
+  "type": "Debit Note",
+  "__props__": {
+    "id": "q1x7f1h0v2c4c6b3S4t9m8v4K5",
+    "doc": "debitNoteManager",
+    "creationDate": 1710246349845,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

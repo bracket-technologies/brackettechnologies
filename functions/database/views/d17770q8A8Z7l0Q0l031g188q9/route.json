@@ -1,0 +1,32 @@
+{
+  "view": "Action:route",
+  "children": [
+    {
+      "view": "manifest:().route"
+    }
+  ],
+  "_secure_": true,
+  "creationDate": 1708970449209,
+  "__props__": {
+    "db": "views",
+    "collection": "d17770q8A8Z7l0Q0l031g188q9",
+    "id": "W127B1j0p224X6W3r4B9O6m848",
+    "doc": "route",
+    "creationDate": 1710246349688,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "checkUser": "search():[collection=_account_;doc=_.user]:[if():[_.data]:[data:().editor.account=_.data]:[eraseCookie():_id;route():login]]",
+      "checkPassword": "search():[collection=_password_;field:[user.equal=_.user;password.equal=_.password]]:[if():[_.data.value()]:[send():true]:[send():false]]",
+      "publish": "if():[_.account]:[save():[collection=_account_;data=_.account]];if():[_.project]:[save():[collection=_project_;data=_.project]];if():[_.pages]:[save():[collection=page;map=_.pages]];if():[_.views]:[save():[collection=view;map=_.views]];send():[msg='Website published successfully!']",
+      "autoLogin": "search():[collection=_account_;doc=_.id]:[account:()=_.data.value();send():[account:()]];",
+      "checkEmail": "search():[collection=_account_;field.email.equal=_.email]:[account:()=_.data.value();send():[account:()]]",
+      "getProject": "if():[_.account;_.project]:[projectID:()=_.project;accountID:()=_.account;[search():[collection=_account_;doc=accountID:()]:[if():[_.data]:[account:()=_.data]];search():[collection=_project_;doc=projectID:()]:[if():[_.data]:[project:()=_.data]]]()::[if():[__firstLoad__:()]:[data:().editor.():[account=account:();project=project:()]]:[if():[account:();project:();projectID:().in():[account:().projects]]:[send():[account=account:();project=project:()]].elif():[!project:()]:[send():[success=false;message='Project does not exist!']].elif():[!account:()]:[send():[success=false;message='User is not authorized!']]]]:[send():[message='Missing Data!';success=false]]]"
+    },
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "version": 0,
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+  }
+}

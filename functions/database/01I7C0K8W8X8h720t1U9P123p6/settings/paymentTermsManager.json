@@ -1,0 +1,182 @@
+{
+  "searchEngineInputs": [
+    {
+      "inputPath": "name",
+      "inputLabel": "Name"
+    }
+  ],
+  "createFormInputs": {
+    "subInput": [
+      {
+        "input": [
+          {
+            "inputPath": "name",
+            "inputLabel": "Name",
+            "required": true
+          }
+        ],
+        "title": "General Information"
+      },
+      {
+        "path": "details",
+        "input": [
+          {
+            "inputPath": "maturityPeriod",
+            "subItemsList": [
+              "Day",
+              "Week",
+              "Month",
+              "Year"
+            ],
+            "unitPath": "maturatyPeriodUnit",
+            "timeFormat": true,
+            "inputLabel": "Maturity Period",
+            "required": true,
+            "unitValue": "Day"
+          },
+          {
+            "inputPath": "rate",
+            "inputLabel": "Rate",
+            "executeUnitEveryLoad": true,
+            "required": true,
+            "unitValue": "USD"
+          },
+          {
+            "inputPath": "repeat",
+            "readonly": true,
+            "inputLabel": "Repeat?",
+            "inputValue": "No",
+            "items": [
+              "Yes",
+              "No"
+            ],
+            "required": true
+          }
+        ],
+        "#input": [
+          {
+            "inputPath": "dateReference",
+            "readonly": true,
+            "inputLabel": "Date Reference",
+            "items": [
+              "Pre Payment",
+              "Due Payment",
+              "Close Payment"
+            ],
+            "required": true
+          },
+          {
+            "inputPath": "beforeAfter",
+            "readonly": true,
+            "inputLabel": "Before/After",
+            "items": [
+              "Before",
+              "After"
+            ],
+            "required": true
+          },
+          {
+            "inputPath": "timeLimit",
+            "timeFormat": true,
+            "inputLabel": "Time Limit (dd:hh:mm)",
+            "required": true
+          },
+          {
+            "inputPath": "charge",
+            "inputLabel": "Charge",
+            "executeUnitEveryLoad": true,
+            "required": true,
+            "unitValue": "USD"
+          }
+        ],
+        "title": "Details"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "note",
+            "inputLabel": "Note",
+            "height": "12rem"
+          },
+          {
+            "inputPath": "overview",
+            "inputLabel": "Brief Overview",
+            "height": "12rem"
+          }
+        ],
+        "grid": "1fr 1fr",
+        "title": "Note & Overview"
+      }
+    ],
+    "collection": "paymentTerms"
+  },
+  "popupInfo": {
+    "docName": "paymentPolicyInfo",
+    "title": "Payment Policy Form"
+  },
+  "title": "Payment Policy Manager",
+  "__props__": {
+    "id": "t1r7j1Z052K4s6E3n4C8p9B4B8",
+    "doc": "paymentTermsManager",
+    "creationDate": 1710246348948,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "popupInfo"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          0,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "#input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          0
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

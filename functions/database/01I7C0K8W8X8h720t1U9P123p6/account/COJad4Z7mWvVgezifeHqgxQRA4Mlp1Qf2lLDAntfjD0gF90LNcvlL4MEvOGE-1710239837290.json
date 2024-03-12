@@ -1,0 +1,26 @@
+{
+  "ref": "ACC-00000245",
+  "ledgerAccount": "7/1/1",
+  "blockAccount": "No",
+  "name": "Income",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239837291,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "7"
+  ],
+  "__props__": {
+    "id": "71w7U1t0d2w4E6p305r2E8H0t6",
+    "doc": "COJad4Z7mWvVgezifeHqgxQRA4Mlp1Qf2lLDAntfjD0gF90LNcvlL4MEvOGE-1710239837290",
+    "creationDate": 1710246352806,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

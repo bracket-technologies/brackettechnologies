@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000081",
+  "ledgerAccount": "6267/1/1",
+  "blockAccount": "No",
+  "name": "Studies & Research",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239832727,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "62",
+    "626",
+    "6267"
+  ],
+  "__props__": {
+    "id": "R177a1N0A2v4b6w3V5y2g9o488",
+    "doc": "lqDjiExm8DolNy8eUWPb96zfkIUOz4WGfcJ3UZKlPppVhFmVX9DInEtMmdII-1710239832727",
+    "creationDate": 1710246352948,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

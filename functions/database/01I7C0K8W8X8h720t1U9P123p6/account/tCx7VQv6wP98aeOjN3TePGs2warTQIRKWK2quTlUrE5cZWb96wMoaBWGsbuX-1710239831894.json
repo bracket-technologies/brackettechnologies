@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000038",
+  "ledgerAccount": "6118/1/1",
+  "blockAccount": "No",
+  "name": "Expen.Connect.Raw Mat.&Consumable",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239831894,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "61",
+    "611",
+    "6118"
+  ],
+  "__props__": {
+    "id": "11U7U1q0u2T4N6k3R5h2c956n8",
+    "doc": "tCx7VQv6wP98aeOjN3TePGs2warTQIRKWK2quTlUrE5cZWb96wMoaBWGsbuX-1710239831894",
+    "creationDate": 1710246352968,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

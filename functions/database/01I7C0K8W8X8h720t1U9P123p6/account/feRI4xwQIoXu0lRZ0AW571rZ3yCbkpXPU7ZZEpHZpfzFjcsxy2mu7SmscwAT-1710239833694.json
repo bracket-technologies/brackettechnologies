@@ -1,0 +1,28 @@
+{
+  "ref": "ACC-00000131",
+  "ledgerAccount": "676/1/1",
+  "blockAccount": "No",
+  "name": "Net Charge On Disposal Securities Place.",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239833695,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "67",
+    "676"
+  ],
+  "__props__": {
+    "id": "C1u7G170i2y4E673f5V2Y9E2v2",
+    "doc": "feRI4xwQIoXu0lRZ0AW571rZ3yCbkpXPU7ZZEpHZpfzFjcsxy2mu7SmscwAT-1710239833694",
+    "creationDate": 1710246352922,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

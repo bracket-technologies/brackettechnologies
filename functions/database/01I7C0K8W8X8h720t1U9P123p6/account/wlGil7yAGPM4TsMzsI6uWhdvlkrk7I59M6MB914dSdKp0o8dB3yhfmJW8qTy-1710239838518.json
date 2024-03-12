@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000312",
+  "ledgerAccount": "7789/1/1",
+  "blockAccount": "No",
+  "name": "Allocation Of Financial Charges",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239838518,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "7",
+    "77",
+    "778",
+    "7789"
+  ],
+  "__props__": {
+    "id": "K1L791D0t254u6p315q289K8Z2",
+    "doc": "wlGil7yAGPM4TsMzsI6uWhdvlkrk7I59M6MB914dSdKp0o8dB3yhfmJW8qTy-1710239838518",
+    "creationDate": 1710246352982,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

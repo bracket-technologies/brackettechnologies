@@ -1,0 +1,56 @@
+{
+  "age": [
+    {
+      "title": [
+        "MR",
+        "MRS"
+      ],
+      "age": "ADT"
+    },
+    {
+      "title": [
+        "MSTR",
+        "MS"
+      ],
+      "age": "CHD"
+    },
+    {
+      "title": [
+        "MSTR",
+        "MS"
+      ],
+      "age": "INF"
+    }
+  ],
+  "__props__": {
+    "id": "n1G7g110p2c4k653y5j1n0k405",
+    "doc": "age-titleRelation",
+    "creationDate": 1710246351045,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "age",
+          0
+        ]
+      },
+      {
+        "path": [
+          "age",
+          1
+        ]
+      },
+      {
+        "path": [
+          "age",
+          2
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

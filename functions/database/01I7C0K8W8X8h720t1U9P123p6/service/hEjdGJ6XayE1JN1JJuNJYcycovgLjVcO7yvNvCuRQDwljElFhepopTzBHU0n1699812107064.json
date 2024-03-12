@@ -1,0 +1,32 @@
+{
+  "includedPax": 12,
+  "pax": "3",
+  "sponsorCommission": "0",
+  "netPrice": "0",
+  "discount": "0",
+  "description": "dsfadsaf",
+  "tax": "0",
+  "creationDate": 1699812107065,
+  "capacity": 12,
+  "exchangeRate": "1",
+  "createdBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+  "service": "Activity",
+  "supplier": "1011/1",
+  "name": "dasfdfas",
+  "currency": "USD",
+  "agentCommission": "0",
+  "salesmanCommission": "0",
+  "creationDay": 1699747200000,
+  "__props__": {
+    "id": "k177D1y0D2k486e3E4s9p5w025",
+    "doc": "hEjdGJ6XayE1JN1JJuNJYcycovgLjVcO7yvNvCuRQDwljElFhepopTzBHU0n1699812107064",
+    "creationDate": 1710246349505,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

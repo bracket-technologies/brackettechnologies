@@ -1,0 +1,28 @@
+{
+  "ref": "ACC-00000001",
+  "ledgerAccount": "511/1/1",
+  "blockAccount": "No",
+  "name": "Cheques & Coupon For Collection",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239831216,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "5",
+    "51",
+    "511"
+  ],
+  "__props__": {
+    "id": "f1H7S1B092k496y395P2O9O2b4",
+    "doc": "gCaUa2quHpHVzTM2Zj5k70kk1Rnygjur0YBhWJrOBKQFqDVO16aBgweqDDLj-1710239831215",
+    "creationDate": 1710246352924,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

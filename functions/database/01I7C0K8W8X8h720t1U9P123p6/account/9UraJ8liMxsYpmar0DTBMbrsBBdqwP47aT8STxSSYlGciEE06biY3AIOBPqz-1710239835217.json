@@ -1,0 +1,30 @@
+{
+  "ref": "ACC-00000199",
+  "ledgerAccount": "65119/1/1",
+  "blockAccount": "No",
+  "name": "Amortiz.Alloc.of Other Intang. Fixed Assets",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239835217,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6511",
+    "65119"
+  ],
+  "__props__": {
+    "id": "F1M7J1I0K2I4k6K3K582Q749o7",
+    "doc": "9UraJ8liMxsYpmar0DTBMbrsBBdqwP47aT8STxSSYlGciEE06biY3AIOBPqz-1710239835217",
+    "creationDate": 1710246352797,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

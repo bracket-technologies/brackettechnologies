@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000190",
+  "ledgerAccount": "6452/1/1",
+  "blockAccount": "No",
+  "name": "Tax on Profits from F. Assets Disposal or Revaluati",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239835006,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "64",
+    "645",
+    "6452"
+  ],
+  "__props__": {
+    "id": "t1y7q1D0n2z4V663M5g2t9Q2A0",
+    "doc": "fTE8nDFkRXxTItFKGvfkvywXYPImPq4h0Mxc403KNeUgHmQa3t6Kg8cgCshz-1710239835005",
+    "creationDate": 1710246352920,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000288",
+  "ledgerAccount": "7613/1/1",
+  "blockAccount": "No",
+  "name": "Director's Attendance Fees & Allowances",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239838093,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "7",
+    "76",
+    "761",
+    "7613"
+  ],
+  "__props__": {
+    "id": "g1Q7c1H0J2h4V6X3y512I9q1H6",
+    "doc": "ex2aa6cFRMtdd3RB1NYy3KqPYfCzULtPD1CNMLsu4NYyKCSsj27mKowN1Lc1-1710239838093",
+    "creationDate": 1710246352916,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "view": "View:'storage-list'?class=flex column;style.display=none;style.marginLeft=1.2rem;style.borderLeft=1px solid #ddd",
+  "children": [
+    {
+      "view": "[View]:[data=data:().editor.storage.keys();doc]?class=flex pointer align-center;style.minHeight=3rem;style.width=100%;style.position=relative;loaded:[loadedHandler()];click:[displayRelatedDoc();openRelatedDoc()];mouseenter:[showOptionIcon()];mouseleave:[hideOptionIcon()]?data()",
+      "children": [
+        {
+          "view": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem"
+        },
+        {
+          "view": "Text?class=dots;text=().data;style.fontSize=1.3rem"
+        },
+        {
+          "view": "Input?class=dots;input.value=().data;generator;preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width=calc(100% - 2.25rem)];blur:[blurEdit()];keyup:[escapeEdit();issueInDocName();createDoc()]"
+        },
+        {
+          "view": "Icon?open-doc=data();open-collection=storage;name=bi-three-dots-vertical;style.fontSize=1.8rem;style.width=2rem;style.height=3rem;style.position=absolute;style.right=0;style.display=none;style.backgroundColor=#e9e9e9;style.borderRadius=.25rem;hover.style.color=blue;click:[showActionPopup()]"
+        }
+      ]
+    }
+  ],
+  "creationDate": 1710239683152,
+  "__props__": {
+    "db": "views",
+    "collection": "d17770q8A8Z7l0Q0l031g188q9",
+    "id": "S1V7j1w05244v6k324j9s649q1",
+    "doc": "storage-list",
+    "creationDate": 1710246349691,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "showActionPopup": "if():[():file-action-popup.style().opacity=1;action-popup-caller:()=().id]:[():file-action-popup.style():[opacity=0;pointerEvents=none;transform=scale(0)]]:[action-popup-caller:()=().id;():file-action-popup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform=scale(1)]];open-doc:()=().data;open-collection:()=storage;():file-action-popup.caller=().id;setPosition():[id=file-action-popup;positioner=().id;placement=right]",
+      "hideOptionIcon": "lastChild().style().display=none;style().backgroundColor=inherit",
+      "blurEdit": "txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.storage.[open-doc:()]]:[parent().rem()]?parent().contains():[clicked()]",
+      "createDoc": "if():[open-doc:()||duplicate-doc:()]:[data:().editor.storage.txt()=data:().editor.storage.[open-doc:()||duplicate-doc:()].clone();data:().editor.storage.[txt()].id=txt()]:[data:().editor.storage.txt()=_map:creation-date:[today().timestamp()]:id:txt()];[erase():[collection=open-collection:();doc=open-doc:();headers.project=project:();data:().editor.[open-collection:()].[open-doc:()].del()]?open-doc:()];save():[collection=storage;doc=txt();data=data:().editor.storage.txt();headers.project=project:()]:[note():[text=if():[open-doc:()]:'File name has been changed!'.elif():[duplicate-doc:()]:'File has been duplicated!':'File has been created!'];if():[!open-doc:();!duplicate-doc:()]:[new-file-created:()=true];duplicate-doc:().del()]?e().key=Enter||e().key=Tab;txt();txt()!=open-doc:();!data:().editor.storage.keys().inc():txt();!txt().inc():",
+      "showOptionIcon": "style().backgroundColor=#e9e9e9;lastChild().style().display=flex?3rdChild().style().display=none",
+      "displayRelatedDoc": "open-doc:()=().data;open-collection:()=storage;open-map:()=data:().editor.storage.[open-doc:()];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():data-viewer-bar.children().find():[open-doc=open-doc:();open-collection=open-collection:()].():[style().backgroundColor=#fff;hover.disable=true];className():data-viewer.():[style().display=none];className():data-viewer.find():[open-doc=open-doc:();open-collection=open-collection:()].style().display=flex?clicked().id!=lastChild().id;open-docs:().inc():[storage/+().data]",
+      "loadedHandler": "if():[new-file-created:();mapIndex=data:().editor.storage.keys().len()-1]:[)(:new-file-created.del();parent().style().display=flex;parent().prev().1stChild().style().transform=rotate(90deg);click()]",
+      "issueInDocName": "note():[text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.storage.keys().inc():txt()]:[File name should be unique!].elif():[txt().inc(): ]:'File name should not contain any spaces!']?e().key=Enter||e().key=Tab;data:().editor.storage.keys().inc():txt()||!txt()||txt().inc():",
+      "escapeEdit": "txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||!data:().editor.storage.[open-doc:()]]:[parent().rem()]?e().key=Escape",
+      "openRelatedDoc": "loader.show;():'my-functions'.style().height=0;():data-viewer.style().height=100%;open-doc:()=().data;open-docs:().push():[storage/+open-doc:()];open-collection:()=storage;open-map:()=data:().editor.storage.[open-doc:()];():data-viewer-bar.style().display=flex;className():data-viewer.():[style().display=none];():data-viewer-bar.children().():[style().backgroundColor=inherit;hover.disable=false];():'data-viewer-bar'.insert():[view=():'data-viewer-bar';viewPath=:children:0;preventDefault;data='storage/'+open-doc:()]:[_.view.():[style().backgroundColor=#fff;hover.disable=true;open-doc=open-doc:();open-collection=open-collection:()]];():'data-viewer'.insert():[view=():'data-viewer';viewPath=:children:0;data=open-map:();index=():data-viewer.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:()];loader.hide]?!2ndLastChild().contains():[clicked()];!lastChild().contains():[clicked()];!open-docs:().inc():['storage/'+().data]"
+    },
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "version": 0,
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+  }
+}

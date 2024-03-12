@@ -1,0 +1,445 @@
+{
+  "create": {
+    "#transactionSeparateDocs": {
+      "keyValue": [
+        {
+          "path": "ledgerAccount",
+          "type": "ledger",
+          "key": "account",
+          "required": "true"
+        },
+        {
+          "path": "credit-debit",
+          "type": "string",
+          "key": "credit-debit",
+          "required": true
+        },
+        {
+          "path": "currency",
+          "type": "string",
+          "key": "currency",
+          "required": "true"
+        },
+        {
+          "path": "accountCurrency",
+          "type": "string",
+          "key": "accountCurrency",
+          "required": "true"
+        },
+        {
+          "path": "amount",
+          "type": "number",
+          "key": "amount",
+          "required": true
+        },
+        {
+          "path": "description",
+          "type": "string",
+          "key": "description",
+          "required": "true"
+        }
+      ]
+    },
+    "account": {
+      "keyValue": [
+        {
+          "path": "generalLedger",
+          "type": "string",
+          "key": "generalLedger",
+          "required": "true"
+        },
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": "true"
+        },
+        {
+          "path": "credit",
+          "type": "number",
+          "key": "credit"
+        },
+        {
+          "path": "debit",
+          "type": "number",
+          "key": "debit"
+        },
+        {
+          "staticValue": "Yes",
+          "key": "openingBalance"
+        },
+        {
+          "path": "currency",
+          "type": "string",
+          "key": "currency",
+          "required": "true"
+        },
+        {
+          "staticValue": "Opening",
+          "key": "description"
+        },
+        {
+          "path": "balance",
+          "type": "balance",
+          "key": "balance"
+        },
+        {
+          "path": "headAccount",
+          "type": "string",
+          "key": "headAccount"
+        },
+        {
+          "path": "accountId",
+          "type": "string",
+          "key": "account",
+          "required": "true"
+        }
+      ],
+      "helpersKeyValue": [
+        {
+          "staticValue": "taha",
+          "key": "mhmd"
+        }
+      ],
+      "generateReference": true
+    },
+    "depreciation": {
+      "keyValue": [
+        {
+          "staticValue": 0,
+          "key": "credit"
+        },
+        {
+          "staticValue": 0,
+          "key": "debit"
+        },
+        {
+          "staticValue": "Yes",
+          "key": "openingBalance"
+        },
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": true
+        },
+        {
+          "staticValue": 0,
+          "key": "balance"
+        },
+        {
+          "staticValue": "Opening",
+          "key": "description"
+        },
+        {
+          "path": "accountId",
+          "type": "string",
+          "key": "account",
+          "required": true
+        }
+      ],
+      "helpersKeyValue": [
+        {
+          "staticValue": "taha2",
+          "key": "mhmd2"
+        }
+      ],
+      "generateReference": true
+    },
+    "transaction": {
+      "listOfDocs": true,
+      "keyValue": [
+        {
+          "listPath": "transactions",
+          "input": [
+            {
+              "path": "ledgerAccount",
+              "type": "ledger",
+              "key": "account",
+              "required": "true"
+            },
+            {
+              "path": "credit-debit",
+              "type": "string",
+              "key": "credit-debit",
+              "required": true
+            },
+            {
+              "path": "currency",
+              "type": "string",
+              "key": "currency",
+              "required": "true"
+            },
+            {
+              "path": "accountCurrency",
+              "type": "string",
+              "key": "accountCurrency",
+              "required": "true"
+            },
+            {
+              "path": "amount",
+              "type": "number",
+              "key": "amount",
+              "required": true
+            },
+            {
+              "path": "description",
+              "type": "string",
+              "key": "description"
+            }
+          ],
+          "listOfDocs": "true",
+          "collection": "transaction",
+          "generateReference": true
+        }
+      ],
+      "ignoreMainDoc": true,
+      "#generateReference": true
+    },
+    "assetWithNewAccount": {
+      "keyValue": [
+        {
+          "path": "credit",
+          "type": "number",
+          "key": "credit",
+          "required": true
+        },
+        {
+          "path": "debit",
+          "type": "number",
+          "key": "debit",
+          "required": "true"
+        },
+        {
+          "staticValue": "Yes",
+          "key": "openingBalance"
+        },
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": true
+        },
+        {
+          "staticValue": "Opening",
+          "key": "description"
+        },
+        {
+          "path": "balance",
+          "type": "number",
+          "key": "balance",
+          "required": "true"
+        },
+        {
+          "path": "accountId",
+          "type": "string",
+          "key": "account",
+          "required": true
+        }
+      ],
+      "helpersKeyValue": [
+        {
+          "staticValue": "taha1",
+          "key": "mhmd1"
+        }
+      ],
+      "nextStep": [
+        {
+          "condition": [
+            {
+              "condition": [
+                "Yes"
+              ],
+              "conditionReference": "autoDepreciation"
+            }
+          ],
+          "nextDestination": {
+            "manager": "depreciation",
+            "collection": "account"
+          }
+        }
+      ],
+      "generateReference": true
+    }
+  },
+  "collection": "transaction Old Schema",
+  "__props__": {
+    "id": "J1Q7d1h0l2U4g6n3Y5C198Y772",
+    "doc": "wE8we0qSfrK3P0bhf4MC",
+    "creationDate": 1710246351872,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "create",
+          "assetWithNewAccount",
+          "nextStep",
+          0,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "#transactionSeparateDocs",
+          "keyValue",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "#transactionSeparateDocs",
+          "keyValue",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "#transactionSeparateDocs",
+          "keyValue",
+          3
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "#transactionSeparateDocs",
+          "keyValue",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "#transactionSeparateDocs",
+          "keyValue",
+          5
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "#transactionSeparateDocs"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "assetWithNewAccount",
+          "nextStep",
+          0,
+          "nextDestination"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "assetWithNewAccount",
+          "nextStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "account",
+          "helpersKeyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "depreciation",
+          "helpersKeyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "assetWithNewAccount",
+          "helpersKeyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "depreciation"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "assetWithNewAccount"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "account"
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "",
+        "path": [
+          "create",
+          "account",
+          "keyValue",
+          5
+        ]
+      }
+    ],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "ref": "ACC-00000147",
+  "ledgerAccount": "68514/1/1",
+  "blockAccount": "No",
+  "name": "Penalties On Contracts",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239834186,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "68",
+    "685",
+    "6851",
+    "68514"
+  ],
+  "__props__": {
+    "id": "81v7Y1X0Q204P6p3R5Q2z7j8U8",
+    "doc": "8Zech6WdzZZYoijWWDJd7VaK974hJQuqkob5ODMd9SO2173nYjfmp7NnBOVm-1710239834186",
+    "creationDate": 1710246352788,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

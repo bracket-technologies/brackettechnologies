@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000106",
+  "ledgerAccount": "6515/1/1",
+  "blockAccount": "No",
+  "name": "Amortization Of Deffered Charges",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239833199,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6515"
+  ],
+  "__props__": {
+    "id": "i1c7z1Z0F2K4n6J3a5y2Y7e687",
+    "doc": "4X5s4YO1LN947Wyu6xhXEHM1txsM8eUo7YRRnESNdC2FO9KjLE6EFQ8sby9x-1710239833199",
+    "creationDate": 1710246352767,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

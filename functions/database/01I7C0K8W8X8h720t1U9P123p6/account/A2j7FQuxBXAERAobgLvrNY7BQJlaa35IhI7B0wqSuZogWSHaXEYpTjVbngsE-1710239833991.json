@@ -1,0 +1,30 @@
+{
+  "ref": "ACC-00000144",
+  "ledgerAccount": "68511/1/1",
+  "blockAccount": "No",
+  "name": "Donations",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239833992,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "68",
+    "685",
+    "6851",
+    "68511"
+  ],
+  "__props__": {
+    "id": "E1i7n1j0l2H4f6q3w572Q7s9o8",
+    "doc": "A2j7FQuxBXAERAobgLvrNY7BQJlaa35IhI7B0wqSuZogWSHaXEYpTjVbngsE-1710239833991",
+    "creationDate": 1710246352798,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

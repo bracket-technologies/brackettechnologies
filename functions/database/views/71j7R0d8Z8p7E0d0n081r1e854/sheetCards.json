@@ -1,0 +1,99 @@
+{
+  "view": "View?class=column;style:[paddingTop=3rem;width=100%];log():['xxxxxxxxxxxxxx']:[under=_;under2=__;under3=___]",
+  "children": [
+    {
+      "view": "View:sheetsView?class=flex;style:[display=grid;gridTemplateColumns='repeat(auto-fill, 14rem)';grid-row-gap=30px;alignItems=flex-start]",
+      "children": [
+        {
+          "view": "[View]:[data=managersSearchResult:().[currentOpenManager:().managerName]]?class=flexbox;style:[width=12rem;cursor=pointer;border=1px solid #00000000;transition=.2s;borderRadius=5px];hover.style:[backgroundColor=#f5f5f5;border=1px solid #ddd];#mouseenter:[1stChild().1stChild().2ndChild().style().display=flex];mouseleave:[if():[().inputFocused=false]:[1stChild().1stChild().2ndChild().style().display=none]];click:[openExcelSheet()]?managersSearchResult:().[currentOpenManager:().managerName].len()>0",
+          "children": [
+            {
+              "view": "View?class=flexbox column;style:[gap=.5rem]",
+              "children": [
+                {
+                  "view": "View?class=flexbox;style:[position=relative;height=5rem]",
+                  "children": [
+                    {
+                      "view": "Icon?name=description;google.symbol;style:[fontSize=4rem]"
+                    },
+                    {
+                      "view": "Icon?name=More_Vert;google.symbol;style:[fontSize=2rem;cursor=pointer;display=none;position=absolute;left=150%;top=10%];sheetDroplist();():droplist.click:[droplistClickHandler()];iconEvent()"
+                    }
+                  ]
+                },
+                {
+                  "view": "View?class=flex",
+                  "children": [
+                    {
+                      "view": "Text?text=_.name;style:[fontSize=1.3rem;cursor=pointer;maxWidth=11rem;textOverflow=ellipsis;whiteSpace=wrap;overflow=hidden];tooltip:[text=_.name]"
+                    },
+                    {
+                      "view": "Input?path=newSheetName;style:[fontSize=1.3rem;display=none;overflow=visible;maxWidth=8rem;border=1px solid black;height=2rem;width=5rem;backgroundColor=white];focus:[3rdParent().().inputFocused=true;3rdParent().style():[backgroundColor=#f5f5f5;borderRadius=5px;border=1px solid #ddd]];blur:[checkIfFilled();3rdParent().().inputFocused=false];"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "creationDate": 1709045711510,
+  "__props__": {
+    "db": "views",
+    "collection": "71j7R0d8Z8p7E0d0n081r1e854",
+    "id": "7147i190s2d4P653O553g4y7M5",
+    "doc": "sheetCards",
+    "creationDate": 1710246353475,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "iconEvent": "mouseenter:[3rdParent().().dropListClick=true];mouseleave:[3rdParent().().dropListClick=false]",
+      "checkIfFilled": {
+        "changeName": "changeSheetName():[id=_.id;newName=doc().newSheetName]:[updateNewName()]",
+        "changeStyle": "style():[display=none];prev().style():[display=block];3rdParent().style():[backgroundColor=transparent;borderRadius=0;border=0]",
+        "updateNewName": "if():[_.success]:[note():[text=_.message];prev().txt()=txt();changeStyle()]:[note():[text=somthing went wrong!;type=warning]]",
+        "_": "changeStyle();if():[doc().newSheetName]:[changeName()];doc().newSheetName=''"
+      },
+      "sheetDroplist": "droplist:[preventDefault;items=:[icon=[name=Visibility;google.symbol];tooltip.text='readonly']:[icon=[name=Edit;google.symbol];tooltip.text='change name']:[icon=[name=history;google.symbol];tooltip.text='history']:[icon=[name=Delete;google.symbol];tooltip.text='remove'];style:[width=3rem];item.style:[padding=0;justifyContent=center];placement=right;align=center]",
+      "#openExcelSheet": "[loader.show;generalPopup:()=[sheet;title=Sheet Form;popupName=sheet;saveAs];updateStatus:()=false;sheetName:().del();timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:10",
+      "openExcelSheet": "openCreateForm():[manager=bracketSheetTable:().value();docValues=_;edit=true]",
+      "openHistoryForm": {
+        "setPopup": "generalPopup:()=[title='History Form';searchTitle=_.name+' Sheet History';popupName=customHotPopup;inputListName=bracketSheetTable:().sheetTable.historySearchEngine;iconFalse=true;clickedId=_.id;identifier='history';searchKey=bracketSheetTable:().sheetTable.managerName;tableHeaders=bracketSheetTable:().sheetTable.historyTable];openPopup();getHistoryData()",
+        "getHistoryData": "#tahaHistory():[id=_.id;collection=sheet]:[ddd]",
+        "openPopup": "timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1];]:10",
+        "_": ";#loader.show;setPopup()"
+      },
+      "#droplistClickHandler": {
+        "openEdit": "currentSheetInfo:()=_;currentSheetInfo:().permission='Editable';currentSheetInfo:().title=_.name;currentSheetInfo:().updateStatus=true;currentSheetInfo:().sheetId=_.id;openExcelSheet()",
+        "focusOnName": "parent().next().1stChild().style():[display=none];parent().next().2ndChild().style():[display=block];parent().next().2ndChild().focus();ChangeName()",
+        "openReadOnly": "currentSheetInfo:()=_;currentSheetInfo:().permission='Readonly';currentSheetInfo:().title=_.name;currentSheetInfo:().updateStatus=true;currentSheetInfo:().sheetId=_.id;openExcelSheet()",
+        "removeSheet": "",
+        "sheetErase": "loader.show;eraseSheet():[_.id]:[note():[text=_.message];sheetInfo:().pull():[name=_.name];():sheetsView.update();loader.hide];",
+        "_": "if():[droplist-txt:()='Edit']:[focusOnName()].elif():[droplist-txt:()='Visibility']:[openReadOnly()].elif():[droplist-txt:()='history']:[openHistoryForm()]:[#sheetErase()]"
+      }
+    },
+    "collapsed": [
+      "_map:path:path()"
+    ],
+    "comments": [
+      {
+        "note": "false",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1
+        ]
+      }
+    ],
+    "folderPath": [],
+    "version": 0,
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

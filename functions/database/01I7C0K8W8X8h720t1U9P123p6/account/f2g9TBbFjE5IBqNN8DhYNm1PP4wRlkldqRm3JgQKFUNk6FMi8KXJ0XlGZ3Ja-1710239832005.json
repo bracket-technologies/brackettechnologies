@@ -1,0 +1,28 @@
+{
+  "ref": "ACC-00000045",
+  "ledgerAccount": "615/1/1",
+  "blockAccount": "No",
+  "name": "Variation Raw Mat.& Consumable",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239832008,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "61",
+    "615"
+  ],
+  "__props__": {
+    "id": "o1O7w1h04234N6a3C5g2x9e197",
+    "doc": "f2g9TBbFjE5IBqNN8DhYNm1PP4wRlkldqRm3JgQKFUNk6FMi8KXJ0XlGZ3Ja-1710239832005",
+    "creationDate": 1710246352917,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

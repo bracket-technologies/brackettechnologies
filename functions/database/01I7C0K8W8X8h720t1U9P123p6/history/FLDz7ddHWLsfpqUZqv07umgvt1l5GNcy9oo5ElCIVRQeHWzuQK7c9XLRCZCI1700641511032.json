@@ -1,0 +1,28 @@
+{
+  "difference": [
+    {
+      "new": {
+        "country": "q",
+        "trainName": "q",
+        "trainStation": "q"
+      },
+      "path": "list"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "aRiAoFpuKnap9rZCJcACccDMX29Kai3iT6kFHbYUfHtc2mL9kHAk3wzgai8g1699268378803",
+  "creationDay": 1700611200000,
+  "creationDate": 1700641511035,
+  "__props__": {
+    "id": "K1h7o1l0G2M4R6m305n3x2W7B8",
+    "doc": "FLDz7ddHWLsfpqUZqv07umgvt1l5GNcy9oo5ElCIVRQeHWzuQK7c9XLRCZCI1700641511032",
+    "creationDate": 1710246353278,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

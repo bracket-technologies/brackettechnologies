@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000344",
+  "ledgerAccount": "7520/1/1",
+  "blockAccount": "No",
+  "name": "Reversal of Fixed Assets Devaluation Provisions",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239839211,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "7",
+    "75",
+    "752",
+    "7520"
+  ],
+  "__props__": {
+    "id": "n1g7M1b0w2G4a6X355n2Z8v7S3",
+    "doc": "SMbZC9cEcDwCkQr1kUKeDpx8DAlfwQLbfPSYFU8qiufwAaYpKfJzkMAcSD6U-1710239839210",
+    "creationDate": 1710246352873,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

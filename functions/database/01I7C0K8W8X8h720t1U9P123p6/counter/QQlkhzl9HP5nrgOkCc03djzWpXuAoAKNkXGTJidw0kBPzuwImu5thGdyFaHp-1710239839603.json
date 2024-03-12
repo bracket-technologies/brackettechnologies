@@ -1,0 +1,24 @@
+{
+  "code": "ACC",
+  "length": 8,
+  "start": 99999999,
+  "reset": "yearly",
+  "end": 99999999,
+  "creationDay": 1710201600000,
+  "collection": "account",
+  "counter": 370,
+  "creationDate": 1710239839603,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "__props__": {
+    "id": "p197U1y0E2j4U603k5C2k1e1W9",
+    "doc": "QQlkhzl9HP5nrgOkCc03djzWpXuAoAKNkXGTJidw0kBPzuwImu5thGdyFaHp-1710239839603",
+    "creationDate": 1710246352119,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

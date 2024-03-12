@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000240",
+  "ledgerAccount": "6850/1/1",
+  "blockAccount": "No",
+  "name": "Other Non-Operating Charges",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239837187,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "68",
+    "685",
+    "6850"
+  ],
+  "__props__": {
+    "id": "T1S7c1Z022e4u6C3Y5r2e9I8I9",
+    "doc": "z1Vv5UTka9qTFZGg9zwngalDXxw3YVQvJOUnNJQ2avmCfgUZROGUyTWUK5LN-1710239837186",
+    "creationDate": 1710246352989,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000011",
+  "ledgerAccount": "6011/1/1",
+  "blockAccount": "No",
+  "name": "Goods",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239831386,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "60",
+    "601",
+    "6011"
+  ],
+  "__props__": {
+    "id": "h1B7X1W0P284p643R5T2h9z0i2",
+    "doc": "bVpAfOqXIZDM3zBoRyR8ORvJuM590us3D0sphBJXIXrRp67Zbc2ca7Sabnbv-1710239831386",
+    "creationDate": 1710246352902,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "ref": "ACC-00000145",
+  "ledgerAccount": "68512/1/1",
+  "blockAccount": "No",
+  "name": "Subsidies Granted",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239834084,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "68",
+    "685",
+    "6851",
+    "68512"
+  ],
+  "__props__": {
+    "id": "p1G7J1g0z2R4l6a3g5I2R7T5j9",
+    "doc": "3ECylDb3cxdmYPAvVtjPHTaFmVuS3ZWeuFTAjCuRZrz1fKhabJP2Ah1xtCZH-1710239834083",
+    "creationDate": 1710246352759,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

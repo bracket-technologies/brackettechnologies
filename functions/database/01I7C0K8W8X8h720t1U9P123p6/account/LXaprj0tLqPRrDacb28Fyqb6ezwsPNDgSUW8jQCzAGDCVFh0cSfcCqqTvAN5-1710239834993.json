@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000188",
+  "ledgerAccount": "6450/1/1",
+  "blockAccount": "No",
+  "name": "Taxes, Dues & Alike, Including the Tax of Article 51 of law 497/2003",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239834993,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "64",
+    "645",
+    "6450"
+  ],
+  "__props__": {
+    "id": "J1k741v0M2k4h6f3R59218d4M9",
+    "doc": "LXaprj0tLqPRrDacb28Fyqb6ezwsPNDgSUW8jQCzAGDCVFh0cSfcCqqTvAN5-1710239834993",
+    "creationDate": 1710246352849,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "view": "View?class=column",
+  "children": [
+    {
+      "view": "View?class=flex;style:[width=100%]?__.table;!__.table.table",
+      "children": [
+        {
+          "view": "View?class=flex;style:[width=100%]?doc().[__.table.docListName].len()>0||_.[__.table.docListName].len()>0",
+          "children": [
+            {
+              "view": "View?style:[width=100%;paddingTop=1.5rem]",
+              "children": [
+                {
+                  "view": "customGeneralTable?collection=[[__.table.collection]()];itemsList=selected:().[().collection];#.filter:():[id.in():[doc().[__.table.docListName]]];docListName=__.table.docListName;noCheckbox=true"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "view": "View:[__.table.tableId]?class=flex column;style:[width=100%;gap=2rem]?__.table.table",
+      "children": [
+        {
+          "view": "[View]:[data=__.table.table]?class=flex;style:[width=100%]?selected:().[___.table.collection].filter():[service=_.filterValue].len()>0",
+          "children": [
+            {
+              "view": "View?style:[width=100%;paddingTop=1.5rem]",
+              "children": [
+                {
+                  "view": "customGeneralTable?collection=[_.collection]();itemsList=selected:().[___.table.collection].filter():[service=_.filterValue];docListName=_.docListName"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "db": "views",
+    "collection": "71j7R0d8Z8p7E0d0n081r1e854",
+    "id": "t18701Z0W2Y4b6q375x3d474l6",
+    "doc": "customFormTable",
+    "creationDate": 1710246353446,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {},
+    "collapsed": [
+      {
+        "path": [
+          "children",
+          1
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "version": 0,
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "ref": "ACC-00000213",
+  "ledgerAccount": "651245/1/1",
+  "blockAccount": "No",
+  "name": "Depr.Alloc. - Hotels & Retaurants Appliances",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239835515,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "65",
+    "651",
+    "6512",
+    "65124",
+    "651245"
+  ],
+  "__props__": {
+    "id": "21k721x0R234W6N3U552b8X1u8",
+    "doc": "FPEo0BCFt7oZyai7LdRXKrPpC7xFPMu9ej28YxJt3FZ0WVSgia22t1jGHpHn-1710239835515",
+    "creationDate": 1710246352818,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

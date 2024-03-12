@@ -1,0 +1,30 @@
+{
+  "ref": "ACC-00000017",
+  "ledgerAccount": "60184/1/1",
+  "blockAccount": "No",
+  "name": "Clearing Expenses",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239831499,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "60",
+    "601",
+    "6018",
+    "60184"
+  ],
+  "__props__": {
+    "id": "G117b1R0R2a4R6z3J5R2E8B1U0",
+    "doc": "Dzrp2hoSiDjSnz74C4ZZvkRFnrqpSRIWs9im4LH1LIcdEEMtInmv92GEaOTx-1710239831498",
+    "creationDate": 1710246352810,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

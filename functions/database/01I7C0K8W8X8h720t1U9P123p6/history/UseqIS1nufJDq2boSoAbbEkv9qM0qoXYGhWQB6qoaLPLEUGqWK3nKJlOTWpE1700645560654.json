@@ -1,0 +1,25 @@
+{
+  "difference": [
+    {
+      "new": "spTxe",
+      "path": "inputId",
+      "old": "JTCjo"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "aRiAoFpuKnap9rZCJcACccDMX29Kai3iT6kFHbYUfHtc2mL9kHAk3wzgai8g1699268378803",
+  "creationDay": 1700611200000,
+  "creationDate": 1700645560655,
+  "__props__": {
+    "id": "V1X7K1B0C2i466O3u5z3u373M3",
+    "doc": "UseqIS1nufJDq2boSoAbbEkv9qM0qoXYGhWQB6qoaLPLEUGqWK3nKJlOTWpE1700645560654",
+    "creationDate": 1710246353333,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

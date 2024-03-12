@@ -1,0 +1,514 @@
+{
+  "managers": [
+    {
+      "groupName": "settingsInfo",
+      "managers": [
+        {
+          "code": "BRN",
+          "manager": "branchManager",
+          "collection": "branch"
+        },
+        {
+          "code": "CRN",
+          "manager": "currencyManager",
+          "collection": "currency"
+        },
+        {
+          "code": "USR",
+          "manager": "userManager",
+          "collection": "user"
+        },
+        {
+          "code": "NTF",
+          "manager": "notificationManager",
+          "collection": "notification"
+        },
+        {
+          "code": "SCH",
+          "manager": "scheduleManager",
+          "collection": "schedule"
+        }
+      ]
+    },
+    {
+      "groupName": "bracketSheet",
+      "managers": [
+        {
+          "code": "SHT",
+          "manager": "sheetTable",
+          "collection": "sheet"
+        }
+      ]
+    },
+    {
+      "groupName": "galleryManagerInfo",
+      "managers": [
+        {
+          "code": "IMG",
+          "manager": "galleryManager",
+          "collection": "storage"
+        }
+      ]
+    },
+    {
+      "groupName": "generalLedgerInfo",
+      "managers": [
+        {
+          "code": "ACC",
+          "manager": "expenditureManager",
+          "collection": "account"
+        },
+        {
+          "code": "ACC",
+          "manager": "capitalsManager",
+          "collection": "account"
+        },
+        {
+          "code": "ACC",
+          "manager": "financialAccountManager",
+          "collection": "account"
+        },
+        {
+          "code": "ACC",
+          "manager": "fixedAssetsManager",
+          "collection": "asset"
+        },
+        {
+          "code": "ACC",
+          "manager": "incomeManager",
+          "collection": "account"
+        },
+        {
+          "code": "ACC",
+          "manager": "receivablesAndPayablesManager",
+          "collection": "account"
+        }
+      ]
+    },
+    {
+      "groupName": "accountingJournalInfo",
+      "managers": [
+        {
+          "code": "TRN",
+          "manager": "transactionManager",
+          "collection": "transaction"
+        }
+      ]
+    },
+    {
+      "groupName": "receiptVoucherInfo",
+      "managers": [
+        {
+          "code": "VCH",
+          "manager": "receiptVoucherManager",
+          "collection": "voucher"
+        }
+      ]
+    },
+    {
+      "groupName": "paymentVoucherInfo",
+      "managers": [
+        {
+          "code": "VCH",
+          "manager": "paymentVoucherManager",
+          "collection": "voucher"
+        }
+      ]
+    },
+    {
+      "groupName": "transfersInfo",
+      "managers": [
+        {
+          "code": "VCH",
+          "manager": "transferManager",
+          "collection": "voucher"
+        }
+      ]
+    },
+    {
+      "groupName": "ticketInvoiceInfo",
+      "managers": [
+        {
+          "code": "INV",
+          "manager": "ticketInvoiceManager",
+          "collection": "invoice"
+        }
+      ]
+    },
+    {
+      "groupName": "tourInvoiceInfo",
+      "managers": [
+        {
+          "code": "INV",
+          "manager": "tourInvoiceManager",
+          "collection": "invoice"
+        }
+      ]
+    },
+    {
+      "groupName": "charterInvoiceInfo",
+      "managers": [
+        {
+          "code": "INV",
+          "manager": "charterInvoiceManager",
+          "collection": "invoice"
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "d1r7Q1l0G234v6l304B974S902",
+    "doc": "globalPathes",
+    "creationDate": 1710246349492,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "managers",
+          0,
+          "managers",
+          5
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          0,
+          "managers",
+          6
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          0,
+          "managers",
+          7
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          5,
+          "managers",
+          1
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          5,
+          "managers",
+          2
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          5,
+          "managers",
+          3
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          5,
+          "managers",
+          4
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          5,
+          "managers",
+          5
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          2,
+          "managers",
+          1
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          2,
+          "managers",
+          2
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          2,
+          "managers",
+          3
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          2,
+          "managers",
+          4
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          10
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          9
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          8
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          7
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          6
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          5
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          4
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          3,
+          "managers",
+          0
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          3,
+          "managers",
+          1
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          3,
+          "managers",
+          2
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          3,
+          "managers",
+          3
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          3,
+          "managers",
+          4
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          3,
+          "managers",
+          5
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          3
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          2
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          1
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          0,
+          "managers",
+          0
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          0,
+          "managers",
+          1
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          0,
+          "managers",
+          2
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          0,
+          "managers",
+          3
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          0,
+          "managers",
+          4
+        ]
+      },
+      {
+        "path": [
+          "managers",
+          0
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "galleryManagerInfo",
+        "path": [
+          "managers",
+          3
+        ]
+      },
+      {
+        "note": "accountingJournalInfo",
+        "path": [
+          "managers",
+          4
+        ]
+      },
+      {
+        "note": "sheet",
+        "path": [
+          "managers",
+          2
+        ]
+      },
+      {
+        "note": "accountingServiceInfo",
+        "path": [
+          "managers",
+          0
+        ]
+      },
+      {
+        "note": "generalLedgerInfo",
+        "path": [
+          "managers",
+          5
+        ]
+      },
+      {
+        "note": "sheet",
+        "path": [
+          "managers",
+          1
+        ]
+      },
+      {
+        "note": "charterInvoiceInfo",
+        "path": [
+          "managers",
+          10
+        ]
+      },
+      {
+        "note": "tourInvoiceInfo",
+        "path": [
+          "managers",
+          9
+        ]
+      },
+      {
+        "note": "ticketInvoiceInfo",
+        "path": [
+          "managers",
+          8
+        ]
+      },
+      {
+        "note": "transfersInfo",
+        "path": [
+          "managers",
+          7
+        ]
+      },
+      {
+        "note": "paymentVoucherInfo",
+        "path": [
+          "managers",
+          6
+        ]
+      },
+      {
+        "note": "receiptVoucherInfo",
+        "path": [
+          "managers",
+          5
+        ]
+      },
+      {
+        "note": "accountingJournalInfo",
+        "path": [
+          "managers",
+          4
+        ]
+      }
+    ],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

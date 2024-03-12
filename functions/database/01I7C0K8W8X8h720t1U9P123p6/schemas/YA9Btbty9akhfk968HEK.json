@@ -1,0 +1,109 @@
+{
+  "create": {
+    "branch": {
+      "keyValue": [
+        {
+          "path": "name",
+          "type": "string",
+          "required": "true",
+          "key": "name"
+        },
+        {
+          "path": "country",
+          "type": "string",
+          "required": true,
+          "key": "country"
+        },
+        {
+          "path": "city",
+          "type": "string",
+          "required": true,
+          "key": "city"
+        },
+        {
+          "path": "address",
+          "type": "string",
+          "required": true,
+          "key": "address"
+        },
+        {
+          "path": "email",
+          "type": "array",
+          "required": true,
+          "key": "email"
+        },
+        {
+          "path": "contactNumber",
+          "type": "array",
+          "required": true,
+          "key": "contactNumber"
+        },
+        {
+          "listPath": "members",
+          "input": [
+            {
+              "path": "title",
+              "type": "string",
+              "key": "title"
+            },
+            {
+              "path": "gender",
+              "type": "string",
+              "key": "gender"
+            },
+            {
+              "path": "position",
+              "type": "string",
+              "key": "position"
+            },
+            {
+              "path": "name",
+              "type": "string",
+              "key": "name"
+            },
+            {
+              "path": "email",
+              "type": "string",
+              "key": "email"
+            },
+            {
+              "path": "contactNumber",
+              "type": "string",
+              "key": "contactNumber"
+            }
+          ]
+        },
+        {
+          "path": "overview",
+          "type": "string",
+          "key": "overview"
+        },
+        {
+          "path": "note",
+          "type": "string",
+          "key": "note"
+        },
+        {
+          "path": "images",
+          "type": "image",
+          "key": "images"
+        }
+      ],
+      "generateReference": true
+    }
+  },
+  "collection": "branch",
+  "creationDate": 1709555435385,
+  "__props__": {
+    "id": "Q1J7a1j0R2C4A6q365K1Y8X6M2",
+    "doc": "YA9Btbty9akhfk968HEK",
+    "creationDate": 1710246351862,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

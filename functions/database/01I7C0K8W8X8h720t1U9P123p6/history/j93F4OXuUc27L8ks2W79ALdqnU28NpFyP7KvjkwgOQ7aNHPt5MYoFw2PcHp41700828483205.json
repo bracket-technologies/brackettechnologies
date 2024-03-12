@@ -1,0 +1,65 @@
+{
+  "updateBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+  "difference": [
+    {
+      "new": "",
+      "path": "lastName",
+      "old": "Assaf"
+    },
+    {
+      "new": "",
+      "path": "country",
+      "old": "lebanon"
+    },
+    {
+      "new": "",
+      "path": "address",
+      "old": "beirut"
+    },
+    {
+      "new": "",
+      "path": "firstName",
+      "old": "Taha"
+    },
+    {
+      "new": "1",
+      "path": "password",
+      "old": "12345"
+    },
+    {
+      "new": "",
+      "path": "contactNumber",
+      "old": "1234567"
+    },
+    {
+      "new": "",
+      "path": "email",
+      "old": "taha@gmail.com"
+    },
+    {
+      "new": "",
+      "path": "username",
+      "old": "tahaassaf"
+    },
+    {
+      "new": "User",
+      "path": "position"
+    }
+  ],
+  "description": "Data has been updated",
+  "creationDay": 1700784000000,
+  "creationDate": 1700828483207,
+  "user": "j7neF8CHqumHOGzAXNWi9JcLKTTyx9LRmJptYuYbJeiNWWfSrQMeqwKTZSp01699559755885",
+  "__props__": {
+    "id": "61d7n1C0n274C6M3E5s3P3m8z1",
+    "doc": "j93F4OXuUc27L8ks2W79ALdqnU28NpFyP7KvjkwgOQ7aNHPt5MYoFw2PcHp41700828483205",
+    "creationDate": 1710246353381,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

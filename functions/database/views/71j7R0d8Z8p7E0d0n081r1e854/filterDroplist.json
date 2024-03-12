@@ -1,0 +1,124 @@
+{
+  "view": "View:filterDroplist?class=flex column;style:[width=20rem;height=30rem;overflow=hidden]",
+  "children": [
+    {
+      "view": "View?class=flex;style:[width=100%;height=2.8rem;padding=0 .5rem;borderRadius=.4rem;cursor=pointer;gap=.5rem];mouseenter:[style():[backgroundColor=#f3f3f3]];mouseleave:[style():[backgroundColor=white]]",
+      "children": [
+        {
+          "view": "Icon?name=sort;google.symbol;style:[fontSize=2rem;color=#666;cursor=pointer]"
+        },
+        {
+          "view": "Text?class=flex;text=Sort A to Z;style:[fontSize=1.3rem;fontWeight=700]"
+        }
+      ]
+    },
+    {
+      "view": "View?class=flex;style:[width=100%;height=2.8rem;padding=0 .5rem;borderRadius=.4rem;cursor=pointer;gap=.5rem];mouseenter:[style():[backgroundColor=#f3f3f3]];mouseleave:[style():[backgroundColor=white]]",
+      "children": [
+        {
+          "view": "Icon?name=sort;google.symbol;style:[fontSize=2rem;color=#666;cursor=pointer]"
+        },
+        {
+          "view": "Text?class=flex;text=Sort Z to A;style:[fontSize=1.3rem;fontWeight=700]"
+        }
+      ]
+    },
+    {
+      "view": "View?class=flexbox column;style:[width=100%;gap=1rem]",
+      "children": [
+        {
+          "view": "View?class=flex;style:[width=100%;height=2.8rem;padding=0 .5rem;borderRadius=.4rem;cursor=pointer;gap=.5rem];mouseenter:[style():[backgroundColor=#f3f3f3]];mouseleave:[style():[backgroundColor=white]]",
+          "children": [
+            {
+              "view": "Icon?name=Filter_Alt;google.symbol;style:[fontSize=2rem;color=#666;cursor=pointer]"
+            },
+            {
+              "view": "Text?class=flex;text=Filter;style:[fontSize=1.3rem;fontWeight=700]"
+            }
+          ]
+        },
+        {
+          "view": "View?class=flexbox column;style:[width=100%;gap=.5rem]",
+          "children": [
+            {
+              "view": "View?class=flex;style:[width=100%]?false",
+              "children": [
+                {
+                  "view": "customInput?inputLabel='Add '+_.currentTitle+' Key';path='titleKey'"
+                }
+              ]
+            },
+            {
+              "view": "customInput?inputLabel='Search';path='filterSearch';entry:[filterValues()];filteredValues:()=filterValue:()"
+            },
+            {
+              "view": "View?class=flex;style:[#border=1px dashed black;height=auto;width=100%;display=grid;gridTemplateColumns='repeat(2,1fr)';grid-row-gap=30px;padding=1rem;#justify-items=center];cellsIds:()=:;counter=1;rowConditions:().del();filterAllDataInfo:().del()",
+              "children": [
+                {
+                  "view": "[View]:[data=filteredValues:()]?class=flex;style:[width=90%;justifyContent=space-between];cellsIds:().push():[_.rowId]?filteredValues:().len()>0",
+                  "children": [
+                    {
+                      "view": "View?class=flexbox;style:[width=60%;justifyContent=start]",
+                      "children": [
+                        {
+                          "view": "Text?text=[[_.rowId.slice():3]+[1]]+'-';style:[fontSize=1.3rem]"
+                        },
+                        {
+                          "view": "Text?text=_.cellText;style:[fontSize=1.3rem;textAlign=start;whiteSpace=nowrap;overflow=hidden;textOverflow=ellipsis]"
+                        }
+                      ]
+                    },
+                    {
+                      "view": "checkboxes?key=_.rowId;selected=true;multiCheck=true;reverseTick=true;defaultSelectedValues=true"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "db": "views",
+    "collection": "71j7R0d8Z8p7E0d0n081r1e854",
+    "id": "r1y7T1d042g486G3x543a4J5J8",
+    "doc": "filterDroplist",
+    "creationDate": 1710246353458,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {},
+    "collapsed": [
+      {
+        "path": [
+          "children",
+          0,
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          2
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "version": 0,
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

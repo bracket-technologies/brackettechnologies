@@ -1,0 +1,57 @@
+{
+  "view": "View:customDroplist?class=column;style:[position=fixed;backgroundColor=white;zIndex=100;opacity=0;borderRadius=.4rem;boxShadow='0px 0px 7px 4px rgba(0,0,0,0.1)';maxHeight=30rem;transition='height 0.2s ease 0s, opacity 0.4s ease 0s';left=-50vw];closeDroplist()",
+  "children": [
+    {
+      "view": "[View]:[data=droplistItems:()]?style:[maxHeight=if():[_.height]:[_.height]:[30rem];minWidth=10rem;width=if():[_.width]:[_.width]:[30rem];overflowY=auto;borderRadius=.4rem;overflowX=hidden];addOnScroll()?droplistItems:()",
+      "children": [
+        {
+          "view": "View?class=column ;style:[width=100%;height=auto]",
+          "children": [
+            {
+              "view": "_.viewName??_.viewName"
+            },
+            {
+              "view": "View:droplistItems?class=column;style:[width=100%;height=100%]?_.items",
+              "children": [
+                {
+                  "view": "[View]:[data=_.items]?class=flexbox;style:[width=100%;height=2.8rem;padding=0 .5rem;borderRadius=.4rem;cursor=pointer];click:[saveSelected()];mouseenter:[style():[backgroundColor=#f3f3f3]];mouseleave:[style():[backgroundColor=white]]",
+                  "children": [
+                    {
+                      "view": "Text?class=flex;text=_;style:[width=100%;fontSize=if():[__.fontSize]:[fontSize]:[1.3rem];fontWeight=if():[_.fontWeight]:[_.fontWeight]:[700];textOverflow=ellipsis;overflow=hidden;whiteSpace=nowrap]"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "creationDate": 1709106377413,
+  "__props__": {
+    "db": "views",
+    "collection": "71j7R0d8Z8p7E0d0n081r1e854",
+    "id": "m197u1u0d2G4Z6V3U5s3C434m3",
+    "doc": "customDroplist",
+    "creationDate": 1710246353443,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "closeDroplist": {
+        "closeDroplistOnMouseleave": "timer():[if():[!().mouseIn]:[().style():[opacity=0;height=0px]]]:600",
+        "closeDroplistOnClick": "if():[!().contains():[clicked()];!():[droplistItems:().identifier].contains():[clicked()]]:[().style():[opacity=0;height=0px]]",
+        "_": "mouseleave:[().mouseIn=false;closeDroplistOnMouseleave()];():root.click:[closeDroplistOnClick()];mouseenter:[().mouseIn=true]"
+      },
+      "addOnScroll": "scroll:[if():[el().scrollHeight-[el().clientHeight+el().scrollTop]<100;dropListNumber:()<governmentAccountsItems:().len()]:[():governmentDroplistItems.insert():[():governmentDroplistItems.children().[-1]]]]",
+      "saveSelected": "if():[():[__.identifier].1stChild().type=Input]:[():[__.identifier].1stChild().txt()=_;if():[():[__.identifier].___.path]:[():[__.identifier].__.[():[__.identifier]._.inputPath]=_]:[():[__.identifier].doc().[():[__.identifier]._.inputPath]=_]];if():[():[__.identifier]._.droplistClickAction]:[[():[__.identifier]._.droplistClickAction]()]"
+    },
+    "collapsed": [
+      "_map:path:path()"
+    ],
+    "comments": [],
+    "folderPath": [],
+    "version": 0,
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

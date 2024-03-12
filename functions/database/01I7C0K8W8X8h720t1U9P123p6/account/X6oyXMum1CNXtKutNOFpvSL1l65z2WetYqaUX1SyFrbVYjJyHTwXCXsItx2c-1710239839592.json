@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000367",
+  "ledgerAccount": "7820/1/1",
+  "blockAccount": "No",
+  "name": "Investment Subsidies Transferred to Results",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239839592,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "7",
+    "78",
+    "782",
+    "7820"
+  ],
+  "__props__": {
+    "id": "a1J7h150i2L4p6a3B5G2z8y8Y8",
+    "doc": "X6oyXMum1CNXtKutNOFpvSL1l65z2WetYqaUX1SyFrbVYjJyHTwXCXsItx2c-1710239839592",
+    "creationDate": 1710246352888,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

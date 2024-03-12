@@ -1,0 +1,20 @@
+{
+  "accountID": "1197B078m8x8q4e9T5X949d858",
+  "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+  "pluginID": "x1u7J0X8a8K8c7H0I14901G9B3",
+  "subscriptionID": "81z7k0f878H897v0N1a8z9R9G7",
+  "dueDate": 9999999999999,
+  "amount": 100,
+  "amountUnit": "TOKEN",
+  "status": "Confirmed",
+  "paymentStatus": "Paid",
+  "__props__": {
+    "db": "bills",
+    "collection": "71j7R0d8Z8p7E0d0n081r1e854",
+    "id": "I1C7Z0t8z8F8d6K999b9c7M5d5",
+    "doc": "bill1",
+    "creationDate": 1710246347080,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2"
+  }
+}

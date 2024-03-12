@@ -1591,7 +1591,7 @@ module.exports = {
         // recheck after decoding
         if (typeof string !== "string") return false
 
-        if (string.slice(0, 1) === "!" || string.includes(">") || string.includes("<") || string.includes("!=")) return true
+        if (string.slice(0, 1) === "!" || string.includes(">") || string.includes("<") || string.includes("!=") || string.includes("==")) return true
         return false
     }
 }
@@ -1995,7 +1995,7 @@ const { isArabic } = require("./isArabic")
 const cssStyleKeyNames = require("./cssStyleKeyNames")
 const events = require("./events.json")
 
-var actions = {
+var actions = { 
     "caret()": ({ o }) => ({ index: getCaretIndex(o) }),
     "device()": ({ global }) => global.manifest.device.device,
     "mobile()": ({ global }) => global.manifest.device.device.type === "smartphone",
@@ -2010,10 +2010,13 @@ var actions = {
     }, "clicked()": ({ global }) => {
 
         return global.__clicked__
+    }, "clicker()": ({ global }) => {
+
+        return global.__clicker__
     }, "focused()": ({ global }) => {
 
         return global.__focused__
-    }, "click()": ({ _window, global, view, o, pathJoined }) => {
+    }, "click()": ({ _window, global, views, view, o, id, pathJoined }) => {
         
         if (!o.__view__ || !o.__rendered__) return
 
@@ -2021,8 +2024,10 @@ var actions = {
             event: `loaded?${pathJoined}`
         })
 
+        global.__clicker__ = views[id]
         global.__clicked__ = o
         o.__element__.click()
+
     }, "focus()": ({ _window, view, o, pathJoined }) => {
 
         if (!o.__view__) return
@@ -2813,7 +2818,7 @@ var actions = {
         o.splice(o.length - 1, 1)
         return o
 
-    }, "rem()": ({ o, stack }) => {
+    }, "rem()": ({ o, stack, __ }) => {
 
         if (!o.__view__) return
         remove({ id: o.id, __, stack })
@@ -3714,7 +3719,8 @@ var actions = {
 
     }, "filter()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, underScored }) => {
 
-        args = args.slice(1), isnot
+        var isnot = false
+        args = args.slice(1)
         if (!args[0]) isnot = true
 
         if (isnot) return toArray(o).filter(o => o !== "" && o !== undefined && o !== null)
@@ -4218,7 +4224,7 @@ var actions = {
 
     }, "droplist()": ({ _window, o, stack, lookupActions, id, e, __, args, object }) => {
 
-        var { address, data } = addresser({ _window, stack, args, id: o.id, interpreting: true, status: "Start", action: "droplist()", object, lookupActions, __ })
+        var { address, data } = addresser({ _window, stack, args, id, interpreting: true, status: "Start", action: "droplist()", object, lookupActions, __ })
         require("./droplist").droplist({ id, e, data, __, stack, lookupActions, address })
 
     }, "route()": ({ _window, req, res, o, stack, lookupActions, id, __, args, object }) => {
@@ -4230,7 +4236,7 @@ var actions = {
 
     }, "root()": ({ _window, req, res, o, stack, lookupActions, id, __, args, object }) => {
 
-        var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id: o.id, action: "root()", object, lookupActions, __ })
+        var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id, action: "root()", object, lookupActions, __ })
         if (typeof data === "string") data = { page: data }
 
         require("./root").root({ _window, lookupActions, stack, address, id, req, res, root: data, __ })
@@ -4238,8 +4244,7 @@ var actions = {
     }, "update()": ({ _window, req, res, o, stack, lookupActions, id, __, args, object }) => {
 
         if (!o.__view__) return o
-
-        var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", renderer: true, blockable: false, id: o.id, action: "update()", object, lookupActions, __ })
+        var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", renderer: true, blockable: false, id, action: "update()", object, lookupActions, __ })
         update({ _window, lookupActions, stack, req, res, id, address, __, data: { id: data.id || o.id, ...data } })
 
     }, "insert()": ({ _window, o, stack, lookupActions, id, __, args }) => {
@@ -4247,7 +4252,7 @@ var actions = {
         if (!o.__view__) return o
 
         // wait address
-        var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", renderer: true, id: o.id, action: "insert()", lookupActions, __ })
+        var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", renderer: true, id, action: "insert()", lookupActions, __ })
         insert({ id, lookupActions, stack, address, __, insert: { ...data, parent: o.id } })
 
     }, "confirmEmail()": ({ _window, o, stack, lookupActions, id, e, __, args, object }) => {
@@ -5313,7 +5318,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
     if (string.charAt(0) === "@" && string.length == 6) string = global.__refs__[string].data
 
     // ==
-    string = string.replace("==", "=")
+    string = string.replaceAll("==", "=")
     
     string.split(";").map(condition => {
 
@@ -5869,7 +5874,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
     }
 
     // clone
-    if (view.__view__) {
+    if (typeof view === "object" && view.__view__) {
 
         // id
         id = view.id
@@ -5895,7 +5900,9 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
                 parent.__childrenRef__.slice(index).map(viewRef => updateDataPath({ id: viewRef.id, index: itemIndex, increment: true }))
 
             // get data
-            passData.data = insert.__view__ ? (typeof insert.data === "object" ? {} : "") : (insert.view && data !== undefined ? data : undefined)
+            passData.data = (insert.__view__) ? (typeof insert.data === "object" ? {} : "") // insert():[...]
+            : (insert.view && data === undefined) ? (typeof insert.view.data === "object" ? {} : "") // insert():[view=...]
+            : (insert.view && data !== undefined ? data : undefined) // insert():[view=...;data=...]
 
             // mount data
             passData.data !== undefined && path.reduce((o, k, i) => {
@@ -5921,12 +5928,15 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
         // get raw view
         view = clone(([...view.__viewPath__, ...viewPath]).reduce((o, k) => o[k], global.data.view))
-
+console.log("here", clone(passData));
     } else { // new View
 
         var genView = generate()
         if (typeof view !== "string") global.data.view[genView] = clone(view)
-        else genView = clone((viewPath).reduce((o, k) => o[k], view))
+        else {
+            genView = view
+            view = clone((viewPath).reduce((o, k) => o[k], global.data.view[view]))
+        }
 
         passData = {
             __viewPath__: [genView, ...viewPath],
@@ -7731,8 +7741,6 @@ const defaultAppEvents = () => {
 
     var views = window.views
     var global = window.global
-
-    // document default event listeners
 
     // clicked element
     document.addEventListener('mousedown', e => {

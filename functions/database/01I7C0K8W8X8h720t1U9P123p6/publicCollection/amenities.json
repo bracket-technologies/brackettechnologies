@@ -1,0 +1,331 @@
+{
+  "keysName": {
+    "Bathroom": [
+      "Soap",
+      "shampoo",
+      "conditioner",
+      "body lotion",
+      "toothpaste",
+      "toothbrush",
+      "dental floss",
+      "mouthwash",
+      "shower cap",
+      "comb",
+      "razor",
+      "shaving cream",
+      "cotton swabs",
+      "cotton balls",
+      "tissues",
+      "toilet paper",
+      "hand towels",
+      " bath towels",
+      "bath mat",
+      "shower curtain",
+      "toilet brush",
+      "plunger",
+      "trash can",
+      "mirrors",
+      "towel rack"
+    ],
+    "Layout": [
+      "Spacious rooms ",
+      "open floor plans ",
+      "separate living and sleeping areas ",
+      "connecting rooms ",
+      "suites ",
+      "balconies or terraces ",
+      "scenic views ",
+      "private entrances ",
+      "private gardens or patios ",
+      "designated workspaces ",
+      "in-room dining areas ",
+      "walk-in closets ",
+      "dressing areas ",
+      "multiple bathrooms",
+      " whirlpool tubs ",
+      "fireplaces",
+      "private pools or hot tubs",
+      "outdoor seating areas ",
+      "private bars or wet bars ",
+      "designated relaxation areas"
+    ],
+    "Media & Technology": [
+      "Flat-screen TV ",
+      "cable/satellite channels ",
+      "streaming services ",
+      "DVD player ",
+      "video-on-demand ",
+      "in-room movies ",
+      "radio ",
+      "alarm clock ",
+      "iPod dock",
+      "Bluetooth speakers ",
+      "high-speed internet access ",
+      "Wi-Fi ",
+      "computer/office area ",
+      "telephone",
+      "international calling ",
+      "USB charging ports ",
+      "electronic safe ",
+      "digital concierge services"
+    ],
+    "Services & Extras": [
+      "24-hour front desk",
+      " concierge services ",
+      "luggage storage ",
+      "tour desk ",
+      "ticket service ",
+      "currency exchange ",
+      "ATM on-site",
+      "valet parking, car rental ",
+      "airport shuttle ",
+      "shuttle service ",
+      "laundry service ",
+      "dry cleaning ",
+      "ironing service ",
+      "daily housekeeping ",
+      "shoeshine ",
+      "wake-up service ",
+      "pet-friendly accommodations ",
+      "pet sitting services ",
+      "bike rental",
+      "electric vehicle charging stations ",
+      "meeting/banquet facilities ",
+      "business center ",
+      "fax/photocopying ",
+      "VIP room facilities",
+      "express check-in/check-out",
+      "on-site shops",
+      "beauty salon/barber shop",
+      "gift shop",
+      "newspapers",
+      "designated smoking areas ",
+      "chapel/shrine ",
+      "multilingual staff ",
+      "personal shopping services ",
+      "event planning services"
+    ],
+    "Acceddibility": [
+      "Accessible parking",
+      "wheelchair-accessible entrance",
+      "grab bars",
+      "roll-in shower",
+      "accessible toilet",
+      "lowered sink",
+      "visual and audible fire alarms",
+      "accessible pathways",
+      "Braille signage"
+    ],
+    "Entertainment & Family Services": [
+      "Children's television networks ",
+      "indoor play area ",
+      "kids'club ",
+      "board games/puzzles ",
+      "babysitting services ",
+      "children's meals ",
+      "family rooms ",
+      "cribs/infant beds",
+      "strollers ",
+      "high chairs ",
+      "outdoor playground",
+      "family-friendly activities ",
+      "babysitting/childcare services",
+      "kids'pool",
+      "children's books/DVDs ",
+      "video game consoles"
+    ],
+    "Food & Drink": [
+      "Room service ",
+      "restaurant ",
+      "bar",
+      "breakfast buffet ",
+      "coffee/tea maker ",
+      "mini-bar ",
+      "complimentary water bottles",
+      "snack bar ",
+      "vending machines ",
+      "specialty restaurants ",
+      "cocktail lounge ",
+      "24-hour dining options",
+      "dietary accommodations",
+      "in-room dining options"
+    ],
+    "Outdoor & View": [
+      "Swimming pool ",
+      "sun loungers",
+      " poolside bar ",
+      "terrace ",
+      "garden",
+      "BBQ facilities",
+      "outdoor seating area",
+      "picnic area",
+      "rooftop terrace",
+      "panoramic views",
+      "ocean views ",
+      "mountain views ",
+      "city views ",
+      "countryside views",
+      "sunset views",
+      "private beach access",
+      "outdoor sports facilities ",
+      "walking trails",
+      "outdoor fitness area",
+      "scenic gardens",
+      " outdoor dining area"
+    ],
+    "Safety Features": [
+      "Smoke detectors",
+      " fire extinguishers ",
+      "sprinkler system",
+      " emergency exit signs ",
+      "emergency lighting ",
+      "fire alarm system ",
+      "fire-resistant materials ",
+      "security cameras ",
+      "24-hour security personnel ",
+      "electronic key card access ",
+      "in-room safes ",
+      "security locks on windows and doors ",
+      "well-lit public areas ",
+      "first aid kits ",
+      "emergency response plans",
+      "on-site medical assistance",
+      "secure parking",
+      "surveillance in common areas",
+      "security escorts ",
+      "intercom system ",
+      "safety deposit boxes ",
+      "visible emergency contact information"
+    ]
+  },
+  "bath/": [
+    ""
+  ],
+  "__props__": {
+    "id": "51e7q1p0p25456d3d5E1X0p5o0",
+    "doc": "amenities",
+    "creationDate": 1710246351050,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "outdoor&View"
+        ]
+      },
+      {
+        "path": [
+          "media&Technology"
+        ]
+      },
+      {
+        "path": [
+          "Room"
+        ]
+      },
+      {
+        "path": [
+          "Safety Features"
+        ]
+      },
+      {
+        "path": [
+          "Bathroom"
+        ]
+      },
+      {
+        "path": [
+          "Entertainment & Family Services"
+        ]
+      },
+      {
+        "path": [
+          "Food & Drink"
+        ]
+      },
+      {
+        "path": [
+          "Layout"
+        ]
+      },
+      {
+        "path": [
+          "Acceddibility"
+        ]
+      },
+      {
+        "path": [
+          "Media & Technology"
+        ]
+      },
+      {
+        "path": [
+          "Outdoor & View"
+        ]
+      },
+      {
+        "path": [
+          "Services & Extras"
+        ]
+      },
+      {
+        "path": [
+          "keysName",
+          "Bathroom"
+        ]
+      },
+      {
+        "path": [
+          "keysName",
+          "Entertainment & Family Services"
+        ]
+      },
+      {
+        "path": [
+          "keysName",
+          "Food & Drink"
+        ]
+      },
+      {
+        "path": [
+          "keysName",
+          "Layout"
+        ]
+      },
+      {
+        "path": [
+          "keysName",
+          "Media & Technology"
+        ]
+      },
+      {
+        "path": [
+          "keysName",
+          "Outdoor & View"
+        ]
+      },
+      {
+        "path": [
+          "keysName",
+          "Safety Features"
+        ]
+      },
+      {
+        "path": [
+          "keysName",
+          "Services & Extras"
+        ]
+      },
+      {
+        "path": [
+          "keysName",
+          "Acceddibility"
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

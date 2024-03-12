@@ -1,0 +1,30 @@
+{
+  "accountID": "1197B078m8x8q4e9T5X949d858",
+  "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+  "transactionDate": 1710246347139,
+  "debit": 0,
+  "credit": 100,
+  "balance": 0,
+  "unit": "TOKEN",
+  "status": "Confirmed",
+  "debits": 100,
+  "credits": 100,
+  "exchangeRate": [
+    {
+      "fromUnit": "TOKEN",
+      "fromAmount": 1,
+      "toUnit": "USD",
+      "toAmount": 1
+    }
+  ],
+  "__props__": {
+    "db": "transactions",
+    "collection": "71j7R0d8Z8p7E0d0n081r1e854",
+    "id": "vPkyWcnarNF2gp4kOoqU",
+    "doc": "transaction2",
+    "creationDate": 1710246347139,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2"
+  },
+  "voucherID": "H1Q7f0a828R8d7d0Q060p1E5l2"
+}

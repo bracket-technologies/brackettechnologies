@@ -1,0 +1,30 @@
+{
+  "ref": "ACC-00000149",
+  "ledgerAccount": "68516/1/1",
+  "blockAccount": "No",
+  "name": "Other Administrative Operations",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239834196,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "68",
+    "685",
+    "6851",
+    "68516"
+  ],
+  "__props__": {
+    "id": "I1J721E0B2q4h6q305x2I9n0S0",
+    "doc": "az2TtniVse2Kp9oRbpALpkHSNhKfD4QFFEgRfOjwm9kChdfcUAf1ePup5Pfr-1710239834195",
+    "creationDate": 1710246352900,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

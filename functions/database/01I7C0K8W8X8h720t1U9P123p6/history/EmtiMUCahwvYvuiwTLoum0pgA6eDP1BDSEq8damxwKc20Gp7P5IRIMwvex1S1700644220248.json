@@ -1,0 +1,32 @@
+{
+  "difference": [
+    {
+      "new": {
+        "country": "l",
+        "trainName": "l",
+        "trainStation": "l"
+      },
+      "path": "list"
+    },
+    {
+      "new": "CPupX",
+      "path": "inputId"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "aRiAoFpuKnap9rZCJcACccDMX29Kai3iT6kFHbYUfHtc2mL9kHAk3wzgai8g1699268378803",
+  "creationDay": 1700611200000,
+  "creationDate": 1700644220248,
+  "__props__": {
+    "id": "a1N7x1U0v2q4W6d3H5B3620796",
+    "doc": "EmtiMUCahwvYvuiwTLoum0pgA6eDP1BDSEq8damxwKc20Gp7P5IRIMwvex1S1700644220248",
+    "creationDate": 1710246353276,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

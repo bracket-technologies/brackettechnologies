@@ -1,0 +1,88 @@
+{
+  "view": "View:dashbaord?class=column;style:[width=100%;overflow=scroll;height=calc(100vh - 4.6rem)];beforeloading:[getBalanceOfAcc()]",
+  "children": [
+    {
+      "view": "View?class=flex column;style:[width=100%;gap=.4rem]",
+      "children": [
+        {
+          "view": "View?class=flex;style:[width=100%;gap=.4rem;padding=1rem 1rem 0 1rem]",
+          "children": [
+            {
+              "view": "[View]:[data=range():1]?style:[width=50%]",
+              "children": [
+                {
+                  "view": "rowBar"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "view": "View?class=flex column;style:[gap=.4rem;padding=0 1rem 1rem 1rem]",
+          "children": [
+            {
+              "view": "customPieChar??false"
+            },
+            {
+              "view": "customSingleBarChart??false"
+            },
+            {
+              "view": "customDoubleBarChart"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "db": "views",
+    "collection": "71j7R0d8Z8p7E0d0n081r1e854",
+    "id": "p177b1a0m2s466p3f5L3H4V5L5",
+    "doc": "dashbaord",
+    "creationDate": 1710246353455,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "convertToTimestamp": {
+        "toYear": "doc().[reset]=[[doc().startDate]+[[doc().reset]*31557600000]]",
+        "toDay": "doc().[reset]=[[doc().startDate]+[[doc().reset]*86400000]]",
+        "toMonth": "doc().[reset]=[[doc().startDate]+[[doc().reset]*2629743000]]",
+        "toWeek": "doc().[reset]=[[doc().startDate]+[[doc().reset]*604800016.56]]",
+        "_": "if():[doc().expiryUnit='Hr']:[toHour()].elif():[doc().expiryUnit='Day']:[toDay()].elif():[doc().expiryUnit='Week']:[toWeek()].elif():[doc().expiryUnit='Month']:[toMonth()].elif():[doc().expiryUnit='Year']:[toYear()]",
+        "toHour": "doc().[reset]=[[doc().startDate]+[[doc().reset]*3600000]]"
+      },
+      "getBalanceOfAcc": "loader.show;getBalanceAccount()::[balances:()=_.data;loader.hide]"
+    },
+    "collapsed": [
+      "_map:path:path()",
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "convertToTimestamp"
+        ]
+      }
+    ],
+    "comments": [
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()",
+      "_map:note:txt():path:path()"
+    ],
+    "folderPath": [],
+    "version": 0,
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

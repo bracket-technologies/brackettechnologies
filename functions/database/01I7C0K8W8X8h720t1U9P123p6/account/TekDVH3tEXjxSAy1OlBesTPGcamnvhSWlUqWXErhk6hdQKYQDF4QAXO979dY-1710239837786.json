@@ -1,0 +1,28 @@
+{
+  "ref": "ACC-00000271",
+  "ledgerAccount": "725/1/1",
+  "blockAccount": "No",
+  "name": "Produced Items (Variation)",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239837788,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "7",
+    "72",
+    "725"
+  ],
+  "__props__": {
+    "id": "Q1x7P1A052e4f6Y3B5h2F8P8S0",
+    "doc": "TekDVH3tEXjxSAy1OlBesTPGcamnvhSWlUqWXErhk6hdQKYQDF4QAXO979dY-1710239837786",
+    "creationDate": 1710246352880,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

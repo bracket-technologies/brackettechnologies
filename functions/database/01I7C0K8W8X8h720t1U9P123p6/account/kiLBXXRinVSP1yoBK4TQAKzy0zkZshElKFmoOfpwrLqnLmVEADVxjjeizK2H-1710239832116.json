@@ -1,0 +1,28 @@
+{
+  "ref": "ACC-00000049",
+  "ledgerAccount": "621/1/1",
+  "blockAccount": "No",
+  "name": "Costs Related To Sub Contracts",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239832116,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "62",
+    "621"
+  ],
+  "__props__": {
+    "id": "d1Q7o17072O4M6j335R2I9s4F4",
+    "doc": "kiLBXXRinVSP1yoBK4TQAKzy0zkZshElKFmoOfpwrLqnLmVEADVxjjeizK2H-1710239832116",
+    "creationDate": 1710246352944,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

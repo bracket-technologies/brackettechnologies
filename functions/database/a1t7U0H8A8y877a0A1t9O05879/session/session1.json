@@ -1,0 +1,27 @@
+{
+  "accountID": "k1A7R0N8X8Y8l7c030q8S8W7O3",
+  "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+  "userID": "41V7H078W8I8I780z1m9Y2E4Y2",
+  "dataDB": "a1t7U0H8A8y877a0A1t9O05879",
+  "dataKEY": "d17770q8A8Z7l0Q0l031g188q9",
+  "expiryDate": 9999999999999,
+  "encryptionKey": "",
+  "subscriptions": [
+    {
+      "type": "view",
+      "db": "view",
+      "collection": "d17770q8A8Z7l0Q0l031g188q9",
+      "doc": "console",
+      "expiryDate": 9999999999999
+    }
+  ],
+  "__props__": {
+    "db": "a1t7U0H8A8y877a0A1t9O05879",
+    "collection": "session",
+    "id": "61Q7V0B8j8I887D0P1e8q9Y7C7",
+    "doc": "session1",
+    "creationDate": 1710246347074,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2"
+  }
+}

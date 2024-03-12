@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000237",
+  "ledgerAccount": "6760/1/1",
+  "blockAccount": "No",
+  "name": "Net Charges on Disposal of Securities",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239836783,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "67",
+    "676",
+    "6760"
+  ],
+  "__props__": {
+    "id": "m1Y7e1S0l2k4E6e3q5V279T8X7",
+    "doc": "yTfU9vPbhizpbYabjauOGn0Ss38mdI3O8rwmZgH41VJ9zZyBz3u3zZz6SscO-1710239836688",
+    "creationDate": 1710246352987,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

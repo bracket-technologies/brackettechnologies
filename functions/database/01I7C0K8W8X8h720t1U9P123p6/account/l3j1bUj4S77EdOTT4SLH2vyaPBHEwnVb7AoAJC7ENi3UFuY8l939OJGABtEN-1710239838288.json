@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000299",
+  "ledgerAccount": "7721/1/1",
+  "blockAccount": "No",
+  "name": "Revenue From Securities Placements",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239838289,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "7",
+    "77",
+    "772",
+    "7721"
+  ],
+  "__props__": {
+    "id": "c1M7b1F0K274P6G3E5a2a9B4n6",
+    "doc": "l3j1bUj4S77EdOTT4SLH2vyaPBHEwnVb7AoAJC7ENi3UFuY8l939OJGABtEN-1710239838288",
+    "creationDate": 1710246352946,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

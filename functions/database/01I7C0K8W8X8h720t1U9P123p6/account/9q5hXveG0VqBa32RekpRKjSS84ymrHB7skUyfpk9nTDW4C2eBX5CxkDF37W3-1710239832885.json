@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000088",
+  "ledgerAccount": "6311/1/1",
+  "blockAccount": "No",
+  "name": "Salaries",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239832886,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "63",
+    "631",
+    "6311"
+  ],
+  "__props__": {
+    "id": "F1S7r1l0A2X4V6a3y5t2x7J9q7",
+    "doc": "9q5hXveG0VqBa32RekpRKjSS84ymrHB7skUyfpk9nTDW4C2eBX5CxkDF37W3-1710239832885",
+    "creationDate": 1710246352797,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

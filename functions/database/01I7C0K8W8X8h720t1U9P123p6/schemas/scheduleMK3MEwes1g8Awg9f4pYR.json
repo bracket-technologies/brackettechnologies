@@ -1,0 +1,54 @@
+{
+  "create": {
+    "notification": {
+      "keyValue": [
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": "true"
+        },
+        {
+          "path": "notificationId",
+          "type": "string",
+          "key": "notification",
+          "required": "true"
+        }
+      ],
+      "nextStep": {
+        "manager": "notification",
+        "collection": "session"
+      }
+    }
+  },
+  "collection": "schedule",
+  "__props__": {
+    "id": "81L781p0K2S4p6K325V1D8Q6C7",
+    "doc": "scheduleMK3MEwes1g8Awg9f4pYR",
+    "creationDate": 1710246351867,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "create",
+          "notification",
+          "keyValue",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "notification",
+          "keyValue",
+          0
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

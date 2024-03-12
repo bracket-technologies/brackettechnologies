@@ -1,0 +1,523 @@
+{
+  "identifier": "voucher",
+  "searchEngineInputs": "voucherSharedInfo",
+  "createFormInputs": "voucherSharedInfo",
+  "tablevvv": [
+    {
+      "#onClickRowAction": "openBalanceSheet()",
+      "collection": "voucher",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Voucher#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "creationDate",
+          "header": "Date",
+          "formatCell": "toCellDate()",
+          "fraction": "1fr"
+        },
+        {
+          "path": "status",
+          "header": "Status",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "balanceSheet": "true",
+          "delete": true,
+          "justifyContent": "end",
+          "customIcon": [
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Pending"
+                  ],
+                  "conditionReference": "status"
+                }
+              ],
+              "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/Ry6VCfrImishYVFev3Qy?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=JHHcpMp5oYR%2FejdfJpCBeJz3dF%2FCCzEW8INeKKAUTPhkddgrrZ55HJ7a2sGI4PpwCsldZ1ATIQc%2FYCezQFsqX8AY6FR3xYK%2F4DeYLJCLX8gjj%2BRaa8yF4l0Nq4zZ34lIWR0Ed3Ma%2F9UB5DpYHlH6AKXNCCFgU0oVHbbg1xGPEZL%2BzphHwdqehvKSNPeQxMNHEHEHGmNfzWMhL3M8JfoQiLpnqKsxTJ8lwqlOsAAQKnbkS1gQUWb7uHwYOHwFHObAdqoGN2GJsOMa5L%2BByn7Y8cddcJbIHIUq4Wc54dvURkubQXyaKMkuTrMNyHAySFSVeVxXyTRYKugcUBe0MQoDrg%3D%3D",
+              "tooltip": "confirm",
+              "action": "confirmPendingVoucher()"
+            },
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Confirmed"
+                  ],
+                  "conditionReference": "status"
+                }
+              ],
+              "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/csjhcpIhV870ttxUYOVl?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=Ftelk4suiYSTqafTtmOKQ47tEBMT2jTg6NznHDjzA6sCMq%2BApzyFOMZVz7yGIO71FR3U%2F6EqznpqrgZ9Y5Z8pEVaOo8FJIUYYZ9kThL4sVDx2YelpU%2FyJSpfToW5X7voyJV87yrdAtWqHmV5LMT%2Bdapetw0sp9FhOIGSwfTvYqO84ZMp9IzqNa%2BMLMjHFbfQiKxKrSB7eGoFHx1EIGZ1jCOwHtOkAladQ49fvJbrNgFFTf%2BaNVFxBP9F%2FfxANWwizU7Ck2WDjO%2BU3bc7QEaeD75NLOvOtdy7jqUiekZ%2FV%2BeTH%2FN1DZKKQtOdN3MEN8ebVM%2F4IrR8%2B3rBuOD3kqNJjg%3D%3D",
+              "tooltip": "refund",
+              "action": "refundVoucher();#openCreateForm():[title='Payment Voucher Form';inputInfo=[collection=voucher;subInput=sharedManagersInfo:().voucherSharedInfo.createFormInputs.subInput];createable=true;read=true;docName=refundVoucherInfo;docValues=[transactions=___.transactions;type='Payment Voucher']]"
+            },
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Pending"
+                  ],
+                  "conditionReference": "status"
+                }
+              ],
+              "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/RT2XaAcbRvxR5b9rxXSH?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=CGimAr0R0Y1GRBtyAlEU2qviIKLfrsKHRVQwDm77D7%2FHHV1PmCgisrKqiHUXWrvc1uwSiGX%2FRxdomxELvAwvBQl2u9Gz08%2FkXucqhbE68liL1TPm0ZlcqKRbTwPApTi3e%2BD8qk3KqVwJ8wimxBcqtgUJf4TqXPGx336BUTpLqrhsLpptfgJISJbqRm1M74RuA5Yna5CluBD9jIUJ4UBUb8V3lJYTOM8h34MwuwgC8aMt7nJl7EliD%2BWjDlw0mR8uGyq2omH37IEChGZTvBTsHim7422jYcHiuLYvS9m60un8uni9MIyUsh6R9mwUADZ0L6Yzm3aXyh2awou6yP9BXA%3D%3D",
+              "tooltip": "cancel"
+            }
+          ],
+          "fraction": ".5fr"
+        }
+      ]
+    }
+  ],
+  "title": "Receipt Manager",
+  "managerName": "receiptVoucher",
+  "type": "Receipt Voucher",
+  "#searchEngineInputs": [
+    {
+      "clearable": true,
+      "inputPath": "voucherRef",
+      "inputLabel": "Voucher#",
+      "hideSearchIcon": true,
+      "collection": "voucher",
+      "searchable": true
+    },
+    {
+      "clearable": true,
+      "inputPath": "invoiceRef",
+      "inputLabel": "Invoice#",
+      "collection": "invoice",
+      "searchable": true
+    },
+    {
+      "inputPath": "creditAccount",
+      "generalLedger": true,
+      "inputLabel": "Credit Account",
+      "#allowedLedgers": [
+        "5"
+      ]
+    },
+    {
+      "inputPath": "debitAccount",
+      "generalLedger": "true",
+      "inputLabel": "Debit Account",
+      "#allowedLedgers": [
+        "5"
+      ]
+    },
+    {
+      "inputPath": "fromDate",
+      "inputLabel": "From Date",
+      "type": "date"
+    },
+    {
+      "inputPath": "toDate",
+      "inputLabel": "To Date",
+      "type": "date"
+    },
+    {
+      "clearable": true,
+      "inputPath": "status",
+      "readonly": "readonly",
+      "inputLabel": "Status",
+      "inputValue": "Confirmed",
+      "items": [
+        "Pending",
+        "Confirmed",
+        "Canceled"
+      ]
+    }
+  ],
+  "popupInfo": {
+    "docName": "voucherInfo",
+    "title": "Receipt Voucher Form"
+  },
+  "table": [
+    {
+      "#onClickRowAction": "openBalanceSheet()",
+      "collection": "voucher",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Voucher#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "creationDate",
+          "header": "Date",
+          "formatCell": "toCellDate()",
+          "fraction": "1fr"
+        },
+        {
+          "path": "transactions",
+          "header": "Financal Account",
+          "innerPath": "paymentWay",
+          "fraction": "1fr"
+        },
+        {
+          "path": "transactions",
+          "header": "Receivables and Payables Account",
+          "innerPath": "ledgerAccount",
+          "fraction": "1fr"
+        },
+        {
+          "path": "transactions",
+          "header": "Description",
+          "innerPath": "description",
+          "fraction": "1fr"
+        },
+        {
+          "path": "status",
+          "header": "Status",
+          "fraction": "1fr"
+        },
+        {
+          "path": "transactions",
+          "header": "Charges/Fees",
+          "innerPath": "chargesFeesAmount",
+          "fraction": "1fr"
+        },
+        {
+          "path": "transactions",
+          "header": "Amount",
+          "formatCell": "toPrice()",
+          "innerPath": "amount",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "balanceSheet": "true",
+          "delete": true,
+          "justifyContent": "end",
+          "customIcon": [
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Pending"
+                  ],
+                  "conditionReference": "status"
+                }
+              ],
+              "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/Ry6VCfrImishYVFev3Qy?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=JHHcpMp5oYR%2FejdfJpCBeJz3dF%2FCCzEW8INeKKAUTPhkddgrrZ55HJ7a2sGI4PpwCsldZ1ATIQc%2FYCezQFsqX8AY6FR3xYK%2F4DeYLJCLX8gjj%2BRaa8yF4l0Nq4zZ34lIWR0Ed3Ma%2F9UB5DpYHlH6AKXNCCFgU0oVHbbg1xGPEZL%2BzphHwdqehvKSNPeQxMNHEHEHGmNfzWMhL3M8JfoQiLpnqKsxTJ8lwqlOsAAQKnbkS1gQUWb7uHwYOHwFHObAdqoGN2GJsOMa5L%2BByn7Y8cddcJbIHIUq4Wc54dvURkubQXyaKMkuTrMNyHAySFSVeVxXyTRYKugcUBe0MQoDrg%3D%3D",
+              "tooltip": "confirm",
+              "action": "confirmPendingVoucher()"
+            },
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Confirmed"
+                  ],
+                  "conditionReference": "status"
+                }
+              ],
+              "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/csjhcpIhV870ttxUYOVl?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=Ftelk4suiYSTqafTtmOKQ47tEBMT2jTg6NznHDjzA6sCMq%2BApzyFOMZVz7yGIO71FR3U%2F6EqznpqrgZ9Y5Z8pEVaOo8FJIUYYZ9kThL4sVDx2YelpU%2FyJSpfToW5X7voyJV87yrdAtWqHmV5LMT%2Bdapetw0sp9FhOIGSwfTvYqO84ZMp9IzqNa%2BMLMjHFbfQiKxKrSB7eGoFHx1EIGZ1jCOwHtOkAladQ49fvJbrNgFFTf%2BaNVFxBP9F%2FfxANWwizU7Ck2WDjO%2BU3bc7QEaeD75NLOvOtdy7jqUiekZ%2FV%2BeTH%2FN1DZKKQtOdN3MEN8ebVM%2F4IrR8%2B3rBuOD3kqNJjg%3D%3D",
+              "tooltip": "refund",
+              "action": "refundVoucher();#openCreateForm():[title='Payment Voucher Form';inputInfo=[collection=voucher;subInput=sharedManagersInfo:().voucherSharedInfo.createFormInputs.subInput];createable=true;read=true;docName=refundVoucherInfo;docValues=[transactions=___.transactions;type='Payment Voucher']]"
+            },
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Pending"
+                  ],
+                  "conditionReference": "status"
+                }
+              ],
+              "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/RT2XaAcbRvxR5b9rxXSH?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=CGimAr0R0Y1GRBtyAlEU2qviIKLfrsKHRVQwDm77D7%2FHHV1PmCgisrKqiHUXWrvc1uwSiGX%2FRxdomxELvAwvBQl2u9Gz08%2FkXucqhbE68liL1TPm0ZlcqKRbTwPApTi3e%2BD8qk3KqVwJ8wimxBcqtgUJf4TqXPGx336BUTpLqrhsLpptfgJISJbqRm1M74RuA5Yna5CluBD9jIUJ4UBUb8V3lJYTOM8h34MwuwgC8aMt7nJl7EliD%2BWjDlw0mR8uGyq2omH37IEChGZTvBTsHim7422jYcHiuLYvS9m60un8uni9MIyUsh6R9mwUADZ0L6Yzm3aXyh2awou6yP9BXA%3D%3D",
+              "tooltip": "cancel"
+            }
+          ],
+          "fraction": ".5fr"
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "K1G7a1d0v2C4R6j3T5M0H3v0R9",
+    "doc": "receiptVoucherManager",
+    "creationDate": 1710246350309,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          11
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          2,
+          "#allowedLedgers"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          5
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "inputLabel"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          2,
+          "multiInput"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          6
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          4
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          1
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          2
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          3
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput"
+        ]
+      },
+      {
+        "path": [
+          "#searchEngineInputs"
+        ]
+      },
+      {
+        "path": [
+          "popupInfo"
+        ]
+      },
+      {
+        "path": [
+          "tablevvv",
+          0
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "general",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0
+        ]
+      },
+      {
+        "note": "Credit",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "note": "Debit",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2
+        ]
+      },
+      {
+        "note": "note",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3
+        ]
+      }
+    ],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

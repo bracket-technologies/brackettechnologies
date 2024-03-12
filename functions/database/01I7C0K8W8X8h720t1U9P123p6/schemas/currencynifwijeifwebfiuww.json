@@ -1,0 +1,96 @@
+{
+  "create": {
+    "currency": {
+      "keyValue": [
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": true
+        },
+        {
+          "path": "code",
+          "type": "string",
+          "key": "code",
+          "required": true
+        },
+        {
+          "path": "country",
+          "type": "string",
+          "key": "country",
+          "required": true
+        },
+        {
+          "path": "exchangeRate",
+          "type": "number",
+          "key": "exchangeRate",
+          "required": true
+        },
+        {
+          "path": "createdCurrency",
+          "type": "string",
+          "key": "createdCurrency",
+          "required": true
+        },
+        {
+          "path": "createdCurrencyRate",
+          "type": "number",
+          "key": "createdCurrencyRate",
+          "required": true
+        },
+        {
+          "path": "vatRate",
+          "type": "number",
+          "key": "vatRate"
+        },
+        {
+          "path": "overview",
+          "type": "string",
+          "key": "overview"
+        },
+        {
+          "path": "symbole",
+          "type": "string",
+          "key": "symbole",
+          "required": true
+        },
+        {
+          "path": "decimals",
+          "type": "string",
+          "key": "decimals"
+        },
+        {
+          "path": "systemCurrencyRate",
+          "type": "number",
+          "key": "systemCurrencyRate",
+          "required": true
+        },
+        {
+          "path": "name",
+          "type": "string",
+          "key": "name",
+          "required": true
+        },
+        {
+          "path": "note",
+          "type": "string",
+          "key": "note"
+        }
+      ],
+      "generateReference": true
+    }
+  },
+  "collection": "currency",
+  "__props__": {
+    "id": "a1U7T1g022n4B6d3H581e836C5",
+    "doc": "currencynifwijeifwebfiuww",
+    "creationDate": 1710246351865,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

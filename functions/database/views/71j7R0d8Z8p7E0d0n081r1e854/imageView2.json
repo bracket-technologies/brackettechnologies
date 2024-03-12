@@ -1,0 +1,57 @@
+{
+  "view": "View?class=column;style:[width=100%;justifyContent=center;paddingTop=2rem]",
+  "children": [
+    {
+      "view": "View?class=flexbox;style:[overflow=hidden;width=100%;height=90%]",
+      "children": [
+        {
+          "view": "Image?src=__.imageData.url;style:[maxWidth=100%;maxHeight=100%;width=35rem]?__.imageData.type.includes():[image]"
+        },
+        {
+          "view": "View?class=flexbox;style:[position=relative]?!__.imageData.type.includes():[image]",
+          "children": [
+            {
+              "view": "Icon?name=description;google.symbol;style:[fontSize=15rem]"
+            },
+            {
+              "view": "Icon?name=downloading;google.symbol;download=_.imageData.url;style:[position=absolute;fontSize=4rem;position=absolute;bottom=75%;left=71%;cursor=pointer];click:[window().open():[__.imageData.url]]"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "creationDate": 1709045204173,
+  "__props__": {
+    "db": "views",
+    "collection": "71j7R0d8Z8p7E0d0n081r1e854",
+    "id": "n1K7N1d0F2e4w6R3t5j3j4P6t2",
+    "doc": "imageView2",
+    "creationDate": 1710246353462,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "confirmPopup": "confirmWindow:()=[title='Confirmation Deletion';text='Continue deleting image?';action='deleteImage()'];():confirmWindow.update();():confirmWindow.style():[visibility=visible;opacity=1]",
+      "downloadFile": "window().open():[_.imageData.url]",
+      "pullTag": "doc().tags.pullItem():[_];3rdParent().update()",
+      "pushTag": "doc().tags.push():[txt()];3rdParent().2ndParent().next().update();clear();focus()?e().key=Enter",
+      "editImage": "Gallery:()._():[if():[_.id=__.imageData.id]:[Gallery:().pullItem():[_];Gallery:().replace():[__.imageData]]];loader.show;updateImage():[doc()]:[if():[_.success]:[loader.hide;note():[text=_.message];closeGeneralPopup();():GalleryManager.update()]:[loader.hide;note():[text=_.message]]]",
+      "saveImage": "loader.show;uploadImage():[data=doc();branch=userData:().currentBranch]:[if():[_.success]:[note():[text='File uploaded successfully!'];searchDataImage:().push():[_.data];():GalleryManager.update();closeGeneralPopup();loader.hide]:[note():[text='Try again!';danger];loader.hide]]",
+      "#deleteImage": "loader.show;eraseImg():[_.imageData.id]:[if():[_.success]:[note():[text='Image deleted']];closeConfirmWindow();closeGeneralPopup();loader.hide;():galleryContainer.update()]"
+    },
+    "collapsed": [],
+    "comments": [
+      {
+        "note": "imageData",
+        "path": [
+          "children",
+          0,
+          "children"
+        ]
+      }
+    ],
+    "folderPath": [],
+    "version": 0,
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

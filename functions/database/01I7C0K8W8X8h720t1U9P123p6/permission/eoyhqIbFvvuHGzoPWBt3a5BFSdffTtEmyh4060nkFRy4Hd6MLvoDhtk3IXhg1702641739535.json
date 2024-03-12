@@ -1,0 +1,55 @@
+{
+  "permission": {
+    "notification": [
+      "Read",
+      "Receive"
+    ],
+    "service": [
+      "Read"
+    ],
+    "voucher": [
+      "Read",
+      "Print",
+      "Create"
+    ],
+    "sheet": [
+      "Read",
+      "Create",
+      "Import",
+      "Export"
+    ],
+    "invoice": [
+      "Read",
+      "Print",
+      "Create"
+    ],
+    "account": [
+      "Edit",
+      "Read",
+      "History",
+      "Create"
+    ],
+    "dashboard": [
+      "Read"
+    ],
+    "gallery": [
+      "Read",
+      "Edit"
+    ]
+  },
+  "creationDay": 1702598400000,
+  "creationDate": 1702641739538,
+  "user": "ewdeDoX3NwxSjrv6edg4H1yKJTESxhgcmxOBozF0JGYyMnRrleWQo1LNutPb1702641735135",
+  "__props__": {
+    "id": "Y1z7Z160C2n4y673J590862527",
+    "doc": "eoyhqIbFvvuHGzoPWBt3a5BFSdffTtEmyh4060nkFRy4Hd6MLvoDhtk3IXhg1702641739535",
+    "creationDate": 1710246350657,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

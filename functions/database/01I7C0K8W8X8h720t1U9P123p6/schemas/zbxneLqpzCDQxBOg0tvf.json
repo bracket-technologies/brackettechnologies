@@ -1,0 +1,37 @@
+{
+  "create": {
+    "user": {
+      "keyValue": [
+        {
+          "path": "usernameId",
+          "type": "string",
+          "key": "username",
+          "required": "true"
+        },
+        {
+          "path": "password",
+          "type": "string",
+          "required": "true",
+          "key": "password"
+        }
+      ],
+      "nextStep": {
+        "manager": "user",
+        "collection": "permission"
+      }
+    }
+  },
+  "collection": "password",
+  "__props__": {
+    "id": "y1c7L1A0u2K4J6r3K5I1n847E3",
+    "doc": "zbxneLqpzCDQxBOg0tvf",
+    "creationDate": 1710246351873,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

@@ -9,7 +9,7 @@ module.exports = {
         // recheck after decoding
         if (typeof string !== "string") return false
 
-        if (string.slice(0, 1) === "!" || string.includes(">") || string.includes("<") || string.includes("!=")) return true
+        if (string.slice(0, 1) === "!" || string.includes(">") || string.includes("<") || string.includes("!=") || string.includes("==")) return true
         return false
     }
 }

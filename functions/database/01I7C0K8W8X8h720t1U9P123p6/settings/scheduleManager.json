@@ -1,0 +1,31 @@
+{
+  "searchEngineInputs": [
+    {
+      "clearable": true,
+      "inputPath": "ref",
+      "inputLabel": "Schedule#",
+      "hideSearchIcon": true,
+      "collection": "schedule",
+      "searchable": true
+    }
+  ],
+  "title": "Schedule Manager",
+  "__props__": {
+    "id": "51h7w1D0U2b426g3a4s8a9k4h9",
+    "doc": "scheduleManager",
+    "creationDate": 1710246348949,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "searchEngineInputs"
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

@@ -1,0 +1,735 @@
+{
+  "create": {
+    "expenseVoucher": {
+      "keyValue": [
+        {
+          "path": "supplierAccountb",
+          "type": "ledger",
+          "key": "account"
+        },
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": "true"
+        },
+        {
+          "staticValue": "Yes",
+          "key": "openingBalance"
+        },
+        {
+          "path": "currency",
+          "type": "string",
+          "key": "currency",
+          "required": "true"
+        },
+        {
+          "staticValue": "debit",
+          "key": "credit-debit"
+        }
+      ],
+      "generateReference": true
+    },
+    "vatAccount": {
+      "keyValue": [
+        {
+          "path": "vatAccount",
+          "type": "string",
+          "key": "generalLedger",
+          "required": "true"
+        },
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": "true"
+        },
+        {
+          "staticValue": "Yes",
+          "key": "openingBalance"
+        },
+        {
+          "path": "currency",
+          "type": "string",
+          "key": "currency",
+          "required": "true"
+        },
+        {
+          "staticValue": "Opening",
+          "key": "description"
+        },
+        {
+          "staticValue": 0,
+          "key": "credit"
+        },
+        {
+          "staticValue": 0,
+          "key": "debit"
+        },
+        {
+          "path": "headAccount",
+          "type": "string",
+          "key": "headAccount"
+        },
+        {
+          "path": "accountId",
+          "type": "string",
+          "key": "account",
+          "required": "true"
+        }
+      ],
+      "helpersKeyValue": [
+        {
+          "staticValue": "toGetLastTransactionForVatAccount",
+          "key": "helperKey"
+        }
+      ],
+      "generateReference": true
+    },
+    "transaction": {
+      "keyValue": [
+        {
+          "listPath": "transactions",
+          "#input": [
+            {
+              "path": "ledgerAccount",
+              "type": "ledger",
+              "key": "account",
+              "required": "true"
+            },
+            {
+              "path": "credit-debit",
+              "type": "string",
+              "key": "credit-debit",
+              "required": true
+            },
+            {
+              "path": "currency",
+              "type": "string",
+              "key": "currency",
+              "required": "true"
+            },
+            {
+              "path": "amount",
+              "type": "number",
+              "key": "amount",
+              "required": true
+            },
+            {
+              "path": "description",
+              "type": "string",
+              "key": "description"
+            },
+            {
+              "path": "exchangeRate",
+              "type": "number",
+              "key": "exchangeRate",
+              "required": true
+            }
+          ],
+          "listOfDocs": "true",
+          "docsKeyValue": [
+            {
+              "input": [
+                {
+                  "path": "ledgerAccount",
+                  "type": "string",
+                  "key": "ledgerAccount"
+                },
+                {
+                  "path": "ledgerAccount",
+                  "type": "ledger",
+                  "key": "account",
+                  "required": "true"
+                },
+                {
+                  "path": "credit-debit",
+                  "type": "string",
+                  "key": "credit-debit",
+                  "required": true
+                },
+                {
+                  "path": "currency",
+                  "type": "string",
+                  "key": "currency"
+                },
+                {
+                  "path": "amount",
+                  "type": "number",
+                  "key": "amount",
+                  "required": true
+                },
+                {
+                  "path": "description",
+                  "type": "string",
+                  "key": "description"
+                },
+                {
+                  "path": "exchangeRate",
+                  "type": "number",
+                  "key": "exchangeRate",
+                  "required": true
+                }
+              ],
+              "collection": "transaction"
+            }
+          ],
+          "collection": "transaction",
+          "generateReference": true
+        }
+      ],
+      "ignoreMainDoc": true
+    },
+    "account": {
+      "keyValue": [
+        {
+          "path": "generalLedger",
+          "type": "string",
+          "key": "generalLedger",
+          "required": "true"
+        },
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": "true"
+        },
+        {
+          "path": "credit-debit",
+          "condition": [
+            {
+              "condition": "Capitals",
+              "conditionReference": "ledgerAccountName",
+              "operator": "!="
+            }
+          ],
+          "type": "string",
+          "key": "credit-debit",
+          "required": "true"
+        },
+        {
+          "staticValue": "Yes",
+          "key": "openingBalance"
+        },
+        {
+          "path": "currency",
+          "type": "string",
+          "key": "currency",
+          "required": "true"
+        },
+        {
+          "staticValue": "Opening",
+          "key": "description"
+        },
+        {
+          "path": "amount",
+          "condition": [
+            {
+              "condition": "Capitals",
+              "conditionReference": "ledgerAccountName",
+              "operator": "!="
+            }
+          ],
+          "type": "number",
+          "key": "amount",
+          "required": true
+        },
+        {
+          "condition": [
+            {
+              "condition": [
+                "Capitals"
+              ],
+              "conditionReference": "ledgerAccountName"
+            }
+          ],
+          "staticValue": 0,
+          "key": "amount"
+        },
+        {
+          "path": "headAccount",
+          "type": "string",
+          "key": "headAccount"
+        },
+        {
+          "path": "accountId",
+          "type": "string",
+          "key": "account",
+          "required": "true"
+        },
+        {
+          "#staticDoc": true,
+          "keyValuebb": [
+            {
+              "staticValue": "119",
+              "key": "generalLedger"
+            },
+            {
+              "staticValue": "119/1/1",
+              "key": "ledgerAccount"
+            },
+            {
+              "staticValue": "119/1/1",
+              "type": "ledger",
+              "key": "account"
+            },
+            {
+              "staticValue": "Debit",
+              "condition": [
+                {
+                  "condition": [
+                    "Credit"
+                  ],
+                  "conditionReference": "credit-debit"
+                }
+              ],
+              "key": "credit-debit"
+            },
+            {
+              "staticValue": "Credit",
+              "condition": [
+                {
+                  "condition": [
+                    "Debit"
+                  ],
+                  "conditionReference": "credit-debit"
+                }
+              ],
+              "key": "credit-debit"
+            },
+            {
+              "staticValue": "Yes",
+              "key": "openingBalance"
+            },
+            {
+              "path": "currency",
+              "type": "string",
+              "key": "currency",
+              "required": "true"
+            },
+            {
+              "staticValue": "Opening",
+              "key": "description"
+            },
+            {
+              "path": "amount",
+              "type": "number",
+              "key": "amount",
+              "required": true
+            },
+            {
+              "path": "headAccount",
+              "type": "string",
+              "key": "headAccount"
+            },
+            {
+              "staticValue": "119",
+              "key": "generalLedger"
+            }
+          ],
+          "conditionbb": [
+            {
+              "condition": "Capitals",
+              "conditionReference": "ledgerAccountName",
+              "operator": "!="
+            }
+          ],
+          "collectionbb": "transaction",
+          "generateReferencebb": true
+        }
+      ],
+      "helpersKeyValue": [
+        {
+          "staticValue": "toGetLastBalance",
+          "key": "helperKey"
+        }
+      ],
+      "nextStep": [
+        {
+          "condition": [
+            {
+              "condition": [
+                "Fixed Assets"
+              ],
+              "conditionReference": "ledgerAccountName"
+            },
+            {
+              "condition": [
+                "Yes"
+              ],
+              "conditionReference": "createDepreciationAccount"
+            }
+          ],
+          "manager": "assetDepreciation",
+          "collection": "account"
+        },
+        {
+          "condition": [
+            {
+              "condition": [
+                "Receivables and Payables"
+              ],
+              "conditionReference": "ledgerAccountName"
+            },
+            {
+              "condition": [
+                "Yes"
+              ],
+              "conditionReference": "createVatAccount"
+            }
+          ],
+          "manager": "vatAccount",
+          "collection": "account"
+        }
+      ],
+      "generateReference": true
+    },
+    "assetDepreciation": {
+      "keyValue": [
+        {
+          "path": "generalLedger",
+          "type": "string",
+          "key": "generalLedger",
+          "required": "true"
+        },
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": "true"
+        },
+        {
+          "staticValue": "Yes",
+          "key": "openingBalance"
+        },
+        {
+          "path": "currency",
+          "type": "string",
+          "key": "currency",
+          "required": "true"
+        },
+        {
+          "staticValue": 0,
+          "key": "credit"
+        },
+        {
+          "staticValue": 0,
+          "key": "debit"
+        },
+        {
+          "staticValue": "Opening",
+          "key": "description"
+        },
+        {
+          "path": "headAccount",
+          "type": "string",
+          "key": "headAccount"
+        },
+        {
+          "path": "accountId",
+          "type": "string",
+          "key": "account",
+          "required": "true"
+        }
+      ],
+      "helpersKeyValue": [
+        {
+          "staticValue": "toGetLastTransactionForDepreciation",
+          "key": "helperKey"
+        }
+      ],
+      "generateReference": true
+    }
+  },
+  "collection": "transaction",
+  "creationDate": 1709111455754,
+  "__props__": {
+    "id": "O1K7E1704204o6J3s5I1a807B0",
+    "doc": "transactiondwjiddkpwdnwdejiefwd",
+    "creationDate": 1710246351870,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "#input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "multipleDocs",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "multipleDocs",
+          0,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "multipleDocs",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "multipleDocs",
+          0,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "multipleDocs",
+          0,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "multipleDocs",
+          0,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "assetDepreciation",
+          "nextStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "vatAccount",
+          "helpersKeyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "assetDepreciation",
+          "helpersKeyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "account",
+          "nextStep"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "account",
+          "helpersKeyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "vatAccount",
+          "keyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "vatAccount"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "assetDepreciation",
+          "keyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "assetDepreciation"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "expenseVoucher"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "transaction",
+          "keyValue",
+          0,
+          "docsKeyValue",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "account",
+          "keyValue",
+          9,
+          "keyValue",
+          3,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "account",
+          "keyValue",
+          9,
+          "keyValue",
+          4,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "account",
+          "keyValue",
+          9,
+          "keyValue"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "account",
+          "keyValue",
+          10,
+          "conditionbb"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "account",
+          "keyValue",
+          10,
+          "keyValuebb"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "account",
+          "keyValue"
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

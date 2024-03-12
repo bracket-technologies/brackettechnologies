@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000186",
+  "ledgerAccount": "6430/1/1",
+  "blockAccount": "No",
+  "name": "Excise Tax",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239834983,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "64",
+    "643",
+    "6430"
+  ],
+  "__props__": {
+    "id": "N1S7c190g2M426L3R5K2I777e7",
+    "doc": "6prdD2kcpXpsuw3dwIcxMgRaBo4iFjcv4HRc8Y8OODwxyierY5FwyiZYWczg-1710239834982",
+    "creationDate": 1710246352777,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}

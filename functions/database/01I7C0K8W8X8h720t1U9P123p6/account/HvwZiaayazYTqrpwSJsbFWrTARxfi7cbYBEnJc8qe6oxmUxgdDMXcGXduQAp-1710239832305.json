@@ -1,0 +1,29 @@
+{
+  "ref": "ACC-00000059",
+  "ledgerAccount": "6257/1/1",
+  "blockAccount": "No",
+  "name": "Know How",
+  "description": "Default account",
+  "currency": "USD",
+  "creationDay": 1710201600000,
+  "creationDate": 1710239832306,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "startsWith": [
+    "6",
+    "62",
+    "625",
+    "6257"
+  ],
+  "__props__": {
+    "id": "p1R7V1c0s2w4w6g3c5Z2c822z6",
+    "doc": "HvwZiaayazYTqrpwSJsbFWrTARxfi7cbYBEnJc8qe6oxmUxgdDMXcGXduQAp-1710239832305",
+    "creationDate": 1710246352826,
+    "active": true,
+    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+  }
+}
