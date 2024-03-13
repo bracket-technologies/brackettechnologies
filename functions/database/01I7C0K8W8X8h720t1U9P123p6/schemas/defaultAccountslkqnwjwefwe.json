@@ -121,11 +121,11 @@
   },
   "collection": "defaultAccounts",
   "__props__": {
-    "id": "g1I7J1S0f2a4Q6a3A571l8F6Z6",
+    "id": "a1a7l1x0B3C3s0l7v8z71304B2",
     "doc": "defaultAccountslkqnwjwefwe",
-    "creationDate": 1710246351866,
+    "creationDate": 1710330787342,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -162,6 +162,7 @@
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 169
   }
 }

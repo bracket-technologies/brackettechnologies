@@ -54,15 +54,16 @@
     }
   ],
   "__props__": {
-    "id": "v157X1w0V2o4B623d501w0n5T4",
+    "id": "f1G7C1F013O330o7S8e6p9v603",
     "doc": "createRoomInfo",
-    "creationDate": 1710246351054,
+    "creationDate": 1710330786963,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [],
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 147
   }
 }

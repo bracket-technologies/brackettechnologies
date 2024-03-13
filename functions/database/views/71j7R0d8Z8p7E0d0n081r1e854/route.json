@@ -10,11 +10,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "W1L7y1x0q2g4z6R3a5p3h4V7d2",
+    "id": "X1x7U1U0H353c0Z7w9Z093d3W9",
     "doc": "route",
-    "creationDate": 1710246353472,
+    "creationDate": 1710330790339,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "getDataOnLoad": {
         "createCollectionsList": "collectionsList:()=:[collection=account;mapName=allLedgersAccounts]:[collection=debitNoteInfo;mapName=debitNoteInfo]:[collection=creditNoteInfo;mapName=creditNoteInfo]:[collection=publicCollection;mapName=publicData]:[collection=expensesInfo;mapName=expensesInfo]:[collection=sharedManagersInfo;mapName=sharedManagersInfo]:[collection=paymentVoucherInfo;mapName=paymentVoucherInfo]:[collection=transfersInfo;mapName=journalsInfo]:[collection=ticketInvoiceInfo;mapName=ticketInvoiceInfo]:[collection=tourInvoiceInfo;mapName=tourInvoiceInfo]:[collection=charterInvoiceInfo;mapName=charterInvoiceInfo]:[collection=receiptVoucherInfo;mapName=receiptVoucherInfo]:[collection=accountingJournalInfo;mapName=transaction]:[collection=sheet;mapName=governmentAccounts;field=[name='Government Accounts']]:[collection=bracketSheet;mapName=bracketSheetTable]:[collection=generalTableInfo;mapName=tableInfo]:[collection=settings;mapName=settingsInfo]:[collection=accountingServiceInfo;mapName=accountingServiceInfo]:[collection=globalPathes;mapName=collectionsInfo]:[collection=printViewInfo;mapName=printView]:[collection=galleryManagerInfo;mapName=galleryManagerInfo]:[collection=generalLedgerInfo;mapName=generalLedgerInfo]",
@@ -206,23 +206,30 @@
       },
       "saveTransaction": {
         "resetData": "().editedData=[[_.data.'credit-debit'.toLowerCase()]=[_.data.amount];account=_.data.account;ledgerAccount=_.data.ledgerAccount;id=_.data.id;creationDate=_.data.creationDate;creationDay=_.data.creationDay;ref=_.data.ref;description=_.data.description;branch=_.data.branch];().editedData.():[debit=().editedData.debit||0;credit=().editedData.credit||0;openingBalance=transactionReceivedData:().openingBalance;headAccount=transactionReceivedData:().headAccount];if():[_.data.voucher]:[().editedData.():[voucher=_.data.voucher;voucherRef=_.data.voucherRef]];#send():[success=false;data=().editedData];saveTransaction():[data=().editedData]",
-        "#setNewBalancett": "if():[transactionReceivedData:().openingBalance='Yes']:[if():[transactionReceivedData:().amount.toString().0='-']:[setNewBalanceIfCredit()]:[setNewBalanceIfDebit()]]:[newBalance:()=[account=transactionReceivedData:().account;credit=transactionReceivedData:().credit;debit=transactionReceivedData:().debit];if():[transactionReceivedData:().voucher]:[newBalance:().():[voucher=transactionReceivedData:().voucher;voucherRef=transactionReceivedData:().voucherRef]];setAccountBalances()]",
+        "addAnalysisDataToNewBalanceDoc": "().x=1;while():[().x<=().taha.len()]:[if():[newBalance:().accountBalances.find():[number=[().taha.[().taha.len()-().x].number]]]:[newBalance:().accountBalances.find():[number=[().taha.[().taha.len()-().x].number]].():[credit=().taha.[().taha.len()-().x].credit;debit=().taha.[().taha.len()-().x].debit;balance=().taha.[().taha.len()-().x].balance]]:[newBalance:().accountBalances.push():[[number=().taha.[().taha.len()-().x].number;credit=().taha.[().taha.len()-().x].credit;debit=().taha.[().taha.len()-().x].debit;balance=().taha.[().taha.len()-().x].balance]]];().x+=1]",
         "setBalanceWithHeadAccount": "[getAccounts():[id=_.data.headAccount]]()::[getBalances()]",
-        "#saveTrialUpdates": "save():[collection=ledgersBalanceTracker;doc=ledgersBalances;update=['0'=+]]:[newBalance:().accountBalances.push():[[account='0/0/0';debit=().trialBalance.debit;credit=().trialBalance.credit;balance=().trialBalance.debit-().trialBalance.credit]];saveBalance():[data=newBalance:()];#send():[success=false;trialBalance=().trialBalance;newBalance=newBalance:()]]",
+        "editAnalysisDocs": "().splitedGeneralLedger._():[().analysisDocInstance=().splitedGeneralLedgerData.find():[number=_];if():[().analysisDocInstance]:[handleGeneralLedgerDoc();().analysisDocInstance.del()]:[createNewAnalysisDoc()]];addAnalysisDataToNewBalanceDoc();saveAnalysisDocs();#do5ansend():[success=false;taha=().taha;mhmd=mhmd:();newBalance=newBalance:()]",
         "#setNewBalanceIfDebitbb": "transactionReceivedData:().():[credit=0;debit=transactionReceivedData:().amount];newBalance:()=[account=transactionReceivedData:().account;credit=0;debit=transactionReceivedData:().amount;accountBalances=:[account=transactionReceivedData:().account;credit=0;debit=transactionReceivedData:().amount;balance=transactionReceivedData:().amount]];if():[transactionReceivedData:().headAccount]:[setAccountBalances()]:[initializeDoc()]",
+        "handleAnalaysis": "().splitedGeneralLedger=splitGeneralLedger():[newBalance:().ledgerAccount.split():'/'.0];[().splitedGeneralLedger._():[search():[collection=analysis;field:[number=_]]:[if():[_.data.value()]:[().splitedGeneralLedgerData.push():[_.data.value()]]:[dd]]]]()::[editAnalysisDocs()]",
+        "#handleTrialBalance": "search():[collection=ledgersBalanceTracker;doc=ledgersBalances]:[if():[_.data.value()]:[().trialBalance=_.data.0;().trialBalance.debit+=newBalance:().debit;().trialBalance.credit+=newBalance:().credit;().trialBalance.balance=().trialBalance.debit-().trialBalance.credit;().trialBalance.balanceId=newBalance:().id;saveTrialUpdates()]:[send():[success=false;msg='error when handle trial balance!']]]",
+        "splitGeneralLedger": "().startsWith=:;().currentNumber='';range():[_.toString().len()-1]._():[().currentNumber+=__.toString().[_];().startsWith.push():[.currentNumber]];return():[().startsWith]",
+        "getBalances": "().existLastBalance=false;accountsAndBalances:().():lastBalance._():[if():[_]:[().existLastBalance=true]];if():[().existLastBalance]:[search():[collection=balance;docs=accountsAndBalances:().():lastBalance]:[if():[_.data.value()]:[accountsLastBalances:()=_.data.values();combineData()]:[send():[success=false;ss=accountsAndBalances:();msg='Transaction not found!']]]]:[combineData()]",
+        "saveUpdate": "save():[collection=account;data=_.data.values()]:[delGBVar();if():[!_.data]:[send():[success=false;msg='Something went wrong during update last balance']]]",
+        "handleGeneralLedgerDoc": "().analysisDocInstance.():[balanceId=newBalance:().id;credit=().analysisDocInstance.credit+newBalance:().credit;debit=().analysisDocInstance.debit+newBalance:().debit];().analysisDocInstance.balance=().analysisDocInstance.debit-().analysisDocInstance.credit;().taha.push():[().analysisDocInstance]",
+        "_": "transactionReceivedData:()=_.data;if():[_.data.'credit-debit']:[resetData()].elif():[_.data.openingBalance='Yes';_.data.headAccount]:[setBalanceWithHeadAccount()].elif():[_.data.openingBalance='Yes']:[setBalanceWithoutHeadAccount()]:[[getAccounts():[id=_.data.account]]()::[getBalances()]]",
+        "#setNewBalancett": "if():[transactionReceivedData:().openingBalance='Yes']:[if():[transactionReceivedData:().amount.toString().0='-']:[setNewBalanceIfCredit()]:[setNewBalanceIfDebit()]]:[newBalance:()=[account=transactionReceivedData:().account;credit=transactionReceivedData:().credit;debit=transactionReceivedData:().debit];if():[transactionReceivedData:().voucher]:[newBalance:().():[voucher=transactionReceivedData:().voucher;voucherRef=transactionReceivedData:().voucherRef]];setAccountBalances()]",
+        "createNewAnalysisDoc": "().taha.push():[[balanceId=newBalance:().id;number=_;credit=newBalance:().credit;debit=newBalance:().debit;balance=newBalance:().debit-newBalance:().credit;id=gen():60+'-'+[today().timestamp()+''];creationDate=today().timestamp();creationDay=todayStart().timestamp()]]",
+        "#saveTrialUpdates": "save():[collection=ledgersBalanceTracker;doc=ledgersBalances;update=['0'=+]]:[newBalance:().accountBalances.push():[[account='0/0/0';debit=().trialBalance.debit;credit=().trialBalance.credit;balance=().trialBalance.debit-().trialBalance.credit]];saveBalance():[data=newBalance:()];#send():[success=false;trialBalance=().trialBalance;newBalance=newBalance:()]]",
         "getAccounts": "search():[collection=account;doc=_.id]:[if():[_.data]:[accountsAndBalances:().push():[account=__.id;lastBalance=_.data.lastBalance;if():[!_.data.lastBalance]:[lastBalanceData=[account=__.id;branch=receviedData:().branch;description='Opening';credit=0;debit=0;accountBalances=:[account=__.id;credit=0;debit=0;balance=0]]];headAccount=_.data.headAccount||false];if():[_.data.headAccount]:[getAccounts():[id=_.data.headAccount]]]:[send():[success=false;data=_.data;msg='Account not found!']]]",
         "setAccountBalances": "accountsAndBalances:()._():[().instance=_.lastBalanceData.accountBalances.find():[account=_.account];().accountBalance=[account=_.account;credit=[().instance.credit]+[transactionReceivedData:().credit];debit=().instance.debit+transactionReceivedData:().debit];().accountBalance.balance=().accountBalance.debit-().accountBalance.credit;newBalance:().accountBalances.push():[().accountBalance]];initializeDoc()",
         "updateLastBalanceInHeadAccounts": "if():[accountsAndBalances:().():account.len()>0]:[search():[collection=account;docs=accountsAndBalances:().():account]:[if():[_.data.value()]:[_.data.values()._():[_.lastBalance=newBalance:().id];saveUpdate()]:[send():[success=false;msg='Something went wrong during update last transacion']]]]",
         "saveBalance": "save():[collection=balance;data=_.data]:[if():[_.data]:[updateLastBalanceInHeadAccounts()]:[send():[success=false;msg=;'Something went wrong during save balance!']]]",
-        "#handleTrialBalance": "search():[collection=ledgersBalanceTracker;doc=ledgersBalances]:[if():[_.data.value()]:[().trialBalance=_.data.0;().trialBalance.debit+=newBalance:().debit;().trialBalance.credit+=newBalance:().credit;().trialBalance.balance=().trialBalance.debit-().trialBalance.credit;().trialBalance.balanceId=newBalance:().id;saveTrialUpdates()]:[send():[success=false;msg='error when handle trial balance!']]]",
-        "getBalances": "().existLastBalance=false;accountsAndBalances:().():lastBalance._():[if():[_]:[().existLastBalance=true]];if():[().existLastBalance]:[search():[collection=balance;docs=accountsAndBalances:().():lastBalance]:[if():[_.data.value()]:[accountsLastBalances:()=_.data.values();combineData()]:[send():[success=false;ss=accountsAndBalances:();msg='Transaction not found!']]]]:[combineData()]",
+        "saveAnalysisDocs": "save():[collection=analysis;data=().taha]:[if():[_.data.value()]:[saveBalance():[data=newBalance:()]]:[send():[success=false;msg='Something went wrong during save analysis!']]]",
         "#setNewBalanceIfCreditbb": "transactionReceivedData:().():[credit=[[transactionReceivedData:().amount]*[-1]];debit=0];newBalance:()=[account=transactionReceivedData:().account;credit=[[transactionReceivedData:().amount]*[-1]];debit=0;accountBalances=:[account=transactionReceivedData:().account;credit=[[transactionReceivedData:().amount]*[-1]];debit=0;balance=transactionReceivedData:().amount]];if():[transactionReceivedData:().headAccount]:[setAccountBalances()]:[initializeDoc()]",
         "setBalanceWithoutHeadAccount": "newBalance:()=[account=transactionReceivedData:().account;credit=transactionReceivedData:().credit||0;debit=transactionReceivedData:().debit||0;accountBalances=:[account=transactionReceivedData:().account;credit=transactionReceivedData:().credit||0;debit=transactionReceivedData:().debit||0;balance=[[transactionReceivedData:().debit||0]-[transactionReceivedData:().credit||0]]]];#send():[success=false;newBalance=newBalance:();kk=mm];initializeDoc()",
-        "initializeDoc": "newBalance:().():[id=transactionReceivedData:().id;creationDate=transactionReceivedData:().creationDate;creationDay=transactionReceivedData:().creationDay;ref=transactionReceivedData:().ref;description=transactionReceivedData:().description;branch=transactionReceivedData:().branch];send():[success=false;newBalance=newBalance:()];#saveBalance():[data=newBalance:()];#handleTrialBalance()",
-        "saveUpdate": "save():[collection=account;data=_.data.values()]:[delGBVar();if():[!_.data]:[send():[success=false;msg='Something went wrong during update last balance']]]",
+        "initializeDoc": "newBalance:().():[id=transactionReceivedData:().id;creationDate=transactionReceivedData:().creationDate;creationDay=transactionReceivedData:().creationDay;ref=transactionReceivedData:().ref;description=transactionReceivedData:().description;branch=transactionReceivedData:().branch];#send():[success=false;newBalance=newBalance:()];handleAnalaysis();#saveBalance():[data=newBalance:()];#handleTrialBalance()",
         "combineData": "accountsAndBalances:()._():[accountsLastBalances:()._():[if():[_.id=__.lastBalance]:[__.lastBalanceData=_]]];setNewBalance()",
         "setNewBalance": "if():[transactionReceivedData:().openingBalance='Yes']:[newBalance:()=[account=transactionReceivedData:().account;ledgerAccount=transactionReceivedData:().ledgerAccount;credit=transactionReceivedData:().credit;debit=transactionReceivedData:().debit;accountBalances=:[account=transactionReceivedData:().account;credit=transactionReceivedData:().credit||0;debit=transactionReceivedData:().debit||0;balance=transactionReceivedData:().debit||0-transactionReceivedData:().credit||0]]]:[newBalance:()=[account=transactionReceivedData:().account;ledgerAccount=transactionReceivedData:().ledgerAccount;credit=transactionReceivedData:().credit;debit=transactionReceivedData:().debit]];if():[transactionReceivedData:().voucher]:[newBalance:().():[voucher=transactionReceivedData:().voucher;voucherRef=transactionReceivedData:().voucherRef]];setAccountBalances()",
-        "_": "transactionReceivedData:()=_.data;if():[_.data.'credit-debit']:[resetData()].elif():[_.data.openingBalance='Yes';_.data.headAccount]:[setBalanceWithHeadAccount()].elif():[_.data.openingBalance='Yes']:[setBalanceWithoutHeadAccount()]:[[getAccounts():[id=_.data.account]]()::[getBalances()]]",
         "delGBVar": "accountsAndBalances:().del();accountsLastBalances:().del();transactionReceivedData:().del();newBalance:().del()"
       },
       "updateNotificationsInSession": {
@@ -572,11 +579,6 @@
       },
       {
         "path": [
-          "saveThroughSchema"
-        ]
-      },
-      {
-        "path": [
           "customCondition"
         ]
       },
@@ -617,7 +619,7 @@
       },
       {
         "path": [
-          "initializeDocAndCheckForRecursion"
+          "saveThroughSchema"
         ]
       },
       {
@@ -708,6 +710,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 70
   }
 }

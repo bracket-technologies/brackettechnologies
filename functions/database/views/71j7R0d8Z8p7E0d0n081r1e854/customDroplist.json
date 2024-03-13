@@ -32,11 +32,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "m197u1u0d2G4Z6V3U5s3C434m3",
+    "id": "A1k7A1r0p3x3l097H910o1v1K3",
     "doc": "customDroplist",
-    "creationDate": 1710246353443,
+    "creationDate": 1710330790113,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "closeDroplist": {
         "closeDroplistOnMouseleave": "timer():[if():[!().mouseIn]:[().style():[opacity=0;height=0px]]]:600",
@@ -52,6 +52,7 @@
     "comments": [],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 32
   }
 }

@@ -52,6 +52,7 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
         //
         path: path.join("/"),
         manifest: {
+            datastore: "bracketdb",
             type,
             server,
             host,

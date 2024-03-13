@@ -82,11 +82,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "Z1e7i1X0n2Y4P623d5m3x474M9",
+    "id": "R1e7p1M0e3R3h0Y739p0Z1Z6c4",
     "doc": "customInput",
-    "creationDate": 1710246353449,
+    "creationDate": 1710330790164,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "showAndHideClearIcon": "mouseenter:[2ndChild().1stChild().style():[opacity=1]];mouseleave:[2ndChild().1stChild().style():[opacity=0]]",
       "updateSectionById": "if():[_.sectionId]:[():[_.sectionId].update()]",
@@ -694,6 +694,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 39
   }
 }

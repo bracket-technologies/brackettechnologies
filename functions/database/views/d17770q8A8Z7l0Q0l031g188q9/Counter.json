@@ -9,11 +9,11 @@
   "__props__": {
     "db": "views",
     "collection": "d17770q8A8Z7l0Q0l031g188q9",
-    "id": "21y7Z17062D4B633R4C9E6k7B0",
+    "id": "X1c771b0m3H3F037p8j6a4c470",
     "doc": "Counter",
-    "creationDate": 1710246349670,
+    "creationDate": 1710330786440,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "test": "log():'Hello World'"
     },
@@ -21,6 +21,7 @@
     "comments": [],
     "folderPath": [],
     "version": 0,
-    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 1
   }
 }

@@ -12,11 +12,11 @@
   "__props__": {
     "db": "views",
     "collection": "d17770q8A8Z7l0Q0l031g188q9",
-    "id": "C1y7W1K0n23496o3x4x9o6Y970",
+    "id": "r187K1S073F3q0V7z8g685m5o9",
     "doc": "storage",
-    "creationDate": 1710246349690,
+    "creationDate": 1710330786559,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "openStorage": "if():[next().style().display=none]:[loader():show;1stChild().style().transform='rotate(90deg)';search():[collection=storage;headers.project=project:()]:[data:().editor.storage=_.data;#next().children().():rem();():'storage-list'.update()::[next().style().display=flex;loader():hide]]]:[next().style().display=none;1stChild().style().transform='rotate(0)']"
     },
@@ -24,6 +24,7 @@
     "comments": [],
     "folderPath": [],
     "version": 0,
-    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 25
   }
 }

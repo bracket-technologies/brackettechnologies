@@ -19,15 +19,16 @@
     "Swimming pool"
   ],
   "__props__": {
-    "id": "o1g7f1I0T2v4S6N3Z5r1x0I5Q9",
+    "id": "R1c7L1P0R3G3N0Y7G8g639K8G1",
     "doc": "mostPopularFacilities",
-    "creationDate": 1710246351059,
+    "creationDate": 1710330786981,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [],
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 153
   }
 }

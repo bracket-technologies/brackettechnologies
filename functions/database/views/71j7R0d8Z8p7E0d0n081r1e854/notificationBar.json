@@ -97,11 +97,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "B1u7G1g0h2n4Y6B3A5V3K4H6P9",
+    "id": "31G7C150O3c3D0a7g9t0B3x2Q0",
     "doc": "notificationBar",
-    "creationDate": 1710246353469,
+    "creationDate": 1710330790320,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "notificationRead": {
         "backToDefault": "1stChild().style().color=#ddd;2ndParent().style():[backgroundColor=#fff];style():[backgroundColor=#fff];_.status='unread';parent().firstLoad=false",
@@ -230,6 +230,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 66
   }
 }

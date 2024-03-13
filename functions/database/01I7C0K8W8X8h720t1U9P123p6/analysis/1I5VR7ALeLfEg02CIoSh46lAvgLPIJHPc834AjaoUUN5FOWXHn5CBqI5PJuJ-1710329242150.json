@@ -1,0 +1,22 @@
+{
+  "number": "5",
+  "balance": 500,
+  "creationDay": 1710288000000,
+  "credit": 500,
+  "debit": 1000,
+  "creationDate": 1710329242150,
+  "balanceId": "dBWhYfTSijtOgH8DwD5268Jo3N6SYAkBbaBLixdNOiAlhF8UPOlpvZAcZ24M-1710329279362",
+  "__props__": {
+    "id": "v1h7X1x0x3y3d067b8h5h6F4c6",
+    "doc": "1I5VR7ALeLfEg02CIoSh46lAvgLPIJHPc834AjaoUUN5FOWXHn5CBqI5PJuJ-1710329242150",
+    "creationDate": 1710330785646,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 115
+  }
+}

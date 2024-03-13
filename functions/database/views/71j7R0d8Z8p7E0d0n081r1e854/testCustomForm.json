@@ -249,11 +249,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "K1c7X150k274m6B3m563x4m7j7",
+    "id": "d1Q7z1C0o3R3v027K9k023a9m3",
     "doc": "testCustomForm",
-    "creationDate": 1710246353477,
+    "creationDate": 1710330790393,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "handleDocDefaultValues": "_.inputInfo.docDefaultValues.keys()._():[().docDefaultValues.[_]=[__.inputInfo.docDefaultValues.[_]]()];_.inputInfo.docDefaultValues.del();doc().():[[().docDefaultValues].flat()]",
       "confirmDeleteImage": "confirmWindow:()=[title='Do you confirm?';text='Continue deleting image?';action='deleteImage()'];():confirmWindow.update();():confirmWindow.style():[visibility=visible;opacity=1]",
@@ -563,11 +563,6 @@
       },
       {
         "path": [
-          "addFormSchema"
-        ]
-      },
-      {
-        "path": [
           "mmm"
         ]
       }
@@ -749,6 +744,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 78
   }
 }

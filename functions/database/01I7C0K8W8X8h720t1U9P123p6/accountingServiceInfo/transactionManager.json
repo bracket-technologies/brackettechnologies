@@ -163,11 +163,11 @@
     }
   ],
   "__props__": {
-    "id": "P1y7s1r0r2I4B6y3W5j1r9u6N5",
+    "id": "y1a7V1Y0M3O3r0r7L8l7F6l0X3",
     "doc": "transactionManager",
-    "creationDate": 1710246351965,
+    "creationDate": 1710330787603,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -250,6 +250,7 @@
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 186
   }
 }

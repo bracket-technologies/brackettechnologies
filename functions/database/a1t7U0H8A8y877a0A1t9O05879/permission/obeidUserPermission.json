@@ -1,0 +1,15 @@
+{
+  "userID": "41V7H078W8I8I780z1m9Y2E4Y2",
+  "accountID": "k1A7R0N8X8Y8l7c030q8S8W7O3",
+  "admin": true,
+  "__props__": {
+    "db": "a1t7U0H8A8y877a0A1t9O05879",
+    "collection": "permission",
+    "id": "R1c7l1H0o3E3i0X7K8e1T2K1b0",
+    "doc": "obeidUserPermission",
+    "creationDate": 1710330781887,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "counter": 1
+  }
+}

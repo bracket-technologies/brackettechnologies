@@ -5,7 +5,8 @@
     "collection": "account",
     "id": "1197B078m8x8q4e9T5X949d858",
     "doc": "accAccount",
-    "creationDate": 1710246347067,
-    "active": true
+    "creationDate": 1710330781866,
+    "active": true,
+    "counter": 2
   }
 }

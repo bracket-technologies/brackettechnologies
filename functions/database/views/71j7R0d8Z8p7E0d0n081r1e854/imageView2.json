@@ -25,11 +25,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "n1K7N1d0F2e4w6R3t5j3j4P6t2",
+    "id": "Z1T7a1H0C3V3t037T9Q0e2A7e0",
     "doc": "imageView2",
-    "creationDate": 1710246353462,
+    "creationDate": 1710330790270,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "confirmPopup": "confirmWindow:()=[title='Confirmation Deletion';text='Continue deleting image?';action='deleteImage()'];():confirmWindow.update();():confirmWindow.style():[visibility=visible;opacity=1]",
       "downloadFile": "window().open():[_.imageData.url]",
@@ -52,6 +52,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 55
   }
 }

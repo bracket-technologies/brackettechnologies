@@ -1,27 +1,18 @@
 {
-  "projects": [
-    "acc",
-    "tt",
-    "interns",
-    "brackettechnologies",
-    "engagement",
-    "training1"
-  ],
   "email": "mohamadalzoghbi@brackettechnologies.com",
   "__props__": {
     "db": "a1t7U0H8A8y877a0A1t9O05879",
     "collection": "user",
     "doc": "mohamadal zoghbi",
-    "id": "d1Z7q1B0C2r4w6H3i4k8n4n3L8",
-    "creationDate": 1710246348438,
+    "id": "Y1B761R0r3G3J0Z7F8R4o1F5U9",
+    "creationDate": 1710330784159,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
-    "collapsed": [],
-    "comments": [],
-    "folderPath": []
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "counter": 5
   },
   "accountID": "1197B078m8x8q4e9T5X949d858",
   "firstName": "Mohamad",
   "lastName": "Al Zoghbi",
-  "password": "Mohamad@Z"
+  "password": "Mohamad@Z",
+  "username": "Mohamad@Z"
 }

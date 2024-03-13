@@ -1123,11 +1123,11 @@
   "__props__": {
     "db": "views",
     "collection": "d17770q8A8Z7l0Q0l031g188q9",
-    "id": "w1z78160O2l4L6i3F4S9r6L8v3",
+    "id": "51o741w0K3u3b0X7g8M675R1q4",
     "doc": "main",
-    "creationDate": 1710246349683,
+    "creationDate": 1710330786514,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {},
     "collapsed": [
       {
@@ -1204,6 +1204,7 @@
     "comments": [],
     "folderPath": [],
     "version": 0,
-    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 16
   }
 }

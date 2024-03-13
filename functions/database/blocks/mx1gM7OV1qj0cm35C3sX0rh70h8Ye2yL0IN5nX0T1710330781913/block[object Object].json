@@ -1,0 +1,21 @@
+{
+  "accountID": "k1A7R0N8X8Y8l7c030q8S8W7O3",
+  "billingAccountID": "31v7G0g8u8O817H0Y0S9d1W0c0",
+  "transactionID": "wro8HuFn08gbek8KLM99",
+  "token": "mx1gM7OV1qj0cm35C3sX0rh70h8Ye2yL0IN5nX0T1710330781913",
+  "blockDate": 1710330782627,
+  "status": "Confirmed",
+  "price": 1,
+  "unit": "USD",
+  "__props__": {
+    "db": "blocks",
+    "collection": "mx1gM7OV1qj0cm35C3sX0rh70h8Ye2yL0IN5nX0T1710330781913",
+    "id": "r157r1Q0N3c350h7m81236m2T7",
+    "doc": "block[object Object]",
+    "creationDate": 1710330782627,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "counter": 183
+  },
+  "prevBlockID": "c1Y7q1Q0z3W3D0f7t8S2K6x2C5"
+}

@@ -16,11 +16,11 @@
   "__props__": {
     "db": "views",
     "collection": "d17770q8A8Z7l0Q0l031g188q9",
-    "id": "01L7b1R0P2e4x6z34439M6t7n7",
+    "id": "D1O7y1c0w3A3S087j8w6t4U7X2",
     "doc": "collection",
-    "creationDate": 1710246349677,
+    "creationDate": 1710330786472,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "openCollections": "if():[1stChild().style().transform='rotate(90deg)']:[next().style().display=none;1stChild().style().transform='rotate(0deg)']:[next().style().display=flex;1stChild().style().transform='rotate(90deg)']?!lastChild().contains():[clicked()]",
       "menterHandler": "if():[1stChild().style().transform='rotate(90deg)']:[lastChild().style().display=flex]",
@@ -45,6 +45,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 7
   }
 }

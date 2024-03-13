@@ -68,11 +68,11 @@
   },
   "title": "Currency Manager",
   "__props__": {
-    "id": "V157g140S2F4T6W3s469K5f3P8",
+    "id": "c1W7I180T3L300j7q8c5O3c4C4",
     "doc": "currencyManager",
-    "creationDate": 1710246349538,
+    "creationDate": 1710330785344,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -205,6 +205,7 @@
     ],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 82
   }
 }

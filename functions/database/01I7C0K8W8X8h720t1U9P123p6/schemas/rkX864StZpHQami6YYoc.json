@@ -250,11 +250,11 @@
   },
   "collection": "asset",
   "__props__": {
-    "id": "k1k771j062y4m693f5p128o6G7",
+    "id": "H1u7D1L0k3d3w0s7i8u7r3h4D6",
     "doc": "rkX864StZpHQami6YYoc",
-    "creationDate": 1710246351867,
+    "creationDate": 1710330787346,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -412,6 +412,7 @@
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 171
   }
 }

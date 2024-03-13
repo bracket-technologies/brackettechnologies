@@ -41,11 +41,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "t18701Z0W2Y4b6q375x3d474l6",
+    "id": "O1o7X1S0b3l3H0a7G9f0i1w4c7",
     "doc": "customFormTable",
-    "creationDate": 1710246353446,
+    "creationDate": 1710330790147,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {},
     "collapsed": [
       {
@@ -58,6 +58,7 @@
     "comments": [],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 36
   }
 }

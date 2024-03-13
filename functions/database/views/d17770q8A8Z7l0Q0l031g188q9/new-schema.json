@@ -32,16 +32,17 @@
   "__props__": {
     "db": "views",
     "collection": "d17770q8A8Z7l0Q0l031g188q9",
-    "id": "O157P1k072t4A6C3h4e9O6y8Z5",
+    "id": "K1Q7u1b0E3C3h0W708c6C5x2n6",
     "doc": "new-schema",
-    "creationDate": 1710246349685,
+    "creationDate": 1710330786526,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {},
     "collapsed": [],
     "comments": [],
     "folderPath": [],
     "version": 0,
-    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 18
   }
 }

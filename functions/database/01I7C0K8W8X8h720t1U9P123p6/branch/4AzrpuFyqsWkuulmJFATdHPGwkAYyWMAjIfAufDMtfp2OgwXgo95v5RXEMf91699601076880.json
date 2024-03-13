@@ -26,11 +26,11 @@
     "info2@example.com"
   ],
   "__props__": {
-    "id": "x1G791i0l2d4b6U3u4A994V084",
+    "id": "v107N1D0P3J380r768Y5i0N853",
     "doc": "4AzrpuFyqsWkuulmJFATdHPGwkAYyWMAjIfAufDMtfp2OgwXgo95v5RXEMf91699601076880",
-    "creationDate": 1710246349404,
+    "creationDate": 1710330785083,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -41,6 +41,7 @@
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 7
   }
 }

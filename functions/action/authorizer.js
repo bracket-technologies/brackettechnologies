@@ -1,14 +1,28 @@
+const { createSession, getSession } = require("./database")
 const { logger } = require("./logger")
+
+// config
+require('dotenv').config()
 
 const authorizer = async ({ _window, req }) => {
 
-  if (_window.global.__provider__ === "firebase" || true) {
+  var global = _window.global
+
+  logger({ _window, data: { key: "authorization", start: true } })
+
+  if (global.manifest.datastore === "bracketdb") {
+
+    var session = getSession({ _window, req })
+    if (!session) session = createSession({ _window, req })
+
+    global.data.collections = global.data.project.collections
+    global.manifest.session = { projectID: global.data.project.id }
+
+  } else if (global.manifest.session.datastore === "firebase") {
 
     var ref = req.db.firebaseDB.collection("_project_"),
       success, message, error,
-      global = _window.global
-
-    logger({ _window, data: { key: "authorization", start: true } })
+      global = global
 
     await ref.where("domains", "array-contains", global.manifest.host).get().then(doc => {
 
@@ -16,10 +30,8 @@ const authorizer = async ({ _window, req }) => {
 
         success = true
         global.data.project = { ...doc.docs[0].data(), id: doc.docs[0].id }
-        global.data.views = global.data.project.datastore.views
         global.data.collections = global.data.project.datastore.collections
         global.manifest.session = { projectID: global.data.project.id }
-        global.__provider__ = global.data.project.datastore.provider
         message = "You are authorized!"
 
       } else {
@@ -37,11 +49,11 @@ const authorizer = async ({ _window, req }) => {
       console.log(err);
     })
 
-    logger({ _window, data: { key: "authorization", end: true } })
+  } else if (global.manifest.session.datastore === "mongoDB") {}
 
-    return { success, message, error }
+  logger({ _window, data: { key: "authorization", end: true } })
 
-  } else if (_window.global.__provider__ === "mongoDB") {}
+  return { success, message, error }
 }
 
 module.exports = { authorizer }

@@ -13,15 +13,13 @@
   "__props__": {
     "db": "storage",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "b12781W0Y2z4h6N3t5S3X9K6d1",
-    "creationDate": 1710246353961,
+    "id": "v1g7a15003h340q7H9d1S5L8d1",
+    "creationDate": 1710330791581,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
-    "collapsed": [],
-    "comments": [],
-    "folderPath": [],
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {},
     "doc": "wN9gQ9Fq59B3uTdmCUIf",
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 75
   }
 }

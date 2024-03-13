@@ -104,11 +104,11 @@
     }
   ],
   "__props__": {
-    "id": "f1Y7W1V0d2L4c6M3J520R7M0T0",
+    "id": "m1h7B140E3l3z0W768V5e406s1",
     "doc": "expenditureManager",
-    "creationDate": 1710246350700,
+    "creationDate": 1710330785461,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -134,6 +134,7 @@
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 97
   }
 }

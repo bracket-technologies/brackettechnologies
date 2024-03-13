@@ -1360,7 +1360,7 @@ const numbers = "1234567890"
 
 const generate = (params = {}) => {
 
-  var { length, number, unique, universal } = params
+  var { length, number, unique, universal, timestamp } = params
 
   var result = "", chars = number ? numbers : characters
 
@@ -1381,6 +1381,10 @@ const generate = (params = {}) => {
       result += chars.charAt(Math.floor(Math.random() * charactersLength))
       if (unique && length >= 26 && i <= 13) result += time[i]
     }
+
+    // timestamp => ex. xxxxxxxxxxxxxxxT(xxxxxxxxxxxxx:timestamp)
+    if (typeof timestamp === "number") result += "T" + timestamp
+    else if (timestamp) result += "T" + time
 
   return result
 }
@@ -5087,7 +5091,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // toValue
     if (isCalc({ _window, string: pathJoined }) && !key) return toValue({ _window, lookupActions, stack, data: pathJoined, __, id, e, req, res, object, condition })
 
-    // [actions?conditions?elseActions]():[params]:[waits]
+    // [actions?conditions?elseActions]():[path;view]:[waits]
     else if (path0.length === 8 && path0.slice(-2) === "()" && path0.charAt(0) === "@") {
 
         var myLookupActions = lookupActions

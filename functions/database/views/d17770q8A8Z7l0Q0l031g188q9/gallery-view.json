@@ -141,11 +141,11 @@
   "__props__": {
     "db": "views",
     "collection": "d17770q8A8Z7l0Q0l031g188q9",
-    "id": "n1g7Q1G0x2q4X6D3a4N9g6D8L2",
+    "id": "q137J1P0H3I3k0C7v8e6J4u9O7",
     "doc": "gallery-view",
-    "creationDate": 1710246349682,
+    "creationDate": 1710330786497,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {},
     "collapsed": [
       {
@@ -224,6 +224,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 13
   }
 }

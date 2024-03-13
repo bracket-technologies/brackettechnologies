@@ -104,11 +104,11 @@
     }
   ],
   "__props__": {
-    "id": "q13761s0V2q4B6n3u5r0b7w0C2",
+    "id": "S117M140p3V3K0d7d8Q5S4Y7Z1",
     "doc": "incomeManager",
-    "creationDate": 1710246350702,
+    "creationDate": 1710330785471,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -129,6 +129,7 @@
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 100
   }
 }

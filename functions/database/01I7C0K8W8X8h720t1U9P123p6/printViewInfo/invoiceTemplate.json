@@ -408,11 +408,11 @@
     }
   ],
   "__props__": {
-    "id": "91q7Z1n0w2A4q6i3W5O1r1k4r5",
+    "id": "f1M7W1J0I3D3Z0N7S806d02963",
     "doc": "invoiceTemplate",
-    "creationDate": 1710246351145,
+    "creationDate": 1710330786093,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -1226,6 +1226,7 @@
     ],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 121
   }
 }

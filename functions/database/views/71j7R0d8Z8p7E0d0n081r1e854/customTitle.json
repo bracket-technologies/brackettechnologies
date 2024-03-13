@@ -2,7 +2,7 @@
   "view": "View?class=flex;style:[width=100%]",
   "children": [
     {
-      "view": "View?class=flex;style:[width=100%;borderBottom=1px solid #ddd;padding=.4rem;justifyContent=space-between;backgroundColor=#ddd;borderRadius=.2rem]?!_.multiSection",
+      "view": "View?class=flex;style:[width=100%;borderBottom=1px solid #ddd;padding=.4rem;justifyContent=space-between;#backgroundColor=#ddd;borderRadius=.2rem]?!_.multiSection",
       "children": [
         {
           "view": "View?class=flexbox",
@@ -95,11 +95,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "k1M741T0A2B4o6P3o5h3A4U525",
+    "id": "81B7c1K0o3U3w097G9p0l211d7",
     "doc": "customTitle",
-    "creationDate": 1710246353455,
+    "creationDate": 1710330790217,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "navigateSections": {
         "_": "if():[__.path]:[selectedSection:().[__.index].[___.index]=_.toLowerCase()]:[selectedSection:().[__.index]=_.toLowerCase()];customUpdate():[section=[__.index]]"
@@ -200,6 +200,18 @@
       },
       {
         "path": [
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
           "customSubtitle",
           "openAndCloseSection"
         ]
@@ -274,6 +286,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 47
   }
 }

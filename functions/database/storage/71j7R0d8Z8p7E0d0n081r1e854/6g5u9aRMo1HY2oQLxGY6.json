@@ -16,15 +16,13 @@
   "__props__": {
     "db": "storage",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "v18711x0w2d4Y6Q3D5i3n960h6",
-    "creationDate": 1710246353906,
+    "id": "01c7Q1J063M3W0o7Q9W1c4M385",
+    "creationDate": 1710330791435,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
-    "collapsed": [],
-    "comments": [],
-    "folderPath": [],
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {},
     "doc": "6g5u9aRMo1HY2oQLxGY6",
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 12
   }
 }

@@ -57,11 +57,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "f1A721a0u2d4o6N3f5e364q542",
+    "id": "D1V7R1I073v3N0B7m9i0R1f987",
     "doc": "customPrintView2",
-    "creationDate": 1710246353452,
+    "creationDate": 1710330790197,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "salesInvoiceData": ":[messrs=3468-SKYLA DKR;invoiceNo=TI334877;invoiceDate='01/12/2023';salesman=0;branch=1]",
       "#demoData1": ":[date='21/11/23';voucher=TI330423;description='1769192469937/PNR:JE3JID/BASHMI/FAHAD MR/BAH-DXB-B';debit='326.00';balance='326.00 DR']:[date='21/11/23';voucher=TI330423;description='1769192469937/PNR:JE3JID/KORKOMAZ/GILBERT MR/BAH-D';debit='326.00';balance='652.00 DR']:[date='21/11/23';voucher=RV 12349;description='PAYMENT ON ACCOUNT BY BOB-PAMELA AOUM';credit='652.00']:[date='07/12/23';voucher=TI336331;description='0713038805769/PNR:QAYS8C/HANDEBO/DINKNESH LELSHO/B';debit='527.00';balance='527.00 DR']",
@@ -196,6 +196,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 44
   }
 }

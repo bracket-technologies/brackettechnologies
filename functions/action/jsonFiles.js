@@ -12,7 +12,7 @@ var getJsonFiles = ({ search = {} }) => {
   limit = search.limit || 100,
   path = `database/${collection}`
   
-  // create folder if it doesnot exist
+  // folder doesnot exist
   if (!fs.existsSync(path)) return data
 
   if (doc) {

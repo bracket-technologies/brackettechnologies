@@ -35,11 +35,11 @@
   "__props__": {
     "db": "views",
     "collection": "d17770q8A8Z7l0Q0l031g188q9",
-    "id": "B1l7s1W062e406S3B4L9X6j706",
+    "id": "71f7V1c0V3A330O7B8a6d466V9",
     "doc": "actionlist",
-    "creationDate": 1710246349676,
+    "creationDate": 1710330786469,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "updateNextSiblingsIndexesForPush": "if():[data().type()=array]:[():[actionlistCaller:()].parent().next().1stChild().children().slice():[_.index||clicked().txt().num()]._():[theIndex:()=_.path().lastIndex();theNewValue:()=_.path().lastEl().num()+1;_.1stChild().2ndChild().txt()=theNewValue:();updateCommentAndClose();_.deepChildren()._():[_.path().[theIndex:()]=theNewValue:()]]]",
       "updateNextSiblingsIndexesForErase": "if():[():[actionlistCaller:()].3rdParent().data().type()=array]:[():[actionlistCaller:()].2ndParent().nextSiblings()._():[theIndex:()=_.path().len()-1;theNewValue:()=_.path().[-1].num()-1;_.1stChild().2ndChild().txt()=theNewValue:()]]",
@@ -66,6 +66,7 @@
     "comments": [],
     "folderPath": [],
     "version": 0,
-    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 6
   }
 }

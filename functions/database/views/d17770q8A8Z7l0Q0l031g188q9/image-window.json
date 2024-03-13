@@ -115,11 +115,11 @@
   "__props__": {
     "db": "views",
     "collection": "d17770q8A8Z7l0Q0l031g188q9",
-    "id": "M1s7X190h2R4U6p31479n6Z8a2",
+    "id": "W1Y7o160Z3L3R0n7d8W6P5j0h3",
     "doc": "image-window",
-    "creationDate": 1710246349682,
+    "creationDate": 1710330786503,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "editImage": "loader.show;save():[headers.project=project:();collection=storage;doc=new-image-data:().id;data=new-image-data:()]:[note():[text=File updated successfuly!];():'image-window-background'.click();():'gallery-view'.update();():'storage-list'.update();loader.hide]?!new-image:()",
       "uploadNewImage": "loader.show;upload():[data='new-image-data':();doc='new-image-data':().name.split():' '.join():'-'.split():'.'.join():'-'+'-'+timestamp();headers.project=project:();file='new-image-data':().url]:[note():[text=Image saved succefully!];data:().editor.storage.[_.data.id]=_.data;gallery-images:().replaceItem():[_.data];():'image-window-background'.click();():'gallery-view'.update();():'storage-list'.update();loader.hide]?new-image:()"
@@ -156,6 +156,7 @@
     "comments": [],
     "folderPath": [],
     "version": 0,
-    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 14
   }
 }

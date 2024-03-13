@@ -213,11 +213,11 @@
   "title": "Expense Manager",
   "managerName": "expense",
   "__props__": {
-    "id": "t1Q7e1l042h4G653f5c1R9R6D1",
+    "id": "N1P7x1W0t3f3Z0z7a897R56930",
     "doc": "expenseManager",
-    "creationDate": 1710246351961,
+    "creationDate": 1710330787590,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -371,6 +371,7 @@
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 182
   }
 }

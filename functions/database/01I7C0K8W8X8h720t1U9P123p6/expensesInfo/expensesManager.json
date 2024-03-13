@@ -335,11 +335,11 @@
     }
   ],
   "__props__": {
-    "id": "o1q7x1r0L2O4i6v3X5l0v2c0x7",
+    "id": "8147i1x093p3W0E7Q8u6h2l0b0",
     "doc": "expensesManager",
-    "creationDate": 1710246350207,
+    "creationDate": 1710330786200,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -622,6 +622,7 @@
     ],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 128
   }
 }

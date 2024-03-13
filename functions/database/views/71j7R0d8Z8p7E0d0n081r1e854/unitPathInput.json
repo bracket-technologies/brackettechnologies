@@ -73,11 +73,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "7157F1T0N2x4B663i5j3M4e8d1",
+    "id": "X157f1Y0T3t3p0p7k9s01492T9",
     "doc": "unitPathInput",
-    "creationDate": 1710246353481,
+    "creationDate": 1710330790429,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "calcTotalCost": "__.costPrice=[[__.purchaseNetPrice]+[if():[__.purchaseTaxes]:[__.purchaseTaxes]:[0]]+[if():[__.IATAInsurance]:[__.IATAInsurance]:[0]]-[if():[__.purchaseCommission]:[__.purchaseCommission]:[0]]];__.totalCost=[__.costPrice]*[__.quantity]",
       "calcCostPrice": "__.costPrice=[[__.purchaseNetPrice]+[if():[__.purchaseTaxes]:[__.purchaseTaxes]:[0]]+[if():[__.IATAInsurance]:[__.IATAInsurance]:[0]]-[if():[__.purchaseCommission]:[__.purchaseCommission]:[0]]]",
@@ -314,6 +314,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 82
   }
 }

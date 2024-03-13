@@ -25,15 +25,16 @@
   "creationDay": 1700870400000,
   "creationDate": 1700910608610,
   "__props__": {
-    "id": "A1j7R1B0r2o4Z6u3F5b3l300V4",
+    "id": "V1R7R1R0X3m3p0L7B9s0A745p7",
     "doc": "Ng0MC8aCnTj8XWIIIDaJ0BpelwPeeVaOqIcCVgfd0DJYhcf3BJi8UbCTJua21700910608610",
-    "creationDate": 1710246353304,
+    "creationDate": 1710330790757,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [],
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 1025
   }
 }

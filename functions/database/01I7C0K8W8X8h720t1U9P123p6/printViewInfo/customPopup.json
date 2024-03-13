@@ -27,11 +27,11 @@
     "title": "Style Form"
   },
   "__props__": {
-    "id": "F1C721K0Z2E4r6v3B5E1u1W4Q2",
+    "id": "I1s7H1L0b343Y0Y7Q8t6J0l8j3",
     "doc": "customPopup",
-    "creationDate": 1710246351142,
+    "creationDate": 1710330786083,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -53,6 +53,7 @@
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 119
   }
 }

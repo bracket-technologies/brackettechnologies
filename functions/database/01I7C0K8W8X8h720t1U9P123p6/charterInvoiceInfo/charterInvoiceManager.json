@@ -143,11 +143,11 @@
     "title": "Charter Invoice Form"
   },
   "__props__": {
-    "id": "31m731q0K2w4N65335O111b479",
+    "id": "K187w140l3R3d087n8i5k6B4j2",
     "doc": "charterInvoiceManager",
-    "creationDate": 1710246351149,
+    "creationDate": 1710330785642,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -1709,6 +1709,7 @@
     ],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 114
   }
 }

@@ -116,11 +116,11 @@
   "__props__": {
     "db": "views",
     "collection": "d17770q8A8Z7l0Q0l031g188q9",
-    "id": "W1P7h1F0S2Y4d6q3T4i9G6b7d2",
+    "id": "i1n7y1l0i33380J7a8D6G4A4o7",
     "doc": "Map",
-    "creationDate": 1710246349672,
+    "creationDate": 1710330786447,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "openCloseMapMain": "highlightTab();updateOpenClose();if():[next().style().display=flex]:[open=false]:[open=true];#Maps;nextSiblings().():[style().display=if():[().open]:flex:none];#caret;1stChild().style().transform=if():[open]:'rotate(90deg)':'rotate(0deg)';#...;3rdLastChild().style().display=if():[open]:none:flex;if():[doc()._view_;path().lastEl().type()=number]:[style().marginBottom=if():[open]:'-3rem':'0';#comment;2ndLastChild().style().display=if():[open]:none:flex];#updateIndexColumn()?data().type()=array||data().type()=map;!lastChild().contains():[clicked()];!2ndLastChild().contains():[clicked()];!3rdLastChild().contains():[clicked()]",
       "updateListIndexes": "_.nextSiblings()._():[if():[_.parent().data().type()=array]:[_.1stChild().2ndChild().txt()=_.path().lastEl().num()-1]]",
@@ -590,6 +590,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 2
   }
 }

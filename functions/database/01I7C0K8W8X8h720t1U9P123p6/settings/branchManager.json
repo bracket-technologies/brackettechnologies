@@ -428,11 +428,11 @@
     }
   ],
   "__props__": {
-    "id": "G1r7D1x0j2G4m6U3R4G8M9w4w3",
+    "id": "p1y7w1z0E3c3e0f7U84477A7j4",
     "doc": "branchManager",
-    "creationDate": 1710246348943,
+    "creationDate": 1710330784774,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -873,6 +873,7 @@
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 0
   }
 }

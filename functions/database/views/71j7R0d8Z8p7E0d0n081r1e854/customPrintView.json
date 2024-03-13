@@ -557,11 +557,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "y1o7T160I2l4a6v3I5i3r4x5H1",
+    "id": "w1S7j1f0a3d3g0C7Q910f1a9Z2",
     "doc": "customPrintView",
-    "creationDate": 1710246353451,
+    "creationDate": 1710330790192,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "calculation": {
         "calcVoucher": "_.items._():[subTotal:()+=_.amount];().subTotalWithVat=subTotal:()+[[subTotal:()*11]/100];total:()=[().subTotalWithVat-[().subTotalWithVat*[_.discount]/100]];balanceDue:()=total:()-[_.paymentMade]",
@@ -1457,6 +1457,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 43
   }
 }

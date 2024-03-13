@@ -8,11 +8,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "O1M731S0D2p4x6E3E593X4V6y6",
+    "id": "C1y7g1Q0A36310l7R9l0z3d0Q0",
     "doc": "mainbody",
-    "creationDate": 1710246353466,
+    "creationDate": 1710330790300,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {},
     "collapsed": [],
     "comments": [
@@ -32,6 +32,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 61
   }
 }

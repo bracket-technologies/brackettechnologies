@@ -264,11 +264,11 @@
   },
   "collection": "transaction Old Schema",
   "__props__": {
-    "id": "J1Q7d1h0l2U4g6n3Y5C198Y772",
+    "id": "j1P7O1C0t3v320d718o7z316g4",
     "doc": "wE8we0qSfrK3P0bhf4MC",
-    "creationDate": 1710246351872,
+    "creationDate": 1710330787364,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -440,6 +440,7 @@
     ],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 177
   }
 }

@@ -194,11 +194,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "L1K7W1R062h4B6p3q533G4H513",
+    "id": "s147l1t0V3f3a0i7u9j0C2q025",
     "doc": "customSearchEngine",
-    "creationDate": 1710246353453,
+    "creationDate": 1710330790205,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "openPrintView": {
         "setStatmentOfAccount": "[getAccountInfo();setFromToDate();currentBranch:()=userData:().branch.find():[id=userData:().currentBranch];footerItemsList:()=:;printViewData:()=printView:().invoiceTemplate.mainInfo;().credit=managersSearchResult:().transaction.():credit.sum();().debit=managersSearchResult:().transaction.():debit.sum();().balance=().debit-().credit;if():[().balance<0]:[().balance='('+().balance+')'];footerItemsList:().push():[balance=().balance;debit=().debit;credit=().credit;description='*REQUESTED PERIOD TOTALS*']]()::[callPrintView()]",
@@ -216,9 +216,9 @@
         "_": "changeDoc();changeCurrentOpenManager();():customManager.update()::[changeFocusedNavBarBtn()]"
       },
       "getSearchResult": {
-        "successSearch": "if():[createFormStack:();createFormStack:().[-1].searchbox]:[#inSearchBox;searchBoxResults:()=_.data;():searchBoxTable.update()]:[;#inManager;log():[():customManagerTable]:['taha1112']:[_.data];managersSearchResult:().[currentOpenManager:().managerName]=_.data;():customManagerTable.update()]",
+        "successSearch": "if():[createFormStack:();createFormStack:().[-1].searchbox]:[#inSearchBox;searchBoxResults:()=_.data;():searchBoxTable.update()]:[;#inManager;managersSearchResult:().[currentOpenManager:().managerName]=_.data;():customManagerTable.update()]",
         "handleFailedResponse": "if():[createFormStack:();createFormStack:().[-1].searchbox]:[#inSearchBox;searchBoxResults:().del();():searchBoxTable.update()]:[#inManager;managersSearchResult:().[currentOpenManager:().managerName].del();():customManagerTable.update()];note():[text='No data found!';danger]",
-        "_": "loader.show;guideSearchResult():[data=doc()]:[loader.hide;if():[_.success]:[successSearch()]:[handleFailedResponse()]]"
+        "_": "loader.show;guideSearchResult():[data=doc();recievedDataCounter=managersSearchResult:().[currentOpenManager:().managerName].len()||0]:[loader.hide;if():[_.success]:[successSearch()]:[handleFailedResponse()]]"
       },
       "iconStyle": "style:[fontSize=2rem;padding=.5rem;border=1px solid #ddd;borderRadius=.8rem;cursor=pointer]",
       "hideAndShowBody": {
@@ -499,17 +499,17 @@
       },
       {
         "path": [
-          "getSearchResult"
-        ]
-      },
-      {
-        "path": [
           "hideAndShowBody"
         ]
       },
       {
         "path": [
           "initializeDoc"
+        ]
+      },
+      {
+        "path": [
+          "directsearchAction"
         ]
       }
     ],
@@ -673,6 +673,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 45
   }
 }

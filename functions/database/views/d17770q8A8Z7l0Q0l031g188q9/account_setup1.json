@@ -122,11 +122,11 @@
   "__props__": {
     "db": "views",
     "collection": "d17770q8A8Z7l0Q0l031g188q9",
-    "id": "F1v7L1A0v2d4B633F4L9u6U7t5",
+    "id": "v1N7p1h0M3j3o0x7S8d6F4g5Z8",
     "doc": "account_setup1",
-    "creationDate": 1710246349675,
+    "creationDate": 1710330786458,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {},
     "collapsed": [
       {
@@ -138,6 +138,7 @@
     "comments": [],
     "folderPath": [],
     "version": 0,
-    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 4
   }
 }

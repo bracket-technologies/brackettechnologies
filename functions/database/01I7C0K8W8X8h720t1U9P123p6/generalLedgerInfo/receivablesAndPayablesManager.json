@@ -221,11 +221,11 @@
     }
   ],
   "__props__": {
-    "id": "31p7b110K2G4l6A3a5I0W7O0e3",
+    "id": "V1U7s1I0z373K0y7h8U5w4D7W6",
     "doc": "receivablesAndPayablesManager",
-    "creationDate": 1710246350703,
+    "creationDate": 1710330785476,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -320,6 +320,7 @@
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 102
   }
 }

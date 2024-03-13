@@ -5,7 +5,7 @@ const http = require('node:http')
 require("firebase/firestore")
 
 // config
-require('dotenv').config()
+require('dotenv').config();
 
 // main
 var data = {}
@@ -52,22 +52,5 @@ const server = (req, res) => {
 http.createServer(server).listen(80, "localhost", () => console.log("Server Listening to Port 80"))
 
 exports.app = functions.https.onRequest((req, res) => require("./action/router")({ req, res, data }))
-
-//require("./action/router")(data)
-
-// db.collection(`_project_`).where("id", "==", "brackettechnologies").get().then(query => query.forEach(doc => postJsonFiles({ save: { data: doc.data(), collection: "test1", doc: doc.id } })))
-/*var project = getJsonFiles({ search: { collection: "test1", doc: "brackettechnologies" } })
-db.collection(`view-brackettechnologies`).get().then(query => query.forEach(doc => {
-  project.datastore.views.push(doc.id);
-  postJsonFiles({ save: { data: project, collection: "test1", doc: "brackettechnologies" } })
-
-  db.collection(`view-brackettechnologies`).doc("route").set(getJsonFiles({ search: { collection: "test1", doc: "route" } }))
-  db.collection(`view-brackettechnologies`).doc("document").set(getJsonFiles({ search: { collection: "test1", doc: "document" } }))
-  db.collection(`view-acc`).doc("route").set(getJsonFiles({ search: { collection: "test", doc: "route" } }))
-  db.collection(`view-acc`).doc("document").set(getJsonFiles({ search: { collection: "test", doc: "document" } }))
-  db.collection(`_project_`).doc("brackettechnologies").set(getJsonFiles({ search: { collection: "test1", doc: "brackettechnologies" } }))
-}))*/
-
-// db.collection(`_project_`).doc("brackettechnologies").set(getJsonFiles({ search: { collection: "test1", doc: "brackettechnologies" } }))
 
 // require("./action/moveData")(data)

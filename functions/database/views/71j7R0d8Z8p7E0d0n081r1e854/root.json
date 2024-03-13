@@ -24,11 +24,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "e1q7l140R2r456p38553z4Z701",
+    "id": "E1T7z1P0A3E3r0d7K9y0w3q3D5",
     "doc": "root",
-    "creationDate": 1710246353471,
+    "creationDate": 1710330790335,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "callOpenCreateForm": "if():[createFormStack:().len()>0]:[openCreateForm():[manager=getManagerFromCollection():[collection=_.collection]]]:[openCreateForm():[manager=currentOpenManager:()]]",
       "setDefaultleftZero": "while():[[_.digits]-[_.text.toString().len()]>0]:[_.text=_.text*10];return():[_.text]",
@@ -127,6 +127,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 69
   }
 }

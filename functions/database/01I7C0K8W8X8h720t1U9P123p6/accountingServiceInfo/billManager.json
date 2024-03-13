@@ -268,11 +268,11 @@
   },
   "title": "Bill Manager",
   "__props__": {
-    "id": "c1M7q1r032j4J6V3U5H129p6R0",
+    "id": "d1n7G1C0h3x3k0z7w827U5t8q8",
     "doc": "billManager",
-    "creationDate": 1710246351960,
+    "creationDate": 1710330787588,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -397,6 +397,7 @@
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 181
   }
 }

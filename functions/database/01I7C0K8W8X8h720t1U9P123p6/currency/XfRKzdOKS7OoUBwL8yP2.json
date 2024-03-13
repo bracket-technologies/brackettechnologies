@@ -10,15 +10,16 @@
   "name": "US Dollar",
   "symbole": "$",
   "__props__": {
-    "id": "s1N771o062p4E6s3g4w9U3v6r6",
+    "id": "61v731L0j3N3b0Q7Q8a691q5i3",
     "doc": "XfRKzdOKS7OoUBwL8yP2",
-    "creationDate": 1710246349366,
+    "creationDate": 1710330786153,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [],
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 127
   }
 }

@@ -2,11 +2,11 @@
   "0": "",
   "creationDate": 1709801677526,
   "__props__": {
-    "id": "b1o7l1W0Y2b4n6d3b5n0u2D1C2",
+    "id": "V1P7o1b0a3k3Y0a7d8S5u585p4",
     "doc": "ledgersBalances",
-    "creationDate": 1710246350212,
+    "creationDate": 1710330785554,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -17,6 +17,7 @@
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 110
   }
 }

@@ -52,16 +52,17 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "51V721B052J4u6H3l5v3l4t6t7",
+    "id": "r1a7x1k0V3g3K0t7o910I350a6",
     "doc": "mobileCustomPopup",
-    "creationDate": 1710246353467,
+    "creationDate": 1710330790306,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {},
     "collapsed": [],
     "comments": [],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 63
   }
 }

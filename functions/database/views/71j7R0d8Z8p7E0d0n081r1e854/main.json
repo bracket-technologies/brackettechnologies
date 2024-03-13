@@ -96,11 +96,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "U1c761x0k2h4u61365u3l4I6s5",
+    "id": "71h7E1g0r3f3a0p7v9G0S2a9A8",
     "doc": "main",
-    "creationDate": 1710246353465,
+    "creationDate": 1710330790298,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "fillInSearchboxSelected": {
         "fillInSelected": "selected:().defaults.currency.push():[id=userData:().currency;code=userData:().currencyCode;ref=userData:().currencyRef];selected:().defaults.branch.push():[id=userData:().branch;ref=userData:().branchRef];selected:().currency.push():[id=userData:().currency;code=userData:().currencyCode;ref=userData:().currencyRef];selected:().branch.push():[id=userData:().branch;ref=userData:().branchRef]",
@@ -731,6 +731,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 60
   }
 }

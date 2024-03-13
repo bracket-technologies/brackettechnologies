@@ -305,11 +305,11 @@
   "__props__": {
     "db": "views",
     "collection": "d17770q8A8Z7l0Q0l031g188q9",
-    "id": "B1v7a1S0j2U4i6t384f9X64820",
+    "id": "j1H7G1P0l3o3F0z7m8S684b887",
     "doc": "console",
-    "creationDate": 1710246349680,
+    "creationDate": 1710330786487,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "hotBtnsHoverEffects": "mouseenter:[style():[backgroundColor=#ddd];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#fff];1stChild().style():[color=#888]]",
       "blurSearchInput": "parent().style().width=3.5rem;style().backgroundColor=#fff;focused=false;style().border=1px solid #00000000",
@@ -1535,6 +1535,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 11
   }
 }

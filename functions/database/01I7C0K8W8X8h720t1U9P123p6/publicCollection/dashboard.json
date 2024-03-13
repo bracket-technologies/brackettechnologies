@@ -292,11 +292,11 @@
     "title": "Total Recivables"
   },
   "__props__": {
-    "id": "11H7T1n0y2n4A6P3D5T1i0t5N5",
+    "id": "I1S7i1D0P3R3s087S836B9W638",
     "doc": "dashboard",
-    "creationDate": 1710246351055,
+    "creationDate": 1710330786968,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -406,6 +406,7 @@
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 148
   }
 }

@@ -27,15 +27,16 @@
     }
   ],
   "__props__": {
-    "id": "21b7k100h2F4S6K384i88954a5",
+    "id": "81e7Y1t013a3m007O8j4Y778c5",
     "doc": "navBar",
-    "creationDate": 1710246348945,
+    "creationDate": 1710330784785,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [],
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 2
   }
 }

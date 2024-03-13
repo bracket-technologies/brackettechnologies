@@ -81,11 +81,11 @@
   "managerName": "storage",
   "title": "Gallery",
   "__props__": {
-    "id": "o177n1s002b476a3D4l994S1D2",
+    "id": "L1D7q1Z033r3x0T7v8A5J2k5n2",
     "doc": "galleryManager",
-    "creationDate": 1710246349412,
+    "creationDate": 1710330785252,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       "_map:path:path()",
       {
@@ -196,6 +196,7 @@
     "comments": [],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 51
   }
 }

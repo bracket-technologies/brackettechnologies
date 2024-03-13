@@ -1,0 +1,29 @@
+{
+  "accountID": "k1A7R0N8X8Y8l7c030q8S8W7O3",
+  "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+  "plugins": [
+    {
+      "db": "views",
+      "collection": "d17770q8A8Z7l0Q0l031g188q9",
+      "doc": "console"
+    }
+  ],
+  "price": 100,
+  "unit": "TOKEN",
+  "subscriptionDuration": 1,
+  "subscriptionDurationUnit": "month",
+  "releaseDate": 0,
+  "expiryDate": 9999999999999,
+  "status": "Confirmed",
+  "approved": true,
+  "__props__": {
+    "db": "a1t7U0H8A8y877a0A1t9O05879",
+    "collection": "plugin",
+    "id": "x1u7J0X8a8K8c7H0I14901G9B3",
+    "doc": "plugin1",
+    "creationDate": 1710330781901,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "counter": 1
+  }
+}

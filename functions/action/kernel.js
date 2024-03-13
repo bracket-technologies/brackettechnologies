@@ -31,12 +31,12 @@ const { isCalc } = require("./isCalc")
 const { toCode } = require("./toCode")
 const { logger } = require("./logger")
 const { openStack, clearStack, endStack } = require("./stack")
-const { getJsonFiles } = require("./jsonFiles")
 const Input = require("../view/Input")
 const { watch } = require("./watch")
 const { isArabic } = require("./isArabic")
 const cssStyleKeyNames = require("./cssStyleKeyNames")
 const events = require("./events.json")
+const { getData } = require("./database")
 
 var actions = { 
     "caret()": ({ o }) => ({ index: getCaretIndex(o) }),
@@ -3130,7 +3130,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     // toValue
     if (isCalc({ _window, string: pathJoined }) && !key) return toValue({ _window, lookupActions, stack, data: pathJoined, __, id, e, req, res, object, condition })
 
-    // [actions?conditions?elseActions]():[params]:[waits]
+    // [actions?conditions?elseActions]():[path;view]:[waits]
     else if (path0.length === 8 && path0.slice(-2) === "()" && path0.charAt(0) === "@") {
 
         var myLookupActions = lookupActions
@@ -3510,12 +3510,13 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
 
                 if (!lookupAction.view || queryNonExistingView || actionFound) return
 
-                if (!global.data.view[lookupAction.view] && global.data.views.includes(lookupAction.view) && !global.__queries__.views.includes(lookupAction.view)) {
+                if (!global.data.view[lookupAction.view] && !global.__queries__.views.includes(lookupAction.view)) {
 
                     queryNonExistingView = true
                     var { address, data } = addresser({ _window, id, stack, __, lookupActions: lookupActions.slice(indexx), stack, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${lookupAction.view}`, waits: `loader.hide;__queries__:().views.push():[${lookupAction.view}];data:().view.${lookupAction.view}=_.data;${action}` })
                     return require("./search").search({ _window, lookupActions, stack, address, id, __, req, res, data })
-                }
+
+                } else if (!global.data.view[lookupAction.view] && global.__queries__.views.includes(lookupAction.view)) return
 
                 // get view actions
                 var actions = global.data.view[lookupAction.view].functions
@@ -4127,7 +4128,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
     }
 
     // custom View
-    if (global.data.views.includes(view.__name__)) {
+    if (view.__name__ !== "Action" && view.__name__ !== "View") {
 
         // query custom view
         if (!global.__queries__.views.includes(view.__name__) && !global.data.view[view.__name__]) {
@@ -4138,7 +4139,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
             var { address, data } = addresser({ _window, id, stack, nextAddress: address, __, lookupActions, stack, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${view.__name__}`, waits: `loader.hide;__queries__:().views.push():[${view.__name__}];data:().view.${view.__name__}=_.data` })
             return require("./search").search({ _window, lookupActions, stack, address, id, __, req, res, data })
-        }
+        } else if (!global.data.view[view.__name__] && global.__queries__.views.includes(view.__name__)) return
 
         // continue to custom view
         else {
@@ -4172,10 +4173,9 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
                 address = addresser({ _window, id: child.id, nextAddress: address, type: "function", function: "documenter", stack, __, logger: { key: "documenter", end: true } }).address
 
                 // get shared public views
-                Object.entries(getJsonFiles({ search: { collection: "public/view" } })).map(([doc, data]) => {
+                Object.entries(getData({ search: { db: "public", collection: "view" } })).map(([doc, data]) => {
 
                     global.data.view[doc] = { ...data, id: doc }
-                    global.data.views.push(doc)
                     global.__queries__.views.push(doc)
                 })
 
@@ -5201,7 +5201,7 @@ const documenter = ({ _window, res, stack, address, __ }) => {
     var metaTitle = view.meta.title || view.title || ""
     var metaViewport = view.meta.viewport || ""
 
-    delete global.data.project
+    delete global.manifest.session
 
     // logs
     global.__server__.logs = stack.logs

@@ -240,11 +240,11 @@
     }
   ],
   "__props__": {
-    "id": "K1G7a1d0v2C4R6j3T5M0H3v0R9",
+    "id": "m1L7r1Q0T3E3f0L7N8f55582T9",
     "doc": "receiptVoucherManager",
-    "creationDate": 1710246350309,
+    "creationDate": 1710330785529,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -518,6 +518,7 @@
     ],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 103
   }
 }

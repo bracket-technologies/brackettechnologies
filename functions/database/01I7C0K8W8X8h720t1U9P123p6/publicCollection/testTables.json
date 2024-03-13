@@ -173,11 +173,11 @@
     }
   ],
   "__props__": {
-    "id": "y1p7a1v0p2s4W6o3N5u1S0e682",
+    "id": "f1X74170l3h3r0F708k6Q9T9y3",
     "doc": "testTables",
-    "creationDate": 1710246351062,
+    "creationDate": 1710330786993,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "collapsed": [
       {
         "path": [
@@ -585,6 +585,7 @@
     ],
     "folderPath": [],
     "actions": {},
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 159
   }
 }

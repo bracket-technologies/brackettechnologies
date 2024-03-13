@@ -136,11 +136,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "D1B7G140I2y4E6Y3b563z4C5Y4",
+    "id": "w1T7P1q0Z3W3B0d72970f2K1h4",
     "doc": "customSingleBarChart",
-    "creationDate": 1710246353454,
+    "creationDate": 1710330790214,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "heightCalc": "[_.number*100]/().max",
       "calcTotal": "data:().collection.dashboard.singelBarChart.[period:()].x-axis._():[totalTicket:()+=_.number]",
@@ -592,6 +592,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 46
   }
 }

@@ -10,11 +10,11 @@
   "__props__": {
     "db": "views",
     "collection": "d17770q8A8Z7l0Q0l031g188q9",
-    "id": "W127B1j0p224X6W3r4B9O6m848",
+    "id": "J1o7L1N0c3I390e7d8n6R5N4e5",
     "doc": "route",
-    "creationDate": 1710246349688,
+    "creationDate": 1710330786545,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "checkUser": "search():[collection=_account_;doc=_.user]:[if():[_.data]:[data:().editor.account=_.data]:[eraseCookie():_id;route():login]]",
       "checkPassword": "search():[collection=_password_;field:[user.equal=_.user;password.equal=_.password]]:[if():[_.data.value()]:[send():true]:[send():false]]",
@@ -27,6 +27,7 @@
     "comments": [],
     "folderPath": [],
     "version": 0,
-    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 22
   }
 }

@@ -44,11 +44,11 @@
   "__props__": {
     "db": "views",
     "collection": "d17770q8A8Z7l0Q0l031g188q9",
-    "id": "M1m76190N2f4F683r4G986k8B9",
+    "id": "V1V7S170E3F3W077p8G645d4o8",
     "doc": "sidebar",
-    "creationDate": 1710246349689,
+    "creationDate": 1710330786548,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "cancelEditCreateDoc": "txt()=open-doc:();style().display=none;prev().style().display=flex;if():[!open-doc:()||if():[_.head-collection]:[!data:().editor.collections.[_.collection].[open-doc:()]]:[!data:().editor.[_.collection].[open-doc:()]]]:[if():[if():[_.head-collection]:[!data:().editor.collections.[_.collection]||data:().editor.collections.[_.collection].keys().len()=0]:[!data:().editor.[_.collection]||data:().editor.[_.collection].keys().len()=0]]:[closeFolder():[id=_.view]];parent().rem()]",
       "pushDocView": "():'data-viewer'.insert():[view=():'data-viewer';viewPath=:children:0;index=():'data-viewer-bar'.children().len();preventDefault;data=open-map:();index=():'data-viewer'.children().len()]:[_.view.():[open-doc=open-doc:();open-collection=open-collection:();open-head-collection=__.head-collection];loader.hide]",
@@ -86,6 +86,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 23
   }
 }

@@ -37,11 +37,11 @@
   "__props__": {
     "db": "views",
     "collection": "71j7R0d8Z8p7E0d0n081r1e854",
-    "id": "p1c7j1f0K2w4e6W3U5O30477Y3",
+    "id": "71c7E1c0X3d3c0z7m9g0c3g6m5",
     "doc": "searchBoxPage",
-    "creationDate": 1710246353473,
+    "creationDate": 1710330790365,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "#searchboxData": "searchBoxData:()=data:().collection.searchBox.collections",
       "#fieldsDroplist": "droplist:[items='searchBoxData:().find():[collectionName=doc().collection].fields.():name';style:[width=10rem];preventDefault];():droplist.click:[txt()=droplist-txt:();doc().field=searchBoxData:().find():[collectionName=doc().collection].fields.find():[name=txt()].fieldName]",
@@ -1356,6 +1356,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "counter": 72
   }
 }

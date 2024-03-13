@@ -23,11 +23,11 @@
   "__props__": {
     "db": "views",
     "collection": "d17770q8A8Z7l0Q0l031g188q9",
-    "id": "b187O1V0j2I4R6C3R4I9p6H7B8",
+    "id": "N1N7j1P0h3b3J0C7b8a6J4Q7k7",
     "doc": "collection-list",
-    "creationDate": 1710246349678,
+    "creationDate": 1710330786477,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "issueInCollectionName": "problemEditingCreateDoc():[view=collection;collection=collection]?e().key=Enter||e().key=Tab;txt()=storage;txt()=collection;data:().editor.collection.keys().inc():txt()||!txt()||txt().inc():",
       "hideOptionIcon": "lastChild().style().display=none;style().backgroundColor=inherit",
@@ -43,6 +43,7 @@
     "comments": [],
     "folderPath": [],
     "version": 0,
-    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 8
   }
 }

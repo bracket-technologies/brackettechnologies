@@ -3,6 +3,19 @@ const { generate } = require("./generate")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { clone } = require("./clone")
 const { toOperator } = require("./toOperator")
+const fs = require("fs")
+const { postJsonFiles } = require("./jsonFiles")
+
+// config
+require('dotenv').config()
+
+// project DB
+var bracketDB = process.env.BRACKETDB
+var accDB = process.env.ACCDB
+
+// collection KEY
+var bracketKEY = process.env.BRACKETKEY
+var accKEY = process.env.ACCKEY
 
 const database = ({ _window, req, res }) => {
 
@@ -83,11 +96,12 @@ const deletedb = async ({ _window, req, res }) => {
 const getData = async ({ _window, req, res, search }) => {
 
   var collection = search.collection
-  var provider = _window.global.__provider__
+  var provider = _window.global.manifest.session.datastore
   var project = (search.headers || {}).project || _window.global.manifest.session.projectID
   var response = { success: false, message: "Something went wrong!" }
 
-  var doc = search.doc,
+  var db = search.db || project,
+    doc = search.doc,
     docs = search.docs,
     populate = search.populate,
     select = search.select,
@@ -100,16 +114,101 @@ const getData = async ({ _window, req, res, search }) => {
     data = {}, success, message
 
   if (provider === "bracketDB") {
+
+    var path = `database/${db}/${collection}`
+
+    // folder doesnot exist
+    if (!fs.existsSync(path)) return data
+
+    if ("docs" in search) {
+
+      toArray(docs).map(doc => {
+        if (fs.existsSync(`${path}/${doc}.json`)) data[doc] = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
+      })
+    }
+
+    else if ("doc" in search) {
+
+      if (!fs.existsSync(`${path}/${doc}.json`)) return data
+      data = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
+    }
+
+    else if (Object.keys(find).length === 0) {
+
+      var docs = fs.readdirSync(path)
+      for (let i = skip; (i < limit) && (i <= docs.length - 1); i++) {
+
+        var doc = docs[i]
+        var query = JSON.parse(fs.readFileSync(`${path}/${doc}`))
+        doc = doc.split(".json")[0]
+        data[doc] = query
+      }
+    }
+
+    // find
+    else {
+
+      var docs = fs.readdirSync(path)
+
+      toArray(find).map(find => {
+        for (let i = skip; (i <= limit) && (i <= docs.length - 1); i++) {
+
+          var doc = docs[i]
+          var query = JSON.parse(fs.readFileSync(`${path}/${doc}`))
+
+          doc = doc.split(".json")[0]
+          var push = true
+
+          Object.keys(find).map(key => {
+            if (!push) return
+            Object.entries(find[key]).map(([operator, value]) => {
+
+              if (!(key in query) || !push) return
+              operator = toOperator(operator)
+
+              if (operator === "==") {
+                if (query[key] === value) push = true
+                else push = false
+              } else if (operator === "!=") {
+                if (query[key] !== value) push = true
+                else push = false
+              } else if (operator === ">=") {
+                if (query[key] >= value) push = true
+                else push = false
+              } else if (operator === "<=") {
+                if (query[key] <= value) push = true
+                else push = false
+              } else if (operator === "<") {
+                if (query[key] < value) push = true
+                else push = false
+              } else if (operator === ">") {
+                if (query[key] > value) push = true
+                else push = false
+              } else if (operator === "inc") {
+                if (query[key].includes(value)) push = true
+                else push = false
+              } else if (operator === "in") {
+                if (value.includes(query[key])) push = true
+                else push = false
+              }
+            })
+          })
+
+          if (push) data[doc] = query
+        }
+      })
+    }
+
   } else if (provider === "firebase") {
 
-    if (_window.global.data.project.datastore.collections.includes(collection)) collection = 'collection-' + collection
-    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && !search.url) collection += `-${project}`
+    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && !search.url) {
+      collection = 'collection-' + collection
+      collection += `-${project}`
+    }
 
     var ref = req.db.firebaseDB.collection(collection), promises = []
 
     if ("url" in search) {
-
-      if (!search.url) return ({ data: {}, success: false, message: "Missing Url!" })
 
       var url = search.url
       delete search.url
@@ -117,6 +216,7 @@ const getData = async ({ _window, req, res, search }) => {
       if (url.slice(-1) === "/") url = url.slice(0, -1)
 
       try {
+
         data = await require("axios").get(url, { timeout: 1000 * 40 })
           .then(res => res.doesNotExist.throwAnError)
           .catch(err => err)
@@ -126,6 +226,7 @@ const getData = async ({ _window, req, res, search }) => {
         message = `Document/s mounted successfuly!`
 
       } catch (err) {
+
         data = {}
         success = false
         message = `Error!`
@@ -283,19 +384,19 @@ const getData = async ({ _window, req, res, search }) => {
 
   } else if (provider === "mongoDB") {
 
-    var ref = req.db.mongoDB.db(project).collection(collection)
+    var ref = req.db.mongoDB.db(db).collection(collection)
 
     // docs
-    if (docs) data = await db.collection(collection).find({ id: { $in: docs } }).limit(limit).skip(skip)
+    if (docs) data = await ref.find({ id: { $in: docs } }).limit(limit).skip(skip)
 
     // doc
-    else if (doc) data = await db.collection(collection).findOne({ id: doc })
+    else if (doc) data = await ref.findOne({ id: doc })
 
     // collection
-    else if (!find && !findOne) data = await db.collection(collection).find().limit(limit).skip(skip)
+    else if (!find && !findOne) data = await ref.find().limit(limit).skip(skip)
 
     // find
-    else data = await db.collection(collection).find(mongoOptions({ find })).limit(limit).skip(skip)
+    else data = await ref.find(mongoOptions({ find })).limit(limit).skip(skip)
 
     // return data as map
     if (!doc && Object.values(data)[0]) {
@@ -315,7 +416,7 @@ const getData = async ({ _window, req, res, search }) => {
     // restructure
     if (doc) data = { [doc]: data }
 
-    if (populate) await populator({ _window, req, res, data, populate, search })
+    if (populate) await populator({ _window, req, res, db, data, populate, search })
     if (select) data = selector({ data, select })
     else if (deselect) data = deselector({ data, deselect })
     else if (assign) data = assigner({ data, assign })
@@ -331,10 +432,11 @@ const getData = async ({ _window, req, res, search }) => {
 const postData = async ({ _window, req, res, save }) => {
 
   var collection = save.collection
-  var provider = _window.global.__provider__
+  var provider = _window.global.manifest.session.datastore
   var project = (save.headers || {}).project || _window.global.manifest.session.projectID
 
   // collection
+  var db = search.db || project
   var doc = save.doc
   var data = save.data
   var update = save.update || {}
@@ -350,10 +452,41 @@ const postData = async ({ _window, req, res, save }) => {
   }
 
   if (provider === "bracketDB") {
+
+    var path = `database/${db}/${collection}`
+    if (!fs.existsSync(path)) fs.mkdirSync(path)
+
+    // get counter
+    var { data: counter } = await getData({ _window, req, res, search: { db: bracketDB, collection: "settings", doc: "counter" } })
+
+    toArray(data).map(data => {
+
+      if (!data.__props__) {
+
+        counter.data++;
+        data.__props__ = {
+
+          id: generate({ unique: true }),
+          doc: collection + counter.data,
+          creationDate: (new Date()).getTime(),
+          active: true,
+          createdByUserID: global.manifest.session.userID,
+          counter: counter.data
+        }
+      }
+
+      fs.writeFileSync(`${path}/${doc}.json`, JSON.stringify(data, null, 2))
+    })
+
+    // get counter
+    var { data: counter } = await postJsonFiles({ save: { db: bracketDB, collection: "settings", doc: "counter" } })
+
   } else if (provider === "firebase") {
 
-    if (_window.global.data.project.datastore.collections.includes(collection)) collection = 'collection-' + collection
-    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${project}`
+    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") {
+      collection = 'collection-' + collection
+      collection += `-${project}`
+    }
 
     var ref = req.db.firebaseDB.collection(collection)
 
@@ -407,17 +540,27 @@ const postData = async ({ _window, req, res, save }) => {
 const deleteData = async ({ _window, req, res, erase }) => {
 
   var collection = erase.collection
-  var provider = _window.global.__provider__
+  var provider = _window.global.manifest.session.datastore
   var project = (erase.headers || {}).project || _window.global.manifest.session.projectID
 
   var success, message
   var docs = erase.docs || [erase.doc]
 
   if (provider === "bracketDB") {
+
+    var path = `database/${db}/${collection}`
+    if (!fs.existsSync(path)) return
+
+    // create folder if it doesnot exist
+    if (docs.length === 0) fs.rmSync(`${path}`, { recursive: true, force: true })
+    else docs.map(doc => doc && fs.unlinkSync(`${path}/${doc}.json`))
+
   } else if (provider === "firebase") {
 
-    if (_window.global.data.project.datastore.collections.includes(collection)) collection = 'collection-' + collection
-    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${project}`
+    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") {
+      collection = 'collection-' + collection
+      collection += `-${project}`
+    }
 
     var promises = docs.map(async doc => {
 
@@ -465,7 +608,7 @@ const deleteData = async ({ _window, req, res, erase }) => {
   return ({ success, message })
 }
 
-const populator = async ({ _window, req, res, data, populate, search }) => {
+const populator = async ({ _window, req, res, data, db, populate, search }) => {
 
   var populatedData = {}
   var populates = toArray(populate)
@@ -473,12 +616,21 @@ const populator = async ({ _window, req, res, data, populate, search }) => {
   // get data by IDs
   var responses = populates.map(async (populate, i) => {
 
-    if (typeof populate === "string") populates[i] = populate = { collection: populate, find: populate, deselect: [] }
-    if (!populate.collection) populate.collection = populate.find
+    if (typeof populate === "string") populates[i] = populate = { db, collection: populate, field: populate, find: "id", deselect: [] }
+    if (!populate.collection) populate.collection = populate.field
+    if (!populate.find) populate.find = "id"
 
+    // get values from queried data
     var IDSet = new Set()
-    Object.values(data).map(data => IDSet.add(data[populate.find]))
-    var response = await getData({ _window, req, res, search: { collection: populate.collection, docs: Array.from(IDSet), headers: search.headers } })
+    Object.values(data).map(data => IDSet.add(data[populate.field]))
+
+    // add find conditions
+    if (populate.find === "doc") {
+      populate.docs = Array.from(IDSet)
+      delete populate.find
+    } else populate.find = { [populate.find]: { in: Array.from(IDSet) } }
+
+    var response = await getData({ _window, req, res, search: populate })
     populatedData = { ...populatedData, ...response.data }
     return response
   })
@@ -601,6 +753,87 @@ const mongoOptions = ({ find }) => {
   return options
 }
 
+const getSession = async ({ _window, req }) => {
+
+  var global = _window.global
+
+  // get session by sessionID
+  if (global.cookies.session) {
+
+    var { data } = await getData({ _window, req, search: { db: bracketDB, collection: "session", find: { "__props__.id": { equal: global.manifest.cookies.session } } } })
+    return data
+  
+  }
+  
+  // get session by host
+  else if (global.manifest.host) {
+
+    var { data } = await getData({ _window, req, search: { db: bracketDB, collection: "session", find: { domain: { equal: global.manifest.host } } } })
+    return data
+  }
+
+  // no session
+  return
+}
+
+const updateSession = () => { }
+
+// create session
+const createSession = async ({ _window, req }) => {
+
+  var global = _window.global
+  var promises = [], account, project, counter, subscriptions
+
+  // project
+  promises.push(getData({ _window, search: { db: bracketDB, collection: "project", find: { domains: { inc: global.manifest.host } } } }).then(({ data }) => { project = Object.values(data)[0] }))
+  
+  // counter
+  promises.push(getData({ _window, search: { db: bracketDB, collection: "settings", doc: "counter" } }).then(({ data }) => { counter = data }))
+  await Promise.all(promises)
+
+  // clear promises
+  var promises = []
+
+  // account
+  promises.push(getData({ _window, search: { db: bracketDB, collection: "account", find: { "__props__.id": { equal: project.accountID } } } }).then(({ data }) => { account = Object.values(data)[0] }))
+  
+  // subscriptions
+  promises.push(getData({ _window, search: { db: "subscriptions", collection: project.dataKEY, find: { expiryDate: { greater: new Date().getTime() } } } }).then(({ data }) => { subscriptions = Object.values(data) }))
+  await Promise.all(promises)
+
+  counter.session++;
+  
+  // session
+  var session = {
+
+    accountID: account.__props__.id,
+    projectID: project.__props__.id,
+    userID: null,
+    permissionID: null,
+    dataDB: project.db,
+    dataKEY: project.dataKEY,
+    domain: "localhost",
+    datastore: "bracketdb",
+    expiryDate: new Date().getTime() + 86400000,
+    encryptionKey: generate(),
+    subscriptions: [{
+      type: "view",
+      db: "view",
+      collection: bracketKEY,
+      doc: "console",
+      expiryDate: 9999999999999,
+    }],
+    __props__: {
+      id: sessionID,
+      doc: "session1",
+      creationDate: new Date().getTime(),
+      active: true,
+      createdByUserID: obeidUserID,
+      counter: counter.session
+    }
+  }
+}
+
 module.exports = {
   database,
   getdb,
@@ -608,5 +841,7 @@ module.exports = {
   postdb,
   postData,
   deletedb,
-  deleteData
+  deleteData,
+  getSession,
+  createSession
 }

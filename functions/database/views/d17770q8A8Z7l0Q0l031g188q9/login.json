@@ -110,11 +110,11 @@
   "__props__": {
     "db": "views",
     "collection": "d17770q8A8Z7l0Q0l031g188q9",
-    "id": "O1s7y1Z0y2r4M6T334t9w6m8M3",
+    "id": "u1r7s1W0I3R3V0X7z876f5j0K9",
     "doc": "login",
-    "creationDate": 1710246349683,
+    "creationDate": 1710330786509,
     "active": true,
-    "createdBy": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
     "actions": {
       "loginPasswordHandler": "loader.show;checkPassword():[password=doc().password;user=data:().editor.account.id]:[loader.hide;if():[!_.data]:[note():[text=Password is incorrect!;type=danger]]:[setCookie():[name=_id;value=data:().editor.account.id];root():[path='/console/acc']]]?doc().password",
       "loginEmailHandler": "loader.show;checkEmail():[email=doc().email]:[loader.hide;if():[!_.data.email]:[note():[text=Email does not exist!;type=danger]]:[data:().editor.account=_.data;():login.1stChild().update()]]?doc().email",
@@ -264,6 +264,7 @@
     ],
     "folderPath": [],
     "version": 0,
-    "projectID": "K1x7d0l898q817C0w1W9c2j4d6"
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 15
   }
 }
