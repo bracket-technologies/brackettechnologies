@@ -65,7 +65,7 @@ const moveData = (data) => {
         var bracketKEY = "d17770q8A8Z7l0Q0l031g188q9"
         var accKEY = "71j7R0d8Z8p7E0d0n081r1e854"
 
-        // db per project, collection forAll projects (collections: ✓project, ✓account, ✓session, ✓user, ✓permission, ✓billingAccount, ✓paymentMethod, ✓exchangeRate, ✓tokenPackage)
+        // db per project, collection forAll projects (collections: ✓project, ✓account, ✓session, ✓user, ✓permission, ✓billingAccount, ✓paymentMethod, ✓exchangeRate, ✓tokenPackage, ✓settings, ✓plugin)
         removeJsonFiles({ erase: { db: bracketDB } }); // ✓
         removeJsonFiles({ erase: { db: accDB } }); // ✓
 
@@ -73,14 +73,49 @@ const moveData = (data) => {
         removeJsonFiles({ erase: { db: "views" } }); // ✓(doc per view)
         removeJsonFiles({ erase: { db: "storage" } }); // ✓(doc per storage)
 
-        removeJsonFiles({ erase: { db: "plugins" } }); // ✓(doc per plugin)
         removeJsonFiles({ erase: { db: "subscriptions" } }); // ✓(doc per subscription)
         removeJsonFiles({ erase: { db: "bills" } }); // ✓(doc per bill, bill per month per plugin)
         removeJsonFiles({ erase: { db: "vouchers" } }); // ✓payment, reciept, and transfer voucher (doc per voucher)
         removeJsonFiles({ erase: { db: "transactions" } }); // ✓(doc per transaction)
-        removeJsonFiles({ erase: { db: "tokens" } }); // ✓release 100,000 token/year on launch for Bracket Account (doc per token)
+        removeJsonFiles({ erase: { db: "tokens" } }); // ✓release 100,000 token/year on launch for Bracket Account (collectionID is releaseDate, doc per token)
         removeJsonFiles({ erase: { db: "blocks" } }); // ✓transaction of each token (collectionID is TokenID)
         // removeJsonFiles({ erase: { db: "analysis" } }); // data analysis per project (doc per day): search, save, erase, requestSize, responseSize
+
+        var counter = {}
+        const settings = () => {
+            counter = { // total = 18
+                project: 0,
+                account: 0,
+                session: 0,
+                permission: 0,
+                user: 0,
+                billingAccount: 0,
+                transaction: 0,
+                token: 0,
+                block: 0,
+                exchangeRate: 0,
+                tokenPackage: 0,
+                voucher: 0,
+                paymentMethod: 0,
+                view: 0,
+                plugin: 0,
+                storage: 0,
+                data: 0,
+                subscription: 0,
+                bill: 0,
+                __props__: {
+                    db: bracketDB,
+                    collection: "settings",
+                    id: generate({ unique: true }),
+                    doc: "counter",
+                    creationDate: new Date().getTime(),
+                    active: true
+                }
+            }
+
+            postJsonFiles({ save: { data: counter, collection: `${bracketDB}/settings`, doc: counter.__props__.doc } })
+        }
+        settings();
 
         // create account
         const creatAccounts = () => {
@@ -93,7 +128,8 @@ const moveData = (data) => {
                     id: bracketAccountID,
                     doc: "bracketAccount",
                     creationDate: new Date().getTime(),
-                    active: true
+                    active: true,
+                    counter: counter.account++
                 }
             }
 
@@ -107,7 +143,8 @@ const moveData = (data) => {
                     id: accAccountID,
                     doc: "accAccount",
                     creationDate: new Date().getTime(),
-                    active: true
+                    active: true,
+                    counter: counter.account++
                 }
             }
 
@@ -124,29 +161,29 @@ const moveData = (data) => {
                 data.__props__ = {
                     db: bracketDB,
                     collection: "project",
-                    id: generate({ unique: true }),
+                    id: i === 0 ? accProjectID : bracketProjectID,
+                    doc: i === 0 ? "accounting" : "brackettechnologies",
                     creationDate: new Date().getTime(),
                     active: true,
                     createdByUserID: obeidUserID,
-                    doc: data.name
+                    counter: counter.project++
                 }
 
                 // confidential: database access keys, publicID, and account ID
-                data.publicID = doc.id === "acc" ? accProjectID : bracketProjectID
                 data.accountID = doc.id === "acc" ? accAccountID : bracketAccountID
-                data.dataDB = doc.id === "acc" ? accDB : bracketDB
+                data.db = doc.id === "acc" ? accDB : bracketDB
                 data.dataKEY = doc.id === "acc" ? accKEY : bracketKEY
 
                 // project details
                 data.subdomain = doc.id
                 data.views = data.datastore.views
                 data.collections = data.datastore.collections
+                data.datastore = "mongodb"
 
                 delete data["creation-date"]
                 delete data.clooossseeed
                 delete data.hezzzyawezzz
                 delete data.functions
-                delete data.datastore
                 delete data.id
 
                 postJsonFiles({ save: { data, collection: `${bracketDB}/project`, doc: data.__props__.doc } })
@@ -168,17 +205,17 @@ const moveData = (data) => {
                 accountType: "Business",
                 organizationAddress: "Hazmieh Village",
                 languagePreference: "English",
-                projectID: accProjectID,
                 accountID: accAccountID,
-                lastTransactionID: debitBracketTransactionID,
+                lastTransactionID: creditAccTransactionID,
                 __props__: {
                     db: bracketDB,
                     collection: "billingAccount",
                     id: accBillingAccountID,
-                    doc: "TokenBillingAccount",
+                    doc: "accBillingAccount",
                     creationDate: new Date().getTime(),
                     createdByUserID: obeidUserID,
-                    active: true
+                    active: true,
+                    counter: counter.billingAccount++
                 }
             }
 
@@ -195,17 +232,17 @@ const moveData = (data) => {
                 accountType: "Business",
                 organizationAddress: "Hazmieh Village",
                 languagePreference: "English",
-                projectID: bracketProjectID,
                 accountID: bracketAccountID,
-                lastTransactionID: creditAccTransactionID,
+                lastTransactionID: debitBracketTransactionID,
                 __props__: {
                     db: bracketDB,
                     collection: "billingAccount",
                     id: bracketBillingAccountID,
-                    doc: "BracketTokenAccount",
+                    doc: "bracketBillingAccount",
                     creationDate: new Date().getTime(),
                     createdByUserID: obeidUserID,
-                    active: true
+                    active: true,
+                    counter: counter.billingAccount++
                 }
             }
 
@@ -229,17 +266,17 @@ const moveData = (data) => {
                 addressLine2: "",
                 city: "Beirut",
                 postalCode: "12345",
-                projectID: accProjectID,
                 accountID: accAccountID,
                 billingAccountID: accBillingAccountID,
                 __props__: {
                     db: bracketDB,
                     collection: "paymentMethod",
                     id: paymentMethodID,
-                    doc: "PaymentMethod1",
+                    doc: "paymentMethod1",
                     creationDate: new Date().getTime(),
                     createdByUserID: obeidUserID,
-                    active: true
+                    active: true,
+                    counter: counter.paymentMethod++
                 }
             }
 
@@ -260,7 +297,8 @@ const moveData = (data) => {
                     id: data["last-name"] === "Obeid" ? obeidUserID : generate({ unique: true }),
                     creationDate: new Date().getTime(),
                     active: true,
-                    createdByUserID: obeidUserID
+                    createdByUserID: obeidUserID,
+                    counter: counter.user++
                 }
 
                 data.accountID = accAccountID
@@ -299,7 +337,8 @@ const moveData = (data) => {
                         doc: id,
                         creationDate: new Date().getTime(),
                         active: true,
-                        createdByUserID: obeidUserID
+                        createdByUserID: obeidUserID,
+                        counter: counter.permission++
                     }
                 }
 
@@ -326,7 +365,8 @@ const moveData = (data) => {
                     doc: "obeidBracketUser",
                     creationDate: new Date().getTime(),
                     active: true,
-                    createdByUserID: obeidUserID
+                    createdByUserID: obeidUserID,
+                    counter: counter.user++
                 }
             }
 
@@ -343,7 +383,8 @@ const moveData = (data) => {
                     doc: "obeidUserPermission",
                     creationDate: new Date().getTime(),
                     active: true,
-                    createdByUserID: obeidUserID
+                    createdByUserID: obeidUserID,
+                    counter: counter.permission++
                 }
             }
 
@@ -377,7 +418,8 @@ const moveData = (data) => {
                     doc: "session1",
                     creationDate: new Date().getTime(),
                     active: true,
-                    createdByUserID: obeidUserID
+                    createdByUserID: obeidUserID,
+                    counter: counter.session++
                 }
             }
 
@@ -397,10 +439,11 @@ const moveData = (data) => {
                     db: bracketDB,
                     collection: "exchangeRate",
                     id: exchangeRateID,
-                    doc: "TOKENtoUSD",
+                    doc: "exchangeRate1",
                     creationDate: new Date().getTime(),
                     active: true,
-                    createdByUserID: obeidUserID
+                    createdByUserID: obeidUserID,
+                    counter: counter.exchangeRate++
                 }
             }
 
@@ -412,16 +455,21 @@ const moveData = (data) => {
         const createTokenPackage = () => {
 
             const data = {
-                minimumPurchasedTokens: 0,
-                giftTokens: 0,
+                minimumTokens: 0,
+                freeTokens: 0,
+                releaseDate: 0,
+                expiryDate: 9999999999999,
+                status: "Confirmed",
+                approved: true,
                 __props__: {
                     db: bracketDB,
                     collection: "tokenPackage",
                     id: tokenPackageID,
-                    doc: "zeroTokenPackage",
+                    doc: "tokenPackage1",
                     creationDate: new Date().getTime(),
                     active: true,
-                    createdByUserID: obeidUserID
+                    createdByUserID: obeidUserID,
+                    counter: counter.tokenPackage++
                 }
             }
 
@@ -429,41 +477,42 @@ const moveData = (data) => {
         }
         createTokenPackage();
 
-        /////////////////////////////////////// Collection Per Project ///////////////////////////////////////////
-
         // create plugin
         const createPlugin = () => {
 
             const data = {
                 accountID: bracketAccountID,
                 projectID: bracketProjectID,
-                data: [{
-                    type: "view",
-                    db: "view",
+                plugins: [{
+                    db: "views",
                     collection: bracketKEY,
                     doc: "console"
                 }],
                 price: 100,
-                priceUnit: "TOKEN",
-                avDuration: 9999999999999,
+                unit: "TOKEN",
+                subscriptionDuration: 1,
+                subscriptionDurationUnit: "month",
                 releaseDate: 0,
                 expiryDate: 9999999999999,
                 status: "Confirmed",
                 approved: true,
                 __props__: {
-                    db: "plugins",
-                    collection: bracketKEY,
+                    db: bracketDB,
+                    collection: "plugin",
                     id: pluginID,
                     doc: "plugin1",
                     creationDate: new Date().getTime(),
                     active: true,
-                    createdByUserID: obeidUserID
+                    createdByUserID: obeidUserID,
+                    counter: counter.plugin++
                 }
             }
 
-            postJsonFiles({ save: { data, collection: `plugins/${bracketKEY}`, doc: "plugin1" } })
+            postJsonFiles({ save: { data, collection: `${bracketDB}/plugin`, doc: "plugin1" } })
         }
         createPlugin();
+
+        /////////////////////////////////////// Collection Per Project ///////////////////////////////////////////
 
         // create subscription
         const createSubscription = () => {
@@ -482,7 +531,8 @@ const moveData = (data) => {
                     doc: "subscription1",
                     creationDate: new Date().getTime(),
                     active: true,
-                    createdByUserID: obeidUserID
+                    createdByUserID: obeidUserID,
+                    counter: counter.subscription++
                 }
             }
 
@@ -510,7 +560,8 @@ const moveData = (data) => {
                     doc: "bill1",
                     creationDate: new Date().getTime(),
                     active: true,
-                    createdByUserID: obeidUserID
+                    createdByUserID: obeidUserID,
+                    counter: counter.bill++
                 }
             }
 
@@ -536,7 +587,8 @@ const moveData = (data) => {
                     doc: "voucher1",
                     creationDate: new Date().getTime(),
                     active: true,
-                    createdByUserID: obeidUserID
+                    createdByUserID: obeidUserID,
+                    counter: counter.voucher++
                 }
             }
 
@@ -547,11 +599,12 @@ const moveData = (data) => {
         // release 100 token
         var tokens = []
         const createTokens = () => {
+            var releaseDate = new Date().getTime()
             for (let i = 0; i < 100; i++) {
 
                 var data = {
-                    token: generate({ universal: true }),
-                    releaseDate: new Date().getTime(),
+                    token: generate({ universal: true, timestamp: releaseDate }),
+                    releaseDate,
                     __props__: {
                         db: "tokens",
                         collection: bracketKEY,
@@ -559,12 +612,13 @@ const moveData = (data) => {
                         doc: "token" + (i + 1),
                         creationDate: new Date().getTime(),
                         active: true,
-                        createdByUserID: obeidUserID
+                        createdByUserID: obeidUserID,
+                        counter: counter.token++
                     }
                 }
-                tokens.push(data.token)
+                tokens.push(data)
 
-                postJsonFiles({ save: { data, collection: `tokens/${bracketKEY}`, doc: data.__props__.doc } })
+                postJsonFiles({ save: { data, collection: `tokens/${releaseDate}`, doc: data.__props__.doc } })
             }
         }
         createTokens();
@@ -581,8 +635,8 @@ const moveData = (data) => {
             ].map((transactionID, i) => {
 
                 var data = {
-                    accountID: accAccountID,
-                    projectID: accProjectID,
+                    accountID: (i === 0 || i === 1 || i === 4) ? bracketAccountID : accAccountID,
+                    billingAccountID: (i === 0 || i === 1 || i === 4) ? bracketBillingAccountID : accBillingAccountID,
                     transactionDate: new Date().getTime(),
                     debit: 0,
                     credit: 0,
@@ -591,12 +645,12 @@ const moveData = (data) => {
                     status: "Confirmed",
                     debits: 0,
                     credits: 0,
-                    exchangeRate: [{
+                    exchangeRate: {
                         fromUnit: "TOKEN",
                         fromAmount: 1,
                         toUnit: "USD",
                         toAmount: 1
-                    }],
+                    },
                     __props__: {
                         db: "transactions",
                         collection: (i === 0 || i === 1 || i === 4) ? bracketKEY : accKEY,
@@ -604,7 +658,8 @@ const moveData = (data) => {
                         doc: "transaction" + (i + 1),
                         creationDate: new Date().getTime(),
                         active: true,
-                        createdByUserID: obeidUserID
+                        createdByUserID: obeidUserID,
+                        counter: counter.transaction++
                     }
                 }
 
@@ -648,31 +703,41 @@ const moveData = (data) => {
         // create 300: 100 deposit to Bracket => 100 move to Acc => 100 move back to Bracket
         const createBlocks = () => {
             
-            var prevBlockID
-            tokens.map((tokenID, i0) => {
+            var prevBlockID, counter = 0
+            tokens.map(token => {
                 for (let i = 0; i < 2; i++) {
+                    counter++;
                     var data = {
                         accountID: (i === 0 || i === 2) ? bracketAccountID : accAccountID,
-                        projectID: (i === 0 || i === 2) ? bracketProjectID : accProjectID,
-                        tokenID,
-                        blockDate: new Date().getTime(),
-                        accountID: (i === 0 || i === 2) ? bracketBillingAccountID : accBillingAccountID,
+                        billingAccountID: (i === 0 || i === 2) ? bracketBillingAccountID : accBillingAccountID,
                         transactionID: i === 0 ? debitBracketReleaseTransactionID : i === 1 ? debitAccTransactionID : i === 2 && debitBracketTransactionID,
+                        token: token.token,
+                        blockDate: new Date().getTime(),
                         status: "Confirmed",
+                        price: i === 0 ? 0 : 1,
+                        unit: "USD",
                         __props__: {
                             db: "blocks",
-                            collection: tokenID,
+                            collection: token.token,
                             id: generate({ unique: true }),
-                            doc: "block" + ((i0 + 1).toString() + (i + 1)),
+                            doc: "block" + counter,
                             creationDate: new Date().getTime(),
                             active: true,
-                            createdByUserID: obeidUserID
+                            createdByUserID: obeidUserID,
+                            counter: counter.block++
                         }
                     }
                     if (i !== 0) data.prevBlockID = prevBlockID
                     prevBlockID = data.__props__.id
 
-                    postJsonFiles({ save: { data, collection: `blocks/${tokenID}`, doc: data.__props__.doc } })
+                    // assign token package on acc purchase
+                    if (i === 1) data.tokenPackageID = tokenPackageID
+
+                    if (i === 2) { // update token lastBlockID
+                        token.lastBlockID = data.id
+                        postJsonFiles({ save: { data: token, collection: `tokens/${token.releaseDate}`, doc: token.__props__.doc } })
+                    }
+                    postJsonFiles({ save: { data, collection: `blocks/${token.token}`, doc: data.__props__.doc } })
                 }
             })
         }
@@ -699,7 +764,8 @@ const moveData = (data) => {
                         comments: [...(data.hezzzyawezzz || []), ...(data.functions.hezzzyawezzz || [])],
                         folderPath: [],
                         version: 0,
-                        projectID: project === "brackettechnologies" ? bracketProjectID : accProjectID
+                        projectID: project === "brackettechnologies" ? bracketProjectID : accProjectID,
+                        counter: counter.view++
                     }
 
                     delete data["creation-date"]
@@ -736,7 +802,8 @@ const moveData = (data) => {
                         folderPath: [],
                         actions: {},
                         doc: doc.id,
-                        projectID: project === "brackettechnologies" ? bracketProjectID : accProjectID
+                        projectID: project === "brackettechnologies" ? bracketProjectID : accProjectID,
+                        counter: counter.storage++
                     }
 
                     delete data["creation-date"]
@@ -769,7 +836,8 @@ const moveData = (data) => {
                             comments: [...(data.hezzzyawezzz || []), ...((data.functions || {}).hezzzyawezzz || [])],
                             folderPath: [],
                             actions: {},
-                            projectID: accProjectID
+                            projectID: accProjectID,
+                            counter: counter.data++
                         }
 
                         delete data["creation-date"]

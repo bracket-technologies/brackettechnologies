@@ -3,7 +3,7 @@ const numbers = "1234567890"
 
 const generate = (params = {}) => {
 
-  var { length, number, unique, universal } = params
+  var { length, number, unique, universal, timestamp } = params
 
   var result = "", chars = number ? numbers : characters
 
@@ -24,6 +24,10 @@ const generate = (params = {}) => {
       result += chars.charAt(Math.floor(Math.random() * charactersLength))
       if (unique && length >= 26 && i <= 13) result += time[i]
     }
+
+    // timestamp => ex. xxxxxxxxxxxxxxxT(xxxxxxxxxxxxx:timestamp)
+    if (typeof timestamp === "number") result += "T" + timestamp
+    else if (timestamp) result += "T" + time
 
   return result
 }
