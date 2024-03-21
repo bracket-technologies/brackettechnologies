@@ -8,12 +8,12 @@ const detector = new (require('node-device-detector'))({
 
 const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, mongoDB } }) => {
 
-    req.db = { firebaseDB, mongoDB }
+    req.datastore = { firebaseDB, mongoDB }
     req.storage = { firebaseStorage }
-
+    
     // parse cookies
     parseCookies(req)
-    req.cookies = JSON.parse(req.cookies.__session || "{}")
+    req.cookies = JSON.parse(req.headers.cookies || req.cookies.__session || "{}")
 
     // action
     req.body.route = req.body.route || {}
@@ -22,8 +22,9 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
     path = decodeURI(req.url).split("/")
     
     // 
-    var page = path[1] || "main"
     var host = req.headers['x-forwarded-host'] || req.headers.host || req.headers.referer
+    var page = path[1] || "main"
+
     var __ = (req.body.data || {}).__ || []
     var server = req.body.server || "render"
     var type = req.body.type
@@ -34,6 +35,9 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
 
         // documenter
         : "document"
+
+    if (host === "192.168.10.204") host = "acc.localhost"
+    else if (host === "192.168.10.204:8080") host = "localhost"
 
     var global = {
         __,
@@ -52,7 +56,7 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
         //
         path: path.join("/"),
         manifest: {
-            datastore: "bracketdb",
+            datastore: "bracketDB",
             type,
             server,
             host,

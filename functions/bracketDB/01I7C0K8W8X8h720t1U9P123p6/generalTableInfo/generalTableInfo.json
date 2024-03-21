@@ -1,0 +1,758 @@
+{
+  "itemsTable": [
+    {
+      "collection": "commission",
+      "table": [
+        {
+          "checkbox": "true",
+          "fraction": ".5fr"
+        },
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "supplierName",
+          "header": "Supplier",
+          "fraction": "1fr"
+        },
+        {
+          "path": "classification",
+          "header": "Group/Specific",
+          "fraction": "1fr"
+        },
+        {
+          "path": "beneficiarType",
+          "header": "Beneficiar Type",
+          "fraction": "1fr"
+        },
+        {
+          "path": "beneficiar",
+          "header": "Beneficiar",
+          "fraction": "1fr"
+        },
+        {
+          "path": "startDate",
+          "header": "Start Date",
+          "fraction": "1fr"
+        },
+        {
+          "path": "expiryDate",
+          "header": "Expiry Date",
+          "fraction": "1fr"
+        },
+        {
+          "path": "commission",
+          "header": "Commission",
+          "fraction": "1fr"
+        },
+        {
+          "path": "service",
+          "header": "Service",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "delete": "true",
+          "fraction": ".4fr"
+        }
+      ]
+    },
+    {
+      "collection": "currency",
+      "table": [
+        {
+          "checkbox": true,
+          "fraction": ".5fr"
+        },
+        {
+          "path": "ref",
+          "header": "ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "country",
+          "header": "Country",
+          "fraction": "1fr"
+        },
+        {
+          "path": "code",
+          "header": "Code",
+          "fraction": "1fr"
+        },
+        {
+          "path": "symbole",
+          "header": "Symbole",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "delete": "true",
+          "remove": true,
+          "fraction": ".4fr"
+        }
+      ]
+    },
+    {
+      "collection": "branch",
+      "table": [
+        {
+          "checkbox": true,
+          "fraction": ".5fr"
+        },
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "city",
+          "header": "City",
+          "fraction": "1fr"
+        },
+        {
+          "path": "address",
+          "header": "Address",
+          "fraction": "1fr"
+        },
+        {
+          "path": "country",
+          "header": "Country",
+          "fraction": "1fr"
+        },
+        {
+          "path": "contactNumber",
+          "header": "Contact Number",
+          "fraction": "1fr"
+        },
+        {
+          "path": "email",
+          "header": "Email",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "delete": true,
+          "remove": true,
+          "fraction": ".4fr"
+        }
+      ]
+    },
+    {
+      "collection": "invoice",
+      "table": [
+        {
+          "checkbox": true,
+          "fraction": ".5fr"
+        },
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "currency",
+          "header": "Currency",
+          "fraction": "1fr"
+        },
+        {
+          "path": "totalDebit",
+          "fromatCell": "toPrice()",
+          "header": "Total Debits",
+          "fraction": "1fr"
+        },
+        {
+          "path": "totalCredit",
+          "fromatCell": "toPrice()",
+          "header": "Total Credits",
+          "fraction": "1fr"
+        },
+        {
+          "path": "totalBalance",
+          "fromatCell": "toPrice()",
+          "header": "Balance",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "delete": true,
+          "fraction": ".4fr"
+        }
+      ]
+    },
+    {
+      "collection": "voucher",
+      "table": [
+        {
+          "checkbox": true,
+          "fraction": ".5fr"
+        },
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "currency",
+          "header": "Currency",
+          "fraction": "1fr"
+        },
+        {
+          "path": "totalDebit",
+          "fromatCell": "toPrice()",
+          "header": "Total Debits",
+          "fraction": "1fr"
+        },
+        {
+          "path": "totalCredit",
+          "fromatCell": "toPrice()",
+          "header": "Total Credits",
+          "fraction": "1fr"
+        },
+        {
+          "path": "totalBalance",
+          "fromatCell": "toPrice()",
+          "header": "Balance",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "delete": true,
+          "fraction": ".4fr"
+        }
+      ]
+    },
+    {
+      "collection": "account",
+      "table": [
+        {
+          "checkbox": "true",
+          "fraction": ".5fr"
+        },
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "currencyName",
+          "header": "Currency",
+          "fraction": "1fr"
+        },
+        {
+          "path": "relatedTo",
+          "header": "Related To",
+          "fraction": "1fr"
+        },
+        {
+          "path": "reset",
+          "header": "Renew Date",
+          "formatCell": "toCellDate()",
+          "fraction": "1fr"
+        },
+        {
+          "path": "limit",
+          "header": "Credit Limit",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "totalDebit",
+          "header": "Total Debits",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "totalCredit",
+          "header": "Total Credits",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "path": "totalBalance",
+          "header": "Balance",
+          "formatCell": "toPrice()",
+          "justifyContent": "end",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "statement": true,
+          "delete": "true",
+          "fraction": ".4fr"
+        }
+      ]
+    },
+    {
+      "collection": "bank",
+      "table": [
+        {
+          "checkbox": "true",
+          "fraction": ".5fr"
+        },
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "city",
+          "header": "City",
+          "fraction": "1fr"
+        },
+        {
+          "path": "address",
+          "header": "Address",
+          "fraction": "1.5fr"
+        },
+        {
+          "path": "country",
+          "header": "Country",
+          "fraction": "1fr"
+        },
+        {
+          "path": "contactNumber",
+          "header": "Contact Number",
+          "fraction": "1fr"
+        },
+        {
+          "path": "email",
+          "header": "Email",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "delete": true,
+          "remove": true,
+          "fraction": ".4fr"
+        }
+      ]
+    },
+    {
+      "collection": "policy",
+      "table": [
+        {
+          "checkbox": "true",
+          "fraction": ".5fr"
+        },
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "name",
+          "header": "Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "city",
+          "header": "City",
+          "fraction": "1fr"
+        },
+        {
+          "path": "address",
+          "header": "Address",
+          "fraction": "1.5fr"
+        },
+        {
+          "path": "country",
+          "header": "Country",
+          "fraction": "1fr"
+        },
+        {
+          "path": "contactNumber",
+          "header": "Contact Number",
+          "fraction": "1fr"
+        },
+        {
+          "path": "email",
+          "header": "Email",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "delete": true,
+          "remove": true,
+          "fraction": ".4fr"
+        }
+      ]
+    },
+    {
+      "collection": "discount",
+      "table": [
+        {
+          "checkbox": "true",
+          "fraction": ".5fr"
+        },
+        {
+          "path": "ref",
+          "header": "Ref#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "customerName",
+          "header": "Customer",
+          "fraction": "1fr"
+        },
+        {
+          "path": "classification",
+          "header": "Group/Specific",
+          "fraction": "1fr"
+        },
+        {
+          "path": "beneficiarType",
+          "header": "Beneficiar Type",
+          "fraction": "1fr"
+        },
+        {
+          "path": "beneficiar",
+          "header": "Beneficiar",
+          "fraction": "1fr"
+        },
+        {
+          "path": "startDate",
+          "header": "Start Date",
+          "fraction": "1fr"
+        },
+        {
+          "path": "expiryDate",
+          "header": "Expiry Date",
+          "fraction": "1fr"
+        },
+        {
+          "path": "discount",
+          "header": "Discount",
+          "fraction": "1fr"
+        },
+        {
+          "path": "service",
+          "header": "Service",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "delete": "true",
+          "fraction": ".4fr"
+        }
+      ]
+    },
+    {
+      "collection": "user",
+      "table": [
+        {
+          "checkbox": "true",
+          "fraction": ".5fr"
+        },
+        {
+          "path": "ref",
+          "header": "User#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "firstName",
+          "header": "First Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "lastName",
+          "header": "Last Name",
+          "fraction": "1fr"
+        },
+        {
+          "path": "contactNumber",
+          "header": "Contact Number",
+          "fraction": "1fr"
+        },
+        {
+          "path": "email",
+          "header": "Email",
+          "fraction": "1.5fr"
+        },
+        {
+          "path": "type",
+          "header": "Type",
+          "fraction": "1fr"
+        },
+        {
+          "path": "country",
+          "header": "Country",
+          "fraction": "1fr"
+        },
+        {
+          "path": "city",
+          "header": "City",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "delete": "true",
+          "fraction": ".3fr"
+        }
+      ]
+    },
+    {
+      "collection": "transaction",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Transaction#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "ledgerAccount",
+          "toSpecific": "log():[mhmd123]:[[under=_;under2=__;under3=___]];if():[__.[_.path]]:[text=if():[!_.innerPath]:[__.[_.path]]:[__.[_.path].[_.innerPath]];if():[__.ledgerAccount=customManagerSearchEngine:().ledgerAccount]:[style.color=#fb3b1e]]:[text='-';style.justifyContent=center]",
+          "header": "Ledger",
+          "fraction": ".5fr"
+        },
+        {
+          "path": "creationDate",
+          "header": "Date",
+          "formatCell": "toCellDate()",
+          "fraction": "1fr"
+        },
+        {
+          "path": "description",
+          "header": "Description",
+          "fraction": "1fr"
+        },
+        {
+          "path": "debit",
+          "header": "Debit",
+          "formatCell": "toPrice()",
+          "justifyContent": "center",
+          "fraction": "1fr"
+        },
+        {
+          "path": "credit",
+          "header": "Credit",
+          "formatCell": "toPrice()",
+          "justifyContent": "center",
+          "fraction": "1fr"
+        },
+        {
+          "path": "balance",
+          "#innerPath": "balance",
+          "header": "Balance",
+          "formatCell": "toPrice()",
+          "justifyContent": "center",
+          "fraction": "1fr"
+        }
+      ]
+    },
+    {
+      "collection": "notification",
+      "table": [
+        {
+          "path": "createdBy",
+          "header": "Sender",
+          "fraction": "1fr"
+        },
+        {
+          "path": "msg",
+          "header": "Message",
+          "fraction": "3fr"
+        },
+        {
+          "path": "dueDate",
+          "#formatCell": "toCellDate",
+          "header": "Due Date",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "balanceSheet": "true",
+          "customIcon": [
+            {
+              "icon": "done_all",
+              "tooltip": "mark as read",
+              "action": "markNotificationsAsRead()"
+            }
+          ],
+          "fraction": ".5fr"
+        }
+      ]
+    }
+  ],
+  "id": "generalTableInfo",
+  "__props__": {
+    "id": "21Z7H141Z0G361f3q6U055b7c3",
+    "doc": "generalTableInfo",
+    "creationDate": 1711031360573,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "itemsTable",
+          9
+        ]
+      },
+      {
+        "path": [
+          "itemsTable",
+          8
+        ]
+      },
+      {
+        "path": [
+          "itemsTable",
+          7
+        ]
+      },
+      {
+        "path": [
+          "itemsTable",
+          6
+        ]
+      },
+      {
+        "path": [
+          "itemsTable",
+          4
+        ]
+      },
+      {
+        "path": [
+          "itemsTable",
+          5
+        ]
+      },
+      {
+        "path": [
+          "itemsTable",
+          3
+        ]
+      },
+      {
+        "path": [
+          "itemsTable",
+          2
+        ]
+      },
+      {
+        "path": [
+          "itemsTable",
+          1
+        ]
+      },
+      {
+        "path": [
+          "itemsTable",
+          0
+        ]
+      },
+      {
+        "path": [
+          "itemsTable",
+          10
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "invoice",
+        "path": [
+          "itemsTable",
+          11
+        ]
+      },
+      {
+        "note": "voucher",
+        "path": [
+          "itemsTable",
+          12
+        ]
+      },
+      {
+        "note": "discount",
+        "path": [
+          "itemsTable",
+          16
+        ]
+      },
+      {
+        "note": "item",
+        "path": [
+          "itemsTable",
+          18
+        ]
+      },
+      {
+        "note": "item",
+        "path": [
+          "itemsTable",
+          19
+        ]
+      },
+      {
+        "note": "item",
+        "path": [
+          "itemsTable",
+          20
+        ]
+      },
+      {
+        "note": "item",
+        "path": [
+          "itemsTable",
+          21
+        ]
+      },
+      {
+        "note": "user",
+        "path": [
+          "itemsTable",
+          26
+        ]
+      }
+    ],
+    "folderPath": [],
+    "actions": {},
+    "counter": 2
+  }
+}

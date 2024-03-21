@@ -1,0 +1,189 @@
+{
+  "view": "View:customFormSectionLoop?class=column;style:[gap=2em;width=100%]",
+  "children": [
+    {
+      "view": "[View]:[data=_.inputInfo.subInput.clone()||_.inputInfo.clone()]?#handleDisplaySection();#if():[().displaySection=false]:[style:[display=none]]:[style:[display=flex]];_.index=index();class=flex column;if():[_.onLoadSectionAction]:[[_.onLoadSectionAction]()]",
+      "children": [
+        {
+          "view": "View?class=flex column;if():[_.multiSection]:[id=toCamelCase():[newId=[__.title+' '+_.title.join():' ']]]:[id=toCamelCase():[newId=[__.title+' '+_.title]]];handleDisplaySection();if():[().displaySection=false]:[parent().style().display=none]:[parent().style().display=flex];",
+          "children": [
+            {
+              "view": "customTitle??!_.multiSection"
+            },
+            {
+              "view": "View?class=flex column;style:[width=100%]?parent().displaySection",
+              "children": [
+                {
+                  "view": "View?class=flex column;style:[width=100%;gap=1rem];?_.type!=image;!_.customSectionView",
+                  "children": [
+                    {
+                      "view": "[View]:[if():[!data().[_.path].0;_.path]:[data().[_.path]=:[]];path=_.path]?class=flex column;style:[width=100%;height=fit-content;overflow=hidden;gap=1rem];if():[__.defaultValues]:[handlePathDefaultValues()]",
+                      "children": [
+                        {
+                          "view": "customTitle?[__].flat()?__.multiSection"
+                        },
+                        {
+                          "view": "View:[__.sectionId]?style:[width=100%;height=fit-content;overflow=hidden;padding=1rem 1rem 0 1rem]",
+                          "children": [
+                            {
+                              "view": "customFormInputLoop??!__.subInput"
+                            },
+                            {
+                              "view": "customFormTable"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "view": "View?style:[width=100%;height=fit-content;overflow=hidden;padding=1rem]?_.customSectionView;parent().displaySection",
+              "children": [
+                {
+                  "view": "_.customSectionView"
+                }
+              ]
+            },
+            {
+              "view": "View?style:[width=100%]?_.type=image;parent().displaySection",
+              "children": [
+                {
+                  "view": "View?class=flex;style:[;overflow=hidden;overflowX=auto;padding=1.5rem 1rem]",
+                  "children": [
+                    {
+                      "view": "View?class=flex;style:[gap=1rem;width=fit-content]?doc().[_.path].len()>0",
+                      "children": [
+                        {
+                          "view": "[View]:[path=_.path]?class=flexbox",
+                          "children": [
+                            {
+                              "view": "View?class=flexbox;style:[border=1px solid #ddd;#backgroundColor=#f3f3f3;width=if():[mobile()]:[15rem]:[23rem];height=10rem;borderRadius=.5rem;padding=0;transition=.3s ease;overflow=hidden;cursor=pointer;position=relative]",
+                              "children": [
+                                {
+                                  "view": "Image?src=_.url;style:[maxWidth=100%;maxHeight=100%]"
+                                },
+                                {
+                                  "view": "Icon?name=Close;google.symbol;style:[fontSize=2.3rem;color=#5b5959ad;cursor=pointer;position=absolute;top=0.25rem;right=0.25rem];click:[2ndParent().rem()]"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "p127a1b1g023y1F3W6L5j1F936",
+    "doc": "customFormSectionLoop",
+    "creationDate": 1711031365196,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "handleDisplaySection": {
+        "checkToRenderSection": "().renderInput=false;_.input._():[if():[_.condition]:[_.condition._():[if():[doc().[_.conditionReference].in():[_.condition]]:[().renderInput=true]:[delInputFromDoc();if():[__.unitPath]:[delUnitPathFromDoc()]]]]:[().renderInput=true]];if():[!().renderInput]:[().displaySection=false]",
+        "sectionConditionHandler": "_.condition._():[if():[!doc().[_.conditionReference].in():[_.condition]]:[().displaySection=false;delSectionFromDoc()]]",
+        "delSectionFromDoc": "if():[_.path]:[doc().[_.path].del()]:[_.input._():[doc().[_.inputPath].del()]]",
+        "delInputFromDoc": "if():[___.path]:[doc().[___.path]._():[_.[___.inputPath].del()]]:[doc().[__.inputPath].del()]",
+        "delUnitPathFromDoc": "if():[___.path]:[doc().[___.path]._():[_.[___.unitPath].del()]]:[doc().[__.unitPath].del()]",
+        "_": "().displaySection=true;if():[_.condition||_.orCondition]:[#sectionConditionHandler();if():[!customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc()]]:[().displaySection=false;delSectionFromDoc()]]:[if():[_.type!=image;!_.customSectionView]:[checkToRenderSection()]]"
+      }
+    },
+    "collapsed": [
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "if you need to look at all templates;please change the template Name and the collection in order to change the structure and the table;(rows of the table are already filled so you can also fill your data);i put the data of all templates in parameter",
+        "path": [
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "image",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          3
+        ]
+      },
+      false,
+      {
+        "note": "table",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "input Loop",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "false",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      }
+    ],
+    "folderPath": [],
+    "version": 0,
+    "counter": 9,
+    "secure": false
+  }
+}

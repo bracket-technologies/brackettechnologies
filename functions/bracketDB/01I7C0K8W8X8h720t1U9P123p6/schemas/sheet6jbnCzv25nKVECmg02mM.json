@@ -1,0 +1,162 @@
+{
+  "create": {
+    "sheet": {
+      "keyValue": [
+        {
+          "path": "name",
+          "type": "string",
+          "key": "name",
+          "required": "true"
+        },
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": "true"
+        },
+        {
+          "path": "headers",
+          "type": "array",
+          "key": "headers",
+          "required": "true"
+        },
+        {
+          "path": "data",
+          "type": "array",
+          "key": "data",
+          "required": "true"
+        },
+        {
+          "path": "type",
+          "type": "string",
+          "key": "type",
+          "required": "true"
+        },
+        {
+          "path": "style",
+          "type": "array",
+          "key": "style"
+        }
+      ]
+    }
+  },
+  "id": "sheet6jbnCzv25nKVECmg02mM",
+  "collection": "sheet",
+  "__props__": {
+    "id": "J1q731y1S0s3u1O316K2u4O772",
+    "doc": "sheet6jbnCzv25nKVECmg02mM",
+    "creationDate": 1711031362472,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "keyValue",
+          7
+        ]
+      },
+      {
+        "path": [
+          "keyValue",
+          0
+        ]
+      },
+      {
+        "path": [
+          "keyValue",
+          1
+        ]
+      },
+      {
+        "path": [
+          "keyValue",
+          2
+        ]
+      },
+      {
+        "path": [
+          "keyValue",
+          3
+        ]
+      },
+      {
+        "path": [
+          "keyValue",
+          4
+        ]
+      },
+      {
+        "path": [
+          "keyValue",
+          5
+        ]
+      },
+      {
+        "path": [
+          "keyValue",
+          6
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "sheet",
+          "keyValue",
+          7
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "sheet",
+          "keyValue",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "sheet",
+          "keyValue",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "sheet",
+          "keyValue",
+          2
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "sheet",
+          "keyValue",
+          3
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "sheet",
+          "keyValue",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "sheet",
+          "keyValue",
+          5
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 16
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "custom": [
+    {}
+  ],
+  "count": 79,
+  "description": "",
+  "type": "application/json",
+  "creationDate": 1702565144988,
+  "title": "APPLICATION/JSON",
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "url": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/rzVOOJcEGbpZX6y5q1kn?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=eOqc73KURCPec54dmYvh%2FEJZv6hzYmjC%2Bcvs7WV%2Fa3V0W8mh5df65FVCASUZT5oIObZCt3PhXOFj6iQNhB7TP%2BrsHNwRw0C1zN4nua5nMrmwkbTzJb6e71hUVuAFJ%2BAShedr5e9NQLwF54tlXRYdYA5VHcVQZ%2B6wxHUcN%2FPbPc5zcMW1JyxfA5QpFBeq%2Br4Gcg4F7uj8%2F3gdC4W40n3FIiDqW6Zx74ljT0Vs40%2BuUG7XCmv0GXd5Z7V59bzrnyxuJkvwi5Gxwq1AofMz1HWRhQrFpdonHtDIY40tHrnZEyKsEBWv%2F0XOdU%2BhJk666lY8i7qjYJit6phS%2FfHXIFwClQ%3D%3D",
+  "tags": [],
+  "ref": "IMG-00000079",
+  "size": 1286,
+  "name": "saveThroughSchema.json",
+  "lastModified": 1702564839340,
+  "__props__": {
+    "id": "41f701W1a0e3O1U3u6r548y299",
+    "creationDate": 1711031365829,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "doc": "rzVOOJcEGbpZX6y5q1kn",
+    "counter": 70
+  }
+}

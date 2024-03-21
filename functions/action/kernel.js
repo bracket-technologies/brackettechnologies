@@ -22,7 +22,6 @@ const { override } = require("./merge")
 const { nthParent, nthNext, nthPrev } = require("./getView")
 const { decode } = require("./decode")
 const { searchParams } = require("./searchParams")
-const { fileReader } = require("./fileReader")
 const { executable } = require("./executable")
 const { toEvent } = require("./toEvent")
 const { isEvent } = require("./isEvent")
@@ -36,9 +35,9 @@ const { watch } = require("./watch")
 const { isArabic } = require("./isArabic")
 const cssStyleKeyNames = require("./cssStyleKeyNames")
 const events = require("./events.json")
-const { getData } = require("./database")
+const myViews = ["View", "Input", "Text", "Image", "Icon", "Action", "Audio", "Video"]
 
-var actions = { 
+var actions = {
     "caret()": ({ o }) => ({ index: getCaretIndex(o) }),
     "device()": ({ global }) => global.manifest.device.device,
     "mobile()": ({ global }) => global.manifest.device.device.type === "smartphone",
@@ -60,7 +59,7 @@ var actions = {
 
         return global.__focused__
     }, "click()": ({ _window, global, views, view, o, id, pathJoined }) => {
-        
+
         if (!o.__view__ || !o.__rendered__) return
 
         if (_window) return view.__controls__.push({
@@ -585,7 +584,7 @@ var actions = {
 
         var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
         if (Array.isArray(data)) data = { path: data }
-        return reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.data !== undefined ? true : key, value: data.data !== undefined ? data.data : value }, e, req, res, __ })
+        return reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.data !== undefined, value: data.data !== undefined ? data.data : value }, e, req, res, __ })
 
     }, "path()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, lastIndex, value, key }) => {
 
@@ -861,10 +860,11 @@ var actions = {
         o.splice(o.length - 1, 1)
         return o
 
-    }, "rem()": ({ o, stack, __ }) => {
+    }, "rem()": ({ _window, id, o, stack, __, e, object, args }) => {
 
         if (!o.__view__) return
-        remove({ id: o.id, __, stack })
+        var data = toParam({ _window, id, data: args[1], __, e, object })
+        remove({ id: o.id, __, stack, data })
 
     }, "keys()": ({ o }) => {
 
@@ -1261,7 +1261,7 @@ var actions = {
         year = month === 1 ? year + 1 : year
         return new Date(date.setYear(year)).setMonth(month, date.getDays())
 
-    }, "1MonthEarlier()" : ({ o }) => {
+    }, "1MonthEarlier()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
 
@@ -1269,7 +1269,7 @@ var actions = {
         var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
         return new Date(date.setYear(year)).setMonth(month, date.getDays())
 
-    }, "2MonthEarlier()" : ({ o }) => {
+    }, "2MonthEarlier()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
 
@@ -1279,7 +1279,7 @@ var actions = {
         year = month === 11 ? year - 1 : year
         return new Date(date.setYear(year)).setMonth(month, date.getDays())
 
-    }, "3MonthEarlier()" : ({ o }) => {
+    }, "3MonthEarlier()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
 
@@ -1701,11 +1701,11 @@ var actions = {
 
         return o
 
-    }, "terminate()": ({ stack,  }) => {
+    }, "terminate()": ({ stack, }) => {
 
         stack.terminated = true
 
-    }, "break()": ({ stack,  }) => {
+    }, "break()": ({ stack, }) => {
 
         if (stack.loop) stack.broke = true
 
@@ -2282,7 +2282,7 @@ var actions = {
         var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id, action: "root()", object, lookupActions, __ })
         if (typeof data === "string") data = { page: data }
 
-        require("./root").root({ _window, lookupActions, stack, address, id, req, res, root: data, __ })
+        root({ _window, lookupActions, stack, address, id, req, res, root: data, __ })
 
     }, "update()": ({ _window, req, res, o, stack, lookupActions, id, __, args, object }) => {
 
@@ -2461,7 +2461,7 @@ var actions = {
 
     }, "encodeURI()": ({ o }) => {
 
-        return  encodeURI(o)
+        return encodeURI(o)
 
     }, "preventDefault()": ({ e }) => {
 
@@ -2471,7 +2471,7 @@ var actions = {
 
         return decodeURI(o)
 
-    } 
+    }
 }
 
 const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: _object, path, pathJoined, value, key, object } }) => {
@@ -2497,7 +2497,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
         k = k.toString()
         var k0 = k.split(":")[0]
         var args = k.split(":")
-        
+
         // get underscores
         var underScored = 0
         while (k0.charAt(0) === "_") {
@@ -2535,8 +2535,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             return o
 
-        } 
-        
+        }
+
         // underscore
         else if (underScored && !k0) { // _
 
@@ -2557,8 +2557,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 else answer = o[underscores]
             }
 
-        } 
-        
+        }
+
         // encoded
         else if (k.charAt(0) === "@" && k.length === 6) { // k not k0
 
@@ -2587,11 +2587,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             } else answer = data
 
-        } 
+        }
 
         // OOP
         else if (actions[k0]) return actions[k0]({ _window, req, res, global, views, view, o, stack, pathJoined, lookupActions, id, e, __, args, k, underScored, object, i, lastIndex, value, key, path, breakRequest, condition, _object, answer })
-            
+
         // methods
         else if (k0.slice(-2) === "()" && typeof o[k0.slice(0, -2)] === "function") {
 
@@ -2602,10 +2602,10 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             answer = o[k0.slice(0, -2)](...data)
 
-        } 
+        }
 
         // action_name()
-        else if (k0.slice(-2) === "()") { 
+        else if (k0.slice(-2) === "()") {
 
             if (k0.charAt(0) === "@" && k0.length == 6) k0 = toValue({ req, res, _window, id, e, __, data: k0, object })
 
@@ -2615,8 +2615,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 answer = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: k }, condition, object: object || o })
             }
 
-        } 
-        
+        }
+
         // endoced params
         else if (k.includes(":@")) {
 
@@ -2626,7 +2626,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             if (k0.charAt(0) === "@" && k0.length == 6) k0 = global.__refs__["@" + k0.slice(-5)].data
 
             o[k0] = o[k0] || {}
-            
+
             if (events.includes(k0)) {
 
                 if (!o.__view__) return
@@ -2640,8 +2640,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             if (args[1]) answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { path: [...args.slice(1).flat(), ...path.slice(i + 1)], object: o[k0] }, __ })
             else return
 
-        } 
-        
+        }
+
         // lastindex
         else if (key && value !== undefined && i === lastIndex) {
 
@@ -2653,8 +2653,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             }
             answer = o[k] = value
 
-        } 
-        
+        }
+
         // assign {} of []
         else if (key && o[k] === undefined && i !== lastIndex) {
 
@@ -2670,8 +2670,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 }
                 answer = o[k] = {}
             }
-        } 
-        
+        }
+
         else answer = o[k]
 
         return answer
@@ -3012,7 +3012,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
         // action()
         if (path0.slice(-2) === "()") {
-            
+
             var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: path[0] }, condition, mount, object })
             if (action !== "__continue__" && typeof action === "object" && !Array.isArray(action)) override(params, action)
             if (action !== "__continue__") return
@@ -3072,6 +3072,9 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
                 view.__dataPath__ = []
                 view.doc = view.doc || generate()
                 global[view.doc] = view.data = global[view.doc] || {}
+
+                // actions in data
+                if (view.data.__props__ && view.data.__props__.actions) view.__lookupActions__.unshift({ type: "data", doc })
             }
 
             // mount path directly when found
@@ -3093,7 +3096,10 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
                 view.__dataPath__.push(...myPath)
                 view.data = kernel({ _window, id, stack, __, lookupActions, data: { path: view.__dataPath__, data: global[view.doc], value: view.data, key: true } })
 
-            } else if (view.id !== id) {
+            }
+
+            // assign view params to new view ID
+            else if (view.id !== id) {
 
                 if (views[view.id]) views[view.id] += "_" + generate()
                 Object.assign(views, { [view.id]: views[id] })
@@ -3119,7 +3125,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     if (typeof path === "number") path = [path]
 
     var pathJoined = path.join(".")
-    
+
     // init
     var path0 = path[0] ? path[0].toString().split(":")[0] : "", args
     if (path[0] !== undefined) args = path[0].toString().split(":")
@@ -3137,9 +3143,9 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
         var { address, data } = addresser({ _window, stack, args, id, type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, lookupActions, id, object })
 
         // view & path
-        if (typeof data === "object" && data.__view__) myLookupActions = data.__lookupViewActions__
+        if (typeof data === "object" && data.__view__) myLookupActions = data.__lookupActions__
         else if (typeof data === "object") {
-            if (typeof data.view === "object" && data.view.__view__) myLookupActions = data.view.__lookupViewActions__
+            if (typeof data.view === "object" && data.view.__view__) myLookupActions = data.view.__lookupActions__
             else {
                 if (!data.view) data.view = view.__customViewPath__.at(-1)
                 if (typeof data.path === "string") data.path = data.path.split(".")
@@ -3362,7 +3368,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
 
     // ==
     string = string.replaceAll("==", "=")
-    
+
     string.split(";").map(condition => {
 
         // no condition
@@ -3443,7 +3449,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
         // get key
         if (object || key.includes("()")) key = toValue({ _window, lookupActions, stack, id, data: key, e, __, req, res, object, condition: true })
         else key = toValue({ _window, lookupActions, stack, id, data: key, e, __, req, res, object: object !== undefined ? object : view, condition: true })
-        
+
         // evaluate
         if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !key : (key === 0 ? true : key)
         else {
@@ -3468,109 +3474,76 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
 
     if (path || (action0.slice(-2) === "()" && action0 !== "()" && action0 !== "_()" && !require("./actions.json").includes(action0) && action0.charAt(0) !== "@")) {
 
-        // call by action():[path;view;data]
-        if (path) {
+        // lookup through parent map actions
+        toArray(lookupActions).map((lookupAction, indexx) => {
 
-            // no view name
-            if (!customViewName || global.data.view[customViewName]) return
+            if (queryNonExistingView || actionFound) return
 
-            if (!global.data.view[customViewName].__secure__) {
+            if (!lookupAction.view && !lookupAction.doc) return
 
-                var actions = (global.data.view[customViewName] || {}).functions
-                actionFound = clone(path).reduce((o, k) => o && o[k], actions)
+            if (lookupAction.view && !global.data.view[lookupAction.view] && !global.__queries__.views.includes(lookupAction.view)) {
 
-                // action doesnot exist
-                if (actionFound === undefined) return
+                queryNonExistingView = true
+                var { address, data } = addresser({ _window, id, stack, __, lookupActions: lookupActions.slice(indexx), stack, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${lookupAction.view}`, waits: `loader.hide;__queries__:().views.push():[${lookupAction.view}];data:().view.${lookupAction.view}=_.data;${action}` })
+                return require("./search").search({ _window, lookupActions, stack, address, id, __, req, res, data })
 
-                if (typeof actionFound === "object" && actionFound._) {
+            } else if (lookupAction.view && !global.data.view[lookupAction.view] && global.__queries__.views.includes(lookupAction.view)) return
 
-                    actionFound = actionFound._ || ""
-                    newLookupActions = [{ type: "customView", view: viewAction, path }]
+            // get actions
+            var actions
+            if (lookupAction.view) actions = global.data.view[lookupAction.view].__props__.actions
+            else if (lookupAction.doc) actions = global[lookupAction.doc].__props__.actions
 
-                } else if (path.length > 1) newLookupActions = [{ type: "customView", view: viewAction, path: path.slice(0, -1) }]
+            if (!actions) return
 
-                if (toArray(lookupActions).length > 1) newLookupActions = [...newLookupActions, ...toArray(lookupActions)]
+            if (lookupAction.path) {
 
-                //
-                action = action0
+                var path = lookupAction.path
+                clone(path).reverse().map((x, i) => {
+
+                    if (actionFound) return
+
+                    actionFound = clone(path.slice(0, path.length - i).reduce((o, k) => o[k], actions)[name])
+
+                    if (actionFound) {
+
+                        if (typeof actionFound === "object" && actionFound._) {
+
+                            actionFound = actionFound._ || ""
+                            newLookupActions = [{ ...lookupAction, path: [...path.slice(0, path.length - i), name] }, ...lookupActions.slice(indexx)]
+
+                        } else if (lookupActions.length > 1) lookupActions.slice(indexx)
+
+                    }
+                })
 
             } else {
 
-                // server action
-                serverAction = true
-                serverActionView = customViewName
-                newLookupActions = []
-            }
-        }
+                if (name in actions) {
 
-        // lookup through parent map actions
-        if (!actionFound) {
+                    if (global.data.view[lookupAction.view].__props__.secure && !stack.server) {
 
-            toArray(lookupActions).map((lookupAction, indexx) => {
+                        // server action
+                        actionFound = true
+                        serverAction = true
+                        serverActionView = lookupAction.view
+                        newLookupActions = []
 
-                if (!lookupAction.view || queryNonExistingView || actionFound) return
+                    } else {
 
-                if (!global.data.view[lookupAction.view] && !global.__queries__.views.includes(lookupAction.view)) {
+                        actionFound = clone(actions[name])
 
-                    queryNonExistingView = true
-                    var { address, data } = addresser({ _window, id, stack, __, lookupActions: lookupActions.slice(indexx), stack, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${lookupAction.view}`, waits: `loader.hide;__queries__:().views.push():[${lookupAction.view}];data:().view.${lookupAction.view}=_.data;${action}` })
-                    return require("./search").search({ _window, lookupActions, stack, address, id, __, req, res, data })
+                        if (typeof actionFound === "object") {
 
-                } else if (!global.data.view[lookupAction.view] && global.__queries__.views.includes(lookupAction.view)) return
-
-                // get view actions
-                var actions = global.data.view[lookupAction.view].functions
-                if (!actions) return
-
-                if (lookupAction.path) {
-
-                    var path = lookupAction.path
-                    clone(path).reverse().map((x, i) => {
-
-                        if (actionFound) return
-
-                        actionFound = clone(path.slice(0, path.length - i).reduce((o, k) => o[k], actions)[name])
-
-                        if (actionFound) {
-
-                            if (typeof actionFound === "object" && actionFound._) {
-
-                                actionFound = actionFound._ || ""
-                                newLookupActions = [{ type: "customView", view: lookupAction.view, path: [...path.slice(0, path.length - i), name] }, ...lookupActions.slice(indexx)]
-
-                            } else if (lookupActions.length > 1) lookupActions.slice(indexx)
-
-                        }
-                    })
-
-                } else {
-                    
-                    if (name in actions) {
-
-                        if (global.data.view[lookupAction.view]._secure_ && !stack.server) {
-
-                            // server action
-                            actionFound = true
-                            serverAction = true
-                            serverActionView = lookupAction.view
-                            newLookupActions = []
-
-                        } else {
-
-                            actionFound = clone(actions[name])
-
-                            if (typeof actionFound === "object") {
-
-                                actionFound = actionFound._ || ""
-                                newLookupActions = [{ type: lookupAction.type, view: lookupAction.view, path: [name] }, ...lookupActions]
-                            }
+                            actionFound = actionFound._ || ""
+                            newLookupActions = [{ ...lookupAction, path: [name] }, ...lookupActions]
                         }
                     }
                 }
-            })
+            }
+        })
 
-            if (queryNonExistingView) return
-        }
+        if (queryNonExistingView) return
 
         if (actionFound) {
 
@@ -3638,7 +3611,10 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
     }
 
     // check event
-    if (string.split("?").length > 1 && isEvent({ _window, string })) return toEvent({ _window, string, id, __, lookupActions })
+    if (string.split("?").length > 1 && isEvent({ _window, string })) {
+        toEvent({ _window, string, id, __, lookupActions })
+        return terminator({ data: { success: true, message: `Event`, executionDuration: 0 } })
+    }
 
     // subparams
     if (i === 1) {
@@ -3693,7 +3669,7 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
         message = "Else actions executed!"
         conditionsNotApplied = true
 
-    } else if (!approved) return ({ success, message: `Conditions not applied!`, conditionsNotApplied: true, executionDuration: (new Date()).getTime() - startTime })
+    } else if (!approved) return terminator({ data: { success, message: `Conditions not applied!`, conditionsNotApplied: true, executionDuration: (new Date()).getTime() - startTime } })
     else message = `Action executed successfully!`
 
     var actionReturnID = generate(), data
@@ -3713,7 +3689,7 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
         if (isParam({ _window, string })) action = "toParam"
         else action = "toValue"
     }
-    
+
     if (action === "toValue") data = toValue({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object })
     else if (action === "toApproval") data = toApproval({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object })
     else if (action === "toParam") data = toParam({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object })
@@ -3732,7 +3708,7 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
     return terminator({ data: { success, message, data, action, conditionsNotApplied, executionDuration: (new Date()).getTime() - startTime }, order: 5 })
 }
 
-const addresser = ({ _window, addressID = generate(), index = 0, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, hasWaits, params, function: func, newLookupActions, nextAddressID, nextAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition, logger, switchNextAddressIDWith }) => {
+const addresser = ({ _window, addressID = generate(), index = 0, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, hasWaits, params, function: func, newLookupActions, nextAddressID, nextStack = {}, nextAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition, logger, switchNextAddressIDWith }) => {
 
     if (switchNextAddressIDWith) {
 
@@ -3741,7 +3717,6 @@ const addresser = ({ _window, addressID = generate(), index = 0, stack = [], arg
         switchNextAddressIDWith.nextAddressID = addressID
         switchNextAddressIDWith.hasWaits = false
         switchNextAddressIDWith.interpreting = false
-        // switchNextAddressIDWith.status = "Wait"
     }
 
     // find nextAddress by nextAddressID
@@ -3753,7 +3728,7 @@ const addresser = ({ _window, addressID = generate(), index = 0, stack = [], arg
     // address waits
     if (waits) nextAddress = addresser({ _window, stack, req, res, e, type: "waits", action: action + "::[...]", data: { string: waits }, nextAddress, blockable, __, id, object, mount, lookupActions, condition }).address
 
-    var address = { id: addressID, stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: hasWaits !== undefined ? hasWaits : (waits ? true : false), nextAddressID: nextAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, logger, executionStartTime: (new Date()).getTime() }
+    var address = { id: addressID, stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: hasWaits !== undefined ? hasWaits : (waits ? true : false), nextStackID: nextStack.id, nextAddressID: nextAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, logger, executionStartTime: (new Date()).getTime() }
     var stackLength = stack.addresses.length
 
     // find and lock the head address
@@ -3777,13 +3752,13 @@ const addresser = ({ _window, addressID = generate(), index = 0, stack = [], arg
     // set all head addresses asynchronous
     if (asynchronous) {
 
-        var nextAddressID = address.stackID === stack.id && address.nextAddressID
+        var nextAddressID = !address.nextStackID && address.nextAddressID
         while (nextAddressID) {
 
             var holdnextAddress = stack.addresses.find(nextAddress => nextAddress.id === nextAddressID)
             if (holdnextAddress) {
                 holdnextAddress.hold = true
-                nextAddressID = holdnextAddress.stackID === stack.id && holdnextAddress.nextAddressID
+                nextAddressID = !address.nextStackID && holdnextAddress.nextAddressID
             } else nextAddressID = false
         }
     }
@@ -3835,7 +3810,10 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
 
         // remove address
         var index = stack.addresses.findIndex(waitingAddress => waitingAddress.id === address.id)
-        if (index !== -1) stack.addresses.splice(index, 1)
+        if (index !== -1) {
+            stack.addresses[index] = null
+            stack.addresses.splice(index, 1)
+        }
 
         // pass underscores to waits
         if (address.hasWaits && nextAddress.params) {
@@ -3878,21 +3856,22 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
     if (stack.terminated) return
 
     // asynchronous unholds nextAddresses
-    if (address.nextAddressID && !nextAddress.interpreting && (nextAddress.stackID || nextAddress.hold || nextAddress.status === "Wait")) {
+    if (address.nextAddressID && !address.nextStackID && !nextAddress.interpreting) {
 
         var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.nextAddressID === address.nextAddressID)
 
         if (otherWaiting === -1 || (otherWaiting > -1 && !stack.addresses.find(waitingAddress => waitingAddress.nextAddressID === address.nextAddressID && !address.blocked))) {
-
+            
             nextAddress.hold = false
             return toAwait({ _window, lookupActions, stack, address: nextAddress, id, req, res, __, action, e })
         }
     }
 
-    endStack({ _window, stack, end: true })
-
     // address is for another stack
-    address.stackID !== stack.id && global.__stacks__[address.stackID] && toAwait({ _window, lookupActions, stack: global.__stacks__[address.stackID], address, id, e, req, res, __, action })
+    if (address.nextStackID && global.__stacks__[address.nextStackID])
+        toAwait({ _window, lookupActions, stack: global.__stacks__[address.nextStackID], address, id, e, req, res, __, action })
+    
+    endStack({ _window, stack })
 }
 
 const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
@@ -3945,8 +3924,8 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
             // get data
             passData.data = (insert.__view__) ? (typeof insert.data === "object" ? {} : "") // insert():[...]
-            : (insert.view && data === undefined) ? (typeof insert.view.data === "object" ? {} : "") // insert():[view=...]
-            : (insert.view && data !== undefined ? data : undefined) // insert():[view=...;data=...]
+                : (insert.view && data === undefined) ? (typeof insert.view.data === "object" ? {} : "") // insert():[view=...]
+                    : (insert.view && data !== undefined ? data : undefined) // insert():[view=...;data=...]
 
             // mount data
             passData.data !== undefined && path.reduce((o, k, i) => {
@@ -3963,7 +3942,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
             __: view.__loop__ && view.__mount__ ? [passData.data, ...view.__.slice(1)] : view.__,
             __viewPath__: [...view.__viewPath__, ...viewPath],
             __customViewPath__: [...view.__customViewPath__],
-            __lookupViewActions__: [...view.__lookupViewActions__],
+            __lookupActions__: [...view.__lookupActions__],
             passData: {
                 __loop__: view.__loop__,
                 __mount__: view.__mount__,
@@ -3972,7 +3951,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
         // get raw view
         view = clone(([...view.__viewPath__, ...viewPath]).reduce((o, k) => o[k], global.data.view))
-console.log("here", clone(passData));
+
     } else { // new View
 
         var genView = generate()
@@ -3985,7 +3964,7 @@ console.log("here", clone(passData));
         passData = {
             __viewPath__: [genView, ...viewPath],
             __customViewPath__: [...parent.__customViewPath__, genView],
-            __lookupViewActions__: [{ type: "customView", view: genView }, ...parent.__lookupViewActions__]
+            __lookupActions__: [{ type: "customView", view: genView }, ...parent.__lookupActions__]
         }
     }
 
@@ -4128,7 +4107,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
     }
 
     // custom View
-    if (view.__name__ !== "Action" && view.__name__ !== "View") {
+    if (!myViews.includes(view.__name__)) {
 
         // query custom view
         if (!global.__queries__.views.includes(view.__name__) && !global.data.view[view.__name__]) {
@@ -4139,6 +4118,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
             var { address, data } = addresser({ _window, id, stack, nextAddress: address, __, lookupActions, stack, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${view.__name__}`, waits: `loader.hide;__queries__:().views.push():[${view.__name__}];data:().view.${view.__name__}=_.data` })
             return require("./search").search({ _window, lookupActions, stack, address, id, __, req, res, data })
+
         } else if (!global.data.view[view.__name__] && global.__queries__.views.includes(view.__name__)) return
 
         // continue to custom view
@@ -4150,7 +4130,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
                 __customView__: view.__name__,
                 __viewPath__: [view.__name__],
                 __customViewPath__: [...view.__customViewPath__, view.__name__],
-                __lookupViewActions__: [{ type: "customView", view: view.__name__ }, ...view.__lookupViewActions__]
+                __lookupActions__: [{ type: "customView", view: view.__name__ }, ...view.__lookupActions__]
             }
 
             // id
@@ -4173,7 +4153,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
                 address = addresser({ _window, id: child.id, nextAddress: address, type: "function", function: "documenter", stack, __, logger: { key: "documenter", end: true } }).address
 
                 // get shared public views
-                Object.entries(getData({ search: { db: "public", collection: "view" } })).map(([doc, data]) => {
+                Object.entries(require("./publicViews.json")).map(([doc, data]) => {
 
                     global.data.view[doc] = { ...data, id: doc }
                     global.__queries__.views.push(doc)
@@ -4183,7 +4163,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
             }
 
             // address
-            return toView({ _window, stack, address, req, res, lookupActions: child.__lookupViewActions__, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
+            return toView({ _window, stack, address, req, res, lookupActions: child.__lookupActions__, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
         }
     }
 
@@ -4212,7 +4192,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
     toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
 }
 
-const update = ({ _window, id, lookupActions, stack, nextAddress, address, req, res, __, data = {} }) => {
+const update = ({ _window, id, lookupActions, stack, address, req, res, __, data = {} }) => {
 
     // address.blockable = false
     var views = _window ? _window.views : window.views
@@ -4227,7 +4207,7 @@ const update = ({ _window, id, lookupActions, stack, nextAddress, address, req, 
         var __childIndex__ = data.__childIndex__ !== undefined ? data.__childIndex__ : view.__childIndex__
         var __viewPath__ = [...(data.__viewPath__ || view.__viewPath__)]
         var __customViewPath__ = [...(data.__customViewPath__ || view.__customViewPath__)]
-        var __lookupViewActions__ = [...(data.__lookupViewActions__ || view.__lookupViewActions__)]
+        var __lookupActions__ = [...(data.__lookupActions__ || view.__lookupActions__)]
         var my__ = data.__ || view.__
 
         var elements = []
@@ -4246,14 +4226,14 @@ const update = ({ _window, id, lookupActions, stack, nextAddress, address, req, 
             __view__: true,
             __viewPath__,
             __customViewPath__,
-            __lookupViewActions__,
+            __lookupActions__,
             ...(data.passData || {}),
         }
 
         // data
         if (data.data) {
 
-            reducedView.data = clone(data.data)
+            reducedView.data = data.data
             reducedView.doc = data.doc || parent.doc || generate()
             global[reducedView.doc] = global[reducedView.doc] || reducedView.data
 
@@ -4270,20 +4250,25 @@ const update = ({ _window, id, lookupActions, stack, nextAddress, address, req, 
         if (!data.insert && parent.__rendered__) parent.__childrenRef__.filter(({ childIndex }) => childIndex === __childIndex__).map(({ id }) => elements.push(removeView({ _window, global, views, id, stack, main: true, insert: data.insert })))
         else if (!parent.__rendered__) removeView({ _window, global, views, id: data.id, stack, main: true })
 
-        // address delete block views (switch with second next address => execute after end of update waits)
-        addresser({ _window, id, stack, switchNextAddressIDWith: stack.addresses.find(add => add.id === address.nextAddressID), type: "function", function: "blockRelatedAddressesByViewID", __, lookupActions, stack, data: { stack, id } })
+        // address for delete blocked addresses (switch with second next address => execute after end of update waits)
+        addresser({ _window, id, stack, switchNextAddressIDWith: stack.addresses.find(add => add.id === address.nextAddressID), type: "function", function: "blockRelatedAddressesByViewID", __, lookupActions, data: { stack, id } })
 
         // address for post update
-        addresser({ _window, id, stack, switchNextAddressIDWith: address, type: "function", function: "update", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent, postUpdate: true } })
+        addresser({ _window, id, stack, switchNextAddressIDWith: address, type: "function", function: "update", __, lookupActions, data: { ...data, childIndex: __childIndex__, elements, timer, parent, postUpdate: true } })
 
         // address
-        address = addresser({ _window, id, stack, nextAddress: address, status: "Start", type: "function", function: "toView", __: my__, lookupActions: __lookupViewActions__, data: { view: reducedView, parent: parent.id } }).address
-
+        address = addresser({ _window, id, stack, nextAddress: address, status: "Start", type: "function", function: "toView", __: my__, lookupActions: __lookupActions__, data: { view: reducedView, parent: parent.id } }).address
+        
         // render
-        toView({ _window, lookupActions: __lookupViewActions__, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
+        toView({ _window, lookupActions: __lookupActions__, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
+
+        // seq: END:toView => END:update() => START:postUpdate => END:postUpdate => START:waits => END:waits => START:spliceBlockedAddresses
+        
+        // address
+        toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
 
     } else { // post update
-
+        
         var { childIndex, elements, root, timer, parent, ...data } = data
 
         // tohtml parent
@@ -4365,7 +4350,7 @@ const update = ({ _window, id, lookupActions, stack, nextAddress, address, req, 
 
         var data = { view: updatedViews.length === 1 ? updatedViews[0] : updatedViews, message: "View updated successfully!", success: true }
 
-        toParam({ _window, data: "loader.hide" })
+        // toParam({ _window, data: "loader.hide" })
 
         if (address) {
             address.params.__ = [data, ...address.params.__]
@@ -4384,7 +4369,7 @@ const addEventListener = ({ event, id, __, stack, lookupActions, address, eventI
 
     // inherit from view
     if (!__) __ = view.__
-    if (!lookupActions) lookupActions = view.__lookupViewActions__
+    if (!lookupActions) lookupActions = view.__lookupActions__
 
     var mainString = toCode({ id, string: toCode({ id, string: event, start: "'" }) })
 
@@ -4679,9 +4664,7 @@ const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res,
 
 const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }) => {
 
-    const { toAwait } = require("./kernel");
     var global = _window ? _window.global : window.global
-
     var executionDuration = (new Date()).getTime() - stack.executionStartTime
 
     data.success = data.success !== undefined ? data.success : true
@@ -4714,7 +4697,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
                     stack.blocked = true
 
                     // address coming from different stack
-                    if (blockedAddress.stackID !== stack.id) stack = global.__stacks__[blockedAddress.stackID]
+                    if (blockedAddress.nextStackID) stack = global.__stacks__[blockedAddress.nextStackID]
                 }
             }
 
@@ -4739,6 +4722,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
 
             // start from self address (by interpretingAddressID) to reach the start head address
             var address = stack.addresses.find(address => address.id === nextAddressID)
+            if (!address) nextAddressID = false
 
             if (address.starter) {
 
@@ -4750,7 +4734,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
             nextAddressID = address.nextAddressID
 
             // reached index 0 address => check stack if it has nextAddress
-            if (address.stackID !== stack.id) stack = global.__stacks__[address.stackID]
+            if (address.nextStackID) stack = global.__stacks__[address.nextStackID]
         }
     }
 }
@@ -4816,15 +4800,21 @@ const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
     closePublicViews({ _window, id, __, stack, lookupActions })
 
     // no data
-    if (__dataPath__.length === 0) return removeView({ id, global, views, stack, main: true }).remove()
+    if (__dataPath__.length === 0) {
 
-    // reset length and __dataPath__
-    var itemIndex = view.__dataPath__.length - 1
-    var parent = views[view.__parent__]
+        removeView({ id, global, views, stack, main: true }).remove()
 
-    // update data path
-    parent.__childrenRef__.slice(view.__index__ + 1).map(({ id }) => updateDataPath({ id, index: itemIndex, decrement: true }))
-    removeView({ id, global, views, stack, main: true }).remove()
+    } else {
+
+        // reset length and __dataPath__
+        var itemIndex = view.__dataPath__.length - 1
+        var parent = views[view.__parent__]
+
+        // update data path
+        parent.__childrenRef__.slice(view.__index__ + 1).map(({ id }) => updateDataPath({ id, index: itemIndex, decrement: true }))
+        removeView({ id, global, views, stack, main: true }).remove()
+    }
+
     console.log("REMOVE:" + id)
 }
 
@@ -5036,7 +5026,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
     // remove view
     delete view.view
     delete view.children
-    delete view.functions
+    delete view.__props__
 
     if (name === "Action") return
 
@@ -5103,8 +5093,6 @@ const toHTML = ({ _window, id, stack, __ }) => {
         }
     } else if (name === "Icon") {
         html = `<i ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.outlined ? "material-icons-outlined" : (view.symbol.outlined) ? "material-symbols-outlined" : (view.rounded || view.round) ? "material-icons-round" : (view.symbol.rounded || view.symbol.round) ? "material-symbols-round" : view.sharp ? "material-icons-sharp" : view.symbol.sharp ? "material-symbols-sharp" : (view.filled || view.fill) ? "material-icons" : (view.symbol.filled || view.symbol.fill) ? "material-symbols" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || "" || ""} ${view.icon.name}' id='${view.id}' style='${view.__htmlStyles__}${_window ? "; opacity:0; transition:.2s" : ""}'>${view.google ? view.icon.name : ""}</i>`
-    } else if (name === "Textarea") {
-        html = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${view.__htmlStyles__}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""}>${text || ""}</textarea>`
     } else if (name === "Input") {
         if (view.textarea) {
             html = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} spellcheck='false' class='${view.class || ""}' id='${view.id}' style='${view.__htmlStyles__}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""}>${text}</textarea>`
@@ -5201,17 +5189,17 @@ const documenter = ({ _window, res, stack, address, __ }) => {
     var metaTitle = view.meta.title || view.title || ""
     var metaViewport = view.meta.viewport || ""
 
-    delete global.manifest.session
+    global.manifest.session = global.manifest.session.__props__.id
 
     // logs
     global.__server__.logs = stack.logs
 
     // clear secure view actions
     Object.values(global.data.view).map(view => {
-        if (view._secure_) {
+        if (view.__props__.secure) {
             view.view = ""
             view.children = []
-            clearActions(view.functions)
+            clearActions(view.__props__.actions)
         }
     })
 
@@ -5321,7 +5309,7 @@ const initView = ({ views, global, id = generate(), doc, children = [], parent, 
         __rendered__: false,
         __initialIndex__: parentView.__indexing__ || 0,
         __viewPath__: [...(data.__viewPath__ || [])],
-        __lookupViewActions__: [...(data.__lookupViewActions__ || parentView.__lookupViewActions__ || [])],
+        __lookupActions__: [...(data.__lookupActions__ || parentView.__lookupActions__ || [])],
         __customViewPath__: [...(data.__customViewPath__ || parentView.__customViewPath__ || [])]
     }
 
@@ -5332,7 +5320,7 @@ const initView = ({ views, global, id = generate(), doc, children = [], parent, 
 
 const getViewParams = ({ view }) => {
 
-    var { id, doc, data, view, children, __lookupViewActions__, __element__, __dataPath__, __childrenRef__, __index__, __relEvents__,
+    var { id, doc, data, view, children, __lookupActions__, __element__, __dataPath__, __childrenRef__, __index__, __relEvents__,
         __viewPath__, __customViewPath__, __indexing__, __childIndex__, __initialIndex__, __customView__, __htmlStyles__, __events__,
         __parent__, __controls__, __status__, __rendered__, __timers__, __view__, __name__, __customID__, __interpreted__, __, ...params } = view
 
@@ -5427,6 +5415,9 @@ const launcher = () => {
     var views = window.views
     var global = window.global
 
+    // session
+    setCookie({ name: "__session__", value: global.manifest.session })
+
     views.document.__element__ = document
 
     // app default event listeneres
@@ -5457,7 +5448,7 @@ const launcher = () => {
     views.body.__element__.appendChild(arDiv)
 }
 
-const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: headStack, address: nextAddress, __ }) => {
+const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: nextStack, address: nextAddress, __ }) => {
 
     var views = window.views
     var global = window.global
@@ -5467,23 +5458,21 @@ const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: he
     // view doesnot exist
     if (!view || !views[eventID]) return
 
-    if (event === "click" || event === "mousedown" || event === "mouseup") {
-        global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
-    }
+    if (event === "click" || event === "mousedown" || event === "mouseup") global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
 
     // prevent unrelated droplists
     if (eventID === "droplist" && id !== "droplist" && (!global.__droplistPositioner__ || !views[global.__droplistPositioner__] || !views[global.__droplistPositioner__].__element__.contains(view.__element__))) return
-
+    
     // init stack
-    var stack = openStack({ event, id, eventID, string, headStack, nextAddress, e })
+    var stack = openStack({ event, id, eventID, string, e })
 
     // address line
-    var address = addresser({ stack, id, status: "Start", type: "line", event: "click", interpreting: true, lookupActions, __, nextAddress: address }).address
+    var address = addresser({ stack, id, status: "Start", type: "line", event: "click", interpreting: true, lookupActions, __, nextStack, nextAddress }).address
 
     // main params
-    toParam({ lookupActions, stack, id, e, address, data: string, __, mount: true })
+    toLine({ lookupActions, stack, id, e, address, data: { string }, __, mount: true })
 
-    endStack({ stack, end: true })
+    endStack({ stack })
 }
 
 const defaultEventHandler = ({ id }) => {
@@ -5725,8 +5714,8 @@ const defaultInputHandler = ({ id }) => {
         if (value !== view.prevContent && global.__ISBRACKET__) {
             global.redo = []
             global.undo.push({
-                collection: global["open-collection"],
-                doc: global["open-doc"],
+                collection: global["openCollection"],
+                doc: global["openDoc"],
                 path: view.__dataPath__,
                 value: view.prevContent,
                 id: view.__element__.parentNode.parentNode.parentNode.parentNode.id
@@ -5872,6 +5861,99 @@ const setData = ({ id, data, __, stack = {} }) => {
 
     // set value
     kernel({ id, data: { data: global[view.doc], path: keys, value: defValue, key: true }, stack, __ })
+}
+
+const fileReader = ({ req, res, _window, lookupActions, stack, address, id, e, __, data }) => {
+
+    // files to read
+    data.data = toArray(data.data)
+    if (!data.data) return console.log("No data to read!")
+
+    // read type
+    var type = data.type
+    if (!type && data.url) type = "url"
+    else if (!type && data.json) type = "json"
+    else if (!type && data.text) type = "text"
+    else if (!type && data.buffer) type = "buffer"
+    else if (!type && data.binary) type = "binary"
+    else if (!type) type = "url"
+
+    // init
+    global.__fileReader__ = {
+        files: [],
+        length: data.data.length,
+        count: 0
+    };
+
+    data.data.map(file => {
+
+        var reader = new FileReader()
+        reader.onload = (e) => {
+
+            global.__fileReader__.count++;
+
+            global.__fileReader__.files.push({
+                type: file.type,
+                lastModified: file.lastModified,
+                name: file.name,
+                size: file.size,
+                url: e.target.result,
+                data: e.target.result
+            })
+
+            if (global.__fileReader__.count === global.__fileReader__.length) {
+
+                var files = global.__fileReader__.files
+
+                // parse JSON
+                if (type === "json") files.map(file => file.data = JSON.parse(file.data))
+
+                var data = { success: true, message: "File read successfully!", data: files.length === 1 ? files[0] : files }
+
+                toAwait({ req, res, _window, lookupActions, stack, address, id, e, __, _: data })
+            }
+        }
+
+        try {
+
+            if (type === "url" || type === "file") reader.readAsDataURL(file)
+            else if (type === "text" || type === "json") reader.readAsText(file)
+            else if (type === "binary") reader.readAsBinaryString(file)
+            else if (type === "buffer") reader.readAsArrayBuffer(file)
+
+        } catch (er) {
+            document.getElementById("loader-container").style.display = "none"
+        }
+    })
+}
+
+const root = ({ id, _window, root = {}, stack, lookupActions, address, req, res, __ }) => {
+
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
+
+    // path
+    var path = root.path || (root.page.includes("/") ? root.page : global.manifest.path.join("/"))
+
+    // page
+    var page = root.page && (root.page.includes("/") ? (!root.page.split("/")[0] ? root.page.split("/")[1] : root.page.split("/")[0]) : root.page) || path.split("/")[1] || "main"
+
+    // recheck path
+    path = root.path ? path : page === "main" ? "/" : `/${page}`
+
+    // prevs
+    global.__prevPath__.push(global.manifest.path.join("/"))
+    global.__prevPage__.push(global.manifest.page)
+
+    // page & path
+    global.manifest.page = page
+    global.manifest.path = path.split("/")
+
+    // params
+    root.path = path
+    root.page = page
+
+    update({ _window, id, req, res, stack, lookupActions, address, data: { root, id: "root", action: "ROOT" }, __ })
 }
 
 module.exports = {

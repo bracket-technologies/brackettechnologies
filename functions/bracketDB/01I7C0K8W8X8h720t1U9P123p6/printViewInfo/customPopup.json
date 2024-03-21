@@ -1,0 +1,59 @@
+{
+  "ue": "hNPKo",
+  "u": "koYTz",
+  "createFormInputs": {
+    "subInput": [
+      {
+        "customSectionView": "customVerticalTable",
+        "title": "Image"
+      },
+      {
+        "input": [
+          {
+            "clearable": "true",
+            "inputPath": "fontSize",
+            "counterInputBlurAction": "customUpdate():[section=0]",
+            "inputLabel": "Font Size"
+          }
+        ],
+        "grid": "1fr 1fr 1fr 1fr 1fr 1fr",
+        "title": "Table Style"
+      }
+    ],
+    "collection": "customPopup"
+  },
+  "id": "customPopup",
+  "popupInfo": {
+    "docName": "styleInfo",
+    "title": "Style Form"
+  },
+  "__props__": {
+    "id": "p1N7t131o0W3n1F3S6A157T316",
+    "doc": "customPopup",
+    "creationDate": 1711031361736,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "popupInfo"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs"
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 2
+  }
+}

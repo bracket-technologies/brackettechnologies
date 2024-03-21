@@ -1,5 +1,6 @@
 const axios = require("axios")
 const { deleteData } = require("./database")
+const { getCookie } = require("./cookie")
 
 const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase = {}, ...params }) => {
 
@@ -16,6 +17,7 @@ const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase
 
   } else {
 
+    headers.cookies = JSON.stringify(getCookie())
     var response = await axios.post(`/`, { server: "database", type: "erase", data: erase }, { headers })
     data = response.data
   }

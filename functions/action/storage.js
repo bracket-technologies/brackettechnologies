@@ -27,7 +27,7 @@ const storage = async ({ req, res }) => {
 
 const storeFile = async ({ req, upload }) => {
 
-  var db = req.db.firebaseDB
+  var db = req.datastore.firebaseDB
   var storage = req.storage.firebaseStorage
   var file = upload.file
   var data = upload.data, url
@@ -73,7 +73,7 @@ const storeFile = async ({ req, upload }) => {
 
 const deleteFile = async ({ req, res }) => {
   
-  var db = req.db.firebaseDB
+  var db = req.datastore.firebaseDB
   var storage = req.storage.firebaseStorage
   var string = decodeURI(req.headers.erase), params = {}
   string = toCode({ _window, string })

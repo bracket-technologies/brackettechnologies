@@ -175,8 +175,8 @@ const colorizeCoded = ({ _window, index, string, colors }) => {
 }
 
 module.exports = { colorize }
-},{"./decode":10,"./toArray":49}],5:[function(require,module,exports){
-const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
+},{"./decode":10,"./toArray":47}],5:[function(require,module,exports){
+const setCookie = ({ name = "", value, expiry = 360 }) => {
 
   var cookie = document.cookie || ""
   var decodedCookie = decodeURIComponent(cookie)
@@ -200,7 +200,7 @@ const getCookie = ({ name, req } = {}) => {
   return __session[name]
 }
 
-const eraseCookie = ({ _window, name }) => {
+const eraseCookie = ({ name }) => {
 
   var cookie = document.cookie || ""
   var decodedCookie = decodeURIComponent(cookie)
@@ -381,12 +381,20 @@ module.exports = {
         reader.readAsBinaryString(file || e.target.files[0]);
     }
 }
-},{"./kernel":32}],9:[function(require,module,exports){
+},{"./kernel":30}],9:[function(require,module,exports){
+(function (process){(function (){
 const { toArray } = require("./toArray")
 const { generate } = require("./generate")
 const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { clone } = require("./clone")
 const { toOperator } = require("./toOperator")
+const fs = require("fs")
+
+// config
+require('dotenv').config()
+
+// project DB
+var bracketDB = process.env.BRACKETDB
 
 const database = ({ _window, req, res }) => {
 
@@ -409,14 +417,14 @@ const getdb = async ({ _window, req, res }) => {
   var search = req.body.data || {}, timer = (new Date()).getTime()
 
   // no collection
-  if (!search.collection) {
+  if (!search.collection && !search.collections) {
     console.log("SEARCH", "No collection!", 0);
     return ({ success: false, message: "No collection exists!" })
   }
 
   var { data, success, message } = await getData({ _window, req, res, search })
 
-  console.log("SEARCH", search.collection, (new Date()).getTime() - timer);
+  console.log("SEARCH", search.collection || search.db, (new Date()).getTime() - timer);
 
   // respond
   res.setHeader('Content-Type', 'application/json')
@@ -466,12 +474,14 @@ const deletedb = async ({ _window, req, res }) => {
 
 const getData = async ({ _window, req, res, search }) => {
 
-  var collection = search.collection
-  var provider = _window.global.__provider__
-  var project = (search.headers || {}).project || _window.global.manifest.session.projectID
+  var global = _window.global
+  var datastore = search.datastore || global.manifest.datastore
+  var project = (search.headers || {}).project || search.db || global.manifest.session.db
   var response = { success: false, message: "Something went wrong!" }
 
-  var doc = search.doc,
+  var db = search.db || global.manifest.session.db,
+    collection = search.collection,
+    doc = search.doc,
     docs = search.docs,
     populate = search.populate,
     select = search.select,
@@ -483,17 +493,143 @@ const getData = async ({ _window, req, res, search }) => {
     skip = search.skip || 0,
     data = {}, success, message
 
-  if (provider === "bracketDB") {
-  } else if (provider === "firebase") {
+  if (datastore === "bracketDB") {
 
-    if (_window.global.data.project.datastore.collections.includes(collection)) collection = 'collection-' + collection
-    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && !search.url) collection += `-${project}`
+    if (search.collections) return ({ success: true, message: "Names queried successfully!", data: getCollectionNames(`bracketDB/${db}`) })
 
-    var ref = req.db.firebaseDB.collection(collection), promises = []
+    var path = `bracketDB/${db}`
+    if (!fs.existsSync(path)) return ({ data, message: "No database!", success: false })
+
+    if (collection) {
+      path += `/${collection}`
+      if (!fs.existsSync(path)) return ({ data, message: "No collection!", success: false })
+    }
+  
+    if ("docs" in search) {
+
+      toArray(docs).map(doc => {
+        if (fs.existsSync(`${path}/${doc}.json`)) data[doc] = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
+      })
+    }
+
+    else if ("doc" in search) {
+
+      if (!fs.existsSync(`${path}/${doc}.json`)) return data
+      data = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
+    }
+
+    else if (Object.keys(find).length === 0) {
+
+      if (!collection) {
+
+        getCollectionNames(path).map(collection => {
+
+          var pathi = path + "/" + collection
+          var docs = fs.readdirSync(pathi)
+          data[collection] = {}
+
+          for (let i = skip; (i < limit) && (i <= docs.length - 1); i++) {
+
+            var doc = docs[i]
+            var query = JSON.parse(fs.readFileSync(`${pathi}/${doc}`))
+            doc = doc.split(".json")[0]
+            data[collection][doc] = query
+          }
+        })
+
+      } else {
+
+        var docs = fs.readdirSync(path)
+
+        for (let i = skip; (i < limit) && (i <= docs.length - 1); i++) {
+
+          var doc = docs[i]
+          var query = JSON.parse(fs.readFileSync(`${path}/${doc}`))
+          doc = doc.split(".json")[0]
+          data[doc] = query
+        }
+      }
+    }
+
+    // find
+    else {
+
+      var docs = fs.readdirSync(path)
+      var i = 0
+
+      toArray(find).map(find => {
+        while (skip >= 0 && limit > 0 && (i <= docs.length - 1)) {
+
+          var doc = docs[i]
+          var query = JSON.parse(fs.readFileSync(`${path}/${doc}`))
+
+          doc = doc.split(".json")[0]
+          var push = true
+
+          Object.keys(find).map(key => {
+            if (!push) return
+
+            // equal without equal
+            if (typeof find[key] !== "object") find[key] = { equal: find[key] }
+
+            Object.entries(find[key]).map(([operator, value]) => {
+
+              if (!(key in query) || !push) return
+              operator = toOperator(operator)
+
+              if (operator === "==") {
+                if (query[key] === value) push = true
+                else push = false
+              } else if (operator === "!=") {
+                if (query[key] !== value) push = true
+                else push = false
+              } else if (operator === ">=") {
+                if (query[key] >= value) push = true
+                else push = false
+              } else if (operator === "<=") {
+                if (query[key] <= value) push = true
+                else push = false
+              } else if (operator === "<") {
+                if (query[key] < value) push = true
+                else push = false
+              } else if (operator === ">") {
+                if (query[key] > value) push = true
+                else push = false
+              } else if (operator === "inc") {
+                if (query[key].includes(value)) push = true
+                else push = false
+              } else if (operator === "in") {
+                if (value.includes(query[key])) push = true
+                else push = false
+              }
+            })
+          })
+
+          if (push) {
+            if (skip) skip--;
+            else {
+              limit--;
+              data[doc] = query
+            }
+          }
+
+          i++;
+        }
+      })
+    }
+    
+    response = { data, message: "Data queried successfully!", success: true }
+
+  } else if (datastore === "firebase") {
+
+    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && !search.url) {
+      collection = 'collection-' + collection
+      collection += `-${project}`
+    }
+
+    var ref = req.datastore.firebaseDB.collection(collection), promises = []
 
     if ("url" in search) {
-
-      if (!search.url) return ({ data: {}, success: false, message: "Missing Url!" })
 
       var url = search.url
       delete search.url
@@ -501,6 +637,7 @@ const getData = async ({ _window, req, res, search }) => {
       if (url.slice(-1) === "/") url = url.slice(0, -1)
 
       try {
+
         data = await require("axios").get(url, { timeout: 1000 * 40 })
           .then(res => res.doesNotExist.throwAnError)
           .catch(err => err)
@@ -510,6 +647,7 @@ const getData = async ({ _window, req, res, search }) => {
         message = `Document/s mounted successfuly!`
 
       } catch (err) {
+
         data = {}
         success = false
         message = `Error!`
@@ -665,32 +803,40 @@ const getData = async ({ _window, req, res, search }) => {
       response = await myPromise()
     }
 
-  } else if (provider === "mongoDB") {
+  } else if (datastore === "mongoDB") {
 
-    var ref = req.db.mongoDB.db(project).collection(collection)
+    if (search.collections) {
+      
+      var collections = await req.datastore.mongoDB.db(db).listCollections().toArray()
+      return ({ success: true, message: "Names queried successfully!", data: collections.map(data => data.name) })
+    }
+
+    var ref = req.datastore.mongoDB.db(db).collection(collection)
 
     // docs
-    if (docs) data = await db.collection(collection).find({ id: { $in: docs } }).limit(limit).skip(skip)
+    if (docs) data = await ref.find({ "__props__.doc": { $in: docs } }).limit(limit).skip(skip).toArray();
 
     // doc
-    else if (doc) data = await db.collection(collection).findOne({ id: doc })
+    else if (doc) data = await ref.findOne({ "__props__.doc": doc })
 
     // collection
-    else if (!find && !findOne) data = await db.collection(collection).find().limit(limit).skip(skip)
+    else if (!find && !findOne) data = await ref.find().limit(limit).skip(skip).toArray();
 
     // find
-    else data = await db.collection(collection).find(mongoOptions({ find })).limit(limit).skip(skip)
-
+    else data = await ref.find(mongoOptions({ find })).limit(limit).skip(skip).toArray();
+    
     // return data as map
-    if (!doc && Object.values(data)[0]) {
+    if (!doc && data[0]) {
       var mapData = {}
       data.map(data => {
-        mapData[data.id] = data
+        mapData[data.__props__.doc] = data
       })
       data = mapData
     }
-  }
 
+    response = { data, message: "Data queried successfully!", success: true }
+  }
+  
   // ex: search():[collection=product;docs;populate=:[collection;key;field]] (key is keyname in data, field is the fields to return)
   if ((populate || select || deselect || assign) && success) {
 
@@ -699,7 +845,7 @@ const getData = async ({ _window, req, res, search }) => {
     // restructure
     if (doc) data = { [doc]: data }
 
-    if (populate) await populator({ _window, req, res, data, populate, search })
+    if (populate) await populator({ _window, req, res, db, data, populate, search })
     if (select) data = selector({ data, select })
     else if (deselect) data = deselector({ data, deselect })
     else if (assign) data = assigner({ data, assign })
@@ -714,11 +860,13 @@ const getData = async ({ _window, req, res, search }) => {
 
 const postData = async ({ _window, req, res, save }) => {
 
+  var global = _window.global
   var collection = save.collection
-  var provider = _window.global.__provider__
-  var project = (save.headers || {}).project || _window.global.manifest.session.projectID
+  var datastore = save.datastore || global.manifest.datastore
+  var project = (save.headers || {}).project || save.db || global.manifest.session.db
 
   // collection
+  var db = save.db || global.manifest.session.db
   var doc = save.doc
   var data = save.data
   var update = save.update || {}
@@ -733,13 +881,60 @@ const postData = async ({ _window, req, res, save }) => {
     data = rawData
   }
 
-  if (provider === "bracketDB") {
-  } else if (provider === "firebase") {
+  if (datastore === "bracketDB") {
 
-    if (_window.global.data.project.datastore.collections.includes(collection)) collection = 'collection-' + collection
-    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${project}`
+    // db
+    var path = `bracketDB/${db}`, counter
+    if (!fs.existsSync(path)) fs.mkdirSync(path)
 
-    var ref = req.db.firebaseDB.collection(collection)
+    // collection
+    path += `/${collection}`
+    if (!fs.existsSync(path)) fs.mkdirSync(path)
+
+    // get counter
+    if (collection !== "settings") {
+      var { data: counter } = await getData({ _window, req, res, search: { db: bracketDB, collection: "settings", find: { db } } })
+      counter = Object.values(counter)[0]
+    }
+
+    toArray(data).map(data => {
+
+      if (!data.__props__) {
+
+        if (!counter.collections[collection]) counter.collections[collection] = 0
+        counter.collections[collection]++;
+
+        data.__props__ = {
+
+          id: generate({ unique: true }),
+          doc: doc || (collection + counter.collections[collection]),
+          creationDate: (new Date()).getTime(),
+          active: true,
+          createdByUserID: global.manifest.session.userID,
+          counter: counter.collections[collection]
+        }
+
+        doc = data.__props__.doc
+
+        // set counter
+        collection !== "settings" && postData({ _window, req, save: { db: bracketDB, collection: "settings", doc: counter.__props__.doc, data: counter } })
+
+      } else if (doc) data.__props__.doc = doc
+      else doc = data.__props__.doc
+
+      fs.writeFileSync(`${path}/${doc}.json`, JSON.stringify(data, null, 2))
+    })
+
+    return { success: true, message: "Data saved successfully!", data }
+
+  } else if (datastore === "firebase") {
+
+    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") {
+      collection = 'collection-' + collection
+      collection += `-${project}`
+    }
+
+    var ref = req.datastore.firebaseDB.collection(collection)
 
     var promises = toArray(data).map(async (data, i) => {
 
@@ -763,49 +958,90 @@ const postData = async ({ _window, req, res, save }) => {
 
     return ({ data, success, message })
 
-  } else if (provider === "mongoDB") {
+  } else if (datastore === "mongoDB") {
 
-    var ref = req.db.mongoDB.db(project).collection(collection)
+    var ref = req.datastore.mongoDB.db(db).collection(collection)
+
+    // get counter
+    if (collection !== "settings") {
+      var { data: counter } = await getData({ _window, req, res, search: { db: bracketDB, collection: "settings", find: { db } } })
+      counter = Object.values(counter)[0]
+    }
+
     promises = toArray(data).map(async data => {
 
-      data.__props__ = data.__props__ || {
-        id: generate({ unique: true }),
-        creationDate: data["creation-date"] || new Date().getTime(),
-        collapsed: [],
-        comments: [],
-        docName: doc.id,
-        folderPath: [],
-        confidential: {
-          projectID: project
+      if (!data.__props__) {
+
+        if (!counter.collections[collection]) counter.collections[collection] = 0
+        counter.collections[collection]++;
+
+        data.__props__ = {
+
+          id: generate({ unique: true }),
+          doc: doc || (collection + counter.collections[collection]),
+          creationDate: (new Date()).getTime(),
+          active: true,
+          createdByUserID: global.manifest.session.userID,
+          counter: counter.collections[collection]
         }
-      }
 
-      if (data.id) return await ref.update({ id }, data, { upsert: true })
-      else return await ref.insertOne(data)
+        doc = data.__props__.doc
+
+        // set counter
+        collection !== "settings" && postData({ _window, req, save: { db: bracketDB, collection: "settings", doc: counter.__props__.doc, data: counter } })
+
+        return await ref.insertOne(data)
+
+      } else if (doc) data.__props__.doc = doc
+      else doc = data.__props__.doc
+
+      var set = {}
+      Object.entries(data).map(([key, value]) => { if (key !== "_id") set[key] = value })
+
+      return await ref.updateOne({ "__props__.id": data.__props__.id }, { $set: set }, { upsert: true })
     })
-  }
 
-  await Promise.all(promises)
+    await Promise.all(promises)
+
+    return { success: true, message: "Data saved successfully!", data }
+  }
 }
 
 const deleteData = async ({ _window, req, res, erase }) => {
 
-  var collection = erase.collection
-  var provider = _window.global.__provider__
-  var project = (erase.headers || {}).project || _window.global.manifest.session.projectID
+  var global = _window.global
+  var collection = erase.collection,
+    datastore = erase.datastore || _window.global.manifest.datastore,
+    project = (erase.headers || {}).project,
+    db = erase.db || global.manifest.session.db,
+    success, message,
+    docs = toArray(erase.docs || erase.doc),
+    find = erase.find
 
-  var success, message
-  var docs = erase.docs || [erase.doc]
+  if (datastore === "bracketDB") {
 
-  if (provider === "bracketDB") {
-  } else if (provider === "firebase") {
+    // db
+    var path = `bracketDB/${db}`
+    if (!fs.existsSync(path)) return { success: false }
 
-    if (_window.global.data.project.datastore.collections.includes(collection)) collection = 'collection-' + collection
-    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") collection += `-${project}`
+    // collection
+    if (collection) path += `/${collection}`
+    if (!fs.existsSync(path)) return { success: false }
+
+    // create folder if it doesnot exist
+    if (docs.length === 0) fs.rmSync(`${path}`, { recursive: true, force: true })
+    else docs.map(doc => doc && fs.unlinkSync(`${path}/${doc}.json`))
+
+  } else if (datastore === "firebase") {
+
+    if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_") {
+      collection = 'collection-' + collection
+      collection += `-${project}`
+    }
 
     var promises = docs.map(async doc => {
 
-      await req.db.firebaseDB.collection(collection).doc(doc.toString()).delete().then(() => {
+      await req.datastore.firebaseDB.collection(collection).doc(doc.toString()).delete().then(() => {
 
         success = true,
           message = `Document erased successfuly!`
@@ -823,7 +1059,7 @@ const deleteData = async ({ _window, req, res, erase }) => {
 
           await req.storage.firebaseStorage.bucket().file(`storage-${req.headers["project"]}/${erase.storage.doc}`).delete()
 
-          await req.db.firebaseDB.collection(`storage-${req.headers["project"]}`).doc(erase.storage.doc.toString()).delete().then(() => {
+          await req.datastore.firebaseDB.collection(`storage-${req.headers["project"]}`).doc(erase.storage.doc.toString()).delete().then(() => {
 
             success = true,
               message = `Document erased successfuly!`
@@ -839,17 +1075,26 @@ const deleteData = async ({ _window, req, res, erase }) => {
 
     await Promise.all(promises)
 
-  } else if (provider === "mongoDB") {
+  } else if (datastore === "mongoDB") {
 
-    var ref = req.db.mongoDB.db(project).collection(collection)
-    var promises = docs.map(async doc => await ref.deleteOne({ id: doc }))
-    await Promise.all(promises)
+    var ref = req.datastore.mongoDB.db(project).collection(collection)
+
+    // erase by docs
+    if (docs.length > 0) {
+      var promises = docs.map(async doc => await ref.deleteOne({ "__props__.id": doc }))
+      await Promise.all(promises)
+    }
+
+    // erase by options
+    else if (find) {
+      await ref.delete(mongoOptions({ find }))
+    }
   }
 
   return ({ success, message })
 }
 
-const populator = async ({ _window, req, res, data, populate, search }) => {
+const populator = async ({ _window, req, res, data, db, populate, search }) => {
 
   var populatedData = {}
   var populates = toArray(populate)
@@ -857,12 +1102,21 @@ const populator = async ({ _window, req, res, data, populate, search }) => {
   // get data by IDs
   var responses = populates.map(async (populate, i) => {
 
-    if (typeof populate === "string") populates[i] = populate = { collection: populate, find: populate, deselect: [] }
-    if (!populate.collection) populate.collection = populate.find
+    if (typeof populate === "string") populates[i] = populate = { db, collection: populate, field: populate, find: "id", deselect: [] }
+    if (!populate.collection) populate.collection = populate.field
+    if (!populate.find) populate.find = "id"
 
+    // get values from queried data
     var IDSet = new Set()
-    Object.values(data).map(data => IDSet.add(data[populate.find]))
-    var response = await getData({ _window, req, res, search: { collection: populate.collection, docs: Array.from(IDSet), headers: search.headers } })
+    Object.values(data).map(data => IDSet.add(data[populate.field]))
+
+    // add find conditions
+    if (populate.find === "doc") {
+      populate.docs = Array.from(IDSet)
+      delete populate.find
+    } else populate.find = { [populate.find]: { in: Array.from(IDSet) } }
+
+    var response = await getData({ _window, req, res, search: populate })
     populatedData = { ...populatedData, ...response.data }
     return response
   })
@@ -961,7 +1215,7 @@ const mongoOptions = ({ find }) => {
 
       if (typeof valueAndOperator !== "object") valueAndOperator = { equal: valueAndOperator }
 
-      var operator = toOperator(Object.keys(value)[0])
+      var operator = toOperator(Object.keys(valueAndOperator)[0])
       var value = Object.values(valueAndOperator)[0]
 
       options[key] = options[key] || {}
@@ -985,6 +1239,120 @@ const mongoOptions = ({ find }) => {
   return options
 }
 
+const getSession = async ({ _window, req }) => {
+
+  var global = _window.global, session, response
+
+  // get session by sessionID
+  if (global.manifest.cookies.__session__) {
+
+    // get session
+    response = await getData({ _window, req, search: { db: bracketDB, collection: "session", find: { "__props__.id": global.manifest.cookies.__session__, domain: global.manifest.host } } })
+    session = Object.values(response.data)[0]
+
+    // session expired
+    if (!session || session.expiryDate < new Date().getTime()) {
+
+      // create session
+      response = await createSession({ _window, req, session })
+    }
+
+    // extend session
+    else {
+
+      session.expiryDate = new Date().getTime() + 86400000
+      response = await postData({ _window, req, save: { db: bracketDB, collection: "session", data: session } })
+    }
+
+    return response
+  }
+
+  // create session
+  else return await createSession({ _window, req })
+}
+
+const createSession = async ({ _window, req, res, session = {} }) => {
+
+  var global = _window.global, expiredSessionExists = session.accountID
+  var promises = [], account, project, counter, subscriptions = [], plugins = []
+  
+  // project
+  !expiredSessionExists && promises.push(getData({ _window, req, search: { db: bracketDB, collection: "project", find: { domains: { inc: global.manifest.host } } } }).then(({ data }) => { project = Object.values(data || {})[0] }))
+  await Promise.all(promises)
+
+  if (!project) return { message: "Project does not exist!", success: false }
+
+  // clear promises
+  var promises = []
+
+  // account
+  !expiredSessionExists && promises.push(getData({ _window, req, search: { db: bracketDB, collection: "account", find: { "__props__.id": { equal: project.accountID } } } }).then(({ data }) => { account = Object.values(data || {})[0] }))
+
+  // counter
+  promises.push(getData({ _window, req, search: { db: bracketDB, collection: "settings", find: { db: project.db } } }).then(({ data }) => { counter = Object.values(data || {})[0] }))
+
+  // subscriptions
+  promises.push(getData({ _window, req, search: { db: bracketDB, collection: "subscription", find: { expiryDate: { greater: new Date().getTime() } } } }).then(({ data }) => { subscriptions = Object.values(data || {}) }))
+  await Promise.all(promises)
+
+  // clear promises
+  var promises = []
+
+  // plugins
+  promises.push(getData({ _window, req, search: { db: bracketDB, collection: "plugin", find: { "__props__.id": { in: subscriptions.map(subs => subs.pluginID) } } } }).then(({ data }) => { plugins = Object.values(data || {}) }))
+  await Promise.all(promises)
+
+  // restructure subscriptions
+  subscriptions = subscriptions.map(subs => {
+    var plugin = plugins.find(plugin => plugin.__props__.id === subs.pluginID)
+    return {
+      subscriptionID: subs.__props__.id,
+      pluginID: subs.pluginID,
+      expiryDate: subs.expiryDate,
+      plugins: plugin.plugins
+    }
+  })
+
+  // counter++
+  !expiredSessionExists && counter.collections.session++;
+
+  // erase expired session
+  expiredSessionExists && deleteData({ _window, req, res, erase: { db: bracketDB, collection: "session", doc: session.__props__.doc } })
+
+  // session
+  session = {
+
+    accountID: session.accountID || account.__props__.id,
+    projectID: session.projectID || project.__props__.id,
+    userID: null,
+    permissionID: null,
+    permissions: {},
+    domain: global.manifest.host,
+    db: session.db || project.db,
+    expiryDate: new Date().getTime() + 86400000,
+    encryptionKey: generate(),
+    subscriptions,
+    __props__: {
+      id: generate({ unique: true }),
+      doc: "session" + counter.collections.session,
+      creationDate: new Date().getTime(),
+      createdByUserID: "anonymous",
+      active: true,
+      counter: counter.collections.session
+    }
+  }
+
+  postData({ _window, req, res, save: { db: bracketDB, collection: "settings", data: counter } })
+  postData({ _window, req, res, save: { db: bracketDB, collection: "session", data: session } })
+
+  return { data: session, success: true, message: "Session created successfully!" }
+}
+
+const getCollectionNames = path =>
+  fs.readdirSync(path, { withFileTypes: true })
+    .filter(dirent => dirent.isDirectory())
+    .map(dirent => dirent.name)
+
 module.exports = {
   database,
   getdb,
@@ -992,9 +1360,12 @@ module.exports = {
   postdb,
   postData,
   deletedb,
-  deleteData
+  deleteData,
+  getSession,
+  createSession
 }
-},{"./clone":3,"./generate":18,"./toArray":49,"./toFirebaseOperator":55,"./toOperator":56,"axios":67}],10:[function(require,module,exports){
+}).call(this)}).call(this,require('_process'))
+},{"./clone":3,"./generate":17,"./toArray":47,"./toFirebaseOperator":53,"./toOperator":54,"_process":105,"axios":65,"dotenv":98,"fs":95}],10:[function(require,module,exports){
 const decode = ({ _window, string }) => {
 
   var global = _window ? _window.global : window.global
@@ -1054,7 +1425,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   var doc = view.droplist.doc || view.doc
 
   // init droplist
-  var droplistView = { ...global.data.view.droplist, children: [], __dataPath__, doc, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["route", "document", "root", "droplist"], __lookupViewActions__: [...view.__lookupViewActions__] }
+  var droplistView = { ...global.data.view.droplist, children: [], __dataPath__, doc, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["route", "document", "root", "droplist"], __lookupActions__: [...view.__lookupActions__] }
 
   // input id
   var { data: inputID } = toLine({ id, data: { string: "input().id||().id" } })
@@ -1177,16 +1548,18 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
     }
 
     global.__keyupIndex__ = global.__keyupIndex__ || 0
-    droplistView.__element__.children[view.droplist.title ? global.__keyupIndex__ + 1 : global.__keyupIndex__].dispatchEvent(new Event("mouseenter"))
+    droplistView.__element__.children.length > 0 &&
+      droplistView.__element__.children[view.droplist.title ? global.__keyupIndex__ + 1 : global.__keyupIndex__].dispatchEvent(new Event("mouseenter"))
   }
 
   global.__droplistTimer__ = setTimeout(mouseEnterItem, 100)
 }
 
 module.exports = { droplist }
-},{"./clone":3,"./jsonToBracket":31,"./kernel":32}],12:[function(require,module,exports){
+},{"./clone":3,"./jsonToBracket":29,"./kernel":30}],12:[function(require,module,exports){
 const axios = require("axios")
 const { deleteData } = require("./database")
+const { getCookie } = require("./cookie")
 
 const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase = {}, ...params }) => {
 
@@ -1203,6 +1576,7 @@ const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase
 
   } else {
 
+    headers.cookies = JSON.stringify(getCookie())
     var response = await axios.post(`/`, { server: "database", type: "erase", data: erase }, { headers })
     data = response.data
   }
@@ -1214,7 +1588,7 @@ const erase = async ({ _window, lookupActions, stack, req, res, id, e, __, erase
 }
 
 module.exports = { erase }
-},{"./database":9,"./kernel":32,"axios":67}],13:[function(require,module,exports){
+},{"./cookie":5,"./database":9,"./kernel":30,"axios":65}],13:[function(require,module,exports){
 module.exports=[
   "mouseenter", "mouseleave",  "mouseover", "mousemove", "mousedown", "mouseup", "touchstart", 
   "touchend", "touchmove", "touchcancel", "click", "change", "focus", "blur", "keypress", "keyup", 
@@ -1231,7 +1605,7 @@ module.exports = {
         return typeof string === "string" && (string.includes("()") || (encoded ? string.charAt(0) === "@" || isParam({ _window, string }) : false) || string.includes("_"))
     }
 }
-},{"./isParam":29}],15:[function(require,module,exports){
+},{"./isParam":28}],15:[function(require,module,exports){
 module.exports = {
     exportJson: ({ data, name }) => {
         
@@ -1248,77 +1622,6 @@ module.exports = {
     }
 }
 },{}],16:[function(require,module,exports){
-(function (global){(function (){
-const { toArray } = require("./toArray")
-const { toAwait } = require("./kernel")
-
-module.exports = {
-    fileReader: ({ req, res, _window, lookupActions, stack, address, id, e, __, data }) => {
-
-        // files to read
-        data.data = toArray(data.data)
-        if (!data.data) return console.log("No data to read!")
-
-        // read type
-        var type = data.type
-        if (!type && data.url) type = "url"
-        else if (!type && data.json) type = "json"
-        else if (!type && data.text) type = "text"
-        else if (!type && data.buffer) type = "buffer"
-        else if (!type && data.binary) type = "binary"
-        else if (!type) type = "url"
-
-        // init
-        global.__fileReader__ = {
-            files: [],
-            length: data.data.length,
-            count: 0
-        };
-
-        data.data.map(file => {
-
-            var reader = new FileReader()
-            reader.onload = (e) => {
-
-                global.__fileReader__.count++;
-
-                global.__fileReader__.files.push({
-                    type: file.type,
-                    lastModified: file.lastModified,
-                    name: file.name,
-                    size: file.size,
-                    url: e.target.result,
-                    data: e.target.result
-                })
-
-                if (global.__fileReader__.count === global.__fileReader__.length) {
-
-                    var files = global.__fileReader__.files
-
-                    // parse JSON
-                    if (type === "json") files.map(file => file.data = JSON.parse(file.data))
-
-                    var data = { success: true, message: "File read successfully!", data: files.length === 1 ? files[0] : files }
-
-                    toAwait({ req, res, _window, lookupActions, stack, address, id, e, __, _: data })
-                }
-            }
-
-            try {
-
-                if (type === "url" || type === "file") reader.readAsDataURL(file)
-                else if (type === "text" || type === "json") reader.readAsText(file)
-                else if (type === "binary") reader.readAsBinaryString(file)
-                else if (type === "buffer") reader.readAsArrayBuffer(file)
-
-            } catch (er) {
-                document.getElementById("loader-container").style.display = "none"
-            }
-        })
-    }
-}
-}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./kernel":32,"./toArray":49}],17:[function(require,module,exports){
 const focus = ({ id }) => {
 
   var view = window.views[id]
@@ -1354,7 +1657,7 @@ const focus = ({ id }) => {
 
 module.exports = {focus}
 
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 const numbers = "1234567890"
 
@@ -1391,7 +1694,7 @@ const generate = (params = {}) => {
 
 module.exports = { generate }
 
-},{}],19:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = ({ el, id }) => {
   var view = window.views[id]
   el = el || view.__element__
@@ -1417,7 +1720,7 @@ module.exports = ({ el, id }) => {
 
   return { top: Math.round(top), left: Math.round(left), right: Math.round(right), bottom: Math.round(bottom), height: Math.round(height), width: Math.round(width) };
 }
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports = {
     getDateTime: (time, format) => {
         
@@ -1438,13 +1741,13 @@ module.exports = {
         return format === "yyyy-mm-ddThh-mm-ss" && `${year}-${month}-${day}T${hrs}:${min}:${sec}`
     }
 }
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 module.exports = {
     getDaysInMonth: (stampTime) => {
         return new Date(stampTime.getFullYear(), stampTime.getMonth() + 1, 0).getDate()
     }
 }
-},{}],22:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 const getType = (value) => {
   const { emptySpaces, isNumber } = require("./kernel")
 
@@ -1465,7 +1768,7 @@ const getType = (value) => {
   if (typeof value === "string") return "string"
 }
 module.exports = { getType }
-},{"./kernel":32}],23:[function(require,module,exports){
+},{"./kernel":30}],22:[function(require,module,exports){
 const nthParent = ({ _window, nth, o }) => {
 
   if (!o.__view__) return o
@@ -1524,7 +1827,7 @@ const getAllParents = ({ _window, id }) => {
 }
 
 module.exports = { nthParent, getAllParents, nthNext, nthPrev }
-},{}],24:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[A-Za-z]/
 
@@ -1558,7 +1861,7 @@ const isArabic = ({ id, value, text }) => {
 
 module.exports = { isArabic }
 
-},{}],25:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 const isCalc = ({ _window, string }) => {
 
     if (typeof string !== "string") return false
@@ -1583,7 +1886,7 @@ const isCalc = ({ _window, string }) => {
 }
 
 module.exports = { isCalc }
-},{}],26:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = {
     isCondition: ({ _window, string }) => {
         
@@ -1599,7 +1902,7 @@ module.exports = {
         return false
     }
 }
-},{}],27:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 const isEqual = function(value, other) {
   // if (value === undefined || other === undefined) return false
 
@@ -1711,7 +2014,7 @@ const isEqual = function(value, other) {
 
 module.exports = {isEqual}
 
-},{}],28:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 var events = require("./events.json")
 
 const isEvent = ({ _window, string }) => {
@@ -1727,7 +2030,7 @@ const isEvent = ({ _window, string }) => {
 }
 
 module.exports = { isEvent }
-},{"./events.json":13}],29:[function(require,module,exports){
+},{"./events.json":13}],28:[function(require,module,exports){
 module.exports = {
   isParam: ({ _window, string = "" }) => {
     
@@ -1737,193 +2040,7 @@ module.exports = {
     return false
   }
 }
-},{}],30:[function(require,module,exports){
-const fs = require("fs")
-const { toArray } = require("./toArray")
-const { toOperator } = require("./toOperator")
-
-var getJsonFiles = ({ search = {} }) => {
-  
-  var data = {},
-  collection = search.collection, 
-  doc = search.doc, 
-  docs = search.docs, 
-  fields = search.field, 
-  limit = search.limit || 100,
-  path = `database/${collection}`
-  
-  // create folder if it doesnot exist
-  if (!fs.existsSync(path)) return data
-
-  if (doc) {
-    
-    if (!fs.existsSync(`${path}/${doc}.json`)) return data // fs.writeFileSync(`${path}/${doc}.json`, "{}")
-    data = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
-
-  } else if (docs && docs.length > 0) {
-    
-    toArray(docs).map(doc => {
-      if (fs.existsSync(`${path}/${doc}.json`)) data[doc] = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
-    })
-    
-  } else if (!fields) {
-
-    var docs = fs.readdirSync(path), i = 0
-    while ((i < limit) && (i <= docs.length - 1)) {
-
-      var doc = docs[i]
-      var _document = JSON.parse(fs.readFileSync(`${path}/${doc}`))
-      doc = doc.split(".json")[0]
-      data[doc] = _document
-      i += 1
-    }
-    
-  } else if (fields) {
-
-    var docs = fs.readdirSync(path), i = 0
-    var _operator = search.operator || "and"
-    
-    while ((Object.keys(data).length <= limit) && (i <= docs.length - 1)) {
-
-      var doc = docs[i]
-      var _document = JSON.parse(fs.readFileSync(`${path}/${doc}`))
-
-      doc = doc.split(".json")[0]
-      var _data = _document, _push = false, pushed = false
-
-      Object.keys(fields).map(field => {
-
-        if (pushed) return
-        Object.entries(fields[field]).map(([operator, value]) => {
-
-          if (pushed) return
-          operator = toOperator(operator)
-          
-          if (operator === "==") {
-            if (_data[field] === value) _push = true
-            else _push = false
-          } else if (operator === "!=") {
-            if (_data[field] !== value) _push = true
-            else _push = false
-          } else if (operator === ">=") {
-            if (_data[field] >= value) _push = true
-            else _push = false
-          } else if (operator === "<=") {
-            if (_data[field] <= value) _push = true
-            else _push = false
-          } else if (operator === "<") {
-            if (_data[field] < value) _push = true
-            else _push = false
-          } else if (operator === ">") {
-            if (_data[field] > value) _push = true
-            else _push = false
-          } else if (operator === "array-contains") {
-            if (toArray(value).length > 0 && toArray(value).filter(v => _data[field].find(_v => _v === v)).length === toArray(value).length) _push = true
-            else _push = false
-          } else if (operator === "array-contains-any") {
-            if (_data[field].find(v => toArray(value).find(_v => _v === v))) _push = true
-            else _push = false
-          } else if (operator === "in") {
-            if (typeof _data[field] === "object") {
-              var records = Array.isArray(_data[field]) ? _data[field] : Object.keys(_data[field])
-              if (records.find(v => value === v)) _push = true
-              else _push = false
-            } else if (typeof _data[field] === "string") {
-              if (value.length >= _data[field].length) {
-                if (value.includes(_data[field]) && _data[field]) _push = true
-                else _push = false
-              } else {
-                if (_data[field].includes(value)) _push = true
-                else _push = false
-              }
-            }
-          } else if (operator === "not-in") {
-            if (typeof _data[field] === "object") {
-              var records = Array.isArray(_data[field]) ? _data[field] : Object.keys(_data[field])
-              if (records.find(v => value === v)) _push = false
-              else _push = true
-            } else if (typeof _data[field] === "string") {
-              if (value.length >= _data[field].length) {
-                if (value.includes(_data[field])) _push = false
-                else _push = true
-              } else {
-                if (_data[field].includes(value)) _push = false
-                else _push = true
-              }
-            }
-          }
-
-          if (_push && _operator === "or") {
-            data[_data.id] = _data
-            pushed = true
-          }
-        })
-      })
-      if (_push && _operator === "and") data[_data.id] = _data
-      i += 1
-    }
-  }
-
-  return data
-}
-
-const postJsonFiles = ({ save = {} }) => {
-  
-  var data = save.data,
-  collection = save.collection, 
-  doc = save.doc
-  
-  // create folder if it doesnot exist
-  var path = "database/"
-  collection.split("/").map(dir => {
-    path += dir
-    if (!fs.existsSync(path)) fs.mkdirSync(path)
-    path += "/"
-  })
-  
-  path = `database/${collection}`
-  fs.writeFileSync(`${path}/${doc}.json`, JSON.stringify(data, null, 2))
-  return data
-}
-
-const removeJsonFiles = ({ erase = {} }) => {
-
-  var db = erase.db, 
-  collection = erase.collection, 
-  docs = toArray(erase.doc || erase.docs), 
-  path = `database`
-
-  if (db) path += `/${db}`
-  if (collection) path += `/${collection}`
-  
-  if (!fs.existsSync(path)) return
-
-  // create folder if it doesnot exist
-  if (docs.length === 0) fs.rmSync(`${path}`, { recursive: true, force: true })
-  else docs.map(doc => doc && fs.unlinkSync(`${path}/${doc}.json`))
-}
-
-const uploadJsonFile = ({ upload = {} }) => {
-  
-  var file = upload.file, path, 
-  collection = upload.collection, 
-  doc = upload.document || upload.doc, 
-  data = upload.data, 
-  path = `storage/${collection}/${doc}`
-  
-  // file Type
-  upload.type = upload.type.split("-").join("/")
-  fs.writeFileSync(path, file, "base64")
-  data.url = path
-
-  path = `database/${collection}/${doc}`
-  fs.writeFileSync(path, JSON.stringify(data, null, 2))
-
-  return path
-}
-
-module.exports = { getJsonFiles, postJsonFiles, removeJsonFiles, uploadJsonFile }
-},{"./toArray":49,"./toOperator":56,"fs":97}],31:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 const jsonToBracket = (object, field) => {
 
   if (!object) return ""
@@ -1958,7 +2075,8 @@ const jsonToBracket = (object, field) => {
 
 module.exports = {jsonToBracket}
 
-},{}],32:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
+(function (global){(function (){
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { isEqual } = require("./isEqual")
@@ -1983,7 +2101,6 @@ const { override } = require("./merge")
 const { nthParent, nthNext, nthPrev } = require("./getView")
 const { decode } = require("./decode")
 const { searchParams } = require("./searchParams")
-const { fileReader } = require("./fileReader")
 const { executable } = require("./executable")
 const { toEvent } = require("./toEvent")
 const { isEvent } = require("./isEvent")
@@ -1992,14 +2109,14 @@ const { isCalc } = require("./isCalc")
 const { toCode } = require("./toCode")
 const { logger } = require("./logger")
 const { openStack, clearStack, endStack } = require("./stack")
-const { getJsonFiles } = require("./jsonFiles")
 const Input = require("../view/Input")
 const { watch } = require("./watch")
 const { isArabic } = require("./isArabic")
 const cssStyleKeyNames = require("./cssStyleKeyNames")
 const events = require("./events.json")
+const myViews = ["View", "Input", "Text", "Image", "Icon", "Action", "Audio", "Video"]
 
-var actions = { 
+var actions = {
     "caret()": ({ o }) => ({ index: getCaretIndex(o) }),
     "device()": ({ global }) => global.manifest.device.device,
     "mobile()": ({ global }) => global.manifest.device.device.type === "smartphone",
@@ -2021,7 +2138,7 @@ var actions = {
 
         return global.__focused__
     }, "click()": ({ _window, global, views, view, o, id, pathJoined }) => {
-        
+
         if (!o.__view__ || !o.__rendered__) return
 
         if (_window) return view.__controls__.push({
@@ -2546,7 +2663,7 @@ var actions = {
 
         var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
         if (Array.isArray(data)) data = { path: data }
-        return reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.data !== undefined ? true : key, value: data.data !== undefined ? data.data : value }, e, req, res, __ })
+        return reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.data !== undefined, value: data.data !== undefined ? data.data : value }, e, req, res, __ })
 
     }, "path()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, lastIndex, value, key }) => {
 
@@ -2822,10 +2939,11 @@ var actions = {
         o.splice(o.length - 1, 1)
         return o
 
-    }, "rem()": ({ o, stack, __ }) => {
+    }, "rem()": ({ _window, id, o, stack, __, e, object, args }) => {
 
         if (!o.__view__) return
-        remove({ id: o.id, __, stack })
+        var data = toParam({ _window, id, data: args[1], __, e, object })
+        remove({ id: o.id, __, stack, data })
 
     }, "keys()": ({ o }) => {
 
@@ -3222,7 +3340,7 @@ var actions = {
         year = month === 1 ? year + 1 : year
         return new Date(date.setYear(year)).setMonth(month, date.getDays())
 
-    }, "1MonthEarlier()" : ({ o }) => {
+    }, "1MonthEarlier()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
 
@@ -3230,7 +3348,7 @@ var actions = {
         var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
         return new Date(date.setYear(year)).setMonth(month, date.getDays())
 
-    }, "2MonthEarlier()" : ({ o }) => {
+    }, "2MonthEarlier()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
 
@@ -3240,7 +3358,7 @@ var actions = {
         year = month === 11 ? year - 1 : year
         return new Date(date.setYear(year)).setMonth(month, date.getDays())
 
-    }, "3MonthEarlier()" : ({ o }) => {
+    }, "3MonthEarlier()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
 
@@ -3662,11 +3780,11 @@ var actions = {
 
         return o
 
-    }, "terminate()": ({ stack,  }) => {
+    }, "terminate()": ({ stack, }) => {
 
         stack.terminated = true
 
-    }, "break()": ({ stack,  }) => {
+    }, "break()": ({ stack, }) => {
 
         if (stack.loop) stack.broke = true
 
@@ -4243,7 +4361,7 @@ var actions = {
         var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id, action: "root()", object, lookupActions, __ })
         if (typeof data === "string") data = { page: data }
 
-        require("./root").root({ _window, lookupActions, stack, address, id, req, res, root: data, __ })
+        root({ _window, lookupActions, stack, address, id, req, res, root: data, __ })
 
     }, "update()": ({ _window, req, res, o, stack, lookupActions, id, __, args, object }) => {
 
@@ -4422,7 +4540,7 @@ var actions = {
 
     }, "encodeURI()": ({ o }) => {
 
-        return  encodeURI(o)
+        return encodeURI(o)
 
     }, "preventDefault()": ({ e }) => {
 
@@ -4432,7 +4550,7 @@ var actions = {
 
         return decodeURI(o)
 
-    } 
+    }
 }
 
 const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: _object, path, pathJoined, value, key, object } }) => {
@@ -4458,7 +4576,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
         k = k.toString()
         var k0 = k.split(":")[0]
         var args = k.split(":")
-        
+
         // get underscores
         var underScored = 0
         while (k0.charAt(0) === "_") {
@@ -4496,8 +4614,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             return o
 
-        } 
-        
+        }
+
         // underscore
         else if (underScored && !k0) { // _
 
@@ -4518,8 +4636,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 else answer = o[underscores]
             }
 
-        } 
-        
+        }
+
         // encoded
         else if (k.charAt(0) === "@" && k.length === 6) { // k not k0
 
@@ -4548,11 +4666,11 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             } else answer = data
 
-        } 
+        }
 
         // OOP
         else if (actions[k0]) return actions[k0]({ _window, req, res, global, views, view, o, stack, pathJoined, lookupActions, id, e, __, args, k, underScored, object, i, lastIndex, value, key, path, breakRequest, condition, _object, answer })
-            
+
         // methods
         else if (k0.slice(-2) === "()" && typeof o[k0.slice(0, -2)] === "function") {
 
@@ -4563,10 +4681,10 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             answer = o[k0.slice(0, -2)](...data)
 
-        } 
+        }
 
         // action_name()
-        else if (k0.slice(-2) === "()") { 
+        else if (k0.slice(-2) === "()") {
 
             if (k0.charAt(0) === "@" && k0.length == 6) k0 = toValue({ req, res, _window, id, e, __, data: k0, object })
 
@@ -4576,8 +4694,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 answer = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: k }, condition, object: object || o })
             }
 
-        } 
-        
+        }
+
         // endoced params
         else if (k.includes(":@")) {
 
@@ -4587,7 +4705,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             if (k0.charAt(0) === "@" && k0.length == 6) k0 = global.__refs__["@" + k0.slice(-5)].data
 
             o[k0] = o[k0] || {}
-            
+
             if (events.includes(k0)) {
 
                 if (!o.__view__) return
@@ -4601,8 +4719,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             if (args[1]) answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { path: [...args.slice(1).flat(), ...path.slice(i + 1)], object: o[k0] }, __ })
             else return
 
-        } 
-        
+        }
+
         // lastindex
         else if (key && value !== undefined && i === lastIndex) {
 
@@ -4614,8 +4732,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             }
             answer = o[k] = value
 
-        } 
-        
+        }
+
         // assign {} of []
         else if (key && o[k] === undefined && i !== lastIndex) {
 
@@ -4631,8 +4749,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 }
                 answer = o[k] = {}
             }
-        } 
-        
+        }
+
         else answer = o[k]
 
         return answer
@@ -4973,7 +5091,7 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
 
         // action()
         if (path0.slice(-2) === "()") {
-            
+
             var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: path[0] }, condition, mount, object })
             if (action !== "__continue__" && typeof action === "object" && !Array.isArray(action)) override(params, action)
             if (action !== "__continue__") return
@@ -5033,6 +5151,9 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
                 view.__dataPath__ = []
                 view.doc = view.doc || generate()
                 global[view.doc] = view.data = global[view.doc] || {}
+
+                // actions in data
+                if (view.data.__props__ && view.data.__props__.actions) view.__lookupActions__.unshift({ type: "data", doc })
             }
 
             // mount path directly when found
@@ -5054,7 +5175,10 @@ const toParam = ({ _window, lookupActions, stack = {}, data: string, e, id, req,
                 view.__dataPath__.push(...myPath)
                 view.data = kernel({ _window, id, stack, __, lookupActions, data: { path: view.__dataPath__, data: global[view.doc], value: view.data, key: true } })
 
-            } else if (view.id !== id) {
+            }
+
+            // assign view params to new view ID
+            else if (view.id !== id) {
 
                 if (views[view.id]) views[view.id] += "_" + generate()
                 Object.assign(views, { [view.id]: views[id] })
@@ -5080,7 +5204,7 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     if (typeof path === "number") path = [path]
 
     var pathJoined = path.join(".")
-    
+
     // init
     var path0 = path[0] ? path[0].toString().split(":")[0] : "", args
     if (path[0] !== undefined) args = path[0].toString().split(":")
@@ -5098,9 +5222,9 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
         var { address, data } = addresser({ _window, stack, args, id, type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, lookupActions, id, object })
 
         // view & path
-        if (typeof data === "object" && data.__view__) myLookupActions = data.__lookupViewActions__
+        if (typeof data === "object" && data.__view__) myLookupActions = data.__lookupActions__
         else if (typeof data === "object") {
-            if (typeof data.view === "object" && data.view.__view__) myLookupActions = data.view.__lookupViewActions__
+            if (typeof data.view === "object" && data.view.__view__) myLookupActions = data.view.__lookupActions__
             else {
                 if (!data.view) data.view = view.__customViewPath__.at(-1)
                 if (typeof data.path === "string") data.path = data.path.split(".")
@@ -5323,7 +5447,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
 
     // ==
     string = string.replaceAll("==", "=")
-    
+
     string.split(";").map(condition => {
 
         // no condition
@@ -5404,7 +5528,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
         // get key
         if (object || key.includes("()")) key = toValue({ _window, lookupActions, stack, id, data: key, e, __, req, res, object, condition: true })
         else key = toValue({ _window, lookupActions, stack, id, data: key, e, __, req, res, object: object !== undefined ? object : view, condition: true })
-        
+
         // evaluate
         if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !key : (key === 0 ? true : key)
         else {
@@ -5429,108 +5553,76 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
 
     if (path || (action0.slice(-2) === "()" && action0 !== "()" && action0 !== "_()" && !require("./actions.json").includes(action0) && action0.charAt(0) !== "@")) {
 
-        // call by action():[path;view;data]
-        if (path) {
+        // lookup through parent map actions
+        toArray(lookupActions).map((lookupAction, indexx) => {
 
-            // no view name
-            if (!customViewName || global.data.view[customViewName]) return
+            if (queryNonExistingView || actionFound) return
 
-            if (!global.data.view[customViewName].__secure__) {
+            if (!lookupAction.view && !lookupAction.doc) return
 
-                var actions = (global.data.view[customViewName] || {}).functions
-                actionFound = clone(path).reduce((o, k) => o && o[k], actions)
+            if (lookupAction.view && !global.data.view[lookupAction.view] && !global.__queries__.views.includes(lookupAction.view)) {
 
-                // action doesnot exist
-                if (actionFound === undefined) return
+                queryNonExistingView = true
+                var { address, data } = addresser({ _window, id, stack, __, lookupActions: lookupActions.slice(indexx), stack, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${lookupAction.view}`, waits: `loader.hide;__queries__:().views.push():[${lookupAction.view}];data:().view.${lookupAction.view}=_.data;${action}` })
+                return require("./search").search({ _window, lookupActions, stack, address, id, __, req, res, data })
 
-                if (typeof actionFound === "object" && actionFound._) {
+            } else if (lookupAction.view && !global.data.view[lookupAction.view] && global.__queries__.views.includes(lookupAction.view)) return
 
-                    actionFound = actionFound._ || ""
-                    newLookupActions = [{ type: "customView", view: viewAction, path }]
+            // get actions
+            var actions
+            if (lookupAction.view) actions = global.data.view[lookupAction.view].__props__.actions
+            else if (lookupAction.doc) actions = global[lookupAction.doc].__props__.actions
 
-                } else if (path.length > 1) newLookupActions = [{ type: "customView", view: viewAction, path: path.slice(0, -1) }]
+            if (!actions) return
 
-                if (toArray(lookupActions).length > 1) newLookupActions = [...newLookupActions, ...toArray(lookupActions)]
+            if (lookupAction.path) {
 
-                //
-                action = action0
+                var path = lookupAction.path
+                clone(path).reverse().map((x, i) => {
+
+                    if (actionFound) return
+
+                    actionFound = clone(path.slice(0, path.length - i).reduce((o, k) => o[k], actions)[name])
+
+                    if (actionFound) {
+
+                        if (typeof actionFound === "object" && actionFound._) {
+
+                            actionFound = actionFound._ || ""
+                            newLookupActions = [{ ...lookupAction, path: [...path.slice(0, path.length - i), name] }, ...lookupActions.slice(indexx)]
+
+                        } else if (lookupActions.length > 1) lookupActions.slice(indexx)
+
+                    }
+                })
 
             } else {
 
-                // server action
-                serverAction = true
-                serverActionView = customViewName
-                newLookupActions = []
-            }
-        }
+                if (name in actions) {
 
-        // lookup through parent map actions
-        if (!actionFound) {
+                    if (global.data.view[lookupAction.view].__props__.secure && !stack.server) {
 
-            toArray(lookupActions).map((lookupAction, indexx) => {
+                        // server action
+                        actionFound = true
+                        serverAction = true
+                        serverActionView = lookupAction.view
+                        newLookupActions = []
 
-                if (!lookupAction.view || queryNonExistingView || actionFound) return
+                    } else {
 
-                if (!global.data.view[lookupAction.view] && global.data.views.includes(lookupAction.view) && !global.__queries__.views.includes(lookupAction.view)) {
+                        actionFound = clone(actions[name])
 
-                    queryNonExistingView = true
-                    var { address, data } = addresser({ _window, id, stack, __, lookupActions: lookupActions.slice(indexx), stack, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${lookupAction.view}`, waits: `loader.hide;__queries__:().views.push():[${lookupAction.view}];data:().view.${lookupAction.view}=_.data;${action}` })
-                    return require("./search").search({ _window, lookupActions, stack, address, id, __, req, res, data })
-                }
+                        if (typeof actionFound === "object") {
 
-                // get view actions
-                var actions = global.data.view[lookupAction.view].functions
-                if (!actions) return
-
-                if (lookupAction.path) {
-
-                    var path = lookupAction.path
-                    clone(path).reverse().map((x, i) => {
-
-                        if (actionFound) return
-
-                        actionFound = clone(path.slice(0, path.length - i).reduce((o, k) => o[k], actions)[name])
-
-                        if (actionFound) {
-
-                            if (typeof actionFound === "object" && actionFound._) {
-
-                                actionFound = actionFound._ || ""
-                                newLookupActions = [{ type: "customView", view: lookupAction.view, path: [...path.slice(0, path.length - i), name] }, ...lookupActions.slice(indexx)]
-
-                            } else if (lookupActions.length > 1) lookupActions.slice(indexx)
-
-                        }
-                    })
-
-                } else {
-                    
-                    if (name in actions) {
-
-                        if (global.data.view[lookupAction.view]._secure_ && !stack.server) {
-
-                            // server action
-                            actionFound = true
-                            serverAction = true
-                            serverActionView = lookupAction.view
-                            newLookupActions = []
-
-                        } else {
-
-                            actionFound = clone(actions[name])
-
-                            if (typeof actionFound === "object") {
-
-                                actionFound = actionFound._ || ""
-                                newLookupActions = [{ type: lookupAction.type, view: lookupAction.view, path: [name] }, ...lookupActions]
-                            }
+                            actionFound = actionFound._ || ""
+                            newLookupActions = [{ ...lookupAction, path: [name] }, ...lookupActions]
                         }
                     }
                 }
-            })
+            }
+        })
 
-            if (queryNonExistingView) return
-        }
+        if (queryNonExistingView) return
 
         if (actionFound) {
 
@@ -5598,7 +5690,10 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
     }
 
     // check event
-    if (string.split("?").length > 1 && isEvent({ _window, string })) return toEvent({ _window, string, id, __, lookupActions })
+    if (string.split("?").length > 1 && isEvent({ _window, string })) {
+        toEvent({ _window, string, id, __, lookupActions })
+        return terminator({ data: { success: true, message: `Event`, executionDuration: 0 } })
+    }
 
     // subparams
     if (i === 1) {
@@ -5653,7 +5748,7 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
         message = "Else actions executed!"
         conditionsNotApplied = true
 
-    } else if (!approved) return ({ success, message: `Conditions not applied!`, conditionsNotApplied: true, executionDuration: (new Date()).getTime() - startTime })
+    } else if (!approved) return terminator({ data: { success, message: `Conditions not applied!`, conditionsNotApplied: true, executionDuration: (new Date()).getTime() - startTime } })
     else message = `Action executed successfully!`
 
     var actionReturnID = generate(), data
@@ -5673,7 +5768,7 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
         if (isParam({ _window, string })) action = "toParam"
         else action = "toValue"
     }
-    
+
     if (action === "toValue") data = toValue({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object })
     else if (action === "toApproval") data = toApproval({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object })
     else if (action === "toParam") data = toParam({ _window, lookupActions, stack, id, e, data: string, req, res, __, mount, object })
@@ -5692,7 +5787,7 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
     return terminator({ data: { success, message, data, action, conditionsNotApplied, executionDuration: (new Date()).getTime() - startTime }, order: 5 })
 }
 
-const addresser = ({ _window, addressID = generate(), index = 0, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, hasWaits, params, function: func, newLookupActions, nextAddressID, nextAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition, logger, switchNextAddressIDWith }) => {
+const addresser = ({ _window, addressID = generate(), index = 0, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data = "", waits, hasWaits, params, function: func, newLookupActions, nextAddressID, nextStack = {}, nextAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition, logger, switchNextAddressIDWith }) => {
 
     if (switchNextAddressIDWith) {
 
@@ -5701,7 +5796,6 @@ const addresser = ({ _window, addressID = generate(), index = 0, stack = [], arg
         switchNextAddressIDWith.nextAddressID = addressID
         switchNextAddressIDWith.hasWaits = false
         switchNextAddressIDWith.interpreting = false
-        // switchNextAddressIDWith.status = "Wait"
     }
 
     // find nextAddress by nextAddressID
@@ -5713,7 +5807,7 @@ const addresser = ({ _window, addressID = generate(), index = 0, stack = [], arg
     // address waits
     if (waits) nextAddress = addresser({ _window, stack, req, res, e, type: "waits", action: action + "::[...]", data: { string: waits }, nextAddress, blockable, __, id, object, mount, lookupActions, condition }).address
 
-    var address = { id: addressID, stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: hasWaits !== undefined ? hasWaits : (waits ? true : false), nextAddressID: nextAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, logger, executionStartTime: (new Date()).getTime() }
+    var address = { id: addressID, stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: hasWaits !== undefined ? hasWaits : (waits ? true : false), nextStackID: nextStack.id, nextAddressID: nextAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, logger, executionStartTime: (new Date()).getTime() }
     var stackLength = stack.addresses.length
 
     // find and lock the head address
@@ -5737,13 +5831,13 @@ const addresser = ({ _window, addressID = generate(), index = 0, stack = [], arg
     // set all head addresses asynchronous
     if (asynchronous) {
 
-        var nextAddressID = address.stackID === stack.id && address.nextAddressID
+        var nextAddressID = !address.nextStackID && address.nextAddressID
         while (nextAddressID) {
 
             var holdnextAddress = stack.addresses.find(nextAddress => nextAddress.id === nextAddressID)
             if (holdnextAddress) {
                 holdnextAddress.hold = true
-                nextAddressID = holdnextAddress.stackID === stack.id && holdnextAddress.nextAddressID
+                nextAddressID = !address.nextStackID && holdnextAddress.nextAddressID
             } else nextAddressID = false
         }
     }
@@ -5795,7 +5889,10 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
 
         // remove address
         var index = stack.addresses.findIndex(waitingAddress => waitingAddress.id === address.id)
-        if (index !== -1) stack.addresses.splice(index, 1)
+        if (index !== -1) {
+            stack.addresses[index] = null
+            stack.addresses.splice(index, 1)
+        }
 
         // pass underscores to waits
         if (address.hasWaits && nextAddress.params) {
@@ -5838,21 +5935,22 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
     if (stack.terminated) return
 
     // asynchronous unholds nextAddresses
-    if (address.nextAddressID && !nextAddress.interpreting && (nextAddress.stackID || nextAddress.hold || nextAddress.status === "Wait")) {
+    if (address.nextAddressID && !address.nextStackID && !nextAddress.interpreting) {
 
         var otherWaiting = stack.addresses.findIndex(waitingAddress => waitingAddress.nextAddressID === address.nextAddressID)
 
         if (otherWaiting === -1 || (otherWaiting > -1 && !stack.addresses.find(waitingAddress => waitingAddress.nextAddressID === address.nextAddressID && !address.blocked))) {
-
+            
             nextAddress.hold = false
             return toAwait({ _window, lookupActions, stack, address: nextAddress, id, req, res, __, action, e })
         }
     }
 
-    endStack({ _window, stack, end: true })
-
     // address is for another stack
-    address.stackID !== stack.id && global.__stacks__[address.stackID] && toAwait({ _window, lookupActions, stack: global.__stacks__[address.stackID], address, id, e, req, res, __, action })
+    if (address.nextStackID && global.__stacks__[address.nextStackID])
+        toAwait({ _window, lookupActions, stack: global.__stacks__[address.nextStackID], address, id, e, req, res, __, action })
+    
+    endStack({ _window, stack })
 }
 
 const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
@@ -5905,8 +6003,8 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
             // get data
             passData.data = (insert.__view__) ? (typeof insert.data === "object" ? {} : "") // insert():[...]
-            : (insert.view && data === undefined) ? (typeof insert.view.data === "object" ? {} : "") // insert():[view=...]
-            : (insert.view && data !== undefined ? data : undefined) // insert():[view=...;data=...]
+                : (insert.view && data === undefined) ? (typeof insert.view.data === "object" ? {} : "") // insert():[view=...]
+                    : (insert.view && data !== undefined ? data : undefined) // insert():[view=...;data=...]
 
             // mount data
             passData.data !== undefined && path.reduce((o, k, i) => {
@@ -5923,7 +6021,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
             __: view.__loop__ && view.__mount__ ? [passData.data, ...view.__.slice(1)] : view.__,
             __viewPath__: [...view.__viewPath__, ...viewPath],
             __customViewPath__: [...view.__customViewPath__],
-            __lookupViewActions__: [...view.__lookupViewActions__],
+            __lookupActions__: [...view.__lookupActions__],
             passData: {
                 __loop__: view.__loop__,
                 __mount__: view.__mount__,
@@ -5932,7 +6030,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
 
         // get raw view
         view = clone(([...view.__viewPath__, ...viewPath]).reduce((o, k) => o[k], global.data.view))
-console.log("here", clone(passData));
+
     } else { // new View
 
         var genView = generate()
@@ -5945,7 +6043,7 @@ console.log("here", clone(passData));
         passData = {
             __viewPath__: [genView, ...viewPath],
             __customViewPath__: [...parent.__customViewPath__, genView],
-            __lookupViewActions__: [{ type: "customView", view: genView }, ...parent.__lookupViewActions__]
+            __lookupActions__: [{ type: "customView", view: genView }, ...parent.__lookupActions__]
         }
     }
 
@@ -6088,7 +6186,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
     }
 
     // custom View
-    if (global.data.views.includes(view.__name__)) {
+    if (!myViews.includes(view.__name__)) {
 
         // query custom view
         if (!global.__queries__.views.includes(view.__name__) && !global.data.view[view.__name__]) {
@@ -6099,7 +6197,8 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
 
             var { address, data } = addresser({ _window, id, stack, nextAddress: address, __, lookupActions, stack, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${view.__name__}`, waits: `loader.hide;__queries__:().views.push():[${view.__name__}];data:().view.${view.__name__}=_.data` })
             return require("./search").search({ _window, lookupActions, stack, address, id, __, req, res, data })
-        }
+
+        } else if (!global.data.view[view.__name__] && global.__queries__.views.includes(view.__name__)) return
 
         // continue to custom view
         else {
@@ -6110,7 +6209,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
                 __customView__: view.__name__,
                 __viewPath__: [view.__name__],
                 __customViewPath__: [...view.__customViewPath__, view.__name__],
-                __lookupViewActions__: [{ type: "customView", view: view.__name__ }, ...view.__lookupViewActions__]
+                __lookupActions__: [{ type: "customView", view: view.__name__ }, ...view.__lookupActions__]
             }
 
             // id
@@ -6133,10 +6232,9 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
                 address = addresser({ _window, id: child.id, nextAddress: address, type: "function", function: "documenter", stack, __, logger: { key: "documenter", end: true } }).address
 
                 // get shared public views
-                Object.entries(getJsonFiles({ search: { collection: "public/view" } })).map(([doc, data]) => {
+                Object.entries(require("./publicViews.json")).map(([doc, data]) => {
 
                     global.data.view[doc] = { ...data, id: doc }
-                    global.data.views.push(doc)
                     global.__queries__.views.push(doc)
                 })
 
@@ -6144,7 +6242,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
             }
 
             // address
-            return toView({ _window, stack, address, req, res, lookupActions: child.__lookupViewActions__, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
+            return toView({ _window, stack, address, req, res, lookupActions: child.__lookupActions__, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
         }
     }
 
@@ -6173,7 +6271,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
     toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
 }
 
-const update = ({ _window, id, lookupActions, stack, nextAddress, address, req, res, __, data = {} }) => {
+const update = ({ _window, id, lookupActions, stack, address, req, res, __, data = {} }) => {
 
     // address.blockable = false
     var views = _window ? _window.views : window.views
@@ -6188,7 +6286,7 @@ const update = ({ _window, id, lookupActions, stack, nextAddress, address, req, 
         var __childIndex__ = data.__childIndex__ !== undefined ? data.__childIndex__ : view.__childIndex__
         var __viewPath__ = [...(data.__viewPath__ || view.__viewPath__)]
         var __customViewPath__ = [...(data.__customViewPath__ || view.__customViewPath__)]
-        var __lookupViewActions__ = [...(data.__lookupViewActions__ || view.__lookupViewActions__)]
+        var __lookupActions__ = [...(data.__lookupActions__ || view.__lookupActions__)]
         var my__ = data.__ || view.__
 
         var elements = []
@@ -6207,14 +6305,14 @@ const update = ({ _window, id, lookupActions, stack, nextAddress, address, req, 
             __view__: true,
             __viewPath__,
             __customViewPath__,
-            __lookupViewActions__,
+            __lookupActions__,
             ...(data.passData || {}),
         }
 
         // data
         if (data.data) {
 
-            reducedView.data = clone(data.data)
+            reducedView.data = data.data
             reducedView.doc = data.doc || parent.doc || generate()
             global[reducedView.doc] = global[reducedView.doc] || reducedView.data
 
@@ -6231,20 +6329,25 @@ const update = ({ _window, id, lookupActions, stack, nextAddress, address, req, 
         if (!data.insert && parent.__rendered__) parent.__childrenRef__.filter(({ childIndex }) => childIndex === __childIndex__).map(({ id }) => elements.push(removeView({ _window, global, views, id, stack, main: true, insert: data.insert })))
         else if (!parent.__rendered__) removeView({ _window, global, views, id: data.id, stack, main: true })
 
-        // address delete block views (switch with second next address => execute after end of update waits)
-        addresser({ _window, id, stack, switchNextAddressIDWith: stack.addresses.find(add => add.id === address.nextAddressID), type: "function", function: "blockRelatedAddressesByViewID", __, lookupActions, stack, data: { stack, id } })
+        // address for delete blocked addresses (switch with second next address => execute after end of update waits)
+        addresser({ _window, id, stack, switchNextAddressIDWith: stack.addresses.find(add => add.id === address.nextAddressID), type: "function", function: "blockRelatedAddressesByViewID", __, lookupActions, data: { stack, id } })
 
         // address for post update
-        addresser({ _window, id, stack, switchNextAddressIDWith: address, type: "function", function: "update", __, lookupActions, stack, data: { ...data, childIndex: __childIndex__, elements, timer, parent, postUpdate: true } })
+        addresser({ _window, id, stack, switchNextAddressIDWith: address, type: "function", function: "update", __, lookupActions, data: { ...data, childIndex: __childIndex__, elements, timer, parent, postUpdate: true } })
 
         // address
-        address = addresser({ _window, id, stack, nextAddress: address, status: "Start", type: "function", function: "toView", __: my__, lookupActions: __lookupViewActions__, data: { view: reducedView, parent: parent.id } }).address
-
+        address = addresser({ _window, id, stack, nextAddress: address, status: "Start", type: "function", function: "toView", __: my__, lookupActions: __lookupActions__, data: { view: reducedView, parent: parent.id } }).address
+        
         // render
-        toView({ _window, lookupActions: __lookupViewActions__, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
+        toView({ _window, lookupActions: __lookupActions__, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
+
+        // seq: END:toView => END:update() => START:postUpdate => END:postUpdate => START:waits => END:waits => START:spliceBlockedAddresses
+        console.log("here");
+        // address
+        toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
 
     } else { // post update
-
+        
         var { childIndex, elements, root, timer, parent, ...data } = data
 
         // tohtml parent
@@ -6326,7 +6429,7 @@ const update = ({ _window, id, lookupActions, stack, nextAddress, address, req, 
 
         var data = { view: updatedViews.length === 1 ? updatedViews[0] : updatedViews, message: "View updated successfully!", success: true }
 
-        toParam({ _window, data: "loader.hide" })
+        // toParam({ _window, data: "loader.hide" })
 
         if (address) {
             address.params.__ = [data, ...address.params.__]
@@ -6345,7 +6448,7 @@ const addEventListener = ({ event, id, __, stack, lookupActions, address, eventI
 
     // inherit from view
     if (!__) __ = view.__
-    if (!lookupActions) lookupActions = view.__lookupViewActions__
+    if (!lookupActions) lookupActions = view.__lookupActions__
 
     var mainString = toCode({ id, string: toCode({ id, string: event, start: "'" }) })
 
@@ -6640,9 +6743,7 @@ const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res,
 
 const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }) => {
 
-    const { toAwait } = require("./kernel");
     var global = _window ? _window.global : window.global
-
     var executionDuration = (new Date()).getTime() - stack.executionStartTime
 
     data.success = data.success !== undefined ? data.success : true
@@ -6675,7 +6776,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
                     stack.blocked = true
 
                     // address coming from different stack
-                    if (blockedAddress.stackID !== stack.id) stack = global.__stacks__[blockedAddress.stackID]
+                    if (blockedAddress.nextStackID) stack = global.__stacks__[blockedAddress.nextStackID]
                 }
             }
 
@@ -6700,6 +6801,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
 
             // start from self address (by interpretingAddressID) to reach the start head address
             var address = stack.addresses.find(address => address.id === nextAddressID)
+            if (!address) nextAddressID = false
 
             if (address.starter) {
 
@@ -6711,7 +6813,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions }
             nextAddressID = address.nextAddressID
 
             // reached index 0 address => check stack if it has nextAddress
-            if (address.stackID !== stack.id) stack = global.__stacks__[address.stackID]
+            if (address.nextStackID) stack = global.__stacks__[address.nextStackID]
         }
     }
 }
@@ -6777,15 +6879,21 @@ const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
     closePublicViews({ _window, id, __, stack, lookupActions })
 
     // no data
-    if (__dataPath__.length === 0) return removeView({ id, global, views, stack, main: true }).remove()
+    if (__dataPath__.length === 0) {
 
-    // reset length and __dataPath__
-    var itemIndex = view.__dataPath__.length - 1
-    var parent = views[view.__parent__]
+        removeView({ id, global, views, stack, main: true }).remove()
 
-    // update data path
-    parent.__childrenRef__.slice(view.__index__ + 1).map(({ id }) => updateDataPath({ id, index: itemIndex, decrement: true }))
-    removeView({ id, global, views, stack, main: true }).remove()
+    } else {
+
+        // reset length and __dataPath__
+        var itemIndex = view.__dataPath__.length - 1
+        var parent = views[view.__parent__]
+
+        // update data path
+        parent.__childrenRef__.slice(view.__index__ + 1).map(({ id }) => updateDataPath({ id, index: itemIndex, decrement: true }))
+        removeView({ id, global, views, stack, main: true }).remove()
+    }
+
     console.log("REMOVE:" + id)
 }
 
@@ -6997,7 +7105,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
     // remove view
     delete view.view
     delete view.children
-    delete view.functions
+    delete view.__props__
 
     if (name === "Action") return
 
@@ -7064,8 +7172,6 @@ const toHTML = ({ _window, id, stack, __ }) => {
         }
     } else if (name === "Icon") {
         html = `<i ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.outlined ? "material-icons-outlined" : (view.symbol.outlined) ? "material-symbols-outlined" : (view.rounded || view.round) ? "material-icons-round" : (view.symbol.rounded || view.symbol.round) ? "material-symbols-round" : view.sharp ? "material-icons-sharp" : view.symbol.sharp ? "material-symbols-sharp" : (view.filled || view.fill) ? "material-icons" : (view.symbol.filled || view.symbol.fill) ? "material-symbols" : view.twoTone ? "material-icons-two-tone" : ""} ${view.class || "" || ""} ${view.icon.name}' id='${view.id}' style='${view.__htmlStyles__}${_window ? "; opacity:0; transition:.2s" : ""}'>${view.google ? view.icon.name : ""}</i>`
-    } else if (name === "Textarea") {
-        html = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} class='${view.class || ""}' id='${view.id}' style='${view.__htmlStyles__}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""}>${text || ""}</textarea>`
     } else if (name === "Input") {
         if (view.textarea) {
             html = `<textarea ${atts} ${view.draggable !== undefined ? `draggable='${view.draggable}'` : ""} spellcheck='false' class='${view.class || ""}' id='${view.id}' style='${view.__htmlStyles__}' placeholder='${view.placeholder || ""}' ${view.readonly ? "readonly" : ""} ${view.maxlength || ""}>${text}</textarea>`
@@ -7162,17 +7268,17 @@ const documenter = ({ _window, res, stack, address, __ }) => {
     var metaTitle = view.meta.title || view.title || ""
     var metaViewport = view.meta.viewport || ""
 
-    delete global.data.project
+    global.manifest.session = global.manifest.session.__props__.id
 
     // logs
     global.__server__.logs = stack.logs
 
     // clear secure view actions
     Object.values(global.data.view).map(view => {
-        if (view._secure_) {
+        if (view.__props__.secure) {
             view.view = ""
             view.children = []
-            clearActions(view.functions)
+            clearActions(view.__props__.actions)
         }
     })
 
@@ -7282,7 +7388,7 @@ const initView = ({ views, global, id = generate(), doc, children = [], parent, 
         __rendered__: false,
         __initialIndex__: parentView.__indexing__ || 0,
         __viewPath__: [...(data.__viewPath__ || [])],
-        __lookupViewActions__: [...(data.__lookupViewActions__ || parentView.__lookupViewActions__ || [])],
+        __lookupActions__: [...(data.__lookupActions__ || parentView.__lookupActions__ || [])],
         __customViewPath__: [...(data.__customViewPath__ || parentView.__customViewPath__ || [])]
     }
 
@@ -7293,7 +7399,7 @@ const initView = ({ views, global, id = generate(), doc, children = [], parent, 
 
 const getViewParams = ({ view }) => {
 
-    var { id, doc, data, view, children, __lookupViewActions__, __element__, __dataPath__, __childrenRef__, __index__, __relEvents__,
+    var { id, doc, data, view, children, __lookupActions__, __element__, __dataPath__, __childrenRef__, __index__, __relEvents__,
         __viewPath__, __customViewPath__, __indexing__, __childIndex__, __initialIndex__, __customView__, __htmlStyles__, __events__,
         __parent__, __controls__, __status__, __rendered__, __timers__, __view__, __name__, __customID__, __interpreted__, __, ...params } = view
 
@@ -7388,6 +7494,9 @@ const launcher = () => {
     var views = window.views
     var global = window.global
 
+    // session
+    setCookie({ name: "__session__", value: global.manifest.session })
+
     views.document.__element__ = document
 
     // app default event listeneres
@@ -7418,7 +7527,7 @@ const launcher = () => {
     views.body.__element__.appendChild(arDiv)
 }
 
-const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: headStack, address: nextAddress, __ }) => {
+const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: nextStack, address: nextAddress, __ }) => {
 
     var views = window.views
     var global = window.global
@@ -7428,23 +7537,21 @@ const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: he
     // view doesnot exist
     if (!view || !views[eventID]) return
 
-    if (event === "click" || event === "mousedown" || event === "mouseup") {
-        global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
-    }
+    if (event === "click" || event === "mousedown" || event === "mouseup") global.__clicked__ = views[((e || window.event).target || e.currentTarget).id]
 
     // prevent unrelated droplists
     if (eventID === "droplist" && id !== "droplist" && (!global.__droplistPositioner__ || !views[global.__droplistPositioner__] || !views[global.__droplistPositioner__].__element__.contains(view.__element__))) return
-
+    
     // init stack
-    var stack = openStack({ event, id, eventID, string, headStack, nextAddress, e })
+    var stack = openStack({ event, id, eventID, string, e })
 
     // address line
-    var address = addresser({ stack, id, status: "Start", type: "line", event: "click", interpreting: true, lookupActions, __, nextAddress: address }).address
+    var address = addresser({ stack, id, status: "Start", type: "line", event: "click", interpreting: true, lookupActions, __, nextStack, nextAddress }).address
 
     // main params
-    toParam({ lookupActions, stack, id, e, address, data: string, __, mount: true })
+    toLine({ lookupActions, stack, id, e, address, data: { string }, __, mount: true })
 
-    endStack({ stack, end: true })
+    endStack({ stack })
 }
 
 const defaultEventHandler = ({ id }) => {
@@ -7686,8 +7793,8 @@ const defaultInputHandler = ({ id }) => {
         if (value !== view.prevContent && global.__ISBRACKET__) {
             global.redo = []
             global.undo.push({
-                collection: global["open-collection"],
-                doc: global["open-doc"],
+                collection: global["openCollection"],
+                doc: global["openDoc"],
                 path: view.__dataPath__,
                 value: view.prevContent,
                 id: view.__element__.parentNode.parentNode.parentNode.parentNode.id
@@ -7835,13 +7942,107 @@ const setData = ({ id, data, __, stack = {} }) => {
     kernel({ id, data: { data: global[view.doc], path: keys, value: defValue, key: true }, stack, __ })
 }
 
+const fileReader = ({ req, res, _window, lookupActions, stack, address, id, e, __, data }) => {
+
+    // files to read
+    data.data = toArray(data.data)
+    if (!data.data) return console.log("No data to read!")
+
+    // read type
+    var type = data.type
+    if (!type && data.url) type = "url"
+    else if (!type && data.json) type = "json"
+    else if (!type && data.text) type = "text"
+    else if (!type && data.buffer) type = "buffer"
+    else if (!type && data.binary) type = "binary"
+    else if (!type) type = "url"
+
+    // init
+    global.__fileReader__ = {
+        files: [],
+        length: data.data.length,
+        count: 0
+    };
+
+    data.data.map(file => {
+
+        var reader = new FileReader()
+        reader.onload = (e) => {
+
+            global.__fileReader__.count++;
+
+            global.__fileReader__.files.push({
+                type: file.type,
+                lastModified: file.lastModified,
+                name: file.name,
+                size: file.size,
+                url: e.target.result,
+                data: e.target.result
+            })
+
+            if (global.__fileReader__.count === global.__fileReader__.length) {
+
+                var files = global.__fileReader__.files
+
+                // parse JSON
+                if (type === "json") files.map(file => file.data = JSON.parse(file.data))
+
+                var data = { success: true, message: "File read successfully!", data: files.length === 1 ? files[0] : files }
+
+                toAwait({ req, res, _window, lookupActions, stack, address, id, e, __, _: data })
+            }
+        }
+
+        try {
+
+            if (type === "url" || type === "file") reader.readAsDataURL(file)
+            else if (type === "text" || type === "json") reader.readAsText(file)
+            else if (type === "binary") reader.readAsBinaryString(file)
+            else if (type === "buffer") reader.readAsArrayBuffer(file)
+
+        } catch (er) {
+            document.getElementById("loader-container").style.display = "none"
+        }
+    })
+}
+
+const root = ({ id, _window, root = {}, stack, lookupActions, address, req, res, __ }) => {
+
+    var views = _window ? _window.views : window.views
+    var global = _window ? _window.global : window.global
+
+    // path
+    var path = root.path || (root.page.includes("/") ? root.page : global.manifest.path.join("/"))
+
+    // page
+    var page = root.page && (root.page.includes("/") ? (!root.page.split("/")[0] ? root.page.split("/")[1] : root.page.split("/")[0]) : root.page) || path.split("/")[1] || "main"
+
+    // recheck path
+    path = root.path ? path : page === "main" ? "/" : `/${page}`
+
+    // prevs
+    global.__prevPath__.push(global.manifest.path.join("/"))
+    global.__prevPage__.push(global.manifest.page)
+
+    // page & path
+    global.manifest.page = page
+    global.manifest.path = path.split("/")
+
+    // params
+    root.path = path
+    root.page = page
+
+    update({ _window, id, req, res, stack, lookupActions, address, data: { root, id: "root", action: "ROOT" }, __ })
+}
+
 module.exports = {
     kernel, toValue, toParam, reducer, toApproval, toAction, toLine, addresser, toAwait, insert, toView, update, addEventListener,
     getDeepChildren, getDeepChildrenId, calcSubs, calcDivision, calcModulo, emptySpaces, isNumber, printAddress, endAddress, resetAddress,
     closePublicViews, updateDataPath, remove, toHTML, documenter, initView, getViewParams, removeView, launcher, defaultEventHandler,
     toNumber, defaultAppEvents
 }
-},{"../event/event":63,"../view/Input":135,"./actions.json":1,"./capitalize":2,"./clone":3,"./colorize":4,"./cookie":5,"./counter":6,"./cssStyleKeyNames":7,"./csvToJson":8,"./decode":10,"./droplist":11,"./erase":12,"./events.json":13,"./executable":14,"./exportJson":15,"./fileReader":16,"./focus":17,"./generate":18,"./getCoords":19,"./getDateTime":20,"./getDaysInMonth":21,"./getType":22,"./getView":23,"./isArabic":24,"./isCalc":25,"./isCondition":26,"./isEqual":27,"./isEvent":28,"./isParam":29,"./jsonFiles":30,"./jsonToBracket":31,"./kernel":32,"./logger":33,"./mail":34,"./merge":35,"./note":36,"./qr":37,"./replaceNbsps":38,"./resize":39,"./root":40,"./route":41,"./save":42,"./search":43,"./searchParams":44,"./setPosition":45,"./sort":46,"./stack":47,"./toArray":49,"./toCSV":50,"./toClock":51,"./toCode":52,"./toEvent":53,"./toExcel":54,"./toPdf":57,"./toSimplifiedDate":58,"./upload":59,"./vcard":60,"./watch":61}],33:[function(require,module,exports){
+}).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+},{"../event/event":61,"../view/Input":136,"./actions.json":1,"./capitalize":2,"./clone":3,"./colorize":4,"./cookie":5,"./counter":6,"./cssStyleKeyNames":7,"./csvToJson":8,"./decode":10,"./droplist":11,"./erase":12,"./events.json":13,"./executable":14,"./exportJson":15,"./focus":16,"./generate":17,"./getCoords":18,"./getDateTime":19,"./getDaysInMonth":20,"./getType":21,"./getView":22,"./isArabic":23,"./isCalc":24,"./isCondition":25,"./isEqual":26,"./isEvent":27,"./isParam":28,"./jsonToBracket":29,"./kernel":30,"./logger":31,"./mail":32,"./merge":33,"./note":34,"./publicViews.json":35,"./qr":36,"./replaceNbsps":37,"./resize":38,"./route":39,"./save":40,"./search":41,"./searchParams":42,"./setPosition":43,"./sort":44,"./stack":45,"./toArray":47,"./toCSV":48,"./toClock":49,"./toCode":50,"./toEvent":51,"./toExcel":52,"./toPdf":55,"./toSimplifiedDate":56,"./upload":57,"./vcard":58,"./watch":59}],31:[function(require,module,exports){
 const logger = ({ _window: { global }, data: { key, start, end } }) => {
     
     if (!key) return
@@ -7854,7 +8055,7 @@ const logger = ({ _window: { global }, data: { key, start, end } }) => {
     }
 }
 module.exports = { logger }
-},{}],34:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 const { toArray } = require("./toArray")
 
 module.exports = {
@@ -7910,7 +8111,7 @@ module.exports = {
         if (params.asyncer) require("./kernel").toAwait({ _window, id, ...params, req, res, __, _: global.mail })
     }
 }
-},{"./kernel":32,"./toArray":49}],35:[function(require,module,exports){
+},{"./kernel":30,"./toArray":47}],33:[function(require,module,exports){
 const { toArray } = require("./toArray")
 const { clone } = require("./clone")
 
@@ -7981,7 +8182,7 @@ const override = (obj1, obj2) => { // (old, new)
 
 module.exports = { merge, override }
 
-},{"./clone":3,"./toArray":49}],36:[function(require,module,exports){
+},{"./clone":3,"./toArray":47}],34:[function(require,module,exports){
 const { isArabic } = require("./isArabic")
 
 const note = ({ note: data }) => {
@@ -8017,7 +8218,174 @@ const note = ({ note: data }) => {
 
 module.exports = { note }
 
-},{"./isArabic":24}],37:[function(require,module,exports){
+},{"./isArabic":23}],35:[function(require,module,exports){
+module.exports={
+    "droplist": {
+        "view": "View:droplist?__droplistMouseleaveTimer__:()=400;class=box-shadow flex column;[mouseleave?mouseleaveDroplist()];[mouseenter?mouseenterDroplist()];[click:document?outClickDroplist()];style:[width=fit-content;transition=opacity .1s, transform .1s, background-color .1s;height=fit-content;overflowY=auto;overflowX=hidden;maxWidth=40rem;transform=scale(0.5);opacity=0;pointerEvents=none;position=fixed;borderRadius=.5rem;backgroundColor=#fff;zIndex=998]",
+        "__props__": {
+            "id": "H1Q7f0a828R8d7d0Q060p1E5l2",
+            "creationDate": 0,
+            "doc": "droplist",
+            "active": true,
+            "folderPath": [],
+            "collapsed": [],
+            "comments": [],
+            "public": true,
+            "actions": {
+                "mouseleaveDroplist": "mouseentered=false;clearTimer():[__droplistTimer__:()];__droplistTimer__:()=timer():[__keyupIndex__:()=0;__droplistMouseenterer__:().del();__droplistPositioner__:().del();():droplist.style():[opacity=0;transform='scale(0.5)';pointerEvents=none]]:[__droplistMouseleaveTimer__:()]",
+                "mouseenterDroplist": "mouseentered=true;__droplistMouseleaveTimer__:()=400;clearTimer():[__droplistTimer__:()]",
+                "outClickDroplist": "__droplistMouseleaveTimer__:()=400;mouseleave()?!contains():[clicked()];clicked()!=clicker();!():[__droplistPositioner__:()].contains():[clicked()]"
+            }
+        }
+    },
+    "loader": {
+        "view": "View:loader-container?class=loader-container",
+        "children": [
+            {
+                "view": "View:loader?class=loader"
+            }
+        ],
+        "__props__": {
+            "id": "r1H7q0M8K8b8O7Q060t0u1w4v6",
+            "creationDate": 0,
+            "doc": "loader",
+            "public": true,
+            "active": true,
+            "actions": {},
+            "folderPath": [],
+            "collapsed": [],
+            "comments": []
+        }
+    },
+    "mininote": {
+        "view": "View:mininote?class=flex-start;style:[zIndex=99999;width=fit-content;alignItems=center;position=absolute;transform=scale(0);transition=transform .1s, opacity .2s;opacity=0;pointerEvents=none;padding=.5rem 1rem;backgroundColor=#444444dd;borderRadius=.5rem];():document.mousemove:[position():[positioner=mouse;placement=right]]",
+        "children": [
+            {
+                "view": "Text:mininote-text?style.width=fit-content;style.fontSize=1.1rem;style.color=#fff"
+            }
+        ],
+        "__props__": {
+            "id": "01o73078J8D8T7T0n1d4P0g3o6",
+            "creationDate": 0,
+            "doc": "mininote",
+            "public": true,
+            "active": true,
+            "actions": {},
+            "folderPath": [],
+            "collapsed": [],
+            "comments": []
+        }
+    },
+    "note": {
+        "view": "View:note?class=flexbox box-shadow;style:[position=fixed;zIndex=9999;if():mobile():[maxWidth=40rem];minWidth=25rem;opacity=0;backgroundColor=#0d6efd;padding=1rem 3rem;left=center;top=0;transform=translateY(-200%);transition=transform .2s;borderRadius=0 0 1.5rem 1.5rem];mouseenter:[clearTimer():[().note-timer]];mouseleave:[note-timer=timer():[style().transform=translateY(-200%)]:5000]",
+        "children": [
+            {
+                "view": "View?class=flexbox;style.width=100%",
+                "children": [
+                    {
+                        "view": "Text?id=note-text;text=Action Note;style.color=#fff;style.fontSize=1.4rem"
+                    },
+                    {
+                        "view": "Icon?icon.name=bi-x;style.color=#fff;style.position=absolute;style.fontSize=1.8rem;style.right=.4rem;style.cursor=pointer;click:[():note.style():[transform=translateY(-200%);opacity=0]]"
+                    }
+                ]
+            }
+        ],
+        "__props__": {
+            "id": "31V7U0w8O8l8K7R0N0m7o8u4X3",
+            "creationDate": 0,
+            "doc": "note",
+            "public": true,
+            "active": true,
+            "actions": {},
+            "folderPath": [],
+            "collapsed": [],
+            "comments": []
+        }
+    },
+    "popup": {
+        "view": "View:popup?class=box-shadow;style:[zIndex=10;pointerEvents=none;opacity=0;transition=opacity .1s;position=fixed];[click:document?closePopup()];mouseenter:[enterPopup()];mouseleave:[leavePopup()]",
+        "children": [
+            {
+                "view": "View?style:[border=1px solid #f0f0f0;transform='scale(0.5)';borderRadius=.5rem;backgroundColor=#fff;transition=.2s]?():[__popupPositioner__:()].popup.model=model1",
+                "children": [
+                    {
+                        "view": "Icon?class=pointer;id=popup-confirm;name=bi-check2;tooltip.text=Confirm;hover.style.backgroundColor=#0000ff22;style:[fontSize=1.8rem;height=4rem;width=3rem];click:[confirmPopup()]"
+                    },
+                    {
+                        "view": "Icon?class=pointer;id=popup-cancel;name=bi-x;tooltip.text=Cancel;hover.style.backgroundColor=#ff000022;style:[fontSize=2rem;height=4rem;width=3rem];click:[cancelPopup()]"
+                    }
+                ]
+            },
+            {
+                "view": "View?class=flexbox;style:[position=fixed;top=0;right=0;left=0;bottom=0;backgroundColor=#00000040;zIndex=10;transition=.2s]?():[__popupPositioner__:()].popup.model=model2",
+                "children": [
+                    {
+                        "view": "View?class=flex column;style:[position=relative;borderRadius=.5em;backgroundColor=#fff;padding=2rem;gap=2rem]",
+                        "children": [
+                            {
+                                "view": "Icon?class=flexbox pointer;name=bi-x;style:[position=absolute;top=1rem;right=1rem;height=2.5rem;width=2.5rem;fontSize=2.5rem;color=#666;transition=.2s;borderRadius=.5rem];hover:[style.backgroundColor=#eee];click:[():popup-cancel.click()]"
+                            },
+                            {
+                                "view": "Text?style:[width=fit-content;fontSize=1.4rem];fontWeight=bold;text=[():[__popupPositioner__:()].popup.title.text||'Do you confirm!']"
+                            },
+                            {
+                                "view": "View?class=flex align-center;style:[gap=2rem;justifyContent=flex-end]",
+                                "children": [
+                                    {
+                                        "view": "Text:popup-confirm?class=flexbox pointer;hover.style.opacity=1;style:[fontSize=1.3rem;transition=.2s;color=#fff;borderRadius=.5rem;backgroundColor=blue;height=3rem;width=12rem];text=[():[__popupPositioner__:()].popup.confirm.text||'Confirm'];click:[confirmPopupModel2()]"
+                                    },
+                                    {
+                                        "view": "Text:popup-cancel?class=flexbox pointer;hover.style.opacity=1;style:[fontSize=1.3rem;transition=.2s;borderRadius=.5rem;backgroundColor=#bbb;height=3rem;width=12rem];text=[():[__popupPositioner__:()].popup.cancel.text||'Cancel'];click:[cancelPopupModel2()]"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "__props__": {
+            "id": "51e7D0G8Z8y8k7U0y1D4X9F4T1",
+            "creationDate": 0,
+            "doc": "popup",
+            "public": true,
+            "active": true,
+            "folderPath": [],
+            "collapsed": [],
+            "comments": [],
+            "actions": {
+                "cancelPopup": "__popupPositioner__:().del();__popupConfirmed__:()=false;():popup.():[style():[opacity=0;pointerEvents=none];1stChild().style().transform=scale(0.5)]",
+                "confirmPopup": "__popupConfirmed__:()=true;():popup.():[style():[opacity=0;pointerEvents=none];1stChild().style().transform=scale(0.5)]",
+                "confirmPopupModel2": "__popupConfirmed__:()=true;():popup.style():[opacity=0;pointerEvents=none]",
+                "cancelPopupModel2": "__popupPositioner__:().del();__popupConfirmed__:()=false;():popup.():[style():[opacity=0;pointerEvents=none]]",
+                "closePopup": "leavePopup()?__popupPositioner__:();!__popupPositioner__:().contains():[clicked()];!popup.contains():[clicked()]",
+                "leavePopup": "clearTimer():[popup-timer:()];popup-timer:()=timer():[():[__popupPositioner__:()].popup.style.keys()._():[():popup.style().[_]=():popup.style.[_]];clearTimer():[popup-timer:()];timer():[():[__popupPositioner__:()].popup.style.keys()._():[():popup.style().[_]=():popup.style.[_]];():popup.():[1stChild().style().transform=scale(0.5);style():[opacity=0;pointerEvents=none]];__popupPositioner__:().del()]:0]:400",
+                "enterPopup": "clearTimer():[popup-timer:()]"
+            }
+        }
+    },
+    "tooltip": {
+        "view": "View:tooltip?class=flex-start;style.zIndex=999;style.width=fit-content;style.alignItems=center;style.position=fixed;style.opacity=0;style.pointerEvents=none;style.padding=.5rem 1rem;style.backgroundColor=#444444dd;style.borderRadius=.5rem",
+        "children": [
+            {
+                "view": "Text:tooltip-text?style.width=fit-content;style.fontSize=1.1rem;style.color=#fff"
+            }
+        ],
+        "__props__": {
+            "id": "z1W7Z0s8o87837a0z1N4k1D6C0",
+            "creationDate": 0,
+            "doc": "tooltip",
+            "public": true,
+            "active": true,
+            "actions": {},
+            "folderPath": [],
+            "collapsed": [],
+            "comments": []
+        }
+    }
+}
+},{}],36:[function(require,module,exports){
 const qr = async ({ _window, id, req, res, data, __, e, stack, lookupActions, address }) => {
 
     if (res && !res.headersSent) return qrServer({ _window, id, req, res, data, __, e, stack, lookupActions, address })
@@ -8053,7 +8421,7 @@ const wifiQrText = ({ data }) => {
 }
 
 module.exports = { qr }
-},{"./kernel":32,"easyqrcodejs":100,"qrcode":105}],38:[function(require,module,exports){
+},{"./kernel":30,"easyqrcodejs":100,"qrcode":106}],37:[function(require,module,exports){
 const replaceNbsps = (str) => {
   if (typeof str !== "string") return str
     var re = new RegExp(String.fromCharCode(160), "g");
@@ -8061,7 +8429,7 @@ const replaceNbsps = (str) => {
   }
 
   module.exports = { replaceNbsps }
-},{}],39:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 const resize = ({ id }) => {
 
   var view = window.views[id]
@@ -8164,41 +8532,7 @@ var lengthConverter = (length) => {
 
 module.exports = {resize, dimensions, lengthConverter}
 
-},{}],40:[function(require,module,exports){
-const { clone } = require("./clone")
-const { update } = require("./kernel")
-
-module.exports = {
-  root: ({ id, _window, root = {}, stack, lookupActions, address, req, res, __ }) => {
-
-    var views = _window ? _window.views : window.views
-    var global = _window ? _window.global : window.global
-
-    // path
-    var path = root.path || (root.page.includes("/") ? root.page : global.manifest.path.join("/"))
-
-    // page
-    var page = root.page && (root.page.includes("/") ? (!root.page.split("/")[0] ? root.page.split("/")[1] : root.page.split("/")[0]) : root.page) || path.split("/")[1] || "main"
-
-    // recheck path
-    path = root.path ? path : page === "main" ? "/" : `/${page}`
-
-    // prevs
-    global.__prevPath__.push(global.manifest.path.join("/"))
-    global.__prevPage__.push(global.manifest.page)
-
-    // page & path
-    global.manifest.page = page
-    global.manifest.path = path.split("/")
-
-    // params
-    root.path = path
-    root.page = page
-
-    update({ _window, id, req, res, stack, lookupActions, address, data: { root, id: "root", action: "ROOT" }, __ })
-  }
-}
-},{"./clone":3,"./kernel":32}],41:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 const route = async ({ _window, lookupActions, stack, address, id, req, __, res, e, data: { type, route = {} } }) => {
 
   // headers
@@ -8212,9 +8546,10 @@ const route = async ({ _window, lookupActions, stack, address, id, req, __, res,
 }
 
 module.exports = { route }
-},{"./kernel":32,"axios":67}],42:[function(require,module,exports){
+},{"./kernel":30,"axios":65}],40:[function(require,module,exports){
 const axios = require('axios')
 const { postData } = require('./database')
+const { getCookie } = require('./cookie')
 
 module.exports = {
   save: async ({ _window, lookupActions, stack, address, id, req, res, e, __, save = {} }) => {
@@ -8230,6 +8565,7 @@ module.exports = {
 
     } else {
 
+      headers.cookies = JSON.stringify(getCookie())
       var response = await axios.post(`/`, { server: "database", type: "save", data: save }, { headers })
 
       data = response.data
@@ -8241,7 +8577,9 @@ module.exports = {
     require("./kernel").toAwait({ _window, lookupActions, stack, id, address, e, req, res, _: data, __ })
   }
 }
-},{"./database":9,"./kernel":32,"axios":67}],43:[function(require,module,exports){
+},{"./cookie":5,"./database":9,"./kernel":30,"axios":65}],41:[function(require,module,exports){
+const { getCookie } = require('./cookie')
+
 module.exports = {
   search: async ({ _window, lookupActions, stack, id, req, res, e, __, data: search = {}, address }) => {
     
@@ -8256,6 +8594,7 @@ module.exports = {
 
     } else {
 
+      headers.cookies = JSON.stringify(getCookie())
       var response = await require('axios').post(`/`, { server: "database", type: "search", data: search }, { headers })
 
       data = response.data
@@ -8265,7 +8604,7 @@ module.exports = {
     require("./kernel").toAwait({ _window, lookupActions, stack, id, e, address, req, res, _: data, __ })
   }
 }
-},{"./database":9,"./kernel":32,"axios":67}],44:[function(require,module,exports){
+},{"./cookie":5,"./database":9,"./kernel":30,"axios":65}],42:[function(require,module,exports){
 const { decode } = require("./decode")
 const { toLine } = require("./kernel")
 const { toCode } = require("./toCode")
@@ -8330,7 +8669,7 @@ const searchParams = ({ _window, lookupActions, stack, req, res, id, e, __, stri
 }
 
 module.exports = { searchParams }
-},{"./decode":10,"./kernel":32,"./toCode":52}],45:[function(require,module,exports){
+},{"./decode":10,"./kernel":30,"./toCode":50}],43:[function(require,module,exports){
 const setPosition = ({ position = {}, id, e }) => {
 
   var views = window.views
@@ -8509,7 +8848,7 @@ const setPosition = ({ position = {}, id, e }) => {
 
 module.exports = {setPosition}
 
-},{}],46:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 (function (global){(function (){
 const { reducer } = require("./kernel")
 const { toArray } = require("./toArray")
@@ -8612,12 +8951,12 @@ const sort = ({ _window, sort = {}, id, e, lookupActions, __, stack }) => {
 
 module.exports = {sort}
 }).call(this)}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"./kernel":32,"./toArray":49,"./toCode":52}],47:[function(require,module,exports){
+},{"./kernel":30,"./toArray":47,"./toCode":50}],45:[function(require,module,exports){
 const { decode } = require("./decode")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const openStack = ({ _window, id: viewID, string = "", nextAddress, headStack, ...data }) => {
+const openStack = ({ _window, id: viewID, string = "", ...data }) => {
 
   var stack = {
     ...data,
@@ -8630,12 +8969,10 @@ const openStack = ({ _window, id: viewID, string = "", nextAddress, headStack, .
     interpreting: true,
     string: string ? decode({ _window, string }) : "",
     executionStartTime: (new Date()).getTime(),
-    addresses: toArray(nextAddress),
+    addresses: [],
     logs: [],
     returns: []
   }
-
-  if (headStack) stack.headStackID = headStack.id
 
   stack.logs.push(`# Status TYPE ID Index Action => HeadID HeadIndex HeadAction`)
   stack.logs.push(`1 Start STACK ${stack.id} ${stack.event.toUpperCase()} ${stack.string}`)
@@ -8654,15 +8991,16 @@ const clearStack = ({ stack }) => {
   stack.addresses = []
 }
 
-const endStack = ({ _window, stack, end }) => {
+const endStack = ({ _window, stack }) => {
 
-  if (end && stack.addresses.length === 0) {
+  if (stack.addresses.length === 0) {
 
+    var global = _window ? _window.global : window.global
     var logs = `%cSTACK ${(new Date()).getTime() - stack.executionStartTime} ${stack.event}`
     stack.logs.push(`${stack.logs.length} End STACK ${(new Date()).getTime() - stack.executionStartTime} ${stack.id} ${stack.event}`)
 
     // remove stack
-    delete (_window ? _window.global : window.global).__stacks__[stack.id]
+    delete global.__stacks__[stack.id]
 
     // print stack
     stack.print && !stack.printed && console.log("STACK:" + stack.event, logs, "color: blue", stack.logs)
@@ -8671,7 +9009,7 @@ const endStack = ({ _window, stack, end }) => {
 }
 
 module.exports = { openStack, clearStack, endStack }
-},{"./decode":10,"./generate":18,"./toArray":49}],48:[function(require,module,exports){
+},{"./decode":10,"./generate":17,"./toArray":47}],46:[function(require,module,exports){
 (function (Buffer){(function (){
 const fs = require("fs")
 const { generate } = require("./generate")
@@ -8702,7 +9040,7 @@ const storage = async ({ req, res }) => {
 
 const storeFile = async ({ req, upload }) => {
 
-  var db = req.db.firebaseDB
+  var db = req.datastore.firebaseDB
   var storage = req.storage.firebaseStorage
   var file = upload.file
   var data = upload.data, url
@@ -8748,7 +9086,7 @@ const storeFile = async ({ req, upload }) => {
 
 const deleteFile = async ({ req, res }) => {
   
-  var db = req.db.firebaseDB
+  var db = req.datastore.firebaseDB
   var storage = req.storage.firebaseStorage
   var string = decodeURI(req.headers.erase), params = {}
   string = toCode({ _window, string })
@@ -8776,14 +9114,14 @@ const deleteFile = async ({ req, res }) => {
 
 module.exports = { storeFile, deleteFile, storage }
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"./generate":18,"./toArray":49,"buffer":98,"fs":97}],49:[function(require,module,exports){
+},{"./generate":17,"./toArray":47,"buffer":96,"fs":95}],47:[function(require,module,exports){
 const toArray = (data) => {
   return data !== undefined ? (Array.isArray(data) ? data : [data]) : [];
 }
 
 module.exports = {toArray}
 
-},{}],50:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 module.exports = {
     toCSV: (file = {}) => {
 
@@ -8858,7 +9196,7 @@ module.exports = {
         }
     }
 }
-},{}],51:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 module.exports = {
     toClock: ({ timestamp, day, hr, min, sec }) => {
 
@@ -8879,7 +9217,7 @@ module.exports = {
         return (day ? days_ + ":" : "") + (hr ? hrs_ + ":" : "") + (min ? mins_ : "") + (sec ? ":" + secs_ : "")
     }
 }
-},{}],52:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 const { generate } = require("./generate")
 const { replaceNbsps } = require("./replaceNbsps")
 
@@ -8956,7 +9294,7 @@ const toCode = ({ _window, id, string, e, start = "[", end = "]", ignoreReplace 
 }
 
 module.exports = { toCode }
-},{"./generate":18,"./replaceNbsps":38}],53:[function(require,module,exports){
+},{"./generate":17,"./replaceNbsps":37}],51:[function(require,module,exports){
 const { toArray } = require("./toArray")
 
 const toEvent = ({ _window, id, string, __, lookupActions }) => {
@@ -8968,7 +9306,7 @@ const toEvent = ({ _window, id, string, __, lookupActions }) => {
 }
 
 module.exports = { toEvent }
-},{"./toArray":49}],54:[function(require,module,exports){
+},{"./toArray":47}],52:[function(require,module,exports){
 // const XLSX = require("xlsx")
 
 module.exports = {
@@ -8993,7 +9331,7 @@ module.exports = {
         XLSX.writeFile(myWorkBook, myFile)
     }
 }
-},{}],55:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 module.exports = {
     toFirebaseOperator: (string) => {
         if (!string || string === 'equal' || string === 'equals' || string === 'equalsTo' || string === 'equalTo' || string === 'is') return '=='
@@ -9008,7 +9346,7 @@ module.exports = {
         else return string
     }
 }
-},{}],56:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 module.exports = {
     toOperator: (string) => {
         if (!string || string === 'equal' || string === 'eq') return '=='
@@ -9017,7 +9355,7 @@ module.exports = {
         if (string === 'lessorequal' || string === 'lte') return '<='
         if (string === 'less' || string === 'lt') return '<'
         if (string === 'greater' || string === 'gt') return '>'
-        if (string === 'contains' || string === "inc") return 'inc'
+        if (string === 'contains') return 'inc'
         if (string === 'containsall' || string === "incall") return 'inc'
         if (string === 'doesnotcontain' || string === "doesnotinclude") return 'notinc'
         else return string
@@ -9025,7 +9363,7 @@ module.exports = {
 }
 
 // in, notin, 
-},{}],57:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 module.exports = {
     toPdf: async (options) => {
 
@@ -9054,7 +9392,7 @@ module.exports = {
         }
     }
 }
-},{}],58:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 // arabic
 var daysAr = ["الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت", "الأحد"]
 var monthsAr = ["كانون الثاني", "شباط", "آذار", "نيسان", "أيار", "حزيران", "تموز", "آب", "أيلول", "تشرين الأول", "تشرين الثاني", "كانون الأول"]
@@ -9102,11 +9440,12 @@ module.exports = {
         return simplifiedDate
     }
 }
-},{}],59:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { storeFile } = require("./storage")
+const { getCookie } = require("./cookie")
 
 module.exports = async ({ _window, lookupActions, stack, address, id, req, res, e, __, upload, ...params }) => {
 
@@ -9149,6 +9488,7 @@ module.exports = async ({ _window, lookupActions, stack, address, id, req, res, 
 
     } else {
 
+      headers.cookies = JSON.stringify(getCookie())
       var { data } = await require("axios").post(`/`, { server: "storage", type: "store", data: upload }, { headers })
 
       uploads.push(data)
@@ -9173,7 +9513,7 @@ const readFile = (file) => new Promise(res => {
     myReader.readAsDataURL(file)
   }
 })
-},{"./clone":3,"./generate":18,"./kernel":32,"./storage":48,"./toArray":49,"axios":67}],60:[function(require,module,exports){
+},{"./clone":3,"./cookie":5,"./generate":17,"./kernel":30,"./storage":46,"./toArray":47,"axios":65}],58:[function(require,module,exports){
 'use strict';
 
 const downloadToFile = (content, filename, contentType) => {
@@ -9246,7 +9586,7 @@ const vcardServer = ({ res, data }) => {
 }
 
 module.exports = { vcard }
-},{"vcards-js":132}],61:[function(require,module,exports){
+},{"vcards-js":133}],59:[function(require,module,exports){
 const { toApproval } = require("./kernel")
 const { clone } = require("./clone")
 const { toParam } = require("./kernel")
@@ -9294,7 +9634,7 @@ const watch = ({ lookupActions, __, string, id }) => {
 }
 
 module.exports = { watch }
-},{"./clone":3,"./generate":18,"./isEqual":27,"./kernel":32,"./toCode":52}],62:[function(require,module,exports){
+},{"./clone":3,"./generate":17,"./isEqual":26,"./kernel":30,"./toCode":50}],60:[function(require,module,exports){
 module.exports = () => {
   
   return [{ // close droplist
@@ -9313,14 +9653,14 @@ module.exports = () => {
     event: `keyup:input()?():droplist.children().[__keyupIndex__:()||0].mouseleave();__keyupIndex__:()=if():[e().keyCode=40]:[__keyupIndex__:()+1]:[__keyupIndex__:()-1];():droplist.children().[__keyupIndex__:()].mouseenter()?e().keyCode=40||=38;__droplistPositioner__:();if():[e().keyCode=38]:[__keyupIndex__:()>0].elif():[e().keyCode=40]:[__keyupIndex__:()<():droplist.children().len()-1]`
   }]
 }
-},{}],63:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 module.exports = {
   droplist: require("./droplist"),
   tooltip: require("./tooltip"),
   mininote: require("./mininote"),
   hover: require("./hover")
 }
-},{"./droplist":62,"./hover":64,"./mininote":65,"./tooltip":66}],64:[function(require,module,exports){
+},{"./droplist":60,"./hover":62,"./mininote":63,"./tooltip":64}],62:[function(require,module,exports){
 module.exports = ({ data, id }) => {
 
     var view = window.views[id]
@@ -9341,14 +9681,14 @@ module.exports = ({ data, id }) => {
         "event": `mouseleave:${_id}?hover.default.style.keys()._():[style().[_]=.hover.default.style.[_]]?!hover.disable`
     }]
 }
-},{}],65:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 module.exports = () => {
   
   return [{
     event: `click?():mininote-text.txt()=[.mininote.text||.mininote.note||''];clearTimeout():[mininote-timer:()];():mininote.style():[opacity=1;transform='scale(1)'];mininote-timer:()=():root.timer():[():mininote.style():[opacity=0;transform=scale(0)]]:[.mininote.timer||3000]`
   }]
 }
-},{}],66:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[a-zA-Z]/
 
@@ -9365,9 +9705,9 @@ module.exports = ({ data, id }) => {
     event: "mouseenter?mouseentered=true"
   }]
 }
-},{}],67:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 module.exports = require('./lib/axios');
-},{"./lib/axios":69}],68:[function(require,module,exports){
+},{"./lib/axios":67}],66:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9558,7 +9898,7 @@ module.exports = function xhrAdapter(config) {
   });
 };
 
-},{"../core/buildFullPath":75,"../core/createError":76,"./../core/settle":80,"./../helpers/buildURL":84,"./../helpers/cookies":86,"./../helpers/isURLSameOrigin":89,"./../helpers/parseHeaders":91,"./../utils":94}],69:[function(require,module,exports){
+},{"../core/buildFullPath":73,"../core/createError":74,"./../core/settle":78,"./../helpers/buildURL":82,"./../helpers/cookies":84,"./../helpers/isURLSameOrigin":87,"./../helpers/parseHeaders":89,"./../utils":92}],67:[function(require,module,exports){
 'use strict';
 
 var utils = require('./utils');
@@ -9616,7 +9956,7 @@ module.exports = axios;
 // Allow use of default import syntax in TypeScript
 module.exports.default = axios;
 
-},{"./cancel/Cancel":70,"./cancel/CancelToken":71,"./cancel/isCancel":72,"./core/Axios":73,"./core/mergeConfig":79,"./defaults":82,"./helpers/bind":83,"./helpers/isAxiosError":88,"./helpers/spread":92,"./utils":94}],70:[function(require,module,exports){
+},{"./cancel/Cancel":68,"./cancel/CancelToken":69,"./cancel/isCancel":70,"./core/Axios":71,"./core/mergeConfig":77,"./defaults":80,"./helpers/bind":81,"./helpers/isAxiosError":86,"./helpers/spread":90,"./utils":92}],68:[function(require,module,exports){
 'use strict';
 
 /**
@@ -9637,7 +9977,7 @@ Cancel.prototype.__CANCEL__ = true;
 
 module.exports = Cancel;
 
-},{}],71:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 'use strict';
 
 var Cancel = require('./Cancel');
@@ -9696,14 +10036,14 @@ CancelToken.source = function source() {
 
 module.exports = CancelToken;
 
-},{"./Cancel":70}],72:[function(require,module,exports){
+},{"./Cancel":68}],70:[function(require,module,exports){
 'use strict';
 
 module.exports = function isCancel(value) {
   return !!(value && value.__CANCEL__);
 };
 
-},{}],73:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9853,7 +10193,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 
 module.exports = Axios;
 
-},{"../helpers/buildURL":84,"../helpers/validator":93,"./../utils":94,"./InterceptorManager":74,"./dispatchRequest":77,"./mergeConfig":79}],74:[function(require,module,exports){
+},{"../helpers/buildURL":82,"../helpers/validator":91,"./../utils":92,"./InterceptorManager":72,"./dispatchRequest":75,"./mergeConfig":77}],72:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -9909,7 +10249,7 @@ InterceptorManager.prototype.forEach = function forEach(fn) {
 
 module.exports = InterceptorManager;
 
-},{"./../utils":94}],75:[function(require,module,exports){
+},{"./../utils":92}],73:[function(require,module,exports){
 'use strict';
 
 var isAbsoluteURL = require('../helpers/isAbsoluteURL');
@@ -9931,7 +10271,7 @@ module.exports = function buildFullPath(baseURL, requestedURL) {
   return requestedURL;
 };
 
-},{"../helpers/combineURLs":85,"../helpers/isAbsoluteURL":87}],76:[function(require,module,exports){
+},{"../helpers/combineURLs":83,"../helpers/isAbsoluteURL":85}],74:[function(require,module,exports){
 'use strict';
 
 var enhanceError = require('./enhanceError');
@@ -9951,7 +10291,7 @@ module.exports = function createError(message, config, code, request, response) 
   return enhanceError(error, config, code, request, response);
 };
 
-},{"./enhanceError":78}],77:[function(require,module,exports){
+},{"./enhanceError":76}],75:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10035,7 +10375,7 @@ module.exports = function dispatchRequest(config) {
   });
 };
 
-},{"../cancel/isCancel":72,"../defaults":82,"./../utils":94,"./transformData":81}],78:[function(require,module,exports){
+},{"../cancel/isCancel":70,"../defaults":80,"./../utils":92,"./transformData":79}],76:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10079,7 +10419,7 @@ module.exports = function enhanceError(error, config, code, request, response) {
   return error;
 };
 
-},{}],79:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -10168,7 +10508,7 @@ module.exports = function mergeConfig(config1, config2) {
   return config;
 };
 
-},{"../utils":94}],80:[function(require,module,exports){
+},{"../utils":92}],78:[function(require,module,exports){
 'use strict';
 
 var createError = require('./createError');
@@ -10195,7 +10535,7 @@ module.exports = function settle(resolve, reject, response) {
   }
 };
 
-},{"./createError":76}],81:[function(require,module,exports){
+},{"./createError":74}],79:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10219,7 +10559,7 @@ module.exports = function transformData(data, headers, fns) {
   return data;
 };
 
-},{"./../defaults":82,"./../utils":94}],82:[function(require,module,exports){
+},{"./../defaults":80,"./../utils":92}],80:[function(require,module,exports){
 (function (process){(function (){
 'use strict';
 
@@ -10357,7 +10697,7 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 }).call(this)}).call(this,require('_process'))
-},{"./adapters/http":68,"./adapters/xhr":68,"./core/enhanceError":78,"./helpers/normalizeHeaderName":90,"./utils":94,"_process":104}],83:[function(require,module,exports){
+},{"./adapters/http":66,"./adapters/xhr":66,"./core/enhanceError":76,"./helpers/normalizeHeaderName":88,"./utils":92,"_process":105}],81:[function(require,module,exports){
 'use strict';
 
 module.exports = function bind(fn, thisArg) {
@@ -10370,7 +10710,7 @@ module.exports = function bind(fn, thisArg) {
   };
 };
 
-},{}],84:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10442,7 +10782,7 @@ module.exports = function buildURL(url, params, paramsSerializer) {
   return url;
 };
 
-},{"./../utils":94}],85:[function(require,module,exports){
+},{"./../utils":92}],83:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10458,7 +10798,7 @@ module.exports = function combineURLs(baseURL, relativeURL) {
     : baseURL;
 };
 
-},{}],86:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10513,7 +10853,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":94}],87:[function(require,module,exports){
+},{"./../utils":92}],85:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10529,7 +10869,7 @@ module.exports = function isAbsoluteURL(url) {
   return /^([a-z][a-z\d\+\-\.]*:)?\/\//i.test(url);
 };
 
-},{}],88:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10542,7 +10882,7 @@ module.exports = function isAxiosError(payload) {
   return (typeof payload === 'object') && (payload.isAxiosError === true);
 };
 
-},{}],89:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10612,7 +10952,7 @@ module.exports = (
     })()
 );
 
-},{"./../utils":94}],90:[function(require,module,exports){
+},{"./../utils":92}],88:[function(require,module,exports){
 'use strict';
 
 var utils = require('../utils');
@@ -10626,7 +10966,7 @@ module.exports = function normalizeHeaderName(headers, normalizedName) {
   });
 };
 
-},{"../utils":94}],91:[function(require,module,exports){
+},{"../utils":92}],89:[function(require,module,exports){
 'use strict';
 
 var utils = require('./../utils');
@@ -10681,7 +11021,7 @@ module.exports = function parseHeaders(headers) {
   return parsed;
 };
 
-},{"./../utils":94}],92:[function(require,module,exports){
+},{"./../utils":92}],90:[function(require,module,exports){
 'use strict';
 
 /**
@@ -10710,7 +11050,7 @@ module.exports = function spread(callback) {
   };
 };
 
-},{}],93:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 'use strict';
 
 var pkg = require('./../../package.json');
@@ -10817,7 +11157,7 @@ module.exports = {
   validators: validators
 };
 
-},{"./../../package.json":95}],94:[function(require,module,exports){
+},{"./../../package.json":93}],92:[function(require,module,exports){
 'use strict';
 
 var bind = require('./helpers/bind');
@@ -11168,7 +11508,7 @@ module.exports = {
   stripBOM: stripBOM
 };
 
-},{"./helpers/bind":83}],95:[function(require,module,exports){
+},{"./helpers/bind":81}],93:[function(require,module,exports){
 module.exports={
   "name": "axios",
   "version": "0.21.4",
@@ -11254,7 +11594,7 @@ module.exports={
   ]
 }
 
-},{}],96:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -11406,9 +11746,9 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],97:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 
-},{}],98:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 (function (Buffer){(function (){
 /*!
  * The buffer module from node.js, for the browser.
@@ -13189,7 +13529,7 @@ function numberIsNaN (obj) {
 }
 
 }).call(this)}).call(this,require("buffer").Buffer)
-},{"base64-js":96,"buffer":98,"ieee754":102}],99:[function(require,module,exports){
+},{"base64-js":94,"buffer":96,"ieee754":102}],97:[function(require,module,exports){
 'use strict';
 
 /******************************************************************************
@@ -13354,6 +13694,184 @@ var dijkstra = {
 // node.js module exports
 if (typeof module !== 'undefined') {
   module.exports = dijkstra;
+}
+
+},{}],98:[function(require,module,exports){
+(function (process){(function (){
+const fs = require('fs')
+const path = require('path')
+const os = require('os')
+const packageJson = require('../package.json')
+
+const version = packageJson.version
+
+const LINE = /(?:^|^)\s*(?:export\s+)?([\w.-]+)(?:\s*=\s*?|:\s+?)(\s*'(?:\\'|[^'])*'|\s*"(?:\\"|[^"])*"|\s*`(?:\\`|[^`])*`|[^#\r\n]+)?\s*(?:#.*)?(?:$|$)/mg
+
+// Parser src into an Object
+function parse (src) {
+  const obj = {}
+
+  // Convert buffer to string
+  let lines = src.toString()
+
+  // Convert line breaks to same format
+  lines = lines.replace(/\r\n?/mg, '\n')
+
+  let match
+  while ((match = LINE.exec(lines)) != null) {
+    const key = match[1]
+
+    // Default undefined or null to empty string
+    let value = (match[2] || '')
+
+    // Remove whitespace
+    value = value.trim()
+
+    // Check if double quoted
+    const maybeQuote = value[0]
+
+    // Remove surrounding quotes
+    value = value.replace(/^(['"`])([\s\S]*)\1$/mg, '$2')
+
+    // Expand newlines if double quoted
+    if (maybeQuote === '"') {
+      value = value.replace(/\\n/g, '\n')
+      value = value.replace(/\\r/g, '\r')
+    }
+
+    // Add to object
+    obj[key] = value
+  }
+
+  return obj
+}
+
+function _log (message) {
+  console.log(`[dotenv@${version}][DEBUG] ${message}`)
+}
+
+function _resolveHome (envPath) {
+  return envPath[0] === '~' ? path.join(os.homedir(), envPath.slice(1)) : envPath
+}
+
+// Populates process.env from .env file
+function config (options) {
+  let dotenvPath = path.resolve(process.cwd(), '.env')
+  let encoding = 'utf8'
+  const debug = Boolean(options && options.debug)
+  const override = Boolean(options && options.override)
+
+  if (options) {
+    if (options.path != null) {
+      dotenvPath = _resolveHome(options.path)
+    }
+    if (options.encoding != null) {
+      encoding = options.encoding
+    }
+  }
+
+  try {
+    // Specifying an encoding returns a string instead of a buffer
+    const parsed = DotenvModule.parse(fs.readFileSync(dotenvPath, { encoding }))
+
+    Object.keys(parsed).forEach(function (key) {
+      if (!Object.prototype.hasOwnProperty.call(process.env, key)) {
+        process.env[key] = parsed[key]
+      } else {
+        if (override === true) {
+          process.env[key] = parsed[key]
+        }
+
+        if (debug) {
+          if (override === true) {
+            _log(`"${key}" is already defined in \`process.env\` and WAS overwritten`)
+          } else {
+            _log(`"${key}" is already defined in \`process.env\` and was NOT overwritten`)
+          }
+        }
+      }
+    })
+
+    return { parsed }
+  } catch (e) {
+    if (debug) {
+      _log(`Failed to load ${dotenvPath} ${e.message}`)
+    }
+
+    return { error: e }
+  }
+}
+
+const DotenvModule = {
+  config,
+  parse
+}
+
+module.exports.config = DotenvModule.config
+module.exports.parse = DotenvModule.parse
+module.exports = DotenvModule
+
+}).call(this)}).call(this,require('_process'))
+},{"../package.json":99,"_process":105,"fs":95,"os":103,"path":104}],99:[function(require,module,exports){
+module.exports={
+  "name": "dotenv",
+  "version": "16.0.3",
+  "description": "Loads environment variables from .env file",
+  "main": "lib/main.js",
+  "types": "lib/main.d.ts",
+  "exports": {
+    ".": {
+      "require": "./lib/main.js",
+      "types": "./lib/main.d.ts",
+      "default": "./lib/main.js"
+    },
+    "./config": "./config.js",
+    "./config.js": "./config.js",
+    "./lib/env-options": "./lib/env-options.js",
+    "./lib/env-options.js": "./lib/env-options.js",
+    "./lib/cli-options": "./lib/cli-options.js",
+    "./lib/cli-options.js": "./lib/cli-options.js",
+    "./package.json": "./package.json"
+  },
+  "scripts": {
+    "dts-check": "tsc --project tests/types/tsconfig.json",
+    "lint": "standard",
+    "lint-readme": "standard-markdown",
+    "pretest": "npm run lint && npm run dts-check",
+    "test": "tap tests/*.js --100 -Rspec",
+    "prerelease": "npm test",
+    "release": "standard-version"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/motdotla/dotenv.git"
+  },
+  "keywords": [
+    "dotenv",
+    "env",
+    ".env",
+    "environment",
+    "variables",
+    "config",
+    "settings"
+  ],
+  "readmeFilename": "README.md",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+    "@types/node": "^17.0.9",
+    "decache": "^4.6.1",
+    "dtslint": "^3.7.0",
+    "sinon": "^12.0.1",
+    "standard": "^16.0.4",
+    "standard-markdown": "^7.1.0",
+    "standard-version": "^9.3.2",
+    "tap": "^15.1.6",
+    "tar": "^6.1.11",
+    "typescript": "^4.5.4"
+  },
+  "engines": {
+    "node": ">=12"
+  }
 }
 
 },{}],100:[function(require,module,exports){
@@ -13525,6 +14043,57 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 }
 
 },{}],103:[function(require,module,exports){
+exports.endianness = function () { return 'LE' };
+
+exports.hostname = function () {
+    if (typeof location !== 'undefined') {
+        return location.hostname
+    }
+    else return '';
+};
+
+exports.loadavg = function () { return [] };
+
+exports.uptime = function () { return 0 };
+
+exports.freemem = function () {
+    return Number.MAX_VALUE;
+};
+
+exports.totalmem = function () {
+    return Number.MAX_VALUE;
+};
+
+exports.cpus = function () { return [] };
+
+exports.type = function () { return 'Browser' };
+
+exports.release = function () {
+    if (typeof navigator !== 'undefined') {
+        return navigator.appVersion;
+    }
+    return '';
+};
+
+exports.networkInterfaces
+= exports.getNetworkInterfaces
+= function () { return {} };
+
+exports.arch = function () { return 'javascript' };
+
+exports.platform = function () { return 'browser' };
+
+exports.tmpdir = exports.tmpDir = function () {
+    return '/tmp';
+};
+
+exports.EOL = '\n';
+
+exports.homedir = function () {
+	return '/'
+};
+
+},{}],104:[function(require,module,exports){
 (function (process){(function (){
 // 'path' module extracted from Node.js v8.11.1 (only the posix part)
 // transplited with Babel
@@ -14057,7 +14626,7 @@ posix.posix = posix;
 module.exports = posix;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":104}],104:[function(require,module,exports){
+},{"_process":105}],105:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -14243,7 +14812,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],105:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 
 const canPromise = require('./can-promise')
 
@@ -14321,7 +14890,7 @@ exports.toString = renderCanvas.bind(null, function (data, _, opts) {
   return SvgRenderer.render(data, opts)
 })
 
-},{"./can-promise":106,"./core/qrcode":122,"./renderer/canvas":129,"./renderer/svg-tag.js":130}],106:[function(require,module,exports){
+},{"./can-promise":107,"./core/qrcode":123,"./renderer/canvas":130,"./renderer/svg-tag.js":131}],107:[function(require,module,exports){
 // can-promise has a crash in some versions of react native that dont have
 // standard global objects
 // https://github.com/soldair/node-qrcode/issues/157
@@ -14330,7 +14899,7 @@ module.exports = function () {
   return typeof Promise === 'function' && Promise.prototype && Promise.prototype.then
 }
 
-},{}],107:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 /**
  * Alignment pattern are fixed reference pattern in defined positions
  * in a matrix symbology, which enables the decode software to re-synchronise
@@ -14415,7 +14984,7 @@ exports.getPositions = function getPositions (version) {
   return coords
 }
 
-},{"./utils":126}],108:[function(require,module,exports){
+},{"./utils":127}],109:[function(require,module,exports){
 const Mode = require('./mode')
 
 /**
@@ -14476,7 +15045,7 @@ AlphanumericData.prototype.write = function write (bitBuffer) {
 
 module.exports = AlphanumericData
 
-},{"./mode":119}],109:[function(require,module,exports){
+},{"./mode":120}],110:[function(require,module,exports){
 function BitBuffer () {
   this.buffer = []
   this.length = 0
@@ -14515,7 +15084,7 @@ BitBuffer.prototype = {
 
 module.exports = BitBuffer
 
-},{}],110:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 /**
  * Helper class to handle QR Code symbol modules
  *
@@ -14582,7 +15151,7 @@ BitMatrix.prototype.isReserved = function (row, col) {
 
 module.exports = BitMatrix
 
-},{}],111:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 const encodeUtf8 = require('encode-utf8')
 const Mode = require('./mode')
 
@@ -14614,7 +15183,7 @@ ByteData.prototype.write = function (bitBuffer) {
 
 module.exports = ByteData
 
-},{"./mode":119,"encode-utf8":101}],112:[function(require,module,exports){
+},{"./mode":120,"encode-utf8":101}],113:[function(require,module,exports){
 const ECLevel = require('./error-correction-level')
 
 const EC_BLOCKS_TABLE = [
@@ -14751,7 +15320,7 @@ exports.getTotalCodewordsCount = function getTotalCodewordsCount (version, error
   }
 }
 
-},{"./error-correction-level":113}],113:[function(require,module,exports){
+},{"./error-correction-level":114}],114:[function(require,module,exports){
 exports.L = { bit: 1 }
 exports.M = { bit: 0 }
 exports.Q = { bit: 3 }
@@ -14803,7 +15372,7 @@ exports.from = function from (value, defaultValue) {
   }
 }
 
-},{}],114:[function(require,module,exports){
+},{}],115:[function(require,module,exports){
 const getSymbolSize = require('./utils').getSymbolSize
 const FINDER_PATTERN_SIZE = 7
 
@@ -14827,7 +15396,7 @@ exports.getPositions = function getPositions (version) {
   ]
 }
 
-},{"./utils":126}],115:[function(require,module,exports){
+},{"./utils":127}],116:[function(require,module,exports){
 const Utils = require('./utils')
 
 const G15 = (1 << 10) | (1 << 8) | (1 << 5) | (1 << 4) | (1 << 2) | (1 << 1) | (1 << 0)
@@ -14858,7 +15427,7 @@ exports.getEncodedBits = function getEncodedBits (errorCorrectionLevel, mask) {
   return ((data << 10) | d) ^ G15_MASK
 }
 
-},{"./utils":126}],116:[function(require,module,exports){
+},{"./utils":127}],117:[function(require,module,exports){
 const EXP_TABLE = new Uint8Array(512)
 const LOG_TABLE = new Uint8Array(256)
 /**
@@ -14929,7 +15498,7 @@ exports.mul = function mul (x, y) {
   return EXP_TABLE[LOG_TABLE[x] + LOG_TABLE[y]]
 }
 
-},{}],117:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 const Mode = require('./mode')
 const Utils = require('./utils')
 
@@ -14985,7 +15554,7 @@ KanjiData.prototype.write = function (bitBuffer) {
 
 module.exports = KanjiData
 
-},{"./mode":119,"./utils":126}],118:[function(require,module,exports){
+},{"./mode":120,"./utils":127}],119:[function(require,module,exports){
 /**
  * Data mask pattern reference
  * @type {Object}
@@ -15221,7 +15790,7 @@ exports.getBestMask = function getBestMask (data, setupFormatFunc) {
   return bestPattern
 }
 
-},{}],119:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 const VersionCheck = require('./version-check')
 const Regex = require('./regex')
 
@@ -15390,7 +15959,7 @@ exports.from = function from (value, defaultValue) {
   }
 }
 
-},{"./regex":124,"./version-check":127}],120:[function(require,module,exports){
+},{"./regex":125,"./version-check":128}],121:[function(require,module,exports){
 const Mode = require('./mode')
 
 function NumericData (data) {
@@ -15435,7 +16004,7 @@ NumericData.prototype.write = function write (bitBuffer) {
 
 module.exports = NumericData
 
-},{"./mode":119}],121:[function(require,module,exports){
+},{"./mode":120}],122:[function(require,module,exports){
 const GF = require('./galois-field')
 
 /**
@@ -15499,7 +16068,7 @@ exports.generateECPolynomial = function generateECPolynomial (degree) {
   return poly
 }
 
-},{"./galois-field":116}],122:[function(require,module,exports){
+},{"./galois-field":117}],123:[function(require,module,exports){
 const Utils = require('./utils')
 const ECLevel = require('./error-correction-level')
 const BitBuffer = require('./bit-buffer')
@@ -15996,7 +16565,7 @@ exports.create = function create (data, options) {
   return createSymbol(data, version, errorCorrectionLevel, mask)
 }
 
-},{"./alignment-pattern":107,"./bit-buffer":109,"./bit-matrix":110,"./error-correction-code":112,"./error-correction-level":113,"./finder-pattern":114,"./format-info":115,"./mask-pattern":118,"./mode":119,"./reed-solomon-encoder":123,"./segments":125,"./utils":126,"./version":128}],123:[function(require,module,exports){
+},{"./alignment-pattern":108,"./bit-buffer":110,"./bit-matrix":111,"./error-correction-code":113,"./error-correction-level":114,"./finder-pattern":115,"./format-info":116,"./mask-pattern":119,"./mode":120,"./reed-solomon-encoder":124,"./segments":126,"./utils":127,"./version":129}],124:[function(require,module,exports){
 const Polynomial = require('./polynomial')
 
 function ReedSolomonEncoder (degree) {
@@ -16054,7 +16623,7 @@ ReedSolomonEncoder.prototype.encode = function encode (data) {
 
 module.exports = ReedSolomonEncoder
 
-},{"./polynomial":121}],124:[function(require,module,exports){
+},{"./polynomial":122}],125:[function(require,module,exports){
 const numeric = '[0-9]+'
 const alphanumeric = '[A-Z $%*+\\-./:]+'
 let kanji = '(?:[u3000-u303F]|[u3040-u309F]|[u30A0-u30FF]|' +
@@ -16087,7 +16656,7 @@ exports.testAlphanumeric = function testAlphanumeric (str) {
   return TEST_ALPHANUMERIC.test(str)
 }
 
-},{}],125:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 const Mode = require('./mode')
 const NumericData = require('./numeric-data')
 const AlphanumericData = require('./alphanumeric-data')
@@ -16419,7 +16988,7 @@ exports.rawSplit = function rawSplit (data) {
   )
 }
 
-},{"./alphanumeric-data":108,"./byte-data":111,"./kanji-data":117,"./mode":119,"./numeric-data":120,"./regex":124,"./utils":126,"dijkstrajs":99}],126:[function(require,module,exports){
+},{"./alphanumeric-data":109,"./byte-data":112,"./kanji-data":118,"./mode":120,"./numeric-data":121,"./regex":125,"./utils":127,"dijkstrajs":97}],127:[function(require,module,exports){
 let toSJISFunction
 const CODEWORDS_COUNT = [
   0, // Not used
@@ -16484,7 +17053,7 @@ exports.toSJIS = function toSJIS (kanji) {
   return toSJISFunction(kanji)
 }
 
-},{}],127:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 /**
  * Check if QR Code version is valid
  *
@@ -16495,7 +17064,7 @@ exports.isValid = function isValid (version) {
   return !isNaN(version) && version >= 1 && version <= 40
 }
 
-},{}],128:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 const Utils = require('./utils')
 const ECCode = require('./error-correction-code')
 const ECLevel = require('./error-correction-level')
@@ -16660,7 +17229,7 @@ exports.getEncodedBits = function getEncodedBits (version) {
   return (version << 12) | d
 }
 
-},{"./error-correction-code":112,"./error-correction-level":113,"./mode":119,"./utils":126,"./version-check":127}],129:[function(require,module,exports){
+},{"./error-correction-code":113,"./error-correction-level":114,"./mode":120,"./utils":127,"./version-check":128}],130:[function(require,module,exports){
 const Utils = require('./utils')
 
 function clearCanvas (ctx, canvas, size) {
@@ -16725,7 +17294,7 @@ exports.renderToDataURL = function renderToDataURL (qrData, canvas, options) {
   return canvasEl.toDataURL(type, rendererOpts.quality)
 }
 
-},{"./utils":131}],130:[function(require,module,exports){
+},{"./utils":132}],131:[function(require,module,exports){
 const Utils = require('./utils')
 
 function getColorAttrib (color, attrib) {
@@ -16808,7 +17377,7 @@ exports.render = function render (qrData, options, cb) {
   return svgTag
 }
 
-},{"./utils":131}],131:[function(require,module,exports){
+},{"./utils":132}],132:[function(require,module,exports){
 function hex2rgba (hex) {
   if (typeof hex === 'number') {
     hex = hex.toString()
@@ -16909,7 +17478,7 @@ exports.qrToImageData = function qrToImageData (imgData, qr, opts) {
   }
 }
 
-},{}],132:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 /********************************************************************************
     vCards-js, Eric J Nesser, November 2014
 ********************************************************************************/
@@ -17249,7 +17818,7 @@ var vCard = (function () {
 
 module.exports = vCard;
 
-},{"./lib/vCardFormatter":133,"fs":97,"path":103}],133:[function(require,module,exports){
+},{"./lib/vCardFormatter":134,"fs":95,"path":104}],134:[function(require,module,exports){
 /********************************************************************************
  vCards-js, Eric J Nesser, November 2014,
  ********************************************************************************/
@@ -17647,9 +18216,9 @@ module.exports = vCard;
 		}
 	};
 })();
-},{}],134:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 require("../action/kernel").launcher()
-},{"../action/kernel":32}],135:[function(require,module,exports){
+},{"../action/kernel":30}],136:[function(require,module,exports){
 const { jsonToBracket } = require('../action/jsonToBracket')
 const { override } = require('../action/merge')
 const { clone } = require('../action/clone')
@@ -17979,4 +18548,4 @@ const Input = (component) => {
 }
 
 module.exports = Input
-},{"../action/clone":3,"../action/generate":18,"../action/jsonToBracket":31,"../action/merge":35,"../action/toArray":49}]},{},[134]);
+},{"../action/clone":3,"../action/generate":17,"../action/jsonToBracket":29,"../action/merge":33,"../action/toArray":47}]},{},[135]);

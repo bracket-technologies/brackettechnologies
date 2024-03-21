@@ -1,0 +1,36 @@
+{
+  "counterList": [
+    0,
+    "1",
+    "4",
+    "2",
+    "6",
+    "3",
+    "55",
+    "5",
+    "7"
+  ],
+  "code": "1",
+  "max": 99999999,
+  "length": 8,
+  "reset": "yearly",
+  "end": 99999999,
+  "counter": 7,
+  "id": "oz4QJSYp0vTFUwAwNaVyYr4q0uOLQYMl5mX7uCa2vuwxNWfaYtLWhRf10d6Z1711026825137",
+  "creationDay": 1710979200000,
+  "creationDate": 1711026825137,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "timestamp": 1711026825137,
+  "__props__": {
+    "id": "Z117S141f0Z3k1W3e6A0H4w7v7",
+    "doc": "oz4QJSYp0vTFUwAwNaVyYr4q0uOLQYMl5mX7uCa2vuwxNWfaYtLWhRf10d6Z1711026825137",
+    "creationDate": 1711031360477,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 2
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "tourGuide": 3,
+  "sponsorCommission": "0",
+  "netPrice": "0",
+  "discount": "0",
+  "description": "d",
+  "tax": "0",
+  "creationDate": 1699811682424,
+  "capacity": 20,
+  "exchangeRate": "1",
+  "createdBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+  "service": "Tour",
+  "name": "sadfdad",
+  "currency": "USD",
+  "agentCommission": "0",
+  "salesmanCommission": "0",
+  "id": "BAwbjUFSSTB4qVj1XbVdTbIv6qFawQRU4mcb8IxAb0luMQM18ypkZhYVxf0I1699811682423",
+  "creationDay": 1699747200000,
+  "__props__": {
+    "id": "C107M1H1H0n3I1n3U6z0o658Y7",
+    "doc": "BAwbjUFSSTB4qVj1XbVdTbIv6qFawQRU4mcb8IxAb0luMQM18ypkZhYVxf0I1699811682423",
+    "creationDate": 1711031360687,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 1
+  }
+}

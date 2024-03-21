@@ -1,5 +1,6 @@
 const axios = require('axios')
 const { postData } = require('./database')
+const { getCookie } = require('./cookie')
 
 module.exports = {
   save: async ({ _window, lookupActions, stack, address, id, req, res, e, __, save = {} }) => {
@@ -15,6 +16,7 @@ module.exports = {
 
     } else {
 
+      headers.cookies = JSON.stringify(getCookie())
       var response = await axios.post(`/`, { server: "database", type: "save", data: save }, { headers })
 
       data = response.data

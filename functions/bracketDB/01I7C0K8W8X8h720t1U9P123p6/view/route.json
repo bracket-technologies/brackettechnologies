@@ -1,0 +1,752 @@
+{
+  "view": "Action:route",
+  "children": [
+    {
+      "view": "manifest:().route"
+    }
+  ],
+  "__props__": {
+    "id": "n1p7Q1Z1X0E3J1b3r6l5a241u4",
+    "doc": "route",
+    "creationDate": 1711031365214,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "getDataOnLoad": {
+        "createCollectionsList": "collectionsList:()=:[collection=account;mapName=allLedgersAccounts]:[collection=debitNoteInfo;mapName=debitNoteInfo]:[collection=creditNoteInfo;mapName=creditNoteInfo]:[collection=publicCollection;mapName=publicData]:[collection=expensesInfo;mapName=expensesInfo]:[collection=sharedManagersInfo;mapName=sharedManagersInfo]:[collection=paymentVoucherInfo;mapName=paymentVoucherInfo]:[collection=transfersInfo;mapName=journalsInfo]:[collection=ticketInvoiceInfo;mapName=ticketInvoiceInfo]:[collection=tourInvoiceInfo;mapName=tourInvoiceInfo]:[collection=charterInvoiceInfo;mapName=charterInvoiceInfo]:[collection=receiptVoucherInfo;mapName=receiptVoucherInfo]:[collection=accountingJournalInfo;mapName=transaction]:[collection=sheet;mapName=governmentAccounts;field=[name='Government Accounts']]:[collection=bracketSheet;mapName=bracketSheetTable]:[collection=generalTableInfo;mapName=tableInfo]:[collection=settings;mapName=settingsInfo]:[collection=accountingServiceInfo;mapName=accountingServiceInfo]:[collection=globalPathes;mapName=collectionsInfo]:[collection=printViewInfo;mapName=printView]:[collection=galleryManagerInfo;mapName=galleryManagerInfo]:[collection=generalLedgerInfo;mapName=generalLedgerInfo]",
+        "getData": "[collectionsList:()._():[search():[collection=_.collection;if():[_.field]:[field=_.field]]:[if():[_.data.value()]:[allData:().[__.mapName]=_.data]:[#send():[success=false;ffff=__]]]]]()::[send():[ttttttttttttttttttt=hhhhhhhhhhhhhhhh;success=true;data=allData:();notification=dueNotifications:()]]",
+        "_": "updateNotificationsInSession();createCollectionsList();getData()"
+      },
+      "#checkRequirementfff": {
+        "#handleMultipleDocs": "if():[___.data.[_.listPath].len()>0]:[setIndexAsMultipleDocs()]",
+        "#checkOrConditionInListPath": "().checkType=false;_.orCondition._():[if():[_.condition.inc():[__.[_.conditionReference]]||_.condition.inc():[_____.data.[_.conditionReference]]]:[().checkType=true]];if():[!().checkType]:[().inputListClone.pullItem():[_]]",
+        "checkDataTypeForStaticDoc": "[().inputListClone=_.keyValue.clone();_.keyValue._():[checkIfIncludeConditionInListPath()]]()::[dataTypeHandler():[indexAsDoc=[];collection=_.collection;generateReference=_.generateReference;input=().inputListClone;data=___.data]]",
+        "#handleListOfDocsAndListPath": "___.data.[_.listPath]._():[().inputListClone=__.input.clone();[__.input._():[[checkIfIncludeConditionInListPath()]]]()::[dataTypeHandler():[indexAsDoc=[];generateReference=__.generateReference;listOfDocs=__.listOfDocs;input=().inputListClone;data=_;newDoc=____.newDoc;listPath=__.listPath]]]",
+        "#checkConditionForListOfDocs": "_.condition._():[if():[_.conditionReferenceInDoc]:[if():[!_.condition.inc():[mainReceivedData:().[_.conditionReferenceInDoc]]]:[().setDoc=false]].elif():[_.conditionReferenceInPath]:[if():[!_.condition.inc():[[_____.data.[___.listPath].0].[_.conditionReferenceInPath]]]:[().setDoc=false]]]",
+        "checkIfIncludeCondition": "if():[_.condition||_.orCondition]:[if():[customCondition():[condition=_.condition;orCondition=_.orCondition;data=mainReceivedData:()]]:[checkDataTypeNotInPath()]]:[checkDataTypeNotInPath()];#if():[_.condition]:[if():[_.condition.value().condition]:[checkConditionInDoc()]:[checkConditionReferenceInDoc()]].elif():[_.orCondition]:[checkOrConditionInDoc()]:[checkDataTypeNotInPath()]",
+        "#checkConditionReferenceInDoc": "().checkType=true;_.condition._():[if():[!____.data.[_.conditionReference]]:[().checkType=false]];if():[().checkType]:[checkDataTypeNotInPath()]",
+        "_": "if():[_.collection;_.data;_.newDoc]:[getSchema()]:[send():[success=false;actionName='checkRequirement';under=_;msg='Missing data!']]",
+        "#checkConditionReferenceInListPath": "_.condition._():[if():[!__.[_.conditionReference];!mainReceivedData:().[_.conditionReference]]:[().inputListClone.pullItem():[__]]]",
+        "handleListItems": "___.data.[_.listPath]._():[().inputListClone=__.input.clone();[__.input._():[[checkIfIncludeConditionInListPath()]]]()::[dataTypeHandler():[generateReference=__.generateReference;input=().inputListClone;data=_;newDoc=____.newDoc;listPath=__.listPath]]]",
+        "checkIfIncludeConditionInListPath": "if():[_.condition||_.orCondition]:[if():[!customCondition():[condition=_.condition;orCondition=_.orCondition;data=if():[__.staticDoc]:[mainReceivedData:()]:[__]]]:[().inputListClone.pullItem():[_]]];#if():[_.condition]:[if():[_.condition.0.condition]:[checkConditionInListPath()]:[checkConditionReferenceInListPath()]].elif():[_.orCondition]:[checkOrConditionInListPath()]",
+        "checkListPathCondition": "if():[_.condition||_.orCondition]:[if():[customCondition():[condition=_.condition;orCondition=_.orCondition;data=mainReceivedData:()]]:[()]]:[setKeysInPath()]",
+        "#setIndexAsDoc": "[().inputListClone=_.input.clone();[_.input._():[checkIfIncludeConditionInListPath()]]()::[dataTypeHandler():[indexAsDoc=[];generateReference=_.generateReference;listOfDocs=_.listOfDocs;input=().inputListClone;data=___.data.[_.listPath].0;newDoc=___.newDoc;listPath=_.listPath]]]()::[___.data.[_.listPath].pullIndex():0;handleListOfDocs()]",
+        "checkDataTypeNotInPath": "dataTypeHandler():[value=___.data.[_.path];[_].flat();data=___.data;newDoc=___.newDoc]",
+        "#checkOrConditionInDoc": "().checkType=false;_.orCondition._():[if():[_.condition.inc():[____.data.[_.conditionReference]]]:[().checkType=true]];if():[().checkType]:[checkDataTypeNotInPath()]",
+        "getSchema": "search():[collection=schemas;field:[collection=_.collection]]:[if():[_.data.value()]:[().schemaData=_.data.value().create.[formManagerName:()];checkPath()]:[send():[success=false;msg='Schema does not exist!']]]",
+        "checkPath": "[().schemaData.keyValue._()::[if():[_.listPath]:[checkListPathCondition()].elif():[_.staticDoc]:[checkConditionForStaticDoc()]:[checkIfIncludeCondition()]]]()::[initializeDoc()]",
+        "#checkConditionInDoc": ";().checkType=true;_.condition._():[if():[!_.condition.inc():[____.data.[_.conditionReference]]]:[().checkType=false]];if():[().checkType]:[checkDataTypeNotInPath()]",
+        "#setKeysInPathbbb": "if():[___.data.[_.listPath]]:[if():[_.multipleDocs]:[setIndexAsMultipleDocs()].elif():[_.listOfDocs]:[handleListOfDocs()]:[handleListItems()]]:[send():[success=false;listPath=_.listPath;msg='listPath does not exist in data!']]",
+        "initializeDoc": "initializeDocAndCheckForRecursion():[receivedData=__.data;data=[__.newDoc]:();collection=__.collection;schema=().schemaData]",
+        "#handleListOfDocs": "if():[___.data.[_.listPath].len()>0]:[setIndexAsDoc()]",
+        "setKeysInPath": "if():[___.data.[_.listPath]]:[if():[_.listOfDocs]:[setDocsFromListItems()]:[handleListItems()]]:[send():[success=false;listPath=_.listPath;msg='listPath does not exist in data!']]",
+        "#checkConditionInListPath": "_.condition._():[if():[_.conditionReferenceInDoc]:[if():[!_.condition.inc():[mainReceivedData:().[_.conditionReferenceInDoc]]]:[().inputListClone.pullItem():[__]]].elif():[!_.condition.inc():[___.[_.conditionReference]];!_.condition.inc():[mainReceivedData:().[_.conditionReference]]]:[().inputListClone.pullItem():[__]]]",
+        "checkConditionForStaticDoc": "if():[_.condition||_.orCondition]:[if():[customCondition():[condition=_.condition;orCondition=_.orCondition;data=mainReceivedData:()]]:[checkDataTypeForStaticDoc()]]:[checkDataTypeForStaticDoc()]",
+        "setDocsFromListItems": "___.data.[_.listPath]._()::[__.docsKeyValue._()::[[().setDoc=true;().indexAsDoc.del();if():[_.condition]:[if():[!customCondition():[condition=_.condition;data=mainReceivedData:();listPath=___.listPath;index=0]]:[().setDoc=false];#checkConditionForListOfDocs()].elif():[_.customCondition]:[[_.customCondition]()]]()::[if():[().setDoc]:[().inputListClone=_.input.clone();_.input._():[checkIfIncludeConditionInListPath()];dataTypeHandler():[indexAsDoc=().indexAsDoc||[];collection=___.collection;generateReference=___.generateReference;listOfDocs=___.listOfDocs;input=().inputListClone;data=__;newDoc=_____.newDoc;listPath=___.listPath]]]]]"
+      },
+      "getGallery": "search():[collection=storage;limit=25;skip=_.imgCounter]:[if():[_.data.value()]:[send():[data=_.data.values();counter=__.imgCounter;success=true]]:[send():[success=false;msg='No image found!']]]",
+      "customHistory": {
+        "setNewHistory": "[_.history]:()=[updateBy=_.updateBy;[_.collection]=_.id;id=gen():60+[today().timestamp()+''];creationDate=today().timestamp();creationDay=todayStart().timestamp();createdBy=_.user];[setDif()]()::[saveHistory()]",
+        "setHistoryDoc": "history:()=[updateBy=_.updateBy;[_.collection]=_.id;id=gen():60+[today().timestamp()+''];creationDate=today().timestamp();creationDay=todayStart().timestamp();createdBy=_.user];[setDif()]()::[saveHistory()]",
+        "checkData": "[getDataDifference():[data=_.data;oldData=_.oldData]]()::[setHistoryDoc():[data=_.data;oldData=_.oldData;id=_.id;collection=_.collection;update=true;updateBy=_.updateBy]]",
+        "saveHistory": "save():[collection=history;if():[_.history]:[data=[_.history]:()]:[data=history:()]]:[if():[!_.success]:[send:[success=false;msg='Sorry, Something went wrong!']]]",
+        "setDif": "if():[dif:()]:[history:().difference=dif:()];if():[_.create]:[history:().description=[_.collection+'']+' creation'].elif():[_.update]:[history:().description='Data has been updated'];#hellaaaaaa",
+        "_": "if():[_.collection;_.user;_.id]:[setNewHistory():[collection=_.collection;user=_.user;id=_.id;create=true;history=_.history]].elif():[_.data;_.oldData;_.id;_.collection]:[checkData()]:[send():[success=false;msg='Missing data!';actionName='customHistory']]"
+      },
+      "updateImage": {
+        "getImage": "search():[collection=storage;field:[id=_.id]]:[if():[_.success]:[updateAndSaveImage()]:[send():[success=false;message='Something went wrong']]]",
+        "updateAndSaveImage": "save():[collection=storage;data=__]:[if():[_.success]:[send():[success=true;message='Image updated successfully']]:[send():[success=false;message='Something went wrong']]]",
+        "_": "if():[_]:[getImage()]:[send():[success=false;message='Missing data!']]"
+      },
+      "checkRequirement": {
+        "handleListItems": "___.data.[_.listPath]._():[().inputListClone=__.input.clone();[__.input._():[[checkIfIncludeConditionInListPath()]]]()::[dataTypeHandler():[generateReference=__.generateReference;input=().inputListClone;data=_;newDoc=____.newDoc;listPath=__.listPath]]]",
+        "checkIfIncludeConditionInListPath": "if():[_.condition||_.orCondition]:[if():[!customCondition():[condition=_.condition;orCondition=_.orCondition;data=if():[__.staticDoc]:[mainReceivedData:()]:[__]]]:[().inputListClone.pullItem():[_]]];#if():[_.condition]:[if():[_.condition.0.condition]:[checkConditionInListPath()]:[checkConditionReferenceInListPath()]].elif():[_.orCondition]:[checkOrConditionInListPath()]",
+        "checkListPathCondition": "if():[_.condition||_.orCondition]:[if():[customCondition():[condition=_.condition;orCondition=_.orCondition;data=mainReceivedData:()]]:[setKeysInPath()]]:[setKeysInPath()]",
+        "checkDataTypeForStaticDoc": "[().inputListClone=_.keyValue.clone();_.keyValue._():[checkIfIncludeConditionInListPath()]]()::[dataTypeHandler():[indexAsDoc=[];collection=_.collection;generateReference=_.generateReference;input=().inputListClone;data=___.data]]",
+        "checkDataTypeNotInPath": "dataTypeHandler():[value=___.data.[_.path];[_].flat();data=___.data;newDoc=___.newDoc]",
+        "checkIfIncludeCondition": "if():[_.condition||_.orCondition]:[if():[customCondition():[condition=_.condition;orCondition=_.orCondition;data=mainReceivedData:()]]:[checkDataTypeNotInPath()]]:[checkDataTypeNotInPath()];#if():[_.condition]:[if():[_.condition.value().condition]:[checkConditionInDoc()]:[checkConditionReferenceInDoc()]].elif():[_.orCondition]:[checkOrConditionInDoc()]:[checkDataTypeNotInPath()]",
+        "getSchema": "search():[collection=schemas;field:[collection=_.collection]]:[if():[_.data.value()]:[().schemaData=_.data.value().create.[formManagerName:()];checkPath()]:[send():[success=false;msg='Schema does not exist!']]]",
+        "checkPath": "[().schemaData.keyValue._()::[if():[_.listPath]:[checkListPathCondition()].elif():[_.staticDoc]:[checkConditionForStaticDoc()]:[checkIfIncludeCondition()]]]()::[initializeDoc()]",
+        "initializeDoc": "initializeDocAndCheckForRecursion():[receivedData=__.data;data=[__.newDoc]:();collection=__.collection;schema=().schemaData]",
+        "setKeysInPath": "if():[___.data.[_.listPath]]:[if():[_.listOfDocs]:[setDocsFromListItems()]:[handleListItems()]]:[send():[success=false;listPath=_.listPath;msg='listPath does not exist in data!']]",
+        "checkConditionForStaticDoc": "if():[_.condition||_.orCondition]:[if():[customCondition():[condition=_.condition;orCondition=_.orCondition;data=mainReceivedData:()]]:[checkDataTypeForStaticDoc()]]:[checkDataTypeForStaticDoc()]",
+        "_": "if():[_.collection;_.data;_.newDoc]:[getSchema()]:[send():[success=false;actionName='checkRequirement';under=_;msg='Missing data!']]",
+        "setDocsFromListItems": "___.data.[_.listPath]._()::[__.docsKeyValue._()::[[().setDoc=true;().indexAsDoc.del();if():[_.condition]:[if():[!customCondition():[condition=_.condition;data=mainReceivedData:();listPath=___.listPath;index=0]]:[().setDoc=false];#checkConditionForListOfDocs()].elif():[_.customCondition]:[[_.customCondition]()]]()::[if():[().setDoc]:[().inputListClone=_.input.clone();_.input._():[checkIfIncludeConditionInListPath()];dataTypeHandler():[indexAsDoc=().indexAsDoc||[];collection=___.collection;generateReference=___.generateReference;listOfDocs=___.listOfDocs;input=().inputListClone;data=__;newDoc=_____.newDoc;listPath=___.listPath]]]]]"
+      },
+      "eraseSheet": "erase():[collection=sheet;doc=_]:[send():[success=true;msg='Sheet deleted successfuly!']]",
+      "uploadImage": "[_.data.creationDate=today().timestamp();generatReferenceNumber():[collection=storage;branch=_.branch]:[_.data.ref=ref:();_.data.count=count:();_.data.branch=_.branch]]()::[upload():[file=_.data;data=_.data]:[send():[data=_.data]]]",
+      "#generateQRCode": "qr():[text='https://acc.brackettechnologies.com/testView/'+_.jsonToBracketCode()]:[if():[_.data.value()]:[send():[success=true;data=_.data]]:[send():[success=false;data=_.data]]]",
+      "getDataDifference": {
+        "checkEquality": "if():[__.oldData.[_]!=__.data.[_]]:[if():[[_+0].type()=number]:[().test=___]:[().test=_];dif:().push():[[['old']=__.oldData.[_];['new']=__.data.[_];path=().test]]]",
+        "findMapArray": "oldDataKeys:()._():[if():[__.oldData.[_].type()=array||__.oldData.[_].type()=map]:[recurAction()]:[checkEquality()]]",
+        "setKeys": "oldDataKeys:()=_.data.keys();findMapArray()",
+        "_": "if():[_.data;_.oldData]:[setKeys()]:[send():[success=false;msg='Sorry, missing data']]",
+        "recurAction": "getDataDifference():[oldData=__.oldData.[_];data=__.data.[_]]"
+      },
+      "checkIdExistence": "search():[collection=_.collection;id=_.value]:[if():[!_.data.value()]:[send():[success=false;msg=__.collection+' not found!']]]",
+      "generateUsername": {
+        "searchUsername": "search():[collection=username;field:[username=_.username]]:[if():[_.data.value()]:[generateUser():[firstName=___.firstName;lastName=___.lastName;foundFirst=true]]:[send():[username=__.username]]]",
+        "generateUser": "if():[_.foundFirst]:[().username=_.firstName+_.lastName+gen():[10;number]]:[().username=[_.firstName]+[_.lastName]];searchUsername():[username=().username]",
+        "_": "if():[true]:[generateUser():[firstName=_.firstName;lastName=_.lastName]]:[send():[msg=Missing Data!;success=false]]"
+      },
+      "generatReferenceNumber": {
+        "setReference": "num:()=counter():[_.data.value()].counter;_.data.value().counter+=1;updateReference()",
+        "checkRefExistance": "search():[collection=counter;field:[searchFeild()]]:[if():[_.data.value()]:[setReference()]:[createReference()]]",
+        "updateReference": "save():[collection=counter;data=_.data.value()]:[if():[_.data]:[[____.var]:()=_.data.code+'-'+num:();count:()=_.data.counter;ref:()=_.data.code+'-'+num:();count:()=_.data.counter;#send():[t=____;tt=___;success=false]]:[send():[success=false;msg='No reference number found!']]]",
+        "setCode": "_.data.value().managers._():[code:().push():[_.managers]];setCounterDoc()",
+        "createReference": "search():[collection=globalPathes]:[if():[_.data.value()]:[setCode()]:[send():[success=false;msg='Missing data!']]]",
+        "setCounterDoc": "counter:()=[branch=___.branch;collection=___.collection;id=gen():60+[today().timestamp()+''];creationDate=today().timestamp();creationDay=todayStart().timestamp();code=code:().find():[collection=___.collection].code;length=8;counter=0;max=99999999;timestamp=today().timestamp();reset=yearly];saveCounter()",
+        "saveCounter": "save():[collection=counter;data=counter:()]:[if():[_.data]:[generatReferenceNumberExecuteTime:()+=1;if():[generatReferenceNumberExecuteTime:()<3]:[generatReferenceNumber():[collection=_.data.collection;branch=_.data.branch]]:[send():[message='Maximum execute limit!';actionName=generatReferenceNumber;success=false]]]:[send():[success=false;msg='Something went wrong!']]]",
+        "searchFeild": "if():[_.collection]:[collection=_.collection];if():[_.branch]:[branch=_.branch]",
+        "_": "if():[_.collection;_.branch]:[checkRefExistance():[collection=_.collection;branch=_.branch]].elif():[_.collection=branch]:[checkRefExistance():[collection=_.collection]]:[send():[success=false;msg='generatReferenceNumber error';under=_;under2=__;ref=11]]"
+      },
+      "generateLedgerCounter": {
+        "handleCounter": "checkAndFixCounter();if():[___.accountNumber]:[__.data.value().counterList.push():[___.accountNumber.toString()]]:[if():[__.data.value().counterList.inc():[__.data.value().counter.toString()]]:[send():[success=false;msg='Account number not available!']]];",
+        "getCurrency": "search():[collection=currency;field:[code=__.currency;branch=__.branch]]:[if():[_.data.value()]:[counter:()=_.data.value().counter;if():[__.data.value()]:[genLedgerNum()]:[createLedgerCounter()]]:[send():[success=false;msg='Currency does not exist!']]]",
+        "createLedgerCounter": "ledgerCounter:()=[code=___.ledger;length=8;counter=0;counterList=:0;max=99999999;end=99999999;reset=yearly;creationDate=today().timestamp();id=gen():60+[today().timestamp()+''];timestamp=today().timestamp();branch=___.branch;creationDay=todayStart().timestamp()];saveLedger()",
+        "checkCounterExistence": "search():[collection=counter;field:[branch=_.branch;code=_.ledger]]:[getCurrency()]",
+        "saveLedger": "save():[collection=counter;data=ledgerCounter:()]:[if():[_.data.value()]:[generateLedgerCounter():[ledger=____.ledger;currency=____.currency;branch=____.branch]]]",
+        "genLedgerNum": "handleCounter();save():[collection=counter;data=__.data.value()]:[if():[_.data.value()]:[refLedger:()=_.data.code+'/'+if():[____.accountNumber]:[____.accountNumber]:[_.data.counter]+'/'+[counter:()+''];[____.var]:()=_.data.code+'/'+_.data.counter+'/'+[counter:()+'']]:[send():[success=false;msg='Sorry no reference number found!']]]",
+        "_": "[if():[_.accountNumber]:[checkAccountNumberExistence():[code=_.ledger;branch=_.branch;s=d;accountNumber=_.accountNumber;keepInServer=true]]]()::[if():[_.ledger;_.branch;_.currency]:[checkCounterExistence()]:[send():[success=false;msg='generateLedgerCounter';under=_;under2=__]]]",
+        "checkAndFixCounter": "if():[___.accountNumber]:[if():[__.data.value().counterList.inc():[[__.data.value().counter+1].toString()]||[__.data.value().counter+1]=[___.accountNumber.num()]]:[__.data.value().counter+=1;checkAndFixCounter()]]:[__.data.value().counter+=1;]"
+      },
+      "searchAssets": {
+        "successFalseAction": "send():[success=false;msg=Data does not exist!]",
+        "getAccount": "[searchAccount():[[_].flat()]]()::[if():[!accountSearchResult:()]:[successFalseAction()]:[getAssets():[data=[account=accountSearchResult:().():id]]]]",
+        "assetSearchFields": "branch=_.data.branch;if():[_.data.name]:[name=_.data.name]",
+        "checkIfAccounResultExist": "if():[accountSearchResult:()]:[getLastBalance()]:[[getAccount():[var=accountSearchResult;data=[asset=_.data.values().():id]]]()::[getLastBalance()]]",
+        "combineData": "assetSearchResult:()._():[().account=accountSearchResult:().find():[asset=_.id];().lastBalance=LastBalanceSearchResult:().find():[id=().account.lastBalance];_.ledgerAccount=().account.ledgerAccount;_.credit=().lastBalance.accountBalances.find():[account=().lastBalance.account].credit;_.debit=().lastBalance.accountBalances.find():[account=().lastBalance.account].debit;_.balance=().lastBalance.accountBalances.find():[account=().lastBalance.account].balance];send():[success=true;data=assetSearchResult:().sort():[ascending;path=creationDate]]",
+        "getLastBalance": "[searchTransaction():[var=LastBalanceSearchResult;docs=accountSearchResult:().():lastBalance]]()::[if():[LastBalanceSearchResult:()]:[combineData()]:[successFalseAction()]]",
+        "getAssets": "search():[collection=asset;docs=_.docs;field:[assetSearchFields()];limit=25]:[if():[_.data.value()]:[assetSearchResult:()=_.data.values();checkIfAccounResultExist();]:[successFalseAction()]]",
+        "_": "if():[_.data.ledgerAccount]:[getAccount():[var=accountSearchResult;data=[ledgerAccount=_.data.ledgerAccount]]]:[getAssets()]"
+      },
+      "searchAccount": {
+        "getAccounts": "search():[collection=account;#if():[_.docs]:[docs=_.docs];field:[accountSearchFields()];limit=25;skip=_.receivedDataCounter]:[if():[_.data.value()]:[if():[!__.var]:[getLastBalance()]:[[__.var]:()=_.data.values()]]:[if():[!__.keepInServer]:[send():[success=false;msg='No account found!';mmm=_.message]]]]",
+        "combineData": "_.data.values()._():[().correspondingLastBalance=LastBalanceSearchResult:().find():[id=_.lastBalance];if():[().correspondingLastBalance]:[_.credit=().correspondingLastBalance.accountBalances.find():[account=_.id].credit;_.debit=().correspondingLastBalance.accountBalances.find():[account=_.id].debit;_.balance=().correspondingLastBalance.accountBalances.find():[account=_.id].balance]];send():[success=true;data=_.data.values().sort():[ascending;path=creationDate]]",
+        "getLastBalance": "[searchTransaction():[var=LastBalanceSearchResult;docs=_.data.values().():lastBalance]]()::[if():[LastBalanceSearchResult:()||true]:[;combineData()]:[send():[success=false;msg='No last balances found!']]]",
+        "accountSearchFields": "if():[_.data.headAccounts]:[headAccount.in=_.data.headAccounts];if():[_.data.branch]:[branch=_.data.branch];#if():[_.data.asset]:[if():[_.data.asset.type()=array]:[asset.in=_.data.asset]:[asset=_.data.asset]];if():[_.data.type]:[type=_.data.type];if():[_.data.name]:[name=_.data.name];if():[_.data.ledgerAccount]:[if():[_.data.ledgerAccount.inc():['/']]:[ledgerAccount=_.data.ledgerAccount]:[startsWith.contains=_.data.ledgerAccount]]",
+        "_": "getAccounts()"
+      },
+      "customCheckExistence": {
+        "checkGeneralInfo": "search():[collection=_.collection;field:[generalFields()]]:[if():[_.data.value()]:[send():[da=_.data.value();success=false;msg=__.collection.capitalize()+' already exists!']]:[continue:()=true]]",
+        "checkUser": "search():[collection=username;field:[username=_.data.username]]:[if():[_.data.value()]:[send():[success=false;msg=__.collection.capitalize()+' already exists!']]:[continue:()=true]]",
+        "generalFields": "if():[_.data.name]:[name=_.data.name];if():[_.data.firstName]:[name=_.data.firstName];if():[_.data.lastName]:[name=_.data.lastName];if():[_.data.code]:[code=_.data.code]",
+        "updateGeneralData": "save():[collection=__.collection;data=__.data]:[if():[_.success]:[send():[msg=___.collection.capitalize()+' Updated Successfully']]:[send():[success=false;msg='Sorry, missing data';kk=111]]]",
+        "getGeneralData": "search():[collection=_.collection;doc=_.data.id]:[if():[_.data.value()]:[setHistoryAndUpdate()]:[send():[success=false;msg='Does not exists';under=_;under2=__]]]",
+        "setHistoryAndUpdate": "[customHistory():[oldData=_.data;data=__.data;collection=__.collection;id=_.data.id;updateBy=__.updateBy]]()::[updateGeneralData()]",
+        "_": "if():[_.data.id;_.updateBy]:[getGeneralData()].elif():[_.collection=user]:[checkUser()].elif():[_.collection]:[checkGeneralInfo()]:[send():[message='Missing data!';success=false;actionName='customCheckExistence']]"
+      },
+      "searchTransaction": {
+        "successFalseAction": "send():[success=false;under=_;under2=__;under3=___;msg='No transaction found!']",
+        "transactionSearchFields": "if():[__.data.branch]:[branch=__.data.branch];if():[_.data.account]:[if():[_.data.account.type()=array]:[account.in=_.data.account]:[account=_.data.account]];if():[__.data.fromDate]:[creationDay.greaterorequal=__.data.fromDate];if():[__.data.toDate]:[creationDay.lessorequal=__.data.toDate]",
+        "getAccount": "[searchAccount():[var=accountSearchResult;data=[ledgerAccount=_.data.ledgerAccount;branch=_.data.branch]]]()::[if():[accountSearchResult:()]:[().headAccount=accountSearchResult:().value().id;[().headAccounts=accountSearchResult:().():id;chekHeadAccounts()]()::[getTransaction():[data=[account=accountSearchResult:().():id]]]]:[successFalseAction()]]",
+        "chekHeadAccounts": "if():[().headAccounts]:[searchAccount():[var=headAccountSearchResult;keepInServer=true;data=[headAccounts=().headAccounts]]:[if():[headAccountSearchResult:()]:[().headAccounts=headAccountSearchResult:().():id;accountSearchResult:()=accountSearchResult:().concat():[headAccountSearchResult:()];headAccountSearchResult:().del();chekHeadAccounts()]]]",
+        "setCreditDebitBalance": "if():[().headAccount]:[_.balance=_.accountBalances.find():[account=().headAccount].balance]:[;#_.credit=_.accountBalances.[-1].credit;#_.debit=_.accountBalances.[-1].debit;_.balance=_.accountBalances.[-1].balance];#_.balance=if():[().headAccount]:[_.accountBalances.find():[account=().headAccount].balance]:[_.accountBalances.[-1].balance];_.accountBalances.del()",
+        "checkIfAccounResultExist": "transactionSearchResult:()=_.data.values();if():[accountSearchResult:()]:[combineData()]:[[searchAccount():[var=accountSearchResult;docs=_.data.values().():account]]()::[if():[accountSearchResult:()]:[combineData()]:[successFalseAction()]]]",
+        "combineData": "transactionSearchResult:()._():[_.ledgerAccount=accountSearchResult:().find():[id=_.account].ledgerAccount;setCreditDebitBalance()];send():[success=true;data=transactionSearchResult:().sort():[ascending;path=creationDate]]",
+        "_": "if():[_.data.ledgerAccount]:[getAccount()]:[getTransaction():[var=_.var;docs=_.docs]]",
+        "getTransaction": "search():[collection=balance;if():[_.docs]:[docs=_.docs];if():[__.data]:[field:[transactionSearchFields()]];limit=25]:[if():[_.data.value()||true]:[if():[__.var]:[[__.var]:()=_.data.values()]:[checkIfAccounResultExist()]]:[successFalseAction()]]"
+      },
+      "updateSheet": {
+        "getSheet": "search():[collection=_.collection;doc=_.data.id]:[if():[_.success]:[#send():[success=false;ddd=_];updateAndSaveSheet()]:[send():[success=false;message='Something went wrong!']]]",
+        "updateAndSaveSheet": "save():[collection=sheet;data=__.data]:[if():[_.success]:[send():[success=true;message='Sheet updated successfully!']]:[send():[success=false;message='Something went wrong!']]]",
+        "_": "if():[_.data]:[getSheet()]:[send():[success=false;message='Missing data!']]"
+      },
+      "customSave": {
+        "setPassword": "password:()=[password=generalData:().password;changed=false;username=username:().id];initializeDoc():[password:()];setPermission()",
+        "saveSentData": "save():[collection=_.collection;data=_.data]:[if():[!_.success]:[send():[success=false;msg='Try again!']]]",
+        "saveAccountData": "[saveAccount():[collection=generalCollection:();data=generalData:()]]()::[send():[success=true;msg=generalCollection:()+' saved successfuly!']]",
+        "setUsername": "username:()=[username=generalData:().username;user=generalData:().id];initializeDoc():[username:()];setPassword()",
+        "setGeneralData": "initializeDoc():[generalData:()];getBranch()",
+        "ledgerCounter": "[generateLedgerCounter():[branch=generalData:().branch;currency=generalData:().currency;ledger=generalData:().generalLedger]]()::[generalData:().ledger=refLedger:().clone();send():[success=false;ledger=generalData:();lid=mhms:();hello=005];generatRef()]",
+        "updateData": "customCheckExistance():[collection=_.collection;data=_.data;updateBy=user:().id]",
+        "getUser": "getUserBySession():[_.session]:[if():[user:()]:[if():[_.data.id]:[updateData()]:[checkForDuplicate()]]:[send():[success=false;msg='User not found!']]]",
+        "saveGeneralData": "save():[collection=generalCollection:();data=generalData:()]:[if():[_.success]:[send():[success=true;msg=generalCollection:().capitalize()+' created successfuly!']]:[send():[success=false;msg='Try again!']]]",
+        "splitPathWay": "if():[generalCollection:()=account]:[saveAccountData()].elif():[generalCollection:()=asset]:[saveAssetData()].elif():[generalCollection:()=user]:[setUsername()]:[generatRef()]",
+        "setAccountDoc": "generalData:().balance=balance:().id;generalData:().credit.del();generalData:().debit.del();ledgerCounter();getRef():[collection=balance;data=balance:()]",
+        "getRef": "sentData:()=_.data;sentCollection:()=_.collection;generatReferenceNumber():[collection=sentCollection:();branch=sentData:().branch]:[sentData:().ref=ref:();saveSentData():[collection=sentCollection:();data=sentData:()]]",
+        "initializeDoc": "_.id=gen():60+[today().timestamp()+''];_.creationDate=today().timestamp();_.creationDay=todayStart().timestamp()",
+        "cleanGeneralInfo": "generalInfo:().data.username.del();generalInfo:().data.password.del();saveSentData():[collection=username;data=username:()];saveSentData():[collection=password;data=password:()];saveSentData():[collection=permission;data=permission:()];generatRef()",
+        "saveExchangeRate": "save():[collection=exchangeRate;data=ExchangeRate:()]:[if():[!_.success]:[send():[success=false;msg='Try again!']]]",
+        "checkForDuplicate": "generalData:().createdBy=user:().id;customCheckExistance():[collection=_.collection;data=_.data]:[if():[continue:()]:[setGeneralData()]]",
+        "generatRef": "generatReferenceNumber():[collection=generalCollection:();branch=generalData:().branch]:[if():[ref:()]:[generalData:().ref=ref:();if():[generalCollection:()=currency]:[generalData:().counter=count:()];if():[generalCollection:()=branch]:[generalData:().branch.del()];saveGeneralData()]:[send():[success=false;da=generalData:();col=generalCollection:()]]]",
+        "setPermission": "permission:()=[user=generalData:().id;permission=generalData:().permission];initializeDoc():[permission:()];cleanGesneralInfo()",
+        "setBalance": "balance:()=[credit=generalData:().credit;debit=generalData:().debit;balance=generalData:().balance;description='Opening balance';account=generalData:().id;totalCredit=generalData:().credit;totalDebit=generalData:().debit;branch=generalData:().branch];initializeDoc():[balance:()];setAccountDoc()",
+        "saveAssetData": "[saveAsset():[collection=generalCollection:();data=generalData:()]]()::[send():[success=true;msg=generalCollection:()+' saved successfuly']]",
+        "getBranch": "search():[collection=branch;doc=generalData:().branch]:[if():[_.data.value()]:[splitPathWay();customHistory():[id=generalData:().id;collection=generalCollection:();user=user:().id;history=gen():6]]:[send():[success=false;msg='Branch not found!']]]",
+        "_": "if():[_.session;_.data;_.collection]:[generalData:()=_.data;generalCollection:()=_.collection;getUser()]:[send():[success=false;msg='Missing data!']]"
+      },
+      "customSearchEngine": {
+        "sendData": "if():[identifier:()=account]:[[getBalance()]()::[send():[success=true;data=_.data.values()]]]:[send():[success=true;data=_.data.values().sort():[ascending;path=creationDate]]]",
+        "getBalance": "search():[collection=balance;docs=_.data.values.():balance;limit=1000]:[__.data.values()._():[_.balance=__.data.[_.balance].clone()]]",
+        "searchField": "#_.data.keys()._():[if():[[_]=email||[_]=contactNumber]:[[_].contains=__.data.[_]]]",
+        "setIdentifier": "identifier:()=_.data.identifier.clone();_.data.identifier.del();getData()",
+        "ttsearchField": "_.data.keys()._():[if():[[_]=email||[_]=contactNumber]:[[_].contains=__.data.[_]].elif():[[_]=ledgerAccount]:[if():[identifier:()=asset]:[if():[__.data.[_].inc():'/']:[ledger.inc():__.data.[_]]:[generalLedger.inc():__.data.[_]]]:[if():[__.[_].inc():'/']:[ledger=__.data.[_]]:[generalLedger=__.data.[_]]]]:[[_]=__.data.[_]]]",
+        "getData": "search():[collection=identifier:();field:[if():[_.data.ref]:[ref=_.data.ref]:[searchField()];if():[_.branch;identifier:()!='branch']:[branch=_.branch]]]:[if():[_.data.value()]:[sendData()]:[send():[success=false;under=_;under2=__;under3=___;msg=identifier:().capitalize()+' not found!']]]",
+        "_": "if():[_.data.identifier]:[setIdentifier()]:[send():[success=false;msg='Identifier is missing!']]"
+      },
+      "customCondition": {
+        "checkOrConditionOperatorsInListPath": "if():[_.operator]:[if():[[_.condition+_.operator+__.data.[__.listPath].[__.index].[_.conditionReference]]()]:[().isConditionTrue=true]]:[if():[_.condition.inc():[__.data.[__.listPath].[__.index].[_.conditionReference]]]:[().isConditionTrue=true]]",
+        "handelIfConditionReferenceExistForOrCondition": "if():[_.conditionReferenceInPath]:[if():[__.data.[__.listPath].[__.index].[_.conditionReferenceInPath]]:[().isConditionTrue=true]].elif():[_.conditionReferenceInDoc]:[if():[__.data.[_.conditionReferenceInDoc]]:[().isConditionTrue=true]].elif():[conditionReference]:[if():[__.data.[__.listPath].[__.index].[_.conditionReference]||__.data.[_.conditionReference]]:[().isConditionTrue=true]]",
+        "checkConditionInData": "if():[_.condition]:[loopOverCondition()].elif():[_.orCondition]:[loopOverOrCondition()]",
+        "loopOverConditionInListPath": "().isConditionTrue=true;_.condition._():[if():[_.condition]:[checkConditionReferenceTypeInListPath()]:[handelIfConditionReferenceExist()]]",
+        "checkConditionReferenceTypeInListPath": "if():[_.conditionReferenceInPath]:[checkAndConditionOperatorsInListPath()].elif():[_.conditionReferenceInDoc]:[checkAndConditionOperatorsInData()].elif():[_.conditionReference]:[if():[__.data.[__.listPath].[__.index].[_.conditionReference]]:[checkAndConditionOperatorsInListPath()]:[checkAndConditionOperatorsInData()]]",
+        "checkAndConditionOperatorsInListPath": "if():[_.operator]:[if():[![_.condition+_.operator+__.data.[__.listPath].[__.index].[_.conditionReference]]()]:[().isConditionTrue=false]]:[if():[!_.condition.inc():[__.data.[__.listPath].[__.index].[_.conditionReference]]]:[().isConditionTrue=false]]",
+        "loopOverCondition": "().isConditionTrue=true;_.condition._():[if():[_.condition]:[checkAndConditionOperatorsInData()].elif():[_.conditionReference]:[if():[!__.data.[_.conditionReference]]:[().isConditionTrue=false]]]",
+        "handelIfConditionReferenceExist": "if():[_.conditionReferenceInPath]:[if():[!__.data.[__.listPath].[__.index].[_.conditionReferenceInPath]]:[().isConditionTrue=false]].elif():[_.conditionReferenceInDoc]:[if():[!__.data.[_.conditionReferenceInDoc]]:[().isConditionTrue=false]].elif():[conditionReference]:[if():[!__.data.[__.listPath].[__.index].[_.conditionReference];!__.data.[_.conditionReference]]:[().isConditionTrue=false]]",
+        "handleListOfCombinationOrConditions": "().isCombinationConditionTrue=false;_.orCondition._():[if():[customCondition():[condition=_.condition;orCondition=_.orCondition;data=__.data]]:[().isCombinationConditionTrue=true]]",
+        "checkConditionInListPath": "if():[_.condition]:[loopOverConditionInListPath()].elif():[_.orCondition]:[loopOverOrConditionInListPath()]",
+        "checkConditionType": "if():[_.listPath;_.index]:[checkConditionInListPath()]:[checkConditionInData()]",
+        "checkAndConditionOperatorsInData": "if():[_.operator='!=']:[if():[[_.condition]=[__.data.[_.conditionReference]]]:[().isConditionTrue=false]].elif():[_.operator]:[if():[![_.condition+_.operator+__.data.[_.conditionReference]]()]:[().isConditionTrue=false]]:[if():[!_.condition.inc():[__.data.[_.conditionReference]]]:[().isConditionTrue=false]]",
+        "loopOverOrConditionInListPath": "().isConditionTrue=false;_.orCondition._():[if():[_.condition]:[checkOrConditionReferenceTypeInListPath()]:[handelIfConditionReferenceExistForOrCondition()]]",
+        "loopOverOrCondition": "().isConditionTrue=false;_.orCondition._():[if():[_.condition]:[checkOrConditionOperatorsInData()].elif():[_.conditionReference]:[if():[__.data.[_.conditionReference]]:[().isConditionTrue=true]]]",
+        "checkOrConditionReferenceTypeInListPath": "if():[_.conditionReferenceInPath]:[checkOrConditionOperatorsInListPath()].elif():[_.conditionReferenceInDoc]:[checkOrConditionOperatorsInData()].elif():[_.conditionReference]:[if():[__.data.[__.listPath].[__.index].[_.conditionReference]]:[checkOrConditionOperatorsInListPath()]:[checkOrConditionOperatorsInData()]]",
+        "checkOrConditionOperatorsInData": "if():[_.operator]:[if():[[_.condition+_.operator+_.conditionReference]()]:[().isConditionTrue=true]]:[if():[_.condition.inc():[__.data.[_.conditionReference]]]:[().isConditionTrue=true]]",
+        "handleListOfCombinationConditions": "().isCombinationConditionTrue=true;_.condition._():[if():[!customCondition():[condition=_.condition;orCondition=_.orCondition;data=__.data]]:[().isCombinationConditionTrue=false]]",
+        "_": ";#if():[false]:[send():[success=false;under=_]];#if():[_.condition.0.conditionReference='financialCharges']:[mhmd:().push():[_]];if():[_.condition.0.condition.0.conditionReference||_.condition.0.orCondition.0.conditionReference]:[handleListOfCombinationConditions();return():[().isCombinationConditionTrue]].elif():[_.orCondition.0.condition.0.conditionReference||_.orCondition.0.orCondition.0.conditionReference]:[handleListOfCombinationOrConditions();return():[().isCombinationConditionTrue]]:[checkConditionType();return():[().isConditionTrue]]"
+      },
+      "getIdByLedger": {
+        "splitLedger": "if():[_.value.split():'/'.len()=3]:[getLedgerAccount()]:[send():[success=false;msg='Ledger is badly formatted!';value=_.value]]",
+        "getLedgerAccount": "search():[collection=account;field:[ledgerAccount=_.value]]:[if():[_.data.value()]:[if():[_.data.value().blockAccount.toString()='false'||true]:[if():[__.var]:[[__.var]:()=_.data.value().id]:[ledgerId:()=_.data.value().id]]:[send():[success=false;blocked=_.data.value().blockAccount;msg=__.value+' '+'is Blocked']]]:[send():[success=false;under=_;under2=__;msg='General ledger not found!']]]",
+        "_": "if():[_.value]:[splitLedger()]:[send():[success=false;msg='Ledger is expected! ';getIdByLedger=_;under2=__]]"
+      },
+      "#getPricing": {
+        "searchByCheckInOut": "[searchByCheckOut();searchByCheckIn()]()::[getSuppliers();#send():[pricing=pricing:();rooms=rooms:();hotels=hotels:()]]",
+        "getSuppliers": "search():[collection=supplier;field:[id.in=pricing:().():supplier]]:[send():[suppliers=_.data.values()]]",
+        "searchByCheckOut": "search():[collection=roomPricing;field:[room.in=_.rooms;startDate.lessorequal=_.checkOut]]:[if():[_.success]:[test1:()=true;_.data=_.data.values().filter():[endDate>=__.checkOut];_.data._():[pricing:().replace():_]]]",
+        "searchByCheckIn": "search():[collection=roomPricing;field:[room.in=_.rooms;endDate.greaterorequal=_.checkIn]]:[if():[_.success]:[test2:()=true;_.data=_.data.values().filter():[startDate<=__.checkIn];_.data._():[pricing:().replace():_]]]",
+        "_": "if():[_.rooms;_.checkIn;_.checkOut]:[pricing:()=_list;searchByCheckInOut()]:[send():[success=false;message='Missing Data']]"
+      },
+      "checkAccountNumberExistence": {
+        "getCounterDoc": "search():[collection=counter;field:[code=_.code]]:[if():[_.data.value()]:[if():[__.accountNumber;__.accountNumber!=0]:[checkAccountNumberIfAvailable()]:[generateNewCounter()]]:[createLedgerCounterDoc()]]",
+        "generateNewCounter": "_.data.value().counter+=1;if():[_.data.value().counterList.inc():[_.data.value().counter.toString()]]:[generateNewCounter()]:[if():[!__.keepInServer]:[send():[success=true;accountNumber=_.data.value().counter]]]",
+        "createLedgerCounterDoc": "ledgerCounter:()=[code=__.code;length=8;counter=0;counterList=:0;max=99999999;end=99999999;reset=yearly;creationDate=today().timestamp();id=gen():60+[today().timestamp()+''];timestamp=today().timestamp();branch=__.branch;creationDay=todayStart().timestamp()];saveLedger()",
+        "checkAccountNumberIfAvailable": "if():[_.data.value().counterList.inc():[__.accountNumber.toString()]]:[send():[success=false;msg='Account number not available!']]:[if():[!__.keepInServer]:[send():[success=true;msg='Account number available!']]]",
+        "saveLedger": "save():[collection=counter;data=ledgerCounter:()]:[if():[_.data.value()]:[checkAccountNumberExistence():[___]]]",
+        "_": "mm:()+=1;if():[_.accountNumber=0;_.keepInServer]:[send():[success=false;msg='Account number must be greater than 0!']].elif():[_.code;_.branch]:[getCounterDoc()]:[send():[success=false;msg='Missing data!';under=_;mm=mm:()]]"
+      },
+      "saveTransaction": {
+        "resetData": "().editedData=[[_.data.'credit-debit'.toLowerCase()]=[_.data.amount];account=_.data.account;ledgerAccount=_.data.ledgerAccount;id=_.data.id;creationDate=_.data.creationDate;creationDay=_.data.creationDay;ref=_.data.ref;description=_.data.description;branch=_.data.branch];().editedData.():[debit=().editedData.debit||0;credit=().editedData.credit||0;openingBalance=transactionReceivedData:().openingBalance;headAccount=transactionReceivedData:().headAccount];if():[_.data.voucher]:[().editedData.():[voucher=_.data.voucher;voucherRef=_.data.voucherRef]];#send():[success=false;data=().editedData];saveTransaction():[data=().editedData]",
+        "addAnalysisDataToNewBalanceDoc": "().x=1;while():[().x<=().analysisDocs.len()]:[if():[newBalance:().accountBalances.find():[number=[().analysisDocs.[().analysisDocs.len()-().x].number]]]:[newBalance:().accountBalances.find():[number=[().analysisDocs.[().analysisDocs.len()-().x].number]].():[credit=().analysisDocs.[().analysisDocs.len()-().x].credit;debit=().analysisDocs.[().analysisDocs.len()-().x].debit;balance=().analysisDocs.[().analysisDocs.len()-().x].balance]]:[newBalance:().accountBalances.push():[[number=().analysisDocs.[().analysisDocs.len()-().x].number;credit=().analysisDocs.[().analysisDocs.len()-().x].credit;debit=().analysisDocs.[().analysisDocs.len()-().x].debit;balance=().analysisDocs.[().analysisDocs.len()-().x].balance]]];().x+=1]",
+        "setBalanceWithHeadAccount": "[getAccounts():[id=_.data.headAccount]]()::[getBalances()]",
+        "editAnalysisDocs": "().splitedGeneralLedger._():[().analysisDocInstance=().splitedGeneralLedgerData.find():[number=_];if():[().analysisDocInstance]:[handleGeneralLedgerDoc();().analysisDocInstance.del()]:[createNewAnalysisDoc()]];addAnalysisDataToNewBalanceDoc();saveAnalysisDocs();#do5ansend():[success=false;analysisDocs=().analysisDocs;mhmd=mhmd:();newBalance=newBalance:()]",
+        "#setNewBalanceIfDebitbb": "transactionReceivedData:().():[credit=0;debit=transactionReceivedData:().amount];newBalance:()=[account=transactionReceivedData:().account;credit=0;debit=transactionReceivedData:().amount;accountBalances=:[account=transactionReceivedData:().account;credit=0;debit=transactionReceivedData:().amount;balance=transactionReceivedData:().amount]];if():[transactionReceivedData:().headAccount]:[setAccountBalances()]:[initializeDoc()]",
+        "handleAnalaysis": "().splitedGeneralLedger=splitGeneralLedger():[number=newBalance:().ledgerAccount.split():'/'.0];[().splitedGeneralLedger._():[search():[collection=analysis;field:[number=_]]:[if():[_.data.value()]:[().splitedGeneralLedgerData.push():[_.data.value()]]:[dd]]]]()::[editAnalysisDocs()]",
+        "#handleTrialBalance": "search():[collection=ledgersBalanceTracker;doc=ledgersBalances]:[if():[_.data.value()]:[().trialBalance=_.data.0;().trialBalance.debit+=newBalance:().debit;().trialBalance.credit+=newBalance:().credit;().trialBalance.balance=().trialBalance.debit-().trialBalance.credit;().trialBalance.balanceId=newBalance:().id;saveTrialUpdates()]:[send():[success=false;msg='error when handle trial balance!']]]",
+        "splitGeneralLedger": "if():[_.number]:[().startsWith=:;().currentNumber='';range():[_.number.toString().len()-1]._():[().currentNumber+=__.number.toString().[_];().startsWith.push():[.currentNumber]];return():[().startsWith]]:[send():[success=false;under=_;under2=__;under3=___;msg='General Ledger not received to split!']]",
+        "getBalances": "().existLastBalance=false;accountsAndBalances:().():lastBalance._():[if():[_]:[().existLastBalance=true]];if():[().existLastBalance]:[search():[collection=balance;docs=accountsAndBalances:().():lastBalance]:[if():[_.data.value()]:[accountsLastBalances:()=_.data.values();combineData()]:[send():[success=false;ss=accountsAndBalances:();msg='Transaction not found!']]]]:[combineData()]",
+        "saveUpdate": "save():[collection=account;data=_.data.values()]:[delGBVar();if():[!_.data]:[send():[success=false;msg='Something went wrong during update last balance']]]",
+        "handleGeneralLedgerDoc": "().analysisDocInstance.():[balanceId=newBalance:().id;credit=().analysisDocInstance.credit+newBalance:().credit;debit=().analysisDocInstance.debit+newBalance:().debit];().analysisDocInstance.balance=().analysisDocInstance.debit-().analysisDocInstance.credit;().analysisDocs.push():[().analysisDocInstance]",
+        "_": "transactionReceivedData:()=_.data;if():[_.data.'credit-debit']:[resetData()].elif():[_.data.openingBalance='Yes';_.data.headAccount]:[setBalanceWithHeadAccount()].elif():[_.data.openingBalance='Yes']:[setBalanceWithoutHeadAccount()]:[[getAccounts():[id=_.data.account]]()::[getBalances()]]",
+        "#setNewBalancett": "if():[transactionReceivedData:().openingBalance='Yes']:[if():[transactionReceivedData:().amount.toString().0='-']:[setNewBalanceIfCredit()]:[setNewBalanceIfDebit()]]:[newBalance:()=[account=transactionReceivedData:().account;credit=transactionReceivedData:().credit;debit=transactionReceivedData:().debit];if():[transactionReceivedData:().voucher]:[newBalance:().():[voucher=transactionReceivedData:().voucher;voucherRef=transactionReceivedData:().voucherRef]];setAccountBalances()]",
+        "createNewAnalysisDoc": "().analysisDocs.push():[[balanceId=newBalance:().id;number=_;credit=newBalance:().credit;debit=newBalance:().debit;balance=newBalance:().debit-newBalance:().credit;id=gen():60+'-'+[today().timestamp()+''];creationDate=today().timestamp();creationDay=todayStart().timestamp()]]",
+        "#saveTrialUpdates": "save():[collection=ledgersBalanceTracker;doc=ledgersBalances;update=['0'=+]]:[newBalance:().accountBalances.push():[[account='0/0/0';debit=().trialBalance.debit;credit=().trialBalance.credit;balance=().trialBalance.debit-().trialBalance.credit]];saveBalance():[data=newBalance:()];#send():[success=false;trialBalance=().trialBalance;newBalance=newBalance:()]]",
+        "getAccounts": "search():[collection=account;doc=_.id]:[if():[_.data]:[accountsAndBalances:().push():[account=__.id;lastBalance=_.data.lastBalance;if():[!_.data.lastBalance]:[lastBalanceData=[account=__.id;branch=receviedData:().branch;description='Opening';credit=0;debit=0;accountBalances=:[account=__.id;credit=0;debit=0;balance=0]]];headAccount=_.data.headAccount||false];if():[_.data.headAccount]:[getAccounts():[id=_.data.headAccount]]]:[send():[success=false;data=_.data;msg='Account not found!']]]",
+        "setAccountBalances": "accountsAndBalances:()._():[().instance=_.lastBalanceData.accountBalances.find():[account=_.account];().accountBalance=[account=_.account;credit=[().instance.credit]+[transactionReceivedData:().credit];debit=().instance.debit+transactionReceivedData:().debit];().accountBalance.balance=().accountBalance.debit-().accountBalance.credit;newBalance:().accountBalances.push():[().accountBalance]];initializeDoc()",
+        "updateLastBalanceInHeadAccounts": "if():[accountsAndBalances:().():account.len()>0]:[search():[collection=account;docs=accountsAndBalances:().():account]:[if():[_.data.value()]:[_.data.values()._():[_.lastBalance=newBalance:().id];saveUpdate()]:[send():[success=false;msg='Something went wrong during update last transacion']]]]",
+        "saveBalance": "save():[collection=balance;data=_.data]:[if():[_.data]:[updateLastBalanceInHeadAccounts()]:[send():[success=false;msg=;'Something went wrong during save balance!']]]",
+        "saveAnalysisDocs": "save():[collection=analysis;data=().analysisDocs]:[if():[_.data.value()]:[().analysisDocs.del();saveBalance():[data=newBalance:()]]:[send():[success=false;msg='Something went wrong during save analysis!']]]",
+        "#setNewBalanceIfCreditbb": "transactionReceivedData:().():[credit=[[transactionReceivedData:().amount]*[-1]];debit=0];newBalance:()=[account=transactionReceivedData:().account;credit=[[transactionReceivedData:().amount]*[-1]];debit=0;accountBalances=:[account=transactionReceivedData:().account;credit=[[transactionReceivedData:().amount]*[-1]];debit=0;balance=transactionReceivedData:().amount]];if():[transactionReceivedData:().headAccount]:[setAccountBalances()]:[initializeDoc()]",
+        "setBalanceWithoutHeadAccount": "newBalance:()=[account=transactionReceivedData:().account;credit=transactionReceivedData:().credit||0;debit=transactionReceivedData:().debit||0;accountBalances=:[account=transactionReceivedData:().account;credit=transactionReceivedData:().credit||0;debit=transactionReceivedData:().debit||0;balance=[[transactionReceivedData:().debit||0]-[transactionReceivedData:().credit||0]]];ledgerAccount=transactionReceivedData:().ledgerAccount];#send():[success=false;newBalance=newBalance:();kk=mm];initializeDoc()",
+        "initializeDoc": "newBalance:().():[id=transactionReceivedData:().id;creationDate=transactionReceivedData:().creationDate;creationDay=transactionReceivedData:().creationDay;ref=transactionReceivedData:().ref;description=transactionReceivedData:().description;branch=transactionReceivedData:().branch];#send():[success=false;newBalance=newBalance:()];handleAnalaysis();#saveBalance():[data=newBalance:()];#handleTrialBalance()",
+        "combineData": "accountsAndBalances:()._():[accountsLastBalances:()._():[if():[_.id=__.lastBalance]:[__.lastBalanceData=_]]];setNewBalance()",
+        "setNewBalance": "if():[transactionReceivedData:().openingBalance='Yes']:[newBalance:()=[account=transactionReceivedData:().account;ledgerAccount=transactionReceivedData:().ledgerAccount;credit=transactionReceivedData:().credit;debit=transactionReceivedData:().debit;accountBalances=:[account=transactionReceivedData:().account;credit=transactionReceivedData:().credit||0;debit=transactionReceivedData:().debit||0;balance=transactionReceivedData:().debit||0-transactionReceivedData:().credit||0]]]:[newBalance:()=[account=transactionReceivedData:().account;ledgerAccount=transactionReceivedData:().ledgerAccount;credit=transactionReceivedData:().credit;debit=transactionReceivedData:().debit]];if():[transactionReceivedData:().voucher]:[newBalance:().():[voucher=transactionReceivedData:().voucher;voucherRef=transactionReceivedData:().voucherRef]];setAccountBalances()",
+        "delGBVar": "accountsAndBalances:().del();accountsLastBalances:().del();transactionReceivedData:().del();newBalance:().del()"
+      },
+      "updateNotificationsInSession": {
+        "findDueSchedule": "_.data.value().schedule._():[if():[_.dueDate.timestamp()<=today().timestamp()]:[dueSchedule:().push():[_.id]]];if():[dueSchedule:()]:[getDueSchedule()];#:[dueNotifications:()=_.data.value().notification]",
+        "getNotifications": "search():[collection=notification;docs=dueNotifications:()]:[if():[_.data.value()]:[preperSessionNotificationforUpdate()]]",
+        "getDueSchedule": "search():[collection=schedule;docs=dueSchedule:()]:[if():[_.data.value()]:[separateNotifications()]]",
+        "separateNotifications": "_.data.values()._():[if():[_.notification]:[dueNotifications:().push():[_.notification]]];if():[dueNotifications:()]:[getNotifications()]:[dueNotifications:()=__.data.value().notification]",
+        "updateSession": "save():[collection=session;data=___.data.value()];dueNotifications:()=___.data.value().notification.():id",
+        "preperSessionNotificationforUpdate": "dueSchedule:()._():[____.data.value().schedule.pull():[id=_]];dueNotifications:()._():[____.data.value().notification.push():[id=_]];updateSession()",
+        "getSession": "search():[collection=session;field:[session=_.session]]:[if():[_.data.value()]:[findDueSchedule()]]",
+        "_": "getSession()"
+      },
+      "loopOverStackAndSaveData": {
+        "saveAndCheckForRecursion": "if():[!saveStackBackUp:()]:[saveStackBackUp:()=saveStack:().clone()];[if():[saveStack:().0.update]:[getDataToUpdate()].elif():[saveStack:().0.customUpdate]:[[saveStack:().0.customUpdate]()].elif():[saveStack:().0.customSave]:[[saveStack:().0.customSave]()].elif():[saveStack:().0.collection='transaction']:[saveTransaction():[data=saveStack:().0.data;collection=saveStack:().0.collection]]:[saveData()]]()::[saveStack:().pullIndex():0;loopOverStackAndSaveData()]",
+        "updateData": "().newDataToUpdate=[[_.data].flat();[saveStack:().0.data].flat()];save():[collection=saveStack:().0.collection;data=().newDataToUpdate]:[if():[!_.data]:[msg='lllSomething went wrong during update in '+[saveStack:().0.collection]]]",
+        "saveData": "if():[saveStack:().0.collection]:[save():[collection=saveStack:().0.collection;data=saveStack:().0.data]:[if():[!_.data]:[send():[success=false;msg='Try again!']]]]:[send():[success=false;msg='Collection not exist!']]",
+        "getDataToUpdate": "if():[saveStack:().0.id]:[search():[collection=saveStack:().0.collection;doc=saveStack:().0.id]:[if():[_.data]:[updateData()]:[send():[success=false;msg='Something went wrong during update in '+[saveStack:().0.collection]]]]]:[send():[success=false;msg='Id not found to update!']]",
+        "_": "#send():[success=false;saveStack=saveStack:();mhmd=mhmd:()];if():[saveStack:().len()>0]:[saveAndCheckForRecursion()]:[send():[success=true;data=saveStackBackUp:().0;msg=mainData:().collection.capitalize()+' added successfully!';dueNotifications=dueNotifications:();saveStack=saveStackBackUp:()]]"
+      },
+      "guideSearchResult": "if():[_.data.identifier='account']:[searchAccount()].elif():[_.data.identifier='transaction']:[searchTransaction()].elif():[_.data.identifier='voucher']:[searchVoucher()]:[customSearchEngine()]",
+      "searchVoucher": {
+        "checkFields": "if():[_.data.ref]:[getVoucherByRef()].elif():[_.data.paymentWay||_.data.ledgerAccount.inc():'/']:[getAccountIds()]:[getVouchers()]",
+        "getTransactions": "().vouchersIds=:;[().accountsIds._():[search():[collection=balance;field:[account=_]]:[if():[_.data.value()]:[().vouchersIds.push():[_.data.values()]]]]]()::[getVouchers()]",
+        "getVouchers": "search():[collection=voucher;field:[searchFields()]]:[if():[_.data.value()]:[send():[success=true;doc=__;data=_.data.values().sort():[ascending;path=creationDate]]]:[send():[success=false;doc=__;msg='No voucher found!']]]",
+        "searchFields": "if():[().vouchersIds]:[id.in=().vouchersIds.():voucher.filter()];type=_.data.type;if():[_.data.status]:[status=_.data.status];#creationDay.greaterorequal=1707868800000;if():[_.data.fromDate]:[creationDay.greaterorequal=_.data.fromDate];if():[_.data.toDate]:[creationDay.lessorequal=_.data.toDate]",
+        "getVoucherByRef": "search():[collection=voucher;field:[ref=_.data.ref;type=_.data.type]]:[if():[_.data.value()]:[send():[success=true;data=_.data.values()]]:[send():[success=false;message='No voucher found!']]]",
+        "_": "if():[_.data.type]:[checkFields()]:[send():[success=false;msg='Voucher type does not specified!']]",
+        "getAccountIds": "().accountsLedgers=:;().accountsIds=:;if():[_.data.paymentWay]:[().accountsLedgers.push():[_.data.paymentWay]];if():[_.data.ledgerAccount]:[().accountsLedgers.push():[_.data.ledgerAccount]];[().accountsLedgers._()::[getIdByLedger():[value=_]:[().accountsIds.push():[ledgerId:()]]]]()::[getTransactions()]"
+      },
+      "login": {
+        "searchUserInfo": "search():[collection=user;doc=if():[_.user]:[_.user]:[__.data.value().user]]:[if():[_.data.value()]:[checkIfSessionExist():[user=_.data.id]]:[send():[success=false;message='Something went wrong']]]",
+        "checkSessionExpiry": "if():[__.user]:[updateExpiry();genNewSession()]:[if():[_.data.value().expiryDate>=today().timestamp()]:[updateExpiry();genNewSession()]:[send():[success=false;message='Session timeout']]]",
+        "genNewSession": "_.data.value().session=gen():20+[today().timestamp()+''];session:()=_.data.value().session;saveUpdate()",
+        "getCurrency": "search():[collection=currency;field:[branch=_.branch]]:[if():[_.data.value()]:[genData:().currency=_.data.values();genData:().defaultCurrency=[id=_.data.values().find():[counter=1].id;value=_.data.values().find():[counter=1].code]]:[send():[success=false;msg='Something went wrong']]]",
+        "getPermission": "search():[collection=permission;field:[user=_.data.id]]:[if():[_.data.vlaue()]:[genData:().permission=_.data.value().permission]]",
+        "getUser": "search():[collection=user;doc=_.user]:[if():[_.data.value()]:[genData:()=[firstName=_.data.firstName;lastName=_.data.lastName];getBranch();getPermission()]:[send():[success=false;msg='Something went wrong']]]",
+        "searchUsername": "search():[collection=username;field:[username=_.username]]:[if():[_.data.value()]:[searchPassword()]:[send():[success=false;msg='Username doesnt exist!']]]",
+        "createSession": "session:()=gen():20+today().timestamp();save():[collection=session;data=[id=gen():20+[today().timestamp()+''];session=session:();user=_.user;expiryDate=today().timestamp()+86400000]]:[if():[_.success]:[[getUser():[user=__.user]]()::[send():[notification=dueNotifications:();success=true;session=session:();data=genData:();lplp=ppp]]]:[send():[success=false;msg='Something went wrong']]]",
+        "searchPassword": "search():[collection=password;field:[username=_.data.value().id;password=__.password]]:[if():[_.data.value()]:[searchUserInfo()]:[send():[success=false]]]",
+        "checkIfSessionExist": "search():[collection=session;field:[if():[_.user]:[user=_.user];if():[_.session]:[session=_.session]]]:[if():[_.data.value()]:[checkSessionExpiry()]:[if():[__.user]:[createSession():[user=__.user]]:[send():[success=false;message='No session exist']]]]",
+        "updateExpiry": "_.data.value().expiryDate=today().timestamp()+86400000",
+        "saveUpdate": "save():[collection=session;data=_.data.value()]:[if():[_.success]:[[getUser():[user=_.data.user]]()::[send():[notification=dueNotifications:();success=true;session=session:();data=genData:()]]]:[send():[success=false;msg='Something went wrong']]]",
+        "getBranch": "search():[collection=branch]:[if():[_.data.value()]:[genData:().branch=_.data.values();genData:().currentBranch=_.data.values().find():[headQuarter].id;getCurrency():[branch=_.data.values().find():[headQuarter].id]]:[send():[success=false;msg='Something went wrong']]]",
+        "_": ";#req().headers.project=manifest:().projectID;#updateNotificationsInSession();genData:()='';if():[_.username;_.password]:[searchUsername()].elif():[_.session]:[checkIfSessionExist()]:[send():[success=false;message'Missing data']]"
+      },
+      "getCurrencyId": {
+        "getCurrency": "search():[collection=currency;field:[code=_.code;branch=_.branch]]:[if():[_.data.value()]:[currency:()=_.data.value()]:[send():[success=false;msg='Currency not found!']]]",
+        "_": "if():[_.code;_.branch]:[getCurrency()]:[send():[success=false;msg='Missing data for currency!']]"
+      },
+      "updateScheduleInSession": {
+        "updateSessions": "_.data.values()._():[save():[collection=session;data=_]]",
+        "getSessionByUser": "search():[collection=session;field:[user.in=().users]]:[if():[_.data.value()]:[pushDataInSchedule()]:[send():[success=false;msg='Missing data!']:[]]]",
+        "pushDataInSchedule": "_.data.values()._():[if():[!_.schedule]:[_.schedule=:];_.schedule.push():[___.data]];updateSessions()",
+        "_": "if():[_.data;_.collection]:[().users=_.data.users.clone();_.data.users.del();getSessionByUser()]:[send():[success=false;msg='Missing data!';action=updateScheduleInSession]]"
+      },
+      "eraseImg": "erase():[collection=storage;doc=_]:[send():[success=true;msg='Image deleted successfully!']]",
+      "checkSheet": {
+        "updateSheet": "save():[collection=sheet;data=__.data]:[send():[msg=Name changes successfuly;success=true]]",
+        "saveSheet": "genRefNum():[sheet]:[sheet:().ref=ref:();sheet:().id=gen():60+[today().timestamp()+''];sheet:().creationDate=today().timestamp();save():[collection=sheet;data=sheet:()]:[if():[_.success]:[send():[msg=sheet saved successfully;success=true]]:[send():[msg=somthing went wrong try again later;success=false]]]]",
+        "searchSheet": "search():[collection=sheet;field:[id=_.id]]:[if():[_.data.value()]:[__.data.id=__.id;__.data.creationDate=_.data.creationDate;updateSheet()]:[send():[msg=Sheet Not Found;success=false]]]",
+        "_": "if():[_.data]:[sheet:()=_.data;if():[_.updateStatus='false']:[saveSheet()]:[searchSheet()]]:[send():[message='Missing Info';success=false]]"
+      },
+      "dataTypeHandler": {
+        "handleStaticValue": "if():[_.type]:[[requiredDataTypeHandler():[value=[_.staticValue]();type=_.type;path=_.path;refVar=gen():5]]()::[if():[_.newDoc]:[[_.newDoc]:().[_.key]=().requiredDataHandler]:[___.indexAsDoc.[_.key]=().requiredDataHandler]]]:[if():[_.newDoc]:[[_.newDoc]:().[_.key]=[_.staticValue]()]:[___.indexAsDoc.[_.key]=[_.staticValue]()]]",
+        "pushGeneralLedgerFromLedgerAccount": "if():[_.value.split():['/'].len()=3]:[().requiredDataHandler=_.value.split():['/'].0]:[().requiredDataHandler=false]",
+        "initializeListPathData": "_.indexAsDoc.branch=mainReceivedData:().branch;[_.indexAsDoc.id=gen():60+'-'+[today().timestamp()+''];_.indexAsDoc.creationDate=today().timestamp();_.indexAsDoc.creationDay=todayStart().timestamp();if():[___.generateReference||_.generateReference]:[generateReference()];#if():[_.schema.generateLedger]:[generateLedger()]]()::[saveListPathInSaveStack()]",
+        "cleanArray": "().filteredArray=_.array.filter().clone();if():[____.required]:[if():[().filteredArray.len()>0]:[().requiredDataHandler=().filteredArray]:[().requiredDataHandler=false]].elif():[().filteredArray.len()>0]:[().unrequiredDataHandler=().filteredArray]:[().unrequiredDataHandler=false]",
+        "assigningDataInListPath": "[_.input._():[dataTypeHandler():[value=__.data.[_.path];[_].flat();type=_.type;path=_.path]]]()::[if():[_.listOfDocs]:[initializeListPathData()]:[[_.newDoc]:().[_.listPath].push():[_.indexAsDoc]]]",
+        "generateReference": ";#send():[success=false;under=_.indexAsDoc.branch];generatReferenceNumber():[collection=__.collection||_.collection;branch=_.indexAsDoc.branch]:[_.indexAsDoc.ref=ref:();#_.data.counter=counter:()]",
+        "saveListPathInSaveStack": "saveStack:().push():[data=_.indexAsDoc;collection=__.collection;beforeSaveStep=__.beforeSaveStep]",
+        "checkImage": "if():[_.value.len()>=1]:[().unrequiredDataHandler='';_.value._():[if():[____.required]:[if():[!_.id||!_.url]:[send():[success=false;msg='Image not found!']]:[().requiredDataHandler.push():[_]]]:[if():[_.id;_.url]:[().unrequiredDataHandler.push():[_]]]]]:[if():[___.required]:[().requiredDataHandler='';send():[success=false;msg='Image was expected!']]:[().unrequiredDataHandler='']]",
+        "mmmt": "[_.input._():[dataTypeHandler():[value=__.data.[_.path];[_].flat();type=_.type;path=_.path]]]()::[initializeListPathData()]",
+        "unrequiredDataTypeHandler": "if():[_.type=branch]:[().unrequiredDataHandler=mainReceivedData:().branch].elif():[_.type=number]:[().unrequiredDataHandler=[_.value.num()]||0].elif():[_.type='ledger']:[getIdByLedger():[value=_.value;var=_.refVar]:[().unrequiredDataHandler=[_.refVar]:()]].elif():[_.type=image]:[checkImage():[value=_.value]].elif():[_.type=id]:[checkIdExistence():[value=_.value;collection=_.path]:[().unrequiredDataHandler=_.value]].elif():[_.type=array]:[cleanArray():[array=_.value];().unrequiredDataHandler=().filteredArray].elif():[_.type=balance]:[().unrequiredDataHandler=[__.data.debit||0]-[__.data.credit||0]].elif():[_.type=currency]:[getCurrencyId():[code=_.value;branch=__.data.branch]:[().unrequiredDataHandler=currency:().id]].elif():[[_.value].type()=_.type]:[().unrequiredDataHandler=_.value]:[().unrequiredDataHandler=false]",
+        "assigningData": "[requiredDataTypeHandler():[value=_.value;type=_.type;path=_.path;refVar=gen():5]]()::[if():[().requiredDataHandler]:[if():[_.newDoc]:[[_.newDoc]:().[_.key]=().requiredDataHandler;if():[_.keyToPushInReceivedData]:[_.data.[_.keyToPushInReceivedData]=().requiredDataHandler]]:[___.indexAsDoc.[_.key]=().requiredDataHandler]]:[send():[data=_;success=false;error='Data type error!']]]",
+        "assigningUnrequiredData": "[unrequiredDataTypeHandler():[value=_.value;type=_.type;path=_.path;refVar=gen():5]]()::[if():[().unrequiredDataHandler]:[if():[_.newDoc]:[[_.newDoc]:().[_.key]=().unrequiredDataHandler;if():[_.keyToPushInReceivedData]:[_.data.[_.keyToPushInReceivedData]=().unrequiredDataHandler]]:[___.indexAsDoc.[_.key]=().unrequiredDataHandler]]]",
+        "_": "if():[_.staticValue]:[handleStaticValue()].elif():[_.required]:[assigningData()].elif():[_.listPath]:[assigningDataInListPath()].elif():[_.indexAsDoc]:[mmmt()]:[assigningUnrequiredData()]",
+        "requiredDataTypeHandler": "if():[_.type=boolean]:[if():[[_.value].type()='boolean']:[().requiredDataHandler=_.value]:[().requiredDataHandler=false]].elif():[_.type=generalLedger]:[pushGeneralLedgerFromLedgerAccount()].elif():[_.type=number]:[if():[[_.value].isNum()]:[().requiredDataHandler=[_.value.num()]]:[().requiredDataHandler=false]].elif():[_.type=image]:[checkImage():[value=_.value]].elif():[_.type='ledger']:[getIdByLedger():[value=_.value;var=_.refVar]:[().requiredDataHandler=[_.refVar]:()]].elif():[_.type=id]:[checkIdExistence():[value=_.value;collection=_.path]:[().requiredDataHandler=_.value]].elif():[_.type=array]:[if():[[_.value].type()=array]:[cleanArray():[array=_.value]]:[().requiredDataHandler=false]].elif():[_.type=balance]:[().requiredDataHandler=[__.data.debit||0]-[__.data.credit||0]].elif():[_.type=currency]:[getCurrencyId():[code=_.value;branch=__.data.branch]:[().requiredDataHandler=currency:().id]].elif():[[_.value].type()=_.type]:[().requiredDataHandler=_.value]:[().requiredDataHandler=false]"
+      },
+      "customGetRef": {
+        "getOwnerId": "search():[collection=_.data.value().collection;field:[ref=__]]:[if():[_.data.value()]:[refData:()=_.data.value()]:[send():[success=false;msg='Ref number not found']]]",
+        "_": "counter:()=_.split():'-';search():[collection=counter;field:[code=counter:().0]]:[if():[_.data.value()]:[getOwnerId()]:[send():[success=false;msg='Ref number not found']]]"
+      },
+      "getUserBySession": {
+        "getPermission": "search():[collection=permission;field:[user=_.data.id]]:[if():[_.data.value()]:[user:().permission=_.data.value()]:[send():[success=false;msg='Session does not exist!']]]",
+        "getUser": "search():[collection=user;doc=_.data.value().user]:[if():[_.data.value()]:[user:()=_.data;getPermission()]:[send():[succes=false;yyy=ppp;msg='Session does not exist!']]]",
+        "getSession": "search():[collection=session;field:[session=_]]:[if():[_.data.value()]:[getUser()]:[send():[success=false;msg='Session does not exist!']]]",
+        "_": "if():[_]:[getSession()]:[send():[success=false;msg='Somthing went wrong!']]"
+      },
+      "searchCurrencySheet": "search():[collection=sheet;field:[name=_.name]]:[if():[_.success]:[send():[success=true;data=_.data.value()]]:[send():[success=false;msg='Data not found']]]",
+      "checkExistence": {
+        "_": "if():[_.collection=user]:[checkUserExistence()]",
+        "checkUserExistence": "search():[collection=username;field:[username=_.data.username]]:[if():[_.data.value()]:[send():[success=false;msg=__.collection.capitalize()+' already exist!']]:[continue:()=true]]"
+      },
+      "createDefaultLedgerAccounts": {
+        "setDefaultZeros": "().taha=_.text+'t';while():[().taha.len()<[_.digits+1]]:[().taha='0'+().taha];return():[().taha.replace():'t':'']",
+        "setAccountAndBalanceCountersDoc": "().accountAndBalanceCountersDoc.push():[setLedgerCountersDoc():[code='ACC';collection='account']];#().accountAndBalanceCountersDoc.push():[setLedgerCountersDoc():[code='TRN';collection='Transaction']]",
+        "saveAccountAndBalanceCountersDoc": "save():[collection=counter;data=().accountAndBalanceCountersDoc]:[if():[_.data.value()]:[send():[success=true;data=_.data;hellooooo=bbbbbbbbbbb]]]",
+        "filterAccounts": "_.data.value().data._():[if():[_.number.0.in():[___.generalLedgers]||_.number.in():[___.generalLedgers]]:[().filteredList.push():[_]]];setAccounts()",
+        "setAccountDoc": "return():[id=().accountId;creationDate=today().timestamp();creationDay=todayStart().timestamp();ref='ACC-'+[setDefaultZeros():[text=().i;digits=8]];ledgerAccount=[_.number.toString()]+'/1/1';name=_.name;currency='USD';blockAccount='No';branch=receviedData:().branch;description='Default account';startsWith=setStartsWith();#lastBalance=().balanceId]",
+        "saveCountersData": "save():[collection=counter;data=().defaultAccountsList.():counter]:[if():[_.data.value()]:[saveAccountAndBalanceCountersDoc()]]",
+        "setStartsWith": "().startsWith=:;().currentNumber='';range():[_.number.toString().len()-1]._():[().currentNumber+=__.number.toString().[_];().startsWith.push():[.currentNumber]];return():[().startsWith]",
+        "#generateRefNumbers": "[().defaultAccountsList._()::[generatReferenceNumber():[collection=account;branch=receviedData:().branch]:[_.ref=ref:()]]]()::[saveAccounts();send():[success=true;data=().defaultAccountsList;hello=sss]]",
+        "setLedgerCountersDoc": "return():[id=gen():60+'-'+[today().timestamp()+''];creationDate=today().timestamp();creationDay=todayStart().timestamp();code=_.code;collection=_.collection;counter=if():[_.code='ACC']:[().defaultAccountsList.len()]:1;length=8;start=99999999;end=99999999;reset=yearly;branch=receviedData:().branch]",
+        "setAccounts": "().i=1;().filteredList._():[().accountId=gen():60+'-'+[today().timestamp()+''];().balanceId=gen():60+'-'+[today().timestamp()+''];().defaultAccountsList.push():[account=setAccountDoc();#balance=setBalanceDoc();counter=setLedgerCountersDoc():[code=_.number.toString()]];().i++];setAccountAndBalanceCountersDoc();saveAccountsData()",
+        "saveTransactionsData": "save():[collection=balance;data=().defaultAccountsList.():balance]:[if():[_.data.value()]:[saveCountersData()]]",
+        "setBalanceDoc": "return():[id=().balanceId;creationDate=today().timestamp();creationDay=todayStart().timestamp();ref='TRN-'+[setDefaultZeros():[text=().i;digits=8]];account=().accountId;branch=receviedData:().branch;description='Opening';credit=0;debit=0;accountBalances=:[account=().accountId;credit=0;debit=0;balance=0]]",
+        "getAccountsFromSheet": "search():[collection=sheet;field:[name='Government Accounts']]:[if():[_.data.value()]:[filterAccounts()]:[send():[success=false;msg='Accounts data doesnt exist!']]]",
+        "saveAccountsData": ";#send():[defaultAccountsList=().defaultAccountsList;accountAndBalanceCountersDoc=().accountAndBalanceCountersDoc;counter=counter:()];save():[collection=account;data=().defaultAccountsList.():account]:[if():[_.data.value()]:[saveCountersData();#saveTransactionsData()]]",
+        "_": "receviedData:()=_;().filteredList=:;getAccountsFromSheet()"
+      },
+      "getDataForDroplist": "search():[collection=_.collection;field:[startsWith.contains=_.startsWith]]:[if():[_.data.value()]:[send():[success=true;data=_.data.values()]]:[send():[success=false]]]",
+      "signupForm": "search():[collection=signUpInfo]:[if():[_.data.value()]:[send():[success=true;data=_.data.values()]]:[send():[success=false;msg='Data not found!']]]",
+      "changeSheetName": {
+        "saveNewSheetName": "save():[collection=sheet;data=_.data.value()]:[send():[msg=Name changes successfuly;success=true]]",
+        "sheetNameSearch": "search():[collection=sheet;field:[id=_.id]]:[if():[_.data.value()]:[_.data.value().name=__.newName;saveNewSheetName()]:[send():[msg=Sheet Not Found;success=false]]]",
+        "_": "if():[_]:[sheetNameSearch()]:[send():[msg='Please Enter A Valid Name';success=false]]"
+      },
+      "saveThroughSchema": {
+        "#checkForDuplicate": "customCheckExistence():[collection=_.collection;data=_.data]:[if():[continue:()]:[setDocsBySchema()]]",
+        "#getBranch": "search():[collection=branch;doc=_.data.branch]:[if():[_.data]:[getUser()]:[send():[success=false;msg='Branch not found!']]]",
+        "setDocsBySchema": "checkRequirement():[collection=_.collection;data=_.data;newDoc=gen():5+[today().timestamp()+'']]",
+        "getUser": "getUserBySession():[_.session]:[if():[user:()]:[_.data.createdBy=user:().id;checkDocExistence()]:[send():[action=getUser;success=false;msg='User not found!']]]",
+        "#setDocsBySchema": "[checkRequirement():[collection=_.collection;data=_.data;newDoc=gen():5+[today().timestamp()+'']]];#()::[send():[success=false;actionName='setDocsBySchema'];#setHistory();#if():[saveStack:()]:[send():[stck=saveStack:();success=false;under=_;collections=collections:();hello=001]]]",
+        "saveSatck": "save():[collection=_.collection;data=_.data]:[if():[!_.success]:[send():[action=saveSatck;success=false;msg='Try Again!']]]",
+        "checkDocExistence": "if():[collection=user]:[checkExistence():[collection=_.collection;data=_.data]:[if():[continue:()]:[setDocsBySchema();continue:().del()]]]:[setDocsBySchema()]",
+        "setHistory": "[saveStack:()._():[[if():[_.data.createdBy]:[customHistory():[id=_.data.id;collection=_.collection;user=_.data.createdBy]]]()::[saveSatck()]]]()::[send():[success=true;msg=_.collection:().capitalize()+' Created Successfuly!']]",
+        "#rrrgetUser": "getUserBySession():[_.session]:[if():[user:()]:[_.data.createdBy=user:().id;setDocsBySchema();#if():[_.data.id]:[updateData()]:[_.data.createdBy=user:().id;checkForDuplicate()]]:[send():[success=false;msg='User not found!']]]",
+        "_": "if():[_.session;_.data;_.collection]:[if():[!mainReceivedData:()]:[mainReceivedData:()=_.data];if():[!mainData:()]:[mainData:()=_];formManagerName:()=_.manager||_.collection;updateNotificationsInSession():[session=_.session];getUser()]:[send():[success=false;under=_;msg='Missing data!']]",
+        "#updateData": "customCheckExistence():[collection=_.collection;data=_.data;updateBy=user:().id]"
+      },
+      "getSessionAndMarkNotificationAsRead": {
+        "updateSession": "save():[collection=session;data=_.data.value()]:[if():[_.success]:[send():[success=true]]:[]]",
+        "_": "search():[collection=session;field:[session=_.session]]:[if():[_.data.value()]:[_.data.value().notification.pull():[id=__.notification];updateSession()]:[send():[success=false;msg='something went wrong!']]]"
+      },
+      "dropListFromSheet": {
+        "_": "search():[collection=sheet;field:[name=_.name]]:[if():[_.data.value()]:[send():[data=_.data.value();success=true]]:[send():[success=false]]]"
+      },
+      "initializeDocAndCheckForRecursion": {
+        "checkIfIncludeNextStep": "if():[_.schema.nextStep]:[if():[_.schema.nextStep.type()=array]:[handelNextStepCondition()]:[if():[_.schema.nextStep.condition]:[handelNextStepCustomCondition()]:[formManagerName:()=_.schema.nextStep.manager;().nextStep=_.schema.nextStep.collection;doNextStep()]]]:[if():[!_.keepRendering]:[checkBeforeSaveStep();if():[_.schema.customCondition]:[[[_.schema.customCondition]()]()::[loopOverStackAndSaveData()]]:[loopOverStackAndSaveData()]]]",
+        "checkBeforeSaveStep": "saveStack:()._():[if():[_.beforeSaveStep]:[if():[_.condition]:[send():[success=false;under=_]];_.beforeSaveStep.keyValue._():[__.data.[_.key]=saveStack:().find():[.[_.findKey]=[_.findValue]].data.[_.path]];_.beforeSaveStep.del()]]",
+        "generateLedger": "if():[_.schema.generateLedger.toString()!='true']:[().generalLedger=[_.schema.generateLedger]()]:[().generalLedger=_.receivedData.generalLedger];generateLedgerCounter():[ledger=().generalLedger;branch=_.receivedData.branch;currency=_.receivedData.currency;accountNumber=_.receivedData.accountNumber]:[_.data.ledgerAccount=refLedger:()]",
+        "handelNextStepCondition": "().nextStepValidation=false;_.schema.nextStep._():[().nextStepCondition=true;_.condition._():[if():[!mainReceivedData:().[_.conditionReference].in():[_.condition]]:[().nextStepCondition=false]];if():[().nextStepCondition;!().nextStep]:[().nextStepValidation=true;formManagerName:()=_.manager;().nextStep=_.collection;#doNextStep()]];if():[().nextStep]:[doNextStep()];if():[!().nextStepValidation]:[checkBeforeSaveStep();loopOverStackAndSaveData()]",
+        "initializeDoc": "[handleHelpersKeyValue()]()::[if():[!_.schema.update;!_.schema.customUpdate]:[_.data.id=gen():60+'-'+[today().timestamp()+''];_.receivedData.[_.collection+'Id']=_.data.id;_.data.creationDate=today().timestamp();_.data.creationDay=todayStart().timestamp()];if():[_.schema.generateReference]:[generateReference()];if():[_.schema.generateLedger]:[generateLedger()]]",
+        "doNextStep": "checkRequirement():[data=__.receivedData||_.receivedData;collection=().nextStep;newDoc=gen():5+[today().timestamp()+'']];().nextStep.del()",
+        "generateReference": "generatReferenceNumber():[collection=_.collection;branch=_.receivedData.branch]:[_.data.ref=ref:();#_.data.counter=counter:()]",
+        "handleHelpersKeyValue": "if():[_.schema.helpersKeyValue]:[_.schema.helpersKeyValue._():[if():[_.staticValue]:[dataToPushInStack:().[_.key]=[_.staticValue]]:[dataTypeHandler():[value=__.receivedData.[_.path];[_].flat();data=__.receivedData;newDoc=dataToPushInStack]]]]",
+        "saveStackAndCheckForRecursion": "if():[!_.schema.ignoreMainDoc]:[dataToPushInStack:().():[data=_.data;collection=_.collection];if():[_.schema.beforeSaveStep]:[dataToPushInStack:().beforeSaveStep=_.schema.beforeSaveStep];if():[_.schema.update]:[dataToPushInStack:().update=true].elif():[_.schema.customUpdate]:[dataToPushInStack:().customUpdate=_.schema.customUpdate].elif():[_.schema.customSave]:[dataToPushInStack:().customSave=_.schema.customSave];saveStack:().push():[dataToPushInStack:()]];checkIfIncludeNextStep()",
+        "_": "[dataToPushInStack:()=[];initializeDoc()]()::[saveStackAndCheckForRecursion()]"
+      },
+      "#checkRequiremenddd": {
+        "handleListItems": "___.data.[_.listPath]._():[().ListPathIndex=0;().inputListClone=__.input.clone();[__.input._():[[checkIfIncludeConditionInListPath()]];().ListPathIndex+=1]()::[dataTypeHandler():[generateReference=__.generateReference;input=().inputListClone;data=_;newDoc=____.newDoc;listPath=__.listPath]]]",
+        "checkIfIncludeConditionInListPath": "if():[_.condition]:[if():[!customCondition():[condition=_.condition;data=mainReceivedData:();path=___.listPath;index=().ListPathIndex]]:[().inputListClone.pullItem():[_]]].elif():[_.orCondition]:[if():[!customCondition():[orCondition=_.orCondition;data=mainReceivedData:();path=___.listPath;index=().ListPathIndex]]:[().inputListClone.pullItem():[_]]]",
+        "handleListOfDocs": "if():[___.data.[_.listPath].len()>0]:[setIndexAsDoc()]",
+        "checkDataTypeNotInPath": "dataTypeHandler():[value=___.data.[_.path];[_].flat();data=___.data;newDoc=___.newDoc]",
+        "checkIfIncludeCondition": "if():[_.condition]:[if():[customCondition():[condition=_.condition;data=mainReceivedData:()]]:[checkDataTypeNotInPath()]].elif():[_.orCondition]:[if():[customCondition():[orCondition=_.orCondition;data=mainReceivedData:()]:[checkDataTypeNotInPath()]]]:[checkDataTypeNotInPath()]",
+        "getSchema": "search():[collection=schemas;field:[collection=_.collection]]:[if():[_.data.value()]:[().schemaData=_.data.value().create.[formManagerName:()];checkPath()]:[send():[success=false;msg='Schema does not exist!']]]",
+        "checkPath": "[().schemaData.keyValue._():[if():[_.listPath]:[if():[_.condition]:[if():[customCondition():[condition=_.condition;data=mainReceivedData:()]]:[setKeysInPath()]]]:[checkIfIncludeCondition()]]]()::[initializeDoc()]",
+        "setIndexAsDoc": "[().inputListClone=_.input.clone();[_.input._():[checkIfIncludeConditionInListPath()]]()::[dataTypeHandler():[indexAsDoc=[];generateReference=_.generateReference;listOfDocs=_.listOfDocs;input=().inputListClone;data=___.data.[_.listPath].0;newDoc=___.newDoc;listPath=_.listPath]]]()::[___.data.[_.listPath].pull():0;handleListOfDocs()]",
+        "initializeDoc": "initializeDocAndCheckForRecursion():[receivedData=__.data;data=[__.newDoc]:();collection=__.collection;schema=().schemaData]",
+        "setKeysInPath": "if():[___.data.[_.listPath]]:[if():[_.multipleDocs]:[().ListPathIndex=0;handleMultipleDocs()].elif():[_.listOfDocs]:[handleListOfDocs()]:[handleListItems()]]:[send():[success=false;msg='listPath does not exist in data!']]",
+        "handleMultipleDocs": "if():[___.data.[_.listPath].len()>0]:[setIndexAsMultipleDocs()]",
+        "setIndexAsMultipleDocs": "[_.multipleDocs._()::[().setDoc=true;if():[_.condition]:[checkConditionForListOfDocs()];if():[().setDoc]:[().inputListClone=_.input.clone();().ListPathIndex++;[_.input._():[checkIfIncludeConditionInListPath()]]()::[dataTypeHandler():[indexAsDoc=[];collection=__.collection;generateReference=__.generateReference;listOfDocs=__.listOfDocs;input=().inputListClone;data=____.data.[__.listPath].0;newDoc=____.newDoc;listPath=__.listPath]]]]]()::[___.data.[_.listPath].pull():0;handleMultipleDocs()]",
+        "checkConditionForListOfDocs": "if():[!customCondition():[condition=_.condition;data=mainReceivedData:()]]:[().setDoc=false]",
+        "_": "if():[_.collection;_.data;_.newDoc]:[getSchema()]:[send():[success=false;actionName='checkRequirement';under=_;msg='Missing data!']]"
+      },
+      "searchNotification": {
+        "combineData": "__.data.values()._():[_.createdBy=__.data.values().find():[id=_.createdBy].firstName+' '+__.data.values().find():[id=_.createdBy].lastName];send():[success=true;data=__.data.values()]",
+        "getSender": "search():[collection=user;docs=_.data.values().():createdBy]:[if():[_.data.value()]:[combineData()]:[send():[success=false;msg='Data not found']]]",
+        "_": "[updateNotificationsInSession():[session=_.session]]()::[search():[collection=notification;if():[dueNotifications:().len()>0]:[docs=dueNotifications:().():id]]:[if():[_.data.value()]:[getSender()]:[send():[success=false;under=_;under2=__;msg='Data not found']]]]"
+      }
+    },
+    "collapsed": [
+      {
+        "path": [
+          "saveSupplier"
+        ]
+      },
+      {
+        "path": [
+          "findOffer&RemoveHotel"
+        ]
+      },
+      {
+        "path": [
+          "saveOffer"
+        ]
+      },
+      {
+        "path": [
+          "saveSponsor"
+        ]
+      },
+      {
+        "path": [
+          "saveUser"
+        ]
+      },
+      {
+        "path": [
+          "getCurrencyId"
+        ]
+      },
+      {
+        "path": [
+          "updateDoc"
+        ]
+      },
+      {
+        "path": [
+          "getDataDifference"
+        ]
+      },
+      {
+        "path": [
+          "[_"
+        ]
+      },
+      {
+        "path": [
+          "branch"
+        ]
+      },
+      {
+        "path": [
+          "path"
+        ]
+      },
+      {
+        "path": [
+          "customHistory"
+        ]
+      },
+      {
+        "path": [
+          "generateUsername"
+        ]
+      },
+      {
+        "path": [
+          "saveAccount"
+        ]
+      },
+      {
+        "path": [
+          "changeSheetName"
+        ]
+      },
+      {
+        "path": [
+          "checkExistence"
+        ]
+      },
+      {
+        "path": [
+          "#getDataOnLoad"
+        ]
+      },
+      {
+        "path": [
+          "saveAsset"
+        ]
+      },
+      {
+        "path": [
+          "dropListFromSheet"
+        ]
+      },
+      {
+        "path": [
+          "#customSearchEngine1"
+        ]
+      },
+      {
+        "path": [
+          "#formatCollection"
+        ]
+      },
+      {
+        "path": [
+          "searchSheet"
+        ]
+      },
+      {
+        "path": [
+          "customSave"
+        ]
+      },
+      {
+        "path": [
+          "searchNotification"
+        ]
+      },
+      {
+        "path": [
+          "customGetRef"
+        ]
+      },
+      {
+        "path": [
+          "checkSheet"
+        ]
+      },
+      {
+        "path": [
+          "#checkRequiremenddd"
+        ]
+      },
+      {
+        "path": [
+          "getSessionAndMarkNotificationAsRead"
+        ]
+      },
+      {
+        "path": [
+          "customSearchEngine"
+        ]
+      },
+      {
+        "path": [
+          "#getPricing"
+        ]
+      },
+      {
+        "path": [
+          "updateNotificationsInSession"
+        ]
+      },
+      {
+        "path": [
+          "customCheckExistence"
+        ]
+      },
+      {
+        "path": [
+          "searchVoucher"
+        ]
+      },
+      {
+        "path": [
+          "updateScheduleInSession"
+        ]
+      },
+      {
+        "path": [
+          "getIdByLedger"
+        ]
+      },
+      {
+        "path": [
+          "customCondition"
+        ]
+      },
+      {
+        "path": [
+          "getUserBySession"
+        ]
+      },
+      {
+        "path": [
+          "createDefaultLedgerAccounts"
+        ]
+      },
+      {
+        "path": [
+          "dataTypeHandler"
+        ]
+      },
+      {
+        "path": [
+          "#checkRequirementfff"
+        ]
+      },
+      {
+        "path": [
+          "updateSheet"
+        ]
+      },
+      {
+        "path": [
+          "saveTransaction"
+        ]
+      },
+      {
+        "path": [
+          "searchAssets"
+        ]
+      },
+      {
+        "path": [
+          "searchAccount"
+        ]
+      },
+      {
+        "path": [
+          "searchTransaction"
+        ]
+      },
+      {
+        "path": [
+          "updateImage"
+        ]
+      },
+      {
+        "path": [
+          "generatReferenceNumber"
+        ]
+      },
+      {
+        "path": [
+          "login"
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "recives collection name and branch and it create a reference number",
+        "path": [
+          "generatReferenceNumber"
+        ]
+      },
+      {
+        "note": "recives ledger, branch, currency and it create a ledger counter",
+        "path": [
+          "generateLedgerCounter"
+        ]
+      },
+      {
+        "note": "receive currency code + branch ID => currency ID",
+        "path": [
+          "getCurrencyId"
+        ]
+      },
+      {
+        "note": "receive ledger => it make sure it is valid and get the account ID",
+        "path": [
+          "getIdByLedger"
+        ]
+      },
+      {
+        "note": "receives session => user Info + permission",
+        "path": [
+          "getUserBySession"
+        ]
+      },
+      {
+        "note": "if the data sent has an IDpp it will update else it will check for duplicate",
+        "path": [
+          "customCheckExistence"
+        ]
+      },
+      {
+        "note": "receive ref number split it then get the collection and retrive the right doc",
+        "path": [
+          "customGetRef"
+        ]
+      },
+      {
+        "note": "this action saves records on every creation or update on any doc",
+        "path": [
+          "customHistory"
+        ]
+      },
+      {
+        "note": "receives oldData & data and check the difference",
+        "path": [
+          "getDataDifference"
+        ]
+      },
+      {
+        "note": "update takes collection + new data => update:() = true",
+        "path": [
+          "updateDoc"
+        ]
+      },
+      {
+        "note": "custom Save",
+        "path": [
+          "customSave"
+        ]
+      },
+      {
+        "note": "custom Search",
+        "path": [
+          "#customSearchEngine1"
+        ]
+      },
+      {
+        "note": "",
+        "path": [
+          "dataTypeHandler"
+        ]
+      }
+    ],
+    "folderPath": [],
+    "version": 0,
+    "counter": 44,
+    "secure": true
+  }
+}

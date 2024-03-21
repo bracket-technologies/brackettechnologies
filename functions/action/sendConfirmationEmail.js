@@ -13,7 +13,7 @@ const transport = nodemailer.createTransport({
 module.exports = {
   sendConfirmationEmail: async ({ req, res }) => {
 
-    var db = req.db.firebaseDB
+    var db = req.datastore.firebaseDB
     var data = req.body.data
     var collection = "_confirmEmail_"
     var ref = db.collection(collection)

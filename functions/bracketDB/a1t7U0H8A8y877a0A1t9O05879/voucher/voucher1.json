@@ -1,0 +1,16 @@
+{
+  "accountID": "1197B078m8x8q4e9T5X949d858",
+  "billID": "I1C7Z0t8z8F8d6K999b9c7M5d5",
+  "voucherDate": 9999999999999,
+  "amount": 100,
+  "unit": "TOKEN",
+  "status": "Confirmed",
+  "__props__": {
+    "id": "H1Q7f0a828R8d7d0Q060p1E5l2",
+    "doc": "voucher1",
+    "creationDate": 1711031357679,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "counter": 1
+  }
+}

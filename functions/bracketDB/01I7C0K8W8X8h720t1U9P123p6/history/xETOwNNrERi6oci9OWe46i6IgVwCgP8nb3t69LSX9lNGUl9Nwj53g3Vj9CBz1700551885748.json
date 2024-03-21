@@ -1,0 +1,25 @@
+{
+  "difference": [
+    {
+      "new": "Rouche",
+      "path": "address"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "s9w655YWHQCO8CkzcjdCTH7PHYDjISNp6SSfLW2fE1OiXRUMz29qW0kT1TV81700207616063",
+  "id": "xETOwNNrERi6oci9OWe46i6IgVwCgP8nb3t69LSX9lNGUl9Nwj53g3Vj9CBz1700551885748",
+  "creationDay": 1700524800000,
+  "creationDate": 1700551885749,
+  "__props__": {
+    "id": "T1Q7B151P0N3N1a3O6W3P9e6c3",
+    "doc": "xETOwNNrERi6oci9OWe46i6IgVwCgP8nb3t69LSX9lNGUl9Nwj53g3Vj9CBz1700551885748",
+    "creationDate": 1711031363963,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 279
+  }
+}

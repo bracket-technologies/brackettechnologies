@@ -1,3 +1,5 @@
+const { getCookie } = require('./cookie')
+
 module.exports = {
   search: async ({ _window, lookupActions, stack, id, req, res, e, __, data: search = {}, address }) => {
     
@@ -12,6 +14,7 @@ module.exports = {
 
     } else {
 
+      headers.cookies = JSON.stringify(getCookie())
       var response = await require('axios').post(`/`, { server: "database", type: "search", data: search }, { headers })
 
       data = response.data

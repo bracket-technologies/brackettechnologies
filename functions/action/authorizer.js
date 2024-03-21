@@ -4,23 +4,20 @@ const { logger } = require("./logger")
 // config
 require('dotenv').config()
 
-const authorizer = async ({ _window, req }) => {
+const authorizer = async ({ _window, req, res }) => {
 
-  var global = _window.global
+  var global = _window.global, success, message, error
 
   logger({ _window, data: { key: "authorization", start: true } })
 
-  if (global.manifest.datastore === "bracketdb") {
+  if (global.manifest.datastore === "bracketDB") {
 
-    var session = getSession({ _window, req })
-    if (!session) session = createSession({ _window, req })
+    var { data, success, message } = await getSession({ _window, req, res })
+    global.manifest.session = data
 
-    global.data.collections = global.data.project.collections
-    global.manifest.session = { projectID: global.data.project.id }
+  } else if (global.manifest.datastore === "firebase") {
 
-  } else if (global.manifest.session.datastore === "firebase") {
-
-    var ref = req.db.firebaseDB.collection("_project_"),
+    var ref = req.datastore.firebaseDB.collection("_project_"),
       success, message, error,
       global = global
 
@@ -49,7 +46,11 @@ const authorizer = async ({ _window, req }) => {
       console.log(err);
     })
 
-  } else if (global.manifest.session.datastore === "mongoDB") {}
+  } else if (global.manifest.datastore === "mongoDB") {
+
+    var { data, success, message } = await getSession({ _window, req, res })
+    global.manifest.session = data
+  }
 
   logger({ _window, data: { key: "authorization", end: true } })
 

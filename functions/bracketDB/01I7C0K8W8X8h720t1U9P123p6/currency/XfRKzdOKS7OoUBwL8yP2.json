@@ -1,0 +1,25 @@
+{
+  "country": "United States",
+  "code": "USD",
+  "counter": 1,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "ref": "CRN-00000001",
+  "createdBy": "i4sFsUOhrwc4ahQQqznbaqcj3qJb53Ha9VRkIqeFBuHMFlNxEY9jP7GYwkyt",
+  "exchangeRate": 1,
+  "decimals": 2,
+  "name": "US Dollar",
+  "symbole": "$",
+  "id": "XfRKzdOKS7OoUBwL8yP2",
+  "__props__": {
+    "id": "e1b7m1x1p0S361M316e0S4W3u0",
+    "doc": "XfRKzdOKS7OoUBwL8yP2",
+    "creationDate": 1711031360430,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 3
+  }
+}

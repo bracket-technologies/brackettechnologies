@@ -2,7 +2,7 @@ const { decode } = require("./decode")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 
-const openStack = ({ _window, id: viewID, string = "", nextAddress, headStack, ...data }) => {
+const openStack = ({ _window, id: viewID, string = "", ...data }) => {
 
   var stack = {
     ...data,
@@ -15,12 +15,10 @@ const openStack = ({ _window, id: viewID, string = "", nextAddress, headStack, .
     interpreting: true,
     string: string ? decode({ _window, string }) : "",
     executionStartTime: (new Date()).getTime(),
-    addresses: toArray(nextAddress),
+    addresses: [],
     logs: [],
     returns: []
   }
-
-  if (headStack) stack.headStackID = headStack.id
 
   stack.logs.push(`# Status TYPE ID Index Action => HeadID HeadIndex HeadAction`)
   stack.logs.push(`1 Start STACK ${stack.id} ${stack.event.toUpperCase()} ${stack.string}`)
@@ -39,15 +37,16 @@ const clearStack = ({ stack }) => {
   stack.addresses = []
 }
 
-const endStack = ({ _window, stack, end }) => {
+const endStack = ({ _window, stack }) => {
 
-  if (end && stack.addresses.length === 0) {
+  if (stack.addresses.length === 0) {
 
+    var global = _window ? _window.global : window.global
     var logs = `%cSTACK ${(new Date()).getTime() - stack.executionStartTime} ${stack.event}`
     stack.logs.push(`${stack.logs.length} End STACK ${(new Date()).getTime() - stack.executionStartTime} ${stack.id} ${stack.event}`)
 
     // remove stack
-    delete (_window ? _window.global : window.global).__stacks__[stack.id]
+    delete global.__stacks__[stack.id]
 
     // print stack
     stack.print && !stack.printed && console.log("STACK:" + stack.event, logs, "color: blue", stack.logs)

@@ -49,8 +49,12 @@ const server = (req, res) => {
     })
 }
 
-http.createServer(server).listen(80, "localhost", () => console.log("Server Listening to Port 80"))
+// acc server
+http.createServer(server).listen(80, ["localhost", "192.168.10.204"], () => console.log("Server Listening to Port 80"))
+
+// bracket server
+http.createServer(server).listen(8080, ["localhost", "192.168.10.204"], () => console.log("Server Listening to Port 8080"))
 
 exports.app = functions.https.onRequest((req, res) => require("./action/router")({ req, res, data }))
 
-// require("./action/moveData")(data)
+require("./action/moveData")(data)

@@ -1,0 +1,106 @@
+{
+  "headers": [
+    {
+      "text": "Country",
+      "key": "country"
+    },
+    {
+      "text": "Code",
+      "key": "code"
+    },
+    {
+      "text": "Symbol",
+      "key": "symbol"
+    },
+    {
+      "text": "Decimal Digits",
+      "key": "decimalDigits"
+    }
+  ],
+  "data": [
+    {
+      "symbol": "$",
+      "country": "United States",
+      "code": "USD",
+      "name": "United States Dollar (USD)",
+      "decimalDigits": "2"
+    },
+    {
+      "symbol": "€",
+      "country": "European Union",
+      "code": "EUR",
+      "name": "Euro (EUR)",
+      "decimalDigits": "2"
+    },
+    {
+      "symbol": "L.L",
+      "country": "Lebanon",
+      "code": "LBP",
+      "name": "Lebanese Pound (LBP)",
+      "decimalDigits": "2"
+    },
+    {
+      "symbol": "CA$",
+      "country": "Canada",
+      "code": "CAD",
+      "name": "Canadian Dollar (CAD)",
+      "decimalDigits": "2"
+    }
+  ],
+  "name": "Currencies",
+  "id": "kGXZFhBsg5NUyB67gska",
+  "creationDay": 1705411295880,
+  "creationDate": 1705411306084,
+  "__props__": {
+    "id": "i1m7T101O0O3k1i3z642L2V2n1",
+    "doc": "kGXZFhBsg5NUyB67gska",
+    "creationDate": 1711031362221,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "keys"
+        ]
+      },
+      {
+        "path": [
+          "list",
+          2
+        ]
+      },
+      {
+        "path": [
+          "list",
+          3
+        ]
+      },
+      {
+        "path": [
+          "list",
+          0
+        ]
+      },
+      {
+        "path": [
+          "list",
+          1
+        ]
+      },
+      {
+        "path": [
+          "data"
+        ]
+      },
+      {
+        "path": [
+          "headers"
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 8
+  }
+}

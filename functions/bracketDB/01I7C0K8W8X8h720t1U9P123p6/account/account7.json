@@ -1,0 +1,25 @@
+{
+  "name": "sdfsdfsd",
+  "isSubAccount": "No",
+  "generalLedger": "1",
+  "currency": "USD",
+  "amount": 0,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "createdBy": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+  "startsWith": [
+    "1"
+  ],
+  "id": "GdGUw7Y3Gy1dSqZkZdG7wkk3BqPAS0P4LCfzuGg6BKoRjQUxXvGDvnBqWzSG-1711031431286",
+  "creationDate": 1711031431286,
+  "creationDay": 1710979200000,
+  "ref": "ACC-00000008",
+  "ledgerAccount": "1/5/1",
+  "__props__": {
+    "id": "q127b1i1R0v3y1b4Q301b3h0Y7",
+    "doc": "account7",
+    "creationDate": 1711031431307,
+    "active": true,
+    "createdByUserID": null,
+    "counter": 7
+  }
+}

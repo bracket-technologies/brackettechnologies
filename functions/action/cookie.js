@@ -1,4 +1,4 @@
-const setCookie = ({ _window, name = "", value, expiry = 360 }) => {
+const setCookie = ({ name = "", value, expiry = 360 }) => {
 
   var cookie = document.cookie || ""
   var decodedCookie = decodeURIComponent(cookie)
@@ -22,7 +22,7 @@ const getCookie = ({ name, req } = {}) => {
   return __session[name]
 }
 
-const eraseCookie = ({ _window, name }) => {
+const eraseCookie = ({ name }) => {
 
   var cookie = document.cookie || ""
   var decodedCookie = decodeURIComponent(cookie)

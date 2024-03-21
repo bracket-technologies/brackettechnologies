@@ -1,0 +1,3012 @@
+{
+  "createFormInputs": {
+    "docDefaultValues": {
+      "ledgerAccountName": "currentOpenManager:().ledgerAccountName"
+    },
+    "subInput": [
+      {
+        "sectionsInfo": [
+          {
+            "#input": [
+              {
+                "orCondition": [
+                  {
+                    "condition": [
+                      "Receivables and Payables"
+                    ],
+                    "conditionReference": "ledgerAccountName"
+                  },
+                  {
+                    "condition": [
+                      "Financial Accounts"
+                    ],
+                    "conditionReference": "ledgerAccountName"
+                  }
+                ],
+                "inputPath": "type",
+                "fillFirstItemAsValue": true,
+                "readonly": "readonly",
+                "inputLabel": "Type",
+                "droplistClickAction": "if():[doc().ledgerAccountName='Financial Accounts']:[customUpdate():[input=:3:4]]:[customUpdate()]",
+                "items": [
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Receivables and Payables"
+                        ],
+                        "conditionReference": "ledgerAccountName"
+                      }
+                    ],
+                    "items": [
+                      "B2B Customer",
+                      "B2C Customer",
+                      "Corporate Customer",
+                      "Supplier",
+                      "Partner",
+                      "Employee",
+                      "Other Operational Account"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Financial Accounts"
+                        ],
+                        "conditionReference": "ledgerAccountName"
+                      }
+                    ],
+                    "items": [
+                      "Petty Cash",
+                      "Cash",
+                      "Bank",
+                      "Credit Card",
+                      "Cheque for Collection",
+                      "Cheque under Collection"
+                    ]
+                  }
+                ],
+                "required": "true"
+              },
+              {
+                "inputPath": "name",
+                "inputLabel": "Name",
+                "required": true
+              },
+              {
+                "inputPath": "isSubAccount",
+                "readonly": "readonly",
+                "inputLabel": "This Account is a Sub-Account?",
+                "inputValue": "No",
+                "items": [
+                  "Yes",
+                  "No"
+                ],
+                "droplistClickAction": "customUpdate():[input=:3:4]",
+                "required": true
+              },
+              {
+                "condition": [
+                  {
+                    "condition": [
+                      "No"
+                    ],
+                    "conditionReference": "isSubAccount"
+                  }
+                ],
+                "inputPath": "generalLedger",
+                "inputLabel": "General Ledger",
+                "allowedLedgers": [
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "B2B Customer"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "413"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "B2C Customer"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "411"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Corporate Customer"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "412"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Supplier"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "401"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Other Operational Account"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "4619"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Employee"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "428"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Bank"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "512"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Cheque for Collection"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "5111"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Cheque under Collection"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "51111"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Credit Card"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "511"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Cash"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "53"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Petty Cash"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "531"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Fixed Assets"
+                        ],
+                        "conditionReference": "ledgerAccountName"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "2"
+                    ],
+                    "notAllowedLedgers": [
+                      "28"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Capitals"
+                        ],
+                        "conditionReference": "ledgerAccountName"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "1"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Expenditure"
+                        ],
+                        "conditionReference": "ledgerAccountName"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "6"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Income"
+                        ],
+                        "conditionReference": "ledgerAccountName"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "7"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Partner"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "45"
+                    ]
+                  }
+                ],
+                "govInput": "true",
+                "required": true
+              },
+              {
+                "condition": [
+                  {
+                    "condition": [
+                      "Yes"
+                    ],
+                    "conditionReference": "isSubAccount"
+                  }
+                ],
+                "varName": {
+                  "ledgerAccount": "ledgerAccount"
+                },
+                "inputPath": "ledgerAccount",
+                "generalLedger": true,
+                "inputLabel": "Ledger Account",
+                "allowedLedgers": [
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "B2B Customer"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "413"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "B2C Customer"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "411"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Corporate Customer"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "412"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Supplier"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "401"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Other Operational Account"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "4619"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Employee"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "428"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Bank"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "512"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Cheque for Collection"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "5111"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Cheque under Collection"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "51111"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Credit Card"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "511"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Cash"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "53"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Petty Cash"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "531"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Fixed Assets"
+                        ],
+                        "conditionReference": "ledgerAccountName"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "2"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Capitals"
+                        ],
+                        "conditionReference": "ledgerAccountName"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "1"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Expenditure"
+                        ],
+                        "conditionReference": "ledgerAccountName"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "6"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Income"
+                        ],
+                        "conditionReference": "ledgerAccountName"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "7"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Partner"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "45"
+                    ]
+                  }
+                ],
+                "required": true
+              },
+              {
+                "inputVa;u": {},
+                "inputVa": "ZTuCB",
+                "inpu;ue": {
+                  "ue": {}
+                },
+                "inputPath": "currency",
+                "readonly": true,
+                "inputVa;": "",
+                "inputVa;ue": {
+                  "u": {}
+                },
+                "inputLabel": "Currency",
+                "inputValue": "userData:().defaultCurrency.value",
+                "items": "userData:().currency.():code",
+                "droplistClickAction": "customUpdate():[:[section=2;input=:0]:[section=4;input=:0]:[section=5;input=:0:2]]",
+                "required": "true"
+              },
+              {
+                "condition": [
+                  {
+                    "condition": [
+                      "Fixed Assets"
+                    ],
+                    "conditionReference": "ledgerAccountName"
+                  }
+                ],
+                "inputPath": "createDepreciationAccount",
+                "readonly": true,
+                "inputLabel": "Create Depreciation Account",
+                "inputValue": "No",
+                "items": [
+                  "Yes",
+                  "No"
+                ],
+                "droplistClickAction": "customUpdate():[section=2]"
+              },
+              {
+                "condition": [
+                  {
+                    "condition": [
+                      "B2B Customer",
+                      "B2C Customer",
+                      "Corporate Customer",
+                      "Supplier",
+                      "Other Operational Account"
+                    ],
+                    "conditionReference": "type"
+                  }
+                ],
+                "inputPath": "createVatAccount",
+                "readonly": true,
+                "inputLabel": "Create VAT Account",
+                "inputValue": "No",
+                "items": [
+                  "Yes",
+                  "No"
+                ],
+                "droplistClickAction": "customUpdate():[section=1]"
+              },
+              {
+                "inputPath": "blockAccount",
+                "readonly": "readonly",
+                "inputValue": "No",
+                "inputLabel": "Block Account",
+                "items": [
+                  {
+                    "text": "Yes",
+                    "pathValue": "true"
+                  },
+                  {
+                    "text": "No",
+                    "pathValue": "false"
+                  }
+                ]
+              }
+            ],
+            "subInput": [
+              {
+                "input": [
+                  {
+                    "orCondition": [
+                      {
+                        "condition": [
+                          "Receivables and Payables"
+                        ],
+                        "conditionReference": "ledgerAccountName"
+                      },
+                      {
+                        "condition": [
+                          "Financial Accounts"
+                        ],
+                        "conditionReference": "ledgerAccountName"
+                      }
+                    ],
+                    "inputPath": "type",
+                    "fillFirstItemAsValue": true,
+                    "readonly": "readonly",
+                    "inputLabel": "Type",
+                    "droplistClickAction": "if():[doc().ledgerAccountName='Financial Accounts']:[customUpdate():[input=:3:4]]:[customUpdate()]",
+                    "items": [
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Receivables and Payables"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                          }
+                        ],
+                        "items": [
+                          "B2B Customer",
+                          "B2C Customer",
+                          "Corporate Customer",
+                          "Airline Supplier",
+                          "Agency Supplier",
+                          "Partner",
+                          "Employee",
+                          "Other Operational Account"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Financial Accounts"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                          }
+                        ],
+                        "items": [
+                          "Petty Cash",
+                          "Cash",
+                          "Bank",
+                          "Credit Card",
+                          "Cheque for Collection",
+                          "Cheque under Collection"
+                        ]
+                      }
+                    ],
+                    "required": "true",
+                    "#inputValue": "B2B Customer"
+                  },
+                  {
+                    "inputPath": "name",
+                    "inputLabel": "Name",
+                    "required": true
+                  },
+                  {
+                    "inputPath": "isSubAccount",
+                    "readonly": "readonly",
+                    "inputLabel": "This Account is a Sub-Account?",
+                    "inputValue": "No",
+                    "items": [
+                      "Yes",
+                      "No"
+                    ],
+                    "droplistClickAction": "customUpdate():[input=:3:4]"
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "No"
+                        ],
+                        "conditionReference": "isSubAccount"
+                      }
+                    ],
+                    "inputPath": "generalLedger",
+                    "inputLabel": "General Ledger",
+                    "allowedLedgers": [
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "B2B Customer"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "413"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "B2C Customer"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "411"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Corporate Customer"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "412"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Agency Supplier",
+                              "Airline Supplier"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "4011"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Other Operational Account"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "4619"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Employee"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "428"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Bank"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "512"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Cheque for Collection"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "5111"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Cheque under Collection"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "51111"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Credit Card"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "511"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Cash"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "53"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Petty Cash"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "531"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Fixed Assets"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "2"
+                        ],
+                        "notAllowedLedgers": [
+                          "28"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Capitals"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "1"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Expenditure"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "6"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Income"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "7"
+                        ]
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Partner"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "allowedLedgers": [
+                          "45"
+                        ]
+                      }
+                    ],
+                    "govInput": "true",
+                    "required": true
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Yes"
+                        ],
+                        "conditionReference": "isSubAccount"
+                      }
+                    ],
+                    "varName": {
+                      "ledgerAccount": "ledgerAccount"
+                    },
+                    "inputPath": "ledgerAccount",
+                    "inputLabel": "Ledger Account",
+                    "govInput": true,
+                    "required": true,
+                    "includeLegerAccounts": [
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "B2B Customer"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "startsWith": "413"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "B2C Customer"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "startsWith": "411"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Corporate Customer"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "startsWith": "412"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Agency Supplier",
+                              "Airline Supplier"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "startsWith": "4011"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Other Operational Account"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "startsWith": "4619"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Employee"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "startsWith": "428"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Bank"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "startsWith": "512"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Cheque for Collection"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "startsWith": "5111"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Cheque under Collection"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "startsWith": "51111"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Credit Card"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "startsWith": "511"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Cash"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "startsWith": "53"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Petty Cash"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "startsWith": "531"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Fixed Assets"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                          }
+                        ],
+                        "startsWith": "2"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Capitals"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                          }
+                        ],
+                        "startsWith": "1"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Expenditure"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                          }
+                        ],
+                        "startsWith": "6"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Income"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                          }
+                        ],
+                        "startsWith": "7"
+                      },
+                      {
+                        "condition": [
+                          {
+                            "condition": [
+                              "Partner"
+                            ],
+                            "conditionReference": "type"
+                          }
+                        ],
+                        "startsWith": "45"
+                      }
+                    ]
+                  },
+                  {
+                    "inputPath": "accountNumber",
+                    "inputLabel": "Account Number",
+                    "keydownAction": "if():[e().key='Enter']:[loader.show;checkAccountNumberExistence():[code=doc().generalLedger;accountNumber=doc().accountNumber;branch=userData:().currentBranch]:[loader.hide;if():[_.success]:[if():[_.accountNumber]:[txt()=_.accountNumber;doc().accountNumber=_.accountNumber];note():[text=_.message]]:[note():[text=_.message;danger]]]]",
+                    "type": "number",
+                    "required": true
+                  },
+                  {
+                    "inputVa;u": {},
+                    "inputVa": "ZTuCB",
+                    "inpu;ue": {
+                      "ue": {}
+                    },
+                    "inputPath": "currency",
+                    "readonly": true,
+                    "inputVa;": "",
+                    "inputVa;ue": {
+                      "u": {}
+                    },
+                    "inputLabel": "Currency",
+                    "inputValue": "userData:().defaultCurrency.value",
+                    "items": "userData:().currency.():code",
+                    "droplistClickAction": "customUpdate():[:[section=2;input=:0]:[section=4;input=:0]:[section=5;input=:0:2]]",
+                    "required": "true"
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Fixed Assets"
+                        ],
+                        "conditionReference": "ledgerAccountName"
+                      }
+                    ],
+                    "inputPath": "createDepreciationAccount",
+                    "readonly": true,
+                    "inputLabel": "Create Depreciation Account",
+                    "inputValue": "No",
+                    "items": [
+                      "Yes",
+                      "No"
+                    ],
+                    "droplistClickAction": "customUpdate():[section='0.2']"
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "B2B Customer",
+                          "B2C Customer",
+                          "Corporate Customer",
+                          "Agency Supplier",
+                          "Airline Supplier",
+                          "Other Operational Account"
+                        ],
+                        "conditionReference": "typefalsed"
+                      }
+                    ],
+                    "inputPath": "createVatAccount",
+                    "readonly": true,
+                    "inputLabel": "Create VAT Account",
+                    "inputValue": "No",
+                    "items": [
+                      "Yes",
+                      "No"
+                    ],
+                    "droplistClickAction": "customUpdate():[section='0.1']"
+                  }
+                ],
+                "#input": [
+                  {
+                    "inputPath": "vatAccount",
+                    "inputLabel": "VAT Account",
+                    "allowedLedgers": [
+                      "442"
+                    ],
+                    "govInput": true,
+                    "required": true
+                  },
+                  {
+                    "inputPath": "financialNumber",
+                    "inputLabel": "Financial Number"
+                  }
+                ],
+                "#condition": [
+                  {
+                    "condition": [
+                      "B2B Customer",
+                      "B2C Customer",
+                      "Corporate Customer",
+                      "Supplier",
+                      "Other Operational Account"
+                    ],
+                    "conditionReference": "type"
+                  },
+                  {
+                    "condition": [
+                      "Yes"
+                    ],
+                    "conditionReference": "createVatAccount"
+                  }
+                ],
+                "title": "General Information"
+              },
+              {
+                "input": [
+                  {
+                    "duplicatedInputPath": "email",
+                    "duplicatedInput": true,
+                    "inputLabel": "Email"
+                  },
+                  {
+                    "duplicatedInputPath": "contactNumber",
+                    "duplicatedInput": true,
+                    "inputLabel": "Contact#"
+                  },
+                  {
+                    "duplicatedInputPath": "address",
+                    "duplicatedInput": true,
+                    "inputLabel": "Address"
+                  }
+                ],
+                "condition": [
+                  {
+                    "condition": [
+                      "Receivables and Payables"
+                    ],
+                    "conditionReference": "ledgerAccountName"
+                  }
+                ],
+                "title": "contact information"
+              },
+              {
+                "input": [
+                  {
+                    "inputPath": "depreciationAccount",
+                    "inputLabel": "Depreciation Account",
+                    "allowedLedgers": [
+                      "28"
+                    ],
+                    "govInput": true,
+                    "required": true
+                  },
+                  {
+                    "inputPath": "autoDepreciation",
+                    "readonly": true,
+                    "inputLabel": "Auto Depreciation",
+                    "inputValue": "No",
+                    "items": [
+                      "Yes",
+                      "No"
+                    ],
+                    "droplistClickAction": "customUpdate():[input=:2:3:4:5]"
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Yes"
+                        ],
+                        "conditionReference": "autoDepreciation"
+                      }
+                    ],
+                    "inputPath": "yearlyRate",
+                    "subItemsList": [
+                      "doc().currency",
+                      "%"
+                    ],
+                    "unitPath": "yearlyRateUnit",
+                    "price": true,
+                    "#unitValue": "doc().currency",
+                    "inputLabel": "Yearly Rate",
+                    "executeUnitEveryLoad": true,
+                    "required": true
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Yes"
+                        ],
+                        "conditionReference": "autoDepreciation"
+                      }
+                    ],
+                    "inputPath": "startDate",
+                    "inputLabel": "Start Date",
+                    "type": "date",
+                    "required": "true"
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Yes"
+                        ],
+                        "conditionReference": "autoDepreciation"
+                      }
+                    ],
+                    "inputPath": "stopDate",
+                    "inputLabel": "Stop Date",
+                    "type": "date",
+                    "required": true
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Yes"
+                        ],
+                        "conditionReference": "autoDepreciation"
+                      }
+                    ],
+                    "inputPath": "notificationForDepreciation",
+                    "readonly": true,
+                    "inputLabel": "Notify Me",
+                    "inputValue": "Yes",
+                    "#items": [
+                      {
+                        "text": "Yes",
+                        "pathValue": "true"
+                      },
+                      {
+                        "text": "No",
+                        "pathValue": "false"
+                      }
+                    ],
+                    "items": [
+                      "Yes",
+                      "No"
+                    ]
+                  }
+                ],
+                "condition": [
+                  {
+                    "condition": [
+                      "Yes"
+                    ],
+                    "conditionReference": "createDepreciationAccount"
+                  }
+                ],
+                "title": "Depreciation"
+              },
+              {
+                "path": "logo",
+                "condition": [
+                  {
+                    "condition": [
+                      "B2B Customer",
+                      "Corporate Customer"
+                    ],
+                    "conditionReference": "type"
+                  }
+                ],
+                "maxSelected": 1,
+                "title": "Logo",
+                "type": "image"
+              },
+              {
+                "path": "passport",
+                "condition": [
+                  {
+                    "condition": [
+                      "B2C Customer"
+                    ],
+                    "conditionReference": "type"
+                  }
+                ],
+                "maxSelected": 1,
+                "title": "Passport",
+                "type": "image"
+              },
+              {
+                "path": "officialDocuments",
+                "condition": [
+                  {
+                    "condition": [
+                      "B2B Customer",
+                      "Corporate Customer"
+                    ],
+                    "conditionReference": "type"
+                  }
+                ],
+                "maxSelected": 10,
+                "title": "Official Documents",
+                "type": "image",
+                "plus": "true"
+              },
+              {
+                "input": [
+                  {
+                    "inputPath": "note",
+                    "inputLabel": "Note",
+                    "textarea": "textarea",
+                    "height": "12rem"
+                  },
+                  {
+                    "inputPath": "description",
+                    "inputLabel": "Description",
+                    "textarea": "textarea",
+                    "height": "12rem"
+                  }
+                ],
+                "grid": "1fr 1fr",
+                "title": "Note & Description"
+              }
+            ],
+            "id": "generalInformation"
+          },
+          {
+            "input": [
+              {
+                "inputPath": "vatAccount",
+                "inputLabel": "VAT Account",
+                "allowedLedgers": [
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "Agency Supplier",
+                          "Airline Supplier"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "4426"
+                    ]
+                  },
+                  {
+                    "condition": [
+                      {
+                        "condition": [
+                          "B2B Customer",
+                          "B2C Customer",
+                          "Corporate Customer"
+                        ],
+                        "conditionReference": "type"
+                      }
+                    ],
+                    "allowedLedgers": [
+                      "4427"
+                    ]
+                  }
+                ],
+                "govInput": true,
+                "required": true
+              },
+              {
+                "inputPath": "financialNumber",
+                "inputLabel": "Financial Number"
+              }
+            ],
+            "condition": [
+              {
+                "condition": [
+                  "B2B Customer",
+                  "B2C Customer",
+                  "Corporate Customer",
+                  "Agency Supplier",
+                  "Airline Supplier",
+                  "Other Operational Account"
+                ],
+                "conditionReference": "type"
+              },
+              {
+                "condition": [
+                  "Receivables and Payables"
+                ],
+                "conditionReference": "ledgerAccountName"
+              }
+            ],
+            "id": "vat"
+          },
+          {
+            "input": [
+              {
+                "inputPath": "limit",
+                "inputLabel": "Credit Limit",
+                "executeUnitEveryLoad": "true",
+                "unitValue": "doc().currency"
+              },
+              {
+                "inputPath": "notification",
+                "readonly": "readonly",
+                "inputLabel": "Notify Me",
+                "inputValue": "No",
+                "#items": [
+                  {
+                    "text": "Yes",
+                    "pathValue": "true"
+                  },
+                  {
+                    "text": "No",
+                    "pathValue": "false"
+                  }
+                ],
+                "droplistClickAction": "customUpdate():[input=:2:3:4]",
+                "items": [
+                  "Yes",
+                  "No"
+                ]
+              },
+              {
+                "condition": [
+                  {
+                    "condition": [
+                      "Yes"
+                    ],
+                    "conditionReference": "notification"
+                  }
+                ],
+                "inputPath": "notifyAmount",
+                "inputLabel": "Notify on Amount",
+                "executeUnitEveryLoad": true,
+                "type": "number",
+                "#required": true,
+                "unitValue": "doc().currency"
+              },
+              {
+                "condition": [
+                  {
+                    "condition": [
+                      "Yes"
+                    ],
+                    "conditionReference": "notification"
+                  }
+                ],
+                "inputPath": "maturatyPeriod",
+                "subItemsList": [
+                  "Day",
+                  "Week",
+                  "Month",
+                  "Year"
+                ],
+                "unitPath": "maturatyPeriodUnit",
+                "timeFormat": true,
+                "inputLabel": "Maturaty Period",
+                "#required": true,
+                "unitValue": "Day"
+              },
+              {
+                "condition": [
+                  {
+                    "condition": [
+                      "Yes"
+                    ],
+                    "conditionReference": "notification"
+                  }
+                ],
+                "inputPath": "repeat",
+                "readonly": true,
+                "inputLabel": "Repeat?",
+                "inputValue": "No",
+                "items": [
+                  "Yes",
+                  "No"
+                ]
+              }
+            ],
+            "condition": [
+              {
+                "condition": [
+                  "Receivables and Payables"
+                ],
+                "conditionReference": "ledgerAccountName"
+              },
+              {
+                "condition": [
+                  "B2B Customer",
+                  "B2C Customer",
+                  "Corporate Customer",
+                  "Employee",
+                  "Salesman",
+                  "Agency Supplier",
+                  "Airline Supplier"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "id": "creditLimit"
+          },
+          {
+            "input": [
+              {
+                "inputPath": "openingBalance",
+                "readonly": true,
+                "inputLabel": "Opening Balance",
+                "inputValue": "No",
+                "items": [
+                  "Yes",
+                  "No"
+                ],
+                "droplistClickAction": "customUpdate():[input=:1:2]"
+              },
+              {
+                "condition": [
+                  {
+                    "condition": [
+                      "Yes"
+                    ],
+                    "conditionReference": "openingBalance"
+                  }
+                ],
+                "inputPath": "credit-debit",
+                "readonly": true,
+                "inputLabel": "Credit/Debit",
+                "inputValue": "Credit",
+                "items": [
+                  "Credit",
+                  "Debit"
+                ],
+                "required": true
+              },
+              {
+                "condition": [
+                  {
+                    "condition": [
+                      "Yes"
+                    ],
+                    "conditionReference": "openingBalance"
+                  }
+                ],
+                "inputPath": "amount",
+                "inputLabel": "Amount",
+                "executeUnitEveryLoad": true,
+                "required": true,
+                "unitValue": "doc().currency"
+              }
+            ],
+            "condition": [
+              {
+                "condition": "Capitals",
+                "conditionReference": "ledgerAccountName",
+                "operator": "!="
+              }
+            ],
+            "id": "openingBalance"
+          },
+          {
+            "input": [
+              {
+                "condition": [
+                  {
+                    "condition": [
+                      "B2B Customer",
+                      "B2C Customer",
+                      "Corporate Customer",
+                      "Salesman",
+                      "Agency Supplier",
+                      "Airline Supplier",
+                      "Employee"
+                    ],
+                    "conditionReference": "type"
+                  }
+                ],
+                "inputPath": "autoSendEmails",
+                "readonly": "readonly",
+                "inputLabel": "Auto Send Emails",
+                "inputValue": "Yes",
+                "items": [
+                  {
+                    "text": "Yes",
+                    "pathValue": "true"
+                  },
+                  {
+                    "text": "No",
+                    "pathValue": "false"
+                  }
+                ]
+              },
+              {
+                "condition": [
+                  {
+                    "condition": [
+                      "B2B Customer",
+                      "B2C Customer",
+                      "Corporate Customer",
+                      "Salesman",
+                      "Airline Supplier",
+                      "Agency Supplier",
+                      "Employee"
+                    ],
+                    "conditionReference": "type"
+                  }
+                ],
+                "inputPath": "portalAccess",
+                "readonly": "readonly",
+                "inputLabel": "Portal Access",
+                "inputValue": "No",
+                "items": [
+                  {
+                    "text": "Yes",
+                    "pathValue": "true"
+                  },
+                  {
+                    "text": "No",
+                    "pathValue": "false"
+                  }
+                ]
+              }
+            ],
+            "condition": [
+              {
+                "condition": [
+                  "Receivables and Payables"
+                ],
+                "conditionReference": "ledgerAccountName"
+              }
+            ],
+            "id": "accessibility"
+          }
+        ],
+        "multiSection": "true",
+        "title": [
+          {
+            "id": "generalInformation",
+            "title": "General Information"
+          },
+          {
+            "id": "vat",
+            "title": "VAT"
+          },
+          {
+            "id": "creditLimit",
+            "title": "Credit Limit"
+          },
+          {
+            "id": "openingBalance",
+            "title": "Opening Balance"
+          },
+          {
+            "id": "accessibility",
+            "title": "Accessibility"
+          }
+        ]
+      }
+    ],
+    "collection": "account"
+  },
+  "id": "ledgerSharedManagerInfo",
+  "creationDate": 1709042544732,
+  "__props__": {
+    "id": "O1P7u1a1M0r3I1E3t6W1o9s6y5",
+    "doc": "ledgerSharedManagerInfo",
+    "creationDate": 1711031361965,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          0,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          0,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          4,
+          "#allowedLedgers"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          1,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          5,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          3,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          1,
+          "#items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          5,
+          "varName"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          5,
+          "allowedLedgersttttt"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          5,
+          "allowedLedgers",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          5,
+          "allowedLedgers"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          9
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          8,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          3,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          4,
+          "varName"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          4,
+          "allowedLedgers",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          2,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          0,
+          "orCondition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          4,
+          "allowedLedgers"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          8
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          7,
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          7,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4,
+          "#input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          4,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input",
+          5,
+          "#items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          7
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          6,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          5,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          6
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "#input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          5
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          3,
+          "allowedLedgers"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          6
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          3,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "#input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          0,
+          "#condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          4,
+          "#input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          4,
+          "#input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          0,
+          "input",
+          4,
+          "includeLegerAccounts"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          1,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          2,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          2,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          3,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          4,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          5,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          6,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          7,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          8,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          5,
+          "#input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          5,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          8,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          9,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          3,
+          "input",
+          0,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          4,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          2,
+          "#input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          3,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          3,
+          "input",
+          1,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          2,
+          "input",
+          1,
+          "#items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          0,
+          "#input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          0,
+          "input",
+          0,
+          "orCondition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          1,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          1,
+          "input",
+          0,
+          "allowedLedgers"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          4,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          3,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          3,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          1,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          4,
+          "input",
+          0,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          4,
+          "input",
+          0,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          4,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          4,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          2,
+          "condition",
+          1,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          2,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          2,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          0,
+          "input",
+          0,
+          "items",
+          0,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          0,
+          "input",
+          0,
+          "items"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "docDefaultValues"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          0,
+          "input",
+          3,
+          "allowedLedgers"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          0,
+          "input",
+          4,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          4,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "title",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "title",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "title",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "title",
+          3
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "e",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "note": "block account falsed",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          0,
+          "input",
+          8
+        ]
+      },
+      {
+        "note": "vat falsed",
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "sectionsInfo",
+          0,
+          "subInput",
+          0,
+          "input",
+          7
+        ]
+      }
+    ],
+    "folderPath": [],
+    "actions": {},
+    "counter": 2
+  }
+}

@@ -2,6 +2,7 @@ const { clone } = require("./clone")
 const { generate } = require("./generate")
 const { toArray } = require("./toArray")
 const { storeFile } = require("./storage")
+const { getCookie } = require("./cookie")
 
 module.exports = async ({ _window, lookupActions, stack, address, id, req, res, e, __, upload, ...params }) => {
 
@@ -44,6 +45,7 @@ module.exports = async ({ _window, lookupActions, stack, address, id, req, res, 
 
     } else {
 
+      headers.cookies = JSON.stringify(getCookie())
       var { data } = await require("axios").post(`/`, { server: "storage", type: "store", data: upload }, { headers })
 
       uploads.push(data)

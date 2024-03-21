@@ -25,7 +25,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   var doc = view.droplist.doc || view.doc
 
   // init droplist
-  var droplistView = { ...global.data.view.droplist, children: [], __dataPath__, doc, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["route", "document", "root", "droplist"], __lookupViewActions__: [...view.__lookupViewActions__] }
+  var droplistView = { ...global.data.view.droplist, children: [], __dataPath__, doc, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["route", "document", "root", "droplist"], __lookupActions__: [...view.__lookupActions__] }
 
   // input id
   var { data: inputID } = toLine({ id, data: { string: "input().id||().id" } })
@@ -148,7 +148,8 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
     }
 
     global.__keyupIndex__ = global.__keyupIndex__ || 0
-    droplistView.__element__.children[view.droplist.title ? global.__keyupIndex__ + 1 : global.__keyupIndex__].dispatchEvent(new Event("mouseenter"))
+    droplistView.__element__.children.length > 0 &&
+      droplistView.__element__.children[view.droplist.title ? global.__keyupIndex__ + 1 : global.__keyupIndex__].dispatchEvent(new Event("mouseenter"))
   }
 
   global.__droplistTimer__ = setTimeout(mouseEnterItem, 100)

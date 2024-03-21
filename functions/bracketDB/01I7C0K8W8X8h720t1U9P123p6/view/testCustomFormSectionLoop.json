@@ -1,0 +1,344 @@
+{
+  "view": "View:testCustomFormSectionLoop?class=column;style:[gap=2em;width=100%]",
+  "children": [
+    {
+      "view": "[View]:[data=_.inputInfo.subInput.clone()||_.inputInfo.clone()]?if():[_.multiSection]:[handleInputValueInDocForAllSections()];setSectionIndex();class=flex column;if():[_.onLoadSectionAction]:[[_.onLoadSectionAction]()]",
+      "children": [
+        {
+          "view": "View?class=flex column;saveSectionIdInFormIds();handleDisplaySection();if():[().displaySection=false]:[parent().style().display=none]:[parent().style().display=flex];",
+          "children": [
+            {
+              "view": "customTitle??parent().displaySection"
+            },
+            {
+              "view": "View?class=flex column;style:[width=100%]?!_.customSectionView;parent().displaySection;!_.type||_.type!=image",
+              "children": [
+                {
+                  "view": "[View]:[if():[!_.subInput]:[if():[!data().[_.path].0;_.path]:[data().[_.path]=:[]];path=_.path]]?handleFormIdsInPathLoop();class=flex column;style:[width=100%;gap=1rem]",
+                  "children": [
+                    {
+                      "view": "View?class=flex column;style:[width=100%;height=fit-content;overflow=hidden;gap=1rem];if():[__.defaultValues]:[handlePathDefaultValues()]",
+                      "children": [
+                        {
+                          "view": "View?style:[width=100%;height=fit-content;overflow=hidden;padding=1rem 1rem 0 1rem]",
+                          "children": [
+                            {
+                              "view": "testCustomFormInputLoop"
+                            },
+                            {
+                              "view": "customFormTable"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "view": "View?style:[width=100%;height=fit-content;overflow=hidden;padding=1rem]?_.customSectionView;parent().displaySection",
+              "children": [
+                {
+                  "view": "_.customSectionView"
+                }
+              ]
+            },
+            {
+              "view": "View?style:[width=100%]?_.type=image;parent().displaySection",
+              "children": [
+                {
+                  "view": "View?class=flex;style:[;overflow=hidden;overflowX=auto;padding=1.5rem 1rem]",
+                  "children": [
+                    {
+                      "view": "View?class=flex;style:[gap=1rem;width=fit-content]?doc().[_.path].len()>0",
+                      "children": [
+                        {
+                          "view": "[View]:[path=_.path]?class=flexbox",
+                          "children": [
+                            {
+                              "view": "View?class=flexbox;style:[border=1px solid #ddd;#backgroundColor=#f3f3f3;width=if():[mobile()]:[15rem]:[23rem];height=10rem;borderRadius=.5rem;padding=0;transition=.3s ease;overflow=hidden;cursor=pointer;position=relative]",
+                              "children": [
+                                {
+                                  "view": "Image?src=_.url;style:[maxWidth=100%;maxHeight=100%]"
+                                },
+                                {
+                                  "view": "Icon?name=Close;google.symbol;style:[fontSize=2.3rem;color=#5b5959ad;cursor=pointer;position=absolute;top=0.25rem;right=0.25rem];click:[2ndParent().rem()]"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "x1f7V1b1u0K32133T6D5P2I1K9",
+    "doc": "testCustomFormSectionLoop",
+    "creationDate": 1711031365219,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "handleFormIdsInPathLoop": {
+        "_": "().path=2ndParent().path.clone();if():[__.path]:[if():[().path.len()=1]:[().path.push():['pathsIds'];().path.push():[path().[-1]]]:[().path.pullIndex():[-1];().path.push():[path().[-1]]];formIds:().reduce():[path=().path;data=[id=().id;inputsIds=:]]]"
+      },
+      "#saveSectionIdInFormIdstttt": {
+        "replaceLastIndexInPathBySuitablePath": {
+          "checkWhatToPushInPath": "if():[formIds:().reduce():[path=_].sectionsIds]:[().currentSectionType='sectionsIds'].elif():[formIds:().reduce():[path=_].pathsIds]:[().currentSectionType='pathsIds'].elif():[formIds:().reduce():[path=_].inputsIds]:[().currentSectionType='inputsIds']:[().currentSectionType=if():[____.inputInfo]:['sectionsIds']:['inputsIds']];().path.push():[().currentSectionType]",
+          "handleFlatInFormIds ": "if():[().splitedIndex.len()=1]:[().path.[-1]=().id]:[formIds:().keys()._():[if():[formIds:().[_].sectionCounter=__.path.0]:[().path.[-1]=_;checkWhatToPushInPath():[:_]]]]",
+          "handleFlatInFormIds ": "if():[().splitedIndex.len()=1]:[().path.[-1]=().id]:[checkHeadParentId()]",
+          "_": "if():[_.path.len()=1]:[handleFlatInFormIds()]:[handleDeepInformIds()]",
+          "checkHeadParentId": "formIds:().keys()._():[if():[formIds:().[_].sectionCounter=__.path.0]:[().path.[-1]=_;checkWhatToPushInPath():[:_]]]"
+        },
+        "getSectionPathByIndex": "().path.push():[().splitedIndex.0];addSectionIdInPath():[path=().path.clone()];().splitedIndex.pullIndex():[0];if():[().splitedIndex.len()>0]:[getSectionPathByIndex()]",
+        "_": "().splitedIndex=_.index.toString().split():'.';clearPrevSection();getSectionPathByIndex();saveIdsInFormIds()",
+        "clearPrevSection": "if():[().splitedIndex.len()=1]:[formIds:().keys()._():[if():[formIds:().[_].sectionCounter=().splitedIndex.0]:[formIds:().[_].del()]]]"
+      },
+      "saveSectionIdInFormIds": {
+        "setTypeInPathIfMultiSection": "if():[[_].input]:[if():[[_].path]:[().currentSectionType='pathsIds']:[().currentSectionType='inputsIds']].elif():[[_].path]:[().currentSectionType='pathsIds']:[().currentSectionType='sectionsIds']",
+        "setSectionId": "if():[_.multiSection]:[id=toCamelCase():[newId=[generalPopup:().title+' '+_.title.join():' ']]]:[id=toCamelCase():[newId=[generalPopup:().title+' '+_.title]]]",
+        "getSectionPathByIndex": "().path.push():[().splitedIndex.0];addSectionIdInPath():[path=().path.clone()];().splitedIndex.pullIndex():[0];if():[().splitedIndex.len()>0]:[getSectionPathByIndex()]",
+        "checkWhatSectionTypeToPushInFormIds": "if():[!_.multiSection]:[if():[_.path]:[().currentSectionType='pathsIds'].elif():[!_.subInput]:[().currentSectionType='inputsIds']:[().currentSectionType='sectionsIds']].elif():[_.multiSection]:[handleMultiSectionType()]",
+        "saveIdsInFormIds": "if():[().path.len()>1]:[if():[().path.[-2]=pathsIds]:[().taha=().path.slice():0:[-2];formIds:().reduce():[path=().taha;data=[sectionCounter=[()._.index.split():'.'.[-1]];pathsIds=:]];formIds:().reduce():[path=().path;data=[pathsIds=:]]]:[().path.pullIndex():[-1];formIds:().reduce():[path=().path;data=[sectionCounter=_.index.split():['.'].[-1];inputsIds=:]]]]:[formIds:().[().id]=[sectionCounter=_.index];checkWhatSectionTypeToPushInFormIds();if():[().currentSectionType='pathsIds'||='inputsIds']:[formIds:().[().id].[().currentSectionType]=:]:[formIds:().[().id].[().currentSectionType]=[]]]",
+        "addSectionIdInPath": {
+          "handleDeepInformIds": "if():[_.path.[-2]!='pathsIds']:[().lastIndex=_.path.[-1];_.path.pullIndex():[-1];if():[().splitedIndex.len()>1]:[formIds:().reduce():[path=_.path].keys()._():[if():[formIds:().reduce():[path=__.path].[_].sectionCounter=().lastIndex]:[().path.[-1]=_]]]:[().path.[-1]=[().id];if():[!__.path]:[().path.push():['inputsIds']]:[().path.push():['pathsIds'];().path.push():[0]]]]:[checkWhatToPushInPath():[().path.clone()]]",
+          "checkWhatToPushInPath": "if():[formIds:().reduce():[path=_].sectionsIds]:[().currentSectionType='sectionsIds'].elif():[formIds:().reduce():[path=_].pathsIds]:[().currentSectionType='pathsIds'].elif():[formIds:().reduce():[path=_].inputsIds]:[().currentSectionType='inputsIds']:[().currentSectionType=if():[____.inputInfo]:['sectionsIds']:['inputsIds']];().path.push():[().currentSectionType]",
+          "handleFlatInFormIds": "if():[().splitedIndex.len()=1]:[().path.[-1]=().id]:[formIds:().keys()._():[if():[formIds:().[_].sectionCounter=__.path.0]:[().path.[-1]=_;checkWhatToPushInPath():[:_]]]]",
+          "_": "if():[_.path.len()=1]:[handleFlatInFormIds()]:[handleDeepInformIds()]"
+        },
+        "handleMultiSectionType": "if():[!selectedSection:().[_.index]]:[setTypeInPathIfMultiSection():[_.sectionsInfo.0]]:[setTypeInPathIfMultiSection():[_.sectionsInfo.find():[id=selectedSection:().[_.index.0]]]]",
+        "_": "#setSectionId();().splitedIndex=_.index.toString().split():'.';clearPrevSection();getSectionPathByIndex();saveIdsInFormIds()",
+        "clearPrevSection": "if():[().splitedIndex.len()=1]:[formIds:().keys()._():[if():[formIds:().[_].sectionCounter=().splitedIndex.0]:[formIds:().[_].del()]]]"
+      },
+      "handleInputValueInDocForAllSections": {
+        "handleInputValueInDoc": "if():[_.inputLabel;_.inputValue;!_.executeEveryLoad;if():[_.condition||_.orCondition]:[customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone();path=___.path;index=0]]:[true]]:[if():[___.path]:[if():[!doc().[___.path].0.[_.inputPath]]:[doc().[___.path].0.[_.inputPath]=[_.inputValue]()]]:[if():[!doc().[_.inputPath]]:[doc().[_.inputPath]=[_.inputValue]()]]].elif():[_.inputLabel;_.inputValue;_.executeEveryLoad]:[if():[___.path]:[doc().[___.path].0.[_.inputPath]=[_.inputValue]()]:[doc().[_.inputPath]=[_.inputValue]()]].elif():[_.fillFirstItemAsValue]:[handleFirstItemAsValue()].elif():[_.allowedLedgers]:[handleAllowedLedgers()]",
+        "handeAllowedLedgersCondition": "_.allowedLedgers._():[if():[customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone();path=___.path;index=0]]:[().allowedLedger=_.allowedLedgers.0]]",
+        "handeItemsCondition": "_.items._():[if():[customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone();path=___.path;index=0]]:[().items=_.items]]",
+        "setItems": "if():[_.items.0.condition||_.items.0.orCondition]:[handeItemsCondition()]:[().items=_.items]",
+        "handleAllowedLedgers": "setAllowedLedger();if():[___.path]:[if():[!doc().[___.path].0.[_.inputPath]]:[doc().[___.path].0.[_.inputPath]=().allowedLedger]]:[if():[!doc().[_.inputPath]]:[doc().[_.inputPath]=().allowedLedger]]",
+        "setAllowedLedger": "if():[_.allowedLedgers.0.condition||_.allowedLedgers.0.orCondition]:[handeAllowedLedgersCondition()]:[().allowedLedger=_.allowedLedgers]",
+        "_": "_.sectionsInfo._():[if():[_.subInput]:[_.subInput._():[_.input._():[handleInputValueInDoc()]]]:[_.input._():[handleInputValueInDoc()]]]",
+        "handleFirstItemAsValue": "setItems();if():[___.path]:[if():[!doc().[___.path].0.[_.inputPath]]:[doc().[___.path].0.[_.inputPath]=().items.0]]:[if():[!doc().[_.inputPath]]:[doc().[_.inputPath]=().items.0]]"
+      },
+      "setSectionIndex": {
+        "_": "if():[______.index]:[if():[____.path]:[_.index=______.index+'.'+path().1]:[_.index=______.index];_.index=_.index+'.'+index()]:[_.index=index().toString()]"
+      },
+      "#toCamelCase": "().sectionId=[_.newId];().camelCase=().sectionId.charAt():[0].toLowerCase();().key=().sectionId.toLowerCase().capitalize().replaceAll():' ':''.replace():[().camelCase.capitalize()]:[().camelCase];return():[().key]",
+      "customUpdate": {
+        "getSelfSectionPath": "getSectionPathBySectionIndex():[section=____.index];if():[____.path]:[().path.push():['pathsIds'];().path.push():[path().[-2]];().path.push():[formIds:().reduce():[path=().path].id]]",
+        "updateSelfSection": "getSelfSectionPath();if():[____.path]:[():[().path.[-1]].children().():[update()]]:[():[().path.[-1]].():[update()]]",
+        "getSectionPathBySectionIndex": {
+          "replaceIndexByPath": "().currentIndex=().splitedIndex.[0];if():[!().path]:[().path.push():[getSectionNameByCounter():[data=formIds:();index=().currentIndex]]].elif():[().path.[-1]='sectionsIds']:[().path.push():[getSectionNameByCounter():[data=formIds:().reduce():[path=().path];index=().currentIndex]]]:[().path.push():[().currentIndex]];if():[().splitedIndex.len()>1||_.input]:[checkPathType()];().splitedIndex.pullIndex():[0];if():[().splitedIndex.len()>0]:[replaceIndexByPath()]",
+          "checkPathType": "if():[formIds:().reduce():[path=().path].pathsIds]:[().path.push():['pathsIds']].elif():[formIds:().reduce():[path=().path].sectionsIds]:[().path.push():['sectionsIds']].elif():[formIds:().reduce():[path=().path].inputsIds]:[().path.push():['inputsIds']]",
+          "getSectionNameByCounter": "_.data.keys()._():[if():[__.data.[_].sectionCounter.num()=__.index.num()]:[return():[_]]]",
+          "_": "().splitedIndex=_.section.toString().split():'.';replaceIndexByPath()"
+        },
+        "updateAllNthInputsInPath": "().x=formIds:().reduce():[path=().path].clone();().x._():[__.input._():[():[[__.inputsIds].[_]].update()]]",
+        "updateForm": "():testCustomForm.update()",
+        "handleListUpdates": "_._():[customUpdate():[_]]",
+        "updateInputInSameSection": "getSelfSectionPath();if():[____.path]:[().path.[-1]='inputsIds']:[().path.push():['inputsIds']];_.input._():[():[formIds:().reduce():[path=().path].[_]].update()]",
+        "inputUpdate": "getSectionPathBySectionIndex();if():[().path.[-1]='pathsIds']:[updateAllNthInputsInPath()]:[().path.push():['inputsIds'];_.input._():[():[formIds:().reduce():[path=().path].[_]].update()]]",
+        "handleSectionUpdate": "if():[_.section='currentSection']:[updateSelfSection()]:[sectionUpdate()]",
+        "_": "().path.del();if():[_.type()=array]:[handleListUpdates()].elif():[_.section;_.input]:[inputUpdate()].elif():[_.section]:[handleSectionUpdate()].elif():[_.input]:[updateInputInSameSection()]:[updateForm()]",
+        "sectionUpdate": "_.section._():[getSectionPathBySectionIndex():[section=_];():[().path.[-1]].update()]"
+      },
+      "handleDisplaySection": {
+        "checkToRenderSection": "().renderInput=false;_.input._():[if():[_.condition]:[_.condition._():[if():[doc().[_.conditionReference].in():[_.condition]]:[().renderInput=true]:[delInputFromDoc();if():[__.unitPath]:[delUnitPathFromDoc()]]]]:[().renderInput=true]];if():[!().renderInput]:[().displaySection=false]",
+        "sectionConditionHandler": "if():[!customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone();path=path().[-2];index=path().[-1]]]:[().displaySection=false;delSectionFromDoc()]",
+        "#sectionConditionHandler": "_.condition._():[if():[!doc().[_.conditionReference].in():[_.condition]]:[().displaySection=false;delSectionFromDoc()]]",
+        "delSectionFromDoc": "if():[_.path]:[doc().[_.path].del()]:[_.input._():[doc().[_.inputPath].del()]]",
+        "delInputFromDoc": "if():[___.path]:[doc().[___.path]._():[_.[___.inputPath].del()]]:[doc().[__.inputPath].del()]",
+        "delUnitPathFromDoc": "if():[___.path]:[doc().[___.path]._():[_.[___.unitPath].del()]]:[doc().[__.unitPath].del()]",
+        "_": "().displaySection=true;if():[_.condition||_.orCondition]:[sectionConditionHandler();]:[if():[_.type!=image;!_.customSectionView]:[checkToRenderSection()]]"
+      }
+    },
+    "collapsed": [
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          3,
+          "children",
+          0,
+          "children"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          3
+        ]
+      },
+      {
+        "path": [
+          "#saveSectionIdInFormI"
+        ]
+      },
+      {
+        "path": [
+          "#saveSectionIdInForm"
+        ]
+      },
+      {
+        "path": [
+          "#saveSectionIdInFormIdsssssssssssssss"
+        ]
+      },
+      {
+        "path": [
+          "#customUpdate"
+        ]
+      },
+      {
+        "path": [
+          "handleDisplaySection"
+        ]
+      },
+      {
+        "path": [
+          "setSectionIndex"
+        ]
+      },
+      {
+        "path": [
+          "#saveSectionIdInFormIdstttt"
+        ]
+      },
+      {
+        "path": [
+          "handleFormIdsInPathLoop"
+        ]
+      },
+      {
+        "path": [
+          "saveSectionIdInFormIds"
+        ]
+      },
+      {
+        "path": [
+          "handleInputValueInDocForAllSections"
+        ]
+      },
+      {
+        "path": [
+          "customUpdate",
+          "getSectionPathBySectionIndex"
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "if you need to look at all templates;please change the template Name and the collection in order to change the structure and the table;(rows of the table are already filled so you can also fill your data);i put the data of all templates in parameter",
+        "path": [
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "image",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          3
+        ]
+      },
+      false,
+      {
+        "note": "table",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "input Loop",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "customSectionView",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "take path and edit on it if not pathsIds",
+        "path": [
+          "saveSectionIdInFormIds",
+          "addSectionIdInPath"
+        ]
+      }
+    ],
+    "folderPath": [],
+    "version": 0,
+    "counter": 54,
+    "secure": false
+  }
+}

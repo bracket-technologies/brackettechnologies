@@ -1,0 +1,29 @@
+{
+  "difference": [
+    {
+      "new": {
+        "country": "y",
+        "trainName": "y",
+        "trainStation": "y"
+      },
+      "path": "list"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "aRiAoFpuKnap9rZCJcACccDMX29Kai3iT6kFHbYUfHtc2mL9kHAk3wzgai8g1699268378803",
+  "id": "KZ7fGJeLNBbU1Ml79Rgrq9qgkRFebacpPsHB7356NUzWpewhzDoTTHuWkElC1700641624045",
+  "creationDay": 1700611200000,
+  "creationDate": 1700641624045,
+  "__props__": {
+    "id": "F1X7n1b1p003C1G3O6h3q3C6K7",
+    "doc": "KZ7fGJeLNBbU1Ml79Rgrq9qgkRFebacpPsHB7356NUzWpewhzDoTTHuWkElC1700641624045",
+    "creationDate": 1711031363367,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 80
+  }
+}

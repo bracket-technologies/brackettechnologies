@@ -1,0 +1,48 @@
+{
+  "navBar": [
+    {
+      "permission": "account",
+      "id": "capitalsManager",
+      "text": "Equity & Long Term Debts"
+    },
+    {
+      "permission": "account",
+      "id": "fixedAssetsManager",
+      "text": "Fixed Assets"
+    },
+    {
+      "permission": "account",
+      "id": "receivablesAndPayablesManager",
+      "text": "Receivables and Payables"
+    },
+    {
+      "permission": "account",
+      "id": "financialAccountManager",
+      "text": "Financial Accounts"
+    },
+    {
+      "permission": "account",
+      "id": "expenditureManager",
+      "text": "Expenditures"
+    },
+    {
+      "permission": "account",
+      "id": "incomeManager",
+      "text": "Incomes"
+    }
+  ],
+  "id": "navBar",
+  "creationDate": 1709218844925,
+  "__props__": {
+    "id": "31H7M1J1O0S3O1L3i68180g7E9",
+    "doc": "navBar",
+    "creationDate": 1711031361079,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 6
+  }
+}

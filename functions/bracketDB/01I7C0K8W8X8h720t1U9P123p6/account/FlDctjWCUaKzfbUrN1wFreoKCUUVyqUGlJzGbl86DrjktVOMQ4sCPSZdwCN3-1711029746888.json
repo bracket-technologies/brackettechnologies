@@ -1,0 +1,29 @@
+{
+  "amount": 0,
+  "creationDate": 1711029746888,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "ref": "ACC-00000004",
+  "createdBy": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+  "ledgerAccount": "1/6/1",
+  "generalLedger": "1",
+  "name": "xfzfb",
+  "isSubAccount": "No",
+  "currency": "USD",
+  "id": "FlDctjWCUaKzfbUrN1wFreoKCUUVyqUGlJzGbl86DrjktVOMQ4sCPSZdwCN3-1711029746888",
+  "creationDay": 1710979200000,
+  "startsWith": [
+    "1"
+  ],
+  "__props__": {
+    "id": "N1e7o1p1E0X3L1C396k0i5v9N7",
+    "doc": "FlDctjWCUaKzfbUrN1wFreoKCUUVyqUGlJzGbl86DrjktVOMQ4sCPSZdwCN3-1711029746888",
+    "creationDate": 1711031360597,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 2
+  }
+}

@@ -1,0 +1,403 @@
+{
+  "searchEngineInputs": [
+    {
+      "clearable": "true",
+      "inputPath": "billRef",
+      "inputLabel": "Bill#",
+      "hideSearchIcon": true,
+      "collection": "bill",
+      "searchable": "true"
+    },
+    {
+      "clearable": true,
+      "inputPath": "type",
+      "readonly": "readonly",
+      "inputLabel": "Type",
+      "inputValue": "Service",
+      "items": [
+        "Service",
+        "Payroll",
+        "Asset"
+      ]
+    },
+    {
+      "clearable": true,
+      "inputPath": "status",
+      "readonly": "readonly",
+      "inputLabel": "Status",
+      "inputValue": "Confirmed",
+      "items": [
+        "Pending",
+        "Confirmed",
+        "Canceled",
+        "Void"
+      ]
+    },
+    {
+      "clearable": true,
+      "inputPath": "paymentStatus",
+      "readonly": "readonly",
+      "inputLabel": "Payment Status",
+      "items": [
+        "Pending",
+        "Partially Paid",
+        "Paid",
+        "Canceled"
+      ]
+    },
+    {
+      "inputPath": "supplier",
+      "generalLedger": "true",
+      "inputLabel": "Supplier",
+      "allowedLedgers": [
+        "40"
+      ]
+    },
+    {
+      "inputPath": "issuingDate",
+      "inputLabel": "Issuing Date",
+      "type": "date"
+    }
+  ],
+  "createFormInputs": {
+    "subInput": [
+      {
+        "input": [
+          {
+            "inputPath": "type",
+            "readonly": "readonly",
+            "inputLabel": "Type",
+            "inputValue": "Service",
+            "items": [
+              "Service",
+              "Payroll",
+              "Asset"
+            ],
+            "droplistClickAction": "updateWrapper()",
+            "required": "true"
+          },
+          {
+            "inputPath": "status",
+            "readonly": "readonly",
+            "inputLabel": "Status",
+            "inputValue": "Pending",
+            "items": [
+              "Pending",
+              "Confirmed",
+              "Canceled",
+              "Void"
+            ],
+            "droplistClickAction": "updateWrapper()",
+            "required": true
+          },
+          {
+            "inputPath": "currency",
+            "inputLabel": "Currency",
+            "inputValue": "userData:().defaultCurrency.value",
+            "items": "userData:().currency.():code",
+            "droplistClickAction": "updateWrapper()",
+            "required": "true"
+          },
+          {
+            "inputPath": "invoiceDate",
+            "inputLabel": "Invoice Date",
+            "inputValue": "todayStart().timestamp()",
+            "type": "date",
+            "required": "true"
+          },
+          {
+            "inputPath": "dueDate",
+            "inputLabel": "Due Date",
+            "type": "date"
+          },
+          {
+            "inputPath": "paymentTerms",
+            "readonly": "readonly",
+            "inputLabel": "Payment Terms",
+            "inputValue": "Due on receipt",
+            "items": [
+              "Due on receipt",
+              "Net 15",
+              "Net 30",
+              "Net 50",
+              "Net 60"
+            ],
+            "required": "true"
+          }
+        ],
+        "title": "General Information"
+      },
+      {
+        "input": [
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Service"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "name",
+            "inputLabel": "Name",
+            "required": true
+          },
+          {
+            "inputPath": "rate",
+            "inputLabel": "Rate",
+            "executeUnitEveryLoad": "true",
+            "inputValue": 0,
+            "required": true,
+            "unitValue": "doc().currency"
+          },
+          {
+            "inputPath": "tax",
+            "inputLabel": "Tax",
+            "executeUnitEveryLoad": "true",
+            "inputValue": 0,
+            "required": true,
+            "unitValue": "doc().currency"
+          },
+          {
+            "inputPath": "amount",
+            "inputLabel": "Amount",
+            "executeUnitEveryLoad": "true",
+            "inputValue": 0,
+            "required": true,
+            "unitValue": "doc().currency"
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Asset"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "assetAccount",
+            "generalLedger": true,
+            "inputLabel": "Asset Account",
+            "allowedLedgers": [
+              "22"
+            ],
+            "required": true
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Payroll"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "employeeAccount",
+            "generalLedger": "true",
+            "inputLabel": "Employee Account",
+            "allowedLedgers": [
+              "40"
+            ],
+            "required": true
+          },
+          {
+            "condition": [
+              {
+                "condition": [
+                  "Service",
+                  "Asset"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "inputPath": "supplierAccount",
+            "generalLedger": "true",
+            "inputLabel": "Supplier Account",
+            "allowedLedgers": [
+              "40"
+            ]
+          },
+          {
+            "inputPath": "expenseAccount",
+            "generalLedger": "true",
+            "inputLabel": "Expense Account",
+            "allowedLedgers": [
+              "6"
+            ],
+            "#allowedLedgers": [
+              {
+                "condition": [
+                  "Asset"
+                ],
+                "allowedLedgers": [
+                  "6811"
+                ],
+                "conditionReference": "type"
+              },
+              {
+                "condition": [
+                  "Payroll"
+                ],
+                "allowedLedgers": [
+                  "6311"
+                ],
+                "conditionReference": "type"
+              },
+              {
+                "condition": [
+                  "Service"
+                ],
+                "allowedLedgers": [
+                  "60"
+                ],
+                "conditionReference": "type"
+              }
+            ],
+            "required": true
+          }
+        ],
+        "path": "items",
+        "title": "Items"
+      }
+    ],
+    "collection": "Bill"
+  },
+  "id": "billManager",
+  "popupInfo": {
+    "docName": "billInfo",
+    "title": "Bill Form"
+  },
+  "title": "Bill Manager",
+  "__props__": {
+    "id": "e1q7j1B190S3k1t3D6b2b2n8v4",
+    "doc": "billManager",
+    "creationDate": 1711031362284,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "popupInfo"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          6
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          4
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          5
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          7,
+          "#allowedLedgers"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          4,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          5,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          7
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1,
+          "input",
+          3
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          0
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          1
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          3
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 3
+  }
+}

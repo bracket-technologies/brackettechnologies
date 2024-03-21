@@ -1,0 +1,150 @@
+{
+  "create": {
+    "notification": {
+      "keyValue": [
+        {
+          "path": "users",
+          "type": "array",
+          "key": "users",
+          "required": "true"
+        },
+        {
+          "path": "dueDate",
+          "type": "number",
+          "key": "dueDate",
+          "required": "true"
+        },
+        {
+          "path": "msg",
+          "type": "string",
+          "key": "msg",
+          "required": "true"
+        },
+        {
+          "path": "overview",
+          "type": "string",
+          "key": "overview"
+        },
+        {
+          "path": "note",
+          "type": "string",
+          "key": "note"
+        },
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": "true"
+        },
+        {
+          "path": "createdBy",
+          "type": "string",
+          "key": "createdBy",
+          "required": "true"
+        }
+      ],
+      "nextStep": {
+        "manager": "notification",
+        "collection": "schedule"
+      }
+    }
+  },
+  "id": "notificationLUR1alpgE4Jyrn0eWWd1",
+  "collection": "notification",
+  "__props__": {
+    "id": "B1O7b151m0g3N1M3g602o4l6y2",
+    "doc": "notificationLUR1alpgE4Jyrn0eWWd1",
+    "creationDate": 1711031362462,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "create",
+          "notification",
+          "keyValue",
+          9
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "notification",
+          "keyValue",
+          3
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "notification",
+          "keyValue",
+          4
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "notification",
+          "keyValue",
+          5
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "notification",
+          "keyValue",
+          6
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "notification",
+          "keyValue",
+          0
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "notification",
+          "keyValue",
+          1
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "notification",
+          "keyValue",
+          2
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "",
+        "path": [
+          "create"
+        ]
+      },
+      {
+        "note": "",
+        "path": [
+          "create",
+          "notification",
+          "keyValue",
+          2,
+          "condition",
+          0,
+          "condition"
+        ]
+      }
+    ],
+    "folderPath": [],
+    "actions": {},
+    "counter": 12
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "updateBy": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+  "difference": [
+    {
+      "new": {
+        "2wfsf": "wf435"
+      },
+      "path": "list"
+    },
+    {
+      "new": {
+        "2wfsf": "fssfs"
+      },
+      "path": "list"
+    },
+    {
+      "new": "2wfsf",
+      "path": "titles"
+    },
+    {
+      "new": "2wfsf",
+      "path": "keys"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "Z4RW8b99lcjPNpiOdrd6vPNNpA2fE7Br1CXyLRYf8PRRkdlxnKLHrrhPzvSU1700904423690",
+  "id": "LfFqTAb1vRVf3kF43ikLqoZPfLJ5cBd1r3T0d95EdIn7cr22G0vybTzWEXn11700910692123",
+  "creationDay": 1700870400000,
+  "creationDate": 1700910692124,
+  "__props__": {
+    "id": "l1c7v1Q140w3Y1w3E6s3t3Y8L2",
+    "doc": "LfFqTAb1vRVf3kF43ikLqoZPfLJ5cBd1r3T0d95EdIn7cr22G0vybTzWEXn11700910692123",
+    "creationDate": 1711031363382,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 86
+  }
+}

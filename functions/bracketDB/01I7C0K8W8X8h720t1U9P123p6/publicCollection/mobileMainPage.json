@@ -1,0 +1,133 @@
+{
+  "accountingItems": [
+    {
+      "image": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/cfcu4HTkS33hnO4yLXil?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=DEVaQrVH4uccXyiCBN7PPUs4ffVaQ9cmZc%2F0J9YlvuS%2FZC1JGcn5s1m3%2FmWSXGxZwLCmAWiePcVHuSH1ouVcXNSzD75bbqkm%2Bugt3Cw%2BIxMb3Z3RxWQOA0iS2NHF0YRi4A%2BjdtFGzL1guzpal82UualoaRFfxF4Jm%2Fx6lBcypziPtngztbp4LHEY8TwulxS4pT2uvhb%2FuJI1AWx7lEkHpKHaAGhoiD5z6CshQBzmQlVPedy%2FP7ylRXzPLniUyHxpPfv%2FEqZU4yXJsHpwgyUPUwv5Q6q%2F6gZdHTo9fv3kzIvNfKxqh4HjKNUQ8CUQz0DpGnhwLWmGkWZEmS5EIMDF6g%3D%3D",
+      "tooltip": "accounts",
+      "collection": "account"
+    },
+    {
+      "image": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/aGqlLP8lQ3kPC1dtwZSn?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=atVxbvcazoKEE0tFS1HrzF8jaRbcYoKOwAgFEmcgcIuPv1scpqWCSIzhARp7Pi6YVyyeu21fJeAuBB1MdpRKHGenFwZ8DtkttTDqqyYBPuLdNbVWxeHAnz6Hs1eBhKwf47RAsdCw4bVIUFgVldttP5KcCylX8TUSEmY1034V5OmOXhJ4Czy%2B%2F%2FU5xai7%2FMLj87L1O7WkazIfO6fZye%2BD6BTthkGIjKCuilbKH15PDoC1bZK6MDJp8L4XPmF5nH8fV4oV2F06hPL9BxEHDp5WWg4BG%2FZ2HBxQHLnrEhtFoLPrGiXq7TXFHstPG3uuMBM%2BchVcODktMfQ4YcKvQ9HQcQ%3D%3D",
+      "tooltip": "transactions",
+      "collection": "transaction"
+    },
+    {
+      "image": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/7BcCz3mUZ97goRJ2C6Ai?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=kRV1%2FJhRbHYcVkqDkreyO3%2FmZOV2SzHilHsg8DcXN2ut3PSbDsMG9BTXrqimWcqT9iKjFwGKXwOcs%2BZLnxsq5TgygvltkQmQd3yQGtoBr8yovIOALlfhtexdQheeTruzGawl371PmCvNPZrzTW3UCAlOqvjDEObwcELKE39h4BIWjN%2F04%2Fg8cVmUgW1UqefADhzLfa%2BVYvLNMdgIGHPvN1FGNL2jlUvhL5n8ktOIkXHObJBU07onlKGbtHRLorAvHkL%2FN9ugAuHLw0BnqSuBJU72Pj3wFxlB39%2BEFfc4tMGkpYEWs9%2FOe2IK3z9qXQZLSHFpFGjynSvAjG1SN5xt0A%3D%3D",
+      "tooltip": "assets",
+      "managerInfo": "accountingServiceInfo",
+      "collection": "asset"
+    },
+    {
+      "image": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/9HhcrGtdO0JNMpn9IPKO?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=d2XTJNmU5lRhN6vVweL0y4p5to8iV290t%2B2LjMJCxdRlrF0t84lWdVGZTN42rytcbOSJk0W0vHYNxn5ypiLEw3FwDclb9RA4nXyLHp7qIuUNEnMFifkVZgqV594q%2FILHKsmxtss5Tt1I2w%2F3Y54bM%2B3NRrR1Z5PSZlN%2BjJNmYCgZD7LVzVypFOFtcAPi8TdtQWkQS51R3CFaJNVWYtFgL6gF54fdCXzr%2FobMnklb5%2BLh4S6ddSVVujvaB6fFJjvcEuki715KcdVIHErCnJz2EoJhzb82F7W%2Bej5o2GCypyocMY68k%2Ft0%2FBvGXk1t0nmwO5mSsHi8gzquUUgbWZheuA%3D%3D",
+      "tooltip": "invoices",
+      "collection": "invoice"
+    },
+    {
+      "image": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/hnqlThbLBPEEcq7SSRHv?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=VMRrdJ6tBgZwbQ%2B6DL8LHwabznVmqRPP1rwkN536avsasHpfI%2BWD8Ow3nloQQwMp1k1gp5z1L%2FT1C6vprH9mWw6e8BZ35lpB%2B3mY3IDIdkyGxCb6xCngfAGYPm5DhnHAA5aOnV2vzqGxyvnbxtBRN%2FzdkX2N%2Fl15wP0tLgyTLQ3AwhzyIflHtVyGB1XCnn9fzjnZ3IjMd9H65PKLgXN%2FDshL7NpI%2FyMfti1dwCNP4EANgZNGaKo2%2BNaZsV407YxOXlKhgEg1OBxd%2FlaMLNNaobBIJm2Yb0TexgcW0OKpJPnTb%2BBJ6Viwvv%2F7ArhgY37EwICAletnC3fIZfB1UbK2yQ%3D%3D",
+      "tooltip": "vouchers",
+      "collection": "voucher"
+    }
+  ],
+  "mainItems": [
+    {
+      "image": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/6F2JtrdVcS2yvGHOPxjS?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=H2T2yZ0SIQMTE9FC5EWW5ZGRTa1vn2bDyyXiR1Gx4KooFhToZUluR7N4isbFLOrgPSwA%2F6mTnZyvS6wWcJ9YdtnuXmSzZcMOtQ2n%2F%2BrPCKBsq4PllYY2nn0d0HCxKhzkW4zzMggvAqIYZZ9DWYTza6CgqFZ2twBsB5Sftcrk4m56eGap1j7ai4jR99BSPAmvy%2BZ7uxu%2BZEKoORl%2FD1z9DLeD1EFMWsKMkyOKjuB0x%2FW1vN32KLC1ihnka%2BUzGkVgIiqDjqZxSqpzmk68xDTpyidyWouFVhxgy34XaMjI71ON%2FIf%2BUtuzwu9qQvPCk%2B0rx2IUExRls5%2FEh18SD2SWQw%3D%3D",
+      "tooltip": "dashboard",
+      "clickAction": "openDashBoard()"
+    },
+    {
+      "image": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/fUTunNQ3WDYaWJwXPWqH?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=WGIBmDnIDA7S%2BzHNiIdh7hpjWCMyxM0hS6%2FWKba%2FiSkpZrOvYAkVgzHC6CbN2fV%2BxRkX2yh5QPx7fEwV%2B0eWsASkLPjF4TNDgFhCBQFlIoQq8Up%2Bq5mbHALDY9gF4QsAZB16nibtiy1j4TQE%2BLm3c6A4cDxwDqUx%2BjM2VvA%2FS7QV22AeVuW64Zpgk%2FsPN3cY%2BRANpoXY8QY6vPJS4d18NlLMN9jhGF0PJapK61hJZWn%2B0gM47Bwam0ApZQPSQLy1QW4YcAUvF13XLHnJ60X4ITOC4BxMl2KdJNjjv28oJ3e4UGZBN4GLJyJXmy0FMZCWrIyJ%2FE7kbjQdNLITm1J0bg%3D%3D",
+      "tooltip": "accounting",
+      "managerName": "data:().collection.mobileMainPage.accountingItems"
+    },
+    {
+      "image": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/uDC0Vw2CiGvCr9JLgnAR?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=EdDxqyAKeVRqtmpwZSLqy0CVppmtHLhDtd9dcVaQ0BUyM6vRMWy5HAN2oCV4wT0eeoa65lh4kTCA3TXuvHHCMeyI5MmDqVBgCtE3pHXDGb044M373P8cgNinBMif%2B8X4fSGZBTNMMQqaVgNesfPE%2BthAugEtaelCz4HM0GrnR9QVRjf72uCA0QsI1T%2BYrss36jEggv9q71CKRQFqvHr%2FXnkpem752jWu4mHZQn6g22GJG4ZIdQUmF%2BzpW25XNoLmEqghYyg%2FGUc%2BcgW8EHn73AtA9mV%2FAgMcVFboS1SZlSGKUuHTwhSusm4MnAmsNsEHFQ9fCXrq0k2lisVtwGWP2w%3D%3D",
+      "tooltip": "sheets",
+      "collection": "sheet"
+    },
+    {
+      "image": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/eF3JGPTZIqdL7JO06Jmp?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=EwRYhXas1GoYb9VH5HgkFN4EeU1HjpKDmf0de0lNLFTVn%2B2b62pEiRGalb%2BCumqh%2FTmrNdrIIl4GBgOJudjeCBkP3iUfjRGDqxPYf%2BIWzC0%2B0qhkFhHv%2BuuKuQaM9aA4DxSAZbk%2FxbvvhpEGiiGKHUIT0HtRWYwOkWV0tm374s93VJzrzYzgruwp7RBya0BAp90S9QW09UM9pSbchRDThqJsS3vnK7Nce54vUtqqMwzuPvZnOf%2BzPCZhBRV30YI1qQF7o7yrIjDtJH3IH5AmW4ym2496orjxliDgYvLkufvCvkvzMWvgZbbHgQRt0fC64dd5dDJby9rLnUNIkJeDbQ%3D%3D",
+      "tooltip": "gallery",
+      "collection": "storage"
+    },
+    {
+      "image": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/EkXxhUecoCmw0xvCVRra?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=jNYbtfZi7HGUs3Yv2b98dEn4kunbV1BjCj1L8snwQYjkNrdt8M%2BkIUG9VbJ1%2Fwj3BASnuN0w4MMzlP54dTUHgLEY1NJvSGazJvfrlXmDv6XKfMP21T6OjYhoo4aJ%2FHidkIBijGKAd099J7MDQ%2FTbVbp%2F7nJH6XelnnOZ91UFrx3Bi0psa6Sftn8CyMVTIlCVJQxTU%2BDGa9ldzrLhwNQZtpjNO0YIjY%2B%2FwecCxN7eyr%2F1y76Se1WJkNNw5oOjfwRVeWKqx0I82Lglf%2FT9XYkU2c%2BfzpBQ%2B%2FK9tVImhoT2F%2FLeQmYSPJ8Fj%2FhNAroz2ucuiKhn%2FzjoAxFzkFTgemreYA%3D%3D",
+      "tooltip": "settings",
+      "managerName": "data:().collection.mobileMainPage.settingsItems"
+    }
+  ],
+  "settingsItems": [
+    {
+      "image": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/liCM0xLciRNxRZEap5cy?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=WRDuI2BYLXopm7dxm5nnmas%2BaTIR3EZMymsvZAGXocLiL6YiMGndhe%2F6ZG59f0yUQ0KIiXHHEzduC1JzRTa3xXMjpEnG6X%2BktTkpNXQXf8X%2FQ3aaVchNDjJRcG9eIXD2UHv1fEdVogPqy4nn9qTaBi%2BcB8emYuhDa0SDvDM5JSJ6acDgtrDfTCoZTp7nmdT0jy9Z0DR9S2z6I9Wd%2FjXHO7xXKrKVVdc7bwDuulZR%2BVUTiqX5%2BNJ7Lv5j0u0LcsEfaqlcXxYD5tfzE1JO8oRTT0Fn%2FXqIz49y9RoNhzjMXVSghGVvFmIP8YdGTB1gJXWMWMl%2BA0XdRyq7wo6cl7jl3A%3D%3D",
+      "tooltip": "branches",
+      "collection": "branch"
+    },
+    {
+      "image": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/c7jbk1fpAf1M63ppJlO4?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=jy2pgzUij3WqSbe22HhJJ3yEFIZ182bnx%2BblOJ6w2w1%2FcSd%2F2fgowcKFJSg3aSI1sZCFuU7EPS06p%2FZx0k2o%2BlcvNxChwlufupS473Bvjp%2BCFwp8omVHVvTWnkhR5GlS6qw58f7g0FnUUnlEp8w5p5zGMhl2n307czKZQma%2BMW5FT2Z4vnH1zxfxtZARew5AfKmCZeyY52dYaZXf8xD%2Fkh9PlMT2n8FKBlukbkshVfP2HwGv3VLkXV%2F%2BHaY9B3Ypn1D1b6uNwS546RM71hjH432ArkF4PHopRHjZz14VXSkMryMzo7KgVlBh2WeHiLix%2Bvoe0YBpWRjRPZxDXbdeYw%3D%3D",
+      "tooltip": "users",
+      "collection": "user"
+    },
+    {
+      "image": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/5pkFTXafbxkuoLVAqhxt?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=MjcHDV9JqwFxrjdQnE2pnUVsAu%2BS9cbHZ3YtZU81%2F0MGAuzkpS70ppf5AgyNSjSWUB%2BUKXubl%2BbsB96DXaUcL72yC%2BL%2BAN0c%2B1jHB%2FBjs1xsOygFaxRis4w%2F8%2Fx6wzdgilDmv5hRE74RJB%2BbHRwd10pT5OoTef6zI6ooGXdaaPMoP7r%2B8%2FvWhFGKXcDInnnjMf1MmoO9qebShItBO6uMlUA6rLmNwm2aFky6EkGToYP4YEjpQPG%2B71w147M8KTBKynrXDOTYOv0nQ7q8DN8kG9OwmlWk3b39i0Z%2BSEREhx48Disp8AhABAd6zbWfcBOelsKmy4OHva7uERhNXA%2Fp6Q%3D%3D",
+      "tooltip": "currencies",
+      "collection": "currency"
+    },
+    {
+      "image": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/lrckS8hyKTBTuMFNwtTe?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=VnqAKyzxChwr5a2V0gRx493mlgss5xUcedmnJ%2FgDxJz2qe58zCv%2BL2VoLLNDDOuUm0%2Bz7a3sStLHv434VNOTgx7lkfclFhdkIRfmUcxfhwbzDpEd5wEO9Zl2BQiVpIKaxWWygkrAjnl9A0JIGa020trXAboht%2Bzm5IjQzgrQn4PCGH17Znzn3RgU4hUDNDC0KFAu8jB9iLNXW56MMuZPSUbZpcqb8jl6qtCF7znP69UWXPc92eF%2FIgTgU8tLtGysSfrKbqLkjKplpXk4X2iDL9x98N15B9GpHlFkn11intqlPJrU%2BjJrue4oAwLkp%2B1vAOI8%2F6XIVtfajuJ89rSdwQ%3D%3D",
+      "tooltip": "notifications",
+      "collection": "notification"
+    }
+  ],
+  "id": "mobileMainPage",
+  "__props__": {
+    "id": "Q1d7b1S1e0C371m3X6f1P586W8",
+    "doc": "mobileMainPage",
+    "creationDate": 1711031361568,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "accountingItems",
+          0
+        ]
+      },
+      {
+        "path": [
+          "accountingItems",
+          1
+        ]
+      },
+      {
+        "path": [
+          "accountingItems",
+          2
+        ]
+      },
+      {
+        "path": [
+          "accountingItems",
+          3
+        ]
+      },
+      {
+        "path": [
+          "accountingItems",
+          4
+        ]
+      },
+      {
+        "path": [
+          "settingsItems"
+        ]
+      },
+      {
+        "path": [
+          "mainItems"
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 9
+  }
+}

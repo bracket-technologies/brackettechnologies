@@ -1,0 +1,30 @@
+{
+  "updateBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+  "difference": [
+    {
+      "new": {
+        "rowHeight": {
+          "row6": "314px"
+        }
+      },
+      "path": "style"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "OfH212xe6tmlLkIdgu58ARtg7BetJsFsTDMl3lFKJ23mbyeQaUZGcC5X2NjC1700923292622",
+  "id": "x5ERFsOcx6j1m6aFi5rpiLT7w6RmDYBpiurwiEpEI2gmsnsZsUuSKSuZvg9M1701070545412",
+  "creationDay": 1701043200000,
+  "creationDate": 1701070545413,
+  "__props__": {
+    "id": "o1b7y1r1i0U3n1a3q653U9t5G8",
+    "doc": "x5ERFsOcx6j1m6aFi5rpiLT7w6RmDYBpiurwiEpEI2gmsnsZsUuSKSuZvg9M1701070545412",
+    "creationDate": 1711031363958,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 277
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "amount": 0,
+  "creationDate": 1711029792691,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "ref": "ACC-00000006",
+  "createdBy": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+  "ledgerAccount": "1/3/1",
+  "generalLedger": "1",
+  "name": "sdg",
+  "isSubAccount": "No",
+  "currency": "USD",
+  "id": "7a4o9FNW97TKWTRb1mVDninHNxZYY05uinKomtmNdGWrSywjkGUoWprIc094-1711029792691",
+  "creationDay": 1710979200000,
+  "startsWith": [
+    "1"
+  ],
+  "__props__": {
+    "id": "u1N7F1M1k0o371y3e6h0q5e913",
+    "doc": "7a4o9FNW97TKWTRb1mVDninHNxZYY05uinKomtmNdGWrSywjkGUoWprIc094-1711029792691",
+    "creationDate": 1711031360593,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 1
+  }
+}

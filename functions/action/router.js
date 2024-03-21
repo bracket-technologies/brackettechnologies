@@ -7,8 +7,6 @@ const { toView } = require("./kernel")
 const { addresser } = require("./kernel")
 const { logger } = require("./logger")
 
-require("dotenv").config();
-
 module.exports = async ({ req, res, data }) => {
 
   var path = decodeURI(req.url).split("/"), id = "route"
@@ -17,11 +15,11 @@ module.exports = async ({ req, res, data }) => {
   if (path[2] === "resource") return getLocalFile({ req, res })
 
   // initialize
-  const _window = initializer({ id, req, res, path, data })
+  var _window = initializer({ id, req, res, path, data })
 
   // authorize
-  var { success, message, error } = await authorizer({ _window, req })
-
+  var { success, message, error } = await authorizer({ _window, req, res })
+  
   // not authorized
   if (!success) {
     // respond
@@ -46,7 +44,7 @@ module.exports = async ({ req, res, data }) => {
   global.data.view.route = data
 
   // init view
-  var view = { ...global.data.view.route, __customView__: "route", __viewPath__: ["route"], __customViewPath__: ["route"], __lookupViewActions__: [{ type: "customView", view: "route" }] }
+  var view = { ...global.data.view.route, __customView__: "route", __viewPath__: ["route"], __customViewPath__: ["route"], __lookupActions__: [{ type: "customView", view: "route" }] }
 
   // log start render
   logger({ _window, data: { key: "route", start: true } })
@@ -55,8 +53,8 @@ module.exports = async ({ req, res, data }) => {
   var address = addresser({ _window, id, interpreting: true, status: "Start", type: "function", function: "toView", stack, renderer: true, __: global.__, data: { view }, logger: { key: "route", end: true } }).address
 
   // render route
-  toView({ _window, req, res, stack, __: global.__, address, lookupActions: view.__lookupViewActions__, data: { view } })
+  toView({ _window, req, res, stack, __: global.__, address, lookupActions: view.__lookupActions__, data: { view } })
 
   // end stack
-  endStack({ _window, stack, end: true })
+  endStack({ _window, stack })
 }

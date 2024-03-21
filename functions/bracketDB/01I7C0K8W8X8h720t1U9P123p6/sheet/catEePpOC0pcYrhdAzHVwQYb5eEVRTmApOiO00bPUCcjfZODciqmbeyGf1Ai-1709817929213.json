@@ -1,0 +1,81 @@
+{
+  "headers": [
+    {
+      "text": "airport",
+      "key": "airport"
+    }
+  ],
+  "data": [
+    {
+      "airport": "Dubai International"
+    },
+    {
+      "airport": "Zayed International"
+    },
+    {
+      "airport": "Sharjah International"
+    },
+    {
+      "airport": "Hamad International"
+    },
+    {
+      "airport": "King Khalid International"
+    },
+    {
+      "airport": "King Abdulaziz International"
+    },
+    {
+      "airport": "King Fahd International"
+    },
+    {
+      "airport": "Queen Alia International"
+    },
+    {
+      "airport": "tttto"
+    }
+  ],
+  "name": "Airports",
+  "style": [
+    {
+      "airport": "Dubai International"
+    },
+    {
+      "airport": "Zayed International"
+    },
+    {
+      "airport": "Sharjah International"
+    },
+    {
+      "airport": "Hamad International"
+    },
+    {
+      "airport": "King Khalid International"
+    },
+    {
+      "airport": "King Abdulaziz International"
+    },
+    {
+      "airport": "King Fahd International"
+    },
+    {
+      "airport": "Queen Alia International"
+    }
+  ],
+  "id": "catEePpOC0pcYrhdAzHVwQYb5eEVRTmApOiO00bPUCcjfZODciqmbeyGf1Ai-1709817929213",
+  "creationDay": 1709769600000,
+  "type": "Editable",
+  "creationDate": 1709817929214,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "__props__": {
+    "id": "h1J7m1P1R0S3n1g3e6t2O2m1e6",
+    "doc": "catEePpOC0pcYrhdAzHVwQYb5eEVRTmApOiO00bPUCcjfZODciqmbeyGf1Ai-1709817929213",
+    "creationDate": 1711031362216,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 6
+  }
+}

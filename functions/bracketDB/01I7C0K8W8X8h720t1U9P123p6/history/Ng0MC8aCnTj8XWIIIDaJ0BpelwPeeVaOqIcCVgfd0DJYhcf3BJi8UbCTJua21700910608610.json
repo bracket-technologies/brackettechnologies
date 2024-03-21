@@ -1,0 +1,40 @@
+{
+  "updateBy": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+  "difference": [
+    {
+      "new": {
+        "asdf": "asasaasas"
+      },
+      "path": "list"
+    },
+    {
+      "new": "ABdallah",
+      "path": "title"
+    },
+    {
+      "new": true,
+      "path": "updateStatus"
+    },
+    {
+      "new": "Z4RW8b99lcjPNpiOdrd6vPNNpA2fE7Br1CXyLRYf8PRRkdlxnKLHrrhPzvSU1700904423690",
+      "path": "sheetId"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "Z4RW8b99lcjPNpiOdrd6vPNNpA2fE7Br1CXyLRYf8PRRkdlxnKLHrrhPzvSU1700904423690",
+  "id": "Ng0MC8aCnTj8XWIIIDaJ0BpelwPeeVaOqIcCVgfd0DJYhcf3BJi8UbCTJua21700910608610",
+  "creationDay": 1700870400000,
+  "creationDate": 1700910608610,
+  "__props__": {
+    "id": "T1L7E1h1D0T3p1L3Y6a3V4s1g3",
+    "doc": "Ng0MC8aCnTj8XWIIIDaJ0BpelwPeeVaOqIcCVgfd0DJYhcf3BJi8UbCTJua21700910608610",
+    "creationDate": 1711031363413,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 98
+  }
+}

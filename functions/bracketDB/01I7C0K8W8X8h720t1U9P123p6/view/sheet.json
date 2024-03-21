@@ -1,0 +1,493 @@
+{
+  "view": "View:sheet?class=column;style:[width=100%;gap=1rem;overflow=hidden;position=relative;overflowX=auto];rowCounter:()=0;loopRange:()=30",
+  "children": [
+    {
+      "view": "View:excelTable?class=column;style:[width=fit-content]",
+      "children": [
+        {
+          "view": "View?class=flex column;style:[border=1px solid #CCC;background=#e3e3e3;gap=2px]",
+          "children": [
+            {
+              "view": "View?class=flexbox;style:[width=max-content;display=grid;gridTemplateColumns='repeat(15,auto)';grid-gap=2px];():root.mouseup:[if():[currentHeader:()]:[updateSheetWidth()]]",
+              "children": [
+                {
+                  "view": "[View]:[data=bracketSheetTable:().sheetTable.sheetTable.headers]?class=flexbox;style:[height=2.88rem;if():[_.header]:[minWidth=9rem;width=9rem;resize=horizontal]:[width=4rem];backgroundColor=white;overflow=auto];mousedown:[currentHeader:()=().i];",
+                  "children": [
+                    {
+                      "view": "Text?text=_.header||'';style:[fontSize=1.3rem]"
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "view": "View?class=flex;style:[width=100%;height=50rem;overflowY=auto];if():[!doc().data]:[doc().data=:;doc().headers=:];scroll:[addRowsOnScroll()]",
+              "children": [
+                {
+                  "view": "View?class=flex column;style:[gap=2px]",
+                  "children": [
+                    {
+                      "view": "View?class=flex;style:[width=100%]",
+                      "children": [
+                        {
+                          "view": "View?class=flex;style:[width=max-content;gridTemplateColumns='repeat(15,auto)';grid-gap=2px;display=grid;height=max-content;min-height=2.88rem]",
+                          "children": [
+                            {
+                              "view": "[View]:[data=range():[bracketSheetTable:().sheetTable.sheetTable.headers.len()-1]]?style:[minHeight=2.88rem;if():[notFirstColumn()]:[width=9rem;minWidth=9rem;cursor=text]:[display=flex;justifyContent=center;resize=vertical;width=4rem];paddingTop=.3rem;backgroundColor=white;transition=.2s backgroundColor]",
+                              "children": [
+                                {
+                                  "view": "Text?if():[notFirstColumn()]:[editable=true];text=if():[notFirstColumn()]:[[doc().headers.[_-1].text]||'']:[_+1];style:[fontSize=1.4rem;textAlign=start];blur:[handleHeaderChange()]"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    {
+                      "view": "View:sheetRowsView?class=flex column;style:[gap=2px]",
+                      "children": [
+                        {
+                          "view": "[View]:[data=range():[loopRange:()]]?class=flex;style:[width=100%]",
+                          "children": [
+                            {
+                              "view": "View?class=flex;style:[width=max-content;gridTemplateColumns='repeat(15,auto)';grid-gap=2px;display=grid;height=max-content;min-height=2.88rem];rowCounter:()+=1",
+                              "children": [
+                                {
+                                  "view": "[View]:[data=range():[bracketSheetTable:().sheetTable.sheetTable.headers.len()-1]]?style:[minHeight=2.88rem;if():[notFirstColumn()]:[width=9rem;minWidth=9rem;cursor=text]:[display=flex;justifyContent=center;resize=vertical;width=4rem];paddingTop=.3rem;backgroundColor=white];click:[checkIfHeaderAvailable()]",
+                                  "children": [
+                                    {
+                                      "view": "Text?#if():[notFirstColumn()]:[editable=true];().rowCounter=rowCounter:()-1;text=if():[notFirstColumn()]:[doc().data.[().rowCounter].[doc().headers.[_-1].key]||'']:[rowCounter:()];style:[fontSize=1.4rem;textAlign=start];keyup:[doc().data.[().rowCounter].[doc().headers.[_-1].key]=txt()]"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "h1y72181I0n3i1k3h6v59221Q6",
+    "doc": "sheet",
+    "creationDate": 1711031365216,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "updateSheetWidth": {
+        "_": "().next().1stChild().1stChild().1stChild()._():[_.children().[currentHeader:()].style().width=[children().[currentHeader:()].el().clientWidth+'px']];().next().1stChild().2ndChild().children()._():[_.1stChild().children().[currentHeader:()].style().width=[children().[currentHeader:()].el().clientWidth+'px']]"
+      },
+      "kamelCase": "().pathCellName=_;().camelCase=().pathCellName.charAt():[0].toLowerCase();().key=().pathCellName.toLowerCase().capitalize().replaceAll():' ':''.replace():[().camelCase.capitalize()]:[().camelCase];return():[().key]",
+      "checkIfHeaderAvailable": {
+        "_": "if():[doc().headers.[_-1]]:[1stChild().editable();1stChild().focus()]:[note():[text='Fill the header first!';warning]]"
+      },
+      "notFirstColumn": "bracketSheetTable:().sheetTable.sheetTable.headers.[_].header!=''",
+      "handleHeaderChange": {
+        "highlightInput": "parent().style():[backgroundColor=#ffa4a4];timer():[parent().style():[backgroundColor=white]]:1000",
+        "editHeader": "newKey=kamelCase():[txt()];oldKey=doc().headers.[_-1].key;doc().data._():[_.[().newKey]=_.[().oldKey];_.[().oldKey].del()];doc().headers.[_-1].text=txt();doc().headers.[_-1].key=().newKey",
+        "_": "if():[txt()!='']:[if():[txt().in():[doc().headers.():text]]:[if():[txt()!=doc().headers.[_-1].text]:[txt()=doc().headers.[_-1].text;note():[text='Duplicated Header!';danger]]]:[editHeader()]]:[if():[doc().data.():[.[doc().headers.[_-1].key]].filter().len()>0]:[highlightInput();note():[text='Cannt leave header empty!';danger];focus()]:[doc().headers.[_-1].del()]]"
+      },
+      "#editHeader": {
+        "_": "newKey=kamelCase():[txt()];oldKey=doc().headers.[_].key;doc().data._():[_.[().newKey]=_.[().oldKey];_.[().oldKey].del()];doc().headers.[_].text=txt();doc().headers.[_].key=().newKey"
+      },
+      "addRowsOnScroll": {
+        "_": "if():[el().scrollHeight-[el().clientHeight+el().scrollTop]<50;().scrollHeihgt!=el().scrollHeight]:[().scrollHeihgt=el().scrollHeight;range():[5].():[():sheetRowsView.insert():[index=():sheetRowsView.children().lastIndex();view=():sheetRowsView.children().[0]]]]"
+      }
+    },
+    "collapsed": [
+      {
+        "path": [
+          "functions"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          2,
+          "children"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          2,
+          "children"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": []
+      },
+      {
+        "path": [
+          "headerAction"
+        ]
+      },
+      {
+        "path": [
+          "#saveSheet"
+        ]
+      },
+      {
+        "path": [
+          "#editHeader"
+        ]
+      },
+      {
+        "path": [
+          "addRowsOnScroll"
+        ]
+      },
+      {
+        "path": [
+          "updateSheetWidth"
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "custom Title",
+        "path": [
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "Name input + Type input + save Btn",
+        "path": [
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "inputs",
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "Save Btn",
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "Table",
+        "path": [
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "sheet cells",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "sheet body",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "sheet",
+        "path": [
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "excel header",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "false",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "false",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "false",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "loop over leters",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "sheet body",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "loop over rows",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "loop over columns",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "data headers",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "loop over headers",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      }
+    ],
+    "folderPath": [],
+    "version": 0,
+    "counter": 48,
+    "secure": false
+  }
+}

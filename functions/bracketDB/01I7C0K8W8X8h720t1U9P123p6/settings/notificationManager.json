@@ -1,0 +1,239 @@
+{
+  "identifier": "notification",
+  "searchEngineInputs": [
+    {
+      "clearable": true,
+      "inputPath": "ref",
+      "inputLabel": "Notification#",
+      "hideSearchIcon": true,
+      "collection": "notification",
+      "searchable": true
+    },
+    {
+      "clearable": true,
+      "inputPath": "user",
+      "inputLabel": "User",
+      "hideSearchIcon": true,
+      "collection": "user",
+      "searchable": true
+    },
+    {
+      "clearable": true,
+      "inputPath": "date",
+      "inputLabel": "Notification Date",
+      "type": "date"
+    }
+  ],
+  "createFormInputs": {
+    "subInput": [
+      {
+        "input": [
+          {
+            "inputPath": "users",
+            "readonly": "readonly",
+            "maxSelected": 100,
+            "inputLabel": "User",
+            "collection": "user",
+            "listName": "users",
+            "required": true,
+            "searchable": "true"
+          },
+          {
+            "inputPath": "dueDate",
+            "inputLabel": "Due Date",
+            "type": "datetime-local",
+            "required": "required"
+          },
+          {
+            "inputPath": "msg",
+            "inputLabel": "Message",
+            "textarea": "textarea",
+            "style": {
+              "minHeight": "3.5rem",
+              "maxHeight": "12rem"
+            },
+            "required": "required",
+            "fraction": "2fr"
+          }
+        ],
+        "title": "General Information",
+        "table": {
+          "docListName": "users",
+          "itemsList": "selected:()",
+          "collection": "user"
+        }
+      },
+      {
+        "path": "attachments",
+        "maxSelected": 1,
+        "title": "Attachments",
+        "type": "image"
+      },
+      {
+        "input": [
+          {
+            "inputPath": "note",
+            "inputLabel": "Note",
+            "textarea": "textarea",
+            "height": "12rem"
+          },
+          {
+            "inputPath": "overview",
+            "inputLabel": "Brief Overview",
+            "textarea": "textarea",
+            "height": "12rem"
+          }
+        ],
+        "grid": "1fr 1fr",
+        "title": "Note & Overview"
+      }
+    ],
+    "collection": "notification"
+  },
+  "id": "notificationManager",
+  "popupInfo": {
+    "docName": "notificationsInfo",
+    "title": "Notifications Form"
+  },
+  "title": "Notification Manager",
+  "managerName": "notification",
+  "table": [
+    {
+      "collection": "notification",
+      "table": [
+        {
+          "path": "createdBy",
+          "header": "Sender",
+          "fraction": "1fr"
+        },
+        {
+          "path": "msg",
+          "header": "Message",
+          "fraction": "3fr"
+        },
+        {
+          "path": "dueDate",
+          "#formatCell": "toCellDate",
+          "header": "Due Date",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "balanceSheet": "true",
+          "customIcon": [
+            {
+              "icon": "done_all",
+              "tooltip": "mark as read",
+              "action": "markNotificationsAsRead()"
+            }
+          ],
+          "fraction": ".5fr"
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "91C701H1H0p3W1N376Y1v3x8f5",
+    "doc": "notificationManager",
+    "creationDate": 1711031361385,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "popupInfo"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          4
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "table"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs"
+        ]
+      },
+      {
+        "path": [
+          "table",
+          1
+        ]
+      },
+      {
+        "path": [
+          "table",
+          0
+        ]
+      },
+      {
+        "path": [
+          "table"
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 4
+  }
+}

@@ -12,7 +12,7 @@
     "server": "node index.js",
     "browserify": "cd resource && browserify launcher.js > engine.js",
     "kill": "npx kill-port 80",
-    "start": "npm run kill && npm-run-all --parallel browserify server"
+    "start": "npm-run-all --parallel browserify server"
   },
   "engines": {
     "node": "16"

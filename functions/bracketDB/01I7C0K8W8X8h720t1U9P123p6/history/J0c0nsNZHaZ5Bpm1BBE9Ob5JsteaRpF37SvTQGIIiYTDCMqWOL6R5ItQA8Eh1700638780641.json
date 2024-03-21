@@ -1,0 +1,34 @@
+{
+  "difference": [
+    {
+      "new": "",
+      "path": "trainName",
+      "old": "Blue Train"
+    },
+    {
+      "new": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+      "path": "branch"
+    },
+    {
+      "new": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+      "path": "createdBy"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "aRiAoFpuKnap9rZCJcACccDMX29Kai3iT6kFHbYUfHtc2mL9kHAk3wzgai8g1699268378803",
+  "id": "J0c0nsNZHaZ5Bpm1BBE9Ob5JsteaRpF37SvTQGIIiYTDCMqWOL6R5ItQA8Eh1700638780641",
+  "creationDay": 1700611200000,
+  "creationDate": 1700638780726,
+  "__props__": {
+    "id": "L1V7f1K1W0g3K1H3L6K3X3k5X1",
+    "doc": "J0c0nsNZHaZ5Bpm1BBE9Ob5JsteaRpF37SvTQGIIiYTDCMqWOL6R5ItQA8Eh1700638780641",
+    "creationDate": 1711031363351,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 74
+  }
+}

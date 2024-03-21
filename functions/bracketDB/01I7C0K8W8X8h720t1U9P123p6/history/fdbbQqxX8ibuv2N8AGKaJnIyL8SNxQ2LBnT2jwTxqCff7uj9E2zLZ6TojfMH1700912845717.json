@@ -1,0 +1,54 @@
+{
+  "updateBy": "5i7aFi1VZvdJzdVB5WTK0KOJGqJuerg3X2A8fjNqFxLXXU4NaOKpEH0iVnGU1700835548602",
+  "difference": [
+    {
+      "new": {
+        "jlkljl": "ljljkl"
+      },
+      "path": "list"
+    },
+    {
+      "new": {
+        "jlkljl": "ljlkl"
+      },
+      "path": "list"
+    },
+    {
+      "new": "kkkk",
+      "path": "title"
+    },
+    {
+      "new": true,
+      "path": "updateStatus"
+    },
+    {
+      "new": "JnZydVBrjMGejGhQz8qrqB70UufoKQC0cfN4JSyyi1ZSFctb0zDgBfRVhDwI1700912818327",
+      "path": "sheetId"
+    },
+    {
+      "new": "jlkljl",
+      "path": "titles"
+    },
+    {
+      "new": "jlkljl",
+      "path": "keys"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "JnZydVBrjMGejGhQz8qrqB70UufoKQC0cfN4JSyyi1ZSFctb0zDgBfRVhDwI1700912818327",
+  "id": "fdbbQqxX8ibuv2N8AGKaJnIyL8SNxQ2LBnT2jwTxqCff7uj9E2zLZ6TojfMH1700912845717",
+  "creationDay": 1700870400000,
+  "creationDate": 1700912845718,
+  "__props__": {
+    "id": "A1n7q1D1J033B1A3m6O3l7Z2P1",
+    "doc": "fdbbQqxX8ibuv2N8AGKaJnIyL8SNxQ2LBnT2jwTxqCff7uj9E2zLZ6TojfMH1700912845717",
+    "creationDate": 1711031363721,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 190
+  }
+}
