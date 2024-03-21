@@ -1,0 +1,26 @@
+{
+  "name": "SDFASD",
+  "isSubAccount": "No",
+  "generalLedger": "2",
+  "currency": "USD",
+  "createDepreciationAccount": "No",
+  "amount": 0,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "createdBy": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+  "startsWith": [
+    "2"
+  ],
+  "id": "IEF49UtTH6eYsdlqmzoJQW65hQIcMv19nAcpbb5peEqXvrOFDA9MoknBinab-1711032271648",
+  "creationDate": 1711032271648,
+  "creationDay": 1710979200000,
+  "ref": "2-00000001",
+  "ledgerAccount": "2/1/1",
+  "__props__": {
+    "id": "n1z7n1a1I0X3o2A2K7b136p752",
+    "doc": "account9",
+    "creationDate": 1711032271672,
+    "active": true,
+    "createdByUserID": null,
+    "counter": 9
+  }
+}

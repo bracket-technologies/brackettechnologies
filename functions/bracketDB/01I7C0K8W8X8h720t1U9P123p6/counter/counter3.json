@@ -1,9 +1,10 @@
 {
   "code": "2",
   "length": 8,
-  "counter": 0,
+  "counter": 1,
   "counterList": [
-    0
+    0,
+    "1"
   ],
   "max": 99999999,
   "end": 99999999,
