@@ -3,11 +3,6 @@ node_modules
 jspm_packages
 
 # Serverless directories
-.serverless
 node_modules/
-layer/
 .env
-../.env
-.gitignore
-./action/moveData.js
-./action/moveData
+bracketDB/
