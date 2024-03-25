@@ -1,0 +1,29 @@
+{
+  "lastName": "a",
+  "country": "a",
+  "address": "a",
+  "city": "a",
+  "creationDate": 1705920997212,
+  "birthDate": 1705536000000,
+  "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+  "firstName": "a",
+  "ref": "USR-00000010",
+  "nationality": "Lebanese",
+  "createdBy": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+  "contactNumber": "a",
+  "id": "miNHA3ZfIRRg8ZXjE3FSefAshelXrNIAR99U6VidwDOC2POfLpRSnTcwOzkC-1705920997212",
+  "creationDay": 1705881600000,
+  "email": "a",
+  "__props__": {
+    "id": "G1m7A1p1n0P3l1E3s660N5g2Z1",
+    "doc": "miNHA3ZfIRRg8ZXjE3FSefAshelXrNIAR99U6VidwDOC2POfLpRSnTcwOzkC-1705920997212",
+    "creationDate": 1711031360521,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 4
+  }
+}

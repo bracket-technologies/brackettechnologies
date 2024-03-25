@@ -1,0 +1,16 @@
+{
+  "currency": "USD",
+  "id": "defaults",
+  "__props__": {
+    "id": "01J7A1H1w0t3Z1C3R6W105A6e1",
+    "doc": "defaults",
+    "creationDate": 1711031361561,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 7
+  }
+}

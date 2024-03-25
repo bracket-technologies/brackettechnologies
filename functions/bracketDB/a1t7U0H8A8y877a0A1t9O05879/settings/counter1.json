@@ -1,0 +1,33 @@
+{
+  "db": "a1t7U0H8A8y877a0A1t9O05879",
+  "collections": {
+    "counter": 1,
+    "project": 0,
+    "account": 0,
+    "session": 11,
+    "permission": 0,
+    "password": 0,
+    "user": 0,
+    "billingAccount": 0,
+    "transaction": 0,
+    "token": 0,
+    "block": 0,
+    "exchangeRate": 0,
+    "tokenPackage": 0,
+    "voucher": 0,
+    "paymentMethod": 0,
+    "view": 0,
+    "plugin": 0,
+    "storage": 0,
+    "data": 0,
+    "subscription": 0,
+    "bill": 0
+  },
+  "__props__": {
+    "id": "y1m7x1r150B3u1t39587h6v6x2",
+    "doc": "counter1",
+    "creationDate": 1711031357662,
+    "active": true,
+    "counter": 1
+  }
+}

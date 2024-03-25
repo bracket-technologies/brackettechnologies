@@ -1,0 +1,596 @@
+{
+  "view": "View:customSingleBarChart?style:[width=50%];beforeloading:[period:()='weeklyDsata'];doc=dashboard;calcTotal()",
+  "children": [
+    {
+      "view": "[View]:[data=data:().collection.dashboard.singelBarChart]?class=flexbox;style:[border-radius=10px 10px 0 0;padding=1rem;justifyContent=space-between;borderLeft=1px solid #ddd;borderTop=1px solid #ddd;borderRight=1px solid #ddd;backgroundColor=#f5f5f5]",
+      "children": [
+        {
+          "view": "Text?text=_.title;style:[fontSize=1.6rem]"
+        },
+        {
+          "view": "View?class=flexbox;style:[cursor=pointer;width=10rem]",
+          "children": [
+            {
+              "view": "Input?path=dropPeriod;style:[fontSize=1.3rem;color=#555;textAlign=center;text-overflow=ellipsis;overflow=hidden;whiteSpace=nowrap;height=2rem;width=50%;padding=0];readonly;droplist=[items=_.interval;style:[width=25rem]];():droplist.click:[changePeriod()];value=_.interval.0"
+            },
+            {
+              "view": "Icon?name=expand_more;google.symbol;style:[fontSize=2.3rem;color=#666];click:[prev().click()]"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "view": "View:chartInfo?class=flexbox;style:[borderRadius=0 0px 10px 10px;flex-direction=column;gap=1rem;width=100%;padding=1rem;border=1px solid #ddd;overflow=hidden;justifyContent=space-between]",
+      "children": [
+        {
+          "view": "[View]:[data=data:().collection.dashboard.singelBarChart.[period:()]]?class=column;style:[width=if():[data:().collection.dashboard.singelBarChart.[period:()].x-axis.len()<7]:[30rem]:[50rem];height=50rem]",
+          "children": [
+            {
+              "view": "View?class=flex;style:[width=100%;height=3rem;alignItems=center]",
+              "children": [
+                {
+                  "view": "Text?text=_.title;style:[fontSize=1.1rem;padding=1rem 0 2rem 0]"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flex;style:[height=100%;width=100%;overflow=hidden]",
+              "children": [
+                {
+                  "view": "View?style:[width=4rem;height=100%]",
+                  "children": [
+                    {
+                      "view": "View?class=flex column;style:[justifyContent=space-between;alignItems=center;width=100%;height=100%;borderRight=1px solid #ddd]",
+                      "children": [
+                        {
+                          "view": "[View]:[data=_.y-axis.sort():[path=value;descending]]",
+                          "children": [
+                            {
+                              "view": "View?style:[position=relative]",
+                              "children": [
+                                {
+                                  "view": "Text?style:[left=-2rem;width=60rem;height=1px;position=absolute;borderBottom=1px solid]?false"
+                                },
+                                {
+                                  "view": "Text?text=_.value;style:[fontSize=1.1rem]"
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "view": "View?class=grid;style:[alignItems=center;gap=2rem;gridTemplateColumns=_.grid;width=100%;height=100%]",
+                  "children": [
+                    {
+                      "view": "[View]:[data=_.x-axis]?class=flex;style:[zIndex=1;width=100%;height=100%;alignItems=end]",
+                      "children": [
+                        {
+                          "view": "View?maxOfList():[data:().collection.dashboard.singelBarChart.[period:()].y-axis.():value];style:[width=100%;height=heightCalc()+%;backgroundColor=#4285F4;cursor=pointer;opacity=.8];hover.style:[opacity=1]"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "view": "View?class=flex;style:[height=3rem;width=100%]",
+              "children": [
+                {
+                  "view": "View?style:[width=4rem;height=100%]"
+                },
+                {
+                  "view": "View?class=grid;style:[alignItems=center;gap=1rem;gridTemplateColumns=_.grid;width=100%;height=100%]",
+                  "children": [
+                    {
+                      "view": "[View]:[data=_.x-axis]",
+                      "children": [
+                        {
+                          "view": "Text?text=_.date;style:[textAlign=center;fontSize=1.1rem]"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "view": "View?class=flexbox;style:[gap=1rem;borderTop=1px solid #ddd;padding=1rem]",
+          "children": [
+            {
+              "view": "[View]:[data=data:().collection.dashboard.singelBarChart.[period:()].x-axis]",
+              "children": [
+                {
+                  "view": "View?class=flex;style:[flex-direction=column;alignItems=center]",
+                  "children": [
+                    {
+                      "view": "Text?text=_.date;style:[font-size=1.4rem;textAlign=center]"
+                    },
+                    {
+                      "view": "Text?maxOfList():[data:().collection.dashboard.singelBarChart.[period:()].y-axis.():value];text=_.number+' ticket';style:[textAlign=center;font-size=1.4rem;#color=#1f78b4;width=100%;color=if():[[_.number*100]/().max<50]:[#e4585a]:[#66a822]]"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "view": "View?class=flex;style:[gap=1rem;borderTop=1px solid #ddd;padding=1rem]?false",
+      "children": [
+        {
+          "view": "Text?text='Total='+totalTicket:()"
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "k1e7H1g1V0S3h1Z3k6f5x2j012",
+    "doc": "customSingleBarChart",
+    "creationDate": 1711031365202,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "heightCalc": "[_.number*100]/().max",
+      "calcTotal": "data:().collection.dashboard.singelBarChart.[period:()].x-axis._():[totalTicket:()+=_.number]",
+      "maxOfList": "max=0;_._():[if():[_>().max]:[().max=_]]",
+      "changePeriod": "if():[txt()=Week]:[period:()='weeklyData';totalTicket:()=0;calcTotal();():chartInfo.update()].elif():[txt()=Month]:[period:()='monthlyData';totalTicket:()=0;calcTotal();():chartInfo.update()].elif():[txt()=Year]:[period:()='yearlyData';totalTicket:()=0;calcTotal();():chartInfo.update()]",
+      "getBalanceOfAcdc": "loader.show;getBalanceAccount()::[balances:()=_.data;loader.hide]"
+    },
+    "collapsed": [
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "falsed information",
+        "path": [
+          "children",
+          "0",
+          "children",
+          3
+        ]
+      },
+      {
+        "note": "header",
+        "path": [
+          "children",
+          "0",
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "y axis",
+        "path": [
+          "children",
+          "0",
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "x axis",
+        "path": [
+          "children",
+          "0",
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "y axis",
+        "path": [
+          "children",
+          "0",
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "bar section",
+        "path": [
+          "children",
+          "0",
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "y axis",
+        "path": [
+          "children",
+          "0",
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "empty view",
+        "path": [
+          "children",
+          "0",
+          "children",
+          2,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "days",
+        "path": [
+          "children",
+          "0",
+          "children",
+          2,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "head title",
+        "path": [
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "droplist",
+        "path": [
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "x axis",
+        "path": [
+          "children",
+          0,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "falsed info",
+        "path": [
+          "children",
+          0,
+          "children",
+          3
+        ]
+      },
+      {
+        "note": "",
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "falsed horizontal line",
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "y value",
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "",
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "",
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "z index is for display falsed horizontal line behind bars",
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "",
+        "path": [
+          "children",
+          1,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "bar chart",
+        "path": [
+          "children",
+          1,
+          "children",
+          "0"
+        ]
+      },
+      {
+        "note": "bar chart",
+        "path": [
+          "children",
+          1,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "data",
+        "path": [
+          "children",
+          1,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "body",
+        "path": [
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "head",
+        "path": [
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "falsed total",
+        "path": [
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "data section falsed",
+        "path": [
+          "children",
+          3
+        ]
+      },
+      {
+        "note": "droplist",
+        "path": [
+          "children",
+          "0",
+          "children",
+          "1"
+        ]
+      },
+      {
+        "note": "head",
+        "path": [
+          "children",
+          "0"
+        ]
+      },
+      {
+        "note": "x-axis",
+        "path": [
+          "children",
+          1,
+          "children",
+          "0",
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "char",
+        "path": [
+          "children",
+          1,
+          "children",
+          "0",
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "y-axis with bars",
+        "path": [
+          "children",
+          1,
+          "children",
+          "0",
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "y title",
+        "path": [
+          "children",
+          1,
+          "children",
+          "0",
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "data legend",
+        "path": [
+          "children",
+          1,
+          "children",
+          "1"
+        ]
+      },
+      {
+        "note": "title y",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "bars, yValues",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      null,
+      null,
+      null,
+      null,
+      {
+        "note": "bars",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "x axis",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "y values",
+        "path": [
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "legend",
+        "path": [
+          "children",
+          1,
+          "children",
+          1
+        ]
+      }
+    ],
+    "folderPath": [],
+    "version": 0,
+    "counter": 20,
+    "secure": false
+  }
+}

@@ -1,0 +1,217 @@
+{
+  "createdBy": {
+    "lastName": "assaf",
+    "country": "Lebanon",
+    "address": "Haret Hreik",
+    "city": "Beirut",
+    "permission": {
+      "creation-date": 1700835451988,
+      "permission": {
+        "voucher": [
+          "Create",
+          "Edit",
+          "Read",
+          "History",
+          "Remove",
+          "Print"
+        ],
+        "expense": [
+          "Create",
+          "Edit",
+          "Read",
+          "Remove"
+        ],
+        "branch": [
+          "Create",
+          "Edit",
+          "Read",
+          "History",
+          "Remove",
+          "Switch Branches"
+        ],
+        "notification": [
+          "Create",
+          "Edit",
+          "Read",
+          "Remove",
+          "Receive"
+        ],
+        "schedule": [
+          "Create",
+          "Edit",
+          "Read",
+          "Remove",
+          "Receive"
+        ],
+        "sheet": [
+          "Create",
+          "Edit",
+          "Read",
+          "Remove",
+          "Import",
+          "Export"
+        ],
+        "currency": [
+          "Create",
+          "Edit",
+          "Read",
+          "Remove"
+        ],
+        "invoice": [
+          "Create",
+          "Edit",
+          "Read",
+          "History",
+          "Remove",
+          "Print"
+        ],
+        "asset": [
+          "Create",
+          "Edit",
+          "Read",
+          "History",
+          "Remove"
+        ],
+        "user": [
+          "Create",
+          "Edit",
+          "Read",
+          "History",
+          "Remove"
+        ],
+        "account": [
+          "Create",
+          "Edit",
+          "Read",
+          "History",
+          "Remove",
+          "Transaction Sheet",
+          "Cash Flow",
+          "Income Statement"
+        ],
+        "dashboard": [
+          "Read"
+        ],
+        "gallery": [
+          "Upload",
+          "Read",
+          "Edit",
+          "Remove"
+        ]
+      },
+      "id": "k7k9uPLr95y9h423xkqKkstbXKB83wcafdOsiCqV08ymqzfKzefezPLZq5hl1700835550316",
+      "creationDay": 1700784000000,
+      "creationDate": 1700835550320,
+      "user": "5i7aFi1VZvdJzdVB5WTK0KOJGqJuerg3X2A8fjNqFxLXXU4NaOKpEH0iVnGU1700835548602",
+      "clooossseeed": [
+        {
+          "path": [
+            "permission",
+            "account"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "asset"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "branch"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "currency"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "dashboard"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "gallery"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "invoice"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "notification"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "schedule"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "sheet"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "user"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "voucher"
+          ]
+        },
+        {
+          "path": [
+            "permission",
+            "expense"
+          ]
+        }
+      ]
+    },
+    "creationDate": 1700835548603,
+    "birthDate": 1699920000000,
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "firstName": "Taha",
+    "ref": "USR-00000013",
+    "nationality": "lebanese",
+    "createdBy": "Udf9J6L5mSDwJKGictin1xutMwalegfs9wnDoxKVbXriRv2gupogDCF3MUtG1700573330426",
+    "contactNumber": "lebanese",
+    "creation-date": 1700835451988,
+    "id": "5i7aFi1VZvdJzdVB5WTK0KOJGqJuerg3X2A8fjNqFxLXXU4NaOKpEH0iVnGU1700835548602",
+    "creationDay": 1700784000000,
+    "email": "lebanese"
+  },
+  "description": "sheet creation",
+  "sheet": "5MR7ty2gPcTQcy7LQ0GjA1w2u5D7eHJrtfpUGVuy3gDuMfPDEhXEfElZkk4O1701513224838",
+  "id": "epmBPsXrhd4sLzcK0gnvafrN8AlmXZwmtKnUKeveSJHjmVVbPKuq8NBcrsWp1701513224944",
+  "creationDay": 1701475200000,
+  "creationDate": 1701513224944,
+  "__props__": {
+    "id": "21c7z121S013V1W3W6B3W7W1f3",
+    "doc": "epmBPsXrhd4sLzcK0gnvafrN8AlmXZwmtKnUKeveSJHjmVVbPKuq8NBcrsWp1701513224944",
+    "creationDate": 1711031363713,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 186
+  }
+}

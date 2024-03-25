@@ -1,0 +1,42 @@
+{
+  "navBar": [
+    {
+      "permission": "account",
+      "id": "accountManager",
+      "text": "Accounts"
+    },
+    {
+      "permission": "transaction",
+      "text": "Transactions",
+      "id": "transactionManager"
+    },
+    {
+      "permission": "asset",
+      "text": "Assets",
+      "id": "assetManager"
+    },
+    {
+      "permission": "invoice",
+      "id": "invoiceManager",
+      "text": "Invoices"
+    },
+    {
+      "permission": "voucher",
+      "id": "voucherManager",
+      "text": "Vouchers"
+    }
+  ],
+  "id": "navBar",
+  "__props__": {
+    "id": "l1o7M16120g3Y1F3Y6p2U2U9O5",
+    "doc": "navBar",
+    "creationDate": 1711031362295,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 7
+  }
+}

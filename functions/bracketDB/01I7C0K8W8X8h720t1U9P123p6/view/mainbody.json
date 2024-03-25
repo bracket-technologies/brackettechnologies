@@ -1,0 +1,36 @@
+{
+  "view": "View:mainbody?class=column;style:[width=100%;overflow=hidden;borderBottom=1px solid #ddd;padding=0 2rem]",
+  "children": [
+    {
+      "view": "currentViewName:()??currentViewName:()"
+    }
+  ],
+  "__props__": {
+    "id": "G1G7A1w160r3y1m326S5S2X0A9",
+    "doc": "mainbody",
+    "creationDate": 1711031365209,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {},
+    "collapsed": [],
+    "comments": [
+      {
+        "note": "",
+        "path": [
+          "children"
+        ]
+      },
+      {
+        "note": "",
+        "path": [
+          "children",
+          0
+        ]
+      }
+    ],
+    "folderPath": [],
+    "version": 0,
+    "counter": 35,
+    "secure": false
+  }
+}

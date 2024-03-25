@@ -1,0 +1,35 @@
+{
+  "accountID": "1197B078m8x8q4e9T5X949d858",
+  "accountName": "accAccount",
+  "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+  "projectName": "brackettechnologies",
+  "userID": null,
+  "permissionID": null,
+  "permissions": {},
+  "domain": "localhost",
+  "db": "a1t7U0H8A8y877a0A1t9O05879",
+  "expiryDate": 1711437151059,
+  "encryptionKey": "DySK1",
+  "subscriptions": [
+    {
+      "subscriptionID": "81z7k0f878H897v0N1a8z9R9G7",
+      "pluginID": "x1u7J0X8a8K8c7H0I14901G9B3",
+      "expiryDate": 9999999999999,
+      "plugins": [
+        {
+          "db": "a1t7U0H8A8y877a0A1t9O05879",
+          "collection": "view",
+          "doc": "console"
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "716741R1F268J1d2X2Z429n2n6",
+    "doc": "session8",
+    "creationDate": 1711281224926,
+    "createdByUserID": "anonymous",
+    "active": true,
+    "counter": 8
+  }
+}

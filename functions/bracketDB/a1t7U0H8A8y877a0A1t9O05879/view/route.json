@@ -1,0 +1,38 @@
+{
+  "view": "Action:route",
+  "children": [
+    {
+      "view": "manifest:().route"
+    }
+  ],
+  "__props__": {
+    "db": "views",
+    "collection": "d17770q8A8Z7l0Q0l031g188q9",
+    "id": "J1o7L1N0c3I390e7d8n6R5N4e5",
+    "doc": "route",
+    "creationDate": 1710330786545,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "checkUser": "search():[collection=user;doc=_.user]:[if():[_.data]:[data:().editor.user=_.data]:[eraseCookie():_id;route():login]]",
+      "checkPassword": "search():[collection=password;find:[userID=_.user;password=_.password]]:[if():[_.data.value()]:[send():true]:[send():false]]",
+      "publish": "if():[_.account]:[save():[collection=user;data=_.account]];if():[_.project]:[save():[collection=project;data=_.project]];if():[_.pages]:[save():[collection=page;map=_.pages]];if():[_.views]:[save():[db=views;map=_.views]];send():[msg='Website published successfully!']",
+      "autoLogin": "search():[collection=user;doc=_.id]:[user:()=_.data.value();send():[user:()]];",
+      "checkEmail": "search():[collection=user;find.email=_.email]:[user:()=_.data.value();send():[user:()]]",
+      "getProject": "if():[_.account;_.project]:[projectID:()=_.project;accountID:()=_.account;[search():[collection=user;doc=accountID:()]:[if():[_.data]:[user:()=_.data]];search():[collection=project;doc=projectID:()]:[if():[_.data]:[project:()=_.data]]]()::[if():[!project:()]:[send():[success=false;message='Project does not exist!']].elif():[!user:()]:[send():[success=false;message='User is not authorized!']]]]:[send():[message='Missing Data!';success=false]]",
+      "__props__": {
+        "comments": []
+      },
+      "clooossseeed": [],
+      "facebook": "log():[_];if():[_.auth]:[passport():[facebook;auth]:[log():here]]"
+    },
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "version": 0,
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 22,
+    "secure": true
+  },
+  "clooossseeed": []
+}

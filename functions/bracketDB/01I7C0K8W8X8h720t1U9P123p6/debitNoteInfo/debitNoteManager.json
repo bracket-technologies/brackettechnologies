@@ -1,0 +1,126 @@
+{
+  "identifier": "voucher",
+  "searchEngineInputs": "voucherSharedInfo",
+  "createFormInputs": "voucherSharedInfo",
+  "managerName": "debitNoteManager",
+  "title": "Debit Note Manager",
+  "type": "Debit Note",
+  "creationDate": 1710497836651,
+  "id": "debitNoteManager",
+  "popupInfo": {
+    "docName": "voucherInfo",
+    "title": "Debit Note Form"
+  },
+  "table": [
+    {
+      "#onClickRowAction": "openBalanceSheet()",
+      "collection": "voucher",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Voucher#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "creationDate",
+          "header": "Date",
+          "formatCell": "toCellDate()",
+          "fraction": "1fr"
+        },
+        {
+          "path": "ledgerSupplierAccount",
+          "header": "Supplier Account",
+          "fraction": "1fr"
+        },
+        {
+          "path": "returns",
+          "header": "Expenditure Account",
+          "innerPath": "expenditureLedgerAccount",
+          "fraction": "1fr"
+        },
+        {
+          "path": "transactions",
+          "header": "Description",
+          "innerPath": "description",
+          "fraction": "1fr"
+        },
+        {
+          "path": "status",
+          "header": "Status",
+          "fraction": "1fr"
+        },
+        {
+          "path": "transactions",
+          "header": "Vat",
+          "formatCell": "().totalVatAmount=0;__.returns._():[if():[_.vatAmount]:[().totalVatAmount+=_.vatAmount]];txt()=().totalVatAmount.price()+' $'",
+          "innerPath": "vat",
+          "fraction": "1fr"
+        },
+        {
+          "path": "returns",
+          "header": "Amount",
+          "formatCell": "__.returns._():[().totalAmount+=_.amount||0];txt()=().totalAmount.price()+' $'",
+          "innerPath": "amount",
+          "fraction": "1fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "#customIcon": [
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Pending"
+                  ],
+                  "conditionReference": "status"
+                }
+              ],
+              "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/Ry6VCfrImishYVFev3Qy?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=JHHcpMp5oYR%2FejdfJpCBeJz3dF%2FCCzEW8INeKKAUTPhkddgrrZ55HJ7a2sGI4PpwCsldZ1ATIQc%2FYCezQFsqX8AY6FR3xYK%2F4DeYLJCLX8gjj%2BRaa8yF4l0Nq4zZ34lIWR0Ed3Ma%2F9UB5DpYHlH6AKXNCCFgU0oVHbbg1xGPEZL%2BzphHwdqehvKSNPeQxMNHEHEHGmNfzWMhL3M8JfoQiLpnqKsxTJ8lwqlOsAAQKnbkS1gQUWb7uHwYOHwFHObAdqoGN2GJsOMa5L%2BByn7Y8cddcJbIHIUq4Wc54dvURkubQXyaKMkuTrMNyHAySFSVeVxXyTRYKugcUBe0MQoDrg%3D%3D",
+              "tooltip": "confirm",
+              "action": "confirmPendingVoucher()"
+            },
+            {
+              "condition": [
+                {
+                  "condition": [
+                    "Pending"
+                  ],
+                  "conditionReference": "status"
+                }
+              ],
+              "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/RT2XaAcbRvxR5b9rxXSH?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=CGimAr0R0Y1GRBtyAlEU2qviIKLfrsKHRVQwDm77D7%2FHHV1PmCgisrKqiHUXWrvc1uwSiGX%2FRxdomxELvAwvBQl2u9Gz08%2FkXucqhbE68liL1TPm0ZlcqKRbTwPApTi3e%2BD8qk3KqVwJ8wimxBcqtgUJf4TqXPGx336BUTpLqrhsLpptfgJISJbqRm1M74RuA5Yna5CluBD9jIUJ4UBUb8V3lJYTOM8h34MwuwgC8aMt7nJl7EliD%2BWjDlw0mR8uGyq2omH37IEChGZTvBTsHim7422jYcHiuLYvS9m60un8uni9MIyUsh6R9mwUADZ0L6Yzm3aXyh2awou6yP9BXA%3D%3D",
+              "tooltip": "cancel"
+            }
+          ],
+          "balanceSheet": "true",
+          "delete": true,
+          "justifyContent": "end",
+          "fraction": ".5fr"
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "V107T1s1v073K1b3h6h1i6n4O3",
+    "doc": "debitNoteManager",
+    "creationDate": 1711031361643,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "table",
+          0,
+          "table",
+          8,
+          "#customIcon"
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 1
+  }
+}

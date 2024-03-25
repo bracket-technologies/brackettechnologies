@@ -1,0 +1,255 @@
+{
+  "identifier": "transaction",
+  "searchEngineInputs": [
+    {
+      "inputPath": "ledgerAccount",
+      "generalLedger": "true",
+      "inputLabel": "Ledger Account"
+    },
+    {
+      "clearable": "true",
+      "inputPath": "fromDate",
+      "inputLabel": "From Date",
+      "type": "date"
+    },
+    {
+      "clearable": "true",
+      "inputPath": "toDate",
+      "inputLabel": "To Date",
+      "type": "date"
+    }
+  ],
+  "createFormInputs": {
+    "subInput": [
+      {
+        "input": [
+          {
+            "inputPath": "credit-debit",
+            "readonly": "readonly",
+            "inputLabel": "Credit/Debit",
+            "inputValue": "Credit",
+            "items": [
+              "Credit",
+              "Debit"
+            ],
+            "required": true
+          },
+          {
+            "clearable": true,
+            "inputPath": "ledgerAccount",
+            "generalLedger": true,
+            "inputLabel": "Ledger Account",
+            "#counterInputBlurAction": "customUpdate():[section=1]",
+            "required": true
+          },
+          {
+            "inputPath": "description",
+            "inputLabel": "Description",
+            "textarea": "true",
+            "fraction": "2fr"
+          },
+          {
+            "inputPath": "currency",
+            "readonly": true,
+            "inputLabel": "Currency",
+            "inputValue": "userData:().currency.find():[counter=1].code",
+            "items": "userData:().currency.():code",
+            "droplistClickAction": "customUpdate():[input=:4]",
+            "required": "true"
+          },
+          {
+            "inputPath": "amount",
+            "unitPath": "currency",
+            "#unitValue": "selected:().defaultCurrency.value",
+            "inputLabel": "Amount",
+            "inputValue": 0,
+            "required": "true"
+          }
+        ],
+        "path": "transactions",
+        "defaultValues": {
+          "exchangeRate": "userData:().currency.find():[code=if():[__.currency]:[__.currency]:[userData:().defaultCurrency.value]].exchangeRate"
+        },
+        "title": "Transactions"
+      }
+    ],
+    "collection": "transaction"
+  },
+  "popupInfo": {
+    "docName": "transactionInfo",
+    "title": "Transaction Form"
+  },
+  "id": "transactionManager",
+  "title": "Transaction Manager",
+  "managerName": "transactionManager",
+  "table": [
+    {
+      "#onClickRowAction": "openBalanceSheet()",
+      "collection": "transaction",
+      "table": [
+        {
+          "path": "ref",
+          "header": "Transaction#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "voucherRef",
+          "header": "Voucher#",
+          "fraction": "1fr"
+        },
+        {
+          "path": "ledgerAccount",
+          "toSpecific": "if():[__.[_.path]]:[text=if():[!_.innerPath]:[__.[_.path]]:[__.[_.path].[_.innerPath]];if():[__.ledgerAccount=customManagerSearchEngine:().ledgerAccount]:[style.color=#fb3b1e]]:[text='-';style.justifyContent=center]",
+          "header": "Ledger",
+          "fraction": ".5fr"
+        },
+        {
+          "path": "creationDate",
+          "header": "Date",
+          "formatCell": "toCellDate()",
+          "fraction": "1fr"
+        },
+        {
+          "path": "description",
+          "header": "Description",
+          "fraction": "1fr"
+        },
+        {
+          "path": "_.exchangeRate",
+          "header": "Exchange Rate",
+          "justifyContent": "center",
+          "fraction": "1fr"
+        },
+        {
+          "path": "debit",
+          "header": "Debit",
+          "formatCell": "toPrice()",
+          "justifyContent": "center",
+          "fraction": "1fr"
+        },
+        {
+          "path": "credit",
+          "header": "Credit",
+          "formatCell": "toPrice()",
+          "justifyContent": "center",
+          "fraction": "1fr"
+        },
+        {
+          "path": "balance",
+          "#innerPath": "balance",
+          "header": "Balance",
+          "formatCell": "toPrice()",
+          "justifyContent": "center",
+          "fraction": "1fr"
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "r1y7c1j190W3F1O3A6D1q0l1B8",
+    "doc": "transactionManager",
+    "creationDate": 1711031361018,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "popupInfo"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2,
+          ""
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          7
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          5
+        ]
+      },
+      {
+        "path": [
+          "table",
+          0,
+          "table",
+          7
+        ]
+      },
+      {
+        "path": [
+          "table",
+          0,
+          "table",
+          6
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "defaultValues"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          1
+        ]
+      },
+      {
+        "path": [
+          "table"
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 1
+  }
+}

@@ -1,0 +1,639 @@
+{
+  "view": "View:sidebar",
+  "children": [
+    {
+      "view": "View?class=flex column;style:[height=calc(100vh - 4.5rem);width=19rem;backgroundColor=#f5f5f5;transition=.2s;overflow=hidden]",
+      "children": [
+        {
+          "view": "View?class=flex column;#hide-scrollbar;style:[overflowY=auto;overflowX=hidden]",
+          "children": [
+            {
+              "view": "[View]:[data=publicData:().sideBar.sidebarItems]?class=column;style:[width=100%;gap=.2rem]",
+              "children": [
+                {
+                  "view": "View?class=flex;style:[width=100%;height=4.5rem;borderRight=2px solid #00000000];click:[handleSideBarClick()]",
+                  "children": [
+                    {
+                      "view": "View?class=flex;style:[width=inherit;cursor=pointer;alignItems=center];tooltip:[text=_.tooltip];hover.style:[backgroundColor='rgb(221 221 221 / 49%)']",
+                      "children": [
+                        {
+                          "view": "View?class=flexbox;style:[height=4.25rem;width=4.25rem;transition=.2s];#click:[managersSearchResult:().del();sidebarNavigationController()]?_.icon",
+                          "children": [
+                            {
+                              "view": "Icon?name=_.icon;google.symbol;style:[fontSize=2.5rem;color=#453f3f;transition=.2s]"
+                            }
+                          ]
+                        },
+                        {
+                          "view": "View?class=flex;style:[alignItems=center;width=10rem;height=100%;text-overflow=ellipsis;white-space=nowrap;overflow=hidden;opacity=1;transition=.2s]",
+                          "children": [
+                            {
+                              "view": "Text?text=_.tooltip.capitalize();style:[fontSize=1.2rem]"
+                            }
+                          ]
+                        },
+                        {
+                          "view": "View?class=flexbox;style:[height=4.5rem;width=100%;borderRight=2px solid #00000000;transition=.2s;overflow=hidden];tooltip:[text=_.tooltip];click:[selectSideBarItems();toggleViewName();if():[_.action]:[[_.action]()]]?_.img",
+                          "children": [
+                            {
+                              "view": "Image?src='https://storage.googleapis.com/bracket-technologies.appspot.com/storage-tt/eUxGSStvIH6comRKQpxi?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=G7vmM%2FptBVWEomvM2cnXQN2t3JJLRm3hNyJs%2F1vPAwazqrfmzFmw8cGTto%2F3vUxBoLLgg9g92UcdqochL3swBjfP7HFFJcijwo9DLqsU8yUohmyCMVKHRIDE3RkZoRxh2ZcljZ8INKezhUzf2gCFVgWiGxJAucErV6JEwJ1X%2Fx9Wnk1pZu66sJCLtNFjqBwHp6HTC5pnxzR5kTuzdtVaGY1tYKwv3JA%2Fq5iqMFwbpDrqexVRS2IOwdCOxrD0BIk37Xz%2F91ZudqIgXwYQA43VeTTo24TlfaXhs8kOnczJJVMmjL9EOnFETPgxM5Tqggg0kg%2Bp0B8rtnKDPrfd9vRomA%3D%3D';style:[width=60%;height=60%]"
+                            }
+                          ]
+                        },
+                        {
+                          "view": "View?class=flexbox;style:[transition=.2s;marginLeft=auto;width=2.5rem]?_.subSidebar",
+                          "children": [
+                            {
+                              "view": "Icon?name=arrow_right;google.symbol;style:[transition=.2s;fontSize=2.5rem;color=#453f3f;transition=.2s]"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "view": "View?class=column;style:[width=100%;overflow=hidden;height=0rem;transition=0.2s;paddingLeft=.8rem;paddingRight=.2rem]?_.subSidebar",
+                  "children": [
+                    {
+                      "view": "[View]:[data=_.subSidebar]?class=flex;style:[width=100%;minHeight=3.25rem;paddingLeft=2rem;borderRadius=.8rem];click:[handleSideBarClick()];hoverStyle()",
+                      "children": [
+                        {
+                          "view": "View?class=flex;style:[width=inherit;cursor=pointer;alignItems=center]",
+                          "children": [
+                            {
+                              "view": "View?class=flex;style:[alignItems=center;width=100%;height=100%;text-overflow=ellipsis;white-space=nowrap;overflow=hidden;opacity=1;transition=.2s;justifyContent=space-between;paddingRight=1rem]",
+                              "children": [
+                                {
+                                  "view": "Text?text=_.text;style:[fontSize=1.2rem]"
+                                },
+                                {
+                                  "view": "View?class=flexbox;style:[width=1.5rem;height=1.5rem;borderRadius=1rem;backgroundColor=#fb3b1e;opacity=0];click:[timer():[callOpenCreateForm()]:0]?_.hotCreate",
+                                  "children": [
+                                    {
+                                      "view": "Icon?name=add;google.symbol;style:[fontSize=1.5rem;color=#fff]"
+                                    }
+                                  ]
+                                }
+                              ]
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "view": "View?class=column;style:[marginTop=auto];().opened=true;click:[expandSidebar()]",
+          "children": [
+            {
+              "view": "View?class=flexbox;style:[width=100%;position=relative;cursor=pointer];hover.style:[backgroundColor=#ddd]",
+              "children": [
+                {
+                  "view": "View?class=flexbox;style:[height=4.5rem;width=100%;borderRight=2px solid #00000000;transition=.2s;transform=rotate(180deg)]",
+                  "children": [
+                    {
+                      "view": "Icon?name=arrow_forward;google.symbol;style:[fontSize=2.5rem;color=#453f3f;transition=.2s]"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "w1V7h1e1n0M3n1E3M6d5n211M7",
+    "doc": "sidebar",
+    "creationDate": 1711031365217,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "unselectListItems": "data:().collection.sideBar.sidebarItems._():[():[_.identifier].children().():[1stChild().style():[backgroundColor=transparent;borderColor=#00000000];1stChild().1stChild().style().color=#453f3f;height=4.5rem]];accountingManager:()=''",
+      "toggleViewName": "if():[_.viewName;currentViewName:()!=_.viewName]:[currentViewName:()=_.viewName;():mainbody.update()]",
+      "handleSideBarClick": {
+        "selectSideBarItem": {
+          "unselectSideBarItems": "2ndParent().children()._():[_.1stChild().selectedSideBarItem=false;#containerBackgroundColor;_.1stChild().style():[backgroundColor=transparent;borderColor=#00000000];#iconColor;_.1stChild().1stChild().1stChild().1stChild().style().color=#453f3f;#textColor;_.1stChild().1stChild().2ndChild().1stChild().style().color=#453f3f;#expandIconStyle;_.1stChild().1stChild().lastChild().1stChild().style():[rotate=0deg;color=rgb(69, 63, 63)];#closeSubSideBar;if():[_.2ndChild().openedSubSidebar;_._!=__]:[_.2ndChild().openedSubSidebar=false;_.2ndChild().style().height=0]]",
+          "openSubSideBar": "1stChild().lastChild().1stChild().style().rotate=90deg;next().openedSubSidebar=true;next().style():[height=_.subSidebar.len()*3.25+'rem']",
+          "handelCloseAndOpenSubsideBar": "if():[next().openedSubSidebar]:[closeSubSideBar()]:[if():[!2ndParent().next().opened]:[2ndParent().next().click()];openSubSideBar()]",
+          "unselectSubSideBarItems": "2ndParent().children().():[2ndChild().children()._():[_.selectedSubSideBarItem=false;_.style():[backgroundColor=transparent];_.1stChild().1stChild().1stChild().style():[color=#453f3f];if():[_._.hotCreate]:[_.1stChild().1stChild().lastChild().style():[opacity=0;backgroundColor=#fb3b1e];_.1stChild().1stChild().lastChild().1stChild().style():[color=#fff]]]]",
+          "selectSideBarItem": "().selectedSideBarItem=true;containerStyle;style():[backgroundColor=rgb(221 221 221 / 49%);borderColor=#fb3b1e];#expandIconStyle;if():[_.subSidebar]:[1stChild().lastChild().1stChild().style():[rotate=90deg;color=#fb3b1e]];#iconstyle;1stChild().1stChild().1stChild().style().color=#fb3b1e;#textStyle;1stChild().2ndChild().1stChild().style().color=#fb3b1e",
+          "closeSubSideBar": "1stChild().lastChild().1stChild().style().rotate=0deg;next().openedSubSidebar=false;next().style().height=0",
+          "_": "if():[!().selectedSideBarItem]:[if():[_.subSidebar]:[unselectSubSideBarItems()];unselectSideBarItems();selectSideBarItem()];if():[_.subSidebar]:[handelCloseAndOpenSubsideBar()]"
+        },
+        "selectSubSidebarItem": {
+          "selectSubSideBarItem": "().selectedSubSideBarItem=true;style():[backgroundColor=rgb(251, 59, 30)];1stChild().1stChild().1stChild().style().color=#fff;if():[_.hotCreate]:[1stChild().1stChild().lastChild().style():[opacity=1;backgroundColor=#fff];1stChild().1stChild().lastChild().1stChild().style():[color=#fb3b1e]]",
+          "unselectSubSideBarItems": "parent().children()._():[_.selectedSubSideBarItem=false;_.style():[backgroundColor=transparent];_.1stChild().1stChild().1stChild().style():[color=#453f3f];if():[_._.hotCreate]:[_.1stChild().1stChild().lastChild().style():[opacity=0;backgroundColor=#fb3b1e];_.1stChild().1stChild().lastChild().1stChild().style():[color=#fff]]]",
+          "_": "unselectSubSideBarItems();selectSubSideBarItem()"
+        },
+        "_": "if():[!__.subSidebar]:[if():[_.subSidebar]:[selectSideBarItem()]:[if():[!().selectedSideBarItem]:[selectSideBarItem();sidebarNavigationController()]]]:[if():[!().selectedSubSideBarItem]:[selectSubSidebarItem();sidebarNavigationController()]]",
+        "sidebarNavigationController": {
+          "changeCurrentOpenManager": "currentManager:()=[_.managerInfo]:().clone();currentOpenManager:()=currentManager:().value();if():[currentViewName:()!=customManager]:[toggleViewName()]:[():customManager.update()]",
+          "toggleViewAction": "if():[_.viewName;currentViewName:()!=_.viewName]:[currentViewName:()=_.viewName;():mainbody.update()]",
+          "_": "managersSearchResult:().del();if():[_.managerInfo]:[changeCurrentOpenManager();if():[_.icon]:[selectSideBarItem()]:[selectSubSidebarItem()]]:[selectSideBarItem();toggleViewAction()];if():[_.action]:[[_.action]()]"
+        }
+      },
+      "hoverStyle": "[mouseenter?style():[backgroundColor='rgb(221 221 221 / 49%)'];if():[_.hotCreate]:[1stChild().1stChild().lastChild().style().opacity=1]?!().selectedSubSideBarItem];[mouseleave?style():[backgroundColor=transparent];if():[_.hotCreate]:[1stChild().1stChild().lastChild().style().opacity=0]?!().selectedSubSideBarItem]",
+      "expandSidebar": {
+        "collapseSidebar": "parent().style().width=4.5rem;1stChild().1stChild().1stChild().style().transform=rotate(180deg);().opened=false;parent().1stChild().children().():[if():[1stChild().1stChild().2ndChild()]:[1stChild().1stChild().2ndChild().style():[opacity=0;width=0];1stChild().1stChild().lastChild().style():[opacity=0;width=0]]]",
+        "collapseSubSidebar": "parent().1stChild().children().():[if():[2ndChild();2ndChild().openedSubSidebar]:[2ndChild().style():[height=0];2ndChild().openedSubSidebar=false]]",
+        "expandSidebar": "parent().style():[width=19rem];1stChild().1stChild().1stChild().style().transform=rotate(0);().opened=true;parent().1stChild().children()._():[_.1stChild().1stChild().2ndChild().style():[opacity=1;width=10rem];if():[_._.subSidebar]:[_.1stChild().1stChild().lastChild().style():[opacity=1;width=2.5rem]]]",
+        "expandSubSidebar": "parent().1stChild().children()._():[if():[_.2ndChild();_.2ndChild().openedSubSidebar]:[_.2ndChild().style():[height=_._.subSidebar.len()*3.25+'rem']]]",
+        "_": "if():[!().opened]:[expandSidebar();expandSubSidebar()]:[collapseSidebar();collapseSubSidebar()]"
+      },
+      "hideArrow": "style().backgroundColor=transparent;2ndChild().style():[right=0rem;width=0rem]",
+      "selectListItem": "3rdParent().parent().children().():[1stChild().1stChild().style():[backgroundColor=transparent;borderColor=#00000000];grandChild().1stChild().style().color=#453f3f];unselectListItems();style():[backgroundColor=#ddd;borderColor=#fb3b1e];1stChild().style().color=#fb3b1e;2ndParent().prev().1stChild().style().backgroundColor=rgb(229, 229, 229)"
+    },
+    "collapsed": [
+      {
+        "path": [
+          "children",
+          "0",
+          "children",
+          2,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          "0",
+          "children",
+          3
+        ]
+      },
+      {
+        "path": [
+          "children",
+          "0",
+          "children",
+          4
+        ]
+      },
+      {
+        "path": [
+          "children",
+          "0",
+          "children",
+          5
+        ]
+      },
+      {
+        "path": [
+          "children",
+          "0",
+          "children",
+          6
+        ]
+      },
+      {
+        "path": [
+          "children",
+          "0",
+          "children",
+          2,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          "0",
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          "0",
+          "children",
+          2
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          4,
+          "children",
+          1,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          5
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          3
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          7
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          8
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          6
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          4
+        ]
+      },
+      {
+        "path": [
+          "functions",
+          "expandListItems"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          3
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          2
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          3
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "selectSubSidebarItem"
+        ]
+      },
+      {
+        "path": [
+          "#selectSideBarItem"
+        ]
+      },
+      {
+        "path": [
+          "expandListItems"
+        ]
+      },
+      {
+        "path": [
+          "sidebarNavigationController"
+        ]
+      },
+      {
+        "path": [
+          "#expandSidebar"
+        ]
+      },
+      {
+        "path": [
+          "handleSideBarClick",
+          "selectSubSidebarItem"
+        ]
+      },
+      {
+        "path": [
+          "handleSideBarClick",
+          "sidebarNavigationController"
+        ]
+      }
+    ],
+    "comments": [
+      {
+        "note": "loop items view",
+        "path": [
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "Flights Options",
+        "path": [
+          "children",
+          0,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "Hotels",
+        "path": [
+          "children",
+          0,
+          "children",
+          3
+        ]
+      },
+      {
+        "note": "Hotels Options",
+        "path": [
+          "children",
+          0,
+          "children",
+          4
+        ]
+      },
+      {
+        "note": "Accounting",
+        "path": [
+          "children",
+          0,
+          "children",
+          5
+        ]
+      },
+      {
+        "note": "Settings",
+        "path": [
+          "children",
+          0,
+          "children",
+          6
+        ]
+      },
+      {
+        "note": "flight icon",
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "icon",
+        "path": [
+          "children",
+          0,
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "all items loop",
+        "path": [
+          "children",
+          0,
+          "children",
+          "0",
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "image false",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          3
+        ]
+      },
+      {
+        "note": "icon",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          2,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "false",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "sideBar main items",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "note": "sub items",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": "image as icon",
+        "path": [
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          0,
+          "children",
+          2
+        ]
+      },
+      {
+        "note": "expand sidebar",
+        "path": [
+          "children",
+          0,
+          "children",
+          1
+        ]
+      },
+      {
+        "note": ".subs",
+        "path": [
+          "sidebarNavigationController"
+        ]
+      }
+    ],
+    "folderPath": [],
+    "version": 0,
+    "counter": 50,
+    "secure": false
+  }
+}

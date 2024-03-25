@@ -1,0 +1,29 @@
+{
+  "view": "View:DataManager?class=flex column;style:[transition=.2s;width=15.5rem;backgroundColor=#f0f0f0;overflow=auto;padding=.5rem 0;width=0px;zIndex=2]",
+  "children": [
+    {
+      "view": "View?class=flex column;style:[width='calc(100% - 1.2rem)';marginLeft=1.2rem;borderLeft=1px solid #ddd]",
+      "children": [
+        {
+          "view": "collections"
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "db": "views",
+    "collection": "d17770q8A8Z7l0Q0l031g188q9",
+    "id": "O1K7i1P0j3L3t077o856H468o2",
+    "doc": "DataManager",
+    "creationDate": 1710330786482,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {},
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "version": 0,
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 9
+  }
+}

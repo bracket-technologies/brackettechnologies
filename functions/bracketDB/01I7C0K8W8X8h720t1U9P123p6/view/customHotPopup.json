@@ -1,0 +1,58 @@
+{
+  "view": "View:customHotPopup?class=column;style:[width=100%;height=100%]",
+  "children": [
+    {
+      "view": "View?class=flex column;style:[width=100%;height=100%]",
+      "children": [
+        {
+          "view": "View?log():[_]:['Golo1']:[__]:[___]",
+          "children": [
+            {
+              "view": "customSearchEngine?intializeSearchEngine()"
+            }
+          ]
+        },
+        {
+          "view": "View:DataTable?class=flex column;style:[width=100%]",
+          "children": [
+            {
+              "view": "View??DataTable:()",
+              "children": [
+                {
+                  "view": "customGeneralTable?intializeTable()"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "4147L1Q1J0c3f1K396x5J1a9N8",
+    "doc": "customHotPopup",
+    "creationDate": 1711031365198,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "intializeTable": "collection=_.identifier;itemsList=DataTable:();tableHeaderAndBody=_.tableHeaders;currency=_.currency",
+      "intializeSearchEngine": "title=_.searchTitle;searchEngineHeight=fit-content;searchEngineInputs=_.inputListName;iconFalse=_.iconFalse;searchKey=_.searchKey;clickedId=_.clickedId;identifier=_.identifier"
+    },
+    "collapsed": [],
+    "comments": [
+      {
+        "note": "Search engine",
+        "path": [
+          "children",
+          0,
+          "children",
+          0
+        ]
+      }
+    ],
+    "folderPath": [],
+    "version": 0,
+    "counter": 12,
+    "secure": false
+  }
+}

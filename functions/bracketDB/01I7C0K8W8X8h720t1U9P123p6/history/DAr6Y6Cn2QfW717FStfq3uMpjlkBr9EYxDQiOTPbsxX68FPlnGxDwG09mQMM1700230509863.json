@@ -1,0 +1,26 @@
+{
+  "difference": [
+    {
+      "new": "1231234234",
+      "path": "note",
+      "old": "123123"
+    }
+  ],
+  "description": "branch creation",
+  "id": "DAr6Y6Cn2QfW717FStfq3uMpjlkBr9EYxDQiOTPbsxX68FPlnGxDwG09mQMM1700230509863",
+  "creationDay": 1700179200000,
+  "creationDate": 1700230509863,
+  "branch": "4AzrpuFyqsWkuulmJFATdHPGwkAYyWMAjIfAufDMtfp2OgwXgo95v5RXEMf91699601076880",
+  "__props__": {
+    "id": "T1Z7e1P1j013J1q3x6t3J2g7a5",
+    "doc": "DAr6Y6Cn2QfW717FStfq3uMpjlkBr9EYxDQiOTPbsxX68FPlnGxDwG09mQMM1700230509863",
+    "creationDate": 1711031363275,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 46
+  }
+}

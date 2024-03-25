@@ -1,0 +1,300 @@
+{
+  "create": {
+    "invoice": {
+      "keyValue": [
+        {
+          "path": "invoiceDate",
+          "type": "number",
+          "key": "invoiceDate",
+          "required": true
+        },
+        {
+          "path": "type",
+          "type": "string",
+          "key": "type",
+          "required": true
+        },
+        {
+          "path": "status",
+          "type": "string",
+          "key": "status",
+          "required": true
+        },
+        {
+          "path": "currency",
+          "type": "string",
+          "key": "currency",
+          "required": true
+        },
+        {
+          "path": "customerAccount",
+          "type": "string",
+          "key": "customerAccount",
+          "required": true
+        },
+        {
+          "listPath": "bookings",
+          "input": [
+            {
+              "path": "supplierAccount",
+              "type": "string",
+              "key": "supplierAccount",
+              "required": true
+            },
+            {
+              "path": "issueDate",
+              "type": "number",
+              "key": "issueDate",
+              "required": true
+            },
+            {
+              "path": "type",
+              "type": "string",
+              "key": "type",
+              "required": true
+            },
+            {
+              "path": "PNR",
+              "type": "string",
+              "key": "PNR"
+            },
+            {
+              "path": "passengerFullName",
+              "type": "string",
+              "key": "passengerFullName"
+            },
+            {
+              "path": "eTicket",
+              "type": "string",
+              "key": "eTicket"
+            },
+            {
+              "listPath": "flightDetails",
+              "input": [
+                {
+                  "path": "arrivaAirport",
+                  "type": "string",
+                  "key": "arrivaAirport"
+                },
+                {
+                  "path": "departureAirport",
+                  "type": "string",
+                  "key": "departureAirport"
+                },
+                {
+                  "path": "flightDate",
+                  "type": "number",
+                  "key": "flightDate"
+                }
+              ]
+            },
+            {
+              "path": "fareBasis",
+              "type": "number",
+              "key": "fareBasis"
+            },
+            {
+              "path": "class",
+              "type": "number",
+              "key": "class"
+            },
+            {
+              "path": "grossFare",
+              "type": "number",
+              "key": "grossFare"
+            },
+            {
+              "path": "tax1",
+              "type": "number",
+              "key": "tax1"
+            },
+            {
+              "path": "tax2",
+              "type": "number",
+              "key": "tax2"
+            },
+            {
+              "path": "tax3",
+              "type": "number",
+              "key": "tax3"
+            },
+            {
+              "path": "tax4",
+              "type": "number",
+              "key": "tax4"
+            },
+            {
+              "path": "tax5",
+              "type": "number",
+              "key": "tax5"
+            },
+            {
+              "path": "tax6",
+              "type": "number",
+              "key": "tax6"
+            },
+            {
+              "path": "tax7",
+              "type": "number",
+              "key": "tax7"
+            },
+            {
+              "path": "tax8",
+              "type": "number",
+              "key": "tax8"
+            },
+            {
+              "path": "totalTaxes",
+              "type": "number",
+              "key": "totalTaxes"
+            },
+            {
+              "path": "costCutFare",
+              "type": "number",
+              "key": "costCutFare",
+              "required": true
+            },
+            {
+              "path": "costCommission",
+              "type": "number",
+              "key": "costCommission"
+            },
+            {
+              "path": "costIATAInsurance",
+              "type": "number",
+              "key": "costIATAInsurance"
+            },
+            {
+              "path": "costServiceCharge",
+              "type": "number",
+              "key": "costServiceCharge"
+            },
+            {
+              "path": "costTotalPrice",
+              "type": "number",
+              "key": "costTotalPrice",
+              "required": true
+            },
+            {
+              "path": "sellingCutFare",
+              "type": "number",
+              "key": "sellingCutFare",
+              "required": true
+            },
+            {
+              "path": "sellingCommission",
+              "type": "number",
+              "key": "sellingCommission"
+            },
+            {
+              "path": "sellingIATAInsurance",
+              "type": "number",
+              "key": "sellingIATAInsurance"
+            },
+            {
+              "path": "sellingServiceCharge",
+              "type": "number",
+              "key": "sellingServiceCharge"
+            },
+            {
+              "path": "sellingTotalPrice",
+              "type": "number",
+              "key": "sellingTotalPrice",
+              "required": true
+            }
+          ]
+        },
+        {
+          "path": "supplierPaymentTermsDueDate",
+          "type": "number",
+          "key": "supplierPaymentTermsDueDate"
+        },
+        {
+          "path": "supplierPaymentTerms",
+          "type": "string",
+          "key": "supplierPaymentTerms"
+        },
+        {
+          "path": "customerPaymentTermsDueDate",
+          "type": "number",
+          "key": "customerPaymentTermsDueDate"
+        },
+        {
+          "path": "customerPaymentTerms",
+          "type": "string",
+          "key": "customerPaymentTerms"
+        },
+        {
+          "path": "salesmanCommission",
+          "type": "string",
+          "key": "salesmanCommission"
+        },
+        {
+          "path": "salesmanAccount",
+          "condition": [
+            {
+              "condition": [
+                "Yes"
+              ],
+              "conditionReference": "salesmanCommission"
+            }
+          ],
+          "type": "string",
+          "key": "salesmanAccount",
+          "required": true
+        },
+        {
+          "path": "salesmanCommissionAmount",
+          "condition": [
+            {
+              "condition": [
+                "Yes"
+              ],
+              "conditionReference": "salesmanCommission"
+            }
+          ],
+          "type": "number",
+          "key": "salesmanCommissionAmount",
+          "required": true
+        }
+      ],
+      "generateReference": true
+    }
+  },
+  "id": "invoicekokemofmwnsbuwbuivubv",
+  "collection": "invoice",
+  "creationDate": 1710838351047,
+  "__props__": {
+    "id": "g1w7I101H0739143L6V2D4c6B0",
+    "doc": "invoicekokemofmwnsbuwbuivubv",
+    "creationDate": 1711031362460,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "create",
+          "invoice",
+          "keyValue",
+          5,
+          "input",
+          6,
+          "input"
+        ]
+      },
+      {
+        "path": [
+          "create",
+          "invoice",
+          "keyValue",
+          5,
+          "input"
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 11
+  }
+}

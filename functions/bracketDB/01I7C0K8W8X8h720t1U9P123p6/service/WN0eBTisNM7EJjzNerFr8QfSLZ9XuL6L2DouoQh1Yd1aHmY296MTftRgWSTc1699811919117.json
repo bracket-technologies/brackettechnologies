@@ -1,0 +1,33 @@
+{
+  "tourGuide": 11,
+  "pax": "3",
+  "sponsorCommission": "0",
+  "netPrice": "0",
+  "discount": "0",
+  "description": "dasfdsaf",
+  "tax": "0",
+  "creationDate": 1699811919120,
+  "capacity": 11,
+  "exchangeRate": "1",
+  "createdBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+  "service": "Activity",
+  "supplier": "101/1",
+  "name": "asasas",
+  "currency": "USD",
+  "agentCommission": "0",
+  "salesmanCommission": "0",
+  "id": "WN0eBTisNM7EJjzNerFr8QfSLZ9XuL6L2DouoQh1Yd1aHmY296MTftRgWSTc1699811919117",
+  "creationDay": 1699747200000,
+  "__props__": {
+    "id": "Y1g781h1c083C1A3t6T0X6r9P9",
+    "doc": "WN0eBTisNM7EJjzNerFr8QfSLZ9XuL6L2DouoQh1Yd1aHmY296MTftRgWSTc1699811919117",
+    "creationDate": 1711031360699,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 5
+  }
+}

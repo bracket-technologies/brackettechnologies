@@ -1,0 +1,29 @@
+{
+  "lastName": "dd",
+  "country": "Afghanistan",
+  "address": "gg",
+  "city": "Kabul",
+  "creationDate": 1704802227688,
+  "birthDate": 1704499200000,
+  "branch": "4AzrpuFyqsWkuulmJFATdHPGwkAYyWMAjIfAufDMtfp2OgwXgo95v5RXEMf91699601076880",
+  "firstName": "test branch user",
+  "ref": "USR-00000001",
+  "nationality": "lebanese",
+  "createdBy": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+  "contactNumber": "dd",
+  "id": "fw9AlBGjBQGhL4cHXUo6ppAnA26bU2aClEubzcFFv9xw5wkEXmAtGjKkLUdF1704802227685",
+  "creationDay": 1704758400000,
+  "email": "dd",
+  "__props__": {
+    "id": "81M7L1o1Q02321X3c6m0w5S1J8",
+    "doc": "fw9AlBGjBQGhL4cHXUo6ppAnA26bU2aClEubzcFFv9xw5wkEXmAtGjKkLUdF1704802227685",
+    "creationDate": 1711031360518,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 3
+  }
+}

@@ -1,0 +1,168 @@
+{
+  "#defaultAccounts": {
+    "generateLedger": true,
+    "keyValue": [
+      {
+        "path": "name",
+        "type": "string",
+        "key": "name",
+        "required": true
+      },
+      {
+        "path": "generalLedger",
+        "type": "string",
+        "key": "generalLedger",
+        "required": "true"
+      },
+      {
+        "path": "currency",
+        "type": "string",
+        "key": "currency",
+        "required": "true"
+      },
+      {
+        "path": "blockAccount",
+        "type": "boolean",
+        "key": "blockAccount",
+        "required": "true"
+      },
+      {
+        "path": "branch",
+        "type": "string",
+        "key": "branch",
+        "required": "true"
+      },
+      {
+        "path": "description",
+        "type": "string",
+        "key": "description"
+      },
+      {
+        "staticValue": "hello test",
+        "key": "startsWith"
+      }
+    ],
+    "beforeSaveStep": {
+      "keyValue": [
+        {
+          "path": "id",
+          "findKey": "helperKey",
+          "findValue": "toGetLastBalance",
+          "key": "lastBalance"
+        }
+      ]
+    },
+    "nextStep": {
+      "manager": "account",
+      "collection": "transaction"
+    },
+    "generateReference": true
+  },
+  "create": {
+    "defaultAccounts": {
+      "generateLedger": true,
+      "keyValue": [
+        {
+          "path": "name",
+          "type": "string",
+          "key": "name",
+          "required": true
+        },
+        {
+          "path": "generalLedger",
+          "type": "string",
+          "key": "generalLedger",
+          "required": "true"
+        },
+        {
+          "path": "currency",
+          "type": "string",
+          "key": "currency",
+          "required": "true"
+        },
+        {
+          "path": "blockAccount",
+          "type": "string",
+          "key": "blockAccount",
+          "required": "true"
+        },
+        {
+          "path": "branch",
+          "type": "string",
+          "key": "branch",
+          "required": "true"
+        },
+        {
+          "path": "description",
+          "type": "string",
+          "key": "description"
+        },
+        {
+          "staticValue": "hello test",
+          "key": "startsWith"
+        }
+      ],
+      "beforeSaveStep": {
+        "keyValue": [
+          {
+            "path": "id",
+            "findKey": "helperKey",
+            "findValue": "toGetLastBalance",
+            "key": "lastBalance"
+          }
+        ]
+      },
+      "nextStep": {
+        "manager": "account",
+        "collection": "transaction"
+      },
+      "generateReference": true
+    }
+  },
+  "id": "defaultAccountslkqnwjwefwe",
+  "collection": "defaultAccounts",
+  "__props__": {
+    "id": "T1y711r140K3C153A6P284W5X8",
+    "doc": "defaultAccountslkqnwjwefwe",
+    "creationDate": 1711031362458,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "defaultAccounts",
+          "beforeSaveStep"
+        ]
+      },
+      {
+        "path": [
+          "account",
+          "keyValue",
+          6,
+          "condition"
+        ]
+      },
+      {
+        "path": [
+          "defaultAccounts",
+          "keyValue"
+        ]
+      },
+      {
+        "path": [
+          "defaultAccounts",
+          "nextStep"
+        ]
+      },
+      {
+        "path": [
+          "#defaultAccounts"
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 10
+  }
+}

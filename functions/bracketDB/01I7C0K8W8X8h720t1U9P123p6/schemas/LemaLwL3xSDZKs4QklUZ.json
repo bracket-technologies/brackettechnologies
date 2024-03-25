@@ -1,0 +1,34 @@
+{
+  "create": {
+    "user": {
+      "keyValue": [
+        {
+          "path": "permission",
+          "type": "map",
+          "key": "permission",
+          "required": "true"
+        },
+        {
+          "path": "userId",
+          "type": "string",
+          "key": "user",
+          "required": "true"
+        }
+      ]
+    }
+  },
+  "id": "LemaLwL3xSDZKs4QklUZ",
+  "collection": "permission",
+  "__props__": {
+    "id": "g12721H1s0c381C3l6X2n4m3L8",
+    "doc": "LemaLwL3xSDZKs4QklUZ",
+    "creationDate": 1711031362438,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 2
+  }
+}

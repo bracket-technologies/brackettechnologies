@@ -53,13 +53,13 @@ const server = (req, res) => {
 }
 
 // acc server
-http.createServer(server).listen(80, ["localhost", "192.168.10.204"], () => {
+http.createServer(server).listen(80, ["localhost"], () => {
   console.log("Server Listening to Port 80");
   Tunnel2.start()
 })
 
 // bracket server
-http.createServer(server).listen(8080, ["localhost", "192.168.10.204"], () => {
+http.createServer(server).listen(8080, ["localhost"], () => {
   console.log("Server Listening to Port 8080")
   Tunnel1.start()
 })

@@ -1,0 +1,33 @@
+{
+  "country": "Afghanistan",
+  "sponsorCommission": "0",
+  "netPrice": "0",
+  "discount": "0",
+  "tax": "0",
+  "type": "Medical Insurance",
+  "creationDate": 1699812324944,
+  "duration": 1699812320297,
+  "exchangeRate": "1",
+  "createdBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+  "service": "Travel Insurance",
+  "supplier": "101/1",
+  "name": "aaaa",
+  "insuranceAgencyName": "dfasfa",
+  "currency": "USD",
+  "agentCommission": "0",
+  "salesmanCommission": "0",
+  "id": "zFrotY5ThYogOgbBo50Geq5egjtRip4AkER7YM10YROHOYzojtxL0IaQl1Wq1699812324944",
+  "creationDay": 1699747200000,
+  "__props__": {
+    "id": "R1a7d1D1c0F3J1J386a0n7j0S8",
+    "doc": "zFrotY5ThYogOgbBo50Geq5egjtRip4AkER7YM10YROHOYzojtxL0IaQl1Wq1699812324944",
+    "creationDate": 1711031360708,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 9
+  }
+}

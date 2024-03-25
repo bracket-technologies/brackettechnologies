@@ -1,0 +1,376 @@
+{
+  "identifier": "sheet",
+  "searchEngineInputs": [
+    {
+      "clearable": "true",
+      "inputPath": "ref",
+      "inputLabel": "Sheet#",
+      "hideSearchIcon": true,
+      "collection": "sheet",
+      "searchable": true
+    },
+    {
+      "clearable": true,
+      "inputPath": "name",
+      "inputLabel": "Name"
+    }
+  ],
+  "createFormInputs": {
+    "subInput": [
+      {
+        "input": [
+          {
+            "inputPath": "name",
+            "inputLabel": "Name",
+            "required": true
+          },
+          {
+            "inputPath": "type",
+            "inputLabel": "Type",
+            "inputValue": "Editable",
+            "items": [
+              "Editable",
+              "Readonly"
+            ],
+            "required": "required"
+          }
+        ],
+        "title": "General Information"
+      },
+      {
+        "customSectionView": "sheet"
+      }
+    ],
+    "collection": "sheet"
+  },
+  "managerName": "sheet",
+  "title": "Sheet Manager",
+  "creationDate": 1709045719800,
+  "historyTable": [
+    {
+      "collection": "history",
+      "table": [
+        {
+          "path": "creationDate",
+          "header": "Created At",
+          "formatCell": "toCellDate()",
+          "fraction": "1fr"
+        },
+        {
+          "path": "updateBy",
+          "header": "Updated By",
+          "fraction": "1fr"
+        },
+        {
+          "path": "createBy",
+          "header": "Created By",
+          "fraction": "1fr"
+        },
+        {
+          "path": "description",
+          "header": "Description",
+          "fraction": "2fr"
+        },
+        {
+          "read": true,
+          "edit": "true",
+          "balanceSheet": "true",
+          "delete": true,
+          "justifyContent": "end",
+          "fraction": ".5fr"
+        }
+      ]
+    }
+  ],
+  "saveAction": "saveSheet()",
+  "searchResultView": "sheetCards",
+  "sheetTable": {
+    "headers": [
+      {
+        "header": ""
+      },
+      {
+        "header": "A"
+      },
+      {
+        "header": "B"
+      },
+      {
+        "header": "C"
+      },
+      {
+        "header": "D"
+      },
+      {
+        "header": "E"
+      },
+      {
+        "header": "F"
+      },
+      {
+        "header": "G"
+      },
+      {
+        "header": "H"
+      },
+      {
+        "header": "I"
+      },
+      {
+        "header": "J"
+      },
+      {
+        "header": "K"
+      },
+      {
+        "header": "L"
+      },
+      {
+        "header": "M"
+      },
+      {
+        "header": "N"
+      }
+    ]
+  },
+  "id": "sheetTable",
+  "searchAction": "getSearchResult()",
+  "popupInfo": {
+    "docName": "sheet",
+    "title": "Sheet Form"
+  },
+  "historySearchEngine": [
+    {
+      "inputPath": "startDate",
+      "inputLabel": "Start Date",
+      "type": "date"
+    },
+    {
+      "inputPath": "endDate",
+      "inputLabel": "End Date",
+      "type": "date"
+    }
+  ],
+  "__props__": {
+    "id": "O1M7Z1F1F08311S3y6o0p5H0G4",
+    "doc": "sheetTable",
+    "creationDate": 1711031360504,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [
+      {
+        "path": [
+          "historyTable",
+          0,
+          "table",
+          0
+        ]
+      },
+      {
+        "path": [
+          "historyTable",
+          0,
+          "table",
+          1
+        ]
+      },
+      {
+        "path": [
+          "historyTable",
+          0,
+          "table",
+          2
+        ]
+      },
+      {
+        "path": [
+          "historyTable",
+          0,
+          "table"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          0
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs",
+          1
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          0
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          1
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          2
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          3
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          4
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          5
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          6
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          7
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          8
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          9
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          10
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          11
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          12
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          13
+        ]
+      },
+      {
+        "path": [
+          "sheetTable",
+          "headers",
+          14
+        ]
+      },
+      {
+        "path": [
+          "historyTable"
+        ]
+      },
+      {
+        "path": [
+          "historySearchEngine"
+        ]
+      },
+      {
+        "path": [
+          "sheetTable"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          2
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          1
+        ]
+      },
+      {
+        "path": [
+          "popupInfo"
+        ]
+      },
+      {
+        "path": [
+          "searchEngineInputs"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput",
+          0,
+          "input",
+          0
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs",
+          "subInput"
+        ]
+      },
+      {
+        "path": [
+          "createFormInputs"
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 1
+  }
+}

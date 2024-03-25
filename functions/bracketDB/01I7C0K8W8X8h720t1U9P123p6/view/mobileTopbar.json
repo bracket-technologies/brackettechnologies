@@ -1,0 +1,175 @@
+{
+  "view": "View:mobileTopbar?class=flexbox column;title:()=Travel Booking Platform",
+  "children": [
+    {
+      "view": "View?class=flexbox;style:[display=grid;gridTemplateColumns=auto auto auto;grid-row-gap=2rem;padding=2.5% 2.5%;width=100%;justifyContent=space-between;borderBottom=1px solid #eee;overflowX=clip]",
+      "children": [
+        {
+          "view": "[View]:[data=data:().collection.mobileTopbar.topbarItems]?class=flexbox;if():[_.type=login]:[profileDroplist()]",
+          "children": [
+            {
+              "view": "View?class=flexbox",
+              "children": [
+                {
+                  "view": "Icon?name=_.icon;google.symbole;style:[fontSize=_.fontSize];click:[[_.clickAction]()]?!_.image"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flexbox",
+              "children": [
+                {
+                  "view": "Image?src=_.image;click:[[_.clickAction]()];style:[width=_.width]?_.image"
+                }
+              ]
+            },
+            {
+              "view": "View?class=flexbox;style:[width=3.5rem;height=3.5rem;backgroundColor=#96BF48;borderRadius=50%]?if():[_.type=login]:[true]",
+              "children": [
+                {
+                  "view": "Text:mobileProfileName?text=if():[userData:().firstName]:[getProfileName()]:[PN];style:[fontSize=1.6rem;color=white;maxWidth=3.5rem]"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "view": "View?class=flexbox;style:[padding=2.5% 2.5%;width=100%;backgroundColor=#f7f7f7;justify-content=space-between;height=5rem;borderBottom=1px solid #eee]",
+      "children": [
+        {
+          "view": "View?class=flex;style:[width=30%];click:[mobileAction():[actionName=if():[mainMobilePageInfo:()=dashBoard]:[mainPage]:[prevPage]]]",
+          "children": [
+            {
+              "view": "Icon?name=arrow_back;google.symbole?mainMobilePageInfo:()!=data:().collection.mobileMainPage.mainItems"
+            }
+          ]
+        },
+        {
+          "view": "View?class=flexbox;style:[width=100%]",
+          "children": [
+            {
+              "view": "Text?text=if():[mainMobilePageInfo:()=dashBoard]:[Dashboard]:[title:()];style:[fontSize=1.7rem]"
+            }
+          ]
+        },
+        {
+          "view": "View?class=flex;style:[width=30%;justifyContent=end];click:[log():[_]:[tayayaya111];openSearchForm()]",
+          "children": [
+            {
+              "view": "Icon?name=search;google.symbole?mobileMainPage:().identifier"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "view": "View?class=flexbox;style:[padding=1rem;justifyContent=space-between;backgroundColor=white;width=100%]?mobileMainPage:().identifier",
+      "children": [
+        {
+          "view": "View?class=flexbox;style:[height=100%;width=auto;backgroundColor=white;cursor=default]",
+          "children": [
+            {
+              "view": "View?class=flex;style:[height=100%;width=.2rem;backgroundColor=#fb3b1e]"
+            },
+            {
+              "view": "Text?text=mobileMainPage:().identifier.capitalize();style:[fontSize=1.6rem;paddingLeft=.8rem;fontWeight=bold]"
+            }
+          ]
+        },
+        {
+          "view": "View?class=flex;style:[gap=.5rem];currentManager()",
+          "children": [
+            {
+              "view": "Icon?name=Print;google.symbol;iconStyle()"
+            },
+            {
+              "view": "Icon?name=grid_view;google.symbol;iconStyle()"
+            },
+            {
+              "view": "Icon?name=Upload;google.symbol;iconStyle()"
+            },
+            {
+              "view": "Icon?name=add;google.symbol;iconStyle();tooltip:[text=create];click:[openForm()]"
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "__props__": {
+    "id": "Z167C1e1r0d3U1r3q6c5D2H1n1",
+    "doc": "mobileTopbar",
+    "creationDate": 1711031365211,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "getProfileName": "[userData:().firstName.at():[0].capitalize()+''+userData:().lastName.at():[0].capitalize()]()",
+      "profileDroplist": "droplist:[items=:Branch:Profile:Logout;align=right;style:[width=10rem];item.text.style:[justifyContent=center];preventDefault];():droplist.click:[if():[droplist-txt:()=Logout]:[eraseCookie():session;route():login].elif():[droplist-txt:()=Branch]:[openBranchForm()]:[openProfileWindow()]]",
+      "openCreateForm": {
+        "setGeneralPopup": "group=collectionsInfo:().find():[managers.():collection.inc():[mobileMainPage:().identifier]];manager=[().group.groupName]:().[().group.managers.find():[collection=mobileMainPage:().identifier].manager];loader.show;generalPopup:()=[title=mobileMainPage:().identifier.capitalize()+' Form';popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName];openPopup()",
+        "openPopup": "timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:10",
+        "_": "createFormStack:().del();createFormStack:().push():[mobileMainPage:().identifier];loader.show;setGeneralPopup()"
+      },
+      "openForm": {
+        "openSheet": "loader.show;generalPopup:()=[sheet;title=Sheet Form;popupName=sheet;saveAs];updateStatus:()=false;sheetName:().del();openGeneralPopup()",
+        "openGallery": "read():[file:()]:[image:()=_.data;openViewUpload();NewImg:()=image:()];openViewUpload()",
+        "openViewUpload": "generalPopup:()=[title='Upload Image';popupName=imageView;imageData=image:();action='saveImage()'];():generalPopup.update();():generalPopup.style():[visibility=visible;opacity=1]",
+        "openGeneralPopup": "timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:10",
+        "_": "if():[mobileMainPage:().identifier=gallery]:[openGallery()].elif():[mobileMainPage:().identifier=sheet]:[openSheet()]:[openCreateForm()]"
+      },
+      "openBranchForm": "generalPopup:()=[mobile=true;branch=true;topSize=40vh;bottomSize=40vh;leftSize=5vw;rightSize=5vw;removeFullScreen=false;inputLabel=Name;searchEngine=true;clearable=true;title=Branche;popupName=customFormInputLoop;inputs=:[inputLabel=Branch;inputPath=branch;items='userData:().branch.():name']];():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]",
+      "openSearchForm": {
+        "openPopup": "timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:10",
+        "openform": "group=collectionsInfo:().find():[managers.():collection.inc():[mobileMainPage:().identifier]];manager=[().group.groupName]:().[().group.managers.find():[collection=mobileMainPage:().identifier].manager];log():[().group]:[tayayaya]:[().manager];loader.show;generalPopup:()=[title=Search+' Form';collection=().manager.managerName;popupName=customFormInputLoop;searchEngine=true;mobile=true;inputs=().manager.searchEngineInputs;docName=().manager.popupInfo.docName];openPopup()",
+        "_": "openform()"
+      },
+      "iconStyle": "style:[fontSize=2rem;padding=.5rem;border=1px solid #ddd;borderRadius=.8rem;cursor=pointer]"
+    },
+    "collapsed": [
+      {
+        "path": [
+          "children",
+          2,
+          "children",
+          1
+        ]
+      },
+      {
+        "path": [
+          "functions"
+        ]
+      },
+      {
+        "path": [
+          "children",
+          0,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": [
+          "children",
+          1,
+          "children",
+          0
+        ]
+      },
+      {
+        "path": []
+      },
+      {
+        "path": [
+          "openForm"
+        ]
+      }
+    ],
+    "comments": [],
+    "folderPath": [],
+    "version": 0,
+    "counter": 39,
+    "secure": false
+  }
+}

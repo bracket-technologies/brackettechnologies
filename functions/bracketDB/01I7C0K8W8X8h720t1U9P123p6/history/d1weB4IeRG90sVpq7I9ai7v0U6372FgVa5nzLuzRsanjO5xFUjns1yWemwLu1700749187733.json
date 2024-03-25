@@ -1,0 +1,35 @@
+{
+  "updateBy": "j7neF8CHqumHOGzAXNWi9JcLKTTyx9LRmJptYuYbJeiNWWfSrQMeqwKTZSp01699559755885",
+  "difference": [
+    {
+      "new": "hotCreateSheet",
+      "path": "status"
+    },
+    {
+      "new": {
+        "columnWidth": {
+          "A": "344px",
+          "B": "678px"
+        }
+      },
+      "path": "style"
+    }
+  ],
+  "description": "Data has been updated",
+  "sheet": "x5T6dOv2N6H78nU2D9WKkf4YJSbTGNehQCLFM55h8FgxC2lPhwG1t1m4XPz51698750937367",
+  "id": "d1weB4IeRG90sVpq7I9ai7v0U6372FgVa5nzLuzRsanjO5xFUjns1yWemwLu1700749187733",
+  "creationDay": 1700697600000,
+  "creationDate": 1700749187733,
+  "__props__": {
+    "id": "P1s7C1i1U0x3Z163o6l3M6K8b7",
+    "doc": "d1weB4IeRG90sVpq7I9ai7v0U6372FgVa5nzLuzRsanjO5xFUjns1yWemwLu1700749187733",
+    "creationDate": 1711031363687,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 176
+  }
+}

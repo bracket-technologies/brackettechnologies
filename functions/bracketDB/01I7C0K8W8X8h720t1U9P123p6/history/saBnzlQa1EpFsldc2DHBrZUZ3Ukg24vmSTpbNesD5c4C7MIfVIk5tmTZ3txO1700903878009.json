@@ -1,0 +1,41 @@
+{
+  "createdBy": {
+    "lastName": "chammas",
+    "country": "lebanon",
+    "address": "beirut",
+    "city": "beirut",
+    "type": "user",
+    "creationDate": 1699560058407,
+    "birthDate": 1699056000000,
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "firstName": "anthony",
+    "password": "12345",
+    "ref": "USR-00000004",
+    "nationality": "lebanese",
+    "createdBy": "j7neF8CHqumHOGzAXNWi9JcLKTTyx9LRmJptYuYbJeiNWWfSrQMeqwKTZSp01699559755885",
+    "contactNumber": "35325465",
+    "creation-date": 1699560019589,
+    "id": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+    "creationDay": 1699488000000,
+    "position": "Admin User",
+    "email": "anthony@gmail.com",
+    "username": "anthonychammas"
+  },
+  "description": "sheet creation",
+  "sheet": "x2tVTuMMLSi642Bh3XVOtowQiJ61qnCME9L8QdBpJCMja4A911UQIV48Vmrd1700903877947",
+  "id": "saBnzlQa1EpFsldc2DHBrZUZ3Ukg24vmSTpbNesD5c4C7MIfVIk5tmTZ3txO1700903878009",
+  "creationDay": 1700870400000,
+  "creationDate": 1700903878012,
+  "__props__": {
+    "id": "H1u7c1y1w0q3v1C376o3d9n1p8",
+    "doc": "saBnzlQa1EpFsldc2DHBrZUZ3Ukg24vmSTpbNesD5c4C7MIfVIk5tmTZ3txO1700903878009",
+    "creationDate": 1711031363918,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "actions": {},
+    "counter": 262
+  }
+}

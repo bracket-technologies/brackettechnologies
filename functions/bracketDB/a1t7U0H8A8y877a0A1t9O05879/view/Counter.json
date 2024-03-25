@@ -1,0 +1,26 @@
+{
+  "view": "View:Counter?class=flex column;style:[width=2rem;borderRight=1px solid #ddd];displayIndex:()=flex",
+  "children": [
+    {
+      "view": "[Text]:[data=numbersColumn:().[3rdParent().id]]?class=flexbox;text=_.index;style:[height=4rem;width=2rem;fontSize=1.1rem;color=#888];if():[_.path.len()<=displayPath:().len();styleCounter:()=true]:[displayIndex:()=flex;styleCounter:()=false;style.backgroundColor=#f3f3f3;style.color=#000];style.display=displayIndex:();if():[displayIndex:()=flex;doc().clooossseeed.find():[path=_.path]]:[displayPath:()=_.path.clone();displayIndex:()=none;styleCounter:()=true]?!doc()._view_"
+    }
+  ],
+  "__props__": {
+    "db": "views",
+    "collection": "d17770q8A8Z7l0Q0l031g188q9",
+    "id": "X1c771b0m3H3F037p8j6a4c470",
+    "doc": "Counter",
+    "creationDate": 1710330786440,
+    "active": true,
+    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "actions": {
+      "test": "log():'Hello World'"
+    },
+    "collapsed": [],
+    "comments": [],
+    "folderPath": [],
+    "version": 0,
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "counter": 1
+  }
+}
