@@ -6011,7 +6011,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
             // increment next views dataPath index
             var itemIndex = view.__dataPath__.length - 1
             if (index < parent.__childrenRef__.length)
-                parent.__childrenRef__.slice(index).map(viewRef => updateDataPath({ id: viewRef.id, index: itemIndex, increment: true }))
+                parent.__childrenRef__.slice(index).map(viewRef => updateDataPath({ id: viewRef.id, myIndex: view.__dataPath__[itemIndex], index: itemIndex, increment: true }))
 
             // get data
             passData.data = (insert.__view__) ? (typeof insert.data === "object" ? {} : "") // insert():[...]
@@ -6902,25 +6902,27 @@ const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
         var parent = views[view.__parent__]
 
         // update data path
-        if (!data.preventDefault) parent.__childrenRef__.slice(view.__index__ + 1).map(({ id }) => updateDataPath({ id, index: itemIndex, decrement: true }))
+        if (!data.preventDefault) parent.__childrenRef__.slice(view.__index__ + 1).map(({ id }) => updateDataPath({ id, myIndex: view.__dataPath__[itemIndex], index: itemIndex, decrement: true }))
         removeView({ id, global, views, stack, main: true }).remove()
     }
 
     console.log("REMOVE:" + id)
 }
 
-const updateDataPath = ({ id, index, decrement, increment }) => {
+const updateDataPath = ({ id, myIndex, index, decrement, increment }) => {
 
     var views = window.views
     var view = views[id]
 
     if (!view) return
     if (!isNumber(view.__dataPath__[index])) return
+    if (decrement && view.__dataPath__[index] <= myIndex) return
+    else if (increment && view.__dataPath__[index] >= myIndex) return
 
     if (decrement) view.__dataPath__[index] -= 1
     else if (increment) view.__dataPath__[index] += 1
 
-    view.__childrenRef__.map(({ id }) => updateDataPath({ id, index, decrement, increment }))
+    view.__childrenRef__.map(({ id }) => updateDataPath({ id, myIndex, index, decrement, increment }))
 }
 
 const sortAndArrange = ({ data, sort, arrange }) => {

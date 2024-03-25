@@ -64,7 +64,7 @@
               "view": "View?class=flex column;style:[width=100%]?_.subInput",
               "children": [
                 {
-                  "view": "[View]:[if():[!data().[_.path].0;_.path]:[data().[_.path]=:[]];path=_.path]?click:[log():[path()]:['vvvv']];checkSelectedPath();class=flex column;style:[width=100%;padding=1rem]",
+                  "view": "[View]:[if():[!data().[_.path].0;_.path]:[data().[_.path]=:[]];path=_.path]?click:[log():[path()]:['vvvv']];#checkSelectedPath();class=flex column;style:[width=100%;padding=1rem]?checkSelectedPath()",
                   "children": [
                     {
                       "view": "View?class=flex;style:[marginLeft=auto;gap=.4rem;paddingRight=1rem]?__.path",
@@ -205,7 +205,7 @@
       "handleInputFraction": "loaded:[().parentFraction=parent().style.gridTemplateColumns;().splittedArray=().parentFraction.split():' ';().splittedArray.[[parent().children().filter():[style.display!='none'].indexOf():[()]]]=_.fraction;parent().style().gridTemplateColumns=().splittedArray.join():' ']",
       "insertNewSubSection": {
         "rearrangeSectionsPathCounter": "2ndParent().nextSiblings()._():[_.2ndChild().2ndChild().1stChild().txt()=_.path().1+1]",
-        "_": "[if():[_.data]:[3rdParent().insert():[data=_.data;view=2ndParent()]]:[3rdParent().insert():[view=2ndParent()]]]()::[hideSiblingPaths()];#hideSiblingPaths();#rearrangeSectionsPathCounter()",
+        "_": "selectedPath:().[____.index]=path().[-1]+1;[if():[_.data]:[3rdParent().insert():[data=_.data;view=2ndParent()]]:[3rdParent().insert():[view=2ndParent()]]]()::[hideSiblingPaths()];#hideSiblingPaths();#rearrangeSectionsPathCounter()",
         "hideSiblingPaths": "2ndParent().rem():[preventDefault]"
       },
       "addRow": {
@@ -260,9 +260,11 @@
         "_": "if():[__.multiSection]:[handelMultiSection()].elif():[_.mobile]:[data=_.inputs]:[if():[__.subInput]:[data=__.clone()]:[data=__.input.clone()]]"
       },
       "removeSubSection": {
-        "rearrangeSectionsPathCounter": "2ndParent().nextSiblings()._():[_.2ndChild().2ndChild().1stChild().txt()=_.path().1]",
-        "_": "if():[doc().[__.path].len()>1]:[log():[2ndParent()]:['ccc0'];#rearrangeSectionsPathCounter();[displayOtherPath()]()::[log():[2ndParent()]:['ccc1'];2ndParent().rem()]]",
-        "displayOtherPath": "if():[path().[-1]>0]:[3rdParent().insert():[preventDefault;path=3rdParent().path().clone().push():[__.path].push():[path().[-1]-1];view=2ndParent()]]:[3rdParent().insert():[preventDefault;path=3rdParent().path().clone().push():[__.path].push():[path().[-1]+1];view=2ndParent()]]"
+        "_": "if():[doc().[__.path].len()>1]:[displayOtherPath();2ndParent().rem()]",
+        "displayOtherPath": "if():[path().[-1]>0]:[displayPrevPath()]:[displayNextPath()]",
+        "#rearrangeSectionsPathCounter": "2ndParent().nextSiblings()._():[_.2ndChild().2ndChild().1stChild().txt()=_.path().1]",
+        "displayPrevPath": "log():[3rdParent().path().clone().push():[__.path].push():[path().[-1]-1]]:'cccc';selectedPath:().[____.index]=path().[-1]-1;3rdParent().insert():[preventDefault;path=3rdParent().path().clone().push():[__.path].push():[path().[-1]-1];view=2ndParent()]",
+        "displayNextPath": "selectedPath:().[____.index]=path().[-1]+1;3rdParent().insert():[preventDefault;path=3rdParent().path().clone().push():[__.path].push():[path().[-1]+1];view=2ndParent()]"
       },
       "handleRemDuplicatedInput": {
         "handleRem": "if():[nthParent():3.data().[__.duplicatedInputPath].len()>1]:[if():[nthParent():3.data().[__.duplicatedInputPath].len()=2]:[changeRemBtnColor()];2ndParent().rem()]",
@@ -287,16 +289,6 @@
       "clooossseeed": [
         {
           "path": [
-            "conditionHandler"
-          ]
-        },
-        {
-          "path": [
-            "#openLimitCheckBox"
-          ]
-        },
-        {
-          "path": [
             "addRow"
           ]
         },
@@ -313,11 +305,6 @@
         {
           "path": [
             "unitValueHandler"
-          ]
-        },
-        {
-          "path": [
-            "#handleInputValueInDocForAllSections"
           ]
         },
         {
@@ -450,18 +437,28 @@
         },
         {
           "path": [
-            "insertNewSubSection"
+            "#handleInputValueInDocForAllSections"
           ]
         },
         {
           "path": [
-            "removeSubSection"
+            "#openLimitCheckBox"
+          ]
+        },
+        {
+          "path": [
+            "conditionHandler"
+          ]
+        },
+        {
+          "path": [
+            "insertNewSubSection"
           ]
         }
       ],
       "displayPrevPath": "if():[path().[-1]>0]:[3rdParent().insert():[preventDefault;path=3rdParent().path().clone().push():[__.path].push():[path().[-1]-1];selectedPath:().[____.index]=path().[-1]-1;view=2ndParent()];2ndParent().rem():[preventDefault]]",
       "displayNextPath": "if():[path().[-1]<3rdParent().data().[__.path].len()-1]:[3rdParent().insert():[preventDefault;path=3rdParent().path().clone().push():[__.path].push():[path().[-1]+1];selectedPath:().[____.index]=path().[-1]+1;view=2ndParent()];2ndParent().rem():[preventDefault]]",
-      "#checkSelectedPath": "log():[under=_;under2=__;under3=___;under4=____]:['vvvvv'];if():[!selectedPath:().[____.index]]:[if():[selectedPath:().[____.index]!=path().[-1]]:[style().display=none]]:[selectedPath:().[____.index]=0]"
+      "checkSelectedPath": "if():[!__.path||true]:[if():[selectedPath:().[____.index]]:[if():[selectedPath:().[____.index]!=path().[-1]]:[return():[false]]:[return():[true]]]:[selectedPath:().[____.index]=0;return():[true]]]:[return():[true]]"
     },
     "comments": [
       {
