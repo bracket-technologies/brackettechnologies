@@ -67,7 +67,6 @@ const moveData = (datastore) => {
         var encryptionKey = generate()
 
         // db per project, collection forAll projects (collections: ✓project, ✓account, ✓session, ✓user, ✓view, ✓permission, ✓password, ✓billingAccount, ✓transactions, ✓paymentMethod, ✓exchangeRate, ✓tokenPackage, ✓settings, ✓plugin, ✓bill, ✓voucher)
-        deleteData({ _window, erase: { db: bracketDB, collection: "project" } });
         deleteData({ _window, erase: { db: bracketDB, collection: "account" } });
         deleteData({ _window, erase: { db: bracketDB, collection: "session" } });
         deleteData({ _window, erase: { db: bracketDB, collection: "user" } });
@@ -83,6 +82,7 @@ const moveData = (datastore) => {
         deleteData({ _window, erase: { db: bracketDB, collection: "subscription" } });
         deleteData({ _window, erase: { db: bracketDB, collection: "bill" } });
         deleteData({ _window, erase: { db: bracketDB, collection: "voucher" } });
+        // deleteData({ _window, erase: { db: bracketDB, collection: "project" } });
         // deleteData({ _window, erase: { db: bracketDB, collection: "view" } });
         deleteData({ _window, erase: { db: accDB } }); // ✓
 

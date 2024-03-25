@@ -36,8 +36,10 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
         // documenter
         : "document"
 
-    if (host === "192.168.10.204") host = "acc.localhost"
-    else if (host === "192.168.10.204:8080") host = "localhost"
+    if (host === "192.168.10.202") host = "acc.localhost"
+    else if (host === "192.168.10.202:8080") host = "localhost"
+    else if (host === "bracketacc.loca.lt") host = "acc.localhost"
+    else if (host === "brackettechnologies.loca.lt") host = "localhost"
 
     var global = {
         __,

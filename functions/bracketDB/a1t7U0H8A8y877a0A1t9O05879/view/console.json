@@ -1,5 +1,5 @@
 {
-  "view": "View:console?style:[overflow=hidden;height=100vh;width=100vw];projectName:()=manifest:().path.2;actionsHeight:()=20;name=Console | Bracket Technologies;title=Console | Bracket Technologies;[loaded?checkSession()::[getNewCollectionView()]];[keydown:document?[e().preventDefault();():saveBtn.click()?e().ctrlKey;e().key=s];toggleActionEditor()]",
+  "view": "View:console?style:[overflow=hidden;height=100vh;width=100vw];initGlobals();metaData();[loaded?checkSession()::[getNewCollectionView()]];[keydown:document?[e().preventDefault();():saveBtn.click()?e().ctrlKey;e().key=s];toggleActionEditor()]",
   "children": [
     {
       "view": "actionlist"
@@ -44,7 +44,7 @@
                       ]
                     },
                     {
-                      "view": "View?class=flexbox",
+                      "view": "View?class=flexbox;[click?facebook():[auth=true]]",
                       "children": [
                         {
                           "view": "Icon?class=flexbox pointer;name=support_agent;google.symbol.outlined;style:[fontSize=2.2rem;color=#999;transition=.2s];hover.style.color=blue"
@@ -381,7 +381,13 @@
         "_": "if():[_.action=remove]:[removeDoc()].elif():[_.action=export]:[exportDoc()].elif():[_.action=duplicate]:[duplicateDoc()].elif():[_.action=]:[]"
       },
       "hotBtnsStyles": "style:[height=3rem;width=3.25rem;backgroundColor=#fff;transition=.2s]",
-      "releaseHorizontalSeperator": "mousedowned=false;document().style().cursor=default;parent().style().transition=.2s;className():dataViewer.filter():[style().display!=none].():[style().overflowY=auto];actionsHeight:()-=().diff?mousedowned"
+      "releaseHorizontalSeperator": "mousedowned=false;document().style().cursor=default;parent().style().transition=.2s;className():dataViewer.filter():[style().display!=none].():[style().overflowY=auto];actionsHeight:()-=().diff?mousedowned",
+      "__props__": {
+        "comments": []
+      },
+      "clooossseeed": [],
+      "metaData": "name=Console | Bracket Technologies;title=Console | Bracket Technologies",
+      "initGlobals": "projectName:()=manifest:().path.2;actionsHeight:()=20"
     },
     "collapsed": [
       {
@@ -1537,14 +1543,5 @@
     "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
     "counter": 11
   },
-  "clooossseeed": [
-    {
-      "path": [
-        "children",
-        1,
-        "children",
-        0
-      ]
-    }
-  ]
+  "clooossseeed": []
 }

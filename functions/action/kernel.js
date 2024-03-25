@@ -35,6 +35,7 @@ const { watch } = require("./watch")
 const { isArabic } = require("./isArabic")
 const cssStyleKeyNames = require("./cssStyleKeyNames")
 const events = require("./events.json")
+const passport = require("./passport")
 const myViews = ["View", "Input", "Text", "Image", "Icon", "Action", "Audio", "Video"]
 
 var actions = {
@@ -528,8 +529,8 @@ var actions = {
 
         var timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })) : 0
         var repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object })) : false
-        var myFn = () => { toParam({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object }) }
-
+        var myFn = () => { eventExecuter({ req, res, event: "Timer", eventID: id, _window, lookupActions, id, string: args[1], __, e, object }) }
+        // eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: nextStack, address: nextAddress, __ })
         if (typeof repeats === "boolean") {
 
             if (repeats === true) answer = setInterval(myFn, timer)
@@ -2339,6 +2340,11 @@ var actions = {
         var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "upload()", object, lookupActions, __, id })
         require("./upload")({ _window, lookupActions, stack, address, req, res, id, e, upload: data, __ })
 
+    }, "passport()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = addresser({ _window, stack, args, req, res, status: "Start", dataInterpretAction: "toParam", asynchronous: true, id: o.id, type: "Auth", action: "passport()", object, lookupActions, __, id })
+        passport({ _window, lookupActions, stack, address, id, e, __, req, res, data })
+
     }, "search()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
 
         var { address, data } = addresser({ _window, stack, args, req, res, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "search()", object, lookupActions, __, id })
@@ -3140,13 +3146,16 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
     else if (path0.length === 8 && path0.slice(-2) === "()" && path0.charAt(0) === "@") {
 
         var myLookupActions = lookupActions
-        var { address, data } = addresser({ _window, stack, args, id, type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, lookupActions, id, object })
+        var { address, data } = addresser({ _window, stack, args, id, type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, lookupActions, object })
 
         // view & path
         if (typeof data === "object" && data.__view__) myLookupActions = data.__lookupActions__
         else if (typeof data === "object") {
             if (typeof data.view === "object" && data.view.__view__) myLookupActions = data.view.__lookupActions__
-            else {
+            else if (data.doc) {
+
+                myLookupActions = [{ type: "data", doc: data.doc }, ...lookupActions]
+            } else {
                 if (!data.view) data.view = view.__customViewPath__.at(-1)
                 if (typeof data.path === "string") data.path = data.path.split(".")
                 myLookupActions = [{ type: "customView", view: data.view, path: data.path }, ...lookupActions]
@@ -3492,7 +3501,15 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
             // get actions
             var actions
             if (lookupAction.view) actions = global.data.view[lookupAction.view].__props__.actions
-            else if (lookupAction.doc) actions = global[lookupAction.doc].__props__.actions
+            else if (lookupAction.doc) {
+                var docPath = lookupAction.doc
+                if (typeof doc === "string") docPath = docPath.split(".")
+                var lastIndex = docPath.length - 1
+                docPath.reduce((o, k, i) => {
+                    if (i === lastIndex) actions = o[k].__props__.actions
+                    else return o[k]
+                }, global)
+            }
 
             if (!actions) return
 
@@ -3521,7 +3538,7 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
 
                 if (name in actions) {
 
-                    if (global.data.view[lookupAction.view].__props__.secure && !stack.server) {
+                    if (lookupAction.type === "customView" && global.data.view[lookupAction.view].__props__.secure && !stack.server) {
 
                         // server action
                         actionFound = true
@@ -3908,11 +3925,11 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
         // index
         index = index !== undefined ? index : (view.__index__ + 1)
 
-        if (!preventDefault) {
+        // path
+        path = [...(path || view.__dataPath__)]
+        doc = doc || view.doc
 
-            // path
-            path = [...(path || view.__dataPath__)]
-            doc = doc || view.doc
+        if (!preventDefault) {
 
             // increment data index
             if (isNumber(path[path.length - 1])) path[path.length - 1] += 1
@@ -4251,7 +4268,7 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
         else if (!parent.__rendered__) removeView({ _window, global, views, id: data.id, stack, main: true })
 
         // address for delete blocked addresses (switch with second next address => execute after end of update waits)
-        addresser({ _window, id, stack, switchNextAddressIDWith: stack.addresses.find(add => add.id === address.nextAddressID), type: "function", function: "blockRelatedAddressesByViewID", __, lookupActions, data: { stack, id } })
+        addresser({ _window, id, stack, switchNextAddressIDWith: address.hasWaits ? stack.addresses.find(add => add.id === address.nextAddressID) : address, type: "function", function: "blockRelatedAddressesByViewID", __, lookupActions, data: { stack, id } })
 
         // address for post update
         addresser({ _window, id, stack, switchNextAddressIDWith: address, type: "function", function: "update", __, lookupActions, data: { ...data, childIndex: __childIndex__, elements, timer, parent, postUpdate: true } })
@@ -4811,7 +4828,7 @@ const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
         var parent = views[view.__parent__]
 
         // update data path
-        parent.__childrenRef__.slice(view.__index__ + 1).map(({ id }) => updateDataPath({ id, index: itemIndex, decrement: true }))
+        if (!data.preventDefault) parent.__childrenRef__.slice(view.__index__ + 1).map(({ id }) => updateDataPath({ id, index: itemIndex, decrement: true }))
         removeView({ id, global, views, stack, main: true }).remove()
     }
 
@@ -4987,7 +5004,7 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
 
         address = addresser({ _window, id: params.id, stack, nextAddress: address, type: "function", function: "toView", renderer: true, blockable: false, __: [values[key], ...__], lookupActions, data: { view: views[params.id] } }).address
 
-    })//.reverse().map(address => !stack.addresses[0].asynchronous && toView({ _window, lookupActions, stack, req, res, address, ...(address.params || {}), data: address.data, __ }))
+    })
 
     toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
     removeView({ _window, global, views, id, stack, address })
@@ -5448,7 +5465,7 @@ const launcher = () => {
     views.body.__element__.appendChild(arDiv)
 }
 
-const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: nextStack, address: nextAddress, __ }) => {
+const eventExecuter = ({ _window, event, eventID, id, lookupActions, e, string, stack: nextStack, address: nextAddress, __ }) => {
 
     var views = window.views
     var global = window.global
@@ -5464,15 +5481,15 @@ const eventExecuter = ({ event, eventID, id, lookupActions, e, string, stack: ne
     if (eventID === "droplist" && id !== "droplist" && (!global.__droplistPositioner__ || !views[global.__droplistPositioner__] || !views[global.__droplistPositioner__].__element__.contains(view.__element__))) return
     
     // init stack
-    var stack = openStack({ event, id, eventID, string, e })
+    var stack = openStack({ _window, event, id, eventID, string, e })
 
     // address line
-    var address = addresser({ stack, id, status: "Start", type: "line", event: "click", interpreting: true, lookupActions, __, nextStack, nextAddress }).address
+    var address = addresser({ _window, stack, id, status: "Start", type: "line", event, interpreting: true, lookupActions, __, nextStack, nextAddress }).address
 
     // main params
-    toLine({ lookupActions, stack, id, e, address, data: { string }, __, mount: true })
+    toLine({ _window, lookupActions, stack, id, e, address, data: { string }, __, mount: true })
 
-    endStack({ stack })
+    endStack({ _window, stack })
 }
 
 const defaultEventHandler = ({ id }) => {

@@ -403,7 +403,7 @@
             "inputLabel": "Currency",
             "inputValue": "userData:().defaultCurrency.value",
             "items": "userData:().currency.():code",
-            "droplistClickAction": "customUpdate():[:[section=3;input=:2:4:5]:[section=4;input=:2:5:6]:[section=1;input=:4:6:7]:[section=5;input=:2:4:5]:[section=6;input=:2:5:6]:[section=2;input=:6:7]]",
+            "droplistClickAction": "().pathsNames=:from:to;().pathsNames._():[doc().[_]._():[_.voucherCurrency=data()]];customUpdate():[:[section=3;input=:2:4:5]:[section=4;input=:2:5:6]:[section=1;input=:4:6:7]:[section=5;input=:2:4:5]:[section=6;input=:2:5:6]:[section=2;input=:6:7]]",
             "required": "true"
           },
           {
@@ -530,12 +530,13 @@
               }
             ],
             "inputPath": "receivablesAndPayablesAccount",
-            "inputLabel": "Receivables and Payables Account",
+            "inputLabel": "Receivables and Payables Account",
             "govInput": true,
             "required": true,
             "includeLegerAccounts": {
               "startsWith": "4"
-            }
+            },
+            "droplistClickAction": "[saveAccountCurrency()]():[doc=sharedManagersInfo.voucherSharedInfo]"
           },
           {
             "condition": [
@@ -547,12 +548,13 @@
               }
             ],
             "inputPath": "financialAccount",
-            "inputLabel": "Financial Account",
+            "inputLabel": "Financial Account",
             "govInput": true,
             "required": "true",
             "includeLegerAccounts": {
               "startsWith": "5"
-            }
+            },
+            "droplistClickAction": "[saveAccountCurrency()]():[doc=sharedManagersInfo.voucherSharedInfo]"
           },
           {
             "hotCreatable": true,
@@ -565,13 +567,14 @@
               }
             ],
             "inputPath": "fromAccount",
-            "inputLabel": "From Account",
+            "inputLabel": "From Account",
             "collection": "account",
             "govInput": "true",
             "required": true,
             "includeLegerAccounts": {
               "startsWith": "all"
-            }
+            },
+            "droplistClickAction": "[saveAccountCurrency()]():[doc=sharedManagersInfo.voucherSharedInfo]"
           },
           {
             "inputPath": "description",
@@ -659,7 +662,8 @@
         ],
         "grid": "1fr 1fr 1fr 1fr 1fr 1fr 1fr",
         "defaultValues": {
-          "exchangeRate": "userData:().currency.find():[code=doc().currency].exchangeRate"
+          "systemCurrency": "userData:().currency.find():[counter=1].code",
+          "voucherCurrency": "doc().currency"
         },
         "title": "From (CR)"
       },
@@ -681,7 +685,8 @@
             "required": "true",
             "includeLegerAccounts": {
               "startsWith": "5"
-            }
+            },
+            "droplistClickAction": "[saveAccountCurrency()]():[doc=sharedManagersInfo.voucherSharedInfo]"
           },
           {
             "condition": [
@@ -698,7 +703,8 @@
             "required": true,
             "includeLegerAccounts": {
               "startsWith": "4"
-            }
+            },
+            "droplistClickAction": "[saveAccountCurrency()]():[doc=sharedManagersInfo.voucherSharedInfo]"
           },
           {
             "condition": [
@@ -715,7 +721,8 @@
             "required": true,
             "includeLegerAccounts": {
               "startsWith": "all"
-            }
+            },
+            "droplistClickAction": "[saveAccountCurrency()]():[doc=sharedManagersInfo.voucherSharedInfo]"
           },
           {
             "inputPath": "description",
@@ -803,7 +810,8 @@
         ],
         "grid": "1fr 1fr 1fr 1fr 1fr 1fr 1fr",
         "defaultValues": {
-          "exchangeRate": "userData:().currency.find():[code=doc().currency].exchangeRate"
+          "systemCurrency": "userData:().currency.find():[counter=1].code",
+          "voucherCurrency": "doc().currency"
         },
         "title": "To (DR)"
       },
@@ -1864,7 +1872,411 @@
       }
     ],
     "folderPath": [],
-    "actions": {},
+    "actions": {
+      "__props__": {
+        "comments": []
+      },
+      "clooossseeed": [],
+      "saveAccountCurrency": "log():['bbb']:[_];():[droplistItems:().identifier].data().accountCurrency=userData:().find():[counter=():[droplistItems:().identifier].data().[():[droplistItems:().identifier]._.inputPath].[-1]].code"
+    },
     "counter": 3
-  }
+  },
+  "clooossseeed": [
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        1,
+        "condition",
+        0
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        3
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        4
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        5
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        6
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        7
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        2,
+        "condition"
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        0,
+        "input",
+        1
+      ]
+    },
+    {
+      "path": [
+        "searchEngineInputs"
+      ]
+    },
+    {
+      "path": [
+        "#createFormInputs",
+        "subInput",
+        0,
+        "input",
+        0
+      ]
+    },
+    {
+      "path": [
+        "#createFormInputs",
+        "subInput",
+        0,
+        "input",
+        1
+      ]
+    },
+    {
+      "path": [
+        "#createFormInputs",
+        "subInput",
+        0,
+        "input",
+        2
+      ]
+    },
+    {
+      "path": [
+        "#createFormInputs",
+        "subInput",
+        0
+      ]
+    },
+    {
+      "path": [
+        "#createFormInputs",
+        "subInput",
+        1
+      ]
+    },
+    {
+      "path": [
+        "#createFormInputs",
+        "subInput",
+        2
+      ]
+    },
+    {
+      "path": [
+        "#createFormInputs",
+        "subInput",
+        3
+      ]
+    },
+    {
+      "path": [
+        "#createFormInputs"
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        0,
+        "input",
+        4
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        0,
+        "input",
+        5
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        0,
+        "input",
+        6
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        0,
+        "input",
+        7
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        0,
+        "input",
+        8
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        1,
+        "input",
+        3
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        1,
+        "input",
+        4
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        1,
+        "input",
+        5
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        0,
+        "input",
+        3
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        1,
+        "input",
+        6
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        1,
+        "input",
+        7
+      ]
+    },
+    {
+      "path": [
+        "clooossseeed"
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        1,
+        "input",
+        0,
+        "condition"
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        1,
+        "input",
+        2,
+        "condition"
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        1,
+        "input",
+        1,
+        "condition"
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        1,
+        "input",
+        1,
+        "includeLegerAccounts"
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        1,
+        "input",
+        0,
+        "includeLegerAccounts"
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        1,
+        "input"
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        2,
+        "input",
+        0,
+        "condition"
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        2,
+        "input",
+        0
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        2,
+        "input",
+        1,
+        "condition"
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        2,
+        "input",
+        1,
+        "includeLegerAccounts"
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        2,
+        "input",
+        1
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        2,
+        "input",
+        2,
+        "condition"
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        2,
+        "input",
+        3
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        2,
+        "input",
+        4
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        2,
+        "input",
+        5
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        1
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        2
+      ]
+    },
+    {
+      "path": [
+        "createFormInputs",
+        "subInput",
+        0,
+        "input",
+        0
+      ]
+    }
+  ]
 }

@@ -1,4 +1,4 @@
-const { createSession, getSession } = require("./database")
+const { getSession } = require("./database")
 const { logger } = require("./logger")
 
 // config

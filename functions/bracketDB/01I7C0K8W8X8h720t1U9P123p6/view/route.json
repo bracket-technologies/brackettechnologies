@@ -91,12 +91,12 @@
       },
       "generatReferenceNumber": {
         "setReference": "num:()=counter():[_.data.value()].counter;_.data.value().counter+=1;updateReference()",
-        "checkRefExistance": "search():[collection=counter;field:[searchFeild()]]:[if():[_.data.value()]:[setReference()]:[createReference()]]",
+        "checkRefExistance": "search():[collection=counter;field:[if():[_.collection]:[collection=_.collection];if():[_.branch]:[branch=_.branch]];#field:[searchFeild()]]:[if():[_.data.value()]:[dd:().push():[underb=_;underb2=__];setReference()]:[dd:().push():[under=_;under2=__];createReference()]]",
         "updateReference": "save():[collection=counter;data=_.data.value()]:[if():[_.data]:[[____.var]:()=_.data.code+'-'+num:();count:()=_.data.counter;ref:()=_.data.code+'-'+num:();count:()=_.data.counter;#send():[t=____;tt=___;success=false]]:[send():[success=false;msg='No reference number found!']]]",
         "setCode": "_.data.value().managers._():[code:().push():[_.managers]];setCounterDoc()",
-        "createReference": "search():[collection=globalPathes]:[if():[_.data.value()]:[setCode()]:[send():[success=false;msg='Missing data!']]]",
+        "createReference": ";search():[collection=globalPathes]:[send():[success=false;udner=_];if():[_.data.value()]:[setCode()]:[send():[success=false;msg='Missing data!']]]",
         "setCounterDoc": "counter:()=[branch=___.branch;collection=___.collection;id=gen():60+[today().timestamp()+''];creationDate=today().timestamp();creationDay=todayStart().timestamp();code=code:().find():[collection=___.collection].code;length=8;counter=0;max=99999999;timestamp=today().timestamp();reset=yearly];saveCounter()",
-        "saveCounter": "save():[collection=counter;data=counter:()]:[if():[_.data]:[generatReferenceNumberExecuteTime:()+=1;if():[generatReferenceNumberExecuteTime:()<3]:[generatReferenceNumber():[collection=_.data.collection;branch=_.data.branch]]:[send():[message='Maximum execute limit!';actionName=generatReferenceNumber;success=false]]]:[send():[success=false;msg='Something went wrong!']]]",
+        "saveCounter": "save():[collection=counter;data=counter:()]:[if():[_.data]:[;#send():[success=false;under=_.data];generatReferenceNumberExecuteTime:()+=1;if():[generatReferenceNumberExecuteTime:()<3]:[generatReferenceNumber():[collection=_.data.collection;branch=_.data.branch]]:[send():[message='Maximum execute limit!';ss=ss:();dd=dd:();actionName=generatReferenceNumber;success=false]]]:[send():[success=false;msg='Something went wrong!']]]",
         "searchFeild": "if():[_.collection]:[collection=_.collection];if():[_.branch]:[branch=_.branch]",
         "_": "if():[_.collection;_.branch]:[checkRefExistance():[collection=_.collection;branch=_.branch]].elif():[_.collection=branch]:[checkRefExistance():[collection=_.collection]]:[send():[success=false;msg='generatReferenceNumber error';under=_;under2=__;ref=11]]"
       },
@@ -223,7 +223,7 @@
         "createLedgerCounterDoc": "ledgerCounter:()=[code=__.code;length=8;counter=0;counterList=:0;max=99999999;end=99999999;reset=yearly;creationDate=today().timestamp();id=gen():60+[today().timestamp()+''];timestamp=today().timestamp();branch=__.branch;creationDay=todayStart().timestamp()];saveLedger()",
         "checkAccountNumberIfAvailable": "if():[_.data.value().counterList.inc():[__.accountNumber.toString()]]:[send():[success=false;msg='Account number not available!']]:[if():[!__.keepInServer]:[send():[success=true;msg='Account number available!']]]",
         "saveLedger": "save():[collection=counter;data=ledgerCounter:()]:[if():[_.data.value()]:[checkAccountNumberExistence():[___]]]",
-        "_": "mm:()+=1;if():[_.accountNumber=0;_.keepInServer]:[send():[success=false;msg='Account number must be greater than 0!']].elif():[_.code;_.branch]:[getCounterDoc()]:[send():[success=false;msg='Missing data!';under=_;mm=mm:()]]"
+        "_": "if():[_.accountNumber=0;_.keepInServer]:[send():[success=false;msg='Account number must be greater than 0!']].elif():[_.code;_.branch]:[getCounterDoc()]:[send():[success=false;msg='Missing data!';under=_]]"
       },
       "saveTransaction": {
         "resetData": "().editedData=[[_.data.'credit-debit'.toLowerCase()]=[_.data.amount];account=_.data.account;ledgerAccount=_.data.ledgerAccount;id=_.data.id;creationDate=_.data.creationDate;creationDay=_.data.creationDay;ref=_.data.ref;description=_.data.description;branch=_.data.branch];().editedData.():[debit=().editedData.debit||0;credit=().editedData.credit||0;openingBalance=transactionReceivedData:().openingBalance;headAccount=transactionReceivedData:().headAccount];if():[_.data.voucher]:[().editedData.():[voucher=_.data.voucher;voucherRef=_.data.voucherRef]];#send():[success=false;data=().editedData];saveTransaction():[data=().editedData]",
@@ -268,7 +268,7 @@
         "updateData": "().newDataToUpdate=[[_.data].flat();[saveStack:().0.data].flat()];save():[collection=saveStack:().0.collection;data=().newDataToUpdate]:[if():[!_.data]:[msg='lllSomething went wrong during update in '+[saveStack:().0.collection]]]",
         "saveData": "if():[saveStack:().0.collection]:[save():[collection=saveStack:().0.collection;data=saveStack:().0.data]:[if():[!_.data]:[send():[success=false;msg='Try again!']]]]:[send():[success=false;msg='Collection not exist!']]",
         "getDataToUpdate": "if():[saveStack:().0.id]:[search():[collection=saveStack:().0.collection;doc=saveStack:().0.id]:[if():[_.data]:[updateData()]:[send():[success=false;msg='Something went wrong during update in '+[saveStack:().0.collection]]]]]:[send():[success=false;msg='Id not found to update!']]",
-        "_": "#send():[success=false;saveStack=saveStack:();mhmd=mhmd:()];if():[saveStack:().len()>0]:[saveAndCheckForRecursion()]:[send():[success=true;data=saveStackBackUp:().0;msg=mainData:().collection.capitalize()+' added successfully!';dueNotifications=dueNotifications:();saveStack=saveStackBackUp:()]]"
+        "_": "send():[success=false;saveStack=saveStack:();dd=dd:();mhmd=mhmd:()];if():[saveStack:().len()>0]:[saveAndCheckForRecursion()]:[send():[success=true;data=saveStackBackUp:().0;msg=mainData:().collection.capitalize()+' added successfully!';dueNotifications=dueNotifications:();saveStack=saveStackBackUp:()]]"
       },
       "guideSearchResult": "if():[_.data.identifier='account']:[searchAccount()].elif():[_.data.identifier='transaction']:[searchTransaction()].elif():[_.data.identifier='voucher']:[searchVoucher()]:[customSearchEngine()]",
       "searchVoucher": {
@@ -420,6 +420,201 @@
         "combineData": "__.data.values()._():[_.createdBy=__.data.values().find():[id=_.createdBy].firstName+' '+__.data.values().find():[id=_.createdBy].lastName];send():[success=true;data=__.data.values()]",
         "getSender": "search():[collection=user;docs=_.data.values().():createdBy]:[if():[_.data.value()]:[combineData()]:[send():[success=false;msg='Data not found']]]",
         "_": "[updateNotificationsInSession():[session=_.session]]()::[search():[collection=notification;if():[dueNotifications:().len()>0]:[docs=dueNotifications:().():id]]:[if():[_.data.value()]:[getSender()]:[send():[success=false;under=_;under2=__;msg='Data not found']]]]"
+      },
+      "clooossseeed": [
+        {
+          "path": [
+            "#checkRequiremenddd"
+          ]
+        },
+        {
+          "path": [
+            "#checkRequirementfff"
+          ]
+        },
+        {
+          "path": [
+            "#getPricing"
+          ]
+        },
+        {
+          "path": [
+            "changeSheetName"
+          ]
+        },
+        {
+          "path": [
+            "checkRequirement"
+          ]
+        },
+        {
+          "path": [
+            "checkSheet"
+          ]
+        },
+        {
+          "path": [
+            "createDefaultLedgerAccounts"
+          ]
+        },
+        {
+          "path": [
+            "customCheckExistence"
+          ]
+        },
+        {
+          "path": [
+            "customCondition"
+          ]
+        },
+        {
+          "path": [
+            "customGetRef"
+          ]
+        },
+        {
+          "path": [
+            "customHistory"
+          ]
+        },
+        {
+          "path": [
+            "customSave"
+          ]
+        },
+        {
+          "path": [
+            "customSearchEngine"
+          ]
+        },
+        {
+          "path": [
+            "dataTypeHandler"
+          ]
+        },
+        {
+          "path": [
+            "dropListFromSheet"
+          ]
+        },
+        {
+          "path": [
+            "generateUsername"
+          ]
+        },
+        {
+          "path": [
+            "getCurrencyId"
+          ]
+        },
+        {
+          "path": [
+            "getDataDifference"
+          ]
+        },
+        {
+          "path": [
+            "getDataOnLoad"
+          ]
+        },
+        {
+          "path": [
+            "getIdByLedger"
+          ]
+        },
+        {
+          "path": [
+            "getSessionAndMarkNotificationAsRead"
+          ]
+        },
+        {
+          "path": [
+            "getUserBySession"
+          ]
+        },
+        {
+          "path": [
+            "initializeDocAndCheckForRecursion"
+          ]
+        },
+        {
+          "path": [
+            "login"
+          ]
+        },
+        {
+          "path": [
+            "saveThroughSchema"
+          ]
+        },
+        {
+          "path": [
+            "saveTransaction"
+          ]
+        },
+        {
+          "path": [
+            "searchAccount"
+          ]
+        },
+        {
+          "path": [
+            "searchAssets"
+          ]
+        },
+        {
+          "path": [
+            "searchNotification"
+          ]
+        },
+        {
+          "path": [
+            "searchTransaction"
+          ]
+        },
+        {
+          "path": [
+            "searchVoucher"
+          ]
+        },
+        {
+          "path": [
+            "updateImage"
+          ]
+        },
+        {
+          "path": [
+            "updateNotificationsInSession"
+          ]
+        },
+        {
+          "path": [
+            "updateScheduleInSession"
+          ]
+        },
+        {
+          "path": [
+            "updateSheet"
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed"
+          ]
+        },
+        {
+          "path": [
+            "checkExistence"
+          ]
+        },
+        {
+          "path": [
+            "generateLedgerCounter"
+          ]
+        }
+      ],
+      "__props__": {
+        "comments": []
       }
     },
     "collapsed": [

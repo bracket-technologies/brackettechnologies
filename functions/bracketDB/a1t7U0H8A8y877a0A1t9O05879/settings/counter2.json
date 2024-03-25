@@ -3,11 +3,11 @@
   "collections": {
     "settings": 7,
     "currency": 3,
-    "session": 5,
+    "session": 12,
     "password": 3,
     "user": 4,
     "username": 3,
-    "counter": 3,
+    "counter": 64,
     "expiry": 0,
     "branch": 2,
     "generalTableInfo": 2,
@@ -15,9 +15,9 @@
     "serviceCollection": 0,
     "balance": 0,
     "sheet": 11,
-    "account": 10,
+    "account": 22,
     "galleryManagerInfo": 1,
-    "globalPathes": 1,
+    "globalPathes": 4,
     "accountingServiceInfo": 9,
     "invoice": 1,
     "voucher": 0,
@@ -28,7 +28,7 @@
     "signUpInfo": 3,
     "permission": 19,
     "asset": 0,
-    "printViewInfo": 6,
+    "printViewInfo": 7,
     "notification": 5,
     "schedule": 6,
     "transaction": 0,
@@ -48,7 +48,7 @@
     "debitNoteInfo": 1,
     "ledgersBalanceTracker": 1,
     "analysis": 0,
-    "view": 3
+    "view": 5
   },
   "__props__": {
     "id": "r1R75151j0q3O1J3K5V9U6J4V5",

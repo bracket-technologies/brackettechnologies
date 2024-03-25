@@ -124,7 +124,14 @@
         "searchOpenedSectionInPath": "if():[selectedSection:().[__.index].[___.index]=_.id]:[style():[backgroundColor=#fff;border=1px solid #ddd;borderBottom=none]]",
         "_": "if():[__.path]:[searchOpenedSectionInPath()]:[searchOpenedSection()]",
         "searchOpenedSection": "if():[selectedSection:().[__.index]=_.id]:[style():[backgroundColor=#fff;border=1px solid #ddd;borderBottom=none]]"
-      }
+      },
+      "clooossseeed": [
+        {
+          "path": [
+            "openAndCloseSection"
+          ]
+        }
+      ]
     },
     "collapsed": [
       {
@@ -266,5 +273,15 @@
     "version": 0,
     "counter": 21,
     "secure": false
-  }
+  },
+  "clooossseeed": [
+    {
+      "path": [
+        "children",
+        0,
+        "children",
+        2
+      ]
+    }
+  ]
 }

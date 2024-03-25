@@ -196,8 +196,8 @@
           "_": "if():[_.referenceDate]:[calculateResetDuration()]:[saveAsTimeStampp()]"
         },
         "saveAsTimeStamp": {
-          "delInputPathFromDoc": "delFromDoc():[_.inputPath];#if():[___.path]:[__.[_.inputPath].del();if():[_.referenceDate]:[__.resetDuration.del()]]:[doc().[_.inputPath].del();if():[_.referenceDate]:[doc().resetDuration.del()]]",
-          "saveAsTimeStamp": "if():[___.path]:[__.[_.inputPath]=txt().timestamp();if():[_.referenceDate]:[__.resetDuration=[[__.[_.inputPath]]-[__.[_.referenceDate]]]]]:[doc().[_.inputPath]=txt().timestamp();if():[_.referenceDate]:[doc().resetDuration=txt().timestamp()-[doc().[_.referenceDate]]]]",
+          "delInputPathFromDoc": "data().del();#delFromDoc():[_.inputPath]",
+          "saveAsTimeStamp": "if():[___.path||true]:[data()=txt().timestamp();if():[_.referenceDate]:[parent().data().resetDuration=[data()-[parent().data().[_.referenceDate]]]]];#:[doc().[_.inputPath]=txt().timestamp();if():[_.referenceDate]:[doc().resetDuration=txt().timestamp()-[doc().[_.referenceDate]]]]",
           "_": "if():[txt()='']:[delInputPathFromDoc()]:[saveAsTimeStamp();if():[_.maxDuration]:[checkMaxDuration():[maxDuration=_.maxDuration]]]"
         },
         "_": "change:[saveAsTimeStamp()];loaded:[convertToDate()]"
@@ -211,7 +211,24 @@
       },
       "inputStyle": "if():[__.customInputInfo]:[height=if():[mobile()]:[5rem]:[4.5rem];width=100%;backgroundColor=#fff;color=#444]:[width=100%;height=if():[mobile()]:[4rem]:[3.5rem];borderRadius=.4rem;if():[!____.read;!_____.read;!______.read]:[border=1px solid #ddd];backgroundColor=#fff;color=#444]",
       "hideClearInput": "if():[_.clearable]:[mouselea View?class=flexbox;style:[width=3.5rem;border=1px solid #ddd;borderRadius=.4rem;cursor=pointer];tooltip:[text='create'];click:[openHotCreateForm()]?_.docNamechildren0viewIcon?name=add;google.symbol;style:[fontSize=2rem]2...expand_moreweb_assetvideo_labelexpand_moreve:[2ndChild().1stChild().style():[opacity=0]]]",
-      "customizableInputFocus": "parent().style().border=1px solid #ddd"
+      "customizableInputFocus": "parent().style().border=1px solid #ddd",
+      "clooossseeed": [
+        {
+          "path": [
+            "openHotCreateForm"
+          ]
+        },
+        {
+          "path": [
+            "openSheet"
+          ]
+        },
+        {
+          "path": [
+            "handelDurationFormat"
+          ]
+        }
+      ]
     },
     "collapsed": [
       {

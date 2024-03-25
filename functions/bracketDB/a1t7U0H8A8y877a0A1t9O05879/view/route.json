@@ -19,7 +19,12 @@
       "publish": "if():[_.account]:[save():[collection=user;data=_.account]];if():[_.project]:[save():[collection=project;data=_.project]];if():[_.pages]:[save():[collection=page;map=_.pages]];if():[_.views]:[save():[db=views;map=_.views]];send():[msg='Website published successfully!']",
       "autoLogin": "search():[collection=user;doc=_.id]:[user:()=_.data.value();send():[user:()]];",
       "checkEmail": "search():[collection=user;find.email=_.email]:[user:()=_.data.value();send():[user:()]]",
-      "getProject": "if():[_.account;_.project]:[projectID:()=_.project;accountID:()=_.account;[search():[collection=user;doc=accountID:()]:[if():[_.data]:[user:()=_.data]];search():[collection=project;doc=projectID:()]:[if():[_.data]:[project:()=_.data]]]()::[if():[!project:()]:[send():[success=false;message='Project does not exist!']].elif():[!user:()]:[send():[success=false;message='User is not authorized!']]]]:[send():[message='Missing Data!';success=false]]"
+      "getProject": "if():[_.account;_.project]:[projectID:()=_.project;accountID:()=_.account;[search():[collection=user;doc=accountID:()]:[if():[_.data]:[user:()=_.data]];search():[collection=project;doc=projectID:()]:[if():[_.data]:[project:()=_.data]]]()::[if():[!project:()]:[send():[success=false;message='Project does not exist!']].elif():[!user:()]:[send():[success=false;message='User is not authorized!']]]]:[send():[message='Missing Data!';success=false]]",
+      "__props__": {
+        "comments": []
+      },
+      "clooossseeed": [],
+      "facebook": "log():[_];if():[_.auth]:[passport():[facebook;auth]:[log():here]]"
     },
     "collapsed": [],
     "comments": [],
@@ -28,5 +33,6 @@
     "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
     "counter": 22,
     "secure": true
-  }
+  },
+  "clooossseeed": []
 }

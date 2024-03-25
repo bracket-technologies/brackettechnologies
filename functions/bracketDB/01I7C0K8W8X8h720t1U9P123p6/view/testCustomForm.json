@@ -5,87 +5,6 @@
       "view": "testCustomFormSectionLoop"
     },
     {
-      "view": "[View]:[data=_.inputInfo.subInput.clone()||_.inputInfo.clone()]?#handleDisplaySection();#if():[().displaySection=false]:[style:[display=none]]:[style:[display=flex]];_.index=index();class=flex column;if():[_.onLoadSectionAction]:[[_.onLoadSectionAction]()]?false",
-      "children": [
-        {
-          "view": "View?class=flex column;if():[_.multiSection]:[id=toCamelCase():[newId=[__.title+' '+_.title.join():' ']]]:[id=toCamelCase():[newId=[__.title+' '+_.title]]];handleDisplaySection();if():[().displaySection=false]:[parent().style().display=none]:[parent().style().display=flex];",
-          "children": [
-            {
-              "view": "customTitle??_.title||_.type=image;!_.multiSection;parent().displaySection"
-            },
-            {
-              "view": "View?class=flex column;style:[width=100%]?parent().displaySection",
-              "children": [
-                {
-                  "view": "View?class=flex column;style:[width=100%;gap=1rem]?_.type!=image;!_.customSectionView",
-                  "children": [
-                    {
-                      "view": "[View]:[if():[!data().[_.path].0;_.path]:[data().[_.path]=:[]];path=_.path]?class=flex column;style:[width=100%;height=fit-content;overflow=hidden];if():[__.defaultValues]:[handlePathDefaultValues()]",
-                      "children": [
-                        {
-                          "view": "customTitle?[__].flat()?__.multiSection"
-                        },
-                        {
-                          "view": "View:[__.sectionId]?style:[width=100%;height=fit-content;overflow=hidden;padding=1rem 1rem 0 1rem]",
-                          "children": [
-                            {
-                              "view": "customFormInputLoop"
-                            },
-                            {
-                              "view": "customFormTable"
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "view": "View?style:[width=100%;height=fit-content;overflow=hidden;padding=1rem]?_.customSectionView;parent().displaySection",
-              "children": [
-                {
-                  "view": "_.customSectionView"
-                }
-              ]
-            },
-            {
-              "view": "View?style:[width=100%;padding=1.5rem 1rem;overflow=hidden]?_.type=image;parent().displaySection",
-              "children": [
-                {
-                  "view": "View:[_.viewId]?class=flex;style:[overflowX=auto]",
-                  "children": [
-                    {
-                      "view": "View?class=flex;style:[gap=1rem;width=fit-content]?doc().[_.path].len()>0",
-                      "children": [
-                        {
-                          "view": "[View]:[path=_.path]?class=flexbox",
-                          "children": [
-                            {
-                              "view": "View?class=flexbox;style:[border=1px solid #ddd;#backgroundColor=#f3f3f3;width=if():[mobile()]:[15rem]:[23rem];height=10rem;borderRadius=.5rem;padding=0;transition=.3s ease;overflow=hidden;cursor=pointer;position=relative]",
-                              "children": [
-                                {
-                                  "view": "Image?src=_.url;style:[maxWidth=100%;maxHeight=100%]"
-                                },
-                                {
-                                  "view": "Icon?name=Close;google.symbol;style:[fontSize=2.3rem;color=#5b5959ad;cursor=pointer;position=absolute;top=0.25rem;right=0.25rem];click:[2ndParent().rem()]"
-                                }
-                              ]
-                            }
-                          ]
-                        }
-                      ]
-                    }
-                  ]
-                }
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
       "view": "View?class=flex column?doc().custom.len()>0;!_.inputInfo.signup;false",
       "children": [
         {
@@ -232,7 +151,7 @@
       ]
     },
     {
-      "view": "View?class=flexbox;style:[width=100%;marginTop=auto;justifyContent=flex-end;gap=1rem;#paddingBottom=.5rem]?!_.readonly;_.inputInfo.buttons",
+      "view": "View?class=flexbox;style:[width=100%;marginTop=auto;justifyContent=flex-end;gap=1rem]?!_.readonly;_.inputInfo.buttons",
       "children": [
         {
           "view": "[View]:[data=_.inputInfo.buttons]?class=flexbox;style:[[_.style]()];click:[[_.btnAction]()];hover.style:[[_.hoverStyle]()]?checkBtnCondition()",
@@ -297,7 +216,11 @@
       "handlePathDefaultValues": "__.defaultValues.keys()._():[data().[_]=[___.defaultValues.[_]]()]",
       "editImage": "loader.show;searchDataImage:().replace():[__.imageData]:[doc()];():galleryContainer.update();updateImage():[doc()]:[if():[_.success]:[loader.hide;note():[text=_.message];closeGeneralPopup();():GalleryManager.update()]:[loader.hide;note():[text=_.message]]]",
       "closePopup": "():generalPopup.style():[visibility=hidden;opacity=0];#().defaultsClone=selected:().defaults.clone();#selected:().del();#selected:().defaults=().defaultsClone;[_.docName]:()='';currentSheetInfo:().del();allDataInfo:().del()",
-      "saveImage": "loader.show;uploadImage():[data=doc();branch=userData:().currentBranch]:[if():[_.success]:[note():[text='File uploaded successfully!'];searchDataImage:().push():[_.data];():GalleryManager.update()::[closeGeneralPopup();loader.hide]]:[note():[text='Try again!';danger];loader.hide]]"
+      "saveImage": "loader.show;uploadImage():[data=doc();branch=userData:().currentBranch]:[if():[_.success]:[note():[text='File uploaded successfully!'];searchDataImage:().push():[_.data];():GalleryManager.update()::[closeGeneralPopup();loader.hide]]:[note():[text='Try again!';danger];loader.hide]]",
+      "__props__": {
+        "comments": []
+      },
+      "clooossseeed": []
     },
     "collapsed": [
       {
@@ -739,11 +662,84 @@
           "children",
           1
         ]
+      },
+      {
+        "note": "btns",
+        "path": [
+          "children",
+          5
+        ]
       }
     ],
     "folderPath": [],
     "version": 0,
     "counter": 52,
     "secure": false
-  }
+  },
+  "clooossseeed": [
+    {
+      "path": [
+        "children",
+        1,
+        "children",
+        0,
+        "children",
+        1,
+        "children",
+        0,
+        "children",
+        0
+      ]
+    },
+    {
+      "path": [
+        "children",
+        1,
+        "children",
+        0,
+        "children",
+        2
+      ]
+    },
+    {
+      "path": [
+        "children",
+        1,
+        "children",
+        0,
+        "children",
+        3
+      ]
+    },
+    {
+      "path": [
+        "children",
+        1
+      ]
+    },
+    {
+      "path": [
+        "children",
+        2
+      ]
+    },
+    {
+      "path": [
+        "children",
+        5
+      ]
+    },
+    {
+      "path": [
+        "children",
+        3
+      ]
+    },
+    {
+      "path": [
+        "children",
+        4
+      ]
+    }
+  ]
 }

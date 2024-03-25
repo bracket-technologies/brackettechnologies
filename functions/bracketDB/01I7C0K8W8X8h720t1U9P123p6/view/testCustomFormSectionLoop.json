@@ -158,7 +158,20 @@
         "delInputFromDoc": "if():[___.path]:[doc().[___.path]._():[_.[___.inputPath].del()]]:[doc().[__.inputPath].del()]",
         "delUnitPathFromDoc": "if():[___.path]:[doc().[___.path]._():[_.[___.unitPath].del()]]:[doc().[__.unitPath].del()]",
         "_": "().displaySection=true;if():[_.condition||_.orCondition]:[sectionConditionHandler();]:[if():[_.type!=image;!_.customSectionView]:[checkToRenderSection()]]"
-      }
+      },
+      "clooossseeed": [
+        {
+          "path": [
+            "customUpdate",
+            "getSectionPathBySectionIndex"
+          ]
+        },
+        {
+          "path": [
+            "saveSectionIdInFormIds"
+          ]
+        }
+      ]
     },
     "collapsed": [
       {
@@ -340,5 +353,55 @@
     "version": 0,
     "counter": 54,
     "secure": false
-  }
+  },
+  "clooossseeed": [
+    {
+      "path": [
+        "children",
+        0,
+        "children",
+        0,
+        "children",
+        3,
+        "children",
+        0,
+        "children",
+        0,
+        "children",
+        0,
+        "children",
+        0
+      ]
+    },
+    {
+      "path": [
+        "children",
+        0,
+        "children",
+        0,
+        "children",
+        3
+      ]
+    },
+    {
+      "path": [
+        "children",
+        0,
+        "children",
+        0,
+        "children",
+        2
+      ]
+    },
+    {
+      "path": [
+        "children",
+        0,
+        "children",
+        0,
+        "children",
+        0
+      ]
+    }
+  ]
 }

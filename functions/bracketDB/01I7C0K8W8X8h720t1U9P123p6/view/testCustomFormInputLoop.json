@@ -64,24 +64,24 @@
               "view": "View?class=flex column;style:[width=100%]?_.subInput",
               "children": [
                 {
-                  "view": "[View]:[if():[!data().[_.path].0;_.path]:[data().[_.path]=:[]];path=_.path]?class=flex column;style:[width=100%;padding=1rem]",
+                  "view": "[View]:[if():[!data().[_.path].0;_.path]:[data().[_.path]=:[]];path=_.path]?click:[log():[path()]:['vvvv']];checkSelectedPath();class=flex column;style:[width=100%;padding=1rem]",
                   "children": [
                     {
                       "view": "View?class=flex;style:[marginLeft=auto;gap=.4rem;paddingRight=1rem]?__.path",
                       "children": [
                         {
-                          "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;cursor=pointer];click:[if():[2ndParent().prev()]:[2ndParent().prev().style().display=flex;2ndParent().style().display=none]]",
+                          "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;borderRadius=.4rem;cursor=pointer];click:[displayPrevPath()]",
                           "children": [
                             {
-                              "view": "Icon?name=keyboard_arrow_left;tooltip.text=duplicate;google.symbol;style:[fontSize=2rem]"
+                              "view": "Icon?name=keyboard_arrow_left;tooltip.text=add;google.symbol;style:[fontSize=2.5rem]"
                             }
                           ]
                         },
                         {
-                          "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;cursor=pointer];click:[displayNextPath()]",
+                          "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;borderRadius=.4rem;cursor=pointer];click:[displayNextPath()]",
                           "children": [
                             {
-                              "view": "Icon?name=keyboard_arrow_right;tooltip.text=duplicate;google.symbol;style:[fontSize=2rem]"
+                              "view": "Icon?name=keyboard_arrow_right;tooltip.text=add;google.symbol;style:[fontSize=2.5rem]"
                             }
                           ]
                         },
@@ -182,11 +182,12 @@
     }
   ],
   "__props__": {
-    "id": "N1a7O1W1e073n1W3r6f5q2N1U8",
+    "id": "u107H191d161T2V164F8s6A5v3",
     "doc": "testCustomFormInputLoop",
-    "creationDate": 1711031365218,
+    "creationDate": 1711112148653,
     "active": true,
-    "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "createdByUserID": null,
+    "counter": 5,
     "actions": {
       "handleExchangeRateDisplayInput": {
         "getAccountCurrency": "().accountCurrency=userData:().currency.find():[[ref.slice():4+0]=__.ledgerAccount.split():['/'].2.num()].code",
@@ -204,8 +205,8 @@
       "handleInputFraction": "loaded:[().parentFraction=parent().style.gridTemplateColumns;().splittedArray=().parentFraction.split():' ';().splittedArray.[[parent().children().filter():[style.display!='none'].indexOf():[()]]]=_.fraction;parent().style().gridTemplateColumns=().splittedArray.join():' ']",
       "insertNewSubSection": {
         "rearrangeSectionsPathCounter": "2ndParent().nextSiblings()._():[_.2ndChild().2ndChild().1stChild().txt()=_.path().1+1]",
-        "hideSiblingSections": "2ndParent().next().siblings()._():[_.style().display=none];",
-        "_": "if():[_.data]:[nthParent():3.insert():[data=_.data;view=2ndParent()]]:[nthParent():3.insert():[view=2ndParent()]];rearrangeSectionsPathCounter();hideSiblingSections()"
+        "_": "[if():[_.data]:[3rdParent().insert():[data=_.data;view=2ndParent()]]:[3rdParent().insert():[view=2ndParent()]]]()::[hideSiblingPaths()];#hideSiblingPaths();#rearrangeSectionsPathCounter()",
+        "hideSiblingPaths": "2ndParent().rem():[preventDefault]"
       },
       "addRow": {
         "handleDuplicatedInput": "nthParent():3.insert();prev().style():[color=#5b5959ad;cursor=pointer]",
@@ -227,14 +228,6 @@
         "_": "if():[!checked]:[checkOpenLimit()]:[uncheckOpenLimit()]"
       },
       "toTableList": "().tableInfo=[];().tableInfo.collection='tableOfInputs';__.clone().input._():[().tableInfo.table.push():[header=_.inputLabel;_.inputLabel.del();fraction=1fr;path=_.inputPath;customInputInfo=_]]",
-      "displayPrevPath": {
-        "displayPrev": "if():[2ndParent().next()]:[2ndParent().prev().style().display=flex;2ndParent().style().display=none]",
-        "_": ";#hayde 5liha la 7atta yzabit l'preventDefault';#if():[path().[-1]>0]:[nthParent():3.insert():[preventDefault;view=2ndParent();path=path().[-1]-1]];displayPrev()"
-      },
-      "displayNextPath": {
-        "displayNext": "if():[2ndParent().next()]:[2ndParent().next().style().display=flex;2ndParent().style().display=none]",
-        "_": ";#hayde 5liha la 7atta yzabit l'preventDefault';#if():[3rdParent().data().[__.path].len()>path().[-1]]:[nthParent():3.insert():[preventDefault;view=2ndParent();path=path().[-1]+1]];displayNext()"
-      },
       "fillInSearchboxSelected": "selected:().currency.push():[id=userData:().currency;code=userData:().currencyCode;ref=userData:().currencyRef];selected:().branch.push():[id=userData:().branch;ref=userData:().branchRef]",
       "#handleInputValueInDocForAllSections": {
         "handleInputValueInDoc": "if():[_.inputValue;!_.executeEveryLoad;if():[_.condition||_.orCondition]:[customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone();path=____.path;index=0]]:[true]]:[if():[____.path]:[if():[!doc().[____.path].0.[_.inputPath]]:[doc().[____.path].0.[_.inputPath]=[_.inputValue]()]]:[if():[!doc().[_.inputPath]]:[doc().[_.inputPath]=[_.inputValue]()]]].elif():[_.inputValue;_.executeEveryLoad]:[if():[____.path]:[doc().[____.path].0.[_.inputPath]=[_.inputValue]()]:[doc().[_.inputPath]=[_.inputValue]()]].elif():[_.fillFirstItemAsValue]:[handleFirstItemAsValue()]",
@@ -268,8 +261,8 @@
       },
       "removeSubSection": {
         "rearrangeSectionsPathCounter": "2ndParent().nextSiblings()._():[_.2ndChild().2ndChild().1stChild().txt()=_.path().1]",
-        "displayOtherSection": "if():[2ndParent().prev()]:[2ndParent().prev().style().display=flex]:[2ndParent().next().style().display=flex]",
-        "_": "if():[doc().[__.path].len()>1]:[rearrangeSectionsPathCounter();displayOtherSection();2ndParent().rem();]"
+        "_": "if():[doc().[__.path].len()>1]:[log():[2ndParent()]:['ccc0'];#rearrangeSectionsPathCounter();[displayOtherPath()]()::[log():[2ndParent()]:['ccc1'];2ndParent().rem()]]",
+        "displayOtherPath": "if():[path().[-1]>0]:[3rdParent().insert():[preventDefault;path=3rdParent().path().clone().push():[__.path].push():[path().[-1]-1];view=2ndParent()]]:[3rdParent().insert():[preventDefault;path=3rdParent().path().clone().push():[__.path].push():[path().[-1]+1];view=2ndParent()]]"
       },
       "handleRemDuplicatedInput": {
         "handleRem": "if():[nthParent():3.data().[__.duplicatedInputPath].len()>1]:[if():[nthParent():3.data().[__.duplicatedInputPath].len()=2]:[changeRemBtnColor()];2ndParent().rem()]",
@@ -288,20 +281,48 @@
         "handleIfCurrencyInDoc": "if():[!doc().currency||[doc().currency]=[userData:().defaultCurrency.value]]:[().display=false;if():[_.multiInput]:[handleDelIfMultiInput()].elif():[___.path]:[__.[_.inputPath].del()]:[doc().[_.inputPath].del()]]",
         "_": "if():[___.path]:[handleIfCurrencyInPath()]:[handleIfCurrencyInDoc()]"
       },
+      "__props__": {
+        "comments": []
+      },
       "clooossseeed": [
         {
           "path": [
+            "conditionHandler"
+          ]
+        },
+        {
+          "path": [
+            "#openLimitCheckBox"
+          ]
+        },
+        {
+          "path": [
+            "addRow"
+          ]
+        },
+        {
+          "path": [
+            "handleExchangeRateDisplayInput"
+          ]
+        },
+        {
+          "path": [
+            "inputsDataPath"
+          ]
+        },
+        {
+          "path": [
+            "unitValueHandler"
+          ]
+        },
+        {
+          "path": [
+            "#handleInputValueInDocForAllSections"
+          ]
+        },
+        {
+          "path": [
             "getSearchResult"
-          ]
-        },
-        {
-          "path": [
-            "displayNextPath"
-          ]
-        },
-        {
-          "path": [
-            "displayPrevPath"
           ]
         },
         {
@@ -311,441 +332,138 @@
         },
         {
           "path": [
-            "conditionHandler"
+            "clooossseeed",
+            0
           ]
         },
         {
           "path": [
-            "addRow"
+            "clooossseeed",
+            1
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed",
+            2
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed",
+            3
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed",
+            4
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed",
+            5
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed",
+            6,
+            "path"
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed",
+            6
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed",
+            7
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed",
+            8
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed",
+            9
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed",
+            10
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed",
+            11
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed",
+            12,
+            "path"
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed",
+            12
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed",
+            13
+          ]
+        },
+        {
+          "path": [
+            "clooossseeed"
+          ]
+        },
+        {
+          "path": [
+            "handleRemoveIconColor"
+          ]
+        },
+        {
+          "path": [
+            "handleRemDuplicatedInput"
+          ]
+        },
+        {
+          "path": [
+            "removeRow"
+          ]
+        },
+        {
+          "path": [
+            "insertNewSubSection"
+          ]
+        },
+        {
+          "path": [
+            "removeSubSection"
           ]
         }
-      ]
+      ],
+      "displayPrevPath": "if():[path().[-1]>0]:[3rdParent().insert():[preventDefault;path=3rdParent().path().clone().push():[__.path].push():[path().[-1]-1];view=2ndParent()];2ndParent().rem():[preventDefault]]",
+      "displayNextPath": "if():[path().[-1]<3rdParent().data().[__.path].len()-1]:[3rdParent().insert():[preventDefault;path=3rdParent().path().clone().push():[__.path].push():[path().[-1]+1];view=2ndParent()];2ndParent().rem():[preventDefault]]",
+      "checkSelectedPath": "log():[under=_;under2=__;under3=___;under4=____]:['vvvvv'];#if():[selectedPath:().]:[]"
     },
-    "collapsed": [
-      {
-        "path": [
-          "children",
-          0,
-          "children",
-          2,
-          "children",
-          0,
-          "children",
-          "0"
-        ]
-      },
-      {
-        "path": [
-          "children",
-          "1",
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0
-        ]
-      },
-      {
-        "path": [
-          "children",
-          "1",
-          "children",
-          0,
-          "children",
-          0
-        ]
-      },
-      {
-        "path": [
-          "children",
-          1,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0,
-          "children"
-        ]
-      },
-      {
-        "path": [
-          "children",
-          1,
-          "children",
-          0,
-          "children",
-          1,
-          "children",
-          0
-        ]
-      },
-      {
-        "path": [
-          "children",
-          1,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          2
-        ]
-      },
-      {
-        "path": [
-          "children",
-          1,
-          "children",
-          2,
-          "children",
-          0,
-          "children",
-          0
-        ]
-      },
-      {
-        "path": [
-          "children",
-          "2"
-        ]
-      },
-      {
-        "path": [
-          "children",
-          1,
-          "children",
-          1,
-          "children",
-          0,
-          "children",
-          0
-        ]
-      },
-      {
-        "path": [
-          "children",
-          1,
-          "children",
-          2,
-          "children",
-          0,
-          "children",
-          1
-        ]
-      },
-      {
-        "path": [
-          "children",
-          1,
-          "children",
-          1,
-          "children",
-          0,
-          "children",
-          1
-        ]
-      },
-      {
-        "path": [
-          "children",
-          2
-        ]
-      },
-      {
-        "path": [
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          2
-        ]
-      },
-      {
-        "path": [
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          1
-        ]
-      },
-      {
-        "path": [
-          "children",
-          1
-        ]
-      },
-      {
-        "path": [
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0
-        ]
-      },
-      {
-        "path": [
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0
-        ]
-      },
-      {
-        "path": [
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0
-        ]
-      },
-      {
-        "path": [
-          "children",
-          0,
-          "children",
-          1
-        ]
-      },
-      {
-        "path": [
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          1,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0
-        ]
-      },
-      {
-        "path": [
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          1,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          4
-        ]
-      },
-      {
-        "path": [
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          1,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          2
-        ]
-      },
-      {
-        "path": [
-          "removeRow111"
-        ]
-      },
-      {
-        "path": [
-          "handleExchangeRateDisplayInput"
-        ]
-      },
-      {
-        "path": [
-          "conditionHandler"
-        ]
-      },
-      {
-        "path": [
-          "#saveIdInFormIds"
-        ]
-      },
-      {
-        "path": [
-          "#conditionHandler"
-        ]
-      },
-      {
-        "path": [
-          "#handleInputValueInDoc"
-        ]
-      },
-      {
-        "path": [
-          "#openLimitCheckBox"
-        ]
-      },
-      {
-        "path": [
-          "handleRemoveIconColor"
-        ]
-      },
-      {
-        "path": [
-          "handleRemDuplicatedInput"
-        ]
-      },
-      {
-        "path": [
-          "getSearchResult"
-        ]
-      },
-      {
-        "path": [
-          "addRow"
-        ]
-      },
-      {
-        "path": [
-          "unitValueHandler"
-        ]
-      },
-      {
-        "path": [
-          "exchangeRateInputCondition"
-        ]
-      },
-      {
-        "path": [
-          "removeRow"
-        ]
-      }
-    ],
     "comments": [
-      {
-        "note": "openLimit + add and remove btns",
-        "path": [
-          "children",
-          1,
-          "children",
-          2
-        ]
-      },
-      {
-        "note": "multiInput",
-        "path": [
-          "children",
-          1,
-          "children",
-          2,
-          "children",
-          0,
-          "children",
-          1
-        ]
-      },
-      {
-        "note": "duplicatedInputPath",
-        "path": [
-          "children",
-          1,
-          "children",
-          1,
-          "children",
-          0,
-          "children",
-          2
-        ]
-      },
-      {
-        "note": "custom input",
-        "path": [
-          "children",
-          1,
-          "children",
-          2,
-          "children",
-          0,
-          "children",
-          0
-        ]
-      },
-      {
-        "note": "multiInput",
-        "path": [
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          1
-        ]
-      },
-      {
-        "note": "duplicatedInput",
-        "path": [
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          2
-        ]
-      },
-      {
-        "note": "normal input",
-        "path": [
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0,
-          "children",
-          0
-        ]
-      },
       {
         "note": "add and rem path",
         "path": [
@@ -756,41 +474,42 @@
         ]
       },
       {
-        "note": "keyName: TableView to show tableOfInputs in form",
+        "note": "subSection",
         "path": [
+          "children",
+          0,
+          "children",
+          0,
           "children",
           1
         ]
       },
       {
-        "note": "btns mobile",
-        "path": [
-          "children",
-          2
-        ]
-      },
-      {
-        "note": "icons ",
+        "note": "section inpurs",
         "path": [
           "children",
           0,
-          "children",
-          0,
-          "children",
-          1,
           "children",
           0,
           "children",
           0
         ]
       }
-    ],
-    "folderPath": [],
-    "version": 0,
-    "counter": 53,
-    "secure": false
+    ]
   },
   "clooossseeed": [
+    {
+      "path": [
+        "children",
+        2
+      ]
+    },
+    {
+      "path": [
+        "children",
+        1
+      ]
+    },
     {
       "path": [
         "children",
@@ -802,14 +521,66 @@
     {
       "path": [
         "children",
-        1
+        0,
+        "children",
+        0,
+        "children",
+        0
       ]
     },
     {
       "path": [
         "children",
+        0,
+        "children",
+        0,
+        "children",
+        1,
+        "children",
+        0,
+        "children",
+        0,
+        "children",
         2
       ]
+    },
+    {
+      "path": [
+        "children",
+        0,
+        "children",
+        0,
+        "children",
+        1,
+        "children",
+        0,
+        "children",
+        0,
+        "children",
+        3
+      ]
+    },
+    {
+      "path": [
+        "clooossseeed"
+      ]
+    },
+    {
+      "path": [
+        "children",
+        0,
+        "children",
+        0,
+        "children",
+        1,
+        "children",
+        0,
+        "children",
+        0,
+        "children",
+        0
+      ]
     }
-  ]
+  ],
+  "hezzzyawezzz": []
 }

@@ -1,5 +1,5 @@
 {
-  "view": "View:main?path='/';name=Bracket Builder;title=Bracket Builder;meta:[title=Bracket Builder;description=Bracket Website Builder];[loaded?route():login]",
+  "view": "View:main?path='/';name=Bracket Builder;title=Bracket Builder;meta:[title=Bracket Builder;description=Bracket Website Builder];root():login",
   "children": [
     {
       "controls": [

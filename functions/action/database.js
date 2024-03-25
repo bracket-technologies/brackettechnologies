@@ -108,7 +108,27 @@ const getData = async ({ _window, req, res, search }) => {
     skip = search.skip || 0,
     data = {}, success, message
 
-  if (datastore === "bracketDB") {
+
+  if ("url" in search) {
+
+    try {
+
+      data = await require("axios").get(search.url, { timeout: 1000 * 40 }).catch(err => err)
+
+      data = data.data
+      success = true
+      message = `Search done successfuly!`
+
+    } catch (err) {
+
+      data = {}
+      success = false
+      message = err
+    }
+
+    response = { data, success, message }
+
+  } else if (datastore === "bracketDB") {
 
     if (search.collections) return ({ success: true, message: "Names queried successfully!", data: getCollectionNames(`bracketDB/${db}`) })
 
@@ -119,7 +139,7 @@ const getData = async ({ _window, req, res, search }) => {
       path += `/${collection}`
       if (!fs.existsSync(path)) return ({ data, message: "No collection!", success: false })
     }
-  
+
     if ("docs" in search) {
 
       toArray(docs).map(doc => {
@@ -232,7 +252,7 @@ const getData = async ({ _window, req, res, search }) => {
         }
       })
     }
-    
+
     response = { data, message: "Data queried successfully!", success: true }
 
   } else if (datastore === "firebase") {
@@ -244,34 +264,7 @@ const getData = async ({ _window, req, res, search }) => {
 
     var ref = req.datastore.firebaseDB.collection(collection), promises = []
 
-    if ("url" in search) {
-
-      var url = search.url
-      delete search.url
-
-      if (url.slice(-1) === "/") url = url.slice(0, -1)
-
-      try {
-
-        data = await require("axios").get(url, { timeout: 1000 * 40 })
-          .then(res => res.doesNotExist.throwAnError)
-          .catch(err => err)
-
-        data = JSON.parse(data.data)
-        success = true
-        message = `Document/s mounted successfuly!`
-
-      } catch (err) {
-
-        data = {}
-        success = false
-        message = `Error!`
-      }
-
-      response = { data, success, message }
-    }
-
-    else if ("docs" in search) {
+    if ("docs" in search) {
 
       if (!docs) return ({ data: {}, success: false, message: "Missing Docs!" })
 
@@ -421,7 +414,7 @@ const getData = async ({ _window, req, res, search }) => {
   } else if (datastore === "mongoDB") {
 
     if (search.collections) {
-      
+
       var collections = await req.datastore.mongoDB.db(db).listCollections().toArray()
       return ({ success: true, message: "Names queried successfully!", data: collections.map(data => data.name) })
     }
@@ -439,7 +432,7 @@ const getData = async ({ _window, req, res, search }) => {
 
     // find
     else data = await ref.find(mongoOptions({ find })).limit(limit).skip(skip).toArray();
-    
+
     // return data as map
     if (!doc && data[0]) {
       var mapData = {}
@@ -451,7 +444,7 @@ const getData = async ({ _window, req, res, search }) => {
 
     response = { data, message: "Data queried successfully!", success: true }
   }
-  
+
   // ex: search():[collection=product;docs;populate=:[collection;key;field]] (key is keyname in data, field is the fields to return)
   if ((populate || select || deselect || assign) && success) {
 
@@ -890,9 +883,9 @@ const createSession = async ({ _window, req, res, session = {} }) => {
 
   var global = _window.global, expiredSessionExists = session.accountID
   var promises = [], account, project, counter, subscriptions = [], plugins = []
-  
+
   // project
-  !expiredSessionExists && promises.push(getData({ _window, req, search: { db: bracketDB, collection: "project", find: { domains: { inc: global.manifest.host } } } }).then(({ data }) => { project = Object.values(data || {})[0] }))
+  promises.push(getData({ _window, req, search: { db: bracketDB, collection: "project", find: { domains: { inc: global.manifest.host } } } }).then(({ data }) => { project = Object.values(data || {})[0] }))
   await Promise.all(promises)
 
   if (!project) return { message: "Project does not exist!", success: false }
@@ -901,7 +894,7 @@ const createSession = async ({ _window, req, res, session = {} }) => {
   var promises = []
 
   // account
-  !expiredSessionExists && promises.push(getData({ _window, req, search: { db: bracketDB, collection: "account", find: { "__props__.id": { equal: project.accountID } } } }).then(({ data }) => { account = Object.values(data || {})[0] }))
+  promises.push(getData({ _window, req, search: { db: bracketDB, collection: "account", find: { "__props__.id": { equal: project.accountID } } } }).then(({ data }) => { account = Object.values(data || {})[0] }))
 
   // counter
   promises.push(getData({ _window, req, search: { db: bracketDB, collection: "settings", find: { db: project.db } } }).then(({ data }) => { counter = Object.values(data || {})[0] }))
@@ -938,7 +931,9 @@ const createSession = async ({ _window, req, res, session = {} }) => {
   session = {
 
     accountID: session.accountID || account.__props__.id,
+    accountName: session.accountName || account.__props__.doc,
     projectID: session.projectID || project.__props__.id,
+    projectName: session.projectName || project.__props__.doc,
     userID: null,
     permissionID: null,
     permissions: {},

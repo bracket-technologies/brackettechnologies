@@ -9,10 +9,10 @@
     "deploy": "npm run kill && npm-run-all --parallel browserify firebase",
     "firebase": "firebase deploy --only functions",
     "logs": "firebase functions:log",
+    "forever": "npx kill-port 80 && npx kill-port 8080 && forever start index.js && forever logs index.js -f",
     "server": "node index.js",
     "browserify": "cd resource && browserify launcher.js > engine.js",
-    "kill": "npx kill-port 80",
-    "start": "npm-run-all --parallel browserify server"
+    "start": "npm-run-all --parallel browserify && npm run server"
   },
   "engines": {
     "node": "16"
@@ -22,6 +22,7 @@
     "aws-sdk": "^2.1135.0",
     "axios": "*",
     "body-parser": "*",
+    "colors": "^1.4.0",
     "cookie-parser": "^1.4.6",
     "dom-to-image": "^2.6.0",
     "dotenv": "*",
@@ -51,6 +52,8 @@
     "xlsx": "^0.18.5"
   },
   "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-es2015": "^6.24.1",
     "browserify": "*",
     "npm-run-all": "*"
   },
