@@ -11,13 +11,15 @@ class EasyTunnel {
         this.port = port
         this.subdomain = subdomain
     }
-    /**
+
+    /*
      * Start the EasyTunnel
      * @param {string} [status] used so redigging does not show initial dig message
-     */
+    */
+   
     start(status) {
         if (status != 'redig') console.log(`> Tunnel on port ${this.port.toString().cyan} at ${("https://" + this.subdomain + ".loca.lt").green}`)
-        exec(`lt --subdomain ${this.subdomain} --port ${this.port}`, async (err, out) => {
+        exec(`lt -s ${this.subdomain} --port ${this.port}`, async (err, out) => {
             if (err === null || err.toString().includes('connection refused')) {
                 this.start("redig")
                 console.log("> Redigging tunnel")

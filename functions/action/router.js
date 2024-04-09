@@ -50,7 +50,7 @@ module.exports = async ({ req, res, data }) => {
   logger({ _window, data: { key: "route", start: true } })
 
   // address toView
-  var address = addresser({ _window, id, interpreting: true, status: "Start", type: "function", function: "toView", stack, renderer: true, __: global.__, data: { view }, logger: { key: "route", end: true } }).address
+  var address = addresser({ _window, id, status: "Start", type: "function", function: "toView", stack, __: global.__, data: { view }, logger: { key: "route", end: true } }).address
 
   // render route
   toView({ _window, req, res, stack, __: global.__, address, lookupActions: view.__lookupActions__, data: { view } })

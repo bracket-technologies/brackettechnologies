@@ -77,7 +77,7 @@ const moveData = (datastore) => {
         deleteData({ _window, erase: { db: bracketDB, collection: "paymentMethod" } });
         deleteData({ _window, erase: { db: bracketDB, collection: "exchangeRate" } });
         deleteData({ _window, erase: { db: bracketDB, collection: "tokenPackage" } });
-        deleteData({ _window, erase: { db: bracketDB, collection: "settings" } });
+        deleteData({ _window, erase: { db: bracketDB, collection: "counters" } });
         deleteData({ _window, erase: { db: bracketDB, collection: "plugin" } });
         deleteData({ _window, erase: { db: bracketDB, collection: "subscription" } });
         deleteData({ _window, erase: { db: bracketDB, collection: "bill" } });
@@ -126,7 +126,7 @@ const moveData = (datastore) => {
                 }
             }
 
-            postData({ _window, save: { data: counter, db: bracketDB, collection: "settings", doc: counter.__props__.doc } })
+            postData({ _window, save: { data: counter, db: bracketDB, collection: "counters", doc: counter.__props__.doc } })
         }
         settings();
 
@@ -206,7 +206,7 @@ const moveData = (datastore) => {
             }
             
             collections.map(collection => accCounter.collections[collection] = 0)
-            postData({ _window, save: { data: accCounter, db: bracketDB, collection: "settings", doc: accCounter.__props__.doc } })
+            postData({ _window, save: { data: accCounter, db: bracketDB, collection: "counters", doc: accCounter.__props__.doc } })
 
             createData(doc.id, collections, accCounter)
         })
@@ -707,7 +707,7 @@ const moveData = (datastore) => {
                         actions: data.functions,
                         collapsed: [...(data.clooossseeed || []), ...(data.functions.clooossseeed || [])],
                         comments: [...(data.hezzzyawezzz || []), ...(data.functions.hezzzyawezzz || [])],
-                        folderPath: [],
+                        dirPath: [],
                         version: 0,
                         counter: counter.collections.view,
                         secure: data._secure_ || false
@@ -780,7 +780,7 @@ const moveData = (datastore) => {
                             createdByUserID: obeidUserID,
                             collapsed: [...(data.clooossseeed || []), ...((data.functions || {}).clooossseeed || [])],
                             comments: [...(data.hezzzyawezzz || []), ...((data.functions || {}).hezzzyawezzz || [])],
-                            folderPath: [],
+                            dirPath: [],
                             actions: {},
                             counter: counter.collections[collection]
                         }
@@ -791,7 +791,7 @@ const moveData = (datastore) => {
                         delete data.functions
 
                         postData({ _window, save: { data, db: accDB, collection, doc: data.__props__.doc } })
-                        postData({ _window, save: { data: counter, db: bracketDB, collection: "settings", doc: counter.__props__.doc } })
+                        postData({ _window, save: { data: counter, db: bracketDB, collection: "counters", doc: counter.__props__.doc } })
                     })
                 })
             })

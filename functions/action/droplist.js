@@ -8,11 +8,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   var global = window.global
   var view = views[id]
 
-  if (!view.droplist) {
-    views = null
-    global = null
-    return
-  }
+  if (!view.droplist) return
   if (view.droplist.searchable !== false) view.droplist.searchable = {}
 
   // closedroplist

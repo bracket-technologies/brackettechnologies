@@ -4,6 +4,7 @@ const { toFirebaseOperator } = require("./toFirebaseOperator")
 const { clone } = require("./clone")
 const { toOperator } = require("./toOperator")
 const fs = require("fs")
+const { compress, decompress } = require("compress-json")
 
 // config
 require('dotenv').config()
@@ -31,15 +32,9 @@ const getdb = async ({ _window, req, res }) => {
 
   var search = req.body.data || {}, timer = (new Date()).getTime()
 
-  // no collection
-  if (!search.collection && !search.collections) {
-    console.log("SEARCH", "No collection!", 0);
-    return ({ success: false, message: "No collection exists!" })
-  }
-
   var { data, success, message } = await getData({ _window, req, res, search })
 
-  console.log("SEARCH", search.collection || search.db, (new Date()).getTime() - timer);
+  console.log((new Date()).getHours() + ":" + (new Date()).getMinutes() + " SEARCH", search.collection || search.db, (new Date()).getTime() - timer);
 
   // respond
   res.setHeader('Content-Type', 'application/json')
@@ -59,7 +54,7 @@ const postdb = async ({ _window, req, res }) => {
 
   var { data, success, message } = await postData({ _window, req, res, save })
 
-  console.log("SAVE", save.collection, (new Date()).getTime() - timer);
+  console.log((new Date()).getHours() + ":" + (new Date()).getMinutes() + " SAVE", save.collection, (new Date()).getTime() - timer);
 
   // respond
   res.setHeader('Content-Type', 'application/json')
@@ -73,7 +68,7 @@ const deletedb = async ({ _window, req, res }) => {
 
   // no collection
   if (!erase.collection) {
-    console.log("ERASE", "No collection!", 0);
+    console.log((new Date()).getHours() + ":" + (new Date()).getMinutes() + " ERASE", "No collection!", 0);
     return ({ success: false, message: "No collection exists!" })
   }
 
@@ -89,12 +84,10 @@ const deletedb = async ({ _window, req, res }) => {
 
 const getData = async ({ _window, req, res, search }) => {
 
-  var global = _window.global
-  var datastore = search.datastore || global.manifest.datastore
-  var project = (search.headers || {}).project || search.db || global.manifest.session.db
   var response = { success: false, message: "Something went wrong!" }
 
-  var db = search.db || global.manifest.session.db,
+  var datastore = search.datastore || "bracketDB" || _window.global.manifest.datastore,
+    db = search.db || _window.global.manifest.session.db,
     collection = search.collection,
     doc = search.doc,
     docs = search.docs,
@@ -102,12 +95,11 @@ const getData = async ({ _window, req, res, search }) => {
     select = search.select,
     deselect = search.deselect,
     assign = search.assign,
-    find = search.find || search.field || {},
+    find = search.find || search.field,
     findOne = search.findOne,
     limit = search.limit || 1000,
     skip = search.skip || 0,
     data = {}, success, message
-
 
   if ("url" in search) {
 
@@ -130,8 +122,6 @@ const getData = async ({ _window, req, res, search }) => {
 
   } else if (datastore === "bracketDB") {
 
-    if (search.collections) return ({ success: true, message: "Names queried successfully!", data: getCollectionNames(`bracketDB/${db}`) })
-
     var path = `bracketDB/${db}`
     if (!fs.existsSync(path)) return ({ data, message: "No database!", success: false })
 
@@ -140,122 +130,242 @@ const getData = async ({ _window, req, res, search }) => {
       if (!fs.existsSync(path)) return ({ data, message: "No collection!", success: false })
     }
 
-    if ("docs" in search) {
+    // no collection => return collection names
+    else {
 
-      toArray(docs).map(doc => {
-        if (fs.existsSync(`${path}/${doc}.json`)) data[doc] = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
-      })
+      var data = getCollectionNames(path)
+      /*for (let i = 0; i < collections.length; i++) {
+
+        var collection = collections[i]
+        var { data: query } = getData({ search: { datastore, db, collection, skip, limit } })
+        limit -= Object.keys(query).length
+        data[collection] = query
+        if (limit === 0) break
+      }*/
+
+      var propsIndex = data.findIndex(coll => coll === "__props__")
+      data.splice(propsIndex, 1)
+
+      return ({ data, message: "Collection names sent successfully!", success: true })
     }
 
-    else if ("doc" in search) {
+    // get db & collection props
+    var dbProps = decompress(JSON.parse(fs.readFileSync(`bracketDB/${db}/__props__/db.json`)))
+    var collectionProps = decompress(JSON.parse(fs.readFileSync(`bracketDB/${db}/${collection}/__props__.json`)))
+    
+    // chunk details
+    var chunkIndex = collectionProps.chunks.length - 1
+    var chunkName = "chunk" + chunkIndex
 
-      if (!fs.existsSync(`${path}/${doc}.json`)) return data
-      data = JSON.parse(fs.readFileSync(`${path}/${doc}.json`))
-    }
+    var chunksRunout = false, endSearch = false
+    while (!chunksRunout && !endSearch) {
+      
+      var chunk = decompress(JSON.parse(fs.readFileSync(`${path}/${chunkName}.json`)))
 
-    else if (Object.keys(find).length === 0) {
+      if ("docs" in search) {
 
-      if (!collection) {
-
-        getCollectionNames(path).map(collection => {
-
-          var pathi = path + "/" + collection
-          var docs = fs.readdirSync(pathi)
-          data[collection] = {}
-
-          for (let i = skip; (i < limit) && (i <= docs.length - 1); i++) {
-
-            var doc = docs[i]
-            var query = JSON.parse(fs.readFileSync(`${pathi}/${doc}`))
-            doc = doc.split(".json")[0]
-            data[collection][doc] = query
+        var foundDocs = []
+        toArray(docs).map(doc => {
+          if (chunk[doc]) {
+            data[doc] = chunk[doc]
+            foundDocs.push(doc);
           }
         })
 
-      } else {
+        docs = docs.filter(doc => !foundDocs.includes(doc))
+        if (docs.length === 0) {
+          endSearch = true
+          break;
+        }
+      }
 
-        var docs = fs.readdirSync(path)
+      else if ("doc" in search) {
 
-        for (let i = skip; (i < limit) && (i <= docs.length - 1); i++) {
+        if (chunk[doc]) {
+
+          data = chunk[doc]
+          endSearch = true
+          break;
+
+          // doc does not exist in collection
+        } else if (chunkIndex === 0) data = undefined
+      }
+
+      else if (("find" in search) || ("field" in search)) {
+
+        // find=[] & find=[preventDefault] => do not return all data in collection
+        if (find.preventDefault && Object.keys(find).length === 1) {
+          readProps({ collectionProps, dbProps, data, db, collection })
+          return { data: {}, message: "No find conditions exist!", success: false }
+        }
+
+        delete find.preventDefault
+
+        var docs = Object.keys(chunk), i = 0
+        
+        while (limit > 0 && (i <= docs.length - 1)) {
 
           var doc = docs[i]
-          var query = JSON.parse(fs.readFileSync(`${path}/${doc}`))
-          doc = doc.split(".json")[0]
-          data[doc] = query
+          if (doc === "__props__") continue;
+
+          toArray(find).map(find => {
+
+            if (limit === 0) return
+            var push = true
+
+            Object.keys(find).map(key => {
+
+              if (!push) return
+
+              // equal without equal
+              if (typeof find[key] !== "object") find[key] = { equal: find[key] }
+
+              push && Object.entries(find[key]).map(([operator, value]) => {
+
+                var keyPath = key.split(".")
+                var lastIndex = keyPath.length - 1
+
+                keyPath.reduce((o, k, i) => {
+
+                  if (!o || !(k in o) || !push) return push = false
+
+                  if (i !== lastIndex) return o[k]
+
+                  operator = toOperator(operator)
+
+                  if (operator === "==") {
+                    if (o[k] === value) push = true
+                    else push = false
+                  } else if (operator === "!=") {
+                    if (o[k] !== value) push = true
+                    else push = false
+                  } else if (operator === ">=") {
+                    if (o[k] >= value) push = true
+                    else push = false
+                  } else if (operator === "<=") {
+                    if (o[k] <= value) push = true
+                    else push = false
+                  } else if (operator === "<") {
+                    if (o[k] < value) push = true
+                    else push = false
+                  } else if (operator === ">") {
+                    if (o[k] > value) push = true
+                    else push = false
+                  } else if (operator === "inc") {
+                    if (o[k].includes(value)) push = true
+                    else push = false
+                  } else if (operator === "in") {
+                    if (value.includes(o[k])) push = true
+                    else push = false
+                  } else if (operator === "regex") {
+                    if (value.test(o[k])) push = true
+                    else push = false
+                  }
+
+                }, chunk[doc])
+              })
+            })
+            
+            if (push && skip) skip--;
+            else if (push && limit > 0) {
+              limit--;
+              data[doc] = chunk[doc]
+            }
+
+            if (limit === 0) endSearch = true
+            i++;
+          })
         }
+      }
+
+      else if ("findOne" in search) {
+
+        data = undefined
+        find.limit = 1
+        var { data: query } = await getData({ search: { datastore, db, collection, find } })
+        data = query
+        if (data) {
+          endSearch = true
+          break;
+        }
+      }
+
+      else if ("findAny" in search) {
+
+        var value = toArray(search.findAny)
+        var docs = Object.keys(chunk)
+
+        for (let i = 0; i < docs.length; i++) {
+
+
+          var doc = docs[i]
+          if (doc === "__props__") continue;
+
+          var docData = chunk[doc]
+          //var stringDoc = JSON.stringify(docData)
+
+          value.map(value => {
+
+            delete docData.__props__.active
+            delete docData.__props__.creationDate
+            delete docData.__props__.comments
+            delete docData.__props__.collapsed
+            delete docData.__props__.createdByUserID
+            delete docData.__props__.id
+            delete docData.__props__.doc
+            delete docData.__props__.counter
+            delete docData.__props__.chunk
+            delete docData.__props__.version
+            delete docData.__props__.dirPath
+
+            if (JSON.stringify(docData).includes(value)) {
+
+              data[doc] = []
+              docData = objectToString(docData)
+
+              var list = docData.split(value)
+              if (list.length <= 1) return
+
+              list.map((text, i) => {
+                if (i === 0) return
+                data[doc].push(list[i - 1].split(": ").at(-1).split(",").at(-1).slice(-30) + `<mark>${value}</mark>` + text.split(",")[0])
+              })
+            }
+          })
+        }
+      }
+
+      else {
+
+        var docs = Object.keys(chunk), i = 0
+
+        while (limit > 0 && (i <= docs.length - 1)) {
+
+          var doc = docs[i]
+          if (doc === "__props__") continue;
+
+          data[doc] = chunk[doc]
+          if (skip) skip--;
+          else limit--;
+          i++;
+        }
+
+        if (limit === 0) endSearch = true
+      }
+
+      if (chunkIndex === 0 || endSearch) chunksRunout = true
+      else {
+        chunkIndex--;
+        chunkName = "chunk" + chunkIndex
       }
     }
 
-    // find
-    else {
-
-      var docs = fs.readdirSync(path)
-      var i = 0
-
-      toArray(find).map(find => {
-        while (skip >= 0 && limit > 0 && (i <= docs.length - 1)) {
-
-          var doc = docs[i]
-          var query = JSON.parse(fs.readFileSync(`${path}/${doc}`))
-
-          doc = doc.split(".json")[0]
-          var push = true
-
-          Object.keys(find).map(key => {
-            if (!push) return
-
-            // equal without equal
-            if (typeof find[key] !== "object") find[key] = { equal: find[key] }
-
-            Object.entries(find[key]).map(([operator, value]) => {
-
-              if (!(key in query) || !push) return
-              operator = toOperator(operator)
-
-              if (operator === "==") {
-                if (query[key] === value) push = true
-                else push = false
-              } else if (operator === "!=") {
-                if (query[key] !== value) push = true
-                else push = false
-              } else if (operator === ">=") {
-                if (query[key] >= value) push = true
-                else push = false
-              } else if (operator === "<=") {
-                if (query[key] <= value) push = true
-                else push = false
-              } else if (operator === "<") {
-                if (query[key] < value) push = true
-                else push = false
-              } else if (operator === ">") {
-                if (query[key] > value) push = true
-                else push = false
-              } else if (operator === "inc") {
-                if (query[key].includes(value)) push = true
-                else push = false
-              } else if (operator === "in") {
-                if (value.includes(query[key])) push = true
-                else push = false
-              }
-            })
-          })
-
-          if (push) {
-            if (skip) skip--;
-            else {
-              limit--;
-              data[doc] = query
-            }
-          }
-
-          i++;
-        }
-      })
-    }
-
+    readProps({ collectionProps, dbProps, data, db, collection })
     response = { data, message: "Data queried successfully!", success: true }
 
   } else if (datastore === "firebase") {
+
+    var project = (search.headers || {}).project || search.db || _window.global.manifest.session.db
 
     if (collection !== "_account_" && collection !== "_project_" && collection !== "_password_" && !search.url) {
       collection = 'collection-' + collection
@@ -413,7 +523,7 @@ const getData = async ({ _window, req, res, search }) => {
 
   } else if (datastore === "mongoDB") {
 
-    if (search.collections) {
+    if (!collection) {
 
       var collections = await req.datastore.mongoDB.db(db).listCollections().toArray()
       return ({ success: true, message: "Names queried successfully!", data: collections.map(data => data.name) })
@@ -468,70 +578,136 @@ const getData = async ({ _window, req, res, search }) => {
 
 const postData = async ({ _window, req, res, save }) => {
 
-  var global = _window.global
-  var collection = save.collection
-  var datastore = save.datastore || global.manifest.datastore
-  var project = (save.headers || {}).project || save.db || global.manifest.session.db
+  var datastore = save.datastore || "bracketDB" || _window.global.manifest.datastore
+  var project = (save.headers || {}).project || save.db
 
   // collection
-  var db = save.db || global.manifest.session.db
+  var db = save.db || _window.global.manifest.session.db
+  var collection = save.collection
   var doc = save.doc
   var data = save.data
-  var update = save.update || {}
+  var find = save.find
+  var update = save.update
   var success = false, message = "Missing data!"
 
   // update specific fields. ex: update:[name=Goerge;age=28] (it ignores appended data)
-  if (Object.keys(update).length > 0 && doc) {
+  if (update) {
 
-    var { data: rawData, success, message } = await getData({ _window, req, res, search: { collection, doc } })
+    var search = { datastore, db, collection }
+    if (doc) search.doc = doc
+    else if (find) search.find = find
+
+    var { data: rawData, success, message } = await getData({ search })
     if (!success) return ({ success, message })
-    Object.entries(update).map(([key, value]) => rawData[key] = value)
     data = rawData
+
+    if (doc) data = { [data.__props__.doc]: data }
+
+    // update values for requested keys
+    Object.values(data).map(data => Object.entries(update).map(([key, value]) => key.split(".").reduce((o, k, i) => { if (i === key.split(".").length - 1) { o[k] = value } else return o[k] }, data)))
+    data = Object.values(data)
+  }
+
+  // find data
+  else if (find) {
+
+    var { data: rawData } = await getData({ _window, req, res, search: { db: bracketDB, collection, find } })
+    rawData = Object.values(rawData)
+    if (rawData.length > 1) return ({ success: false, message: "Incompatible use of find and save!" })
+    else if (rawData.length === 1) doc = rawData[0].__props__.doc
   }
 
   if (datastore === "bracketDB") {
 
     // db
-    var path = `bracketDB/${db}`, counter
+    var path = `bracketDB/${db}`
     if (!fs.existsSync(path)) fs.mkdirSync(path)
+
+    // create collection
+    if (!("data" in save) && !("update" in save)) {
+
+      if (fs.existsSync(path + "/" + collection)) return ({ success: false, message: "Enter data to save!" })
+
+      createCollection({ db, collection })
+
+      return { success: true, message: "Collection created successfully!" }
+    }
 
     // collection
     path += `/${collection}`
-    if (!fs.existsSync(path)) fs.mkdirSync(path)
+    if (!fs.existsSync(path)) createCollection({ db, collection })
 
-    // get counter
-    if (collection !== "settings") {
-      var { data: counter } = await getData({ _window, req, res, search: { db: bracketDB, collection: "settings", find: { db } } })
-      counter = Object.values(counter)[0]
+    // get db & collection props
+    var dbProps = decompress(JSON.parse(fs.readFileSync(`bracketDB/${db}/__props__/db.json`)))
+    var collectionProps = decompress(JSON.parse(fs.readFileSync(`bracketDB/${db}/${collection}/__props__.json`)))
+
+    // rename collection
+    if (save.rename) {
+      fs.renameSync(path, `bracketDB/${db}/${save.rename}`)
+
+      // props
+      dbProps.writes += 1
+      collectionProps.writes += 1
+      collectionProps.collection = collection = save.rename
+
+      fs.writeFileSync(`bracketDB/${db}/${collection}/__props__.json`, JSON.stringify(compress(collectionProps)))
+      fs.writeFileSync(`bracketDB/${db}/__props__/db.json`, JSON.stringify(compress(dbProps)))
+
+      return { success: true, message: "Collection name changed successfully!" }
     }
 
+    var writesCounter = 0, newDocsLength = 0, payloadIn = 0, newDataSize = 0, chunkName = `chunk${collectionProps.lastChunk}`
+    var lastChunk = decompress(JSON.parse(fs.readFileSync(`${path}/${chunkName}.json`))), chunks = { [chunkName]: lastChunk }
+    
     toArray(data).map(data => {
+
+      var chunk
+      var newData = false
+      writesCounter++
 
       if (!data.__props__) {
 
-        if (!counter.collections[collection]) counter.collections[collection] = 0
-        counter.collections[collection]++;
+        newData = true
+        newDocsLength++;
+        collectionProps.counter++;
 
         data.__props__ = {
 
           id: generate({ unique: true }),
-          doc: doc || (collection + counter.collections[collection]),
+          doc: doc || (collection + collectionProps.counter),
+          counter: collectionProps.counter,
           creationDate: (new Date()).getTime(),
           active: true,
-          createdByUserID: global.manifest.session.userID,
-          counter: counter.collections[collection]
+          actions: {},
+          chunk: chunkName,
+          createdByUserID: (_window.global.manifest.session || {}).userID || null
         }
 
         doc = data.__props__.doc
 
-        // set counter
-        collection !== "settings" && postData({ _window, req, save: { db: bracketDB, collection: "settings", doc: counter.__props__.doc, data: counter } })
-
-      } else if (doc) data.__props__.doc = doc
+      } 
+      else if (doc) data.__props__.doc = doc
       else doc = data.__props__.doc
 
-      fs.writeFileSync(`${path}/${doc}.json`, JSON.stringify(data, null, 2))
+      // old data
+      if (!data.__props__.chunk) data.__props__.chunk = "chunk0"
+
+      // get related chunk
+      if (!chunks[data.__props__.chunk]) {
+        chunk = decompress(JSON.parse(fs.readFileSync(`${path}/${data.__props__.chunk}.json`)))
+        chunks[data.__props__.chunk] = chunk
+      } else chunk = chunks[data.__props__.chunk]
+
+      chunk[doc] = data
+      var dataSize = JSON.stringify({ [doc]: data }).length
+      payloadIn += dataSize
+      if (newData) newDataSize += dataSize
     })
+    
+    postProps({ db, collection, collectionProps, dbProps, writesCounter, newDocsLength, payloadIn, newDataSize })
+
+    // save chunks
+    Object.keys(chunks).map(chunkName => fs.writeFileSync(`${path}/${chunkName}.json`, JSON.stringify(compress(chunks[chunkName])), () => {}))
 
     return { success: true, message: "Data saved successfully!", data }
 
@@ -571,8 +747,8 @@ const postData = async ({ _window, req, res, save }) => {
     var ref = req.datastore.mongoDB.db(db).collection(collection)
 
     // get counter
-    if (collection !== "settings") {
-      var { data: counter } = await getData({ _window, req, res, search: { db: bracketDB, collection: "settings", find: { db } } })
+    if (collection !== "counters") {
+      var { data: counter } = await getData({ _window, req, res, search: { db: bracketDB, collection: "counters", find: { db } } })
       counter = Object.values(counter)[0]
     }
 
@@ -589,14 +765,14 @@ const postData = async ({ _window, req, res, save }) => {
           doc: doc || (collection + counter.collections[collection]),
           creationDate: (new Date()).getTime(),
           active: true,
-          createdByUserID: global.manifest.session.userID,
+          createdByUserID: _window.global.manifest.session.userID,
           counter: counter.collections[collection]
         }
 
         doc = data.__props__.doc
 
         // set counter
-        collection !== "settings" && postData({ _window, req, save: { db: bracketDB, collection: "settings", doc: counter.__props__.doc, data: counter } })
+        collection !== "counters" && postData({ _window, req, save: { db: bracketDB, collection: "counters", doc: counter.__props__.doc, data: counter } })
 
         return await ref.insertOne(data)
 
@@ -619,26 +795,94 @@ const deleteData = async ({ _window, req, res, erase }) => {
 
   var global = _window.global
   var collection = erase.collection,
-    datastore = erase.datastore || _window.global.manifest.datastore,
+    datastore = erase.datastore || "bracketDB" || _window.global.manifest.datastore,
     project = (erase.headers || {}).project,
     db = erase.db || global.manifest.session.db,
-    success, message,
+    success = true, message = "Documents erased successfully!",
     docs = toArray(erase.docs || erase.doc),
-    find = erase.find
+    find = erase.find,
+    data = {}
 
   if (datastore === "bracketDB") {
 
     // db
     var path = `bracketDB/${db}`
-    if (!fs.existsSync(path)) return { success: false }
+    if (!fs.existsSync(path)) return { success: false, message: "Project does not exist!" }
 
     // collection
     if (collection) path += `/${collection}`
-    if (!fs.existsSync(path)) return { success: false }
+    if (!fs.existsSync(path)) return { success: false, message: "Collection does not exist!" }
 
-    // create folder if it doesnot exist
-    if (docs.length === 0) fs.rmSync(`${path}`, { recursive: true, force: true })
-    else docs.map(doc => doc && fs.unlinkSync(`${path}/${doc}.json`))
+    // get db & collection props
+    var dbProps = decompress(JSON.parse(fs.readFileSync(`bracketDB/${db}/__props__/db.json`)))
+    var collectionProps = decompress(JSON.parse(fs.readFileSync(`bracketDB/${db}/${collection}/__props__.json`)))
+
+    // erase collection
+    if (!("docs" in erase) && !("doc" in erase) && !("find" in erase)) {
+
+      fs.rmSync(`${path}`, { recursive: true, force: true })
+
+      dbProps.deletes += 1
+      dbProps.collectionsLength -= 1
+      dbProps.docsLength -= collectionProps.docsLength
+      dbProps.size -= collectionProps.size
+      fs.writeFileSync(`bracketDB/${db}/__props__/db.json`, JSON.stringify(compress(dbProps)))
+
+      return ({ success: true, message: "Collection erased successfully!" })
+    }
+
+    // find
+    if (find) {
+      find.preventDefault = true
+      var { data } = await getData({ search: { datastore, db, collection, find } })
+      docs = Object.keys(data)
+      docs.map(doc => data[doc] = "erased")
+    }
+
+    if (docs.length === 0) {
+
+      message = "No data found!"
+      collectionProps.deletes += 1
+      dbProps.deletes += 1
+
+    } else {
+
+      var deletedDocsLength = 0, deletedDataSize = 0, chunkName = `chunk${collectionProps.lastChunk}`
+      var chunk = decompress(JSON.parse(fs.readFileSync(`${path}/${chunkName}.json`))), chunks = { [chunkName]: chunk }
+      // Note: considering erasing is only available on last chunk (for now)
+
+      // remove docs in collection
+      docs.map(doc => {
+        if (chunk[doc]) {
+
+          // props: length, size
+          deletedDocsLength++;
+          deletedDataSize += JSON.stringify({ [doc]: chunk[doc] }).length
+
+          delete chunk[doc]
+          data[doc] = "erased"
+        }
+      })
+
+      // props
+      collectionProps.docsLength -= deletedDocsLength
+      collectionProps.size -= deletedDataSize
+      dbProps.docsLength -= deletedDocsLength
+      dbProps.size -= deletedDataSize
+
+      // all docs erased => reset counter to 0
+      if (fs.existsSync(path) && !collectionProps.docsLength) {
+        collectionProps.counter = 0
+        message = "All docs has been erased!"
+      }
+      
+      // save chunk
+      fs.writeFileSync(`${path}/${chunkName}.json`, JSON.stringify(compress(chunk)))
+    }
+
+    // save props
+    fs.writeFileSync(`bracketDB/${db}/${collection}/__props__.json`, JSON.stringify(compress(collectionProps)))
+    fs.writeFileSync(`bracketDB/${db}/__props__/db.json`, JSON.stringify(compress(dbProps)))
 
   } else if (datastore === "firebase") {
 
@@ -699,10 +943,10 @@ const deleteData = async ({ _window, req, res, erase }) => {
     }
   }
 
-  return ({ success, message })
+  return ({ success, message, data })
 }
 
-const populator = async ({ _window, req, res, data, db, populate, search }) => {
+const populator = async ({ _window, req, res, data, db, populate }) => {
 
   var populatedData = {}
   var populates = toArray(populate)
@@ -882,7 +1126,7 @@ const getSession = async ({ _window, req }) => {
 const createSession = async ({ _window, req, res, session = {} }) => {
 
   var global = _window.global, expiredSessionExists = session.accountID
-  var promises = [], account, project, counter, subscriptions = [], plugins = []
+  var promises = [], account, project, subscriptions = [], plugins = []
 
   // project
   promises.push(getData({ _window, req, search: { db: bracketDB, collection: "project", find: { domains: { inc: global.manifest.host } } } }).then(({ data }) => { project = Object.values(data || {})[0] }))
@@ -896,11 +1140,8 @@ const createSession = async ({ _window, req, res, session = {} }) => {
   // account
   promises.push(getData({ _window, req, search: { db: bracketDB, collection: "account", find: { "__props__.id": { equal: project.accountID } } } }).then(({ data }) => { account = Object.values(data || {})[0] }))
 
-  // counter
-  promises.push(getData({ _window, req, search: { db: bracketDB, collection: "settings", find: { db: project.db } } }).then(({ data }) => { counter = Object.values(data || {})[0] }))
-
   // subscriptions
-  promises.push(getData({ _window, req, search: { db: bracketDB, collection: "subscription", find: { expiryDate: { greater: new Date().getTime() } } } }).then(({ data }) => { subscriptions = Object.values(data || {}) }))
+  promises.push(getData({ _window, req, search: { db: bracketDB, collection: "subscription", find: { expiryDate: { greater: new Date().getTime() }, projectID: project.__props__.id } } }).then(({ data }) => { subscriptions = Object.values(data || {}) }))
   await Promise.all(promises)
 
   // clear promises
@@ -913,6 +1154,7 @@ const createSession = async ({ _window, req, res, session = {} }) => {
   // restructure subscriptions
   subscriptions = subscriptions.map(subs => {
     var plugin = plugins.find(plugin => plugin.__props__.id === subs.pluginID)
+
     return {
       subscriptionID: subs.__props__.id,
       pluginID: subs.pluginID,
@@ -920,9 +1162,6 @@ const createSession = async ({ _window, req, res, session = {} }) => {
       plugins: plugin.plugins
     }
   })
-
-  // counter++
-  !expiredSessionExists && counter.collections.session++;
 
   // erase expired session
   expiredSessionExists && deleteData({ _window, req, res, erase: { db: bracketDB, collection: "session", doc: session.__props__.doc } })
@@ -942,18 +1181,21 @@ const createSession = async ({ _window, req, res, session = {} }) => {
     expiryDate: new Date().getTime() + 86400000,
     encryptionKey: generate(),
     subscriptions,
-    __props__: {
+    /*__props__: {
       id: generate({ unique: true }),
-      doc: "session" + counter.collections.session,
+      doc: "session" + collectionProps.counter,
       creationDate: new Date().getTime(),
       createdByUserID: "anonymous",
       active: true,
-      counter: counter.collections.session
-    }
+      counter: collectionProps.counter,
+      chunk: `chunk${collectionProps.lastChunk}`
+    }*/
   }
 
-  postData({ _window, req, res, save: { db: bracketDB, collection: "settings", data: counter } })
   postData({ _window, req, res, save: { db: bracketDB, collection: "session", data: session } })
+
+  // session garbage collector
+  deleteData({ _window, req, res, erase: { db: project.db, collection: "session", find: { expiryDate: { "<": (new Date()).getTime() } } } })
 
   return { data: session, success: true, message: "Session created successfully!" }
 }
@@ -961,7 +1203,116 @@ const createSession = async ({ _window, req, res, session = {} }) => {
 const getCollectionNames = path =>
   fs.readdirSync(path, { withFileTypes: true })
     .filter(dirent => dirent.isDirectory())
-    .map(dirent => dirent.name)
+    .map(dirent => dirent.name);
+
+const flattenObject = (obj, parentKey = '') => {
+  let flattened = {};
+
+  for (let key in obj) {
+    if (typeof obj[key] === 'object' && obj[key] !== null) {
+      let nestedObj = flattenObject(obj[key], parentKey + key + ': ');
+      flattened = { ...flattened, ...nestedObj };
+    } else {
+      flattened[parentKey + key] = Array.isArray(obj[key]) ? obj[key].join(', ') : obj[key];
+    }
+  }
+
+  return flattened;
+}
+
+const objectToString = (obj) => {
+  let flattenedObj = flattenObject(obj);
+  let str = '';
+
+  let usedKeys = {}; // Keep track of used parent keys
+
+  for (let key in flattenedObj) {
+    let parts = key.split(': '); // Split the key into parts by ': '
+    let parentKey = parts.slice(0, -1).join(': '); // Get the parent key
+    let lastKey = parts[parts.length - 1]; // Get the last part of the key
+
+    // Check if the parent key has been used before
+    if (!usedKeys[parentKey]) {
+      // If not used, add the parent key and the last key with value
+      str += parentKey + ': ' + lastKey + ': ' + flattenedObj[key] + ', ';
+      usedKeys[parentKey] = true; // Mark the parent key as used
+    } else {
+      // If used, just add the last key with value
+      str += lastKey + ': ' + flattenedObj[key] + ', ';
+    }
+  }
+
+  // Remove the trailing comma and space
+  str = str.slice(0, -2);
+
+  return str;
+}
+
+const readProps = ({ collectionProps, dbProps, data, db, collection }) => {
+
+  // save collection props
+  collectionProps.reads += data ? Object.keys(data).length : 1
+  collectionProps.payloadOut += data ? JSON.stringify(data).length : 0
+  fs.writeFileSync(`bracketDB/${db}/${collection}/__props__.json`, JSON.stringify(compress(collectionProps)))
+
+  // save db props
+  dbProps.reads += collectionProps.reads
+  dbProps.payloadOut += collectionProps.payloadOut
+  fs.writeFileSync(`bracketDB/${db}/__props__/db.json`, JSON.stringify(compress(dbProps)))
+}
+
+const postProps = ({ db, collection, collectionProps, dbProps, writesCounter, newDocsLength, payloadIn, newDataSize }) => {
+
+  // writes
+  collectionProps.writes += writesCounter
+  dbProps.writes += writesCounter
+  // docsLength
+  collectionProps.docsLength += newDocsLength
+  dbProps.docsLength += newDocsLength
+  // payloadIn
+  collectionProps.payloadIn += payloadIn
+  dbProps.payloadIn += payloadIn
+  // size
+  collectionProps.size += newDataSize
+  dbProps.size += newDataSize
+
+  // save
+  fs.writeFileSync(`bracketDB/${db}/${collection}/__props__.json`, JSON.stringify(compress(collectionProps)))
+  fs.writeFileSync(`bracketDB/${db}/__props__/db.json`, JSON.stringify(compress(dbProps)))
+}
+
+const createCollection = ({ db, collection }) => {
+
+  // create collection dir
+  if (!fs.existsSync(`bracketDB/${db}/${collection}`)) fs.mkdirSync(`bracketDB/${db}/${collection}`)
+
+  var collectionProps = {
+    creationDate: new Date().getTime(),
+    collection,
+    chunkMaxSizeMB: 20,
+    lastChunk: 0,
+    docsLength: 0,
+    counter: 0,
+    reads: 0,
+    writes: 1,
+    deletes: 0,
+    size: 0,
+    payloadIn: 0,
+    payloadOut: 0,
+    chunks: [{ creationDate: new Date().getTime(), size: 0, docsLength: 0 }]
+  }
+
+  fs.writeFileSync(`bracketDB/${db}/${collection}/chunk0.json`, JSON.stringify(compress({})))
+  fs.writeFileSync(`bracketDB/${db}/${collection}/__props__.json`, JSON.stringify(compress(collectionProps)))
+
+  // db props
+  var dbProps = decompress(JSON.parse(fs.readFileSync(`bracketDB/${db}/__props__/db.json`)))
+  dbProps.writes += 1
+  db.collectionsLength += 1
+  fs.writeFileSync(`bracketDB/${db}/__props__/db.json`, JSON.stringify(compress(dbProps)))
+
+  return collectionProps
+}
 
 module.exports = {
   database,

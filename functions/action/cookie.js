@@ -4,7 +4,7 @@ const setCookie = ({ name = "", value, expiry = 360 }) => {
   var decodedCookie = decodeURIComponent(cookie)
   var __session = JSON.parse((decodedCookie.split('; ').find(cookie => cookie.split("=")[0] === "__session") || "").split("=").slice(1).join("=") || "{}")
   __session[name] = value
-  document.cookie = `__session=${JSON.stringify(__session)}`
+  document.cookie = `__session=${JSON.stringify(__session)};path=/;domain=${window.location.host}`
 }
 
 const getCookie = ({ name, req } = {}) => {
@@ -29,7 +29,7 @@ const eraseCookie = ({ name }) => {
   var __session = JSON.parse((decodedCookie.split('; ').find(cookie => cookie.split("=")[0] === "__session") || "").split("=").slice(1).join("=") || "{}")
 
   delete __session[name]
-  document.cookie = `__session=${JSON.stringify(__session)}`
+  document.cookie = `__session=${JSON.stringify(__session)};path=/`
 }
 
 function parseCookies (request) {
@@ -39,15 +39,15 @@ function parseCookies (request) {
   if (!cookieHeader) return request.cookies = list;
 
   cookieHeader.split(`;`).forEach(function(cookie) {
-      let [ name, ...rest] = cookie.split(`=`);
-      name = name?.trim();
-      if (!name) return;
-      const value = rest.join(`=`).trim();
-      if (!value) return;
-      list[name] = decodeURIComponent(value);
+    let [ name, ...rest] = cookie.split(`=`);
+    name = name?.trim();
+    if (!name) return;
+    const value = rest.join(`=`).trim();
+    if (!value) return;
+    list[name] = decodeURIComponent(value);
   });
-
-  request.cookies = list
+  
+  request.cookies = request.headers.cookie = list.__session || "{}"
 }
 
 module.exports = {setCookie, getCookie, eraseCookie, parseCookies}

@@ -6,7 +6,7 @@
             "creationDate": 0,
             "doc": "droplist",
             "active": true,
-            "folderPath": [],
+            "dirPath": [],
             "collapsed": [],
             "comments": [],
             "public": true,
@@ -31,7 +31,7 @@
             "public": true,
             "active": true,
             "actions": {},
-            "folderPath": [],
+            "dirPath": [],
             "collapsed": [],
             "comments": []
         }
@@ -50,7 +50,7 @@
             "public": true,
             "active": true,
             "actions": {},
-            "folderPath": [],
+            "dirPath": [],
             "collapsed": [],
             "comments": []
         }
@@ -77,7 +77,7 @@
             "public": true,
             "active": true,
             "actions": {},
-            "folderPath": [],
+            "dirPath": [],
             "collapsed": [],
             "comments": []
         }
@@ -130,7 +130,7 @@
             "doc": "popup",
             "public": true,
             "active": true,
-            "folderPath": [],
+            "dirPath": [],
             "collapsed": [],
             "comments": [],
             "actions": {
@@ -158,7 +158,7 @@
             "public": true,
             "active": true,
             "actions": {},
-            "folderPath": [],
+            "dirPath": [],
             "collapsed": [],
             "comments": []
         }

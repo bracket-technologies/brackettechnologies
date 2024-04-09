@@ -6,7 +6,7 @@ const logger = ({ _window: { global }, data: { key, start, end } }) => {
     
         global.__server__[`${key}EndTime`] = (new Date()).getTime()
         global.__server__[`${key}Duration`] = global.__server__[`${key}EndTime`] - global.__server__[`${key}StartTime`]
-        console.log(key.toUpperCase(), global.__server__[`${key}Duration`])
+        console.log((new Date()).getHours() + ":" + (new Date()).getMinutes() + " " + key.toUpperCase(), global.__server__[`${key}Duration`])
     }
 }
 module.exports = { logger }

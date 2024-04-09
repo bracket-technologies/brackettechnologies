@@ -1,6 +1,6 @@
 [
-  "data()", "Data()", "doc()", "mail()", "function()", "exec()", "notification()", "notify()", "alert()", "tag()", "view()"
- , "style()", "className()", "getChildrenByClassName()", "erase()", "insert()", "setChild()", "same()", "checker()"
+  "data()", "doc()", "mail()", "function()", "exec()", "notification()", "notify()", "alert()", "tag()", "view()"
+ , "style()", "class()", "getChildrenByClassName()", "erase()", "insert()", "setChild()", "same()", "checker()"
  , "deepChildren()", "children()", "1stChild()", "lastChild()", "2ndChild()", "3rdChild()", "promise()", "type()"
  , "3rdLastChild()", "2ndLastChild()", "parent()", "next()", "text()", "val()", "txt()", "loader()", "resolve()"
  , "element()", "el()", "checked()", "check()", "prev()", "format()", "lastSibling()", "interval()", "export()"
@@ -8,7 +8,7 @@
  , "mousedown()", "copyToClipBoard()", "mininote()", "note()", "date()", "tooltip()", "update()"
  , "refresh()", "save()", "search()", "override()", "click()", "clicked()", "is()", "new()", "preventDefault()"
  , "device()", "mobile()", "tablet()", "desktop()", "render()"
- , "gen()", "generate()", "route()", "root()", "getInput()", "input()", "getEntry()", "entry()", "capitalize()", "if()"
+ , "gen()", "route()", "root()", "getInput()", "input()", "getEntry()", "entry()", "capitalize()", "if()"
  , "getEntries()", "entries()", "toggleView()", "clearTimer()", "timer()", "range()", "focus()", "setCookie()"
  , "siblings()", "todayStart()", "time()", "remove()", "rem()", "removeChild()", "remChild()", "keyup()", "keydown()"
  , "contains()", "contain()", "def()", "price()", "clone()", "uuid()", "touchable()", "px()", "getCookie()", "repeat()"
@@ -21,5 +21,5 @@
  , "upload()", "timestamp()", "confirmEmail()", "files()", "share()", "return()", "html2pdf()", "dblclick()"
  , "exportExcel()", "2nd()", "2ndPrev()", "3rdPrev()", "2ndParent()", "3rdParent()", "installApp()", "sent()", "stack()"
  , "replaceItem()", "replaceItems()", "findAndReplaceItem()", "grandParent()", "grandChild()", "grandChildren()", "2ndNext()", "isNaN()"
- , "send()", "removeDuplicates()", "stopWatchers()", "getGeoLocation()", "display()", "hide()", "scrollTo()", "colorize()"
+ , "send()", "end()", "removeDuplicates()", "stopWatchers()", "getGeoLocation()", "display()", "hide()", "scrollTo()", "colorize()"
 ]

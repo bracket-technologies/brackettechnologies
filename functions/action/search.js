@@ -1,4 +1,4 @@
-const { getCookie } = require('./cookie')
+const { getCookie, setCookie } = require('./cookie')
 
 module.exports = {
   search: async ({ _window, lookupActions, stack, id, req, res, e, __, data: search = {}, address }) => {
@@ -19,7 +19,7 @@ module.exports = {
 
       data = response.data
     }
-
+    
     // await params
     require("./kernel").toAwait({ _window, lookupActions, stack, id, e, address, req, res, _: data, __ })
   }

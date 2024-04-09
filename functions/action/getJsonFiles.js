@@ -4,13 +4,13 @@ const fs = require("fs");
 const getJsonFiles = (folder, fileName, params = {}) => {
   
   let data = {};
-  const folderPath = path.join(process.cwd(), folder);
+  const dirPath = path.join(process.cwd(), folder);
 
   if (fileName) {
-    data = JSON.parse(fs.readFileSync(path.join(folderPath, fileName)));
+    data = JSON.parse(fs.readFileSync(path.join(dirPath, fileName)));
   } else {
-    fs.readdirSync(folderPath).forEach((fileName) => {
-      const file = fs.readFileSync(path.join(folderPath, fileName));
+    fs.readdirSync(dirPath).forEach((fileName) => {
+      const file = fs.readFileSync(path.join(dirPath, fileName));
       fileName = fileName.split(".json")[0];
       data[fileName] = JSON.parse(file);
     });

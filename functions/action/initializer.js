@@ -1,4 +1,8 @@
 const { parseCookies } = require('./cookie');
+const os = require('os');
+
+// config
+require('dotenv').config()
 
 const detector = new (require('node-device-detector'))({
     clientIndexes: true,
@@ -11,9 +15,9 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
     req.datastore = { firebaseDB, mongoDB }
     req.storage = { firebaseStorage }
     
-    // parse cookies
+    // parse cookies (req.headers.cookies coming from client request)
     parseCookies(req)
-    req.cookies = JSON.parse(req.headers.cookies || req.cookies.__session || "{}")
+    req.cookies = JSON.parse(req.headers.cookies || req.headers.cookie || "{}")
 
     // action
     req.body.route = req.body.route || {}
@@ -36,10 +40,13 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
         // documenter
         : "document"
 
-    if (host === "192.168.10.208") host = "acc.localhost"
-    else if (host === "192.168.10.208:8080") host = "localhost"
-    else if (host === "bracketacc.loca.lt") host = "acc.localhost"
-    else if (host === "brackettechnologies.loca.lt") host = "localhost"
+    const networkInterfaces = os.networkInterfaces();
+    const ipAddress = (networkInterfaces["Wi-Fi 2"] || networkInterfaces.Ethernet)[1].address
+
+    if (host === ipAddress) host = "acc.localhost"
+    else if (host === ipAddress + ":8080") host = "localhost"
+    else if (host === "brcacc.loca.lt") host = "acc.localhost"
+    else if (host === "brctec.loca.lt") host = "localhost"
 
     var global = {
         __,
@@ -65,7 +72,7 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
             page,
             path,
             route,
-            action: type === "action" && req.body.data.action,
+            action: type === "action" && req.body.data.action.slice(0, -2),
             os: req.headers["sec-ch-ua-platform"],
             browser: req.headers["sec-ch-ua"],
             country: req.headers["x-country-code"],
@@ -80,7 +87,7 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
     var _window = { views, global }
 
     // log
-    console.log(req.method, path.join("/"), req.body.route.action || "");
+    console.log((new Date()).getHours() + ":" + (new Date()).getMinutes() + " " + req.method, path.join("/"), req.body.route.action || "");
 
     return _window
 }

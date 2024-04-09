@@ -23,6 +23,9 @@ const isEqual = function(value, other) {
     type === "[object Array]" ? other.length : Object.keys(other).length;
   if (valueLen !== otherLen) return false;
 
+  // views
+  if (value.__view__ && other.__view__) return value.id === other.id
+
   // Compare two items
   const compare = function(item1, item2) {
     // Get the object type
