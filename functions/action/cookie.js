@@ -4,7 +4,8 @@ const setCookie = ({ name = "", value, expiry = 360 }) => {
   var decodedCookie = decodeURIComponent(cookie)
   var __session = JSON.parse((decodedCookie.split('; ').find(cookie => cookie.split("=")[0] === "__session") || "").split("=").slice(1).join("=") || "{}")
   __session[name] = value
-  document.cookie = `__session=${JSON.stringify(__session)};path=/;domain=${window.location.host}`
+  
+  document.cookie = `__session=${JSON.stringify(__session)};path=/`//;domain=${window.location.host}
 }
 
 const getCookie = ({ name, req } = {}) => {

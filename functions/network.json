@@ -1,0 +1,20 @@
+{
+    "domains": [
+        "local.lt",
+        "brackettechnologies.com"
+    ],
+    "servers": [
+        {
+            "port": 80,
+            "Tsubdomain": "brctec",
+            "Thost": "brctec.loca.lt",
+            "Lhost": "localhost"
+        },
+        {
+            "port": 8080,
+            "Tsubdomain": "brcacc",
+            "Thost": "brcacc.loca.lt",
+            "Lhost": "acc.localhost"
+        }
+    ]
+}

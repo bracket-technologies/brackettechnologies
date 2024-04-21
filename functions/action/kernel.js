@@ -37,9 +37,16 @@ const cssStyleKeyNames = require("./cssStyleKeyNames")
 const events = require("./events.json")
 const passport = require("./passport")
 const myViews = ["View", "Input", "Text", "Image", "Icon", "Action", "Audio", "Video"]
-const builtInActions = require("./actions.json")
 
 const actions = {
+    "id()": ({ o }) => {
+        if (typeof o === "object" && o.__props__) return o.__props__.id
+    },
+    "e()": () => {}, // inorder not to check in actions
+    "if()": () => {}, // inorder not to check in actions
+    "__props__()": ({ o, args }) => {
+        if (args[1] === "clearActions") return clearActions(o)
+    },
     "caret()": ({ o }) => ({ index: getCaretIndex(o) }),
     "device()": ({ global }) => global.manifest.device.device,
     "mobile()": ({ global }) => global.manifest.device.device.type === "smartphone",
@@ -62,16 +69,18 @@ const actions = {
     }, "focused()": ({ global }) => {
 
         return global.__focused__
-    }, "click()": ({ _window, global, views, view, o, id, pathJoined }) => {
+    }, "click()": ({ _window, global, views, o, id, pathJoined }) => {
 
-        if (!o.__view__ || !o.__rendered__) return
+        if (!o.__view__) return
 
-        if (_window) return view.__controls__.push({
+        if (_window) return o.__controls__.push({
             event: `loaded?${pathJoined}`
         })
+        if (!o.__rendered__) return
 
         global.__clicker__ = views[id]
         global.__clicked__ = o
+        
         o.__element__.click()
 
     }, "focus()": ({ _window, o, pathJoined }) => {
@@ -132,6 +141,45 @@ const actions = {
         var name = toValue({ _window, id, e, object, data: args[1], __ })
         var children = getDeepChildren({ _window, id: o.id })
         return children.filter(view => view.__name__ === name)
+
+    }, "tag()": ({ _window, id, e, object, args, __ }) => {
+
+        var tag = toValue({ _window, id, e, object, data: args[1], __ }), styles = ""
+        if (!tag.type) tag.type = "span"
+        
+        if (tag.style) {
+            Object.entries(tag.style).map(([style, value]) => {
+                styles += `${cssStyleKeyNames[style] || style}:${value}; `
+            })
+
+            styles = styles.slice(0, -2)
+        }
+
+        return `<${tag.type} style="${styles}" class="${tag.class||""}">${tag.text || ""}</${tag.type}>`
+
+    }, "width()": ({ o, key, value }) => {
+        
+        if (!o.__view__) return
+        if (key && value !== undefined) o.__element__.style.width = value
+        else return o.__element__.offsetWidth/10+ "rem"
+
+    }, "height()": ({ o, key, value }) => {
+
+        if (!o.__view__) return
+        if (key && value !== undefined) o.__element__.style.height = value
+        else return o.__element__.offsetHeight/10+ "rem"
+
+    }, "color()": ({ o, key, value }) => {
+
+        if (!o.__view__) return
+        if (key && value !== undefined) o.__element__.style.color = value
+        else return o.__element__.color
+
+    }, "backgroundColor()": ({ o, key, value }) => {
+
+        if (!o.__view__) return
+        if (key && value !== undefined) o.__element__.style.backgroundColor = value
+        else return o.__element__.backgroundColor
 
     }, "display()": ({ o }) => {
 
@@ -282,7 +330,7 @@ const actions = {
         if (args.slice(1).length === 0 && pathJoined !== "log()") logs = [o]
 
         console.log("LOG:" + (o.id || id), decode({ _window, string: pathJoined }), ...logs)
-        stack.logs.push(stack.logs.length + " LOG:" + (o.id || id) + " " + logs.join(" "))
+        stack.logs && stack.logs.push(stack.logs.length + " LOG:" + (o.id || id) + " " + logs.join(" "))
 
         return o
     }, "parent()": ({ _window, o }) => {
@@ -923,7 +971,9 @@ const actions = {
         })
         return o
 
-    }, "pullIndex()": ({ _window, o, stack, lookupActions, id, e, __, args, object, i, lastIndex }) => { // pull by index
+    }, "pullIndex()": ({ _window, o, stack, lookupActions, id, e, __, args, object, i, lastIndex, pathJoined }) => { // pull by index
+
+        if (!Array.isArray(o)) throw "Pulling index of a non array at => " + decode({ _window, string: pathJoined })
 
         // if no index pull the last element
         var lastIndex = 1, firstIndex = 0
@@ -986,7 +1036,7 @@ const actions = {
 
         if (isParam({ _window, string: args[1] })) {
 
-            data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
             return generate(data)
 
         } else {
@@ -1082,6 +1132,22 @@ const actions = {
 
         var data = toParam({ _window, req, res, lookupActions, stack, id, e, data: args[1], __ })
         return toSimplifiedDate({ timestamp: o, lang: data.lang || "en", timer: data.time || false })
+
+    }, "camelcase()": ({ o }) => {
+
+        var str = o
+        // Split the string by spaces, dashes, and underscores
+        let words = str.split(/[\s-_]/);
+        
+        // Convert the first word to lowercase
+        let camelCaseStr = words[0].toLowerCase();
+        
+        // Capitalize the first letter of each word except the first word
+        for (let i = 1; i < words.length; i++) {
+            camelCaseStr += words[i].charAt(0).toUpperCase() + words[i].slice(1).toLowerCase();
+        }
+        
+        return camelCaseStr;
 
     }, "ar()": ({ o }) => {
         //
@@ -1298,7 +1364,9 @@ const actions = {
     }, "timestamp()": ({ o }) => {
 
         if (o instanceof Date) return o.getTime()
-        else if (o.length === 5 && o.split(":").length === 2) {
+        else return new Date().getTime()
+        
+        /*else if (o.length === 5 && o.split(":").length === 2) {
 
             var _hrs = parseInt(o.split(":")[0]) * 60 * 60 * 1000
             var _mins = parseInt(o.split(":")[1]) * 60 * 1000
@@ -1317,7 +1385,7 @@ const actions = {
             if (o.getTime()) return o.getTime()
             o = new Date()
             return o.getTime()
-        }
+        }*/
 
     }, "getDateTime()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, k, underScored, i, lastIndex, value, key, path, breakRequest, condition, _object, answer }) => {
 
@@ -2500,7 +2568,9 @@ const actions = {
     }, "position()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
 
         var position = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-        return require("./setPosition").setPosition({ position, id: o.id || id, e })
+        if (!position.id) position.id = o.id
+        if (!position.positioner) position.positioner = id
+        return require("./setPosition").setPosition({ position, id, e })
 
     }, "csvToJson()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
 
@@ -2558,6 +2628,8 @@ const actions = {
 
     }
 }
+
+const builtInActions = Object.keys(actions)
 
 const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: _object, path, pathJoined, value, key, object } }) => {
 
@@ -2806,13 +2878,13 @@ const toValue = ({ _window, lookupActions = [], stack = {}, address, data: value
     else if (value.charAt(0) === ":") return value.split(":").slice(1).map(item => toValue({ req, res, _window, id, stack, lookupActions, __, e, data: item })) // :item1:item2
 
     // show loader
-    if (value === "loader.show") {
+    if (value === "loader.show" && !_window) {
         document.getElementById("loader-container").style.display = "flex"
         return sleep(10)
     }
 
     // hide loader
-    if (value === "loader.hide") {
+    if (value === "loader.hide" && !_window) {
         document.getElementById("loader-container").style.display = "none"
         return sleep(10)
     }
@@ -2844,50 +2916,47 @@ const toValue = ({ _window, lookupActions = [], stack = {}, address, data: value
 
                 var values = [], allAreNumbers = false, allAreArrays = false, allAreObjects = false
 
-                var _value = values[0] = toValue({ _window, lookupActions, stack, data: value.split("+")[0], __, id, e, req, res, object, mount })
+                var val0 = values[0] = toValue({ _window, lookupActions, stack, data: value.split("+")[0], __, id, e, req, res, object, mount })
 
-                if (isNumber(_value) || typeof _value === "number") allAreNumbers = true
-                else if (Array.isArray(_value)) allAreArrays = true
-                else if (typeof _value === "object") allAreObjects = true
+                if (isNumber(val0) || typeof val0 === "number") allAreNumbers = true
+                else if (Array.isArray(val0)) allAreArrays = true
+                else if (typeof val0 === "object") allAreObjects = true
 
                 value.split("+").slice(1).map(value => {
 
-                    var _value = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount })
+                    var val0 = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount })
 
                     if (allAreNumbers) {
 
                         allAreArrays = false
                         allAreObjects = false
-                        if (isNumber(value) || (executable({ _window, string: value }) && typeof _value === "number")) allAreNumbers = true
+                        if (isNumber(value) || (executable({ _window, string: value }) && typeof val0 === "number")) allAreNumbers = true
                         else allAreNumbers = false
-
-                    } else if (allAreArrays) {
-
-                        allAreNumbers = false
-                        allAreObjects = false
-                        if (!Array.isArray(_value)) allAreArrays = false
 
                     } else if (allAreObjects) {
 
                         allAreNumbers = false
                         allAreArrays = false
-                        if (typeof _value !== "object") allAreObjects = false
+                        if (typeof val0 !== "object") allAreObjects = false
                     }
 
-                    values.push(_value)
+                    values.push(val0)
                 })
 
-                if (allAreNumbers) {
+                if (allAreArrays) {
+
+                    var array = []
+                    values.map(val => {
+                        if (Array.isArray(val)) array = array.concat(val)
+                        else array.push(val)
+                    })
+                    return array
+
+                } else if (allAreNumbers) {
 
                     var value = 0
                     values.map(val => value += (parseFloat(val) || 0))
                     return value
-
-                } else if (allAreArrays) {
-
-                    var array = []
-                    values.map(arr => array = array.concat(arr))
-                    return array
 
                 } else if (allAreObjects) {
 
@@ -2989,7 +3058,7 @@ const toParam = ({ _window, lookupActions, stack = {}, address, data: string, e,
     string.split(";").map(param => {
 
         // set interpreting
-        if (address) stack.interpretingAddressID = address.id
+        if (address && address.id) stack.interpretingAddressID = address.id
 
         // case id was changed during rendering
         id = view.id
@@ -3149,6 +3218,9 @@ const toParam = ({ _window, lookupActions, stack = {}, address, data: string, e,
             return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, data: { data, path, value, key, object, pathJoined: param } })
         }
 
+        // [params]
+        if (param.charAt(0) === "@" && param.length === 6 && isParam({ _window, string: param })) return toParam({ req, res, _window, id, lookupActions, address, stack, e, data: param, __, object, mount, condition })
+
         // reduce
         if (path0.slice(-2) === "()" || path[0].slice(-3) === ":()" || path[0].slice(0, 3) === "():" || path[0].includes("_") || object)
             reducer({ _window, lookupActions, stack, id, data: { path, value, key, object }, e, req, res, __, mount, condition, action: "toParam" })
@@ -3158,15 +3230,14 @@ const toParam = ({ _window, lookupActions, stack = {}, address, data: string, e,
 
         if (mount && !view.__fake__) {
 
+            if (key === "data") __.unshift(global[view.doc])
+
             // mount data directly when found
             if (key === "doc" || key === "data") {
 
                 view.__dataPath__ = []
                 view.doc = view.doc || generate()
                 global[view.doc] = view.data = global[view.doc] || {}
-
-                // actions in data
-                if (view.data.__props__ && view.data.__props__.actions) view.__lookupActions__.unshift({ type: "data", doc: view.doc })
             }
 
             // mount path directly when found
@@ -3234,19 +3305,22 @@ const reducer = ({ _window, lookupActions = [], stack = {}, id, data: { path, va
         var myLookupActions = lookupActions, myID
         var { address, data } = addresser({ _window, stack, args, id, type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, lookupActions, object })
 
-        // view & path
+        // doc, view, path, collection, db
         if (typeof data === "object" && data.__view__) myID = data.id
         else if (typeof data === "object") {
-            if (typeof data.view === "object" && data.view.__view__) myLookupActions = data.view.__lookupActions__
+            if (typeof data.view === "object" && data.view.__view__) myID = data.view.id
             else if (data.doc) {
 
-                myLookupActions = [{ type: "data", doc: data.doc }, ...lookupActions]
+                if (typeof data.path === "string") data.path = data.path.split(".")
+                myLookupActions = [{ doc: data.doc, path: data.path, collection: data.collection || "view", db: data.db }, ...lookupActions]
+            
             } else {
+
                 if (!data.view) data.view = view.__customViewPath__.at(-1)
                 if (typeof data.path === "string") data.path = data.path.split(".")
-                myLookupActions = [{ type: "customView", view: data.view, path: data.path }, ...lookupActions]
+                myLookupActions = [{ doc: data.view, path: data.path, collection: "view", db: data.db }, ...lookupActions]
             }
-        } else if (typeof data === "string") myLookupActions = [{ type: "customView", view: data }, ...lookupActions]
+        } else if (typeof data === "string") myLookupActions = [{ doc: data, collection: "view" }, ...lookupActions]
         address.params = { ...address.params, lookupActions: myLookupActions, id: myID || id }
 
         return toAwait({ _window, lookupActions: myLookupActions, stack, address, id: myID || id, e, req, res, __ }).data
@@ -3558,7 +3632,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
     return approval
 }
 
-const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: customViewName, data: passedData }, condition, mount, object, lookupActions = {}, stack }) => {
+const toAction = ({ _window, id, req, res, __, e, data: { action, path, data: passedData }, condition, mount, object, lookupActions = {}, stack }) => {
 
     var global = _window ? _window.global : window.global
     var views = _window ? _window.views : window.views
@@ -3566,7 +3640,7 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
 
     if (!view) return "__continue__"
 
-    var serverAction = false, actionFound = false, newLookupActions = lookupActions, serverActionView, queryNonExistingView
+    var serverAction = false, actionFound = false, newLookupActions = lookupActions, queryNonExistingView
     var action0 = path ? (path.at(-1) + "()") : action.split(":")[0], name = action0.slice(0, -2)
 
     if (path || (action0.slice(-2) === "()" && action0 !== "()" && action0 !== "_()" && !builtInActions.includes(action0) && action0.charAt(0) !== "@")) {
@@ -3576,31 +3650,22 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
 
             if (queryNonExistingView || actionFound) return
 
-            if (!lookupAction.view && !lookupAction.doc) return
+            // queried before and not found
+            if (global.__queries__[lookupAction.collection] && global.__queries__[lookupAction.collection][lookupAction.doc] === false) return
 
-            if (lookupAction.view && !global.data.view[lookupAction.view] && !global.__queries__.views.includes(lookupAction.view)) {
+            // not queried yet => query
+            if (!global.__queries__[lookupAction.collection] || !global.__queries__[lookupAction.collection][lookupAction.doc]) {
 
                 queryNonExistingView = true
-                var { address, data } = addresser({ _window, id, stack, __, lookupActions: lookupActions.slice(indexx), stack, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${lookupAction.view}`, waits: `loader.hide;__queries__:().views.push():[${lookupAction.view}];data:().view.${lookupAction.view}=_.data;${action}` })
+                var waits = `loader.hide;__queries__:().${lookupAction.collection}.${lookupAction.doc}=_.data||false;${action}`
+                var params = `loader.show;${lookupAction.db ? `db=${lookupAction.db};` : ""}collection=${lookupAction.collection};doc=${lookupAction.doc}`
+                var { address, data } = addresser({ _window, id, stack, __, lookupActions: lookupActions.slice(indexx), stack, type: "data", action: "search()", status: "Start", asynchronous: true, params, waits })
                 return require("./search").search({ _window, lookupActions, stack, address, id, __, req, res, data })
-
-            } else if (lookupAction.view && !global.data.view[lookupAction.view] && global.__queries__.views.includes(lookupAction.view)) return
-
-            // get actions
-            var actions
-            if (lookupAction.view) actions = global.data.view[lookupAction.view].__props__.actions
-            else if (lookupAction.doc) {
-                var docPath = lookupAction.doc
-                if (typeof docPath === "string") docPath = docPath.split(".")
-                var lastIndex = docPath.length - 1
-                docPath.reduce((o, k, i) => {
-                    if (i === lastIndex) actions = o[k].__props__.actions
-                    else return o[k]
-                }, global)
             }
 
-            if (!actions) return
-
+            // get actions
+            var actions = global.__queries__[lookupAction.collection][lookupAction.doc].__props__.actions
+            
             if (lookupAction.path) {
 
                 var path = lookupAction.path
@@ -3626,14 +3691,13 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
 
                 if (name in actions) {
 
-                    if (lookupAction.type === "customView" && global.data.view[lookupAction.view].__props__.secure && !stack.server) {
+                    if (global.__queries__[lookupAction.collection][lookupAction.doc].__props__.secured && !stack.server) {
 
                         // server action
                         actionFound = true
                         serverAction = true
-                        serverActionView = lookupAction.view
-                        newLookupActions = []
-
+                        newLookupActions = [{ doc: lookupAction.doc, collection: lookupAction.collection, db: lookupAction.db }]
+                        
                     } else {
 
                         actionFound = clone(actions[name])
@@ -3661,7 +3725,7 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, view: cu
             if (serverAction) {
 
                 address.status = "Start"
-                var route = { action: action0, customView: serverActionView, __: data !== undefined ? [data] : [], lookupActions: [], stack: [], condition, object }
+                var route = { action: action0, __: data !== undefined ? [data] : [], lookupActions: newLookupActions, stack: [], condition, object }
                 return require("./route").route({ _window, req, res, id, e, data: { type: "action", route }, __, stack, lookupActions, address })
             }
 
@@ -3945,7 +4009,7 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
         printAddress({ stack, address, nextAddress })
 
         stack.interpretingAddressID = address.id
-
+        
         // logger
         if (address.logger && address.logger.start) logger({ _window, data: { key: address.logger.key, start: true } })
 
@@ -3979,7 +4043,8 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
             nextAddress.hold = false
             return toAwait({ _window, lookupActions, stack, address: nextAddress, id, req, res, __, action, e })
         }
-    }
+
+    } else if (nextAddress.interpreting) stack.interpretingAddressID = nextAddress.id
 
     // address is for another stack
     if (address.nextStackID && global.__stacks__[address.nextStackID])
@@ -4065,21 +4130,21 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
         }
 
         // get raw view
-        view = clone(([...view.__viewPath__, ...viewPath]).reduce((o, k) => o[k], global.data.view))
+        view = clone(([...view.__viewPath__, ...viewPath]).reduce((o, k) => o[k], global.__queries__.view))
 
     } else { // new View
 
         var genView = generate()
-        if (typeof view !== "string") global.data.view[genView] = clone(view)
+        if (typeof view !== "string") global.__queries__.view[genView] = clone(view)
         else {
             genView = view
-            view = clone((viewPath).reduce((o, k) => o[k], global.data.view[view]))
+            view = clone((viewPath).reduce((o, k) => o[k], global.__queries__.view[view]))
         }
 
         passData = {
             __viewPath__: [genView, ...viewPath],
             __customViewPath__: [...parent.__customViewPath__, genView],
-            __lookupActions__: [{ type: "customView", view: genView }, ...parent.__lookupActions__]
+            __lookupActions__: [{ doc: genView, collection: "view" }, ...parent.__lookupActions__]
         }
     }
 
@@ -4128,6 +4193,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
         if (subParams.includes("()") || view.__name__.includes("()")) {
             view.__name__ = view.__name__ + ":" + subParams
             subParams = ""
+            if (view.__name__ === "manifest:().page") view.__page__ = true
         }
 
         // action view
@@ -4142,7 +4208,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
         // loop
         var loop = view.__name__.charAt(0) === "@" && view.__name__.length == 6
 
-        // view name
+        // exec view name
         view.__name__ = toValue({ _window, id, req, res, data: view.__name__, __, stack })
 
         // no view
@@ -4220,32 +4286,35 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
         // asynchronous actions within view params
         if (address.hold) return addresser({ _window, id, stack, switchNextAddressIDWith: address, type: "function", function: "toView", __, lookupActions, stack, data: { view } })
     }
-   
+    
     // not builtin view => custom View
     if (!myViews.includes(view.__name__)) {
+
+        // queried before and not found
+        if (global.__queries__.view[view.__name__] === false) return
         
         // query custom view
-        if (!global.__queries__.views.includes(view.__name__) && !global.data.view[view.__name__]) {
+        if (!global.__queries__.view[view.__name__]) {
 
             address.interpreting = false
             address.status = "Wait"
             address.data = { view }
 
-            var { address, data } = addresser({ _window, id, stack, nextAddress: address, __, lookupActions, stack, type: "data", action: "search()", status: "Start", asynchronous: true, params: `loader.show;collection=view;doc=${view.__name__}`, waits: `loader.hide;__queries__:().views.push():[${view.__name__}];data:().view.${view.__name__}=_.data` })
+            var waits = `loader.hide;__queries__:().view.${view.__name__}=_.data||false`
+            var params = `loader.show;collection=view;doc=${view.__name__}`
+            var { address, data } = addresser({ _window, id, stack, nextAddress: address, __, lookupActions, stack, type: "data", action: "search()", status: "Start", asynchronous: true, params, waits })
             return require("./search").search({ _window, lookupActions, stack, address, id, __, req, res, data })
-
-        } else if (!global.data.view[view.__name__] && global.__queries__.views.includes(view.__name__)) return
-
+        }
+        
         // continue to custom view
         else {
-
             var newView = {
-                ...global.data.view[view.__name__],
+                ...global.__queries__.view[view.__name__],
                 __interpreted__: false,
                 __customView__: view.__name__,
                 __viewPath__: [view.__name__],
                 __customViewPath__: [...view.__customViewPath__, view.__name__],
-                __lookupActions__: [{ type: "customView", view: view.__name__ }, ...view.__lookupActions__]
+                __lookupActions__: [{ doc: view.__name__, collection: "view" }, ...view.__lookupActions__]
             }
 
             // id
@@ -4270,8 +4339,8 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
                 // get shared public views
                 Object.entries(require("./publicViews.json")).map(([doc, data]) => {
 
-                    global.data.view[doc] = { ...data, id: doc }
-                    global.__queries__.views.push(doc)
+                    global.__queries__.view[doc] = { ...data, id: doc }
+                    global.__queries__.view[doc] = data
                 })
 
                 address = addresser({ _window, stack, status: "Start", type: "function", function: "toView", nextAddress: address, lookupActions, __ }).address
@@ -4303,6 +4372,8 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
         
     } else toHTML({ _window, id, stack, __ })
     
+    if (view.__page__) global.__pageViewID__ = view.id
+
     // address
     toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
 }
@@ -4335,7 +4406,7 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
 
         // get view to be rendered
         var reducedView = {
-            ...(data.view ? data.view : clone(__viewPath__.reduce((o, k) => o[k], global.data.view))),
+            ...(data.view ? data.view : clone(__viewPath__.reduce((o, k) => o[k], global.__queries__.view))),
             __index__,
             __childIndex__,
             __view__: true,
@@ -4369,6 +4440,9 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
         // remove views
         if (!data.insert && parent.__rendered__) parent.__childrenRef__.filter(({ childIndex }) => childIndex === __childIndex__).map(({ id }) => elements.push(removeView({ _window, global, views, id, stack, main: true, insert: data.insert })))
         else if (!parent.__rendered__) removeView({ _window, global, views, id: data.id, stack, main: true })
+
+        // reset page view id
+        if (data.id === global.__pageViewID__) reducedView.__page__ = true
 
         // address for delete blocked addresses (switch with second next address => execute after end of update waits)
         addresser({ _window, id, stack, switchNextAddressIDWith: address.hasWaits ? stack.addresses.find(add => add.id === address.nextAddressID) : address, type: "function", function: "blockRelatedAddressesByViewID", __, lookupActions, data: { stack, id } })
@@ -4464,6 +4538,7 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
                 document.body.removeChild(lDiv)
                 lDiv = null
             }
+            
         } else if (!innerHTML) console.log("View has conditions which are not applied!");
 
         console.log((new Date()).getHours() + ":" + (new Date()).getMinutes() + " " + (data.action || "UPDATE") + ":" + (data.action === "ROOT" ? global.manifest.page : (updatedViews[0] || {}).id), (new Date()).getTime() - timer)
@@ -4479,11 +4554,13 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
     }
 }
 
-const addEventListener = ({ event, id, __, stack, lookupActions, address, eventID: mainEventID }) => {
+const addEventListener = ({ event, id, string, __, stack, lookupActions, address, eventID: mainEventID, executable }) => {
 
     var views = window.views
     var global = window.global
     var view = views[id]
+
+    if (executable) return eventExecuter({ string, event, eventID: mainEventID, id, address, stack, lookupActions, __ })
 
     if (!view || !event) return
 
@@ -4513,7 +4590,13 @@ const addEventListener = ({ event, id, __, stack, lookupActions, address, eventI
             if (event === "watch") return watch({ lookupActions, __, stack, address, string, id })
 
             // loaded event
-            if (event === "loaded") return eventExecuter({ string, event, eventID, id, address, stack, lookupActions, __ })
+            if (event === "loaded") {
+                if (id === eventID) return eventExecuter({ string, event, eventID, id, address, stack, lookupActions, __ })
+                else if (id !== eventID) {
+                    if (views[eventID].__rendered__) return eventExecuter({ string, event, eventID, id, address, stack, lookupActions, __ })
+                    else views[eventID].__controls__.push({ string, event, eventID, id, address, stack, lookupActions, __, executable: true })
+                }
+            }
 
             // event id
             var genID = generate()
@@ -4832,7 +4915,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions, 
         endStarterAddress({ address, stack })
 
     } else {
-
+        
         while (!starter && nextAddressID && stack) {
 
             // start from self address (by interpretingAddressID) to reach the start head address
@@ -5080,7 +5163,7 @@ const componentModifier = ({ _window, id }) => {
     else if (view.__name__ === "Input") {
 
         view.input = view.input || {}
-        if (view.value) view.input.value = view.input.value || view.value
+        if ("value" in view) view.input.value = view.input.text = view.input.value || view.input.text || view.value
         if (view.checked !== undefined) view.input.checked = view.checked
         if (view.max !== undefined) view.input.max = view.max
         if (view.min !== undefined) view.input.min = view.min
@@ -5090,11 +5173,15 @@ const componentModifier = ({ _window, id }) => {
         if (view.input.placeholder) view.placeholder = view.input.placeholder
         view.text = view.input.value
 
-    } else if (view.__name__ === "Image") {
+    } 
+    
+    else if (view.__name__ === "Image") {
 
         view.src = view.src || (typeof view.data === "string" && view.data) || ""
 
-    } else if (view.__name__ === "Text") {
+    } 
+    
+    else if (view.__name__ === "Text") {
 
         view.text = view.text !== undefined ? view.text : ((typeof view.data === "string" && view.data) || "")
     }
@@ -5341,7 +5428,7 @@ const documenter = ({ _window, res, stack, address, __ }) => {
 
     var { global, views } = _window
     var page = global.manifest.page
-    var view = views[page] || {}
+    var view = views[global.__pageViewID__ || page] || {}
 
     // head tags
     var language = global.language = view.language || view.lang || "en"
@@ -5367,14 +5454,8 @@ const documenter = ({ _window, res, stack, address, __ }) => {
     // logs
     global.__server__.logs = stack.logs
 
-    // clear secure view actions
-    Object.values(global.data.view).map(view => {
-        if (view.__props__ && view.__props__.secure) {
-            view.view = ""
-            view.children = []
-            clearActions(view.__props__.actions)
-        }
-    })
+    // hide secured
+    hideSecured(global)
 
     toAwait({ _window, stack, address, __ })
 
@@ -5457,6 +5538,7 @@ const clearActions = (data) => {
         if (typeof mapAction === "object") return clearActions(mapAction)
         data[action] = ""
     })
+    return data
 }
 
 const initView = ({ views, global, id = generate(), doc, children = [], parent, __parent__, __status__ = "Loading", __dataPath__, __controls__ = [], ...data }) => {
@@ -5700,6 +5782,7 @@ const modifyEvent = ({ eventID, string, event }) => {
 
     if (event === "change" && (view.editable || view.input.type === "text" || view.input.type === "number")) {
         event = "keyup"
+        subconditions += "e().key!=Tab;e().key!=Alt;e().key!=Shift;e().key!=Control;e().key!=ArrowUp;e().key!=ArrowDown;e().key!=ArrowRight;e().key!=ArrowLeft;e().key!=Enter"
     } else if (event === "entry") {
         event = "input"
     } else if (event === "enter") {
@@ -5752,7 +5835,7 @@ const starter = ({ lookupActions, stack, __, address, id }) => {
     })
 
     // events
-    view.__controls__.map(data => addEventListener({ lookupActions, stack, address, __, id, ...data, event: data.event }))
+    view.__controls__.map(data => addEventListener({ lookupActions, stack, address, __, id, ...data }))
 
     // related events
     global.__events__[id] && Object.values(global.__events__[id]).map(address => view.__element__.addEventListener(address.event, address.eventListener))
@@ -6133,9 +6216,25 @@ const root = ({ id, _window, root = {}, stack, lookupActions, address, req, res,
     update({ _window, id, req, res, stack, lookupActions, address, data: { root, id: "root", action: "ROOT" }, __ })
 }
 
+const hideSecured = (global) => {
+    
+    Object.keys(global.__queries__).map(collection => {
+        Object.keys(global.__queries__[collection]).map(doc => {
+            var data = global.__queries__[collection][doc]
+            if (data.__props__.secured) {
+                clearActions(data.__props__.actions)
+                Object.keys(data).map(key => {
+                    if (key === "__props__") return
+                    delete data[key]
+                })
+            }
+        })
+    })
+}
+
 module.exports = {
-    kernel, toValue, toParam, reducer, toApproval, toAction, toLine, addresser, toAwait, insert, toView, update, addEventListener,
+    actions, kernel, toValue, toParam, reducer, toApproval, toAction, toLine, addresser, toAwait, insert, toView, update, addEventListener,
     getDeepChildren, getDeepChildrenId, calcSubs, calcDivision, calcModulo, emptySpaces, isNumber, printAddress, endAddress, resetAddress,
     closePublicViews, updateDataPath, remove, toHTML, documenter, initView, getViewParams, removeView, launcher, defaultEventHandler,
-    toNumber, defaultAppEvents
+    toNumber, defaultAppEvents, clearActions, hideSecured
 }

@@ -33,6 +33,8 @@ module.exports = {
   "boxShadow": "box-shadow",
   "borderRadius": "border-radius",
   "zIndex": "z-index",
+  "gapX": "column-gap",
+  "gapY": "row-gap",
   "alignItems": "align-items",
   "alignSelf": "align-self",
   "justifyContent": "justify-content",

@@ -10,7 +10,7 @@ module.exports = {
         const OAuth2 = google.auth.OAuth2;
         var data = req.body.data
         var global = _window.global
-        var project = global.data.project
+        var project = global.__queries__.project
 
         // no recipient
         if (!data.recipient) return res.send({ success: false, message: `Missing recipient!` })

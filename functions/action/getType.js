@@ -10,7 +10,7 @@ const getType = (value) => {
     /*if (value.length >= 10 && value.length <= 13 && !isNaN(value) && value.slice(0, 2) !== "0") return "timestamp"
     if (value.length === 8 && value.slice(0, 2) !== "00" && !isNaN(value)) return "time"*/
 
-    if ((value + "").length >= 10 && (value + "").length <= 13 && (value + "").charAt(0) !== "0") return "timestamp"
+    if ((value + "").length === 13 && (value + "").charAt(0) !== "0") return "timestamp"
     //if ((value + "").length === 8 && (value + "").charAt(0) !== "0") return "time"
     if (typeof value === "number") return "number"
     return "string"

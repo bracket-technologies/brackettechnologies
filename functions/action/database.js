@@ -5,6 +5,7 @@ const { clone } = require("./clone")
 const { toOperator } = require("./toOperator")
 const fs = require("fs")
 const { compress, decompress } = require("compress-json")
+const { hideSecured } = require("./kernel")
 
 // config
 require('dotenv').config()
@@ -36,6 +37,9 @@ const getdb = async ({ _window, req, res }) => {
 
   console.log((new Date()).getHours() + ":" + (new Date()).getMinutes() + " SEARCH", search.collection || search.db, (new Date()).getTime() - timer);
 
+  // hide secured
+  _window.global.manifest.session.db !== bracketDB && hideSecured(_window.global)
+
   // respond
   res.setHeader('Content-Type', 'application/json')
   res.write(JSON.stringify({ data, success, message }))
@@ -48,7 +52,7 @@ const postdb = async ({ _window, req, res }) => {
 
   // no collection
   if (!save.collection) {
-    console.log("SAVE", "No collection!", 0);
+    console.log((new Date()).getHours() + ":" + (new Date()).getMinutes() + " SAVE", "No collection!", 0);
     return ({ success: false, message: "No collection exists!" })
   }
 
@@ -74,7 +78,7 @@ const deletedb = async ({ _window, req, res }) => {
 
   var { success, message } = await deleteData({ _window, req, res, erase })
 
-  console.log("ERASE", erase.collection, (new Date()).getTime() - timer);
+  console.log((new Date()).getHours() + ":" + (new Date()).getMinutes() + " ERASE", erase.collection, (new Date()).getTime() - timer);
 
   // respond
   res.setHeader('Content-Type', 'application/json')
@@ -84,10 +88,11 @@ const deletedb = async ({ _window, req, res }) => {
 
 const getData = async ({ _window, req, res, search }) => {
 
+  var global = _window.global
   var response = { success: false, message: "Something went wrong!" }
 
-  var datastore = search.datastore || "bracketDB" || _window.global.manifest.datastore,
-    db = search.db || _window.global.manifest.session.db,
+  var datastore = search.datastore || "bracketDB" || global.manifest.datastore,
+    db = search.db || global.manifest.session.db,
     collection = search.collection,
     doc = search.doc,
     docs = search.docs,
@@ -100,7 +105,7 @@ const getData = async ({ _window, req, res, search }) => {
     limit = search.limit || 1000,
     skip = search.skip || 0,
     data = {}, success, message
-
+    
   if ("url" in search) {
 
     try {
@@ -148,7 +153,7 @@ const getData = async ({ _window, req, res, search }) => {
 
       return ({ data, message: "Collection names sent successfully!", success: true })
     }
-
+    
     // get db & collection props
     var dbProps = decompress(JSON.parse(fs.readFileSync(`bracketDB/${db}/__props__/db.json`)))
     var collectionProps = decompress(JSON.parse(fs.readFileSync(`bracketDB/${db}/${collection}/__props__.json`)))
@@ -361,6 +366,10 @@ const getData = async ({ _window, req, res, search }) => {
     }
 
     readProps({ collectionProps, dbProps, data, db, collection })
+
+    // mount actions queries
+    queries({ global, data, search, db, collection, doc })
+
     response = { data, message: "Data queried successfully!", success: true }
 
   } else if (datastore === "firebase") {
@@ -680,17 +689,22 @@ const postData = async ({ _window, req, res, save }) => {
           active: true,
           actions: {},
           chunk: chunkName,
+          secured: collection === "session" ? true : false,
+          collection,
           createdByUserID: (_window.global.manifest.session || {}).userID || null
         }
 
         doc = data.__props__.doc
 
+        // new project
+        createDBprops({ collection, db, data })
       } 
       else if (doc) data.__props__.doc = doc
       else doc = data.__props__.doc
 
-      // old data
+      // reset data
       if (!data.__props__.chunk) data.__props__.chunk = "chunk0"
+      data.__props__.collection = collection
 
       // get related chunk
       if (!chunks[data.__props__.chunk]) {
@@ -707,7 +721,7 @@ const postData = async ({ _window, req, res, save }) => {
     postProps({ db, collection, collectionProps, dbProps, writesCounter, newDocsLength, payloadIn, newDataSize })
 
     // save chunks
-    Object.keys(chunks).map(chunkName => fs.writeFileSync(`${path}/${chunkName}.json`, JSON.stringify(compress(chunks[chunkName])), () => {}))
+    Object.keys(chunks).map(chunkName => fs.writeFileSync(`${path}/${chunkName}.json`, JSON.stringify(compress(chunks[chunkName]))))
 
     return { success: true, message: "Data saved successfully!", data }
 
@@ -826,6 +840,7 @@ const deleteData = async ({ _window, req, res, erase }) => {
       dbProps.collectionsLength -= 1
       dbProps.docsLength -= collectionProps.docsLength
       dbProps.size -= collectionProps.size
+      
       fs.writeFileSync(`bracketDB/${db}/__props__/db.json`, JSON.stringify(compress(dbProps)))
 
       return ({ success: true, message: "Collection erased successfully!" })
@@ -834,7 +849,7 @@ const deleteData = async ({ _window, req, res, erase }) => {
     // find
     if (find) {
       find.preventDefault = true
-      var { data } = await getData({ search: { datastore, db, collection, find } })
+      var { data } = await getData({ _window, search: { datastore, db, collection, find } })
       docs = Object.keys(data)
       docs.map(doc => data[doc] = "erased")
     }
@@ -1249,15 +1264,18 @@ const objectToString = (obj) => {
 }
 
 const readProps = ({ collectionProps, dbProps, data, db, collection }) => {
+  
+  var reads = data ? Object.keys(data).length : 1
+  var payloadOut = data ? JSON.stringify(data).length : 0
 
   // save collection props
-  collectionProps.reads += data ? Object.keys(data).length : 1
-  collectionProps.payloadOut += data ? JSON.stringify(data).length : 0
+  collectionProps.reads += reads
+  collectionProps.payloadOut += payloadOut
   fs.writeFileSync(`bracketDB/${db}/${collection}/__props__.json`, JSON.stringify(compress(collectionProps)))
-
+  
   // save db props
-  dbProps.reads += collectionProps.reads
-  dbProps.payloadOut += collectionProps.payloadOut
+  dbProps.reads += reads
+  dbProps.payloadOut += payloadOut
   fs.writeFileSync(`bracketDB/${db}/__props__/db.json`, JSON.stringify(compress(dbProps)))
 }
 
@@ -1312,6 +1330,41 @@ const createCollection = ({ db, collection }) => {
   fs.writeFileSync(`bracketDB/${db}/__props__/db.json`, JSON.stringify(compress(dbProps)))
 
   return collectionProps
+}
+
+const queries = ({ global, data, search, db, collection, doc }) => {
+
+  global.__queries__[collection] = global.__queries__[collection] || {}
+  if (search.doc && data) {
+    global.__queries__[collection][doc] = data
+  } else if (data && !Array.isArray(data)) {
+    Object.entries(data).map(([doc, data]) => {
+      if (Array.isArray(data) || typeof data !== "object") return
+      global.__queries__[collection][doc] = data
+      //if (collection === "view" && db === global.manifest.session.db) 
+        //global.data[collection][doc] = data
+    })
+  }
+}
+
+const createDBprops = ({ collection, db, data }) => {
+  
+  if (collection === "project" && db === bracketDB && data.db) {
+    var newProjectProps = {
+      creationDate: 0,
+      collectionsLength: 0,
+      docsLength: 0,
+      reads: 0,
+      writes: 0,
+      deletes: 0,
+      size: 0,
+      payloadIn: 0,
+      payloadOut: 0
+    }
+    fs.mkdirSync(`bracketDB/${data.db}`)
+    fs.mkdirSync(`bracketDB/${data.db}/__props__`)
+    fs.writeFileSync(`bracketDB/${data.db}/__props__/db.json`, JSON.stringify(compress(newProjectProps)))
+  }
 }
 
 module.exports = {

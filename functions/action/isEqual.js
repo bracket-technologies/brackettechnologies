@@ -1,17 +1,20 @@
-const isEqual = function(value, other) {
+const isEqual = function (value, other) {
   // if (value === undefined || other === undefined) return false
 
-  if ((value && !other) || (other && !value)) return false
+  if ((value && !other) || (other && !value) || (typeof value !== typeof other)) return false
 
   // string
-  if (typeof value === "string" && typeof other === "string") return value.replace(/\s+/g, ",") === other.replace(/\s+/g, ",");
+  if (typeof value === "string") return value.replace(/\s+/g, ",") === other.replace(/\s+/g, ",");
 
   // boolean || number
-  if ((typeof value !== "object") && (typeof other !== "object")) return value === other
-  
+  if (typeof value !== "object") return value === other
+
   var type = Object.prototype.toString.call(value)
   // If the two objects are not the same type, return false
   if (type !== Object.prototype.toString.call(other)) return false
+
+  // views
+  if (value.__view__ && other.__view__) return value.id === other.id
 
   // If items are not an object or array, return false
   if (["[object Array]", "[object Object]"].indexOf(type) < 0) return false;
@@ -23,11 +26,8 @@ const isEqual = function(value, other) {
     type === "[object Array]" ? other.length : Object.keys(other).length;
   if (valueLen !== otherLen) return false;
 
-  // views
-  if (value.__view__ && other.__view__) return value.id === other.id
-
   // Compare two items
-  const compare = function(item1, item2) {
+  const compare = function (item1, item2) {
     // Get the object type
     const itemType = Object.prototype.toString.call(item1);
 
@@ -64,7 +64,7 @@ const isEqual = function(value, other) {
     }
   }
 
-  if (Array.isArray(value) && Array.isArray(other)) {
+  if (Array.isArray(value)) {
     var equal = true
     if (value.length === other.length) {
       value.map((value, i) => {
@@ -74,7 +74,7 @@ const isEqual = function(value, other) {
     return equal
   }
 
-  if (typeof value === "object" && typeof other === "object" && !Array.isArray(value) && !Array.isArray(other)) {
+  if (typeof value === "object") {
     var equal = true, valueKeys = Object.keys(value), otherKeys = Object.keys(other)
     if (valueKeys.length === otherKeys.length) {
       valueKeys.map((key, i) => {
@@ -85,29 +85,26 @@ const isEqual = function(value, other) {
   }
 
   // html elements
-  if (value && other) {
-    
-    if (
-      value.nodeType === Node.ELEMENT_NODE &&
-      other.nodeType === Node.ELEMENT_NODE
-    ) {
-      return (
-        value.isSameNode(other) ||
-        value.contains(other) ||
-        other.contains(value)
-      );
-    } else if (
-      (value.nodeType !== Node.ELEMENT_NODE &&
-        other.nodeType === Node.ELEMENT_NODE) ||
-      (value.nodeType === Node.ELEMENT_NODE &&
-        other.nodeType !== Node.ELEMENT_NODE)
-    ) {
-      return false;
-    }
+  if (
+    value.nodeType === Node.ELEMENT_NODE &&
+    other.nodeType === Node.ELEMENT_NODE
+  ) {
+    return (
+      value.isSameNode(other) ||
+      value.contains(other) ||
+      other.contains(value)
+    );
+  } else if (
+    (value.nodeType !== Node.ELEMENT_NODE &&
+      other.nodeType === Node.ELEMENT_NODE) ||
+    (value.nodeType === Node.ELEMENT_NODE &&
+      other.nodeType !== Node.ELEMENT_NODE)
+  ) {
+    return false;
   }
 
   // If nothing failed, return true
   return true;
 }
 
-module.exports = {isEqual}
+module.exports = { isEqual }

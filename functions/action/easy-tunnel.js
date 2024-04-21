@@ -8,6 +8,7 @@ class EasyTunnel {
      * @param {string} subdomain 
      */
     constructor(port, subdomain) {
+
         this.port = port
         this.subdomain = subdomain
     }
@@ -24,6 +25,7 @@ class EasyTunnel {
                 this.start("redig")
                 console.log("> Redigging tunnel")
             } else if (out) console.log("out");
+           
         })
     }
 

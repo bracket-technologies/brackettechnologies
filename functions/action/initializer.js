@@ -1,5 +1,5 @@
 const { parseCookies } = require('./cookie');
-const os = require('os');
+const { lookup } = require('geoip-lite');
 
 // config
 require('dotenv').config()
@@ -14,7 +14,7 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
 
     req.datastore = { firebaseDB, mongoDB }
     req.storage = { firebaseStorage }
-    
+
     // parse cookies (req.headers.cookies coming from client request)
     parseCookies(req)
     req.cookies = JSON.parse(req.headers.cookies || req.headers.cookie || "{}")
@@ -24,7 +24,7 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
 
     // path
     path = decodeURI(req.url).split("/")
-    
+
     // 
     var host = req.headers['x-forwarded-host'] || req.headers.host || req.headers.referer
     var page = path[1] || "main"
@@ -33,24 +33,22 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
     var server = req.body.server || "render"
     var type = req.body.type
     var route = type === "action" ? req.body.data.action
-        
         // route to view
         : type === "route" ? req.body.data.route
+            // documenter
+            : "document"
 
-        // documenter
-        : "document"
+    // privateIP:port
+    if (host.split(":")[0] === req.network.private)
+        host = req.network.servers.find(server => server.port === parseInt(host.split(":")[1] || "80")).Lhost
 
-    const networkInterfaces = os.networkInterfaces();
-    const ipAddress = (networkInterfaces["Wi-Fi 2"] || networkInterfaces.Ethernet)[1].address
-
-    if (host === ipAddress) host = "acc.localhost"
-    else if (host === ipAddress + ":8080") host = "localhost"
-    else if (host === "brcacc.loca.lt") host = "acc.localhost"
-    else if (host === "brctec.loca.lt") host = "localhost"
+    // subdomain.loca.lt
+    else if (req.network.servers.find(server => server.Thost === host))
+        host = req.network.servers.find(server => server.Thost === host).Lhost
 
     var global = {
         __,
-        __queries__: { views: [] },
+        __queries__: { view: {} },
         __stacks__: {},
         __refs__: {},
         __events__: {},
@@ -75,10 +73,9 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
             action: type === "action" && req.body.data.action.slice(0, -2),
             os: req.headers["sec-ch-ua-platform"],
             browser: req.headers["sec-ch-ua"],
-            country: req.headers["x-country-code"],
-            headers: req.headers,
             cookies: req.cookies,
-            device: detector.detect(req.headers['user-agent'])
+            device: detector.detect(req.headers['user-agent']),
+            // geo: lookup(req.network.public)
         },
         data: { view: {} }
     }

@@ -5,7 +5,7 @@ const _colors = ["#a35521", "#1E90FF", "#FF4500", "#02ad18", "#5260FF", "#bf9202
 const arabic = /[\u0600-\u06FF\u0750-\u077F]/
 const english = /[a-zA-Z]/
 
-const colorize = ({ _window, string, start = "[", index = 0, colors = _colors }) => {
+const colorize = ({ _window, string, start = "[", index = 0, colors = _colors, sub }) => {
 
   colors = toArray(colors)
   
@@ -43,7 +43,7 @@ const colorize = ({ _window, string, start = "[", index = 0, colors = _colors })
     comment = (comment || "").replaceAll("__map__", "[]")
 
     key = key.split(comment).slice(1).join(comment)
-    key = colorize({ _window, string: key, index, colors })
+    key = colorize({ _window, string: key, index, colors, sub: true })
 
     if (string0) string0 = colorizeCoded({ _window, index, string: string0, colors })
 
@@ -51,28 +51,10 @@ const colorize = ({ _window, string, start = "[", index = 0, colors = _colors })
 
   } else string = colorizeCoded({ _window, index, string, colors })
 
-  // arabic
-  /*if (arabic.test(string)) {
-
-    var i = 0, lastIndex = string.length - 1, start = false, newString = ""
-    while (i <= lastIndex) {
-      if ((arabic.test(string[i]) && !english.test(string[i])) || (start !== false && string[i] === " ")) {
-        if (start === false) {
-          start = i
-          newString += `<span contenteditable class="arabic" style="color:inherit; background-color:#00000000; white-space:nowrap">`
-        }
-      } else if (start !== false) {
-        start = false
-        newString += `</span>`
-      } else start = false
-      newString += string[i]
-      i++
-    }
-    string = newString
-  }*/
-
   if (index !== 0) string = `<span contenteditable style="background-color:#00000000; color:${colors[index]}; white-space:nowrap">${string}</span>`
 
+  // ?
+  string = string.replaceAll("?", "<u>?</u>")
   return string
 }
 
@@ -85,13 +67,13 @@ const colorizeCoded = ({ _window, index, string, colors }) => {
   var text = ""
 
   var string0 = slicer[0]
-  var string1 = colorize({ _window, index, string: slicer.slice(1).join("@").slice(5), colors })
+  var string1 = colorize({ _window, index, string: slicer.slice(1).join("@").slice(5), colors, sub: true })
   var reference = global.__refs__["@" + slicer[1].slice(0, 5)]
 
   if (typeof reference === "object") {
 
     var data = ""
-    if (reference.type === "code") data = colorize({ _window, string: "[" + reference.data + "]", index: index + 1, colors })
+    if (reference.type === "code") data = colorize({ _window, string: "[" + reference.data + "]", index: index + 1, colors, sub: true })
     else data = `<span contenteditable style="background-color:#00000000; color:${colors[index + 1]}; white-space:nowrap">'${reference.data}'</span>`
 
     text += string0 + data + string1

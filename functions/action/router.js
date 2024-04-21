@@ -41,10 +41,13 @@ module.exports = async ({ req, res, data }) => {
 
   // get route view
   var { data } = await getData({ _window, req, res, search: { collection: "view", doc: "route" } })
-  global.data.view.route = data
-
+  global.__queries__.view.route = data
+  
   // init view
-  var view = { ...global.data.view.route, __customView__: "route", __viewPath__: ["route"], __customViewPath__: ["route"], __lookupActions__: [{ type: "customView", view: "route" }] }
+  var view = { ...data, __customView__: "route", __viewPath__: ["route"], __customViewPath__: ["route"] }
+
+  // lookup actions
+  view.__lookupActions__ = [{ doc: "route", collection: "view" }, ...(req.body.data && req.body.data.lookupActions || [])]
 
   // log start render
   logger({ _window, data: { key: "route", start: true } })

@@ -21,7 +21,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   var doc = view.droplist.doc || view.doc
 
   // init droplist
-  var droplistView = { ...global.data.view.droplist, children: [], __dataPath__, doc, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["route", "document", "root", "droplist"], __lookupActions__: [...view.__lookupActions__] }
+  var droplistView = { ...global.__queries__.view.droplist, children: [], __dataPath__, doc, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["route", "document", "root", "droplist"], __lookupActions__: [...view.__lookupActions__] }
 
   // input id
   var { data: inputID } = toLine({ id, data: { string: "input().id||().id" } })

@@ -6,29 +6,29 @@ const setPosition = ({ position = {}, id, e }) => {
   var mousePos = position.positioner === "mouse"
   var fin = element.getElementsByClassName("fin")[0]
   var positioner = position.positioner || id
-  
-  if (!views[positioner] && !mousePos) return
 
-  var topPos, bottomPos, rightPos, leftPos, heightPos, widthPos
+  if (!views[positioner] && !mousePos) return
+  
+  var positionerTop, positionerBottom, positionerRight, positionerLeft, positionerHeight, positionerWidth
 
   if (mousePos) {
 
-    topPos = e.clientY + window.scrollY
-    bottomPos = e.clientY + window.scrollY
-    rightPos = e.clientX + window.scrollX
-    leftPos = e.clientX + window.scrollX
-    heightPos = 0
-    widthPos = 0
+    positionerTop = e.clientY + window.scrollY
+    positionerBottom = e.clientY + window.scrollY
+    positionerRight = e.clientX + window.scrollX
+    positionerLeft = e.clientX + window.scrollX
+    positionerHeight = 0
+    positionerWidth = 0
     
   } else {
 
     positioner = views[positioner].__element__
-    topPos = positioner.getBoundingClientRect().top
-    bottomPos = positioner.getBoundingClientRect().bottom
-    rightPos = positioner.getBoundingClientRect().right
-    leftPos = positioner.getBoundingClientRect().left
-    heightPos = positioner.clientHeight
-    widthPos = positioner.clientWidth
+    positionerTop = positioner.getBoundingClientRect().top
+    positionerBottom = positioner.getBoundingClientRect().bottom
+    positionerRight = positioner.getBoundingClientRect().right
+    positionerLeft = positioner.getBoundingClientRect().left
+    positionerHeight = positioner.offsetHeight
+    positionerWidth = positioner.offsetWidth
 
     // set height to fit content
     element.style.height = views[element.id].style.height
@@ -54,12 +54,12 @@ const setPosition = ({ position = {}, id, e }) => {
   }
   
   placement = position.placement || "bottom"
-  distance = parseFloat(element.distance || position.distance || 10)
-  
+  distance = position.distance === undefined ? 10 : position.distance
+
   if (placement === "right") {
 
-    left = rightPos + distance + (position.gapX || 0)
-    top = topPos + heightPos / 2 - height / 2 + (position.gapY || 0)
+    left = positionerRight + distance + (position.gapX || 0)
+    top = positionerTop + positionerHeight / 2 - height / 2 + (position.gapY || 0)
       
     if (fin) {
       fin.style.right = "unset"
@@ -71,8 +71,8 @@ const setPosition = ({ position = {}, id, e }) => {
 
   } else if (placement === "left") {
     
-    left = leftPos - distance - width + (position.gapX || 0)
-    top = topPos + heightPos / 2 - height / 2 + (position.gapY || 0)
+    left = positionerLeft - distance - width + (position.gapX || 0)
+    top = positionerTop + positionerHeight / 2 - height / 2 + (position.gapY || 0)
     
     if (fin) {
       fin.style.right = "-0.5rem"
@@ -84,8 +84,8 @@ const setPosition = ({ position = {}, id, e }) => {
 
   } else if (placement === "top") {
 
-    top = topPos - height - distance + (position.gapY || 0)
-    left = leftPos + widthPos / 2 - width / 2 + (position.gapX || 0)
+    top = positionerTop - height - distance + (position.gapY || 0)
+    left = positionerLeft + positionerWidth / 2 - width / 2 + (position.gapX || 0)
 
     if (fin) {
       fin.style.right = "unset"
@@ -97,8 +97,8 @@ const setPosition = ({ position = {}, id, e }) => {
 
   } else if (placement === "bottom") {
 
-    top = topPos + heightPos + distance + (position.gapY || 0)
-    left = leftPos + widthPos / 2 - width / 2 + (position.gapX || 0)
+    top = positionerTop + positionerHeight + distance + (position.gapY || 0)
+    left = positionerLeft + positionerWidth / 2 - width / 2 + (position.gapX || 0)
     
     if (fin) {
       fin.style.right = "unset"
@@ -166,10 +166,10 @@ const setPosition = ({ position = {}, id, e }) => {
   } else element.style.left = left + 'px'
   
   // align
-  if (align === "left") element.style.left = leftPos + (position.gapX || 0) + "px"
-  else if (align === "top") element.style.top = topPos - height + heightPos + (position.gapY || 0) + "px"
-  else if (align === "bottom") element.style.bottom = bottomPos + (position.gapY || 0) + "px"
-  else if (align === "right") element.style.left = leftPos - width + widthPos + (position.gapX || 0) + "px"
+  if (align === "left") element.style.left = positionerLeft + (position.gapX || 0) + "px"
+  else if (align === "top") element.style.top = positionerTop - height + positionerHeight + (position.gapY || 0) + "px"
+  else if (align === "bottom") element.style.bottom = positionerBottom + (position.gapY || 0) + "px"
+  else if (align === "right") element.style.left = positionerLeft - width + positionerWidth + (position.gapX || 0) + "px"
   
   if (fin) fin.style.left = "unset"
 }

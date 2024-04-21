@@ -9,8 +9,8 @@ const { getData } = require("./action/database")
 const { generate } = require("./action/generate")
 const { compress, decompress } = require("compress-json")
 const { collection } = require("firebase/firestore")
-var Tunnel1 = new EasyTunnel(80, "brctec")
-var Tunnel2 = new EasyTunnel(8080, "brcacc")
+const networkInterfaces = require('os').networkInterfaces()
+var network = require("./network.json")
 
 // config
 require('dotenv').config();
@@ -44,7 +44,19 @@ data.mongoDB = new MongoClient(uri, {
   }
 })
 */
-const server = (req, res) => {
+
+// get private ip
+network.private = (networkInterfaces.Ethernet || networkInterfaces["Wi-Fi 2"]).find(add => add.family === "IPv4").address;
+// get public ip
+require('http').get({ 'host': 'api.ipify.org', 'port': 80, 'path': '/' }, (resp) => {
+  resp.on('data', (ip) => {
+    network.public = ip.toString()
+    console.log(`private: ${network.private} | public: ${network.public}`);
+  })
+})
+
+// app
+const app = (req, res) => {
 
   // parse body
   res.statusCode = 200
@@ -52,27 +64,25 @@ const server = (req, res) => {
   req
     .on('data', chunk => req.body.push(chunk))
     .on('end', () => {
+
+      req.network = network
       req.body = JSON.parse(Buffer.concat(req.body).toString() || "{}")
-      
+
       try {
         require("./action/router")({ req, res, data })
       } catch (err) {
-        console.log("here", err);
         require("./action/router")({ req, res, data })
       }
     })
 }
 
-// acc server
-http.createServer(server).listen(80, ["localhost"], () => {
-  console.log("Server Listening to Port 80");
-  Tunnel2.start()
-})
+// run servers
+network.servers.map(server => {
 
-// bracket server
-http.createServer(server).listen(8080, ["localhost"], () => {
-  console.log("Server Listening to Port 8080")
-  Tunnel1.start()
+  http.createServer(app).listen(server.port, ["localhost"], () => {
+    console.log(`Server Listening to Port ${server.port}`)
+    new EasyTunnel(server.port, server.Tsubdomain).start()
+  })
 })
 
 // exports.app = functions.https.onRequest((req, res) => require("./action/router")({ req, res, data }))
@@ -99,7 +109,7 @@ var test1 = async () => {
   //await getData({ search: { datastore: "bracketDB", db: "test", collection: "test", find: { "__props__.doc": "test900000" }}})
   var timer3 = new Date().getTime()
   console.log("find", timer3 - timer2);
-  await getData({ search: { datastore: "bracketDB", db: "test", collection: "test", doc: "settings" }})
+  await getData({ search: { datastore: "bracketDB", db: "test", collection: "test", doc: "settings" } })
   var timer4 = new Date().getTime()
   console.log("settings", timer4 - timer3);
 }
@@ -107,69 +117,69 @@ var test1 = async () => {
 
 var test2 = async () => {
   var data = {}
-  
+
   for (let index = 0; index < 10000; index++) {
     var id = generate()
     data[id] = {
       id,
       creationDate: new Date(),
       counter: index,
-      name: "counasdasfsater"+index,
+      name: "counasdasfsater" + index,
       id1: id,
       creationDate1: new Date(),
       counter1: index,
-      name1: "counxcbvcgfhter"+index,
+      name1: "counxcbvcgfhter" + index,
       id2: id,
       creationDate2: new Date(),
       counter2: index,
-      name2: "cofdhshsdunter"+index,
+      name2: "cofdhshsdunter" + index,
       id3: id,
       creationDate3: new Date(),
       counter3: index,
-      name3: "coucvnbn fxgb sdnter"+index,
+      name3: "coucvnbn fxgb sdnter" + index,
       id4: id,
       creationDate4: new Date(),
       counter4: index,
-      name4: "countwer efdsf asdfasfer"+index,
+      name4: "countwer efdsf asdfasfer" + index,
       test: [{
         afdfc: id,
         dfsdfsdf: new Date(),
         safsd: index,
-        nagfdgdfge4: "counasdfsfaveqwerter"+index,
-      },{
+        nagfdgdfge4: "counasdfsfaveqwerter" + index,
+      }, {
         idss4: id,
         creatiosfdgdsfnDate4: new Date(),
         coufddnter4: index,
-        namasdfe4: "counter"+index,
-      },{
+        namasdfe4: "counter" + index,
+      }, {
         idsdf4: id,
         creatsdfsionDate4: new Date(),
         cosdfudfnter4: index,
-        nasdfme4: "counter"+index,
-      },{
+        nasdfme4: "counter" + index,
+      }, {
         idsdfsd4: id,
         dfsd: new Date(),
         cofsdfunter4: index,
-        nagvcbme4: "counter"+index,
+        nagvcbme4: "counter" + index,
       }],
       fghfg: [{
         id4hgjg: id,
         crehationDate4: new Date(),
-        cohmbnmbme4: "counter"+index,
-      },{
+        cohmbnmbme4: "counter" + index,
+      }, {
         ivbnvd4: id,
         crnvbeationDate4: new Date(),
         bn: index,
-        vbnbmhgj: "counter"+index,
-      },{
+        vbnbmhgj: "counter" + index,
+      }, {
         nmbnm: id,
         fghfg: new Date(),
         vnv: index,
-        fghfg: "counter"+index,
-      },{
+        fghfg: "counter" + index,
+      }, {
         rtyrt: id,
         crehfghfationDate4: new Date(),
-        name4: "counter"+index,
+        name4: "counter" + index,
       }]
     }
   }
@@ -191,7 +201,7 @@ var test3 = () => {
 var test4 = async () => {
 
   var timer3 = new Date().getTime()
-  var {data} = await getData({ search: { datastore: "bracketDB", db: "test", collection: "test", doc: "settings" }})
+  var { data } = await getData({ search: { datastore: "bracketDB", db: "test", collection: "test", doc: "settings" } })
   var stats = fs.statSync("bracketDB/test/test/settings.json")
   var fileSizeInBytes = stats.size;
   var timer4 = new Date().getTime()
@@ -212,11 +222,20 @@ var test4 = async () => {
 //test4()
 
 var test5 = async () => {
+  ["a1t7U0H8A8y877a0A1t9O05879", "01I7C0K8W8X8h720t1U9P123p6"].map(db => {
+    var collections = fs.readdirSync("bracketDB/" + db)
+    collections.map(collection => {
+      if (!fs.existsSync(`bracketDB/${db}/${collection}`) || collection === "__props__") return
+      var props = decompress(JSON.parse(fs.readFileSync(`bracketDB/${db}/${collection}/__props__.json`)))
+      props.dirTree = []
+      fs.writeFileSync(`bracketDB/${db}/${collection}/__props__.json`, JSON.stringify(compress(props)))
+    })
+  })
 }
 //test5()
 
 var scaleData = async () => {
-  
+
   ["a1t7U0H8A8y877a0A1t9O05879", "01I7C0K8W8X8h720t1U9P123p6"].map(db => {
 
     var collections = fs.readdirSync("bracketDB/" + db)
@@ -236,20 +255,20 @@ var scaleData = async () => {
     collections.map(collection => {
 
       if (collection === "__props__") return
-      var docs = fs.readdirSync("bracketDB/" + db + "/" + collection);
-      var collectionData = {}
+      var collectionData = decompress(JSON.parse(fs.readFileSync(`bracketDB/${db}/${collection}/chunk0.json`)))
+      var docs = Object.keys(collectionData)
 
-      docs.map(doc => {
+      /*docs.map(doc => {
 
         var query = JSON.parse(fs.readFileSync("bracketDB/" + db + "/" + collection + "/" + doc))
         fs.unlinkSync("bracketDB/" + db + "/" + collection + "/" + doc)
         doc = doc.split(".json")[0]
         collectionData[doc] = query
-      })
+      })*/
 
       // chunk
       var size = Buffer.byteLength(JSON.stringify(collectionData))
-      var collectionProps = {
+      /*var collectionProps = {
         creationDate: new Date().getTime(),
         collection,
         chunkMaxSizeMB: 20,
@@ -263,7 +282,7 @@ var scaleData = async () => {
         payloadIn: size,
         payloadOut: 0,
         chunks: [{ creationDate: new Date().getTime(), size, docsLength: docs.length }]
-      }
+      }*/
 
       // db props
       dbProps.size += size
@@ -271,14 +290,14 @@ var scaleData = async () => {
       dbProps.docsLength += docs.length
 
       // compress
-      var compressed = compress(collectionData)
+      //var compressed = compress(collectionData)
 
       // compress
-      var compressedCollectionProps = compress(collectionProps)
+      //var compressedCollectionProps = compress(collectionProps)
 
       // save chunk, collection __props__, and db props
-      fs.writeFileSync(`bracketDB/${db}/${collection}/chunk0.json`, JSON.stringify(compressed))
-      fs.writeFileSync(`bracketDB/${db}/${collection}/__props__.json`, JSON.stringify(compressedCollectionProps))
+      //fs.writeFileSync(`bracketDB/${db}/${collection}/chunk0.json`, JSON.stringify(compressed))
+      //fs.writeFileSync(`bracketDB/${db}/${collection}/__props__.json`, JSON.stringify(compressedCollectionProps))
     })
 
     // compress
@@ -289,3 +308,38 @@ var scaleData = async () => {
   })
 }
 //scaleData()
+
+var createPlugin = async () => {
+
+  // get project
+  var { data } = await getData({ _window, req, search: { db: bracketDB, collection: "project", find: { "__props__.doc": { equal: "acc" } } } })
+  var project = Object.values(data || {})[0]
+
+  // get account
+  var { data } = await getData({ _window, req, search: { db: bracketDB, collection: "account", find: { "__props__.id": { equal: project.accountID } } } })
+  var account = Object.values(data || {})[0]
+
+  // plugin
+  var plugin = {
+    name: "Travel Accounting Platform",
+    accountID: account.__props__.id,
+    projectID: project.__props__.id,
+    plugins: [{
+      type: "project",
+      db: project.db,
+      collections: true,
+      docs: true
+    }],
+    price: 100,
+    unit: "TOKEN",
+    freeTierDuration: 1296000000, // 15 days
+    subscriptionDuration: 2592000000, // 1 month
+    releaseDate: new Date().getTime(),
+    expiryDate: 9999999999999,
+    status: "Confirmed",
+    approved: true
+  }
+
+  // save plugin
+  postData({ _window, req, res, save: { db: bracketDB, collection: "plugin", data: plugin } })
+}
