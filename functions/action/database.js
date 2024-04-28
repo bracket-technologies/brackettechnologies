@@ -31,14 +31,20 @@ const database = ({ _window, req, res }) => {
 
 const getdb = async ({ _window, req, res }) => {
 
-  var search = req.body.data || {}, timer = (new Date()).getTime()
+  var search = req.body.data || {}, timer = (new Date()).getTime(), global = _window.global, data, success, message
 
-  var { data, success, message } = await getData({ _window, req, res, search })
+  // accessing other db data => check subscriptions (ex1: db;collections(true or list) ex2:db;collection;docs(true or list) ex3:db;collection;doc)
+  var authorized = authorizeAccess({ global, search })
 
-  console.log((new Date()).getHours() + ":" + (new Date()).getMinutes() + " SEARCH", search.collection || search.db, (new Date()).getTime() - timer);
+  if (authorized) {
+    // query
+    var { data, success, message } = await getData({ _window, req, res, search })
 
-  // hide secured
-  _window.global.manifest.session.db !== bracketDB && hideSecured(_window.global)
+    // hide secured
+    global.manifest.session.db !== bracketDB && hideSecured(global)
+  }
+
+  console.log((new Date()).getHours() + ":" + (new Date()).getMinutes() + " SEARCH", search.collection || search.db, (new Date()).getTime() - timer, authorized?"✔":"X");
 
   // respond
   res.setHeader('Content-Type', 'application/json')
@@ -197,9 +203,9 @@ const getData = async ({ _window, req, res, search }) => {
       }
 
       else if (("find" in search) || ("field" in search)) {
-
+        
         // find=[] & find=[preventDefault] => do not return all data in collection
-        if (find.preventDefault && Object.keys(find).length === 1) {
+        if ((find.preventDefault && Object.keys(find).length === 1) || Object.keys(find).length === 0) {
           readProps({ collectionProps, dbProps, data, db, collection })
           return { data: {}, message: "No find conditions exist!", success: false }
         }
@@ -219,12 +225,13 @@ const getData = async ({ _window, req, res, search }) => {
             var push = true
 
             Object.keys(find).map(key => {
-
+              
               if (!push) return
 
               // equal without equal
               if (typeof find[key] !== "object") find[key] = { equal: find[key] }
-
+              
+              if (!find[key]) push = false
               push && Object.entries(find[key]).map(([operator, value]) => {
 
                 var keyPath = key.split(".")
@@ -674,7 +681,7 @@ const postData = async ({ _window, req, res, save }) => {
       var newData = false
       writesCounter++
 
-      if (!data.__props__) {
+      if (!data.__props__ || (typeof data.__props__ === "object" ? doc && data.__props__.doc !== doc : true)) {
 
         newData = true
         newDocsLength++;
@@ -1122,12 +1129,22 @@ const getSession = async ({ _window, req }) => {
 
       // create session
       response = await createSession({ _window, req, session })
+      return response
     }
 
     // extend session
     else {
 
+      // extend session
       session.expiryDate = new Date().getTime() + 86400000
+
+      // get plugins
+      var plugins = await getPlugins({ _window, projectID: session.projectID })
+
+      // mount subs to session
+      session.plugins = plugins
+
+      // update session
       response = await postData({ _window, req, save: { db: bracketDB, collection: "session", data: session } })
     }
 
@@ -1141,7 +1158,7 @@ const getSession = async ({ _window, req }) => {
 const createSession = async ({ _window, req, res, session = {} }) => {
 
   var global = _window.global, expiredSessionExists = session.accountID
-  var promises = [], account, project, subscriptions = [], plugins = []
+  var promises = [], account, project, plugins = []
 
   // project
   promises.push(getData({ _window, req, search: { db: bracketDB, collection: "project", find: { domains: { inc: global.manifest.host } } } }).then(({ data }) => { project = Object.values(data || {})[0] }))
@@ -1155,29 +1172,10 @@ const createSession = async ({ _window, req, res, session = {} }) => {
   // account
   promises.push(getData({ _window, req, search: { db: bracketDB, collection: "account", find: { "__props__.id": { equal: project.accountID } } } }).then(({ data }) => { account = Object.values(data || {})[0] }))
 
-  // subscriptions
-  promises.push(getData({ _window, req, search: { db: bracketDB, collection: "subscription", find: { expiryDate: { greater: new Date().getTime() }, projectID: project.__props__.id } } }).then(({ data }) => { subscriptions = Object.values(data || {}) }))
+  // get plugins according to unexpired subscriptions
+  promises.push(getPlugins({ _window, projectID: project.__props__.id }).then(data => { plugins = data }))
   await Promise.all(promises)
-
-  // clear promises
-  var promises = []
-
-  // plugins
-  promises.push(getData({ _window, req, search: { db: bracketDB, collection: "plugin", find: { "__props__.id": { in: subscriptions.map(subs => subs.pluginID) } } } }).then(({ data }) => { plugins = Object.values(data || {}) }))
-  await Promise.all(promises)
-
-  // restructure subscriptions
-  subscriptions = subscriptions.map(subs => {
-    var plugin = plugins.find(plugin => plugin.__props__.id === subs.pluginID)
-
-    return {
-      subscriptionID: subs.__props__.id,
-      pluginID: subs.pluginID,
-      expiryDate: subs.expiryDate,
-      plugins: plugin.plugins
-    }
-  })
-
+  
   // erase expired session
   expiredSessionExists && deleteData({ _window, req, res, erase: { db: bracketDB, collection: "session", doc: session.__props__.doc } })
 
@@ -1195,16 +1193,7 @@ const createSession = async ({ _window, req, res, session = {} }) => {
     db: session.db || project.db,
     expiryDate: new Date().getTime() + 86400000,
     encryptionKey: generate(),
-    subscriptions,
-    /*__props__: {
-      id: generate({ unique: true }),
-      doc: "session" + collectionProps.counter,
-      creationDate: new Date().getTime(),
-      createdByUserID: "anonymous",
-      active: true,
-      counter: collectionProps.counter,
-      chunk: `chunk${collectionProps.lastChunk}`
-    }*/
+    plugins
   }
 
   postData({ _window, req, res, save: { db: bracketDB, collection: "session", data: session } })
@@ -1365,6 +1354,52 @@ const createDBprops = ({ collection, db, data }) => {
     fs.mkdirSync(`bracketDB/${data.db}/__props__`)
     fs.writeFileSync(`bracketDB/${data.db}/__props__/db.json`, JSON.stringify(compress(newProjectProps)))
   }
+}
+
+const authorizeAccess = async ({ global, search }) => {
+
+  // cases authorized: (bracketplatform accessing another database) || (db used is own database) || (no db no accesskey => accessing own database)
+  var authorized = (bracketDB === global.manifest.session.db) || (search.db === global.manifest.session.db) || (!search.db && !search.accessKey)
+  if (authorized) return true
+
+  // no plugins => not authorized
+  if (global.manifest.session.plugins.length === 0) return false
+
+  // search thorugh db => get accessKey
+  if (!search.accessKey) await getData({ _window, search: { db: bracketDB, collection: "accessKey", find: { db: search.db, projectID: global.manifest.session.projectID } } }).then(({ data }) => { search.accessKey = Object.values(data || {}).accessKey })
+  
+  // check authority
+  var promises = global.manifest.session.plugins.map(async ({ db, accessKey, plugins }) => {
+
+    return (search.accessKey ? accessKey === search.accessKey : db === search.db) 
+      && plugins.find(({ collection, collections, doc, docs }) => 
+        ((collections ? (typeof collections === "boolean" ? true : (Array.isArray(collections) && search.collection) ? collections.includes(search.collection) : false) : (collection && search.collection) ? collection === search.collection : false) 
+        || (docs ? (typeof docs === "boolean" ? true : (Array.isArray(docs) && search.doc) ? docs.includes(search.doc) : false) : (doc && search.doc) ? doc === search.doc : false))
+    )}
+  )
+
+  await Promise.all(promises)
+  authorized = promises.find(promise => promise === true)
+  
+  // get db through accesskey for query
+  if (search.accessKey && !search.db) await getData({ _window, search: { db: bracketDB, collection: "accessKey", find: { accessKey: search.accessKey, projectID: global.manifest.session.projectID } } }).then(({ data }) => { search.db = Object.values(data || {}).db })
+
+  return authorized
+}
+
+const getPlugins = async ({ _window, projectID }) => {
+  
+  // recheck subscriptions
+  var plugins = [], subscriptions = []
+  
+  // get subscriptions
+  await getData({ _window, search: { db: bracketDB, collection: "subscription", find: { expiryDate: { greater: new Date().getTime() }, projectID } } }).then(({ data }) => { subscriptions = Object.values(data || {}) })
+
+  // get plugins
+  subscriptions.length > 0 && await getData({ _window, search: { db: bracketDB, collection: "plugin", find: { "__props__.id": { in: subscriptions.map(subs => subs.pluginID) } } } }).then(({ data }) => { plugins = Object.values(data || {}) })
+
+  plugins = plugins.map(({ accessKey, plugins }) => ({ accessKey, plugins }))
+  return plugins
 }
 
 module.exports = {
