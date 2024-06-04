@@ -51,6 +51,7 @@ const endStack = ({ _window, stack }) => {
     // print stack
     stack.print && !stack.printed && console.log("STACK:" + stack.event, logs, "color: blue", stack.logs)
     stack.printed = true
+    stack.status = "End"
   }
 }
 

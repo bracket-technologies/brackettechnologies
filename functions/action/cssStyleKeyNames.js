@@ -32,6 +32,7 @@ module.exports = {
   "zIndex": "z-index",
   "boxShadow": "box-shadow",
   "borderRadius": "border-radius",
+  "borderColor": "border-color",
   "zIndex": "z-index",
   "gapX": "column-gap",
   "gapY": "row-gap",

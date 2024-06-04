@@ -1,4 +1,4 @@
-const { getData } = require('./database');
+const { getData } = require('./kernel');
 
 require('dotenv').config()
 

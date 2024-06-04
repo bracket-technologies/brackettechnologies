@@ -109,6 +109,17 @@ const setPosition = ({ position = {}, id, e }) => {
     }
   }
 
+  if (("top" in position) || ("left" in position) || ("bottom" in position) || ("right" in position)) {
+    
+    element.style.top = top + 'px'
+    element.style.left = left + 'px'
+    if ("top" in position) element.style.top = position.top + 'px'
+    if ("left" in position) element.style.left = position.left + 'px'
+    if ("bottom" in position) element.style.bottom = position.bottom + 'px'
+    if ("right" in position) element.style.right = position.right + 'px'
+    return
+  }
+
   // fix height overflow
   bottom = top + height
   if (mousePos && window.scrollY) bottom = top - window.scrollY

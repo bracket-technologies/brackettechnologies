@@ -1,4 +1,4 @@
-const { postData, deleteData, getData } = require("./database")
+const { postData, deleteData, getData } = require("./kernel")
 const { generate } = require("./generate")
 
 // config

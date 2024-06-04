@@ -1,5 +1,6 @@
 const { parseCookies } = require('./cookie');
 const { lookup } = require('geoip-lite');
+const { checkHost } = require('./kernel');
 
 // config
 require('dotenv').config()
@@ -10,44 +11,25 @@ const detector = new (require('node-device-detector'))({
     deviceAliasCode: false,
 });
 
-const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, mongoDB } }) => {
-
-    req.datastore = { firebaseDB, mongoDB }
-    req.storage = { firebaseStorage }
+const initializer = async ({ id, req, res }) => {
 
     // parse cookies (req.headers.cookies coming from client request)
     parseCookies(req)
     req.cookies = JSON.parse(req.headers.cookies || req.headers.cookie || "{}")
-
-    // action
-    req.body.route = req.body.route || {}
-
-    // path
-    path = decodeURI(req.url).split("/")
+    
+    var __ = req.body.data && (req.body.data.data !== undefined ? [req.body.data.data] : []) || []
+    var __lookupActions__ = req.body.data && req.body.data.lookupActions || []
 
     // 
     var host = req.headers['x-forwarded-host'] || req.headers.host || req.headers.referer
-    var page = path[1] || "main"
-
-    var __ = (req.body.data || {}).__ || []
+    var path = req.body.path || decodeURI(req.url).split("/")
+    var page = req.body.page || path[1] || "main"
     var server = req.body.server || "render"
-    var type = req.body.type
-    var route = type === "action" ? req.body.data.action
-        // route to view
-        : type === "route" ? req.body.data.route
-            // documenter
-            : "document"
-
-    // privateIP:port
-    if (host.split(":")[0] === req.network.private)
-        host = req.network.servers.find(server => server.port === parseInt(host.split(":")[1] || "80")).Lhost
-
-    // subdomain.loca.lt
-    else if (req.network.servers.find(server => server.Thost === host))
-        host = req.network.servers.find(server => server.Thost === host).Lhost
+    var action = req.body.action || "document"
 
     var global = {
         __,
+        __lookupActions__,
         __queries__: { view: {} },
         __stacks__: {},
         __refs__: {},
@@ -64,13 +46,11 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
         path: path.join("/"),
         manifest: {
             datastore: "bracketDB",
-            type,
             server,
             host,
             page,
             path,
-            route,
-            action: type === "action" && req.body.data.action.slice(0, -2),
+            action,
             os: req.headers["sec-ch-ua-platform"],
             browser: req.headers["sec-ch-ua"],
             cookies: req.cookies,
@@ -80,13 +60,17 @@ const initializer = ({ id, req, res, path, data: { firebaseDB, firebaseStorage, 
         data: { view: {} }
     }
 
+    // check host
+    var { success, message } = await checkHost({ host, global })
+    if (!success) return ({ success, message })
+
     var views = { [id]: { id } }
     var _window = { views, global }
 
     // log
-    console.log((new Date()).getHours() + ":" + (new Date()).getMinutes() + " " + req.method, path.join("/"), req.body.route.action || "");
+    console.log((new Date()).getHours() + ":" + (new Date()).getMinutes() + " " + req.method, path.join("/"), action || "");
 
-    return _window
+    return { _window, success: true }
 }
 
 module.exports = { initializer }

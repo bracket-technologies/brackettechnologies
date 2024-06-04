@@ -2,7 +2,7 @@ const { toView } = require("./kernel");
 const { addresser } = require("./kernel");
 const { logger } = require("./logger");
 const { toAwait } = require("./kernel");
-const { getData } = require("./database");
+const { getData } = require("./kernel");
 
 require("dotenv").config();
 

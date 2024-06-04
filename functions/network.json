@@ -15,6 +15,12 @@
             "Tsubdomain": "brcacc",
             "Thost": "brcacc.loca.lt",
             "Lhost": "acc.localhost"
+        },
+        {
+            "port": 81,
+            "Tsubdomain": "brcply",
+            "Thost": "brcply.loca.lt",
+            "Lhost": "playground.localhost"
         }
     ]
 }

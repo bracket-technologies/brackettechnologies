@@ -9,7 +9,6 @@
     "deploy": "npm run kill && npm-run-all --parallel browserify firebase",
     "firebase": "firebase deploy --only functions",
     "logs": "firebase functions:log",
-    "forever": "npx kill-port 80 && npx kill-port 8080 && forever start index.js && forever logs index.js -f",
     "server": "node index.js",
     "browserify": "cd resource && browserify launcher.js > engine.js",
     "start": "npm-run-all --parallel browserify && npm run server"
@@ -53,6 +52,7 @@
     "vcards-js": "^2.10.0",
     "web3": "^1.8.2",
     "whatsapp-web.js": "^1.16.7",
+    "winston": "^3.13.0",
     "xlsx": "^0.18.5",
     "zlib": "^1.0.5"
   },

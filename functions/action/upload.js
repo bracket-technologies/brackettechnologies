@@ -46,7 +46,7 @@ module.exports = async ({ _window, lookupActions, stack, address, id, req, res, 
     } else {
 
       headers.cookies = JSON.stringify(getCookie())
-      var { data } = await require("axios").post(`/`, { server: "storage", type: "store", data: upload }, { headers })
+      var { data } = await require("axios").post(`/`, { server: "storage", action: "storage", data: upload }, { headers })
 
       uploads.push(data)
       return data

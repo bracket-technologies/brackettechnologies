@@ -25,10 +25,8 @@ class EasyTunnel {
                 this.start("redig")
                 console.log("> Redigging tunnel")
             } else if (out) console.log("out");
-           
         })
     }
-
 }
 
 module.exports = EasyTunnel

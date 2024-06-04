@@ -1,9 +1,11 @@
 const { isArabic } = require("./isArabic")
 
-const note = ({ note: data }) => {
+const note = ({ _window, note: data }) => {
 
+  if (_window) return
   var views = window.views
   var note = views["note"]
+  if (typeof data === "string") data = { text: data }
   var type = (data.type || (data.danger && "danger") || (data.info && "info") || (data.warning && "warning") || "success").toLowerCase()
   var noteText = views["note-text"]
   var backgroundColor = type === "success" 
