@@ -1,1 +1,0 @@
-require("../action/kernel").launcher()
