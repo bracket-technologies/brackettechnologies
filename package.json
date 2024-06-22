@@ -4,7 +4,7 @@
   "description": "Bracket Platform",
   "scripts": {
     "server": "node index.js",
-    "browserify": "cd resource && browserify launcher.js > engine.js",
+    "browserify": "browserify -u ./action/documenter.js ./resource/index.js > ./resource/engine.js",
     "start": "npm-run-all --parallel browserify && npm run server"
   },
   "engines": {

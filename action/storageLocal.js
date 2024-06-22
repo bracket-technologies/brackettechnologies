@@ -17,16 +17,24 @@ const mime = {
 
 var getLocalFile = ({ req, res }) => {
   
-  var folder = req.url.split("/")[2]
-  var path = req.url.split(`${folder}/`)[1]
-  
-  var docType = path.split(".").slice(-1)[0].split("?")[0]
+  var folder = req.url.split("/")[1]
+  var path = req.url.split("/")[2].split("?")[0]
+  var timer = new Date().getTime()
+  var docType = path.split(".").slice(-1)[0]
   var type = mime[docType]
   var file = fs.createReadStream(`${folder}/${path}`)
   
+  res.setHeader('Cache-Control', 'max-age=604800')
+  res.setHeader("Expires", new Date(Date.now() + 604800000).toUTCString())
+
   file.on("open", () => {
+    
     res.setHeader("Content-Type", type)
-    file.pipe(res)
+    var stream = file.pipe(res)
+    stream.on("finish", () => {
+  
+      console.log(path, new Date().getTime() - timer);
+    })
   })
 }
 

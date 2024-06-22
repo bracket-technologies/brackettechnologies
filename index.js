@@ -3,6 +3,7 @@ const EasyTunnel = require("./action/easy-tunnel")
 const { getData, start } = require("./action/kernel")
 const { toArray } = require('./action/toArray')
 const router = require('./action/router')
+const { generate } = require('./action/generate')
 const networkInterfaces = require('os').networkInterfaces()
 
 // config
@@ -13,6 +14,7 @@ var bracketDB = process.env.BRACKETDB
 
 // get private ip
 var ip = { private: (networkInterfaces.Ethernet || networkInterfaces["Wi-Fi 2"]).find(add => add.family === "IPv4").address }
+var serverID = generate({ unique: true })
 
 // app
 const app = (req, res) => {
@@ -26,6 +28,8 @@ const app = (req, res) => {
 
       req.ip = ip
       req.body = JSON.parse(Buffer.concat(req.body).toString() || "{}")
+      // server id
+      res.serverID = serverID
 
       router({ req, res })
     })

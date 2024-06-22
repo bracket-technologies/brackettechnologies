@@ -15,6 +15,7 @@ const openStack = ({ _window, id: viewID, string = "", ...data }) => {
     interpreting: true,
     string: string ? decode({ _window, string }) : "",
     executionStartTime: (new Date()).getTime(),
+    executedActions: [],
     addresses: [],
     logs: [],
     returns: []
