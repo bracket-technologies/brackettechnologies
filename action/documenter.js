@@ -2,7 +2,7 @@ const cssStyleKeyNames = require("./cssStyleKeyNames")
 const { hideSecured, toAwait, respond } = require("./kernel")
 const fs = require("fs")
 
-const documenter = ({ _window, res, stack, address, __ }) => {
+const documenter = ({ _window, res, stack, props, address, __ }) => {
 
     var { global, views } = _window
     var page = global.manifest.page
@@ -35,14 +35,14 @@ const documenter = ({ _window, res, stack, address, __ }) => {
     // hide secured
     hideSecured({ __, global })
 
-    toAwait({ _window, stack, address, __ })
+    toAwait({ _window, stack, props, address, __ })
     
-    respond({ res, stack, global, __, response: (
+    respond({ res, stack, props, global, __, response: (
         `<!DOCTYPE html>
         <html lang="${language}" dir="${direction}" class="html">
             <head>
                 <!-- css -->
-                <link rel="stylesheet" href="/resource/index.css?sid=${res.serverID}">
+                <link rel="stylesheet" href="/bracketStorage/index.css?sid=${res.serverID}">
                 <style>
                     ${views.document.stylesheet ? `${Object.entries(views.document.stylesheet).map(([key, value]) => typeof value === "object" && !Array.isArray(value)
             ? `${key}{
@@ -90,7 +90,7 @@ const documenter = ({ _window, res, stack, address, __ }) => {
                 ${views.body.__html__ || ""}
   
                 <!-- engine -->
-                <script src="/resource/engine.js?sid=${res.serverID}"></script>
+                <script src="/bracketStorage/engine.js?sid=${res.serverID}"></script>
   
                 <!-- google icons -->
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"/>
@@ -107,7 +107,7 @@ const documenter = ({ _window, res, stack, address, __ }) => {
             </body>
         </html>`
     )})
-    //${fs.readFileSync("resource/index.css").toString()}
+    //${fs.readFileSync("bracketStorage/index.css").toString()}
 }
 
 module.exports = documenter

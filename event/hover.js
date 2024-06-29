@@ -11,8 +11,8 @@ module.exports = ({ data, id }) => {
     )
     
     return [{
-        "event": `mouseenter:${_id}?hover.style.keys()._():[style().[_]=.hover.style.[_]]?!hover.disable`
+        "event": `mouseenter:${_id}?hover.style.keys()._():[style().[_]=hover.style.[_]]?!hover.disable`
     }, {
-        "event": `mouseleave:${_id}?hover.default.style.keys()._():[style().[_]=.hover.default.style.[_]]?!hover.disable`
+        "event": `mouseleave:${_id}?hover.default.style.keys()._():[style().[_]=hover.default.style.[_]]?!hover.disable`
     }]
 }

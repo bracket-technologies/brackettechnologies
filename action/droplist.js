@@ -1,8 +1,8 @@
 const { clone } = require("./clone")
 const { jsonToBracket } = require("./jsonToBracket")
-const { update, toLine, kernel } = require("./kernel")
+const { update, toLine, kernel, toValue } = require("./kernel")
 
-const droplist = ({ id, e, __, stack, lookupActions, address }) => {
+const droplist = ({ id, e, __, stack, props, lookupActions, address, object }) => {
   
   var views = window.views
   var global = window.global
@@ -24,11 +24,11 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   var droplistView = { ...global.__queries__.view.droplist, children: [], __dataPath__, doc, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["router", "document", "root", "droplist"], __lookupActions__: [...view.__lookupActions__] }
 
   // input id
-  var { data: inputID } = toLine({ id, data: { string: "input().id||().id" } })
-  var text = views[inputID].__element__.value || views[inputID].__element__.innerHTML
+  var inputID = toValue({ id, data: "input().id||().id", object })
+  var text = views[inputID].__element__.value || views[inputID].__element__.innerText
 
   // items
-  if (typeof items === "string") items = toLine({ id, data: { string: items }, lookupActions, __: view.__ }).data
+  if (typeof items === "string") items = toValue({ id, data: items, lookupActions, __: view.__, object })
 
   // filterable
   if (!view.droplist.preventDefault) {
@@ -73,7 +73,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
       } else {
         
         return ({
-          view: `Text?style:[minHeight=3rem;padding=0 1rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item)};class=flex align-center pointer ${item.class || ""};click:[():[__droplistPositioner__:()].():[txt()=txt();data()=txt()]?!():${id}.droplist.preventDefault]`,
+          view: `Text?style:[minHeight=3rem;padding=0 1rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item)};class=flex align-center pointer ${item.class || ""};click:[():[__droplistPositioner__:()].():[txt()=..txt();data()=..txt()]?!():${id}.droplist.preventDefault]`,
         })
       }
     }))
@@ -89,17 +89,17 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   var mouseEnterItem = () => {
 
     var _index, onlyOne
-    if (view.droplist && view.droplist.searchable) {
+    //if (view.droplist && view.droplist.searchable) {
 
       if (text) {
         
-        _index = items.findIndex(item => view.droplist.searchable.any 
+        _index = (items || []).findIndex(item => view.droplist.searchable.any 
           ? item.toString().toLowerCase().includes(text.toString().toLowerCase())
           : item.toString().toLowerCase().slice(0, text.toString().length) === text.toString().toLowerCase()
         )
 
         // fills input value
-        onlyOne = items.filter(item => view.droplist.searchable.any 
+        onlyOne = (items || []).filter(item => view.droplist.searchable.any 
           ? item.toString().toLowerCase().includes(text.toString().toLowerCase())
           : item.toString().toLowerCase().slice(0, text.toString().length) === text.toString().toLowerCase()
         ).length === 1
@@ -137,15 +137,14 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
             }
           }
 
-          kernel({ id, data: { path: droplistView.__dataPath__, object: global[droplistView.doc], key: true, value: items[_index] }, __ })
+          kernel({ id, data: { path: droplistView.__dataPath__, key: true, value: items[_index], data: global[droplistView.doc] }, __ })
           global.__keyupIndex__ = _index
         }
       }
-    }
+    //}
 
     global.__keyupIndex__ = global.__keyupIndex__ || 0
-    droplistView.__element__.children.length > 0 &&
-      droplistView.__element__.children[view.droplist.title ? global.__keyupIndex__ + 1 : global.__keyupIndex__].dispatchEvent(new Event("mouseenter"))
+    droplistView.__element__.children.length > 0 && droplistView.__element__.children[global.__keyupIndex__].dispatchEvent(new Event("mouseenter"))
   }
 
   global.__droplistTimer__ = setTimeout(mouseEnterItem, 100)

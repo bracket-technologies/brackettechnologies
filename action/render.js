@@ -6,7 +6,7 @@ const { getData } = require("./kernel");
 
 require("dotenv").config();
 
-const render = async ({ _window, id, req, res, stack, address, lookupAction, data }) => {
+const render = async ({ _window, id, req, res, stack, props, address, lookupAction, data }) => {
 }
 
 module.exports = { render }

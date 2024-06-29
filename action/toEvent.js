@@ -4,7 +4,8 @@ const { toArray } = require("./toArray")
 const toEvent = ({ _window, id, string, __, lookupActions }) => {
 
   var view = _window ? _window.views[id] : window.views[id]
-  if (view.__rendered__) addEventListener({ event: string, id, __, stack, lookupActions })
+
+  if (view.__rendered__) addEventListener({ event: string, id, __, stack, props, lookupActions })
   else toArray(view.__controls__).push({ event: string, __, lookupActions })
   
   return "__event__"

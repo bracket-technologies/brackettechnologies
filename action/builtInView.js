@@ -4,7 +4,7 @@ const { toCode } = require("./toCode")
 const builtInViews = require("../view/views")
 
 module.exports = {
-  builtInView: ({ _window, lookupActions, stack, id, __ }) => {
+  builtInView: ({ _window, lookupActions, stack, props, id, __ }) => {
     
     var views = _window ? _window.views : window.views
     var view = views[id]
@@ -21,7 +21,7 @@ module.exports = {
     var elseParams = view.__name__.split("?")[3]
 
     // approval
-    var approved = toApproval({ _window, lookupActions, stack, data: conditions, id, __ })
+    var approved = toApproval({ _window, lookupActions, stack, props, data: conditions, id, __ })
     if (!approved) {
       if (elseParams) params = otherParams
       else return delete views[id]
@@ -30,7 +30,7 @@ module.exports = {
     // params
     if (params) {
       
-      params = toParam({ _window, lookupActions, stack, data: params, id, mount: true, __ })
+      params = toParam({ _window, lookupActions, stack, props, data: params, id, object: [view], __ })
 
       if (params.id) {
         

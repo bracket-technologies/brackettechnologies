@@ -5,7 +5,7 @@ require('dotenv').config()
 // project DB
 var bracketDB = process.env.BRACKETDB
 
-module.exports = async ({ _window, lookupActions, stack, address, id, e, __, req, res, data }) => {
+module.exports = async ({ _window, lookupActions, stack, props, address, id, e, __, req, res, data }) => {
 
     if (!_window) return console.log("Passport is a serverside action!")
 
@@ -64,5 +64,5 @@ module.exports = async ({ _window, lookupActions, stack, address, id, e, __, req
     }
 
     // await params
-    require("./kernel").toAwait({ _window, lookupActions, stack, id, e, address, req, res, _: data, __ })
+    require("./kernel").toAwait({ _window, lookupActions, stack, props, id, e, address, req, res, _: data, __ })
 }

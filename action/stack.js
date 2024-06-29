@@ -32,13 +32,13 @@ const openStack = ({ _window, id: viewID, string = "", ...data }) => {
 
 const clearStack = ({ stack }) => {
 
-  console.log("STACK", (new Date()).getTime() - stack.executionStartTime, stack.event.toUpperCase())
+  console.log("STACK", (new Date()).getTime() - stack.executionStartTime, stack, props.event.toUpperCase())
 
   stack.terminated = true
   stack.addresses = []
 }
 
-const endStack = ({ _window, stack }) => {
+const endStack = ({ _window, stack, props }) => {
 
   if (stack.addresses.length === 0) {
 
@@ -50,7 +50,7 @@ const endStack = ({ _window, stack }) => {
     delete global.__stacks__[stack.id]
 
     // print stack
-    stack.print && !stack.printed && console.log("STACK:" + stack.event, logs, "color: blue", stack.logs)
+    stack.print && !stack.printed && console.log("STACK:" + stack.event, logs, "color: blue", stack, props.logs)
     stack.printed = true
     stack.status = "End"
   }

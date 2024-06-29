@@ -341,7 +341,7 @@ module.exports = {
             /* Convert the final array to JSON */
             console.log(result)
             window.views[id].file = window.global.file = { data: result, message: "Data converted successfully!" }
-            toParam({ id, e, data: onload, mount: true, __: [window.global.file, ...__] })
+            toParam({ id, e, data: onload, object: [views[id]], __: [window.global.file, ...__] })
         };
 
         // start reading the file. When it is done, calls the onload event defined above.
@@ -383,9 +383,9 @@ module.exports = { decode }
 },{}],9:[function(require,module,exports){
 const { clone } = require("./clone")
 const { jsonToBracket } = require("./jsonToBracket")
-const { update, toLine, kernel } = require("./kernel")
+const { update, toLine, kernel, toValue } = require("./kernel")
 
-const droplist = ({ id, e, __, stack, lookupActions, address }) => {
+const droplist = ({ id, e, __, stack, props, lookupActions, address, object }) => {
   
   var views = window.views
   var global = window.global
@@ -407,11 +407,11 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   var droplistView = { ...global.__queries__.view.droplist, children: [], __dataPath__, doc, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["router", "document", "root", "droplist"], __lookupActions__: [...view.__lookupActions__] }
 
   // input id
-  var { data: inputID } = toLine({ id, data: { string: "input().id||().id" } })
-  var text = views[inputID].__element__.value || views[inputID].__element__.innerHTML
+  var inputID = toValue({ id, data: "input().id||().id", object })
+  var text = views[inputID].__element__.value || views[inputID].__element__.innerText
 
   // items
-  if (typeof items === "string") items = toLine({ id, data: { string: items }, lookupActions, __: view.__ }).data
+  if (typeof items === "string") items = toValue({ id, data: items, lookupActions, __: view.__, object })
 
   // filterable
   if (!view.droplist.preventDefault) {
@@ -456,7 +456,7 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
       } else {
         
         return ({
-          view: `Text?style:[minHeight=3rem;padding=0 1rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item)};class=flex align-center pointer ${item.class || ""};click:[():[__droplistPositioner__:()].():[txt()=txt();data()=txt()]?!():${id}.droplist.preventDefault]`,
+          view: `Text?style:[minHeight=3rem;padding=0 1rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item)};class=flex align-center pointer ${item.class || ""};click:[():[__droplistPositioner__:()].():[txt()=..txt();data()=..txt()]?!():${id}.droplist.preventDefault]`,
         })
       }
     }))
@@ -472,17 +472,17 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
   var mouseEnterItem = () => {
 
     var _index, onlyOne
-    if (view.droplist && view.droplist.searchable) {
+    //if (view.droplist && view.droplist.searchable) {
 
       if (text) {
         
-        _index = items.findIndex(item => view.droplist.searchable.any 
+        _index = (items || []).findIndex(item => view.droplist.searchable.any 
           ? item.toString().toLowerCase().includes(text.toString().toLowerCase())
           : item.toString().toLowerCase().slice(0, text.toString().length) === text.toString().toLowerCase()
         )
 
         // fills input value
-        onlyOne = items.filter(item => view.droplist.searchable.any 
+        onlyOne = (items || []).filter(item => view.droplist.searchable.any 
           ? item.toString().toLowerCase().includes(text.toString().toLowerCase())
           : item.toString().toLowerCase().slice(0, text.toString().length) === text.toString().toLowerCase()
         ).length === 1
@@ -520,15 +520,14 @@ const droplist = ({ id, e, __, stack, lookupActions, address }) => {
             }
           }
 
-          kernel({ id, data: { path: droplistView.__dataPath__, object: global[droplistView.doc], key: true, value: items[_index] }, __ })
+          kernel({ id, data: { path: droplistView.__dataPath__, key: true, value: items[_index], data: global[droplistView.doc] }, __ })
           global.__keyupIndex__ = _index
         }
       }
-    }
+    //}
 
     global.__keyupIndex__ = global.__keyupIndex__ || 0
-    droplistView.__element__.children.length > 0 &&
-      droplistView.__element__.children[view.droplist.title ? global.__keyupIndex__ + 1 : global.__keyupIndex__].dispatchEvent(new Event("mouseenter"))
+    droplistView.__element__.children.length > 0 && droplistView.__element__.children[global.__keyupIndex__].dispatchEvent(new Event("mouseenter"))
   }
 
   global.__droplistTimer__ = setTimeout(mouseEnterItem, 100)
@@ -718,7 +717,7 @@ module.exports = { getType }
 },{"./kernel":27}],19:[function(require,module,exports){
 const nthParent = ({ _window, nth, o }) => {
 
-  if (!o.__view__) return o
+  if (!o.__view__) return 
   var views = _window ? _window.views : window.views
 
   var n = 0, parent = o.id
@@ -733,7 +732,7 @@ const nthParent = ({ _window, nth, o }) => {
 
 const nthNext = ({ _window, nth, o }) => {
 
-  if (!o.__view__) return o
+  if (!o.__view__) return 
   var views = _window ? _window.views : window.views
 
   var n = 0, next = o.id
@@ -747,7 +746,7 @@ const nthNext = ({ _window, nth, o }) => {
 
 const nthPrev = ({ _window, nth, o }) => {
 
-  if (!o.__view__) return o
+  if (!o.__view__) return 
   var views = _window ? _window.views : window.views
 
   var n = 0, prev = o.id
@@ -1079,6 +1078,7 @@ const util = require('util')
 
 // config
 require('dotenv').config()
+const executableRegex = /\(\)|@|^_+$/;
 
 // project DB
 var bracketDB = process.env.BRACKETDB
@@ -1120,7 +1120,7 @@ const actions = {
         if (!isNumber(o)) return
         var integer = o
         return Math.round(toNumber(integer))
-    }, "clicked()": ({ global, key, value }) => {
+    }, "clicked()": ({ global, key, value, pathJoined }) => {
 
         if (key && value !== undefined) global.__droplistPositioner__ = global.__clicked__ = value
         return global.__clicked__
@@ -1146,7 +1146,7 @@ const actions = {
         
         o.__element__.click()
 
-    }, "focus()": ({ _window, o, pathJoined }) => {
+    }, "focus()": ({ _window, o, pathJoined, id }) => {
 
         if (!o.__view__) return
 
@@ -1154,7 +1154,7 @@ const actions = {
             event: `loaded?${pathJoined}`
         })
 
-        focus({ id: o.id })
+        focus({ id: o.id || id })
 
     }, "blur()": ({ _window, view, o, pathJoined }) => {
 
@@ -1194,20 +1194,20 @@ const actions = {
         o.__element__.dispatchEvent(keyupevent)
     }, "name()": ({ _window, o, id, e, __, args, object }) => {
 
-        var name = toValue({ _window, id, e, object, data: args[1], __ })
+        var name = toValue({ _window, id, e, object, data: args[1], props:{isValue:true}, __ })
         if (name === o.__name__) return o
-        var children = getDeepChildren({ _window, id: o.id })
+        var children = getDeepChildren({ _window, id: o.id || id })
         return children.find(view => view.__name__ === name)
 
     }, "names()": ({ _window, o, id, e, __, args, object }) => {
 
-        var name = toValue({ _window, id, e, object, data: args[1], __ })
-        var children = getDeepChildren({ _window, id: o.id })
+        var name = toValue({ _window, id, e, object, data: args[1], props:{isValue:true}, __ })
+        var children = getDeepChildren({ _window, id: o.id || id })
         return children.filter(view => view.__name__ === name)
 
     }, "tag()": ({ _window, id, e, object, args, __ }) => {
 
-        var tag = toValue({ _window, id, e, object, data: args[1], __ }), styles = ""
+        var tag = toValue({ _window, id, e, object, data: args[1], props:{isValue:true}, __ }), styles = ""
         if (!tag.type) tag.type = "span"
         
         if (tag.style) {
@@ -1223,86 +1223,86 @@ const actions = {
     }, "width()": ({ o, key, value }) => {
         
         if (!o.__view__) return
-        if (key && value !== undefined) o.__element__.style.width = value
+        if (key && value !== undefined) return o.__element__.style.width = value
         else return o.__element__.offsetWidth/10+ "rem"
 
     }, "height()": ({ o, key, value }) => {
 
         if (!o.__view__) return
-        if (key && value !== undefined) o.__element__.style.height = value
+        if (key && value !== undefined) return o.__element__.style.height = value
         else return o.__element__.offsetHeight/10+ "rem"
 
     }, "border()": ({ o, key, value }) => {
 
         if (!o.__view__) return
-        if (key && value !== undefined) o.__element__.style.border = value
+        if (key && value !== undefined) return o.__element__.style.border = value
         else return o.__element__.border
 
     }, "left()": ({ o, key, value }) => {
 
         if (!o.__view__) return
-        if (key && value !== undefined) o.__element__.style.left = value
+        if (key && value !== undefined) return o.__element__.style.left = value
         else return o.__element__.left
 
     }, "right()": ({ o, key, value }) => {
 
         if (!o.__view__) return
-        if (key && value !== undefined) o.__element__.style.right = value
+        if (key && value !== undefined) return o.__element__.style.right = value
         else return o.__element__.right
 
     }, "cursor()": ({ o, key, value }) => {
 
         if (!o.__view__) return
-        if (key && value !== undefined) o.__element__.style.cursor = value
+        if (key && value !== undefined) return o.__element__.style.cursor = value
         else return o.__element__.cursor
 
     }, "transform()": ({ o, key, value }) => {
 
         if (!o.__view__) return
-        if (key && value !== undefined) o.__element__.style.transform = value
+        if (key && value !== undefined) return o.__element__.style.transform = value
         else return o.__element__.transform
 
     }, "color()": ({ o, key, value }) => {
 
         if (!o.__view__) return
-        if (key && value !== undefined) o.__element__.style.color = value
+        if (key && value !== undefined) return o.__element__.style.color = value
         else return o.__element__.color
 
     }, "backgroundColor()": ({ o, key, value }) => {
 
         if (!o.__view__) return
-        if (key && value !== undefined) o.__element__.style.backgroundColor = value
+        if (key && value !== undefined) return o.__element__.style.backgroundColor = value
         else return o.__element__.backgroundColor
 
     }, "display()": ({ o, value, key }) => {
         
         if (!o.__view__) return
-        o.__element__.style.display = ["flex", "none", "block"].includes(value) ? value : "flex"
+        return o.__element__.style.display = ["flex", "none", "block"].includes(value) ? value : "flex"
 
-    }, "scale()": ({ _window, o, id, e, __, args, object, lastIndex, value, i, key, condition }) => {
+    }, "scale()": ({ _window, o, id, e, __, args, object, lastIndex, value, i, key, props = {} }) => {
         
         if (!o.__view__) return
-        var scale = toValue({ _window, id, e, data: args[1], __, object }) || 0
+        var scale = toValue({ _window, id, e, data: args[1], __, object, props:{isValue:true} }) || 0
         var transform = o.__element__.style.transform || ""
         
         if (key && i === lastIndex && value !== undefined) return o.__element__.style.transform = (transform ? " " : "") + `scale(${value})`
-        else if (condition || (!args[1] && i === lastIndex)) return getNumberAfterString(o.__element__.style.transform, "scale(") || 0
-        o.__element__.style.transform = (transform ? " " : "") + `scale(${scale})`
+        else if (props.isCondition || (!args[1] && i === lastIndex)) return getNumberAfterString(o.__element__.style.transform, "scale(") || 0
+        return o.__element__.style.transform = (transform ? " " : "") + `scale(${scale})`
 
-    }, "rotate()": ({ _window, o, id, e, __, args, object, lastIndex, value, i, key, condition }) => {
+    }, "rotate()": ({ _window, o, id, e, __, args, object, lastIndex, value, i, key, props }) => {
         
         if (!o.__view__) return
-        var angle = toValue({ _window, id, e, data: args[1], __, object }) || 0
+        var angle = toValue({ _window, id, e, data: args[1], __, object, props:{isValue:true} }) || 0
         var transform = o.__element__.style.transform || ""
         
         if (key && i === lastIndex && value !== undefined) return o.__element__.style.transform = (transform ? " " : "") + `rotate(${value}deg)`
-        else if (condition || (!args[1] && i === lastIndex)) return getNumberAfterString(o.__element__.style.transform, "rotate(") || 0
-        o.__element__.style.transform = (transform ? " " : "") + `rotate(${angle}deg)`
+        else if (props.isCondition || (!args[1] && i === lastIndex)) return getNumberAfterString(o.__element__.style.transform, "rotate(") || 0
+        return o.__element__.style.transform = (transform ? " " : "") + `rotate(${angle}deg)`
 
     }, "hide()": ({ o }) => {
 
         if (!o.__view__) return
-        o.__element__.style.display = "none"
+        return o.__element__.style.display = "none"
 
     }, "hidden()": ({ o }) => {
 
@@ -1311,25 +1311,25 @@ const actions = {
 
     }, "fade()": ({ _window, id, e, object, args, __, value, key, lastIndex, i, o }) => {
 
-        var opacity = toValue({ _window, id, e, object, data: args[1], __ }) || 0
-        var timer = toValue({ _window, id, e, object, data: args[2], __ }) || 0
+        var opacity = toValue({ _window, id, e, object, data: args[1], __, props:{isValue:true} }) || 0
+        var timer = toValue({ _window, id, e, object, data: args[2], __, props:{isValue:true} }) || 0
 
         if (key && lastIndex === i && value !== undefined) return o.__element__.style.opacity = 1 - value
         if (!o.__view__) return
         if (timer) o.__element__.style.transition += `, opacity ${timer}ms`
-        o.__element__.style.opacity = 1 - opacity
+        return o.__element__.style.opacity = 1 - opacity
 
     }, "opacity()": ({ _window, id, e, object, args, __, value, key, lastIndex, i, o }) => {
 
-        var opacity = toValue({ _window, id, e, object, data: args[1], __ }) || 0
-        var timer = toValue({ _window, id, e, object, data: args[2], __ }) || 0
+        var opacity = toValue({ _window, id, e, object, data: args[1], __, props:{isValue:true} }) || 0
+        var timer = toValue({ _window, id, e, object, data: args[2], __, props:{isValue:true} }) || 0
 
         if (key && lastIndex === i && value !== undefined) return o.__element__.style.opacity = value
         if (!o.__view__) return
         if (timer) o.__element__.style.transition += `, opacity ${timer}ms`
-        o.__element__.style.opacity = opacity
+        return o.__element__.style.opacity = opacity
 
-    }, "style()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "style()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
         if (!o.__view__) return
         if (!args[1]) {
@@ -1339,8 +1339,8 @@ const actions = {
             } return o.__element__.style
         }
 
-        var styles = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-
+        var styles = toValue({ req, res, _window, lookupActions, stack, props: {isValue: true}, id, e, __, data: args[1], object })
+        
         if (Object.keys(styles).length > 0) {
 
             var obj = o.__element__ ? o.__element__ : o
@@ -1350,25 +1350,26 @@ const actions = {
                 obj.style[key] = value
             })
         }
+        return styles
 
-    }, "qr()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+    }, "qr()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
         // wait address
-        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "qr()", object, lookupActions, __, id })
-        qr({ _window, id, req, res, data, e, __, stack, address, lookupActions })
+        var { address, data } = addresser({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id || id, action: "qr()", object, lookupActions, __, id })
+        return qr({ _window, id, req, res, data, e, __, stack, props, address, lookupActions })
 
-    }, "contact()": ({ _window, req, res, o, id, e, __, args }) => {
+    }, "contact()": ({ _window, req, res, o, id, e, __, args, object }) => {
 
-        var data = toValue({ req, res, _window, id, e, __, data: args[1] })
+        var data = toValue({ req, res, _window, id, e, __, data: args[1], object, props:{isValue:true} })
         if (typeof data !== "obejct") return o
 
-        vcard({ _window, id, req, res, data, e, __ })
+        return vcard({ _window, id, req, res, data, e, __ })
 
     }, "bracket()": ({ o }) => {
 
         if (typeof o === "object") return require("./jsonToBracket").jsonToBracket(o)
 
-    }, "inputs()": ({ _window, views, o, stack, lookupActions }) => {
+    }, "inputs()": ({ _window, views, o, stack, props, lookupActions, id }) => {
 
         if (!o.__view__) return
         var inputs = [], textareas = [], editables = []
@@ -1387,12 +1388,12 @@ const actions = {
 
         inputs = o.__element__.getElementsByTagName("INPUT")
         textareas = o.__element__.getElementsByTagName("TEXTAREA")
-        editables = getDeepChildren({ _window, lookupActions, stack, id: o.id }).filter(view => view.editable)
+        editables = getDeepChildren({ _window, lookupActions, stack, props, id: o.id || id }).filter(view => view.editable)
         if (o.editable) editables.push(o)
 
-        return [...inputs, ...textareas, ...editables].map(o => views[o.id])
+        return [...inputs, ...textareas, ...editables].map(o => views[o.id || id])
 
-    }, "input()": ({ _window, views, o, stack, lookupActions }) => {
+    }, "input()": ({ _window, views, o, stack, props, lookupActions, id }) => {
 
         if (!o.__view__) return
         var inputs = [], textareas = [], editables = [], input
@@ -1412,15 +1413,15 @@ const actions = {
 
         inputs = o.__element__.getElementsByTagName("INPUT")
         textareas = o.__element__.getElementsByTagName("TEXTAREA")
-        editables = getDeepChildren({ _window, lookupActions, stack, id: o.id }).filter(view => view.editable)
+        editables = getDeepChildren({ _window, lookupActions, stack, props, id: o.id || id }).filter(view => view.editable)
         if (o.editable) editables.push(o)
 
         if ([...inputs, ...textareas, ...editables].length === 0) return
         return views[[...inputs, ...textareas, ...editables][0].id]
 
-    }, "px()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "px()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        if (args[1]) return lengthConverter(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
+        if (args[1]) return lengthConverter(toValue({ req, res, _window, lookupActions, object, stack, props:{isValue:true}, id, e, __, data: args[1] }))
         return lengthConverter(o)
 
     }, "touchable()": ({ _window, global }) => {
@@ -1428,22 +1429,22 @@ const actions = {
         if (_window) return global.manifest.device.device.type === "smartphone"
         else return (('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0))
 
-    }, "class()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, i, lastIndex, value, key, path, breakRequest, condition, _object, answer }) => {
+    }, "class()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, answer, object }) => {
 
         if (!o.__view__) return
-        var className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        var className = toValue({ req, res, _window, lookupActions, object, stack, props:{isValue:true}, id, e, __, data: args[1] })
 
         var answer = [...o.__element__.getElementsByClassName(className)]
-        return answer.map(o => window.views[o.id])
+        return answer.map(o => window.views[o.id || id])
 
     }, "classList()": ({ o }) => {
 
         if (!o.__view__) return
         return [...o.__element__.classList]
 
-    }, "log()": ({ _window, req, res, o, stack, pathJoined, lookupActions, id, e, __, args, k, underScored, object, i }) => {
+    }, "log()": ({ _window, req, res, o, stack, props, pathJoined, lookupActions, id, e, __, args, k, underScored, object, i }) => {
 
-        var logs = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, id, e, __: underScored ? [o, ...__] : __, data: arg, object: underScored ? object : (i === 0 ? ((pathJoined || "").split(".")[0] !== k ? o : undefined) : o) }))
+        var logs = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, e, __: underScored ? [o, ...__] : __, data: arg, object }))
         if (args.slice(1).length === 0 && pathJoined !== "log()") logs = [o]
 
         console.log("LOG:" + (o.id || id), decode({ _window, string: pathJoined }), ...logs)
@@ -1452,20 +1453,25 @@ const actions = {
         return o
     }, "parent()": ({ _window, o }) => {
 
+        if (!o.__view__) return
         return nthParent({ _window, nth: 1, o })
 
     }, "2ndParent()": ({ _window, o }) => {
 
+        if (!o.__view__) return
         return nthParent({ _window, nth: 2, o })
 
     }, "3rdParent()": ({ _window, o }) => {
 
+        if (!o.__view__) return
         return nthParent({ _window, nth: 3, o })
 
-    }, "nthParent()": ({ _window, o, stack, lookupActions, id, e, __, args }) => {
-
-        if (!o.__view__ || !o.id) return
-        var nth = toValue({ _window, id, e, lookupActions, stack, __, data: args[1] })
+    }, "nthParent()": ({ _window, o, stack, props, lookupActions, id, e, __, args, object }) => {
+        
+        if (!o.__view__) return
+        
+        var nth = toValue({ _window, id, e, lookupActions, stack, props:{isValue:true}, __, data: args[1], object })
+        
         return nthParent({ _window, nth, o })
 
     }, "prevSiblings()": ({ views, o }) => {
@@ -1487,20 +1493,23 @@ const actions = {
 
     }, "next()": ({ _window, o }) => {
 
+        if (!o.__view__) return
         return nthNext({ _window, nth: 1, o })
 
     }, "2ndNext()": ({ _window, o }) => {
 
+        if (!o.__view__) return
         return nthNext({ _window, nth: 2, o })
 
     }, "3rdNext()": ({ _window, o }) => {
 
+        if (!o.__view__) return
         return nthNext({ _window, nth: 3, o })
 
-    }, "nthNext()": ({ _window, o, stack, lookupActions, id, e, __, args }) => {
+    }, "nthNext()": ({ _window, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
         if (!o.__view__ || !o.id) return
-        var nth = toValue({ _window, __, data: args[1], e, id, lookupActions, stack })
+        var nth = toValue({ _window, __, data: args[1], e, id, lookupActions, stack, props:{isValue:true}, object })
         return nthNext({ _window, nth, o })
 
     }, "last()": ({ views, o }) => {
@@ -1523,10 +1532,10 @@ const actions = {
         if (!o.__view__ || !o.id) return
         return views[views[o.__parent__].__childrenRef__.slice(-3)[0].id]
 
-    }, "nthLast()": ({ _window, views, o, stack, lookupActions, id, e, __, args }) => {
+    }, "nthLast()": ({ _window, views, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
         if (!o.__view__ || !o.id) return
-        var nth = toValue({ _window, __, data: args[1], e, id, lookupActions, stack })
+        var nth = toValue({ _window, __, data: args[1], e, id, lookupActions, stack, props:{isValue:true}, object })
         if (!isNumber(nth)) return
         return views[views[o.__parent__].__childrenRef__.slice(-1 * nth)[0].id]
 
@@ -1545,10 +1554,10 @@ const actions = {
         if (!o.__view__ || !o.id) return o
         return views[views[o.__parent__].__childrenRef__[2].id]
 
-    }, "nthSibling()": ({ _window, views, o, stack, lookupActions, id, e, __, args }) => {
+    }, "nthSibling()": ({ _window, views, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
         if (!o.__view__ || !o.id) return o
-        var nth = toValue({ _window, id, e, __, data: args[1], lookupActions, stack })
+        var nth = toValue({ _window, id, e, __, data: args[1], lookupActions, stack, object, props:{isValue:true} })
         return views[views[o.__parent__].__childrenRef__[nth - 1].id]
 
     }, "grandChild()": ({ views, o }) => {
@@ -1563,20 +1572,23 @@ const actions = {
 
     }, "prev()": ({ _window, o }) => {
 
+        if (!o.__view__) return
         return nthPrev({ _window, nth: 1, o })
 
     }, "2ndPrev()": ({ _window, o }) => {
 
+        if (!o.__view__) return
         return nthPrev({ _window, nth: 2, o })
 
     }, "3rdPrev()": ({ _window, o }) => {
 
+        if (!o.__view__) return
         return nthPrev({ _window, nth: 3, o })
 
-    }, "nthPrev()": ({ _window, o, stack, lookupActions, id, e, __, args }) => {
+    }, "nthPrev()": ({ _window, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
         if (!o.__view__ || !o.id) return
-        var nth = toValue({ _window, id, e, __, data: args[1], lookupActions, stack })
+        var nth = toValue({ _window, id, e, __, data: args[1], object, lookupActions, stack, props:{isValue:true} })
         return nthPrev({ _window, nth, o })
 
     }, "1stChild()": ({ views, o }) => {
@@ -1599,10 +1611,10 @@ const actions = {
         if (!o.__view__ || !o.id || !o.__childrenRef__[2]) return
         return views[o.__childrenRef__[2].id]
 
-    }, "nthChild()": ({ _window, views, o, stack, lookupActions, id, e, __, args }) => {
+    }, "nthChild()": ({ _window, views, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
         if (!o.__view__ || !o.id) return
-        var nth = toValue({ _window, __, data: args[1], e, id, stack, lookupActions })
+        var nth = toValue({ _window, __, data: args[1], e, id, stack, object, props:{isValue:true}, lookupActions })
         if (!isNumber(nth)) return
         if (!o.__childrenRef__[nth - 1]) return
         return views[o.__childrenRef__[nth - 1].id]
@@ -1622,10 +1634,10 @@ const actions = {
         if (!o.__view__ || !o.id) return
         return views[o.__childrenRef__.slice(-1)[0].id]
 
-    }, "nthLastChild()": ({ _window, views, o, id, e, __, args }) => {
+    }, "nthLastChild()": ({ _window, views, o, id, e, __, args, object }) => {
 
         if (!o.__view__ || !o.id) return
-        var nth = toValue({ _window, __, data: args[1], e, id })
+        var nth = toValue({ _window, __, data: args[1], e, id, object, props:{isValue:true} })
         if (!isNumber(nth)) return
         return views[o.__childrenRef__.slice(-1 * nth)[0].id]
 
@@ -1646,18 +1658,18 @@ const actions = {
 
         return o[o.length - 3]
 
-    }, "nthLastEl()": ({ _window, o, stack, lookupActions, id, e, __, args }) => {
+    }, "nthLastEl()": ({ _window, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var nth = toValue({ _window, __, data: args[1], e, id, lookupActions, stack })
+        var nth = toValue({ _window, __, data: args[1], e, id, lookupActions, stack, object, props:{isValue:true} })
         return o[o.length - nth]
 
-    }, "while()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "while()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        while (toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })) {
-            toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e })
+        while (toValue({ req, res, _window, lookupActions, stack, object, props:{isValue:true}, id, data: args[1], __, e })) {
+            toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, data: args[2], __, e })
         }
 
-    }, "data()": ({ _window, req, res, global, o, stack, lookupActions, id, e, __, args, object, i, lastIndex, value, key, path, breakRequest }) => {
+    }, "data()": ({ _window, req, res, global, o, stack, props, lookupActions, id, e, __, args, object, i, lastIndex, value, key, path, breakRequest }) => {
 
         /*if (o.__props__) {
             var {__props__, ...data} = o
@@ -1669,18 +1681,18 @@ const actions = {
 
         breakRequest.break = true
 
-        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
+        var data = toValue({ req, res, _window, lookupActions, stack, props: {isValue: true}, object, id, e, __, data: args[1] || "" })
 
-        if (data.path) return answer = kernel({ req, res, _window, lookupActions, stack, id, e, data: { data: data.data || global[data.doc || o.doc], value, key, path: data.path, object }, __ })
+        if (data.path) return answer = kernel({ req, res, _window, lookupActions, stack, props, id, e, data: { data: data.data || global[data.doc || o.doc], value, key, path: data.path }, __, object })
 
         if (!o.doc) return
 
         // ex: data()=value => ().data=value
         if (i === lastIndex && key && value !== undefined) o.data = value
 
-        return kernel({ req, res, _window, lookupActions, stack, id, data: { path: [...o.__dataPath__, ...path.slice(i + 1)], object, data: global[o.doc], value, key }, __, e })
+        return kernel({ req, res, _window, lookupActions, stack, props, id, data: { path: [...o.__dataPath__, ...path.slice(i + 1)], data: global[o.doc], value, key }, __, e, object })
 
-    }, "doc()": ({ _window, req, res, global, views, o, stack, lookupActions, id, e, __, args, object, i, value, key, path, breakRequest, answer }) => {
+    }, "doc()": ({ _window, req, res, global, views, o, stack, props, lookupActions, id, e, __, args, object, i, value, key, path, breakRequest, answer }) => {
 
         breakRequest.break = true
         var doc = o.__view__ ? o.doc : views[id].doc
@@ -1689,24 +1701,24 @@ const actions = {
 
             if (isParam({ _window, string: args[1] })) {
 
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                data = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: args[1] })
                 args[1] = data.path || data.__dataPath__ || []
                 if (typeof args[1] === "string") args[1] = args[1].split(".")
 
-                return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
+                return answer = reducer({ req, res, _window, lookupActions, stack, props, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)] }, object, __ })
             }
 
             if (args[1].charAt(0) === "@") args[1] = global.__refs__[args[1]].data
-            args[1] = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+            args[1] = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, data: args[1], __, e })
             if (typeof args[1] === "string") args[1] = args[1].split(".")
 
-            return answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)], object }, __ })
+            return answer = reducer({ req, res, _window, lookupActions, stack, props, id, e, data: { value, key, path: [`${doc}:()`, ...args[1], ...path.slice(i + 1)] }, object, __ })
         }
 
         if (path[i + 1] !== undefined) {
 
-            if (path[i + 1] && path[i + 1].charAt(0) === "@") path[i + 1] = toValue({ req, res, _window, lookupActions, stack, id, data: global.__refs__[path[i + 1]].data, __, e })
-            answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { value, key, path: [`${doc}:()`, ...path.slice(i + 1)], object }, __ })
+            if (path[i + 1] && path[i + 1].charAt(0) === "@") path[i + 1] = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, data: global.__refs__[path[i + 1]].data, __, e, object })
+            answer = reducer({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, e, data: { value, key, path: [`${doc}:()`, ...path.slice(i + 1)] }, object, __ })
 
         } 
         
@@ -1730,44 +1742,44 @@ const actions = {
 
         installApp()
 
-    }, "clearTimer()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "clearTimer()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var timer = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e }) || o
+        var timer = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, data: args[1], __, e, object }) || o
         return clearTimeout(timer)
 
-    }, "clearInterval()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "clearInterval()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var timer = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e }) || o
+        var timer = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, data: args[1], __, e, object }) || o
         return clearInterval(timer)
 
-    }, "interval()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+    }, "interval()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
         if (!o.__view__) return
-        if (!isNaN(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))) { // interval():params:timer
+        if (!isNaN(toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, data: args[2], __, e }))) { // interval():params:timer
 
-            var timer = parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e }))
-            var myFn = () => toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1], object })
+            var timer = parseInt(toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, data: args[2], __, e, object }))
+            var myFn = () => toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, e, __, data: args[1], object })
             return setInterval(myFn, timer)
         }
 
-    }, "repeat()": ({ _window, req, res, stack, lookupActions, id, e, __, args, object, i }) => {
+    }, "repeat()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, object, i }) => {
 
-        var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
-        var times = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
+        var item = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, data: args[1], __, e, object })
+        var times = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, data: args[2], __, e, object })
         var loop = []
         for (var i = 0; i < times; i++) {
             loop.push(item)
         }
         return loop
 
-    }, "timer()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object, answer, pathJoined }) => { // timer():params:timer:repeats
+    }, "timer()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object, answer, pathJoined }) => { // timer():params:timer:repeats
 
         if (_window) return console.log("Cannot run a timer in server => " + decode({ _window, string: pathJoined }))
 
-        var timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })) : 0
-        var repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object })) : false
+        var timer = args[2] ? parseInt(toValue({ req, res, _window, lookupActions, stack, props: { isValue: true }, id, data: args[2], __, e, object })) : 0
+        var repeats = args[3] ? parseInt(toValue({ req, res, _window, lookupActions, stack, props: { isValue: true }, id, data: args[3], __, e, object })) : false
         var myFn = () => { eventExecuter({ req, res, event: "Timer", eventID: id, _window, lookupActions, id, string: args[1], __, e, object }) }
-        
+
         if (typeof repeats === "boolean") {
 
             if (repeats === true) answer = setInterval(myFn, timer)
@@ -1787,12 +1799,12 @@ const actions = {
         if (o.__view__) toArray(answer).map(timer => o.__timers__.push(timer))
         return answer
 
-    }, "slice()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object, answer }) => { // slice by text or by number
+    }, "slice()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object, answer }) => { // slice by text or by number
 
         if (!Array.isArray(o) && typeof o !== "string" && typeof o !== "number") return
 
-        var start = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object })
-        var end = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[2], __, object })
+        var start = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, e, data: args[1], __, object })
+        var end = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, e, data: args[2], __, object })
 
         if (end !== undefined) {
 
@@ -1818,22 +1830,23 @@ const actions = {
         }
         return answer
 
-    }, "reduce()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, value, key }) => { // o.reduce():[path=]
+    }, "reduce()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, value, key, object }) => { // o.reduce():[path=]
 
-        var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        var data = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, data: args[1], __ })
         if (Array.isArray(data)) data = { path: data }
-        return reducer({ _window, lookupActions, stack, id, data: { path: data.path, object: o, key: data.data !== undefined, value: data.data !== undefined ? data.data : value }, e, req, res, __ })
+        return reducer({ _window, lookupActions, stack, props, id, data: { path: data.path, key: data.data !== undefined, value: data.data !== undefined ? data.data : value }, object: [o, ...toArray(object)], e, req, res, __ })
 
-    }, "path()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, lastIndex, value, key }) => {
+    }, "path()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, lastIndex, value, key, object }) => {
 
+        if (!o.__view__) return
         var data = {}
         if (args[1]) {
 
             if (isParam({ _window, string: args[1] })) {
 
-                data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                data = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: args[1] })
 
-            } else data.path = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+            } else data.path = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, e, data: args[1], __, object })
         }
 
         if ((key && value !== undefined && lastIndex) || data.value !== undefined) {
@@ -1855,9 +1868,9 @@ const actions = {
 
         document.location.reload(true)
 
-    }, "contains()": ({ _window, req, res, views, o, stack, lookupActions, id, e, __, args, answer }) => {
+    }, "contains()": ({ _window, req, res, views, o, stack, props, lookupActions, id, e, __, args, answer, object }) => {
 
-        var first = o, next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+        var first = o, next = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, data: args[1], __, e, object })
         if (!first || !next) return
 
         if (typeof first === "string") first = views[first]
@@ -1874,9 +1887,9 @@ const actions = {
         }
         return answer
 
-    }, "in()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "in()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var next = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+        var next = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, data: args[1], __, e, object })
 
         if (next) {
             if (typeof o === "string" || Array.isArray(o) || typeof o === "number") return next.includes(o)
@@ -1884,9 +1897,9 @@ const actions = {
             else if (o.nodeType === Node.ELEMENT_NODE && next.nodeType === Node.ELEMENT_NODE) return next.contains(o)
         } else return false
 
-    }, "is()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "is()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var b = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+        var b = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, data: args[1], __, e })
         return isEqual(o, b)
 
     }, "opp()": ({ o }) => {
@@ -1930,17 +1943,17 @@ const actions = {
         answer = toArray(o)
         return [...answer]
 
-    }, "notify()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+    }, "notify()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, object }) => {
 
         var notify = () => {
             if (isParam({ _window, string: args[1] })) {
 
-                var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var _params = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: args[1] })
                 new Notification(_params.title || "", _params)
 
             } else {
 
-                var title = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+                var title = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] })
                 new Notification(title || "")
             }
         }
@@ -1965,18 +1978,18 @@ const actions = {
             });
         }
 
-    }, "alert()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+    }, "alert()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var text = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+        var text = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, data: args[1], __, e })
         alert(text)
 
     }, "clone()": ({ o }) => {
 
         return clone(o)
 
-    }, "override()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "override()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var obj1 = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e })
+        var obj1 = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, data: args[1], __, e })
         override(o, obj1)
 
     }, "icon()": ({ views, o }) => {
@@ -2072,12 +2085,12 @@ const actions = {
         if (i === lastIndex && key && value !== undefined) o.max = value
         return o.max
 
-    }, "push()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object, i, path, _object }) => {
+    }, "push()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object, i, path, _object }) => {
 
-        if (!Array.isArray(o)) o = kernel({ req, res, _window, id, data: { data: _object, path: path.slice(0, i), value: [], key: true, object }, __, e })
+        if (!Array.isArray(o)) o = kernel({ req, res, _window, id, stack, props: {isValue: true}, data: { data: _object, path: path.slice(0, i), value: [], key: true }, __, e, object })
 
-        var item = toValue({ req, res, _window, lookupActions, stack, id, data: args[1], __, e, object })
-        var index = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
+        var item = toValue({ req, res, _window, lookupActions, stack, props: {isValue: true}, id, data: args[1], __, e, object })
+        var index = toValue({ req, res, _window, lookupActions, stack, props: {isValue: true}, id, data: args[2], __, e, object })
 
         if (!Array.isArray(o)) return
         if (index === undefined) index = o.length || 0
@@ -2096,12 +2109,12 @@ const actions = {
     }, "pushItems()": ({ _window, req, res, o, id, e, __, args, object }) => {
 
         args.slice(1).map(arg => {
-            arg = toValue({ req, res, _window, id, data: args[1], __, e, object })
+            arg = toValue({ req, res, _window, id, data: args[1], __, e, object, props:{isValue:true} })
             o.splice(o.length, 0, arg)
         })
         return o
 
-    }, "pullIndex()": ({ _window, o, stack, lookupActions, id, e, __, args, object, i, lastIndex, pathJoined }) => { // pull by index
+    }, "pullIndex()": ({ _window, o, stack, props, lookupActions, id, e, __, args, object, i, lastIndex, pathJoined }) => { // pull by index
 
         if (!Array.isArray(o)) {
             if (stack.server) return o
@@ -2110,19 +2123,19 @@ const actions = {
 
         // if no index pull the last element
         var lastIndex = 1, firstIndex = 0
-        if (args[1]) firstIndex = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack })
-        if (args[2]) lastIndex = toValue({ _window, id, data: args[2], __, e, object, lookupActions, stack })
+        if (args[1]) firstIndex = toValue({ _window, id, data: args[1], __, e, lookupActions, stack, props:{isValue:true}, object })
+        if (args[2]) lastIndex = toValue({ _window, id, data: args[2], __, e, lookupActions, stack, props:{isValue:true}, object })
 
         o.splice(firstIndex, lastIndex || 1)
         return o
 
-    }, "pull()": ({ _window, o, stack, lookupActions, id, e, __, args, object, pathJoined }) => { // pull by conditions
+    }, "pull()": ({ _window, o, stack, props, lookupActions, id, e, __, args, object, pathJoined }) => { // pull by conditions
 
         if (!Array.isArray(o)) {
             if (stack.server) return o
             else throw "Pulling from a non list at pull() => " + decode({ _window, string: pathJoined })
         }
-        var items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: o, __, lookupActions, stack }))
+        var items = o.filter(o => toApproval({ _window, e, data: args[1], id, object: [o, ...object], __, lookupActions, stack, props }))
 
         items.filter(data => data !== undefined && data !== null).map(_item => {
             var _index = o.findIndex(item => isEqual(item, _item))
@@ -2131,18 +2144,18 @@ const actions = {
 
         return o
 
-    }, "pullItem()": ({ _window, o, id, e, __, args, stack, object, pathJoined }) => { // pull by item
+    }, "pullItem()": ({ _window, o, id, e, __, args, stack, props, object, pathJoined }) => { // pull by item
 
         if (!Array.isArray(o)) {
             if (stack.server) return o
             else throw "Pulling item from a non list => " + decode({ _window, string: pathJoined })
         }
-        var item = toValue({ _window, id, data: args[1], __, e, object })
+        var item = toValue({ _window, id, data: args[1], __, e, props:{isValue:true}, object })
         var index = o.findIndex(_item => isEqual(_item, item))
         if (index !== -1) o.splice(index, 1)
         return o
 
-    }, "pullLast()": ({ _window, o, stack, pathJoined }) => {
+    }, "pullLast()": ({ _window, o, stack, props, pathJoined }) => {
 
         if (!Array.isArray(o)) {
             if (stack.server) return o
@@ -2152,11 +2165,12 @@ const actions = {
         o.splice(o.length - 1, 1)
         return o
 
-    }, "rem()": ({ _window, id, o, stack, __, e, object, args }) => {
+    }, "rem()": ({ _window, id, o, stack, props, __, e, object, args }) => {
 
         if (!o.__view__) return
-        var data = toParam({ _window, id, data: args[1], __, e, object })
-        remove({ id: o.id, __, stack, data })
+        var data = toValue({ _window, id, data: args[1], __, e, props: {isValue:true}, object })
+        remove({ id: o.id, __, stack, props, data })
+        return true
 
     }, "keys()": ({ o }) => {
 
@@ -2177,29 +2191,29 @@ const actions = {
         if (i === lastIndex && value !== undefined && key) return o[Object.keys(o)[0]] = value
         else return Object.values(o)[0]
 
-    }, "gen()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+    }, "gen()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, object }) => {
 
         if (isParam({ _window, string: args[1] })) {
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var data = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: args[1] })
             return generate(data)
 
         } else {
 
-            var length = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 5
+            var length = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] }) || 5
             return generate({ length })
         }
 
-    }, "inc()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "inc()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var item = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        var item = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, data: args[1], __ })
 
         if (typeof o === "string") return o.split(item).length > 1
         else if (Array.isArray(o)) return o.find(_item => isEqual(_item, item)) ? true : false
 
-    }, "incAny()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, answer }) => {
+    }, "incAny()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, answer, object }) => {
 
-        var items = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        var items = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, data: args[1], __ })
         answer = false
 
         if (typeof o === "string") {
@@ -2234,15 +2248,15 @@ const actions = {
         else if (typeof o === "string") return o.split("").length
         else if (typeof o === "object") return Object.keys(o).length
 
-    }, "require()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+    }, "require()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        require(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
+        require(toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] }))
 
-    }, "new()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+    }, "new()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var data = [], className = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        var data = [], className = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] })
         args.slice(1).map(arg => {
-            data.push(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg || "" }))
+            data.push(toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: arg || "" }))
         })
         if (className && typeof (new [className]()) === "object") return new [className](...data)
 
@@ -2266,16 +2280,16 @@ const actions = {
         var timeZone = Math.abs(_date.getTimezoneOffset()) * 60 * 1000
         return timeZone
 
-    }, "clock()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, answer }) => { // dd:hh:mm:ss
+    }, "clock()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object, answer }) => { // dd:hh:mm:ss
 
-        var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        var data = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, data: args[1], __ })
         if (!data.timestamp) data.timestamp = o
 
         return toClock(data)
 
-    }, "toSimplifiedDate()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, answer }) => {
+    }, "toSimplifiedDate()": ({ _window, req, res, o, stack, props, object, lookupActions, id, e, __, args, answer }) => {
 
-        var data = toParam({ _window, req, res, lookupActions, stack, id, e, data: args[1], __ })
+        var data = toValue({ _window, req, res, lookupActions, stack, props: {isValue:true}, object, id, e, data: args[1], __ })
         return toSimplifiedDate({ timestamp: o, lang: data.lang || "en", timer: data.time || false })
 
     }, "lowercase()": ({ o }) => {
@@ -2303,17 +2317,17 @@ const actions = {
         if (Array.isArray(o)) return o.map(o => o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
         else return o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d])
 
-    }, "date()": ({ _window, stack, lookupActions, id, e, __, args, object }) => {
+    }, "date()": ({ _window, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var data = toValue({ _window, id, data: args[1], __, e, object, lookupActions, stack })
+        var data = toValue({ _window, id, data: args[1], __, e, lookupActions, stack, props:{isValue:true}, object })
         if (isNumber(data) && typeof data === "string") data = parseInt(data)
         return new Date(data)
 
-    }, "toDateFormat()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => { // returns date for input
+    }, "toDateFormat()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => { // returns date for input
 
         if (isParam({ _window, string: args[1] })) {
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var data = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: args[1] })
             var format = data.format, day = 0, month = 0, year = 0, hour = 0, sec = 0, min = 0
 
             if (typeof o === "string") {
@@ -2360,7 +2374,7 @@ const actions = {
 
         } else {
 
-            var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) || "format1"
+            var format = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, data: args[1], __ }) || "format1"
 
             if (!isNaN(o) && typeof o === "string") o = parseInt(o)
             var date = new Date(o)
@@ -2379,14 +2393,14 @@ const actions = {
             else if (format.replace(" ", "") === "format4") return `${_daysofWeek[_dayofWeek]} ${_day.toString().length === 2 ? _day : `0${_day}`}/${_month.toString().length === 2 ? _month : `0${_month}`}/${_year}${` | ${_hour.toString().length === 2 ? _hour : `0${_hour}`}:${_mins.toString().length === 2 ? _mins : `0${_mins}`}`}`
         }
 
-    }, "toDateInputFormat()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => { // returns date for input in a specific format
+    }, "toDateInputFormat()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => { // returns date for input in a specific format
 
         var data = {}
         if (isParam({ _window, string: args[1] })) {
 
-            data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            data = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: args[1] })
         } else if (args[1]) {
-            data = { date: toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ }) }
+            data = { date: toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, data: args[1], __ }) }
         } else data = { date: o }
 
         var format = data.format || "yyyy-mm-dd"
@@ -2479,11 +2493,9 @@ const actions = {
         navigator.geolocation.getCurrentPosition((position) => { answer = position })
         return answer
 
-    }, "counter()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+    }, "counter()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var data = {}
-        if (isParam({ _window, string: args[1] })) data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-        else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        var data = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, data: args[1], __ })
 
         data.counter = data.counter || data.start || data.count || 0
         data.length = data.length || data.len || data.maxLength || 0
@@ -2536,9 +2548,9 @@ const actions = {
             return o.getTime()
         }*/
 
-    }, "getDateTime()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, k, underScored, i, lastIndex, value, key, path, breakRequest, condition, _object, answer }) => {
+    }, "getDateTime()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var format = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __ })
+        var format = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, data: args[1], __ })
         return getDateTime(o, format)
 
     }, "getDaysInMonth()": ({ o }) => {
@@ -2887,11 +2899,11 @@ const actions = {
 
         return new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
 
-    }, "removeDuplicates()": ({ _window, o, stack, lookupActions, id, e, __, args }) => { // without condition and by condition. ex: removeDuplicates():number (it will remove items that has the same number value)
+    }, "removeDuplicates()": ({ _window, o, stack, props, lookupActions, id, e, __, args, object }) => { // without condition and by condition. ex: removeDuplicates():number (it will remove items that has the same number value)
 
         if (args[1]) {
 
-            var keys = toValue({ _window, e, data: args[1], id, __, lookupActions, stack })
+            var keys = toValue({ _window, e, data: args[1], id, __, lookupActions, stack, props:{isValue:true}, object })
             var list = []
 
             toArray(keys).map(key => {
@@ -2926,33 +2938,33 @@ const actions = {
             return o
         }
 
-    }, "replaceAll()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "replaceAll()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
         
         if (typeof o === "string") {
 
-            var rec0 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
-            var rec1 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] || "" })
+            var rec0 = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] || "" })
+            var rec1 = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[2] || "" })
             return o.replaceAll(rec0, rec1)
         }
 
-    }, "replace()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object, i, path, _object, pathJoined }) => { // replace():[conditions]:newItem
+    }, "replace()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object, i, path, _object, pathJoined }) => { // replace():[conditions]:newItem
 
         if (typeof o === "string") {
 
-            var rec0 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
-            var rec1 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] || "" })
+            var rec0 = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] || "" })
+            var rec1 = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[2] || "" })
             if (rec1 !== undefined) return o.replace(rec0, rec1)
             else return o.replace(rec0)
         }
 
-        if (!Array.isArray(o)) o = kernel({ req, res, _window, id, stack, data: { data: _object, path: path.slice(0, i), value: [], key: true, object }, __, e }) || []
+        if (!Array.isArray(o)) o = kernel({ req, res, _window, id, stack, props, data: { data: _object, path: path.slice(0, i), value: [], key: true }, __, e, object }) || []
 
-        var newItem = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] || "" }), pushed = false
+        var newItem = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[2] || "" }), pushed = false
 
         if (o.length === 0) o.push(newItem)
         else {
             o.map((item, i) => {
-                if (toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: item })) {
+                if (toApproval({ _window, lookupActions, stack, props, e, data: args[1], id, __, req, res, object: [item, ...toArray(object)] })) {
                     pushed = true
                     o[i] = newItem
                 }
@@ -2963,42 +2975,42 @@ const actions = {
 
         return o
 
-    }, "replaceItem()": ({ o, req, res, _window, lookupActions, stack, id, e, __, args }) => { // replaceItem():item
+    }, "replaceItem()": ({ o, req, res, _window, lookupActions, stack, props, id, e, __, args, object }) => { // replaceItem():item
 
-        if (!Array.isArray(o) && typeof o !== "string") o = kernel({ req, res, _window, id, data: { data: _object, path: path.slice(0, i), value: [], key: true, object }, __, e })
+        if (!Array.isArray(o) && typeof o !== "string") o = kernel({ req, res, _window, id, data: { data: _object, path: path.slice(0, i), value: [], key: true }, __, e, object })
 
         if (typeof o === "string") {
 
-            var rec0 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
-            var rec1 = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] || "" })
+            var rec0 = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] || "" })
+            var rec1 = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[2] || "" })
             
             if (rec1 !== undefined) return o.replaceAll(rec0, rec1)
             else return o.replaceAll(rec0)
         }
 
-        var newItem = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] || "" })
+        var newItem = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] || "" })
         var index = o.findIndex(item => isEqual(item, newItem))
         if (index >= 0) o[index] = newItem
         else o.push(newItem)
 
         return o
 
-    }, "replaceItems()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "replaceItems()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
         if (isParam({ _window, string: args[1] })) {
 
-            var _params = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var _params = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: args[1] })
             var _path = _params.path, _data = _params.data.filter(data => data !== undefined && data !== null)
             toArray(_data).map(_data => {
 
-                var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], data: item }, __: [o, ...__], e }), kernel({ req, res, _window, lookupActions, stack, id, data: { path: _path || [], data: _data }, __: [o, ...__], e })))
+                var _index = o.findIndex((item, index) => isEqual(kernel({ req, res, _window, lookupActions, stack, props, id, data: { path: _path || [], data: item }, __: [o, ...__], e }), kernel({ req, res, _window, lookupActions, stack, props, id, data: { path: _path || [], data: _data }, __: [o, ...__], e })))
                 if (_index >= 0) o[_index] = _data
                 else o.push(_data)
             })
 
         } else if (args[1]) {
 
-            var _data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }).filter(data => data !== undefined && data !== null)
+            var _data = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] }).filter(data => data !== undefined && data !== null)
             if (typeof o[0] === "object") {
 
                 toArray(_data).map(_data => {
@@ -3029,9 +3041,9 @@ const actions = {
 
         if (stack.loop) stack.broke = true
 
-    }, "return()": ({ _window, stack, lookupActions, id, e, __, args, object, answer, pathJoined }) => {
+    }, "return()": ({ _window, stack, props, lookupActions, id, e, __, args, object, answer, pathJoined }) => {
         
-        stack.returns[0].data = answer = toValue({ _window, data: args[1], e, id, object, __, stack, lookupActions })
+        stack.returns[0].data = answer = toValue({ _window, data: args[1], e, id, __, stack, props:{isValue:true}, object, lookupActions })
         stack.returns[0].returned = true
         
         return answer
@@ -3063,13 +3075,7 @@ const actions = {
             }
         } else return o
 
-    }, /*"action()": ({ _window, req, res, stack, lookupActions, id, e, __, args, object, condition }) => {
-
-        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-        if (typeof data.path === "string") data.path = data.path.split(".")
-        toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { path: data.path || data.action.split("."), view: data.view, data: data.data }, condition, object })
-
-    }, */"getDeepChildrenId()": ({ _window, o }) => {
+    }, "getDeepChildrenId()": ({ _window, o }) => {
 
         return getDeepChildrenId({ _window, id: o.id })
 
@@ -3081,7 +3087,7 @@ const actions = {
 
         return getDeepChildren({ _window, id: o.id })
 
-    }, "filter()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, underScored }) => {
+    }, "filter()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, underScored, object }) => {
 
         var isnot = false
         args = args.slice(1)
@@ -3089,56 +3095,56 @@ const actions = {
 
         if (isnot) return toArray(o).filter(o => o !== "" && o !== undefined && o !== null)
 
-        if (underScored) return toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: args[0], id, __: [o, ...__], req, res }))
-        else return toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, e, data: args[0], id, object: o, req, res, __ }))
+        if (underScored) return toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, props: {isCondition: true, isValue:false}, e, data: args[0], id, __: [o, ...__], object, req, res }))
+        else return toArray(o).filter((o, index) => toApproval({ _window, lookupActions, stack, props: {isCondition: true, isValue:false}, e, data: args[0], id, object: [o, ...object], req, res, __ }))
 
-    }, "find()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, underScored, i, lastIndex, value, key, answer }) => {
+    }, "find()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, underScored, i, lastIndex, value, key, answer, object }) => {
 
         if (i === lastIndex && key && value !== undefined) {
 
             var index
-            if (underScored) index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-            else index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+            if (underScored) index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, props: {isCondition: true, isValue:false}, e, data: args[1], id, __: [o, ...__], req, res, object }))
+            else index = toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, props, e, data: args[1], id, __, req, res, object: [o, ...toArray(object)] }))
             if (index !== undefined && index !== -1) o[index] = answer = value
             return answer
 
         } else {
 
-            if (underScored) return toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-            else return toArray(o).find(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+            if (underScored) return toArray(o).find(o => toApproval({ _window, lookupActions, stack, props: {isCondition: true, isValue:false}, e, data: args[1], id, __: [o, ...__], req, res, object }))
+            else return toArray(o).find(o => toApproval({ _window, lookupActions, stack, props, e, data: args[1], id, __, req, res, object: [o, ...toArray(object)] }))
         }
 
-    }, "sort()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, answer }) => {
+    }, "sort()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, answer, object, pathJoined }) => {
 
-        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        var data = toParam({ req, res, _window, lookupActions, stack, props, object: [{}, ...object], id, e, __, data: args[1] })
         data.data = data.data || o
 
-        data.data = answer = sort({ _window, lookupActions, stack, __, id, e, sort: data })
+        data.data = answer = sort({ _window, lookupActions, stack, props, __, id, e, sort: data })
 
         return answer
 
-    }, "findIndex()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, underScored }) => {
+    }, "findIndex()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, underScored, object }) => {
 
         if (typeof o !== "object") return
 
-        if (underScored) return toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __: [o, ...__], req, res }))
-        else return toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object: o }))
+        if (underScored) return toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, props, e, data: args[1], id, __: [o, ...__], req, res }))
+        else return toArray(o).findIndex(o => toApproval({ _window, lookupActions, stack, props, e, data: args[1], id, __, req, res, object: [o, ...toArray(object)] }))
 
-    }, "map()": ({ _window, req, res, global, o, stack, lookupActions, id, e, __, args }) => {
+    }, "map()": ({ _window, req, res, global, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
         if (args[1] && args[1].charAt(0) === "@" && args[1].length == 6) args[1] = global.__refs__[args[1]].data
 
         if (args[1] && underScored) {
             
-            toArray(o).map((...o) => toValue({ req, res, _window, lookupActions, stack, id, data: args[1] || "", object, __: [o, ...__], e }))
+            toArray(o).map((...o) => toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, data: args[1] || "", __: [o, ...__], e }))
             return o
 
         } else if (args[1]) {
 
-            return toArray(o).map((...o) => toValue({ req, res, _window, lookupActions, stack, id, data: args[1] || "", object: o, __, e }))
+            return toArray(o).map((...o) => toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, data: args[1] || "", object: [o, ...toArray(object)], __, e }))
         }
 
-    }, "()": ({ _window, req, res, global, o, stack, lookupActions, id, e, __, args, underScored, object, breakRequest, pathJoined }) => {// map()
+    }, "()": ({ _window, req, res, global, o, stack, props, lookupActions, id, e, __, args, underScored, object, breakRequest, pathJoined }) => {// map()
 
         var notArray = false
         if (args[1] && args[1].charAt(0) === "@" && args[1].length == 6) args[1] = global.__refs__[args[1]].data
@@ -3150,12 +3156,12 @@ const actions = {
 
         if (args[1] && underScored) {
             
-            toArray(o).map(o => toValue({ req, res, _window, lookupActions, stack, id, data: args[1] || "", object, __: [o, ...__], e }))
+            toArray(o).map(o => toValue({ req, res, _window, lookupActions, stack, props: { ...props, isValue: false }, id, data: args[1] || "", object, __: [o, ...__], e }))
             return o
 
         } else if (args[1]) {
 
-            return toArray(o).map(o => toValue({ req, res, _window, lookupActions, stack, id, data: args[1] || "", object: o, __, e }))
+            return toArray(o).map(o => toValue({ req, res, _window, lookupActions, stack, props: { ...props, isValue: false }, id, data: args[1] || "", object: [o, ...object], __, e }))
 
         } else if (args[2] && underScored) {
 
@@ -3163,11 +3169,11 @@ const actions = {
             var address;
             ([...toArray(o)]).reverse().map(o => {
                 // address
-                address = addresser({ _window, id, stack, nextAddress: address, __: [o, ...__], lookupActions, data: { string: args[2] }, object }).address
+                address = addresser({ _window, id, stack, props: { ...props, isValue: false }, nextAddress: address, __: [o, ...__], lookupActions, data: { string: args[2] }, object }).address
             })
 
             // address
-            if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+            if (address) toAwait({ _window, id, lookupActions, stack, props: { ...props, isValue: false }, address, __, req, res })
 
         } else if (args[2]) {
 
@@ -3175,11 +3181,11 @@ const actions = {
             var address;
             ([...toArray(o)]).reverse().map(o => {
                 // address
-                address = addresser({ _window, id, stack, nextAddress: address, __, lookupActions, data: { string: args[2] }, object: o }).address
+                address = addresser({ _window, id, stack, props, nextAddress: address, __, lookupActions, data: { string: args[2] }, object: [o, ...toArray(object)] }).address
             })
 
             // address
-            if (address) toAwait({ _window, id, lookupActions, stack, address, __, req, res })
+            if (address) toAwait({ _window, id, lookupActions, stack, props, address, __, req, res })
         }
 
         stack.loop = false
@@ -3187,9 +3193,9 @@ const actions = {
 
         if (notArray) return o
 
-    }, "html2pdf()": ({ _window, o, stack, lookupActions, id, __, args, object }) => {
+    }, "html2pdf()": ({ _window, o, stack, props, lookupActions, id, __, args, object }) => {
 
-        var { address, data } = addresser({ _window, stack, args, asynchronous: true, id: o.id, status: "Start", action: "html2pdf()", object, lookupActions, __, id })
+        var { address, data } = addresser({ _window, stack, props, args, asynchronous: true, id: o.id, status: "Start", action: "html2pdf()", object, lookupActions, __, id })
 
         var options = {
             margin: .25,
@@ -3232,7 +3238,7 @@ const actions = {
                             if (!once && pages.length > 1 && pages.length === _elements.length) {
 
                                 once = true
-                                exportHTMLToPDF({ _window, pages: _elements, opt, lookupActions, stack, address, req, res, id, e, __, args })
+                                exportHTMLToPDF({ _window, pages: _elements, opt, lookupActions, stack, props, address, req, res, id, e, __, args })
 
                             } else if (pages.length === 1) html2pdf().set(opt).from(_element).toPdf().get('pdf').then(pdf => {
 
@@ -3249,7 +3255,7 @@ const actions = {
                             }).save().then((pdf) => {
 
                                 // await params
-                                if (args[2]) require("./kernel").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __: [pdf, ...__] })
+                                if (args[2]) require("./kernel").toAwait({ _window, lookupActions, stack, props, address, req, res, id, e, __: [pdf, ...__] })
                                 window.devicePixelRatio = 1
                             })
                         }
@@ -3260,16 +3266,16 @@ const actions = {
 
 
                 // await params
-                if (args[2]) require("./kernel").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __: [pdf, ...__] })
+                if (args[2]) require("./kernel").toAwait({ _window, lookupActions, stack, props, address, req, res, id, e, __: [pdf, ...__] })
                 window.devicePixelRatio = 1
             })
         })*/
 
-    }, "share()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+    }, "share()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, object }) => {
 
         if (isParam({ _window, string: args[1] })) { // share():[text;title;url;files]
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || {}, images = []
+            var data = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: args[1] }) || {}, images = []
             data.files = toArray(data.file || data.files) || []
             if (data.image || data.images) data.images = toArray(data.image || data.images)
 
@@ -3290,21 +3296,21 @@ const actions = {
             }
 
         } else if (args[1]) { // share():url
-            navigator.share({ url: toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) })
+            navigator.share({ url: toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] }) })
         }
 
-    }, "loader()": ({ _window, req, res, views, o, stack, lookupActions, id, e, __, args, k }) => {
+    }, "loader()": ({ _window, req, res, views, o, stack, props, object, lookupActions, id, e, __, args, k }) => {
 
         var data = {}
 
         if (isParam({ _window, string: args[1] })) {
 
-            data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            data = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: args[1] })
             if (data.hide) data.show = false
 
         } else {
 
-            var show = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var show = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] })
             if (show === "show") data.show = true
             else if (show === "hide") data.show = false
         }
@@ -3365,9 +3371,9 @@ const actions = {
             else console.log("Loader doesnot exist!")
         }
 
-    }, "type()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "type()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        if (args[1]) return getType(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }))
+        if (args[1]) return getType(toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] }))
         else return getType(o)
 
     }, "coords()": ({ o }) => {
@@ -3375,11 +3381,11 @@ const actions = {
         if (!o.__view__) return
         require("./getCoords")({ id: o.id })
 
-    }, "price()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "price()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
         if (!isNumber(o)) return
 
-        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        var data = toParam({ req, res, _window, lookupActions, stack, props, object, id, e, __, data: args[1] })
         if (!data.decimal) data.decimal = 2
         var formatter = new Intl.NumberFormat("en", {
             style: 'decimal',
@@ -3400,10 +3406,10 @@ const actions = {
 
         return isNumber(o)
 
-    }, "round()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "round()": ({ _window, req, res, o, stack, props, object, lookupActions, id, e, __, args }) => {
 
         if (isNumber(o)) {
-            var nth = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) || 2
+            var nth = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] }) || 2
             return parseFloat(o || 0).toFixed(nth)
         }
 
@@ -3468,34 +3474,34 @@ const actions = {
 
         return JSON.parse(o)
 
-    }, "getCookie()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+    }, "getCookie()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, object }) => {
 
         // getCookie():name
         if (isParam({ _window, string: args[1], req, res })) {
 
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var data = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: args[1] })
             return getCookie({ ...data, req, res, _window })
         }
 
-        var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        var _name = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] })
         var _cookie = getCookie({ name: _name, req, res, _window })
         return _cookie
 
-    }, "eraseCookie()": ({ _window, req, res, views, stack, pathJoined, lookupActions, id, e, __, args }) => {
+    }, "eraseCookie()": ({ _window, req, res, views, stack, props, pathJoined, lookupActions, id, e, __, args, object }) => {
 
         if (_window) return views.root.__controls__.push({ event: `loading?${pathJoined}` })
 
         // getCookie():name
         if (isParam({ _window, req, res, string: args[1] })) {
-            var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            var data = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: args[1] })
             return eraseCookie({ ...data, req, res, _window })
         }
 
-        var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        var _name = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] })
         var _cookie = eraseCookie({ name: _name, req, res, _window })
         return _cookie
 
-    }, "setCookie()": ({ _window, req, res, views, stack, pathJoined, lookupActions, id, e, __, args }) => {
+    }, "setCookie()": ({ _window, req, res, views, stack, props, pathJoined, lookupActions, id, e, __, args, object }) => {
 
         if (_window) return views.root.__controls__.push({ event: `loading?${pathJoined}` })
 
@@ -3505,7 +3511,7 @@ const actions = {
 
             args.slice(1).map(arg => {
 
-                var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: arg })
+                var data = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: arg })
                 setCookie({ ...data, req, res, _window })
 
                 cookies.push(data)
@@ -3513,9 +3519,9 @@ const actions = {
 
         } else {
 
-            var _name = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-            var _value = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] })
-            var _expiryDate = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[3] })
+            var _name = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] })
+            var _value = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[2] })
+            var _expiryDate = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[3] })
 
             setCookie({ name: _name, value: _value, expires: _expiryDate, req, res, _window })
         }
@@ -3524,9 +3530,9 @@ const actions = {
         if (cookies.length === 1) return cookies[0]
         else return cookies
 
-    }, "cookie()": ({ _window, req, res, views, stack, pathJoined, lookupActions, id, e, __, args }) => {
+    }, "cookie()": ({ _window, req, res, views, stack, props, pathJoined, lookupActions, id, e, __, args, object }) => {
 
-        var data = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        var data = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: args[1] })
 
         if (_window && data.method === "post" || data.method === "delete") return views.root.__controls__.push({ event: `loading?${pathJoined}` })
         if (data.method === "post") return setCookie({ ...data, req, res, _window })
@@ -3537,19 +3543,20 @@ const actions = {
 
         return o.filter(o => o !== undefined && !Number.isNaN(o) && o !== "")
 
-    }, "colorize()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "colorize()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var data = toParam({ req, res, _window, lookupActions, stack, id, e, data: args[1] || "", __ })
+        var data = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, data: args[1] || "", __ })
         return colorize({ _window, string: o, ...data })
 
-    }, "deepChildren()": ({ _window, o, stack, lookupActions }) => {
+    }, "deepChildren()": ({ _window, o, stack, props, lookupActions }) => {
 
-        return getDeepChildren({ _window, lookupActions, stack, id: o.id })
+        return getDeepChildren({ _window, lookupActions, stack, props, id: o.id })
 
-    }, "note()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => { // note
+    }, "note()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, object }) => { // note
 
-        var data = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        var data = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] })
         note({ _window, note: data })
+        return data
 
     }, "readonly()": ({ _window, o }) => {
 
@@ -3573,13 +3580,13 @@ const actions = {
             child.__element__.setAttribute("contentEditable", true)
         })
 
-    }, "range()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+    }, "range()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, object }) => {
 
         var index = 0
         var range = []
-        var startIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] }) : 0 || 0
-        var endIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[2] }) : toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-        var steps = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[3] }) || 1
+        var startIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] }) : 0 || 0
+        var endIndex = args[2] ? toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[2] }) : toValue({ req, res, _window, lookupActions, stack, props, id, e, __, data: args[1] })
+        var steps = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[3] }) || 1
         var lang = args[4] || ""
         index = startIndex
 
@@ -3593,52 +3600,52 @@ const actions = {
         if (lang === "ar") range = range.map(num => num.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
         return range
 
-    }, "droplist()": ({ _window, o, stack, lookupActions, id, e, __, args, object }) => {
+    }, "droplist()": ({ _window, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var { address, data } = addresser({ _window, stack, args, id, interpreting: true, status: "Start", action: "droplist()", object, lookupActions, __ })
-        require("./droplist").droplist({ id, e, data, __, stack, lookupActions, address })
+        var { address, data } = addresser({ _window, stack, props, args, id, interpreting: true, status: "Start", action: "droplist()", object, lookupActions, __ })
+        require("./droplist").droplist({ id, e, data, __, stack, props, lookupActions, address, object })
 
-    }, "route()": ({ _window, req, res, o, stack, lookupActions, id, __, args, object }) => {
+    }, "route()": ({ _window, req, res, o, stack, props, lookupActions, id, __, args, object }) => {
 
-        var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", asynchronous: true, id: o.id, action: "route()", object, lookupActions, __ })
+        var { address, data } = addresser({ _window, stack, props, args, interpreting: true, status: "Start", type: "action", asynchronous: true, id: o.id, action: "route()", object, lookupActions, __ })
         if (typeof data === "string") data = { data: data }
 
-        route({ _window, lookupActions, stack, address, id, req, res, data: data.data, __ })
+        route({ _window, lookupActions, stack, props, address, id, req, res, data: data.data, __ })
 
-    }, "root()": ({ _window, req, res, o, stack, lookupActions, id, __, args, object }) => {
+    }, "root()": ({ _window, req, res, o, stack, props, lookupActions, id, __, args, object }) => {
 
-        var { address, data } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", blockable: false, renderer: true, id, action: "root()", object, lookupActions, __ })
+        var { address, data } = addresser({ _window, stack, props: {isValue: true}, args, interpreting: true, status: "Start", type: "action", blockable: false, renderer: true, id, action: "root()", object, lookupActions, __ })
         if (typeof data === "string") data = { page: data }
+        
+        root({ _window, lookupActions, stack, props, address, id, req, res, root: data, __ })
 
-        root({ _window, lookupActions, stack, address, id, req, res, root: data, __ })
-
-    }, "update()": ({ _window, req, res, o, stack, lookupActions, id, __, args, object }) => {
+    }, "update()": ({ _window, req, res, o, stack, props, lookupActions, id, __, args, object }) => {
 
         if (!o.__view__) return o
-        var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", renderer: true, blockable: false, id, action: "update()", object, lookupActions, __ })
-        update({ _window, lookupActions, stack, req, res, id, address, __, data: { id: data.id || o.id, ...data } })
+        var { address, data = {} } = addresser({ _window, stack, props, args, interpreting: true, status: "Start", type: "action", dataInterpretAction: "toValue", renderer: true, blockable: false, id, action: "update()", object, lookupActions, __ })
+        update({ _window, lookupActions, stack, props, req, res, id, address, __, data: { id: data.id || o.id, ...data } })
 
-    }, "insert()": ({ _window, o, stack, lookupActions, id, __, args }) => {
+    }, "insert()": ({ _window, o, stack, props, lookupActions, id, __, args, object }) => {
 
         if (!o.__view__) return o
 
         // wait address
-        var { address, data = {} } = addresser({ _window, stack, args, interpreting: true, status: "Start", type: "action", renderer: true, id, action: "insert()", lookupActions, __ })
-        insert({ id, lookupActions, stack, address, __, insert: { ...data, parent: o.id } })
+        var { address, data = {} } = addresser({ _window, stack, props, args, interpreting: true, status: "Start", type: "action", renderer: true, id, action: "insert()", lookupActions, __, object })
+        insert({ id, lookupActions, stack, props, object, address, __, insert: { ...data, parent: o.id } })
 
-    }, "confirmEmail()": ({ _window, o, stack, lookupActions, id, e, __, args, object }) => {
+    }, "confirmEmail()": ({ _window, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "confirmEmail()", object, lookupActions, __ })
+        var { address, data } = addresser({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id, action: "confirmEmail()", object, lookupActions, __ })
         data.store = "confirmEmail"
 
-    }, "mail()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+    }, "mail()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
         if (!o.__view__) return o
 
         // wait address
-        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "mail()", object, lookupActions, __ })
+        var { address, data } = addresser({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id, action: "mail()", object, lookupActions, __ })
 
-        require("./mail").mail({ req, res, _window, lookupActions, stack, address, id, e, __, data })
+        require("./mail").mail({ req, res, _window, lookupActions, stack, props, address, id, e, __, data })
         return true
 
     }, "print()": () => {
@@ -3651,47 +3658,47 @@ const actions = {
 
         return o.__file__
 
-    }, "read()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+    }, "read()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
         // wait address
-        var { address, data, action } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, action: "read()", object, lookupActions, __, id, dataInterpretAction: "conditional" })
+        var { address, data, action } = addresser({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id, action: "read()", object, lookupActions, __, id, dataInterpretAction: "conditional" })
 
         if (!data) return
         if (action === "toValue") data.file = data
 
-        fileReader({ req, res, _window, lookupActions, stack, address, id, e, __, data })
+        fileReader({ req, res, _window, lookupActions, stack, props, address, id, e, __, data })
 
-    }, "passport()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, object }) => {
+    }, "passport()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var { address, data } = addresser({ _window, stack, args, req, res, status: "Start", dataInterpretAction: "toParam", asynchronous: true, id: o.id, type: "Auth", action: "passport()", object, lookupActions, __, id })
-        passport({ _window, lookupActions, stack, address, id, e, __, req, res, data })
+        var { address, data } = addresser({ _window, stack, props, args, req, res, status: "Start", dataInterpretAction: "toParam", asynchronous: true, id: o.id, type: "Auth", action: "passport()", object, lookupActions, __, id })
+        passport({ _window, lookupActions, stack, props, address, id, e, __, req, res, data })
 
-    }, "upload()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, mount }) => {
+    }, "upload()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, mount }) => {
 
-        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "upload()", object: o, mount, lookupActions, __ })
-        upload({ _window, lookupActions, stack, address, req, res, id, e, upload: data, __ })
+        var { address, data } = addresser({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "upload()", object, mount, lookupActions, __ })
+        upload({ _window, lookupActions, stack, props, address, req, res, id, e, upload: data, __ })
 
-    }, "database()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, mount, object }) => {
+    }, "database()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "database()", object, lookupActions, __, mount: true })
-        return callDatabase({ _window, lookupActions, stack, address, id, e, __, req, res, data: { data: (data === undefined ? __[0] : data), action: data.action } })
+        var { address, data } = addresser({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id || id, type: "Data", action: "database()", object, lookupActions, __ })
+        return callDatabase({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: (data === undefined ? __[0] : data), action: data.action } })
 
-    }, "search()": ({ _window, global, req, res, o, stack, lookupActions, id, e, __, args, mount, object }) => {
+    }, "search()": ({ _window, global, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
         
-        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "search()", object, lookupActions, __, mount: true })
-        return callDatabase({ _window, lookupActions, stack, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "search()" } })
+        var { address, data } = addresser({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id || id, type: "Data", action: "search()", object, lookupActions, __ })
+        return callDatabase({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "search()" } })
 
-    }, "erase()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, mount, object }) => {
+    }, "erase()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "erase()", object, lookupActions, __, mount: true })
-        return callDatabase({ _window, lookupActions, stack, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "erase()" } })
+        var { address, data } = addresser({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id || id, type: "Data", action: "erase()", object, lookupActions, __ })
+        return callDatabase({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "erase()" } })
 
-    }, "save()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args, mount, object }) => {
+    }, "save()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var { address, data } = addresser({ _window, stack, args, status: "Start", asynchronous: true, id: o.id, type: "Data", action: "save()", object, lookupActions, __, mount: true })
-        return callDatabase({ _window, lookupActions, stack, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "save()" } })
+        var { address, data } = addresser({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id || id, type: "Data", action: "save()", object, lookupActions, __ })
+        return callDatabase({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "save()" } })
 
-    }, "start()": ({ global, stack }) => {
+    }, "start()": ({ global, stack, props }) => {
 
         var address = stack.addresses.find(address => address.id === stack.interpretingAddressID)
         address.starter = true
@@ -3702,12 +3709,12 @@ const actions = {
 
         return startID
 
-    }, "end()": ({ _window, req, res, stack, lookupActions, id, e, __, args, o }) => {
+    }, "end()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, o, object }) => {
 
-        var { data } = toLine({ req, res, _window, lookupActions, stack, id, e, __, data: { string: args[1] }, action: "toValue" })
-        endAddress({ req, res, _window, lookupActions, stack, id, e, __, data, endID: typeof o === "string" && o })
+        var { data } = toLine({ req, res, _window, lookupActions, stack, props: {isValue:true}, id, e, __, data: { string: args[1] }, action: "toValue", object })
+        endAddress({ req, res, _window, lookupActions, stack, props, object, id, e, __, data, endID: typeof o === "string" && o })
 
-    }, "send()": ({ _window, req, res, global, stack, lookupActions, id, e, __, args, breakRequest, pathJoined }) => {
+    }, "send()": ({ _window, req, res, global, stack, props, lookupActions, id, e, __, args, object, breakRequest, pathJoined }) => {
 
         breakRequest.break = true
 
@@ -3715,40 +3722,46 @@ const actions = {
 
         if (isParam({ _window, string: args[1] })) {
 
-            response = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+            response = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: args[1] })
+            //console.log(decode({_window, string:args[1]}));
             response.success = response.success !== undefined ? response.success : true
             response.message = response.message || response.msg || "Action executed successfully!"
             delete response.msg
 
         } else {
 
-            var data = toValue({ req, res, _window, lookupActions, id, e, __, data: args[1] })
-            response = { success: true, message: "Action executed successfully!", data }
+            var data = toValue({ req, res, _window, lookupActions, id, e, __, data: args[1], stack, props:{isValue:true}, object })
+            response = { success: true, message: "Action executed successfully!" }
+            if (typeof data === "object" && !Array.isArray(data)) response = {...response, ...data}
+            else response.data = data
         }
 
-        respond({ res, stack, global, response, __ })
+        respond({ res, stack, props, global, response, __ })
+        return response
 
     }, "sent()": ({ res }) => {
 
         if (!res || res.headersSent) return true
         else return false
 
-    }, "position()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "position()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args }) => {
 
-        var position = toParam({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        var position = toLine({ req, res, _window, lookupActions, stack, props, id, e, __, data: {string: args[1]}, action: "toParam" }).data
+        
         if (!position.id) position.id = o.id
         if (!position.positioner) position.positioner = id
+        //if (position.positioner !== "mouse") console.log(position);
         return require("./setPosition").setPosition({ position, id, e })
 
-    }, "csvToJson()": ({ _window, req, res, stack, lookupActions, id, e, __, args }) => {
+    }, "csvToJson()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, object }) => {
 
-        var file = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
-        require("./csvToJson").csvToJson({ id, lookupActions, stack, e, file, onload: args[2] || "", __ })
+        var file = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] })
+        require("./csvToJson").csvToJson({ id, lookupActions, stack, props, object, e, file, onload: args[2] || "", __ })
 
-    }, "copyToClipBoard()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "copyToClipBoard()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
         var text
-        if (args[1]) text = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: args[1] })
+        if (args[1]) text = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: args[1] })
         else text = o
 
         if (navigator.clipboard) answer = navigator.clipboard.writeText(text)
@@ -3764,22 +3777,22 @@ const actions = {
             document.body.removeChild(textArea)
         }
 
-    }, "addClass()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "addClass()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
 
         if (!o.__view__) return o
-        var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
+        var _class = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __: [o, ...__], data: args[1] })
         if (o.__element__) return o.__element__.classList.add(_class)
 
-    }, "remClass()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "remClass()": ({ _window, req, res, o, stack, props, object, lookupActions, id, e, __, args }) => {
 
         if (!o.__view__) return o
-        var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
+        var _class = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __: [o, ...__], data: args[1] })
         if (o.__element__) return o.__element__.classList.remove(_class)
 
-    }, "toggleClass()": ({ _window, req, res, o, stack, lookupActions, id, e, __, args }) => {
+    }, "toggleClass()": ({ _window, req, res, o, stack, props, object, lookupActions, id, e, __, args }) => {
 
         if (!o.__view__) return o
-        var _class = toValue({ req, res, _window, lookupActions, stack, id, e, __: [o, ...__], data: args[1] })
+        var _class = toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __: [o, ...__], data: args[1] })
         if (o.__element__) return o.__element__.classList.toggle(_class)
 
     }, "encodeURI()": ({ o }) => {
@@ -3799,7 +3812,7 @@ const actions = {
 
 const builtInActions = Object.keys(actions)
 
-const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: _object, path, pathJoined, value, key, object } }) => {
+const kernel = ({ _window, lookupActions, stack, props = {}, id, __, e, req, res, data: { data: _object, path, pathJoined, value, key }, object = [] }) => {
 
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
@@ -3846,7 +3859,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
         if (k0 !== "data()" && k0 !== "doc()" && path[i + 1] === "del()") {
 
             breakRequest.index = i + 1
-            if (k.charAt(0) === "@" && k.length === 6) k = toValue({ req, res, _window, lookupActions, stack, id, e, __, data: k, object })
+            if (k.charAt(0) === "@" && k.length === 6) k = toValue({ req, res, _window, lookupActions, stack, props, object, id, e, __, data: k })
 
             if (Array.isArray(o)) {
                 if (!isNumber(k)) {
@@ -3889,8 +3902,8 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
 
             var data
             if (k0.charAt(0) === "@" && global.__refs__[k0].type === "text") data = global.__refs__[k0].data
-            else data = toValue({ req, res, _window, lookupActions, stack, id, e, data: global.__refs__[k0].data, __, object })
-
+            else data = toValue({ req, res, _window, lookupActions, stack, props: {isValue: true}, object, id, e, data: global.__refs__[k0].data, __ })
+            
             if (typeof data !== "object") {
 
                 if (Array.isArray(o) && isNumber(data) && data < 0) { // negative index
@@ -3905,24 +3918,23 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
                 } else if (i === lastIndex && key && value !== undefined) answer = o[data] = value
                 else if (i !== lastIndex && key && value !== undefined && o[data] === undefined) {
 
-                    if (isNumber(toValue({ req, res, _window, lookupActions, stack, id, data: path[i + 1], __, e, object }))) answer = o[data] = []
+                    if (isNumber(toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, data: path[i + 1], __, e }))) answer = o[data] = []
                     else answer = o[data] = {}
                 }
                 else answer = o[data]
-
+//console.log(decode({_window, string: pathJoined}), clone(answer), data);
             } else answer = data
-
         }
 
         // OOP
-        else if (actions[k0]) return actions[k0]({ _window, req, res, global, views, view, o, stack, pathJoined, lookupActions, id, e, __, args, k, underScored, object, i, lastIndex, value, key, path, breakRequest, condition, _object, answer })
+        else if (actions[k0]) return actions[k0]({ _window, req, res, global, views, view, o, stack, props, pathJoined, lookupActions, id, e, __, args, k, underScored, object, i, lastIndex, value, key, path, breakRequest, _object, answer })
 
         // methods
         else if (k0.slice(-2) === "()" && typeof o[k0.slice(0, -2)] === "function") {
 
             var data = []
             args.slice(1).map(arg => {
-                data.push(toValue({ req, res, _window, lookupActions, stack, id, e, __, data: arg || "" }))
+                data.push(toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, object, id, e, __, data: arg || "" }))
             })
 
             answer = o[k0.slice(0, -2)](...data)
@@ -3932,12 +3944,12 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
         // action_name()
         else if (k0.slice(-2) === "()") {
             
-            if (k0.charAt(0) === "@" && k0.length == 6) k0 = toValue({ req, res, _window, id, e, __, data: k0, object })
+            if (k0.charAt(0) === "@" && k0.length == 6) k0 = toValue({ req, res, _window, id, e, __, data: k0, stack, props:{isValue:true}, object })
 
             if (underScored) {
-                answer = toAction({ _window, lookupActions, stack, id, req, res, __: [o, ...__], e, data: { action: k }, condition, object })
+                answer = toAction({ _window, lookupActions, stack, props, id, req, res, __: [o, ...__], e, data: { action: k }, object })
             } else {
-                answer = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: k }, condition, object: object || o })
+                answer = toAction({ _window, lookupActions, stack, props, id, req, res, __, e, data: { action: k }, object: [o, ...toArray(object)] })
             }
         }
 
@@ -3959,10 +3971,9 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
             }
 
             o[k0] = o[k0] || {}
-
-            if (args[1]) answer = reducer({ req, res, _window, lookupActions, stack, id, e, data: { path: args[1], object: o[k0] }, __ })
+            
+            if (args[1]) answer = reducer({ req, res, _window, lookupActions, stack, props, id, e, object: [o[k0], ...object], data: { path: args[1] }, __ })
             else return
-
         }
 
         // lastindex
@@ -4003,7 +4014,7 @@ const kernel = ({ _window, lookupActions, stack, id, __, e, req, res, condition,
     return answer
 }
 
-const toValue = ({ _window, lookupActions = [], stack = { addresses: [], returns: []}, address, data: value, __, id, e, req, res, object, mount, condition, isValue }) => {
+const toValue = ({ _window, lookupActions = [], stack = { addresses: [], returns: []}, props = { isValue: true }, address, data: value, key, __, id, e, req, res, object = [], mount }) => {
 
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
@@ -4013,16 +4024,15 @@ const toValue = ({ _window, lookupActions = [], stack = { addresses: [], returns
     // coded
     if (value.charAt(0) === "@" && value.length == 6 && global.__refs__[value].type === "text") return global.__refs__[value].data
     if (value.charAt(0) === "@" && value.length == 6) value = global.__refs__[value].data
- 
+    
     // value?condition?value
-    if (value.split("?").length > 1) return toLine({ _window, lookupActions, stack, id, e, data: { string: value }, req, res, mount, __, condition, object, action: "toValue" }).data
+    if (value.split("?").length > 1) return toLine({ _window, lookupActions, stack, props, id, e, data: { string: value }, req, res, mount, __, object, action: "toValue" }).data
 
     // value is a param it has key=value
-    if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, address, stack, e, data: value, __, object, mount: !isValue && mount, condition })
+    if (isParam({ _window, string: value })) return toParam({ req, res, _window, id, lookupActions, address, stack, props, e, data: value, __, object: props.isValue ? [{}, ...object] : object })
 
     // no value
     if (value === "()") return views[id]
-    else if (value === ".") return object !== undefined ? object : views[id]
     else if (value === undefined) return generate()
     else if (value === "undefined") return undefined
     else if (value === "false") return false
@@ -4037,6 +4047,7 @@ const toValue = ({ _window, lookupActions = [], stack = { addresses: [], returns
     else if (value === "today()") return new Date()
     else if (value === "null") return null
     else if (value.charAt(0) === "_" && !value.split("_").find(i => i !== "_" && i !== "")) return __[value.split("_").length - 2]
+    else if (value.charAt(0) === "." && !value.split(".").find(i => i !== "." && i !== "")) return object[value.split(".").length - 2]
     else if (value === "[]") return ({})
     else if (value === ":[]") return ([{}])
     else if (value === " ") return value
@@ -4048,7 +4059,7 @@ const toValue = ({ _window, lookupActions = [], stack = { addresses: [], returns
     if (value.includes("||")) { // or
         var answer
         value.split("||").map(value => {
-            if (!answer) answer = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount, condition })
+            if (!answer) answer = toValue({ _window, lookupActions, stack, props:{isValue:true}, data: value, __, id, e, req, res, object })
         })
         return answer
     }
@@ -4063,23 +4074,23 @@ const toValue = ({ _window, lookupActions = [], stack = { addresses: [], returns
 
                 value = value.slice(0, -2)
                 value = `${value}=${value}+1`
-                toParam({ req, res, _window, lookupActions, id, e, data: value, __, object, mount, condition })
-                return (toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount, condition }) - 1)
+                toParam({ req, res, _window, lookupActions, id, e, data: value, __, object, mount, props })
+                return (toValue({ _window, lookupActions, stack, props, data: value, __, id, e, req, res, object, mount }) - 1)
 
             } else {
 
                 var values = [], allAreNumbers = false, allAreArrays = false, allAreObjects = false
 
-                var val0 = values[0] = toValue({ _window, lookupActions, stack, data: value.split("+")[0], __, id, e, req, res, object, mount })
-
+                var val0 = values[0] = toValue({ _window, lookupActions, stack, props:{isValue:true}, object, data: value.split("+")[0], __, id, e, req, res })
+                
                 if (isNumber(val0) || typeof val0 === "number") allAreNumbers = true
                 else if (Array.isArray(val0)) allAreArrays = true
                 else if (typeof val0 === "object") allAreObjects = true
                 
                 value.split("+").slice(1).map(value => {
 
-                    var val0 = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount })
-
+                    var val0 = toValue({ _window, lookupActions, stack, props:{isValue:true}, object, data: value, __, id, e, req, res })
+                    
                     if (allAreNumbers) {
 
                         allAreArrays = false
@@ -4115,9 +4126,9 @@ const toValue = ({ _window, lookupActions = [], stack = { addresses: [], returns
 
                 } else if (allAreObjects) {
 
-                    var object = {}
-                    values.map(obj => object = { ...object, ...obj })
-                    return object
+                    var object0 = {}
+                    values.map(obj => object0 = { ...object0, ...obj })
+                    return object0
 
                 } else {
 
@@ -4130,13 +4141,13 @@ const toValue = ({ _window, lookupActions = [], stack = { addresses: [], returns
 
         if (value.includes("-")) { // subtraction
 
-            var _value = calcSubs({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition })
+            var _value = calcSubs({ _window, lookupActions, stack, props, value, __, id, e, req, res, object })
             if (_value !== value) return _value
         }
 
         if (value.includes("*") && value.split("*")[1] !== "") { // multiplication
 
-            var values = value.split("*").map(value => toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, mount, condition }))
+            var values = value.split("*").map(value => toValue({ _window, lookupActions, stack, props:{isValue:true}, data: value, __, id, e, req, res, object, mount }))
             var newVal = values[0]
             values.slice(1).map(val => {
                 if (!isNaN(newVal) && !isNaN(val)) newVal *= val
@@ -4159,47 +4170,44 @@ const toValue = ({ _window, lookupActions = [], stack = { addresses: [], returns
 
         if (value.includes("/") && value.split("/")[1] !== "") { // division
 
-            var _value = calcDivision({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition })
+            var _value = calcDivision({ _window, lookupActions, stack, props, value, __, id, e, req, res, object })
             if (_value !== value && _value !== undefined) return _value
         }
 
         if (value.includes("%") && value.split("%")[1] !== "") { // modulo
 
-            var _value = calcModulo({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition })
+            var _value = calcModulo({ _window, lookupActions, stack, props, value, __, id, e, req, res, object })
             if (_value !== value && _value !== undefined) return _value
         }
     }
-
-    // check calculations then list
-    if (value.charAt(0) === ":") return value.split(":").slice(1).map(item => toValue({ req, res, _window, id, stack, lookupActions, __, e, data: item, condition })) // :item1:item2
+    
+    // list => check calculations then list
+    if (value.charAt(0) === ":") return value.split(":").slice(1).map(item => toValue({ req, res, _window, id, stack, props: {isValue: true}, lookupActions, __, e, data: item, object })) // :item1:item2
 
     var path = typeof value === "string" ? value.split(".") : []
-
-    /* value */
+    
+    // number
     if (isNumber(value)) value = parseFloat(value)
-    else if (object || path[0].includes(":") || path[0].includes("()") || path[0].includes("@") || path[1])
-        value = reducer({ _window, lookupActions, stack, id, data: { path, value, object }, __, e, req, res, mount, condition  })
-
+    else if (path.length > 1 || path.find(path => executableRegex.test(path)) || !props.isValue) value = reducer({ _window, lookupActions, stack, props, id, data: { path, value }, object, __, e, req, res, mount  })
+        
     return value
 }
 
-const toParam = ({ _window, lookupActions, stack = { addresses: [], returns: []}, address, data: string, e, id, req, res, mount, object, __, condition }) => {
+const toParam = ({ _window, lookupActions, stack = { addresses: [], returns: []}, props = {}, address, data: string, e, id, req, res, mount, object = [], __ }) => {
 
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
     var view = views[id] || { id, __view__: true, __fake__: true }
 
-    var params = object || {}
-
     // returned
     if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.broke || stack.blocked) return
 
     if (typeof string !== "string" || !string) return string || {}
-
+    
     // decode
     if (string.charAt(0) === "@" && string.length == 6 && global.__refs__[string].type === "text") return global.__refs__[string].data
     if (string.charAt(0) === "@" && string.length == 6) string = global.__refs__[string].data
-
+    
     // check event else interpret
     if (string.split("?").length > 1) {
 
@@ -4207,11 +4215,17 @@ const toParam = ({ _window, lookupActions, stack = { addresses: [], returns: []}
         if (isEvent({ _window, string })) return toEvent({ _window, string, id, __, lookupActions })
 
         // line interpreter
-        return toLine({ _window, lookupActions, stack, id, e, data: { string }, req, res, mount, __, condition, object, action: "toParam" }).data
+        return toLine({ _window, lookupActions, stack, props: { isValue: false, ...props }, id, e, data: { string }, req, res, __, object, action: "toParam" }).data
     }
 
     // conditions
-    if (condition || isCondition({ _window, string })) return toApproval({ id, lookupActions, stack, e, data: string, req, res, _window, __, object })
+    if (props.isCondition || isCondition({ _window, string })) return toApproval({ id, lookupActions, stack, props, e, data: string, req, res, _window, __, object })
+
+    // init
+    if (object.length === 0) object.push({})
+    var params = object[0]
+
+    props.isValue = false
 
     string.split(";").map(param => {
 
@@ -4242,19 +4256,19 @@ const toParam = ({ _window, lookupActions, stack = { addresses: [], returns: []}
 
             var newParam = key + "=" + value
             param.split("=").slice(1).map(key => { newParam += ";" + key + "=" + value })
-            return params = { ...params, ...toParam({ _window, lookupActions, stack, data: param, e, id, req, res, mount, object, __, condition }) }
+            return params = { ...params, ...toParam({ _window, lookupActions, stack, props, data: param, e, id, req, res, object, __ }) }
         }
 
         // increment
         if (key && value === undefined && key.slice(-2) === "++") {
             key = key.slice(0, -2)
-            value = parseFloat(toValue({ _window, lookupActions, stack, req, res, id, e, data: key, __, condition, object }) || 0) + 1
+            value = parseFloat(toValue({ _window, lookupActions, stack, props:{isValue:true}, req, res, id, e, data: key, __, object }) || 0) + 1
         }
 
         // decrement
         else if (key && value === undefined && key.slice(-2) === "--") {
             key = key.slice(0, -2)
-            value = parseFloat(toValue({ _window, lookupActions, stack, req, res, id, e, data: key, __, condition, object }) || 0) - 1
+            value = parseFloat(toValue({ _window, lookupActions, stack, props:{isValue:true}, req, res, id, e, data: key, __, object }) || 0) - 1
         }
 
         // ||=
@@ -4303,14 +4317,11 @@ const toParam = ({ _window, lookupActions, stack = { addresses: [], returns: []}
 
         var path = typeof key === "string" ? key.split(".") : [], args = path[0].split(":"), path0 = path[0].split(":")[0]
 
-        // .value => inherit object
-        var inheritObject = false
-        if (typeof value === "string" && value.charAt(0) === "." && (value.includes("()") || isNaN(value.charAt(1)))) inheritObject = true
-
         // interpret value
         if (typeof value === "string") {
 
-            value = toValue({ _window, lookupActions, stack, req, res, id, e, data: value, __, condition, object: inheritObject ? object : undefined, isValue: true, key, param })
+            value = toValue({ _window, lookupActions, stack, props: { ...props, isValue: true }, req, res, id, e, data: value, __, object, key, param })
+            
             if (value && typeof value === "string") value = replaceNbsps(value)
 
         } else if (value === undefined) value = generate()
@@ -4319,36 +4330,44 @@ const toParam = ({ _window, lookupActions, stack = { addresses: [], returns: []}
         if (!path0 && path[0]) return
 
         // .param=value or .[params]
-        else if (!path[0]) return toParam({ req, res, _window, id, lookupActions, address, stack, e, data: param.slice(1), __, object: object || (mount ? view : params) })
+        else if (!path[0]) {
+
+            var index = -1
+            while (param.charAt(0) === ".") {
+                index += 1
+                param = param.slice(1)
+            }
+            
+            if (object[index]) return toParam({ req, res, _window, id, lookupActions, address, stack, props, e, data: param, __, object: object.slice(index) })
+            else return object[index]
+        }
 
         // action()
-        if (path0.slice(-2) === "()") {
-            
-            var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: path[0] }, condition, mount, object })
-            
-            if (action !== "__continue__" && typeof action === "object" && !Array.isArray(action)) override(params, action)
+        if (path0.slice(-2) === "()" && path0.charAt(0) !== "@") {
+            var action = toAction({ _window, lookupActions, stack, props, id, req, res, __, e, data: { action: path[0] }, object })
+            // console.log(path[0], decode({ _window, string }), action);
             if (action !== "__continue__" && path.length === 1) return
-            else if (action !== "__continue__") return reducer({ _window, lookupActions, stack, id, data: { path: path.slice(1), value, key, object: action }, e, req, res, __, action: "toParam" })
+            else if (action !== "__continue__" && path.length > 1) return reducer({ _window, lookupActions, stack, props, id, data: { path: path.slice(1), value, key }, object: [action, ...toArray(object)], e, req, res, __, action: "toParam" })
         }
 
         // if()
         if (path0 === "if()") {
 
             var data = {}
-            var approved = toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object })
+            var approved = toApproval({ _window, lookupActions, stack, props, e, data: args[1], id, __, req, res, object })
 
             if (!approved) {
 
                 if (args[3]) {
 
-                    data = toParam({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object, mount })
+                    data = toParam({ req, res, _window, lookupActions, stack, props, id, data: args[3], __, e, object })
                     path.shift()
 
                 } else if (path[1] && path[1].includes("elif()")) {
 
                     path.shift()
                     path[0] = path[0].slice(2)
-                    data = toParam({ _window, lookupActions, stack, id, data: path.join("."), __, e, req, res, mount, condition })
+                    data = toParam({ _window, lookupActions, stack, props, id, data: path.join("."), __, e, req, res, object })
                 }
 
                 if (data) params = override(params, data)
@@ -4356,7 +4375,7 @@ const toParam = ({ _window, lookupActions, stack = { addresses: [], returns: []}
 
             } else {
 
-                data = toParam({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object, mount })
+                data = toParam({ req, res, _window, lookupActions, stack, props, id, data: args[2], __, e, object, mount })
 
                 path.shift()
 
@@ -4367,27 +4386,24 @@ const toParam = ({ _window, lookupActions, stack = { addresses: [], returns: []}
                 if (!path[0]) return params = override(params, data)
             }
 
-            return kernel({ _window, lookupActions, stack, id, __, e, req, res, mount, condition, data: { data, path, value, key, object, pathJoined: param } })
+            return kernel({ _window, lookupActions, stack, props, id, __, e, req, res, mount, object, data: { data, path, value, key, pathJoined: param } })
         }
 
         // [params]
-        if (param.charAt(0) === "@" && param.length === 6 && isParam({ _window, string: param })) return toParam({ req, res, _window, id, lookupActions, address, stack, e, data: param, __, object: object || (mount ? view : params) })
+        if (param.charAt(0) === "@" && param.length === 6 && isParam({ _window, string: param })) return toParam({ req, res, _window, id, lookupActions, address, stack, props, e, data: param, __, object })
         
         // reduce
-        if (path0.slice(-2) === "()" || path[0].slice(-3) === ":()" || path[0].slice(0, 3) === "():" || path[0].includes("_") || object)
-            reducer({ _window, lookupActions, stack, id, data: { path, value, key, object }, e, req, res, __, mount, action: "toParam" })
-        else kernel({ _window, lookupActions, stack, id, data: { path, value, key, data: (mount ? view : params) }, e, req, res, __, mount, action: "toParam" })
+        reducer({ _window, lookupActions, stack, props, id, data: { path, value, key }, object, e, req, res, __, mount, action: "toParam" })
 
         /////////////////////////////////////////// path & data & doc ///////////////////////////////////////////////
-
-        if (mount && !view.__fake__) mountData({ view, views, global, key, id, params, __ })
-        // else if (typeof object === "object" && object.__view__ && !object.__fake__) mountData({ tt:true, view: object, views, global, key, params, id: object.id })
+    //if (key === "data") console.log(decode({_window, string}), clone(value));
+        if ((object[0] || {}).__view__ && !view.__fake__) mountData({ view, views, global, key, id, params, __ })
     })
 
     return params
 }
 
-const reducer = ({ _window, lookupActions = [], stack = { addresses: [], returns: []}, id, data: { path, value, key, object }, __, e, req, res, condition, action, mount }) => {
+const reducer = ({ _window, lookupActions = [], stack = { addresses: [], returns: []}, props = {}, id, data: { path, value, key }, object = [], __, e, req, res, action, mount }) => {
 
     if ((stack.returns && stack.returns[0] || {}).returned || stack.terminated || stack.blocked || stack.broke) return
 
@@ -4407,68 +4423,84 @@ const reducer = ({ _window, lookupActions = [], stack = { addresses: [], returns
     if (path[0] !== undefined) args = path[0].toString().split(":")
 
     // toParam
-    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, stack, id, e, data: pathJoined, __, object, condition  })
+    if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, stack, props, id, e, data: pathJoined, __, object  })
 
     // toValue
-    if (isCalc({ _window, string: pathJoined }) && !key) return toValue({ _window, lookupActions, stack, data: pathJoined, __, id, e, req, res, object, condition })
+    if (isCalc({ _window, string: pathJoined }) && !key) return toValue({ _window, lookupActions, stack, props, data: pathJoined, __, id, e, req, res, object })
 
     // [actions?conditions?elseActions]():[path;view]:[waits]
     else if (path0.length === 8 && path0.slice(-2) === "()" && path0.charAt(0) === "@") {
 
-        var myLookupActions = lookupActions, myID
-        var { address, data } = addresser({ _window, stack, args, id, type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, lookupActions, object, mount, condition })
-
+        var myLookupActions = lookupActions, myID, my__ = __, myObject = object
+        var { address, data } = addresser({ _window, stack, props, args, id, type: "action", action: "[...]()", data: { string: global.__refs__[path0.slice(0, -2)].data, dblExecute: true }, __, lookupActions, object, mount })
+        
         // doc, view, path, collection, db
-        if (typeof data === "object" && data.__view__) myID = data.id
-        else if (typeof data === "object") {
+        if (typeof data === "object" && data.__view__) {
+
+            myID = data.id
+            my__ = [...data.__, ...my__]
+            myObject = [data, ...myObject]
+            myLookupActions = [data.__lookupActions__.slice(0, -1), ...myLookupActions]
+
+        } else if (typeof data === "object") {
 
             if ("condition" in data) {
-                address.params.condition = data.condition
-                if (address.hasWaits) stack.addresses.find(({ id }) => id === address.nextAddressID).params.condition = data.condition
+                address.params.props.isCondition = data.condition
+                if (address.hasWaits) stack.addresses.find(({ id }) => id === address.nextAddressID).params.isCondition = data.condition
             }
 
-            if (data.view) myID = data.view.id
+            if (data.view) {
+
+                myID = data.view.id
+                myObject = [data.view, ...myObject]
+                my__ = [...data.view.__, ...my__]
+                myLookupActions = [...data.view.__lookupActions__.slice(0, -1), ...myLookupActions]
+            }
+
+            if ("data" in data) {
+                my__ = [data.data, ...my__]
+            }
+
             if (data.doc || data.path || data.collection || data.db) {
                 
                 if (typeof data.path === "string") data.path = data.path.split(".")
-                myLookupActions = [{ doc: data.doc || lookupActions[0].doc, path: data.path, collection: data.collection || lookupActions[0].collection, db: data.db }, ...lookupActions]
+                myLookupActions = [{ doc: data.doc || myLookupActions[0].doc, path: data.path, collection: data.collection || myLookupActions[0].collection, db: data.db }, ...myLookupActions]
             }
 
-        } else if (typeof data === "string") myLookupActions = [{ doc: data, collection: "view" }, ...lookupActions]
-        address.params = { ...address.params, lookupActions: myLookupActions, id: myID || id }
+        } else if (typeof data === "string") myLookupActions = [{ doc: data, collection: "view" }, ...myLookupActions]
         
-        var my__ = typeof data === "object" && data.data !== undefined && !data.__view__ ? [data.data, ...__] : __
-        address.params.__ = my__
-
-        return toAwait({ _window, lookupActions: myLookupActions, stack, address, id: myID || id, e, req, res, __: my__ }).data
+        address.params = { ...address.params, id: myID || id, lookupActions: myLookupActions, __: my__, object: myObject }
+        
+        //console.log("before", decode({ _window, string: path0.slice(0, -2)}), clone(object));
+        return toAwait({ _window, lookupActions: myLookupActions, stack, props, object: myObject, address, id: myID || id, e, req, res, __: my__ }).data
     }
 
     // if()
     else if (path0 === "if()") {
 
         var data
-        var approved = toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object })
+        var approved = toApproval({ _window, lookupActions, stack, props:{isValue:true}, e, data: args[1], id, __, req, res, object })
 
         if (!approved) {
 
             if (args[3]) {
 
-                if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[3], id, __, req, res, object })
-                else return toValue({ req, res, _window, lookupActions, stack, id, data: args[3], __, e, object })
+                if (props.isCondition) return toApproval({ _window, lookupActions, stack, props, e, data: args[3], id, __, req, res, object })
+                else return toValue({ req, res, _window, lookupActions, stack, props, id, data: args[3], __, e, object })
 
             } else if (path[1] && path[1].includes("elif()")) {
 
                 path.shift()
                 path[0] = path[0].slice(2)
-                return reducer({ _window, lookupActions, stack, id, data: { path, object, value, key }, __, e, req, res, condition })
+                return reducer({ _window, lookupActions, stack, props, id, data: { path, value, key }, object, __, e, req, res })
 
             } else return data
 
         } else {
 
-            if (condition) return toApproval({ _window, lookupActions, stack, e, data: args[2], id, __, req, res, object })
-            if (path[1]) data = toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
-            else return toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
+            //if (props.isCondition) return toApproval({ _window, lookupActions, stack, props, e, data: args[2], id, __, req, res, object })
+            if (path[1]) data = toValue({ req, res, _window, lookupActions, stack, props, id, data: args[2], __, e, object })
+            else return toValue({ req, res, _window, lookupActions, stack, props, id, data: args[2], __, e, object })
 
             path.shift()
 
@@ -4479,14 +4511,14 @@ const reducer = ({ _window, lookupActions = [], stack = { addresses: [], returns
             if (!path[0]) return data
         }
 
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, props, id, __, e, req, res, object, data: { data, path, value, key, pathJoined } })
     }
 
     // while()
     else if (path0 === "while()") {
 
-        while (toApproval({ _window, lookupActions, stack, e, data: args[1], id, __, req, res, object })) {
-            toValue({ req, res, _window, lookupActions, stack, id, data: args[2], __, e, object })
+        while (toApproval({ _window, lookupActions, stack, props, e, data: args[1], id, __, req, res, object })) {
+            toValue({ req, res, _window, lookupActions, stack, props:{isValue:true}, id, data: args[2], __, e, object })
         }
         // path = path.slice(1)
         return global.return = false
@@ -4495,31 +4527,34 @@ const reducer = ({ _window, lookupActions = [], stack = { addresses: [], returns
     // global:()
     else if (path0 && args[1] === "()" && !args[2]) {
 
-        var globalVariable = toValue({ req, res, _window, id, e, data: args[0], __, stack, lookupActions })
+        var globalVariable = toValue({ req, res, _window, id, e, data: args[0], __, stack, props: {isValue: true}, lookupActions, object })
         if (path.length === 1 && key && globalVariable) return global[globalVariable] = value
 
         path.splice(0, 1, globalVariable)
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: global, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, props, id, __, e, req, res, object, data: { data: global, path, value, key, pathJoined } })
     }
 
     // view => ():id
     else if (path0 === "()" && args[1]) {
-
+        
         // id
-        var customID = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object })
+        var customID = toValue({ req, res, _window, lookupActions, stack, id, e, data: args[1], __, object, props: { ...props, isValue: true } })
         path.shift()
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: views[customID || args[1] || id], path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, props, id, __, e, req, res, object, data: { data: views[customID || args[1] || id], path, value, key, pathJoined } })
     }
 
-    // .keyName => [object||view].keyName
+    // .value
     else if (path[0] === "" && path.length > 1) {
-       
-        if (isNaN(path[1].charAt(0)) || path[1].includes("()")) {
-
-            path.shift()
-            return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: object || view, path, value, key, object, pathJoined } })
-
-        } else return path.join(".")
+        
+        if (!isNumber(path[1].charAt(0))) {
+            
+            var index = 0
+            while (pathJoined.charAt(index) === ".") {index++}
+            path = path.slice(index)
+            var t = kernel({ _window, lookupActions, stack, props, id, __, e, req, res, object, data: { data: object[index - 1], path, value, key, pathJoined } })
+            //console.log(decode({_window, string: pathJoined}), clone(object), t);
+            return t
+        } else return pathJoined
     }
 
     // @coded
@@ -4530,14 +4565,14 @@ const reducer = ({ _window, lookupActions = [], stack = { addresses: [], returns
         // text in square bracket
         if (global.__refs__[path[0]].type === "text" && key && value !== undefined) {
             path[0] = global.__refs__[path[0]].data
-            return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: object, path, value, key, object, pathJoined } })
+            return kernel({ _window, lookupActions, stack, props, id, __, e, req, res, object, data: { data: object[0], path, value, key, pathJoined } })
         } 
         
         if (global.__refs__[path[0]].type === "text") return global.__refs__[path[0]].data
-        else data = toLine({ _window, req, res, lookupActions, stack, object, id, data: { string: global.__refs__[path[0]].data }, __, e }).data
+        else data = toLine({ _window, req, res, lookupActions, stack, props, object, id, data: { string: global.__refs__[path[0]].data }, __, e }).data
 
         if (path[1] === "flat()") {
-
+            
             if (Array.isArray(data)) {
 
                 data = [...data]
@@ -4545,25 +4580,21 @@ const reducer = ({ _window, lookupActions = [], stack = { addresses: [], returns
 
             } else {
 
-                if (typeof object === "object") return override(object, data)
-                return object
+                if (typeof object[0] === "object") return override(object[0], data)
+                return object[0]
             }
 
         } else {
 
-            if (!path[1] && typeof object === "object" && key && value !== undefined) {
+            if (!path[1] && key) {
 
-                object[data] = value
-                return object[data]
+                if (value !== undefined) object[0][data] = value
+                return object[0][data]
 
             } else if (path[1]) {
 
                 path.splice(0, 1)
-                return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data, path, value, key, object, pathJoined } })
-
-            } else if (!path[1] && typeof object === "object") {
-
-                return object[data]
+                return kernel({ _window, lookupActions, stack, props, id, __, e, req, res, object, data: { data, path, value, key, pathJoined } })
 
             } else return data
         }
@@ -4572,15 +4603,14 @@ const reducer = ({ _window, lookupActions = [], stack = { addresses: [], returns
     // action()
     else if (path0.slice(-2) === "()") {
         
-        var action = toAction({ _window, lookupActions, stack, id, req, res, __, e, data: { action: path[0] }, condition, object })
-        if (action !== "__continue__") return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: action, path: path.slice(1), value, key, object, pathJoined } })
-        
+        var action = toAction({ _window, lookupActions, stack, props, id, req, res, __, e, data: { action: path[0] }, object })
+        if (action !== "__continue__") return kernel({ _window, lookupActions, stack, props, id, __, e, req, res, object, data: { data: action, path: path.slice(1), value, key, pathJoined } })
     }
 
     if (path0 === "class()") {
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: views.document, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, props, id, __, e, req, res, object, data: { data: views.document, path, value, key, pathJoined } })
     } else {
-        var __o = ((typeof object === "object" && object.__view__) ? object : view) || {}
+        var __o = (object[0] || {}).__view__ ? object[0] : view || {}
         if (__o.__labeled__ && (path0.toLowerCase().includes("prev") || path0.toLowerCase().includes("next") || path0.toLowerCase().includes("parent"))) {
 
             if (__o.__featured__) path = ["2ndParent()", ...path]
@@ -4590,7 +4620,7 @@ const reducer = ({ _window, lookupActions = [], stack = { addresses: [], returns
     }
 
     // assign reserved vars
-    var reservedVars = {
+    var mainVars = {
         keys: ["()", "global()", "e()", "console()", "string()", "object()", "array()", "document()", "window()", "win()", "history()", "navigator()", "nav()", "request()", "response()", "req()", "res()", "math()"],
         "()": view,
         "global()": _window ? _window.global : window.global,
@@ -4615,37 +4645,39 @@ const reducer = ({ _window, lookupActions = [], stack = { addresses: [], returns
     // assign
     var underScored = path0 && path0.charAt(0) === "_" && !path0.split("_").find(i => i !== "_" && i !== "")
 
-    if (reservedVars.keys.includes(path0) || underScored) {
+    // main var (win(), document()...) or underscore
+    if (mainVars.keys.includes(path0) || underScored) {
 
         var data
-        if (reservedVars.keys.includes(path0)) data = reservedVars[path0]
+        if (mainVars.keys.includes(path0)) data = mainVars[path0]
         else data = __[path0.split("_").length - 2]
-
-        path.shift()
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data, path, value, key, object, pathJoined } })
-
-    } else if (object) return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: object, path, value, key, object, pathJoined } })
-
-    // still no data
-    if ((path[0] && object && object.__view__) || (path0 && path0.includes("()"))) {
         
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data: view, path, value, key, object, pathJoined } })
-
-    } else if (path[1] && path[1].toString().includes("()")) {
-
-        var data = toValue({ req, res, _window, lookupActions, stack, id, __, e, data: path[0] }) || {}
         path.shift()
-        return kernel({ _window, lookupActions, stack, id, __, e, req, res, condition, data: { data, path, value, key, object, pathJoined } })
+        return kernel({ _window, lookupActions, stack, props, id, __, e, req, res, object, data: { data, path, value, key, pathJoined } })
+    }
+    
+    // lookup object
+    if (props.isValue || path.length > 1 || executableRegex.test(pathJoined)) {
 
-    } else return pathJoined
+        var index = 0, answer
+        
+        while (object[index] !== undefined && answer === undefined) {
+            answer = kernel({ _window, lookupActions, stack, props, id, __, e, req, res, object, data: { data: object[index], path, value, key, pathJoined } })
+            index++
+        }
+        if (answer === undefined && !props.isCondition && props.isValue && !executableRegex.test(pathJoined)) answer = pathJoined
+        
+    } else answer = kernel({ _window, lookupActions, stack, props, id, __, e, req, res, object, data: { data: object[0], path, value, key, pathJoined } })
+
+    return answer
 }
 
-const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, req, res, object }) => {
+const toApproval = ({ _window, lookupActions, stack, props, e, data: string, id, __, req, res, object = [] }) => {
 
     // no string but object exists
     if (!string)
-        if (object) return true
-        else if (object !== undefined) return false
+        if (object[0]) return true
+        else if (object[0] !== undefined) return false
 
     // no string
     if (!string || typeof string !== "string") return true
@@ -4661,7 +4693,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
 
     // ==
     string = string.replaceAll("==", "=")
-
+    
     string.split(";").map(condition => {
 
         // no condition
@@ -4681,7 +4713,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
             while (!approval && conditions[i] !== undefined) {
                 
                 if (conditions[i].charAt(0) === "=" || conditions[i].slice(0, 2) === "!=") conditions[i] = key + conditions[i]
-                approval = toApproval({ _window, lookupActions, stack, e, data: conditions[i], id, __, req, res, object })
+                approval = toValue({ _window, lookupActions, stack, props: {isCondition:true}, e, data: conditions[i], id, __, req, res, object })
                 i += 1
             }
 
@@ -4706,7 +4738,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
         var notEqual
 
         // get value
-        if (value) value = toValue({ _window, lookupActions, stack, id, data: value, e, __, req, res, condition: true })
+        if (value) value = toValue({ _window, lookupActions, stack, props: { ...props, isCondition: true, isValue: true }, id, data: value, e, __, req, res, object })
 
         // encoded
         if (key.charAt(0) === "@" && key.length == 6 && global.__refs__[key].type === "text") {
@@ -4716,6 +4748,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
 
         // operator has !
         if (key.at(0) === "!" || key.at(-1) === "!") {
+
             if (key.at(-1) === "!") {
 
                 if (condition[1]) {
@@ -4725,18 +4758,20 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
 
             } else {
 
-                key = key.split("!")[1]
+                key = key.slice(1)
                 notEqual = true
+                if (key.charAt(0) === "@" && key.length === 6) {
+                    key = toApproval({ _window, lookupActions, stack, props, e, data: key, id, __, req, res, object })
+                }
             }
         }
+        
+        // get key
+        if (typeof key === "string") {
 
-        // @coded && (no value)
-        if (key.charAt(0) === "@" && key.length == 6) {
-            key = toLine({ _window, lookupActions, stack, id, e, data: { string: key }, req, res, __, object, action: "toApproval" }).data
+            //if (key.charAt(0) === "@" && key.length == 6) key = global.__refs__[key].data
+            key = reducer({ _window, lookupActions, stack, props: { isCondition: true, isValue: true }, id, data: { path: key.split(".") }, e, __, req, res, object })
         }
-
-        else if (object || key.includes("()")) key = toValue({ _window, lookupActions, stack, id, data: key, e, __, req, res, object, condition: true })
-        else key = toValue({ _window, lookupActions, stack, id, data: key, e, __, req, res, object: object !== undefined ? object : view, condition: true })
 
         // evaluate
         if (!equalOp && !greaterOp && !lessOp) approval = notEqual ? !key : key
@@ -4750,7 +4785,7 @@ const toApproval = ({ _window, lookupActions, stack, e, data: string, id, __, re
     return approval
 }
 
-const toAction = ({ _window, id, req, res, __, e, data: { action, path, data: passedData }, condition, mount, object, lookupActions = {}, stack }) => {
+const toAction = ({ _window, id, req, res, __, e, data: { action, path, data: passedData }, mount, object = [], lookupActions = {}, stack, props = {} }) => {
 
     var global = _window ? _window.global : window.global
     var views = _window ? _window.views : window.views
@@ -4779,7 +4814,7 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, data: pa
                 
                 queryNonExistingView = true
                 var mydata = { data: { ...lookupAction, path: [...(lookupAction.path || []), name] }, action, lookupServerActions: true }
-                return searchDoc({ _window, lookupActions, stack, address, id, __, req, res, data: mydata })
+                return searchDoc({ _window, lookupActions, stack, props, address, id, __, req, res, data: mydata, object })
             }
 
             var actions = doc.__props__.actions
@@ -4828,7 +4863,7 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, data: pa
 
         if (actionFound) {
             
-            var { address, data } = addresser({ _window, req, res, stack, args: action.split(":"), newLookupActions, asynchronous: serverAction, e, id, data: { string: serverAction ? "" : actionFound }, action: action0, __, id, object, mount, condition, lookupActions })
+            var { address, data } = addresser({ _window, req, res, stack, props, args: action.split(":"), newLookupActions, asynchronous: serverAction, e, id, data: { string: serverAction ? "" : actionFound }, action: action0, __, id, object, mount, lookupActions })
 
             // data passed from action():[action;path;data]
             if (passedData !== undefined) data = passedData
@@ -4838,10 +4873,10 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, data: pa
 
                 address.status = "Start"
                 var mydata = { lookupActions: newLookupActions, server: "action", action: action0, data }
-                return route({ _window, req, res, id, e, data: mydata, __, stack, lookupActions, address })
+                return route({ _window, req, res, id, e, data: mydata, __, stack, props, lookupActions, address })
             }
             
-            var answer = toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: data }).data
+            var answer = toAwait({ _window, lookupActions, stack, props, address, id, e, req, res, __, _: data }).data
             
             if (answer === "__continue__") return
             else return answer
@@ -4851,8 +4886,8 @@ const toAction = ({ _window, id, req, res, __, e, data: { action, path, data: pa
     return "__continue__"
 }
 
-const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { string, dblExecute, index: i = 0, splitter = "?" }, req, res, __, mount, condition, object, action, startTime = (new Date()).getTime(), success = true, message = "", conditionsNotApplied = false }) => {
-
+const toLine = ({ _window, lookupActions, stack, props = {}, address = {}, id, e, data: { string, dblExecute, index: i = 0, splitter = "?" }, req, res, __, mount, object = [], action, startTime = (new Date()).getTime(), success = true, message = "", conditionsNotApplied = false }) => {
+    
     var global = _window ? _window.global : window.global
     var view = _window ? _window.views[id] : window.views[id]
 
@@ -4872,17 +4907,17 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
         address.interpreting = false
 
         // execute waits
-        toAwait({ _window, lookupActions, stack, address, id, e, req, res, __, _: returnForWaitActionExists ? data.data : undefined })
+        toAwait({ _window, lookupActions, stack, props, address, id, e, req, res, __, _: returnForWaitActionExists ? data.data : undefined })
 
         return data
     }
 
     if (stack.terminated || stack.broke || stack.blocked) return terminator({ data: { success: false, message: `Action terminated!`, executionDuration: 0 }, order: 0 })
     if (!string) return terminator({ data: { success: true, message: `No action to execute!`, executionDuration: 0 }, order: 1 })
-
+        
     // encode
     string = toCode({ _window, id, string: toCode({ _window, id, string, start: "'" }) })
-
+    
     // decode
     if (string.charAt(0) === "@" && string.length === 6) {
 
@@ -4891,11 +4926,12 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
             return terminator({ data: { data: global.__refs__[string].data, success: true, message: `No action to execute!`, executionDuration: 0 }, order: 2 })
 
         string = global.__refs__[string].data
-        if (action === "toParam") object = {}
+        //if (props.isValue && !props.isCondition) object = [{}, ...object]
     }
 
-    // check event
+    // check if event
     if (string.split("?").length > 1 && isEvent({ _window, string })) {
+
         toEvent({ _window, string, id, __, lookupActions })
         return terminator({ data: { success: true, message: `Event`, executionDuration: 0 } })
     }
@@ -4913,13 +4949,12 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
         // name has subparams => interpret
         if (substring.includes("?")) {
 
-            var data = toLine({ lookupActions, stack, id, e, data: { string: substring, i: 1 }, req, res, __, mount, condition, object })
+            var data = toLine({ lookupActions, stack, props, id, e, data: { string: substring, i: 1 }, req, res, __, mount, object })
             if (data.conditionsNotApplied) return terminator({ data, order: 4 })
         }
     }
 
-    var stringList = string.split(splitter)
-    var elseIfList = string.split("??")
+    var stringList = string.split(splitter), elseIfList = string.split("??")
 
     if (splitter === "?" && elseIfList[1]) {
 
@@ -4945,14 +4980,14 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
     var elseParams = stringList[i + 2]
     string = stringList[i + 0]
     
-    var approved = toApproval({ _window, data: conditions || "", id, e, req, res, __, stack, lookupActions, object })
-
+    var approved = toApproval({ _window, data: conditions || "", id, e, req, res, __, stack, props, lookupActions, object })
+    
     if (!approved && elseParams) {
 
         string = stringList.slice(2).join("?")
         message = "Else actions executed!"
         conditionsNotApplied = true
-        return toLine({ _window, lookupActions, stack, address, id, e, data: { string, dblExecute, splitter }, req, res, __, mount, condition, object, action, startTime, message, conditionsNotApplied })
+        return toLine({ _window, lookupActions, stack, props, address, id, e, data: { string, dblExecute, splitter }, req, res, __, mount, object, action, startTime, message, conditionsNotApplied })
 
     } else if (!approved) return terminator({ data: { success, message: `Conditions not applied!`, conditionsNotApplied: true, executionDuration: (new Date()).getTime() - startTime } })
     else message = `Action executed successfully!`
@@ -4962,24 +4997,25 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
 
     // no params
     if (!string) message = "No actions to execute!"
-
-    if (!action || condition) {
+    
+    if (!action || props.isCondition) {
 
         action = "toValue"
-        if (!dblExecute && (condition || isCondition({ _window, string: data }))) action = "toApproval"
-        else if (!dblExecute && mount) action = "toParam"
+        if (props.isValue) action = "toValue"
+        else if (!dblExecute && (props.isCondition || isCondition({ _window, string }))) action = "toApproval"
+        else if (!dblExecute && isParam({ _window, string })) action = "toParam"
 
     } else if (action === "conditional") {
 
         if (isParam({ _window, string })) action = "toParam"
         else action = "toValue"
     }
-
-    if (action === "toValue") data = toValue({ _window, lookupActions, address, stack, id, e, data: string, req, res, __, mount, object })
-    else if (action === "toApproval") data = toApproval({ _window, lookupActions, address, stack, id, e, data: string, req, res, __, mount, object })
-    else if (action === "toParam") data = toParam({ _window, lookupActions, address, stack, id, e, data: string, req, res, __, mount, object })
-
-    if (dblExecute && executable({ _window, string: data })) data = toLine({ _window, lookupActions, stack, id, e, data: { string: data }, req, res, __, mount, condition, object }).data
+   
+    if (action === "toValue") data = toValue({ _window, lookupActions, address, stack, props, id, e, data: string, req, res, __, object })
+    else if (action === "toApproval") data = toApproval({ _window, lookupActions, address, stack, props, id, e, data: string, req, res, __, object })
+    else if (action === "toParam") data = toParam({ _window, lookupActions, address, stack, props, id, e, data: string, req, res, __, object })
+        
+    if (dblExecute && executable({ _window, string: data })) data = toLine({ _window, lookupActions, stack, props, id, e, data: { string: data }, req, res, __, object, tt:true }).data
 
     if (stack.returns && stack.returns[0].returned) {
         returnForWaitActionExists = true
@@ -4995,8 +5031,9 @@ const toLine = ({ _window, lookupActions, stack, address = {}, id, e, data: { st
     return terminator({ data: { success, message, data, action, conditionsNotApplied, executionDuration: (new Date()).getTime() - startTime }, order: 5 })
 }
 
-const addresser = ({ _window, addressID = generate(), index = 0, stack = [], args = [], req, res, e, type = "action", status = "Wait", file, data, waits, hasWaits, params, function: func, newLookupActions, nextAddressID, nextStack = {}, nextAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, condition, logger, switchNextAddressIDWith }) => {
+const addresser = ({ _window, addressID = generate(), index = 0, stack, props = {}, args = [], req, res, e, type = "action", status = "Wait", file, data, waits, hasWaits, params, function: func, newLookupActions, nextAddressID, nextStack = {}, nextAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, mount, lookupActions, logger, switchNextAddressIDWith }) => {
 
+    var global = _window ? _window.global : window.global
     if (switchNextAddressIDWith) {
 
         nextAddressID = switchNextAddressIDWith.nextAddressID
@@ -5013,13 +5050,15 @@ const addresser = ({ _window, addressID = generate(), index = 0, stack = [], arg
     waits = waits || args[2], params = params || args[1] || ""
 
     // address waits
-    if (waits) toArray(waits).reverse().map(waits => nextAddress = addresser({ _window, stack, req, res, e, type: "waits", action: action + "::[...]", data: { string: waits }, nextAddress, blockable, __, id, object, mount, lookupActions, condition }).address)
-
+    if (waits) toArray(waits).reverse().map(waits => {
+        if (waits.charAt(0) === "@" && waits.length == 6) waits = global.__refs__[waits].data
+        nextAddress = addresser({ _window, stack, props, req, res, e, type: "waits", action: action + "::[...]", data: { string: waits }, nextAddress, blockable, __, id, object, mount, lookupActions }).address
+    })
     // data is encoded ex. action [key=value] => build a map => object=[]
-    var global = _window ? _window.global : window.global
-    var encoded = type !== "waits" && data && data.string && data.string.charAt(0) === "@" && data.string.length == 6 && global.__refs__[data.string].type !== "text" ? true : false
+    //var global = _window ? _window.global : window.global
+    //var encoded = type !== "waits" && data && data.string && data.string.charAt(0) === "@" && data.string.length == 6 && global.__refs__[data.string].type !== "text" ? true : false
 
-    var address = { id: addressID, stackID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: hasWaits !== undefined ? hasWaits : (waits ? true : false), nextStackID: nextStack.id, nextAddressID: nextAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, logger, executionStartTime: (new Date()).getTime() }
+    var address = { id: addressID, stack, props, ID: stack.id, viewID: id, type, data, status, file, function: func, hasWaits: hasWaits !== undefined ? hasWaits : (waits ? true : false), nextStackID: nextStack.id, nextAddressID: nextAddress.id, blocked, blockable, index: stack.addresses.length, action, asynchronous, interpreting, renderer, logger, executionStartTime: (new Date()).getTime() }
     var stackLength = stack.addresses.length
 
     // Start => set interpretingAddressID
@@ -5063,11 +5102,11 @@ const addresser = ({ _window, addressID = generate(), index = 0, stack = [], arg
     }
 
     // data
-    var { data, executionDuration, action: interpretAction } = toLine({ _window, lookupActions, stack, req, res, id, e, __, data: { string: params }, action: dataInterpretAction })
+    var { data, executionDuration, action: interpretAction } = toLine({ _window, lookupActions, stack, props: {isValue:true}, req, res, id, e, __, data: { string: params }, action: dataInterpretAction, object })
     address.paramsExecutionDuration = executionDuration
 
     // pass params
-    address.params = { __, id, object: encoded ? {} : object, mount, lookupActions: newLookupActions || lookupActions, condition }
+    address.params = { __, id, object, props, lookupActions: newLookupActions || lookupActions }
 
     // push to stack
     if (index) stack.addresses.splice(index, 0, address)
@@ -5079,10 +5118,10 @@ const addresser = ({ _window, addressID = generate(), index = 0, stack = [], arg
     // actions executed
     address.action && address.status === "Start" && stack.executedActions.push(address.action)
 
-    return { address, data, stack, action: interpretAction, __: [...(data !== undefined ? [data] : []), ...__] }
+    return { nextAddress, address, data, stack, props, action: interpretAction, __: [...(data !== undefined ? [data] : []), ...__] }
 }
 
-const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, stack, id, e, _, __, action }) => {
+const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, stack, props = {}, id, e, _, __, action }) => {
 
     var global = _window ? _window.global : window.global
 
@@ -5143,7 +5182,7 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
         if (address.function) {
 
             var func = address.function || "toLine"
-            var params = { _window, lookupActions, stack, id, e, req, res, address, nextAddress, ...(address.params || {}), data: address.data, __: my__, action }
+            var params = { _window, lookupActions, stack, props, id, e, req, res, address, nextAddress, ...(address.params || {}), data: address.data, __: my__, action }
             
             if (func === "toView") toView(params)
             else if (func === "toHTML") toHTML(params)
@@ -5153,12 +5192,10 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
 
             address.interpreting = false
 
-            return !address.asynchronous && toAwait({ _window, lookupActions, stack, address, id, e, req, res, __: my__, action })
+            return !address.asynchronous && toAwait({ _window, lookupActions, stack, props, address, id, e, req, res, __: my__, action })
 
         } else if (address.type === "line" || address.type === "waits" || address.type === "action") {
-
-            // actions executed
-            return toLine({ _window, lookupActions, address, stack, id, e, req, res, ...(address.params || {}), data: address.data, __: my__, action })
+            return toLine({ _window, lookupActions, address, stack, props: {isValue:false}, id, e, req, res, ...(address.params || {}), data: address.data, __: my__ })
         }
     }
 
@@ -5172,7 +5209,7 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
         if (otherWaiting === -1 || (otherWaiting > -1 && !stack.addresses.find(waitingAddress => waitingAddress.nextAddressID === address.nextAddressID && !address.blocked))) {
 
             nextAddress.hold = false
-            return toAwait({ _window, lookupActions, stack, address: nextAddress, id, req, res, __, action, e })
+            return toAwait({ _window, lookupActions, stack, props, address: nextAddress, id, req, res, __, action, e })
         }
 
     } else if (nextAddress.interpreting) stack.interpretingAddressID = nextAddress.id
@@ -5180,16 +5217,16 @@ const toAwait = ({ _window, req, res, address = {}, addressID, lookupActions, st
     // address is for another stack
     if (address.nextStackID && global.__stacks__[address.nextStackID] && global.__stacks__[address.nextStackID].addresses.find(({ id }) => address.nextStackID === id)) {
         
-        toAwait({ _window, lookupActions, stack: global.__stacks__[address.nextStackID], address, id, e, req, res, __, action })
+        toAwait({ _window, lookupActions, stack: global.__stacks__[address.nextStackID], props, address, id, e, req, res, __, action })
     }
 
-    endStack({ _window, stack })
+    endStack({ _window, stack, props })
 }
 
-const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
+const insert = async ({ lookupActions, stack, props = {}, object, __, address, id, insert }) => {
 
-    var { index, view, path, data, doc, viewPath = [], parent, preventDefault } = insert
-
+    var { index, view, path, data, doc, viewPath = [], parent, mount, preventDefault } = insert
+    //console.log(clone(insert));
     var views = window.views
     var global = window.global
     var parent = views[parent]
@@ -5248,6 +5285,7 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
                 else return o[k]
 
             }, global[doc])
+            
         }
 
         // inserted view params
@@ -5292,10 +5330,10 @@ const insert = async ({ lookupActions, stack, __, address, id, insert }) => {
         view.view = global.__refs__[view.view.slice(0, 6)].data + "?" + decode({ string: view.view.split("?").slice(1).join("?") })
     }
     
-    update({ lookupActions, stack, address, id, __, data: { view: { ...clone(view), __inserted__: true }, id: myID || id, path, data, doc, __childIndex__, __index__: index, insert: true, __parent__: parent.id, action: "INSERT", ...passData } })
+    update({ lookupActions, stack, props, object, address, id, __, data: { view: { ...clone(view), __inserted__: true }, id: myID || id, path, mount, data, doc, __childIndex__, __index__: index, insert: true, __parent__: parent.id, action: "INSERT", ...passData } })
 }
 
-const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data = {} }) => {
+const toView = ({ _window, lookupActions, stack, props = {}, address, req, res, __, id, data = {} }) => {
 
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
@@ -5310,7 +5348,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
         id = details.id
         
         // no view
-        if (!view.view) return removeView({ _window, global, views, lookupActions, stack, id, address, __ })
+        if (!view.view) return removeView({ _window, global, views, lookupActions, stack, props, id, address, __ })
 
         // encode
         view.__name__ = toCode({ _window, id, string: toCode({ _window, id, string: view.__name__, start: "'" }) })
@@ -5329,7 +5367,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
             if (view.__name__ === "manifest:().page") view.__page__ = true
             if (view.__name__ === "manifest:().action") global.__actionLaunched__ = true
         }
-
+        
         // action view
         if (isParam({ _window, string: view.__name__ })) {
 
@@ -5343,30 +5381,33 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
         var loop = view.__name__.charAt(0) === "@" && view.__name__.length == 6
 
         // exec view name
-        view.__name__ = toValue({ _window, id, req, res, data: view.__name__, __, stack })
-
+        view.__name__ = toValue({ _window, id, req, res, data: view.__name__, __, stack, props:{isValue:true}, object: [view] })
+        
         // no view
-        if (!view.__name__ || typeof view.__name__ !== "string" || view.__name__.charAt(0) === "#") return removeView({ _window, global, views, id, stack, address })
+        if (!view.__name__ || typeof view.__name__ !== "string" || view.__name__.charAt(0) === "#") return removeView({ _window, global, views, id, stack, props, address })
         else views[id] = view
 
         // executable view name
         if (executable({ _window, string: view.__name__ })) {
             
-            toValue({ _window, id, req, res, data: view.__name__, lookupActions, __, stack })
+            var action = view.__name__
             view.__name__ = "Action"
+            toValue({ _window, id, req, res, data: action, lookupActions, __, stack, object: [view] })
         }
 
         // interpret subparams
         if (subParams) {
-
-            var { data = {}, conditionsNotApplied } = toLine({ _window, lookupActions, stack, id, data: { string: subParams }, req, res, __/*, action: loop && "toParam"*/ })
-            if (conditionsNotApplied) return removeView({ _window, global, views, id, stack, address })
+            view.__executingSubparams__ = true
+            var { data = {}, conditionsNotApplied } = toLine({ _window, lookupActions, stack, props: {isValue: true}, id, data: { string: subParams }, req, res, object:[view], __ })
+            //console.log(data, decode({ _window, string: subParams }), clone(view));
+            if (conditionsNotApplied) return removeView({ _window, global, views, id, stack, props, address })
             else subParams = data
+            view.__executingSubparams__ = false
         }
-
+        
         // [View]
-        if (loop) return loopOverView({ _window, id, stack, lookupActions, __, address, data: subParams || {}, req, res })
-
+        if (loop) return loopOverView({ _window, id, stack, props, lookupActions, __, address, data: subParams || {}, req, res })
+            
         // subparam is params or id
         if (typeof subParams === "object") {
 
@@ -5394,38 +5435,35 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
         }
 
         // conditions
-        var approved = toApproval({ _window, lookupActions, stack, data: conditions, id, req, res, __ })
-        if (!approved) return removeView({ _window, global, views, id, stack, address })
+        var approved = toApproval({ _window, lookupActions, stack, props, data: conditions, id, req, res, __, object: [view] })
+        if (!approved) return removeView({ _window, global, views, id, stack, props, address })
 
         // params
         if (params) {
 
-            toParam({ _window, lookupActions, stack, data: params, id, req, res, mount: true, __ })
-
+            toParam({ _window, lookupActions, stack, props, data: params, id, req, res, object: [view], __ })
+            
             // id changed
-            if (view.id !== id) {
-
-                id = view.id
-            }
+            if (view.id !== id) id = view.id
         }
 
         // data
-        view.data = kernel({ _window, id, stack, lookupActions, data: { path: view.__dataPath__, data: global[view.doc], value: view.data, key: true }, __ })
+        view.data = kernel({ _window, id, stack, props, lookupActions, data: { path: view.__dataPath__, data: global[view.doc], value: view.data, key: true }, __ })
 
         // prepare for toHTML
         componentModifier({ _window, id })
 
         // built-in view
-        if (view.__name__ === "Input" && !view.__templated__) var { id, view } = builtInViewHandler({ _window, lookupActions, stack, id, req, res, __ })
+        if (view.__name__ === "Input" && !view.__templated__) var { id, view } = builtInViewHandler({ _window, lookupActions, stack, props, id, req, res, __ })
 
         // set interpreted
         view.__interpreted__ = true
 
         // maybe update in params or root
-        if (address.blocked) return// toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
+        if (address.blocked) return// toAwait({ _window, lookupActions, stack, props, address, id, req, res, __ })
 
         // asynchronous actions within view params
-        if (address.hold) return addresser({ _window, id, stack, switchNextAddressIDWith: address, type: "function", function: "toView", __, lookupActions, stack, data: { view } })
+        if (address.hold) return addresser({ _window, id, stack, props, switchNextAddressIDWith: address, type: "function", function: "toView", __, lookupActions, stack, props, data: { view } })
     }
     
     // not builtin view => custom View
@@ -5440,11 +5478,12 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
             address.interpreting = false
             address.status = "Wait"
             address.data = { view }
-            return searchDoc({ _window, lookupActions, stack, address, id, __, req, res, data: { data: { collection: "view", doc: view.__name__ } } })
+            return searchDoc({ _window, lookupActions, stack, props, address, id, __, req, res, object: [view], data: { data: { collection: "view", doc: view.__name__ } } })
         }
         
         // continue to custom view
         else {
+            
             var newView = {
                 ...global.__queries__.view[view.__name__],
                 __interpreted__: false,
@@ -5477,7 +5516,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
                 logger({ _window, data: { key: "documenter", start: true } })
 
                 // address: document
-                address = addresser({ _window, id: child.id, nextAddress: address, type: "function", function: "documenter", stack, __, logger: { key: "documenter", end: true } }).address
+                address = addresser({ _window, id: child.id, nextAddress: address, type: "function", function: "documenter", stack, props, __, logger: { key: "documenter", end: true } }).address
 
                 // get shared public views
                 Object.entries(require("./publicViews.json")).map(([doc, data]) => {
@@ -5486,12 +5525,12 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
                     global.__queries__.view[doc] = data
                 })
 
-                address = addresser({ _window, stack, status: "Start", type: "function", function: "toView", nextAddress: address, lookupActions, __ }).address
+                address = addresser({ _window, stack, props, status: "Start", type: "function", function: "toView", nextAddress: address, lookupActions, __ }).address
             
             }
 
             // address
-            return toView({ _window, stack, address, req, res, lookupActions: child.__lookupActions__, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
+            return toView({ _window, stack, props, address, req, res, lookupActions: child.__lookupActions__, __: [...(Object.keys(data).length > 0 ? [data] : []), ...__], data: { view: child, parent: view.__parent__ } })
         }
     }
 
@@ -5502,7 +5541,7 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
     if (view.children.length > 0) {
 
         // html address
-        address = addresser({ _window, id, stack, type: "function", function: "toHTML", file: "toView", __, lookupActions, nextAddress: address }).address
+        address = addresser({ _window, id, stack, props, type: "function", function: "toHTML", file: "toView", __, lookupActions, nextAddress: address }).address
 
         var lastIndex = view.children.length - 1;
 
@@ -5514,18 +5553,18 @@ const toView = ({ _window, lookupActions, stack, address, req, res, __, id, data
             views[childID] = { ...child, id: childID, __view__: true, __parent__: id, __viewPath__: [...view.__viewPath__, "children", lastIndex - index], __childIndex__: lastIndex - index }
 
             // address
-            address = addresser({ _window, index, id: childID, stack, type: "function", function: "toView", __: [...__], lookupActions, nextAddress: address, data: { view: views[childID] } }).address
+            address = addresser({ _window, index, id: childID, stack, props, type: "function", function: "toView", __: [...__], lookupActions, nextAddress: address, data: { view: views[childID] } }).address
         })
         
-    } else toHTML({ _window, id, stack, __ })
+    } else toHTML({ _window, id, stack, props, __ })
     
     if (view.__page__) global.__pageViewID__ = view.id
 
     // address
-    if (!toViewAddress.hold) toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
+    if (!toViewAddress.hold) toAwait({ _window, lookupActions, stack, props, address, id, req, res, __ })
 }
 
-const update = ({ _window, id, lookupActions, stack, address, req, res, __, data = {} }) => {
+const update = ({ _window, id, lookupActions, stack, props, address, req, res, __, data = {} }) => {
 
     // address.blockable = false
     var views = _window ? _window.views : window.views
@@ -5549,7 +5588,7 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
         if (!view) return
 
         // close publics
-        closePublicViews({ _window, id: data.id, __, stack, lookupActions })
+        closePublicViews({ _window, id: data.id, __, stack, props, lookupActions })
 
         // get view to be rendered
         var reducedView = {
@@ -5564,15 +5603,16 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
             __page__: data.id === global.__pageViewID__,
             ...(data.passData || {}),
         }
-
+        
         // data
         if ("data" in data) {
+            
+            if ("mount" in data) {
 
-            //if ("mount" in data) {
                 reducedView.data = data.data
                 reducedView.doc = data.doc || view.doc || parent.doc || generate()
                 global[reducedView.doc] = global[reducedView.doc] || reducedView.data
-            //}
+            }
 
             if (!("__" in data)) my__ = [data.data, ...my__]
 
@@ -5583,14 +5623,14 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
             global[reducedView.doc] = global[reducedView.doc] || reducedView.data || {}
             if (!("__" in data)) my__ = [global[reducedView.doc], ...my__]
         }
-
+        
         // path
         if ("path" in data) reducedView.__dataPath__ = (Array.isArray(data.path) ? data.path : typeof data.path === "number" ? [data.path] : data.path.split(".")) || []
 
         // remove views
         if (!data.insert && parent.__rendered__) parent.__childrenRef__.filter(({ index, childIndex }) => (data.__childIndex__ === undefined && view.__loop__) ? (index === view.__index__) : (childIndex === __childIndex__))
-            .map(({ id }) => elements.push(removeView({ _window, global, views, id, stack, main: true, insert: data.insert })))
-        else if (!parent.__rendered__) removeView({ _window, global, views, id: data.id, stack, main: true })
+            .map(({ id }) => elements.push(removeView({ _window, global, views, id, stack, props, main: true, insert: data.insert })))
+        else if (!parent.__rendered__) removeView({ _window, global, views, id: data.id, stack, props, main: true })
 
         // remove loop
         if (reducedView.view.charAt(0) === "[") {
@@ -5599,28 +5639,28 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
         }
 
         // address for delete blocked addresses (switch with second next address => execute after end of update waits)
-        addresser({ _window, id, stack, switchNextAddressIDWith: address.hasWaits ? stack.addresses.find(add => add.id === address.nextAddressID) : address, type: "function", function: "blockRelatedAddressesByViewID", __, lookupActions, data: { stack, id: data.id } })
+        addresser({ _window, id, stack, props, switchNextAddressIDWith: address.hasWaits ? stack.addresses.find(add => add.id === address.nextAddressID) : address, type: "function", function: "blockRelatedAddressesByViewID", __, lookupActions, data: { stack, id: data.id } })
 
         // address for post update
-        addresser({ _window, id, stack, switchNextAddressIDWith: address, type: "function", function: "update", __, lookupActions, data: { ...data, childIndex: __childIndex__, index: __index__, elements, timer, parent, postUpdate: true } })
+        addresser({ _window, id, stack, props, switchNextAddressIDWith: address, type: "function", function: "update", __, lookupActions, data: { ...data, childIndex: __childIndex__, index: __index__, elements, timer, parent, postUpdate: true } })
 
         // address for rendering view
-        address = addresser({ _window, id, stack, nextAddress: address, status: "Start", type: "function", function: "toView", interpreting: true, __: my__, lookupActions: __lookupActions__, data: { view: reducedView, parent: parent.id } }).address
+        address = addresser({ _window, id, stack, props, nextAddress: address, status: "Start", type: "function", function: "toView", interpreting: true, __: my__, lookupActions: __lookupActions__, data: { view: reducedView, parent: parent.id } }).address
         
         // render
-        toView({ _window, lookupActions: __lookupActions__, stack, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
+        toView({ _window, lookupActions: __lookupActions__, stack, props, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
 
         // seq: END:toView => END:update() => START:postUpdate => END:postUpdate => START:waits => END:waits => START:spliceBlockedAddresses
 
         // address
-        toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
+        toAwait({ _window, lookupActions, stack, props, address, id, req, res, __ })
 
     } else { // post update
 
         var { childIndex, elements, root, timer, parent, loop, inserted, ...data } = data
 
         // tohtml parent
-        toHTML({ _window, lookupActions, stack, __, id: parent.id })
+        toHTML({ _window, lookupActions, stack, props, __, id: parent.id })
         
         var renderedRefView = parent.__childrenRef__.filter(({ id, childIndex: chdIndex }) => (inserted ? chdIndex === childIndex : true) && !views[id].__rendered__ && views[id])
         
@@ -5663,7 +5703,7 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
             })
 
             // start
-            var relatedEvents = idLists.map(id => starter({ _window, lookupActions, address, stack, __, id }))
+            var relatedEvents = idLists.map(id => starter({ _window, lookupActions, address, stack, props, __, id }))
 
             // loaded events
             idLists.map(id => views[id] && views[id].__loadedEvents__.map(data => eventExecuter(data)))
@@ -5710,13 +5750,13 @@ const update = ({ _window, id, lookupActions, stack, address, req, res, __, data
     }
 }
 
-const addEventListener = ({ event, id, string, __, stack, lookupActions, address, eventID: mainEventID, executable }) => {
+const addEventListener = ({ event, id, string, __, stack, props, lookupActions, address, eventID: mainEventID, executable }) => {
 
     var views = window.views
     var global = window.global
     var view = views[id]
 
-    if (executable) return eventExecuter({ string, event, eventID: mainEventID, id, address, stack, lookupActions, __ })
+    if (executable) return eventExecuter({ string, event, eventID: mainEventID, id, address, stack, props, lookupActions, __ })
 
     if (!view || !event) return
 
@@ -5732,7 +5772,7 @@ const addEventListener = ({ event, id, string, __, stack, lookupActions, address
         if (substring.charAt(0) === "@" && substring.length === 6) substring = global.__refs__[substring].data
 
         // event:id
-        var { data: eventID } = toLine({ id, data: { string: substring.split("?")[0].split(":")[1] } })
+        var { data: eventID } = toLine({ id, data: { string: substring.split("?")[0].split(":")[1] }, props: {isValue: true} })
         eventID = eventID || mainEventID || id
 
         toArray(eventID).map(eventID => {
@@ -5740,17 +5780,17 @@ const addEventListener = ({ event, id, string, __, stack, lookupActions, address
             if (typeof eventID === "object" && eventID.__view__) eventID = eventID.id
 
             // modify
-            var { event, string } = modifyEvent({ eventID, event: substring, string: mainString, id, __, stack, lookupActions, address })
+            var { event, string } = modifyEvent({ eventID, event: substring, string: mainString, id, __, stack, props, lookupActions, address })
 
             // watch
-            if (event === "watch") return watch({ lookupActions, __, stack, address, string, id })
+            if (event === "watch") return watch({ lookupActions, __, stack, props, address, string, id })
 
             // loaded event
-            if (event === "loaded") return views[eventID].__loadedEvents__.push({ string, event, eventID, id, address, stack, lookupActions, __ })
+            if (event === "loaded") return views[eventID].__loadedEvents__.push({ string, event, eventID, id, address, stack, props, lookupActions, __ })
 
             // event id
             var genID = generate()
-            var eventAddress = { genID, event, id, eventListener: (e) => eventExecuter({ string, event, eventID, id, stack, lookupActions, __, address, e }) }
+            var eventAddress = { genID, event, id, eventListener: (e) => eventExecuter({ string, event, eventID, id, stack, props, lookupActions, __, address, e }) }
 
             //
             if (id !== eventID) {
@@ -5771,11 +5811,11 @@ const addEventListener = ({ event, id, string, __, stack, lookupActions, address
     })
 }
 
- /////////////////////////////////////////////////////////////////////////////////////////
- /////////////////////////////////////////////////////////////////////////////////////////
- /////////////////////////////////////////////////////////////////////////////////////////
- ///////////////////////////////////////////////////////////////////////////////////////// 
- /////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////// 
+/////////////////////////////////////////////////////////////////////////////////////////
 
 const getDeepChildren = ({ _window, id }) => {
 
@@ -5821,7 +5861,7 @@ const getDeepChildrenId = ({ _window, id }) => {
     return all
 }
 
-const getDeepParentId = ({ _window, lookupActions, stack, id }) => {
+const getDeepParentId = ({ _window, lookupActions, stack, props, id }) => {
 
     var views = _window ? _window.views : window.views
     var view = views[id]
@@ -5832,12 +5872,12 @@ const getDeepParentId = ({ _window, lookupActions, stack, id }) => {
     var parentId = view.__element__.parentNode.id
     var all = [parentId]
 
-    all.push(...getDeepParentId({ _window, lookupActions, stack, id: parentId }))
+    all.push(...getDeepParentId({ _window, lookupActions, stack, props, id: parentId }))
 
     return all
 }
 
-const exportHTMLToPDF = async ({ _window, pages, opt, lookupActions, stack, address, req, res, id, e, __ }) => {
+const exportHTMLToPDF = async ({ _window, pages, opt, lookupActions, stack, props, address, req, res, id, e, __ }) => {
 
     const { jsPDF } = jspdf
     const doc = new jsPDF(opt.jsPDF)
@@ -5870,7 +5910,7 @@ const exportHTMLToPDF = async ({ _window, pages, opt, lookupActions, stack, addr
     doc.save(opt.filename)
 
     // await params
-    if (args[2]) require("./kernel").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __ })
+    if (args[2]) require("./kernel").toAwait({ _window, lookupActions, stack, props, address, req, res, id, e, __ })
 }
 
 const toDataURL = url => fetch(url)
@@ -5908,7 +5948,7 @@ const emptySpaces = (string) => {
     return false
 }
 
-const calcSubs = ({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition, index = 1 }) => {
+const calcSubs = ({ _window, lookupActions, stack, props, value, __, id, e, req, res, object, index = 1 }) => {
 
     var allAreNumbers = true, test = value, global = _window ? _window.global : window.global
     if (value.split("-").length > index) {
@@ -5924,7 +5964,7 @@ const calcSubs = ({ _window, lookupActions, stack, value, __, id, e, req, res, o
 
             if (allAreNumbers) {
 
-                var num = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object, condition })
+                var num = toValue({ _window, lookupActions, stack, props:{isValue:true}, data: value, __, id, e, req, res, object })
                 if (!isNaN(num) && num !== " " && num !== "") return num
                 else allAreNumbers = false
             }
@@ -5936,7 +5976,7 @@ const calcSubs = ({ _window, lookupActions, stack, value, __, id, e, req, res, o
             values.slice(1).map(val => value -= parseFloat(val))
             global.__calcTests__[test] = true
 
-        } else value = calcSubs({ _window, lookupActions, stack, value, __, id, e, req, res, object: value.charAt(0) === "." && object, condition, index: index + 1 })
+        } else value = calcSubs({ _window, lookupActions, stack, props, value, __, id, e, req, res, object: value.charAt(0) === "." ? object : [], index: index + 1 })
 
     } else return value
 
@@ -5944,7 +5984,7 @@ const calcSubs = ({ _window, lookupActions, stack, value, __, id, e, req, res, o
     return value
 }
 
-const calcDivision = ({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition, index = 1 }) => {
+const calcDivision = ({ _window, lookupActions, stack, props, value, __, id, e, req, res, object, index = 1 }) => {
 
     var allAreNumbers = true, test = value, global = _window ? _window.global : window.global
     if (value.split("/").length > index) {
@@ -5960,7 +6000,7 @@ const calcDivision = ({ _window, lookupActions, stack, value, __, id, e, req, re
 
             if (allAreNumbers) {
 
-                var num = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object: value.charAt(0) === "." && object, condition })
+                var num = toValue({ _window, lookupActions, stack, props:{isValue:true}, data: value, __, id, e, req, res, object })
                 if (!isNaN(num) && num !== " " && num !== "") return num
                 else allAreNumbers = false
             }
@@ -5976,14 +6016,14 @@ const calcDivision = ({ _window, lookupActions, stack, value, __, id, e, req, re
             // push 
             global.__calcTests__[test] = true
 
-        } else calcDivision({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition, index: index + 1 })
+        } else calcDivision({ _window, lookupActions, stack, props, value, __, id, e, req, res, object, index: index + 1 })
     }
 
     if (value === test) global.__calcTests__[test] = false
     return value
 }
 
-const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition, index = 1 }) => {
+const calcModulo = ({ _window, lookupActions, stack, props, value, __, id, e, req, res, object, index = 1 }) => {
 
     var allAreNumbers = true, test = value, global = _window ? _window.global : window.global
     if (value.split("%").length > index) {
@@ -5998,7 +6038,7 @@ const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res,
 
             if (allAreNumbers) {
 
-                var num = toValue({ _window, lookupActions, stack, data: value, __, id, e, req, res, object: value.charAt(0) === "." ? object : undefined, condition })
+                var num = toValue({ _window, lookupActions, stack, props:{isValue:true}, data: value, __, id, e, req, res, object })
 
                 if (!isNaN(num) && num !== " " && num !== "") return num
                 else allAreNumbers = false
@@ -6012,21 +6052,21 @@ const calcModulo = ({ _window, lookupActions, stack, value, __, id, e, req, res,
 
             global.__calcTests__[test] = true
 
-        } else value = calcModulo({ _window, lookupActions, stack, value, __, id, e, req, res, object, condition, index: index + 1 })
+        } else value = calcModulo({ _window, lookupActions, stack, props, value, __, id, e, req, res, object, index: index + 1 })
     }
 
     if (value === test) global.__calcTests__[test] = false
     return value
 }
 
-const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions, endID }) => {
+const endAddress = ({ _window, stack, props, data, req, res, id, e, __, lookupActions, endID }) => {
 
     var global = _window ? _window.global : window.global
 
     var starter = false, nextAddressID = stack.interpretingAddressID, currentStackID = stack.id
     var address = stack.addresses.find(address => address.id === nextAddressID)
 
-    var endStarterAddress = ({ address, stack }) => {
+    var endStarterAddress = ({ address, stack, props }) => {
 
         address.starter = false
 
@@ -6061,7 +6101,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions, 
 
             stack = global.__stacks__[currentStackID]
 
-            toAwait({ req, res, _window, lookupActions, stack, addressID: stack.interpretingAddressID, id, e, __ })
+            toAwait({ req, res, _window, lookupActions, stack, props, addressID: stack.interpretingAddressID, id, e, __ })
 
             if (endID) {
 
@@ -6069,7 +6109,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions, 
                 var address = global.__startAddresses__[endID].address
         
                 delete global.__startAddresses__[endID]
-                toAwait({ req, res, _window, lookupActions, stack, address, id, e, __ })
+                toAwait({ req, res, _window, lookupActions, stack, props, address, id, e, __ })
             }
         }
     }
@@ -6080,7 +6120,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions, 
         var stack = global.__stacks__[global.__startAddresses__[endID].address.stackID]
         var address = global.__startAddresses__[endID].address
 
-        endStarterAddress({ address, stack })
+        endStarterAddress({ address, stack, props })
 
     } else {
         
@@ -6094,7 +6134,7 @@ const endAddress = ({ _window, stack, data, req, res, id, e, __, lookupActions, 
             if (address.starter) {
 
                 starter = true
-                endStarterAddress({ address, stack })
+                endStarterAddress({ address, stack, props })
             }
 
             // move to head address
@@ -6134,7 +6174,7 @@ const closePublicViews = ({ _window, id, __, lookupActions }) => {
     toParam({ id: "mininote", data: toCode({ string: "():mininote.style():[opacity=0;transform=scale(0)]" }), __, lookupActions })
 }
 
-const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
+const remove = ({ _window, stack, props, data = {}, id, __, lookupActions }) => {
 
     var global = window.global
     var views = window.views
@@ -6164,12 +6204,12 @@ const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
     }
 
     // close publics
-    closePublicViews({ _window, id, __, stack, lookupActions })
+    closePublicViews({ _window, id, __, stack, props, lookupActions })
 
     // no data
     if (__dataPath__.length === 0) {
 
-        removeView({ id, global, views, stack, main: true }).remove()
+        removeView({ id, global, views, stack, props, main: true }).remove()
 
     } else {
 
@@ -6179,7 +6219,7 @@ const remove = ({ _window, stack, data = {}, id, __, lookupActions }) => {
 
         // update data path
         if (!data.preventDefault) parent.__childrenRef__.slice(view.__index__ + 1).map(({ id }) => updateDataPath({ id, myIndex: view.__dataPath__[itemIndex], index: itemIndex, decrement: true }))
-        removeView({ id, global, views, stack, main: true }).remove()
+        removeView({ id, global, views, stack, props, main: true }).remove()
     }
 
     console.log("REMOVE:" + id)
@@ -6201,7 +6241,7 @@ const updateDataPath = ({ id, myIndex, index, decrement, increment }) => {
     view.__childrenRef__.map(({ id }) => updateDataPath({ id, myIndex, index, decrement, increment }))
 }
 
-const sort = ({ _window, sort = {}, id, e, lookupActions, __, stack }) => {
+const sort = ({ _window, sort = {}, id, e, lookupActions, __, stack, props, object }) => {
 
     var view = _window ? _window.views[id] : window.views[id]
 
@@ -6222,8 +6262,8 @@ const sort = ({ _window, sort = {}, id, e, lookupActions, __, stack }) => {
 
     data.sort((a, b) => {
 
-        a = reducer({ _window, id, data: { path, object: a }, e, lookupActions, __, stack })
-        b = reducer({ _window, id, data: { path, object: b }, e, lookupActions, __, stack })
+        a = reducer({ _window, id, data: { path }, object: [a, ...toArray(object)], e, lookupActions, __, stack, props })
+        b = reducer({ _window, id, data: { path }, object: [b, ...toArray(object)], e, lookupActions, __, stack, props })
 
         if (sortBy === "descending") {
 
@@ -6338,38 +6378,29 @@ const componentModifier = ({ _window, id }) => {
     }
 }
 
-const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {}, req, res }) => {
+const loopOverView = ({ _window, id, stack, props, lookupActions, __, address, data = {}, req, res }) => {
 
     var global = _window ? _window.global : window.global
     var views = _window ? _window.views : window.views
     var view = views[id]
-
+   
     // mount
     if (data.doc || data.path) data.mount = true
 
     // path
-    data.path = toArray(data.path) || []
+    var path = toArray(data.path) || []
+    path = Array.isArray(data.path) ? data.path : data.path !== undefined ? (data.path || "").split(".") : []
 
-    // split path
-    data.path = Array.isArray(data.path) ? data.path : data.path !== undefined ? (data.path || "").split(".") : []
+    if (data.mount) {
 
-    if (data.data) {
-
-        data.doc = data.doc || generate()
+        data.__dataPath__ = [...((data.doc || data.data) ? [] : view.__dataPath__), ...path]
+        data.doc = data.doc || ((("path" in data) || ("keys" in data)) && view.doc) || generate()
         global[data.doc] = global[data.doc] || data.data || {}
-        data.__dataPath__ = data.path
-
-    } else {
-
-        data.__dataPath__ = [...(data.doc ? [] : view.__dataPath__), ...data.path]
-        data.doc = data.doc || view.doc || generate()
-        global[data.doc] = global[data.doc] || {}
+ 
+        data.data = kernel({ _window, lookupActions, stack, props: {}, id, data: { path: data.__dataPath__, data: global[data.doc] }, req, res, __ })
     }
 
     var { doc, data = {}, __dataPath__ = [], mount, path, keys, preventDefault, ...myparams } = data
-
-    // data
-    data = kernel({ _window, lookupActions, stack, id, data: { path: __dataPath__, data: global[doc] }, req, res, __ })
     
     var loopData = []
     var isObj = !Array.isArray(data) && typeof data === "object"
@@ -6381,7 +6412,7 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
 
     var values = keys ? data : toArray(data), address = {}
     if (keys && !Array.isArray(data)) loopData = sortAndArrange({ _window, id, data: loopData, sort: myparams.sort, arrange: myparams.arrange })
-
+        
     var lastIndex = loopData.length - 1;
 
     // view
@@ -6396,15 +6427,14 @@ const loopOverView = ({ _window, id, stack, lookupActions, __, address, data = {
 
         views[params.id] = { __view__: true, __loop__: true, __mount__: mount, ...clone(view), ...myparams, ...params }
 
-        address = addresser({ _window, id: params.id, stack, nextAddress: address, type: "function", function: "toView", renderer: true, blockable: false, __: [values[key], ...__], lookupActions, data: { view: views[params.id] } }).address
-
+        address = addresser({ _window, id: params.id, stack, props, nextAddress: address, type: "function", function: "toView", renderer: true, blockable: false, __: [values[key], ...__], lookupActions, data: { view: views[params.id] } }).address
     })
 
-    toAwait({ _window, lookupActions, stack, address, id, req, res, __ })
-    removeView({ _window, global, views, id, stack, address })
+    toAwait({ _window, lookupActions, stack, props, address, id, req, res, __ })
+    removeView({ _window, global, views, id, stack, props, address })
 }
 
-const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ }) => {
+const builtInViewHandler = ({ _window, lookupActions, stack, props, id, req, res, __ }) => {
 
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
@@ -6413,7 +6443,7 @@ const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ })
     views[id] = Input(view)
     var { id, view } = initView({ views, global, parent: views[id].__parent__, ...views[id] })
 
-    toLine({ _window, lookupActions, stack, data: { string: view.view, id, index: 1 }, req, res, mount: true, __ })
+    toLine({ _window, lookupActions, stack, props, data: { string: view.view, id, index: 1 }, req, res, object: [view], __ })
     view.__name__ = view.view.split("?")[0]
 
     if (view.id !== id) {
@@ -6427,7 +6457,7 @@ const builtInViewHandler = ({ _window, lookupActions, stack, id, req, res, __ })
     return { id, view }
 }
 
-const toHTML = ({ _window, id, stack, __ }) => {
+const toHTML = ({ _window, id, stack, props, __ }) => {
 
     var views = _window ? _window.views : window.views
 
@@ -6442,7 +6472,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
     if (name === "Action") return
 
     // linkable
-    //if (view.link && !view.__linked__) return link({ _window, id, stack, __ })
+    //if (view.link && !view.__linked__) return link({ _window, id, stack, props, __ })
 
     // text
     var text = typeof view.text !== "object" && view.text !== undefined ? view.text : ((view.editable || view.__name__ === "Input" || view.__name__ === "Text") && typeof view.data !== "object" && view.data !== undefined) ? view.data : ""
@@ -6559,7 +6589,7 @@ const toHTML = ({ _window, id, stack, __ }) => {
     view.__idList__ = innerHTML.split("id='").slice(1).map(id => id.split("'")[0])
 }
 
-const link = ({ _window, id, stack, __ }) => {
+const link = ({ _window, id, stack, props, __ }) => {
 
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
@@ -6571,12 +6601,12 @@ const link = ({ _window, id, stack, __ }) => {
 
     // link
     var { view: linkView, id: linkID } = initView({ views, global, parent: view.__parent__, ...linkView, __, __controls__: [{ event: `click?root():'${view.link.path}'?${view.link.path || "false"};${view.link.preventDefault ? "false" : "true"}` }] })
-    toHTML({ _window, id: linkID, stack, __ })
+    toHTML({ _window, id: linkID, stack, props, __ })
 
     // view
     view.__parent__ = linkID
     view.__linked__ = true
-    toHTML({ _window, id, stack, __ })
+    toHTML({ _window, id, stack, props, __ })
 }
 
 const clearActions = (data) => {
@@ -6631,7 +6661,7 @@ const getViewParams = ({ view }) => {
 
     var { 
         id, doc, data, view, children, style, __lookupActions__, __element__, __dataPath__, __childrenRef__, __index__, __relEvents__, __loadedEvents__, 
-        __loop__, __loopIndex__, __looped__, __mount__, i,
+        __loop__, __loopIndex__, __looped__, __mount__, i, __executingSubparams__,
         __viewPath__, __customViewPath__, __indexing__, __childIndex__, __initialIndex__, __customView__, __htmlStyles__, __events__, __page__, 
         __defaultValue__, __childrenInitialIDRef__, __initialID__,
         __parent__, __controls__, __status__, __rendered__, __timers__, __view__, __name__, __customID__, __interpreted__, __, ...params 
@@ -6640,7 +6670,7 @@ const getViewParams = ({ view }) => {
     return params
 }
 
-const removeView = ({ _window, global, views, id, stack, self = true, main, insert }) => {
+const removeView = ({ _window, global, views, id, stack, props, self = true, main, insert }) => {
 
     var view = views[id]
     if (!view) return
@@ -6648,11 +6678,11 @@ const removeView = ({ _window, global, views, id, stack, self = true, main, inse
 
     if (!parent) return
 
-    view.__childrenRef__.map(({ id }) => id).map(id => removeView({ _window, global, views, id, stack, insert }))
+    view.__childrenRef__.map(({ id }) => id).map(id => removeView({ _window, global, views, id, stack, props, insert }))
     if (main || !self) view.__childrenInitialIDRef__.map(initialID => {
         
-        var unrenderedView = Object.values(views).find(({__initialID__}) => initialID === __initialID__)
-        if (unrenderedView) removeView({ _window, global, views, id: unrenderedView.id, stack, insert })
+        var unrenderedView = Object.values(views).find(view => initialID === (view || {}).__initialID__)
+        if (unrenderedView) removeView({ _window, global, views, id: unrenderedView.id, stack, props, insert })
     })
 
     // remove events
@@ -6783,14 +6813,16 @@ const launcher = () => {
     views.body.__element__.appendChild(arDiv)
 }
 
-const eventExecuter = ({ _window, event, eventID, id, lookupActions, e, string, stack: nextStack, address: nextAddress, __ }) => {
+const eventExecuter = ({ _window, event, eventID, id, lookupActions, e, string, stack: nextStack, props, address: nextAddress, __, object = [] }) => {
 
     var views = window.views
     var global = window.global
-
+    
     // view doesnot exist
     if (!views[id] || !views[eventID]) return
-    
+
+    object = [views[id], ...object]
+
     // e.target is not necessorily the element clicked. consider a btn in a container. the click event is on the container however the exact click was on the btn.
     if (event === "click" || event === "mousedown" || event === "mouseup") global.__clicked__ = views[e.target.id]
 
@@ -6801,12 +6833,12 @@ const eventExecuter = ({ _window, event, eventID, id, lookupActions, e, string, 
     var stack = openStack({ _window, event, id, eventID, string, e })
 
     // address line
-    var address = addresser({ _window, stack, id, status: "Start", type: "line", event, interpreting: true, lookupActions, __, nextStack, nextAddress }).address
+    var address = addresser({ _window, stack, props, id, status: "Start", type: "line", event, interpreting: true, lookupActions, __, nextStack, nextAddress, object }).address
 
     // main params
-    toLine({ _window, lookupActions, stack, id, e, address, data: { string }, __, mount: true })
+    toLine({ _window, lookupActions, stack, props, id, e, address, data: { string }, __, object, action: "toParam" })
 
-    endStack({ _window, stack })
+    endStack({ _window, stack, props })
 }
 
 const defaultEventHandler = ({ id, events = ["click", "focus", "blur", "mouseenter", "mouseleave", "mousedown", "mouseup"] }) => {
@@ -6846,7 +6878,7 @@ const defaultInputHandlerByEvent = ({ views, view, id, event, keyName, value }) 
     view.__element__.addEventListener(event, fn)
 }
 
-const modifyEvent = ({ eventID, event, string, id, __, stack, lookupActions, address }) => {
+const modifyEvent = ({ eventID, event, string, id, __, stack, props, lookupActions, address }) => {
 
     var view = window.views[eventID]
     var subparams = event.split("?")[1] || ""
@@ -6887,7 +6919,7 @@ const modifyEvent = ({ eventID, event, string, id, __, stack, lookupActions, add
 
         event = "mouseleave"
         defaultEventHandler({ id, events: ["mouseenter", "mouseleave"] })
-        addEventListener({ event: `mouseenter?[${subparams};${string[0]}?${conditions}?${string.slice(2).join("?") || ""}]?${subconditions}`, eventID, id, __, stack, lookupActions, address })
+        addEventListener({ event: `mouseenter?[${subparams};${string[0]}?${conditions}?${string.slice(2).join("?") || ""}]?${subconditions}`, eventID, id, __, stack, props, lookupActions, address })
 
     } else if (event === "dblclick") {
 
@@ -6899,7 +6931,7 @@ const modifyEvent = ({ eventID, event, string, id, __, stack, lookupActions, add
     return { string, event }
 }
 
-const starter = ({ lookupActions, stack, __, address, id }) => {
+const starter = ({ lookupActions, stack, props, __, address, id }) => {
 
     var view = window.views[id]
     var global = window.global
@@ -6929,7 +6961,7 @@ const starter = ({ lookupActions, stack, __, address, id }) => {
     })
 
     // events
-    view.__controls__.map(data => addEventListener({ lookupActions, stack, address, __, id, ...data }))
+    view.__controls__.map(data => addEventListener({ lookupActions, stack, props, address, __, id, ...data }))
 
     // related events
     global.__events__[id] && Object.values(global.__events__[id]).map(address => view.__element__.addEventListener(address.event, address.eventListener))
@@ -7218,7 +7250,7 @@ const defaultAppEvents = () => {
     })
 }
 
-const setData = ({ id, data, __, stack = { addresses: [], returns: []} }) => {
+const setData = ({ id, data, __, stack = { addresses: [], returns: []}, props = {} }) => {
 
     var view = window.views[id]
     var global = window.global
@@ -7247,10 +7279,10 @@ const setData = ({ id, data, __, stack = { addresses: [], returns: []} }) => {
     if (data.noValue) keys.push("del()")
 
     // set value
-    kernel({ id, data: { data: global[view.doc], path: keys, value: defValue, key: !data.noValue }, stack, __ })
+    kernel({ id, data: { data: global[view.doc], path: keys, value: defValue, key: !data.noValue }, stack, props, __ })
 }
 
-const fileReader = ({ req, res, _window, lookupActions, stack, address, id, e, __, data }) => {
+const fileReader = ({ req, res, _window, lookupActions, stack, props, address, id, e, __, data }) => {
     
     // files to read
     data.files = toArray(data.file || data.files)
@@ -7297,7 +7329,7 @@ const fileReader = ({ req, res, _window, lookupActions, stack, address, id, e, _
 
                 var data = { success: true, message: "File read successfully!", data: files.length === 1 ? files[0] : files }
 
-                toAwait({ req, res, _window, lookupActions, stack, address, id, e, __, _: data })
+                toAwait({ req, res, _window, lookupActions, stack, props, address, id, e, __, _: data })
             }
         }
 
@@ -7314,7 +7346,7 @@ const fileReader = ({ req, res, _window, lookupActions, stack, address, id, e, _
     })
 }
 
-const root = ({ id, _window, root = {}, stack, lookupActions, address, req, res, __ }) => {
+const root = ({ id, _window, root = {}, stack, props, lookupActions, address, req, res, __ }) => {
 
     var views = _window ? _window.views : window.views
     var global = _window ? _window.global : window.global
@@ -7348,7 +7380,7 @@ const root = ({ id, _window, root = {}, stack, lookupActions, address, req, res,
         anotherRootAddress.data.elements.map(element => element.remove())
     }
 
-    update({ _window, id, req, res, stack, lookupActions, address, data: { root, id: "root", action: "ROOT" }, __ })
+    update({ _window, id, req, res, stack, props, lookupActions, address, data: { root, id: "root", action: "ROOT" }, __ })
 }
 
 const getNumberAfterString = (str, variable) => {
@@ -7366,28 +7398,28 @@ const getNumberAfterString = (str, variable) => {
     }
 }
 
-const searchDoc = ({ _window, lookupActions, stack, address, id, __, req, res, data }) => {
+const searchDoc = ({ _window, lookupActions, stack, props, address, id, __, req, res, data, object }) => {
 
     var waits = [`loader.hide;__queries__:().${data.data.collection}.${data.data.doc}=_.data||false`]
     if (data.lookupServerActions) waits.push(data.action)
-    var { address } = addresser({ _window, id, stack, __, lookupActions, nextAddress: address, stack, type: "data", action: "search()", status: "Start", asynchronous: true, waits })
+    var { address } = addresser({ _window, id, stack, props, __, lookupActions, nextAddress: address, stack, props, type: "data", action: "search()", status: "Start", asynchronous: true, waits, object })
 
-    return callDatabase({ _window, lookupActions, stack, address, id, __, req, res, data: { ...data, action: "search()" } })
+    return callDatabase({ _window, lookupActions, stack, props, address, id, __, req, res, data: { ...data, action: "search()" } })
 }
 
-const callDatabase = async ({ _window, lookupActions, stack, address, id, req, res, e, __, data }) => {
+const callDatabase = async ({ _window, lookupActions, stack, props, address, id, req, res, e, __, data }) => {
     
     // call server
-    if (!_window) return route({ lookupActions, stack, address, id, req, __, res, e, data: { ...data, server: "database" } })
+    if (!_window) return route({ lookupActions, stack, props, address, id, req, __, res, e, data: { ...data, server: "database" } })
     
     // database
-    var data = await database({ _window, req, res, action: data.action, stack, data: data.data || {}, __ })
-
+    var data = await database({ _window, req, res, action: data.action, stack, props, data: data.data || {}, __ })
+    
     // awaits
-    toAwait({ _window, lookupActions, stack, id, address, e, req, res, _: data, __ })
+    toAwait({ _window, lookupActions, stack, props, id, address, e, req, res, _: data, __ })
 }
 
-const route = async ({ lookupActions, stack, address, id, req, __, res, e, data }) => {
+const route = async ({ lookupActions, stack, props, address, id, req, __, res, e, data }) => {
 
     // headers
     var options = {
@@ -7420,7 +7452,7 @@ const route = async ({ lookupActions, stack, address, id, req, __, res, e, data 
     if (data.__props__.session) setCookie({ name: "__session__", value: data.__props__.session })
 
     // await
-    toAwait({ lookupActions, address, stack, id, e, req, res, _: data, __ })
+    toAwait({ lookupActions, address, stack, props, id, e, req, res, _: data, __ })
 }
 
 const loader = ({ _window, show }) => {
@@ -7434,7 +7466,7 @@ const loader = ({ _window, show }) => {
 const mountData = ({ view, views, global, key, id, params, __ }) => {
     
     // data without doc => push to underscore
-    if (key === "data" && !params.doc) {
+    if (key === "data" && !view.__executingSubparams__) {
 
         view.__.unshift(view.data)
         delete view.data
@@ -7455,7 +7487,7 @@ const mountData = ({ view, views, global, key, id, params, __ }) => {
     else if (key === "path") {
 
         var dataPath = view.path
-        
+       // console.log(dataPath);
         // setup doc
         if (!view.doc) {
 
@@ -7490,7 +7522,7 @@ const mountData = ({ view, views, global, key, id, params, __ }) => {
     }
 }
 
-const respond = ({ res, stack, global, response, __ }) => {
+const respond = ({ res, stack, props, global, response, __ }) => {
     
     if (!res || res.headersSent) return
     
@@ -7526,7 +7558,7 @@ const respond = ({ res, stack, global, response, __ }) => {
     res.end()
 }
 
-const upload = async ({ _window, lookupActions, stack, address, id, req, res, e, __, upload, ...params }) => {
+const upload = async ({ _window, lookupActions, stack, props, address, id, req, res, e, __, upload, ...params }) => {
 
     var promises = []
     var alldata = toArray(upload.data || []), uploads = []
@@ -7578,7 +7610,7 @@ const upload = async ({ _window, lookupActions, stack, address, id, req, res, e,
     await Promise.all(promises)
 
     // await
-    require("./kernel").toAwait({ _window, lookupActions, stack, address, req, res, id, e, __, _: uploads.length === 1 ? uploads[0] : uploads, ...params })
+    require("./kernel").toAwait({ _window, lookupActions, stack, props, address, req, res, id, e, __, _: uploads.length === 1 ? uploads[0] : uploads, ...params })
 }
   
 const readFile = (file) => new Promise(res => {
@@ -7599,13 +7631,13 @@ const readFile = (file) => new Promise(res => {
 /////////////////////////////////////////////////////////////////////////////////////////
 /////////////////////////////////////////////////////////////////////////////////////////
 
-const database = async ({ _window, req, res, action, preventDefault, data, stack, authorized, __ }) => {
+const database = async ({ _window, req, res, action, preventDefault, data, stack, props, authorized, __ }) => {
 
   var timer = (new Date()).getTime(), global = _window.global, responses = []
   
   // authorize
   var authorizations = authorized ? [data] : await authorize({ _window, req, global, action: action.slice(0, -2), data })
-  if (!authorizations) return respond({ res, stack, global, __, response: { success: false, message: "Not authorized!" } })
+  if (!authorizations) return respond({ res, stack, props, global, __, response: { success: false, message: "Not authorized!" } })
 
   var promises = authorizations.map(async data => {
 
@@ -7626,7 +7658,7 @@ const database = async ({ _window, req, res, action, preventDefault, data, stack
   if (global.manifest.server !== "database" || !global.__actionLaunched__) return response
 
   // send
-  return respond({ res, stack, global, response, __ })
+  return respond({ res, stack, props, global, response, __ })
 }
 
 const getData = async ({ _window = {}, req, res, search, action = "search()" }) => {
@@ -8161,12 +8193,19 @@ const postData = async ({ _window = {}, req, res, save, action = "save()" }) => 
     var length = toArray(data).length, promises = []
 
     // check props (getData because i need to get data from a specific db not considering live, dev, or subscriptions)
-    toArray(data).map(async data => {
+    /*toArray(data).map(async data => {
 
         // check if data belongs to the database
-        if (data.__props__ && (typeof data.__props__ !== "object" || !data.__props__.id || !data.__props__.doc)) delete data.__props__
-        else if (data.__props__) promises.push(database({ _window, req, res, action: "search()", data: { ...save, data: undefined, db: undefined, dev: undefined, uncheckPlugins: true, findOne: { "__props__.id" : data.__props__.id } } }).then(({ data: myData }) => { if (!myData) delete data.__props__ }))
-    })
+        if (data.__props__ && (typeof data.__props__ !== "object" || !data.__props__.id || !data.__props__.doc)) {
+            delete data.__props__.id
+            delete data.__props__.doc
+        } else if (data.__props__) promises.push(database({ _window, req, res, action: "search()", data: { ...save, data: undefined, db: undefined, dev: undefined, uncheckPlugins: true, findOne: { "__props__.id" : data.__props__.id } } }).then(({ data: myData }) => { 
+            if (!myData) {
+                delete data.__props__.id
+                delete data.__props__.doc
+            } 
+        }))
+    })*/
 
     await Promise.all(promises)
 
@@ -9537,7 +9576,7 @@ require('dotenv').config()
 // project DB
 var bracketDB = process.env.BRACKETDB
 
-module.exports = async ({ _window, lookupActions, stack, address, id, e, __, req, res, data }) => {
+module.exports = async ({ _window, lookupActions, stack, props, address, id, e, __, req, res, data }) => {
 
     if (!_window) return console.log("Passport is a serverside action!")
 
@@ -9596,7 +9635,7 @@ module.exports = async ({ _window, lookupActions, stack, address, id, e, __, req
     }
 
     // await params
-    require("./kernel").toAwait({ _window, lookupActions, stack, id, e, address, req, res, _: data, __ })
+    require("./kernel").toAwait({ _window, lookupActions, stack, props, id, e, address, req, res, _: data, __ })
 }
 }).call(this)}).call(this,require('_process'))
 },{"./kernel":27,"_process":79,"dotenv":60}],33:[function(require,module,exports){
@@ -9767,9 +9806,9 @@ module.exports={
     }
 }
 },{}],34:[function(require,module,exports){
-const qr = async ({ _window, id, req, res, data, __, e, stack, lookupActions, address }) => {
+const qr = async ({ _window, id, req, res, data, __, e, stack, props, lookupActions, address }) => {
 
-    if (res && !res.headersSent) return qrServer({ _window, id, req, res, data, __, e, stack, lookupActions, address })
+    if (res && !res.headersSent) return qrServer({ _window, id, req, res, data, __, e, stack, props, lookupActions, address })
     
     var QRCode = require("easyqrcodejs")
 
@@ -9782,10 +9821,10 @@ const qr = async ({ _window, id, req, res, data, __, e, stack, lookupActions, ad
 
     console.log("QR", data)
 
-    require("./kernel").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, req, res, __, _: data })
+    require("./kernel").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, props, req, res, __, _: data })
 }
 
-const qrServer = async ({ _window, id, req, res, data, __, e, stack, lookupActions, address }) => {
+const qrServer = async ({ _window, id, req, res, data, __, e, stack, props, lookupActions, address }) => {
 
     var text = data.text || data.url
     if (data.wifi) text = wifiQrText({ data })
@@ -9793,7 +9832,7 @@ const qrServer = async ({ _window, id, req, res, data, __, e, stack, lookupActio
     var qrcode = await require('qrcode').toDataURL(text)
     var data = { message: "QR generated successfully!", data: qrcode, success: true }
 
-    require("./kernel").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, req, res, __, _: data })
+    require("./kernel").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, props, req, res, __, _: data })
 }
 
 const wifiQrText = ({ data }) => {
@@ -10138,13 +10177,13 @@ const openStack = ({ _window, id: viewID, string = "", ...data }) => {
 
 const clearStack = ({ stack }) => {
 
-  console.log("STACK", (new Date()).getTime() - stack.executionStartTime, stack.event.toUpperCase())
+  console.log("STACK", (new Date()).getTime() - stack.executionStartTime, stack, props.event.toUpperCase())
 
   stack.terminated = true
   stack.addresses = []
 }
 
-const endStack = ({ _window, stack }) => {
+const endStack = ({ _window, stack, props }) => {
 
   if (stack.addresses.length === 0) {
 
@@ -10156,7 +10195,7 @@ const endStack = ({ _window, stack }) => {
     delete global.__stacks__[stack.id]
 
     // print stack
-    stack.print && !stack.printed && console.log("STACK:" + stack.event, logs, "color: blue", stack.logs)
+    stack.print && !stack.printed && console.log("STACK:" + stack.event, logs, "color: blue", stack, props.logs)
     stack.printed = true
     stack.status = "End"
   }
@@ -10360,7 +10399,8 @@ const { toArray } = require("./toArray")
 const toEvent = ({ _window, id, string, __, lookupActions }) => {
 
   var view = _window ? _window.views[id] : window.views[id]
-  if (view.__rendered__) addEventListener({ event: string, id, __, stack, lookupActions })
+
+  if (view.__rendered__) addEventListener({ event: string, id, __, stack, props, lookupActions })
   else toArray(view.__controls__).push({ event: string, __, lookupActions })
   
   return "__event__"
@@ -10558,31 +10598,31 @@ const watch = ({ lookupActions, __, string, id }) => {
 
     var watch = toCode({ _window, id, string: toCode({ _window, id, string, start: "'" }) })
 
-    var approved = toApproval({ id, lookupActions, stack, __, data: watch.split('?')[2] })
+    var approved = toApproval({ id, lookupActions, stack, props, __, data: watch.split('?')[2] })
     if (!approved || !watch) return
 
     watch.split('?')[0].split(';').map(_watch => {
 
         var timer = 500, watchAddress = { id: generate() }
-        view[`${_watch}-watch`] = clone(toValue({ id, lookupActions, stack, __, data: _watch }))
+        view[`${_watch}-watch`] = clone(toValue({ id, lookupActions, stack, props:{isValue:true}, __, data: _watch }))
         
         const myFn = async () => {
             
-            var value = toValue({ id, lookupActions, stack, data: _watch })
+            var value = toValue({ id, lookupActions, stack, props, data: _watch })
 
             if ((value === undefined && view[`${_watch}-watch`] === undefined) || isEqual(value, view[`${_watch}-watch`])) return
 
             view[`${_watch}-watch`] = clone(value)
             
             // params
-            toParam({ id, lookupActions, stack, data: watch.split('?')[1], mount: true, __ })
+            toParam({ id, lookupActions, stack, props, data: watch.split('?')[1], object: [view], __ })
             
             // approval
-            var approved = toApproval({ id, lookupActions, stack, data: watch.split('?')[2], __ })
+            var approved = toApproval({ id, lookupActions, stack, props, data: watch.split('?')[2], __ })
             if (!approved) return
                 
             // params
-            if (view.await) toParam({ id, lookupActions, stack, data: view.await.join(';'), __ })
+            if (view.await) toParam({ id, lookupActions, stack, props, data: view.await.join(';'), __ })
         }
 
         view.__timers__.push(setInterval(myFn, timer))
@@ -10630,9 +10670,9 @@ module.exports = ({ data, id }) => {
     )
     
     return [{
-        "event": `mouseenter:${_id}?hover.style.keys()._():[style().[_]=.hover.style.[_]]?!hover.disable`
+        "event": `mouseenter:${_id}?hover.style.keys()._():[style().[_]=hover.style.[_]]?!hover.disable`
     }, {
-        "event": `mouseleave:${_id}?hover.default.style.keys()._():[style().[_]=.hover.default.style.[_]]?!hover.disable`
+        "event": `mouseleave:${_id}?hover.default.style.keys()._():[style().[_]=hover.default.style.[_]]?!hover.disable`
     }]
 }
 },{}],52:[function(require,module,exports){
