@@ -1,0 +1,69 @@
+{
+    "updateBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+    "difference": [
+        {
+            "new": "",
+            "path": "country",
+            "old": "m"
+        },
+        {
+            "new": "",
+            "path": "trainName",
+            "old": "m"
+        },
+        {
+            "new": "",
+            "path": "trainStation",
+            "old": "mm"
+        },
+        {
+            "new": "",
+            "path": "country",
+            "old": "taha"
+        },
+        {
+            "new": "",
+            "path": "trainName",
+            "old": "taha"
+        },
+        {
+            "new": "",
+            "path": "trainStation",
+            "old": "taha"
+        },
+        {
+            "new": "",
+            "path": "country",
+            "old": "Anthi"
+        },
+        {
+            "new": "",
+            "path": "trainName",
+            "old": "Anthi"
+        },
+        {
+            "new": "",
+            "path": "trainStation",
+            "old": "Anthi"
+        }
+    ],
+    "description": "Data has been updated",
+    "sheet": "aRiAoFpuKnap9rZCJcACccDMX29Kai3iT6kFHbYUfHtc2mL9kHAk3wzgai8g1699268378803",
+    "id": "LNWZeZ3AzOLDJ8iGoz8F39anp2N74zRETj8l0kPAalnQd4UaUv7VqIEvtiCt1700652444725",
+    "creationDay": 1700611200000,
+    "creationDate": 1700652444725,
+    "__props__": {
+        "id": "71M7g1M100N3W153J6e3G3j729",
+        "doc": "LNWZeZ3AzOLDJ8iGoz8F39anp2N74zRETj8l0kPAalnQd4UaUv7VqIEvtiCt1700652444725",
+        "creationDate": 1711031363379,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 85,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

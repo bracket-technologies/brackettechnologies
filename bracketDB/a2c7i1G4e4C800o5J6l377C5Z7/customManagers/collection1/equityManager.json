@@ -1,0 +1,19 @@
+{
+    "__props__": {
+        "id": "w1W7K1v7A4O221P3z2y3T407i4",
+        "doc": "equityManager",
+        "counter": 8,
+        "creationDate": 1717421323474,
+        "active": true,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "customManagers"
+    },
+    "id": "",
+    "title": "Equity & Long Term Debts Manager",
+    "listOfItems": ""
+}

@@ -1,0 +1,33 @@
+{
+    "creationDate": 1716197602936,
+    "collection": "accessability",
+    "chunkMaxSizeMB": 20,
+    "lastChunk": 1,
+    "docsLength": 1,
+    "counter": 2,
+    "reads": 2663,
+    "writes": 14,
+    "deletes": 0,
+    "size": 250,
+    "payloadIn": 4837,
+    "payloadOut": 1148924,
+    "indexes": [
+        {
+            "find": [
+                "__props__.id"
+            ],
+            "doc": "index1",
+            "lastRead": 1721037605283,
+            "expiryDate": 1723629605283
+        },
+        {
+            "find": [
+                "packageID"
+            ],
+            "doc": "index2",
+            "lastRead": 1721037780979,
+            "expiryDate": 1723629780979
+        }
+    ],
+    "lastIndex": 2
+}

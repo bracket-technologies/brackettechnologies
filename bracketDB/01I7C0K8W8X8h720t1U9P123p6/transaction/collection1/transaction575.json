@@ -1,0 +1,77 @@
+{
+    "currency": "USD",
+    "account": "Hk4WshztSc6RHvsEQVTWTqNJbcYhNNYnpCM264WWPdlk4CGh9VVPkBDh54zc-1721035206228",
+    "ledgerAccount": "1/2/0",
+    "credit": 100,
+    "debit": 0,
+    "exchangeRates": [
+        {
+            "code": "USD",
+            "name": "US Dollar",
+            "exchangeRate": 1,
+            "systemCurrencyRate": 1,
+            "counter": 0,
+            "createdCurrencyRate": 1
+        },
+        {
+            "code": "LBP",
+            "name": "Lebanese Pound (LBP)",
+            "exchangeRate": 89000,
+            "systemCurrencyRate": 1,
+            "counter": 1,
+            "createdCurrencyRate": 89000
+        },
+        {
+            "code": "CAD",
+            "name": "Canadian Dollar (CAD)",
+            "exchangeRate": 0.923076923076923,
+            "systemCurrencyRate": 1.3,
+            "counter": 2,
+            "createdCurrencyRate": 1.2
+        }
+    ],
+    "voucher": "yja5lwMJQ21AZrbciTj5UQXyOJ6IvYleGLe9nDa3YS8jG9lkJAGvy0rphGLP-1721035229534",
+    "voucherRef": "VCH-00000001",
+    "accountBalances": [
+        {
+            "ledgerAccount": "1/2/0",
+            "accountBalances": [
+                {
+                    "account": "Hk4WshztSc6RHvsEQVTWTqNJbcYhNNYnpCM264WWPdlk4CGh9VVPkBDh54zc-1721035206228",
+                    "credit": 100,
+                    "debit": 0,
+                    "balance": -100
+                }
+            ]
+        }
+    ],
+    "systemAccountBalances": [
+        {
+            "account": "Hk4WshztSc6RHvsEQVTWTqNJbcYhNNYnpCM264WWPdlk4CGh9VVPkBDh54zc-1721035206228",
+            "credit": 100,
+            "debit": 0,
+            "balance": -100
+        }
+    ],
+    "id": "xUwSX4U57ohFQLlrkkISck6PH3Mg53SvN3XmIciSE8VYVF5sQIqjoEBxIhTg-1721035229487",
+    "creationDate": 1721035229487,
+    "creationDay": 1720990800000,
+    "ref": "TRN-00000004",
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "sysCredit": 100,
+    "sysDebit": 0,
+    "__props__": {
+        "id": "F1D7M2t1f0d3W5b2q2A9t5X8v0",
+        "doc": "transaction575",
+        "counter": 575,
+        "creationDate": 1721035229580,
+        "collection": "transaction",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1502
+    }
+}

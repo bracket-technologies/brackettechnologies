@@ -1,0 +1,100 @@
+{
+    "permission": {
+        "notification": [
+            "Create",
+            "Edit",
+            "Read",
+            "Remove",
+            "Receive"
+        ],
+        "schedule": [
+            "Create",
+            "Edit",
+            "Read",
+            "Remove",
+            "Receive"
+        ],
+        "service": [
+            "Remove",
+            "History",
+            "Create",
+            "Edit",
+            "Read"
+        ],
+        "voucher": [
+            "Remove",
+            "History",
+            "Create",
+            "Edit",
+            "Read",
+            "Print"
+        ],
+        "sheet": [
+            "Remove",
+            "History",
+            "Create",
+            "Edit",
+            "Read",
+            "Import",
+            "Export"
+        ],
+        "invoice": [
+            "Remove",
+            "History",
+            "Create",
+            "Edit",
+            "Read",
+            "Print"
+        ],
+        "asset": [
+            "Read",
+            "Remove",
+            "Create",
+            "History",
+            "Edit"
+        ],
+        "branch": [
+            "Read",
+            "Edit",
+            "Create",
+            "History",
+            "Remove"
+        ],
+        "account": [
+            "Edit",
+            "Remove",
+            "Balance Sheet",
+            "History",
+            "Create",
+            "Read"
+        ],
+        "dashboard": [
+            "Read",
+            "Edit"
+        ],
+        "gallery": [
+            "Upload",
+            "Read",
+            "Edit",
+            "Remove"
+        ]
+    },
+    "id": "BjqkHpCk7diHuXotEHEgCGGhagn08ozgW6C4egejMqEPBmiRRw8axjG4dVbm-1705914444763",
+    "creationDay": 1705881600000,
+    "creationDate": 1705914444764,
+    "user": "15wySqxTS4o4BXn9bxekLktdQw64EV026sjg1yksXjhYgnWkFqzK4nX9k1Cm-1705914444185",
+    "__props__": {
+        "id": "P1C7a1n1P0e3q16376G0T7T4H6",
+        "doc": "BjqkHpCk7diHuXotEHEgCGGhagn08ozgW6C4egejMqEPBmiRRw8axjG4dVbm-1705914444763",
+        "creationDate": 1711031360746,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 3,
+        "collection": "permission",
+        "chunk": "chunk1"
+    }
+}

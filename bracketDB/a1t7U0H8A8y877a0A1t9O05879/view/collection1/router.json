@@ -1,0 +1,37 @@
+{
+    "view": "Action?id=router",
+    "children": [
+        {
+            "view": "Authorize"
+        },
+        {
+            "view": "manifest:().action"
+        }
+    ],
+    "__props__": {
+        "db": "views",
+        "collection": "view",
+        "id": "J1o7L1N0c3I390e7d8n6R5N4e5",
+        "doc": "router",
+        "creationDate": 1710330786545,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "actions": {
+            "checkUser": "search():[collection=user;doc=_.user]:[user:()=_.data?_.data?root():login]",
+            "checkPassword": {
+                "_": "search():[collection=user;find.email=_.user.email]:[user:()=_.data.value();[send():[verified=false]?!user:()?search():[collection=password;find:[userID=user:().id();password=__.password]]:[if():[_.data.value()]:[updateSessionUser()]:[send():[verified=false]]]]]",
+                "updateSessionUser": "manifest:().session.userID=user:().id();manifest:().session.username=user:().firstName+ +user:().lastName;save():[collection=session;data=manifest:().session]:[send():[verified=true]]"
+            },
+            "checkEmail": "search():[collection=user;find.email=_.email]:[user:()=_.data.value();[send():[success=false;msg=Email does not exist!]?!user:()?user:()=[firstName=user:().firstName;lastName=user:().lastName;email=user:().email];send():[user=user:()]]]"
+        },
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "version": 0,
+        "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+        "counter": 22,
+        "secure": true,
+        "chunk": "chunk1",
+        "secured": true
+    }
+}

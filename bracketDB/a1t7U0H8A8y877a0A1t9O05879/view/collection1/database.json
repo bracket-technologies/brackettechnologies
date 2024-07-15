@@ -1,0 +1,15 @@
+{
+    "view": "Action?id=database",
+    "__props__": {
+        "id": "s1C7X1K4b9k2R1g7y1Q851P6q2",
+        "doc": "database",
+        "counter": 34,
+        "creationDate": 1714921718162,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "view",
+        "createdByUserID": null
+    }
+}

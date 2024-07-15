@@ -1,0 +1,21 @@
+{
+    "password": "t",
+    "id": "ETiejLCqmttKOr1WJb11QbBOgUK45n93loG6n41OkCzbakUcOkZquUOCrCrz1700835549914",
+    "creationDay": 1700784000000,
+    "creationDate": 1700835549915,
+    "username": "VPnfQrsprmqfHn1GD50iYThkYNlpY970j1TwJ13L2ZeBvuqJg98WDz6zcnbu1700835549701",
+    "__props__": {
+        "id": "b1A7T1u1U0u3e183I6Y0m4T566",
+        "doc": "ETiejLCqmttKOr1WJb11QbBOgUK45n93loG6n41OkCzbakUcOkZquUOCrCrz1700835549914",
+        "creationDate": 1711031360456,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 1,
+        "collection": "password",
+        "chunk": "chunk1"
+    }
+}

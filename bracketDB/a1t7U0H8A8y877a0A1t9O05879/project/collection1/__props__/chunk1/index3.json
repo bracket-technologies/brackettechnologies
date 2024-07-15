@@ -1,0 +1,20 @@
+{
+    "acc": {
+        "subdomain": "acc"
+    },
+    "brackettechnologies": {
+        "subdomain": "brackettechnologies"
+    },
+    "project1": {
+        "subdomain": "playground"
+    },
+    "project181": {
+        "subdomain": "skylagroup"
+    },
+    "project182": {
+        "subdomain": "branch.skylagroup"
+    },
+    "project183": {
+        "subdomain": "test1"
+    }
+}

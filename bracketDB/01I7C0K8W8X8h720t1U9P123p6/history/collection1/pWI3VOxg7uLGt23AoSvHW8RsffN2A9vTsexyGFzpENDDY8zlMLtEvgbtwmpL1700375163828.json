@@ -1,0 +1,22 @@
+{
+    "createdBy": "i4sFsUOhrwc4ahQQqznbaqcj3qJb53Ha9VRkIqeFBuHMFlNxEY9jP7GYwkyt",
+    "description": "account creation",
+    "id": "pWI3VOxg7uLGt23AoSvHW8RsffN2A9vTsexyGFzpENDDY8zlMLtEvgbtwmpL1700375163828",
+    "creationDay": 1700352000000,
+    "creationDate": 1700375163829,
+    "account": "p2Esn1ErOw6YpMlxa5937qfbr0tdVfcPueSxbbCKJJnOqC9tlxSgMkIcl0Yu1700375163141",
+    "__props__": {
+        "id": "N1Q7Q1c1E0m3h1T3r6p3a8n8b2",
+        "doc": "pWI3VOxg7uLGt23AoSvHW8RsffN2A9vTsexyGFzpENDDY8zlMLtEvgbtwmpL1700375163828",
+        "creationDate": 1711031363882,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 248,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

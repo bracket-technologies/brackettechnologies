@@ -1,0 +1,87 @@
+{
+    "view": "View:subGeneralPopup?class=flexbox;style:[height=100vh;width=100vw;position=fixed;top=0;right=0;zIndex=5;opacity=0;#transition='opacity .2s';visibility=hidden]",
+    "__props__": {
+        "id": "E1i7E1E2K3x0v2i7b8M633p0H6",
+        "doc": "subGeneralPopup",
+        "counter": 9,
+        "creationDate": 1712302786306,
+        "active": true,
+        "createdByUserID": null,
+        "comments": [],
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children"
+                ]
+            }
+        ],
+        "actions": {
+            "setBottom": "if():[_.bottomSize]:[_.bottomSize]:[if():[mobile()]:[0vw]:[60vh]]",
+            "setLeft": "if():[_.leftSize]:[_.leftSize]:[if():[mobile()]:[0vw]:[25vw]]",
+            "setRight": "if():[_.rightSize]:[_.rightSize]:[if():[mobile()]:[0vw]:[25vw]]",
+            "setTop": "if():[_.topSize]:[_.topSize]:[if():[mobile()]:[0vw]:[0vh]]",
+            "fullscreen": "3rdParent().style():[top=0;bottom=0;right=0;left=0;borderRadius=0];next().style().display=flex;style().display=none",
+            "exitFullscreen": "3rdParent().style():[top=setTop();bottom=setBottom();right=setRight();left=setLeft();borderRadius=.4rem];prev().style().display=flex;style().display=none",
+            "closeSubGeneralPopup": "():subGeneralPopup.2ndChild().style():[transform=translateY(-45rem)];timer():[():subGeneralPopup.style():[visibility=hidden;opacity=0];searchBoxResults:().del();unpaidInvoiceInfo:()=[]]:400",
+            "updateExchangeRate": {
+                "_": "doc().exchangeRates.0._():[log():[_]:['tahabbbb'];_.exchangeRate=_.createdCurrencyRate/_.systemCurrencyRate];doc().():[[doc().exchangeRates.0].flat()];doc().exchangeRates.del();addForm()",
+                "addForm": "addFormSchema():[__]"
+            }
+        },
+        "chunk": "chunk1",
+        "collection": "view"
+    },
+    "children": [
+        {
+            "view": "View?style:[height=100%;width=100%;backgroundColor=black;opacity=0.5]"
+        },
+        {
+            "view": "[View]:[data=subGeneralPopup:()]?class=flex column;style:[opacity=1;transition=.2s;position=absolute;overflow=hidden;top=setTop();bottom=setBottom();right=setRight();left=setLeft();backgroundColor=#fff;transform=translateY(-45rem);padding=1rem;gap=.2rem;border-radius=_.borderRadius||.4rem;transition=.4s]",
+            "children": [
+                {
+                    "view": "View?class=flexbox;style:[width=100%;height=4.5rem;justifyContent=space-between;backgroundColor=#f3f3f3;borderRadius=.4rem .4rem 0rem 0rem;padding=0rem 1rem]",
+                    "children": [
+                        {
+                            "view": "Text?text=_.title;style:[fontSize=1.6rem;fontWeight=bolder]"
+                        },
+                        {
+                            "view": "View?class=flex;style:[gap=1.3rem]",
+                            "children": [
+                                {
+                                    "view": "Icon?name=print;google.symbol;style:[fontSize=2.5rem;cursor=pointer];click:[():customPrintView2.html2pdf():[name='statement of account']]?if():[_.searchEngine=true]:[false]:[true];false"
+                                },
+                                {
+                                    "#view": "Icon?name=save_as;google.symbol;style:[fontSize=2.1rem;cursor=pointer;paddingTop=.2rem];click:[saveSheet()]?_.saveAs;false"
+                                },
+                                {
+                                    "view": "Icon?name=Upload;google.symbol;style:[fontSize=2.5rem;cursor=pointer];click:[exportView()]?_.uploadIcon;false"
+                                },
+                                {
+                                    "view": "Icon?name=fullscreen;google.symbol;style:[display=if():[!mobile()]:[flex]:[none];fontSize=2.5rem;cursor=pointer];click:[fullscreen()]?!_.fullScreen;false"
+                                },
+                                {
+                                    "view": "Icon?name=Fullscreen_Exit;google.symbol;style:[display=if():[mobile()]:[flex]:[none];fontSize=2.5rem;cursor=pointer];click:[exitFullscreen()]?false"
+                                },
+                                {
+                                    "view": "Icon:closeGeneralPopup?name=Close;google.symbol;style:[fontSize=2.5rem;cursor=pointer];click:[closeSubGeneralPopup()]"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "view": "View?style:[height='calc(100% - 4.5rem)';width=100%;transition=.2s;overflowY=auto]",
+                    "children": [
+                        {
+                            "view": "_.popupName"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

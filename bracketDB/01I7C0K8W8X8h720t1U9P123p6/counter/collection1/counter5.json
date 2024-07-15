@@ -1,0 +1,30 @@
+{
+    "code": "119",
+    "length": 8,
+    "counter": 0,
+    "counterList": [
+        0,
+        "1"
+    ],
+    "start": 0,
+    "max": 99999999,
+    "reset": "yearly",
+    "creationDate": 1721035267368,
+    "id": "dr9ayH0lWjdptvduQBHaLD5j0puqDAsTQHZssvuBy5eri0nhnYrf21SkWy4B1721035267368",
+    "timestamp": 1721035267368,
+    "creationDay": 1720990800000,
+    "__props__": {
+        "id": "N1l7c27190l3z5R2b6I7d37699",
+        "doc": "counter5",
+        "counter": 5,
+        "creationDate": 1721035267369,
+        "collection": "counter",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 482
+    }
+}

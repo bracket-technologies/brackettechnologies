@@ -1,0 +1,26 @@
+{
+    "__props__": {
+        "id": "g1r7R1s5f3Y4R3s7y5M524e1H3",
+        "doc": "collection2",
+        "counter": 4,
+        "creationDate": 1715343755413,
+        "active": true,
+        "actions": {},
+        "comments": {},
+        "collapsed": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "collection",
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2"
+    },
+    "id": "2",
+    "categoryIDs": [
+        "1",
+        "2",
+        "3",
+        "9",
+        "10",
+        "11"
+    ],
+    "title": "NEW IN CURVE CLOTHING"
+}

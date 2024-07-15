@@ -1,0 +1,30 @@
+{
+    "view": "View?id=root;style:[position=relative;minHeight=100vh]",
+    "__props__": {
+        "id": "91C7c1s4e458A4P9q1k2N8q5x6",
+        "doc": "root",
+        "counter": 4,
+        "creationDate": 1714484912856,
+        "active": true,
+        "actions": {
+            "#mleave": "style():[color=#888;transform=scale(1)]"
+        },
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "view",
+        "createdByUserID": "M1X7V1X4O4A8Z076N0c2l5x2R1",
+        "comments": [],
+        "collapsed": []
+    },
+    "children": [
+        {
+            "view": "manifest:().page"
+        },
+        {
+            "view": "note"
+        },
+        {
+            "view": "droplist"
+        }
+    ]
+}

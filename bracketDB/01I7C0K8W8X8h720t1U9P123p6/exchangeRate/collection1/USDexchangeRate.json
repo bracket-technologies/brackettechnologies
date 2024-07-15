@@ -1,0 +1,20 @@
+{
+    "__props__": {
+        "id": "M1P7D142F2o2D6d5n128l7m1X7",
+        "doc": "USDexchangeRate",
+        "counter": 5,
+        "creationDate": 1712226518717,
+        "active": true,
+        "createdByUserID": "91l7f111C0i3r1J3V6L0C2c5n1",
+        "comments": [],
+        "collapsed": [],
+        "collection": "exchangeRate",
+        "chunk": "chunk1"
+    },
+    "id": "USDexchangeRate",
+    "exchangeRate": 1,
+    "currency": "XfRKzdOKS7OoUBwL8yP2",
+    "creationDay": 1712226393099,
+    "creationDate": 1712226394695,
+    "code": "USD"
+}

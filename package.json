@@ -1,11 +1,11 @@
 {
   "name": "brackettechnologies",
   "version": "1.0.0",
-  "description": "Bracket Platform",
+  "description": "Bracket Technologies",
   "scripts": {
-    "server": "node index.js",
-    "browserify": "browserify -u ./action/documenter.js ./bracketStorage/index.js > ./bracketStorage/engine.js",
-    "start": "npm-run-all --parallel browserify && npm run server"
+    "servers": "node index.js",
+    "browserify": "browserify -u ./functions/documenter.js ./functions/index.js > ./resources/engine.js",
+    "start": "npm run browserify && npm run servers"
   },
   "engines": {
     "node": "16"
@@ -17,6 +17,7 @@
     "cookie-parser": "^1.4.6",
     "dotenv": "*",
     "easyqrcodejs": "^4.6.0",
+    "fs-extra": "^11.2.0",
     "ip": "^2.0.1",
     "node-device-detector": "^2.0.12",
     "qrcode": "^1.5.3",

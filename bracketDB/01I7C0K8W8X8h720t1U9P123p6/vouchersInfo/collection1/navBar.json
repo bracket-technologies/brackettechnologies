@@ -1,0 +1,28 @@
+{
+    "__props__": {
+        "id": "v1t761144939G9p2b813X1A8P9",
+        "doc": "navBar",
+        "counter": 1,
+        "creationDate": 1714999283189,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "vouchersInfo",
+        "createdByUserID": "p1l781A1x043Q1Y3Q6e0K3W1b2"
+    },
+    "navBar": [
+        {
+            "id": "journalsManager",
+            "text": "Journals"
+        },
+        {
+            "id": "receiptsManager",
+            "text": "Receipts"
+        },
+        {
+            "id": "paymentsManager",
+            "text": "Payments"
+        }
+    ]
+}

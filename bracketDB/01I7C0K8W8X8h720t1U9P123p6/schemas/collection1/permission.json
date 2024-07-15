@@ -1,0 +1,54 @@
+{
+    "create": {
+        "user": {
+            "keyValue": [
+                {
+                    "path": "permission",
+                    "type": "map",
+                    "key": "permission",
+                    "required": "true"
+                },
+                {
+                    "path": "userId",
+                    "type": "string",
+                    "key": "user",
+                    "required": "true"
+                }
+            ]
+        },
+        "signUp": {
+            "keyValue": [
+                {
+                    "path": "permission",
+                    "type": "map",
+                    "key": "permission",
+                    "required": "true"
+                },
+                {
+                    "path": "userId",
+                    "type": "string",
+                    "key": "user",
+                    "required": "true"
+                }
+            ],
+            "nextStep": {
+                "manager": "signUp",
+                "collection": "currency"
+            }
+        }
+    },
+    "id": "LemaLwL3xSDZKs4QklUZ",
+    "collection": "permission",
+    "__props__": {
+        "id": "P107b1S3x9J580P534c1P6X337",
+        "doc": "permission",
+        "counter": 25,
+        "creationDate": 1713950541637,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "schemas",
+        "createdByUserID": "91l7f111C0i3r1J3V6L0C2c5n1"
+    }
+}

@@ -1,0 +1,302 @@
+{
+    "view": "View?class=flex column;style:[width=100%;position=relative]",
+    "__props__": {
+        "id": "U1w7a1G5P3b2n8B1D3u8x9k2m3",
+        "doc": "codeInput",
+        "counter": 7,
+        "creationDate": 1715328138923,
+        "collection": "view",
+        "chunk": "chunk1",
+        "actions": {
+            "setItemsList": {
+                "_": "[if():[_.sheetName]:[checkSheetInSheetData()].elif():[_.generalLedgers]:[setLedgers()].elif():[_.existingAccounts]:[setItemsListFromExistingAccounts()]]()::[if():[_.allowedCode]:[handleAllowedCodeCondition()]:[().allowedItemsList=().itemsList]]",
+                "getSheetData": "dropListFromSheet():[name=_.sheetName]:[if():[_.data.value()]:[sheetData:().[__.sheetName]=_.data;setSheetItems():[__]]:[sheetData:().[__.sheetName]=false]]",
+                "checkSheetInSheetData": "if():[sheetData:().[_.sheetName]]:[setSheetItems()]:[getSheetData()]",
+                "setLedgers": "governmentAccounts:()._():[_.inputCode=setDefaultleftZero():[text=_.number;digits=5]];setItemsList():[data=governmentAccounts:();code=number;inputCode=inputCode;name=name]",
+                "handleAllowedCodeCondition": {
+                    "_": "if():[_.allowedCode.type()=map]:[setAllowedAndNotAllowedCode():[_.allowedCode]]:[specifyAppliedCondition()];if():[().allowedCode]:[filterByAllowedCode():[allowedCode=().allowedCode]]:[().allowedItemsList=().itemsList];if():[().notAllowedCode]:[pullNotAllowedCode()]",
+                    "filterByAllowedCode": "().allowedItemsList=:;().itemsList._():[__.allowedCode._():[if():[__.code.slice():0:[[_].toString().len()]=_.toString()]:[().allowedItemsList.push():[__]]]];",
+                    "pullNotAllowedCode": "().allowedItemsList._():[().notAllowedCode._():[if():[__.code.slice():0:[[_].toString().len()]=_.toString()]:[().allowedItemsList.find():[code=__.code]='']]];().allowedItemsList.filter()",
+                    "specifyAppliedCondition": "_.allowedCode._():[().conditionApplied=customCondition():[data=doc().clone();condition=_.condition];if():[().conditionApplied]:[setAllowedAndNotAllowedCode()]]",
+                    "setAllowedAndNotAllowedCode": "if():[_.allowedCode]:[().allowedCode=_.allowedCode];if():[_.notAllowedCode]:[().notAllowedCode=_.notAllowedCode]"
+                },
+                "setItemsListFromExistingAccounts": "allLedgersAccounts:()._():[if():[[[__.referenceCurrency]()].in():[_.currency]||!__.referenceCurrency]:[().itemsList.push():[dataCode=if():[__.referenceCurrency]:[_.ledgerAccount.[_.currency.indexOf():[[__.referenceCurrency]()]]]:[_.ledgerAccount.0];name=_.name;inputCode=_.helper;code=_.generalLedger]]]",
+                "setItemsList": "_.data._():[().itemsList.push():[code=_.[__.code];inputCode=_.[__.inputCode]||_.[__.code];dataCode=_.[__.dataCode]||_.[__.code];name=_.[__.name]]]",
+                "setDefaultleftZero": "while():[[_.digits]-[_.text.toString().len()]>0]:[_.text=_.text*10];return():[_.text]",
+                "setSheetItems": "setItemsList():[data=sheetData:().[_.sheetName].data;code=_.headerAsCode;name=_.headerAsText]"
+            },
+            "codeInputEventsHandler": {
+                "_": "[focus;click?replaceInputCodeByCode();setDroplistItems():[code=2ndParent().selectedItem.code];openDroplist():[items=().items]];keydown:[keyDownActions();checkIfTextInAllowedLedgers()];[change?saveCodeInData();setDroplistItems():[code=txt()];openDroplist():[items=().items];().startingScroll=0;if():[_.entryAction]:[[_.entryAction]()]?e().keyCode!=40;e().keyCode!=38;e().key!=Enter];blur:[fillInputCodeInInput();checkToCloseDroplist();if():[_.changeAction]:[[_.changeAction]()]];loaded:[inputValueHandler()]",
+                "fillInputCodeInInput": "txt()=2ndParent().selectedItem.inputCode",
+                "setDroplistItems": "if():[().txt()]:[().items=filterDroplistItems():[searchByCode=true;text=_.code]]:[().items=2ndParent().allowedItemsList]",
+                "saveCodeInData": {
+                    "_": "if():[txt()!=''||true]:[2ndParent().selectedItem=findCorrespondingItem():[code=txt()];if():[_.fillCodeName]:[saveCorrespondingCodeData()]:[saveIfNextInputValid()];if():[_.showBalance]:[showBalance()]]:[2ndParent().selectedItem.del();data().[_.inputPath].del()]",
+                    "saveCorrespondingCodeData": "if():[2ndParent().selectedItem]:[data().[_.inputPath]=2ndParent().selectedItem.dataCode;parent().next().1stChild().txt()=2ndParent().selectedItem.name]:[data().[_.inputPath].del();txt()='';parent().next().1stChild().txt()='']",
+                    "saveIfNextInputValid": "if():[parent().next().1stChild().txt()]:[data().[_.inputPath]=2ndParent().selectedItem.dataCode+[_.separator]+parent().next().1stChild().txt()]:[data().[_.inputPath].del()]"
+                },
+                "inputValueHandler": {
+                    "_": "checkIfDataAllowed();if():[data().[_.inputPath]]:[if():[_.fillCodeName]:[checkInAllowedItemsList()]:[splitDataAndCheckIfAllowed()]]:[checkToInitializeValue()];if():[_.showBalance]:[showBalance()]",
+                    "checkToInitializeValue": "if():[_.initializeValue]:[2ndParent().selectedItem=2ndParent().allowedItemsList.0;data().[_.inputPath]=2ndParent().selectedItem.dataCode;txt()=2ndParent().selectedItem.inputCode;if():[_.fillCodeName]:[parent().next().1stChild().txt()=2ndParent().allowedItemsList.0.name]]",
+                    "checkInAllowedItemsList": "if():[data().[_.inputPath].in():[2ndParent().allowedItemsList].():dataCode]:[readCodeFromData()]:[checkToInitializeValue()]",
+                    "splitDataAndCheckIfAllowed": "().dataList=data().[_.inputPath].split():[_.separator];if():[().dataList.0.in():[2ndParent().allowedItemsList].():dataCode]:[readCodeValueFromData()]:[data().[_.inputPath].del()]",
+                    "readCodeFromData": "2ndParent().selectedItem=findCorrespondingItem():[dataCode=data().[_.inputPath]];txt()=2ndParent().selectedItem.inputCode;parent().next().1stChild().txt()=2ndParent().selectedItem.name",
+                    "readCodeValueFromData": "2ndParent().selectedItem=findCorrespondingItem():[dataCode=().dataList.0];txt()=2ndParent().selectedItem.inputCode;parent().next().1stChild().txt()=().dataList.1",
+                    "checkIfDataAllowed": "if():[!data().[_.inputPath].in():[2ndParent().allowedItemsList.():dataCode]]:[data().[_.inputPath].del()]"
+                },
+                "findCorrespondingItem": "if():[[_.key()].in():[2ndParent().allowedItemsList.():[[_.key()]]]]:[return():[2ndParent().allowedItemsList.find():[.[_.key()]=_.[_.key()]]]]",
+                "replaceInputCodeByCode": "if():[txt()!='']:[txt()=2ndParent().selectedItem.code]",
+                "showBalance": "getAccountBalance():[ledger=data().[_.inputPath];identifier=3rdParent().next().id;currency=doc().currency;exchangeRate=doc().exchangeRates]",
+                "checkToCloseDroplist": "if():[!():customDroplist.contains():[clicked()]]:[():customDroplist.style():[opacity=0;height=0]]",
+                "checkIfTextInAllowedLedgers": {
+                    "_": "if():[e().key=Backspace]:[checkToDelete()]:[checkToDeleteEnteredChar()]",
+                    "checkToDelete": "if():[2ndParent().allowedCode]:[2ndParent().allowedCode._():[if():[txt().slice():[0]:[-1].slice():[0]:[_.len()]=_]:[().x=true]]]:[;2ndParent().allowedItemsList._():[if():[txt().slice():[0]:[-1]=_.code.slice():[0]:[txt().len()-1]]:[().x=true]]];if():[!().x]:[preventDefault()];().x.del()",
+                    "checkToDeleteEnteredChar": "2ndParent().allowedItemsList._():[if():[txt()+e().key=_.code.slice():[0]:[txt().len()+1]]:[().x=true]];if():[!().x]:[preventDefault()];().x.del()"
+                }
+            },
+            "filterDroplistItems": {
+                "_": "list=:;;if():[_.searchByCode]:[filterByCode()].elif():[_.searchByName]:[filterByName()];return():[.list]",
+                "filterByCode": "..2ndParent().allowedItemsList._():[if():[_.code.startsWith():[__.text]]:[list.push():[_]]]",
+                "filterByName": "..2ndParent().allowedItemsList._():[if():[_.name.toLowerCase().includes():[__.text.toLowerCase()]]:[list.push():[_]]]"
+            },
+            "openDroplist": {
+                "_": "setDroplistParams();setDroplistHeight();openDroplist()",
+                "setDroplistParams": "droplistItems:()=[viewName=codeDroplist;identifier=2ndParent().id;width=2ndParent().el().clientWidth+'px';viewInfo=[items=_.items;inputData=()._;identifier=2ndParent().id]]",
+                "setDroplistHeight": "().droplistHeight=if():[_.items.len()>10]:[30]:[[_.items.len()]*2.8]",
+                "openDroplist": "():customDroplist.update()::[():customDroplist.position():[positioner=2ndParent().id;placement=bottom;align=left];():customDroplist.style():[opacity=1;height=[().droplistHeight+'rem']()]]"
+            },
+            "valueInputEventsHandler": {
+                "_": "if():[_.fillCodeName]:[filterEventsHandler()]:[valueEventsHandler()]",
+                "filterEventsHandler": {
+                    "_": "keydown:[keyDownActions()];blur:[readNameFromAllowedItems()];[change;click?setDroplistItems();openDroplist():[items=().items]?e().keyCode!=38;e().keyCode!=40;e().key!=Enter]",
+                    "setDroplistItems": "if():[!().txt()]:[().items=2ndParent().allowedItemsList]:[().items=filterDroplistItems():[searchByName=true;text=txt()];if():[().items.len()=0]:[txt()=txt().slice():[0]:[txt().len()-1]]]",
+                    "readNameFromAllowedItems": "txt()=2ndParent().selectedItem.name;#txt()=findCorrespondingValue():[code=data().[_.inputPath]].name"
+                },
+                "valueEventsHandler": {
+                    "_": "placeholder=_.placeholder;keydown:[if():[_.removeChar]:[removeChar()];if():[_.keydownAction]:[[_.keydownAction]()]];focus:[().x=txt()];#entry:[if():[_.textFormat]:[[_.textFormat]()]];blur:[saveCodeInData()]",
+                    "saveCodeInData": "if():[parent().prev().1stChild().txt()!='';txt()!='']:[data().[_.inputPath]=findCorrespondingValue():[inputCode=[parent().prev().1stChild().txt()]].dataCode+[_.separator]+txt()]:[data().[_.inputPath].del()]"
+                },
+                "findCorrespondingValue": "if():[[_.key()].in():[2ndParent().allowedItemsList.():[[_.key()]]]]:[return():[2ndParent().allowedItemsList.find():[.[_.key()].toString()=_.[_.key()].toString()]]]"
+            },
+            "removeChar": "if():[[e().keyCode>=48;e().keyCode<=57]||[e().keyCode>=96;e().keyCode<=105]||[e().keyCode=110||e().keyCode=8]||[e().keyCode>=37;e().keyCode<=40]||[e().keyCode>=16;e().keyCode<=20]||[e().keyCode>=112;e().keyCode<=123]||[e().keyCode=190]]:[]:[if():[e().keyCode=9]:[blur()]:[preventDefault()]]",
+            "eticketFormat": "if():[txt().len()>().x]:[if():[txt().len()=4||txt().len()=8]:[txt()=txt()+'-'].elif():[txt().len()=5||txt().len()=9;txt().[-1]!='-']:[txt()=txt().slice():[0]:[-1]+'-'+txt().slice():[-1]]]:[if():[txt().len()=5||txt().len()=9]:[txt()=txt().slice():[0]:[-1]]];if():[txt().len()>12]:[txt()=txt().slice():[0]:[-1]];().x=txt().len()",
+            "keyDownActions": {
+                "[object Object]": "if():[e().keyC=4:[check();if():[().start=250]:[custom.1stChild().el().scrollTop+=28]:[().startingScroll+=28]].elif():[e().keyCode=38]:[checkArrowDown();if():[().startingScroll<28]:[():customDroplist.1stChild().el().scrollTop-=28]:[().startingScroll-=28]].elif():[e().key=Enter]:[():governmentDroplistItems.children().[selectedIndex:()].click()]",
+                "checkArrowUp": "if():[selectedIndex:()<():codeDroplist.children().len()-1]:[selectedIndex:()+=1;():codeDroplist.children().[selectedIndex:()].mouseenter()]",
+                "checkArrowDown": "if():[selectedIndex:()>=1]:[selectedIndex:()-=1;():codeDroplist.children().[selectedIndex:()].mouseenter()]",
+                "_": "if():[e().keyCode=40]:[checkArrowUp();if():[().startingScroll>=250]:[():customDroplist.1stChild().el().scrollTop+=28]:[().startingScroll+=28]].elif():[e().keyCode=38]:[checkArrowDown();if():[().startingScroll<28]:[():customDroplist.1stChild().el().scrollTop-=28]:[().startingScroll-=28]].elif():[e().key=Enter]:[():codeDroplist.children().[selectedIndex:()].click()]",
+                "checkToDelete": "2ndParent().allowedLedgers._():[if():[txt().toString().slice():0:[_.toString().len()]=_.toString();txt().len()=_.toString().len()]:[e().preventDefault()]]"
+            }
+        },
+        "comments": [
+            {
+                "note": "balance",
+                "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "code input",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "value input",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "label",
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "it takes items as params; and opens the code droplist; it handles droplist height and width",
+                "path": [
+                    "openDroplist"
+                ]
+            },
+            {
+                "note": "filters allowedItemsList accourding to the passed params",
+                "path": [
+                    "filterDroplistItems"
+                ]
+            },
+            {
+                "note": "handle arrows btns functionality",
+                "path": [
+                    "keyDownActions"
+                ]
+            }
+        ],
+        "collapsed": [
+            {
+                "path": [
+                    "#valueInputEventsHa",
+                    "saveAccountInDoc"
+                ]
+            },
+            {
+                "path": [
+                    "codeInputEventsHandler",
+                    "saveLedgerInDataaaaa",
+                    "handelGovInputInDoc"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "setItemsList",
+                    "handleAllowedCodeCondition"
+                ]
+            },
+            {
+                "path": [
+                    "valueInputEventsHandler",
+                    "filterEventsHandler"
+                ]
+            },
+            {
+                "path": [
+                    "valueInputEventsHandler",
+                    "valueEventsHandler"
+                ]
+            },
+            {
+                "path": [
+                    "keyDownActions"
+                ]
+            },
+            {
+                "path": [
+                    "filterDroplistItems"
+                ]
+            },
+            {
+                "path": [
+                    "openDroplist"
+                ]
+            },
+            {
+                "path": [
+                    "valueInputEventsHandler"
+                ]
+            },
+            {
+                "path": [
+                    "setItemsList"
+                ]
+            },
+            {
+                "path": [
+                    "codeInputEventsHandler",
+                    "inputValueHandler"
+                ]
+            },
+            {
+                "path": [
+                    "codeInputEventsHandler",
+                    "checkIfTextInAllowedLedgers"
+                ]
+            },
+            {
+                "path": [
+                    "codeInputEventsHandler",
+                    "saveCodeInData"
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 14292
+    },
+    "children": [
+        {
+            "view": "customInputLabel"
+        },
+        {
+            "view": "View?class=flex;style:[width=100%;gap=.2rem;zIndex=2]",
+            "children": [
+                {
+                    "view": "View?class=flex;style:[inputStyle()];loaded:[setItemsList()]",
+                    "children": [
+                        {
+                            "view": "View?class=flexbox;style:[width=5.6rem;height=100%;backgroundColor=#f3f3f3;position=relative]",
+                            "children": [
+                                {
+                                    "view": "Input?preventDefault;().startingScroll=0;placeholder='#';style:[fontSize=1.2rem;width=100%;height=100%;paddingRight=0rem];codeInputEventsHandler()"
+                                },
+                                {
+                                    "view": "Icon?name=expand_more;google.symbol;style:[fontSize=1.8rem;color=#666;cursor=pointer;position=absolute;right=-1px];click:[prev().click();prev().focus()]?!generalPopup:().read"
+                                }
+                            ]
+                        },
+                        {
+                            "view": "View?class=flex;style:[width='calc(100% - 5.6rem)';position=relative];[mouseenter?2ndChild().style():[opacity=1]];[mouseleave?2ndChild().style():[opacity=0]]",
+                            "children": [
+                                {
+                                    "view": "Input?preventDefault;valueInputEventsHandler();style:[fontSize=1.2rem;width=100%;textOverflow=ellipsis;height=100%;paddingRight=0];if():[_.counterInputBlurAction]:[blur:[[_.counterInputBlurAction]()]]"
+                                },
+                                {
+                                    "view": "Icon?name=Close;google.symbol;style:[fontSize=1.8rem;cursor=pointer;color=#666;opacity=0;transition=.2s;paddingRight=.5rem;align-self=center;position=absolute;right=0px];click:[data().[_.inputPath].del();if():[_.clearIconAction]:[[_.clearIconAction]()];nthParent():4.update()]?!____.read"
+                                },
+                                {
+                                    "view": "Icon?name=Search;google.symbol;style:[fontSize=2rem;color=#666;padding=.5rem;cursor=pointer];tooltip:[text='open search box'];click:[callOpenSearchBox()]?_.generalLedger;notInSearchEngine();!____.read;false"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "view": "View?class=flex",
+            "children": [
+                {
+                    "view": "View?class=flex;style:[overflow=hidden;width=100%;height=1.2rem]?_.showBalance;data().[_.inputPath]",
+                    "children": [
+                        {
+                            "view": "View?class=flex;style:[width=100%;height=1.2rem;backgroundColor=#ddd;borderRadius=0rem 0rem .25rem .25rem;position=absolute;bottom=2px;zIndex=1;align-items=center]",
+                            "children": [
+                                {
+                                    "view": "Text?().balance=selectedAccountsBalance:().find():[ledger=data().[_.inputPath]];text=().balance.creditDebit+' = '+().balance.balance;style:[color=if():[().balance.creditDebit=Debit]:[#3266ff]:[red];paddingLeft=.5rem;fontSize=.9rem]"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

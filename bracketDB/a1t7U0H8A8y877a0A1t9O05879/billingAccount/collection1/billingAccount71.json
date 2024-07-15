@@ -1,0 +1,26 @@
+{
+    "name": "My Billing Account",
+    "accountID": "31G7d2T0P8F743F344c6H3Y3O3",
+    "accountType": "business",
+    "country": "Lebanon",
+    "creditLimit": 0,
+    "currency": "COIN",
+    "languagePreference": "English",
+    "organizationAddress": "Chouifet",
+    "organizationName": "Skyla Group",
+    "paymentTerms": "Due on receipt",
+    "__props__": {
+        "id": "n1C792G098y7S3b3i4I6z6s6I6",
+        "doc": "billingAccount71",
+        "counter": 71,
+        "creationDate": 1720873346666,
+        "collection": "billingAccount",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 511
+    }
+}

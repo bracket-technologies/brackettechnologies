@@ -1,0 +1,24 @@
+{
+    "transaction575": {
+        "voucher": "yja5lwMJQ21AZrbciTj5UQXyOJ6IvYleGLe9nDa3YS8jG9lkJAGvy0rphGLP-1721035229534",
+        "ledgerAccount": "1/2/0"
+    },
+    "transaction576": {
+        "voucher": "yja5lwMJQ21AZrbciTj5UQXyOJ6IvYleGLe9nDa3YS8jG9lkJAGvy0rphGLP-1721035229534",
+        "ledgerAccount": "1/3/0"
+    },
+    "transaction577": {
+        "ledgerAccount": "119/1/0"
+    },
+    "transaction578": {
+        "ledgerAccount": "413/1/0"
+    },
+    "transaction579": {
+        "voucher": "8kAiAFuRObpaby40dUt6vn7tpzmwUwW0kFPwZbxmu4V5ByzQLBMyNi3teZlR-1721035308518",
+        "ledgerAccount": "413/1/0"
+    },
+    "transaction580": {
+        "voucher": "8kAiAFuRObpaby40dUt6vn7tpzmwUwW0kFPwZbxmu4V5ByzQLBMyNi3teZlR-1721035308518",
+        "ledgerAccount": "1/2/0"
+    }
+}

@@ -1,0 +1,8 @@
+{
+    "counter2": {
+        "collection": "transaction"
+    },
+    "counter1": {
+        "collection": "account"
+    }
+}

@@ -1,0 +1,21 @@
+{
+    "publicID": "991cD7p528b0wu8Go7H73364Lu5oP1qw4My8ZS9",
+    "active": true,
+    "public": true,
+    "host": "dev.branch.skylagroup.brackettechnologies.com",
+    "dev": true,
+    "__props__": {
+        "id": "H1F7X221g0K3k7U2y4n1K2x1o6",
+        "doc": "host82",
+        "counter": 82,
+        "creationDate": 1721037241216,
+        "collection": "host",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 361
+    }
+}

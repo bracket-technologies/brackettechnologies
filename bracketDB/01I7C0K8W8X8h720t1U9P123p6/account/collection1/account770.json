@@ -1,0 +1,52 @@
+{
+    "name": "customer",
+    "isSubAccount": "No",
+    "generalLedger": "413",
+    "autoGenerateAccountNumber": "Yes",
+    "currency": [
+        "USD"
+    ],
+    "type": "B2B Customer",
+    "createVATAccount": "No",
+    "openingBalance": [
+        {
+            "openingBalance": "Yes",
+            "currency": "USD",
+            "credit-debit": "Debit",
+            "amount": 1000,
+            "openingBalanceAccount": "119/1/0"
+        }
+    ],
+    "limit": 0,
+    "notification": "No",
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "createdBy": "5i7aFi1VZvdJzdVB5WTK0KOJGqJuerg3X2A8fjNqFxLXXU4NaOKpEH0iVnGU1700835548602",
+    "startsWith": [
+        "4",
+        "41",
+        "413"
+    ],
+    "id": "dnCceeAhNCvbvsFudBoVpQAXhLFk5I2lF3sPcp6pWlyhRRX9Uafrw4dIAmEd-1721035291331",
+    "creationDate": 1721035291331,
+    "creationDay": 1720990800000,
+    "ref": "ACC-00000004",
+    "accountNumber": "1",
+    "ledgerAccount": [
+        "413/1/0"
+    ],
+    "__props__": {
+        "id": "U1N7I2J150L3T5K2Q9l1a4z6Y8",
+        "doc": "account770",
+        "counter": 770,
+        "creationDate": 1721035291468,
+        "collection": "account",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1032
+    },
+    "lastBalance": "tFRGMDaOfrPOZC3YHChyBhuS5pznJnNIlXax9RJexlcLqy72qtl7Q3Comr1x-1721035308469"
+}

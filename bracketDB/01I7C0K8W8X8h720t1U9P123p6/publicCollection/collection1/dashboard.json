@@ -1,0 +1,414 @@
+{
+    "pieChar": [
+        {
+            "quantity": 30,
+            "color": "yellow",
+            "target": "Economy"
+        },
+        {
+            "quantity": 25,
+            "color": "#0a0",
+            "target": "Premium Economy"
+        },
+        {
+            "quantity": 15,
+            "color": "#f80",
+            "target": "Business"
+        },
+        {
+            "quantity": "10",
+            "color": "#264a69",
+            "target": "other"
+        },
+        {
+            "quantity": 20,
+            "color": "#08f",
+            "target": "First Class"
+        }
+    ],
+    "singelBarChart": {
+        "monthlyData": {
+            "grid": "1fr 1fr 1fr 1fr",
+            "y-axis": [
+                {
+                    "value": "0"
+                },
+                {
+                    "value": "100"
+                },
+                {
+                    "value": "50"
+                }
+            ],
+            "x-axis": [
+                {
+                    "date": "Week 1",
+                    "number": 65
+                },
+                {
+                    "date": "Week 2",
+                    "number": 35
+                },
+                {
+                    "date": "Week 3",
+                    "number": 12
+                },
+                {
+                    "date": "Week 4",
+                    "number": 98
+                }
+            ],
+            "title": "ticket/month"
+        },
+        "weeklyData": {
+            "grid": "1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+            "y-axis": [
+                {
+                    "value": "0"
+                },
+                {
+                    "value": "120"
+                },
+                {
+                    "value": "240"
+                }
+            ],
+            "x-axis": [
+                {
+                    "date": "Mon",
+                    "number": 165
+                },
+                {
+                    "date": "Tue",
+                    "number": 135
+                },
+                {
+                    "date": "Wed",
+                    "number": 112
+                },
+                {
+                    "date": "Thu",
+                    "number": 198
+                },
+                {
+                    "date": "Fri",
+                    "number": 165
+                },
+                {
+                    "date": "Sat",
+                    "number": 125
+                },
+                {
+                    "date": "Sun",
+                    "number": 195
+                }
+            ],
+            "title": "ticket/week"
+        },
+        "yearlyData": {
+            "grid": "1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+            "y-axis": [
+                {
+                    "value": "0"
+                },
+                {
+                    "value": "450"
+                },
+                {
+                    "value": "900"
+                }
+            ],
+            "x-axis": [
+                {
+                    "date": "Jan",
+                    "number": 550
+                },
+                {
+                    "date": "Feb",
+                    "number": 730
+                },
+                {
+                    "date": "Mar",
+                    "number": 386
+                },
+                {
+                    "date": "April",
+                    "number": 410
+                },
+                {
+                    "date": "May",
+                    "number": 355
+                },
+                {
+                    "date": "Jun",
+                    "number": 100
+                },
+                {
+                    "date": "Jul",
+                    "number": 640
+                },
+                {
+                    "date": "Aug",
+                    "number": 320
+                },
+                {
+                    "date": "Sep",
+                    "number": 860
+                },
+                {
+                    "date": "Oct",
+                    "number": 430
+                },
+                {
+                    "date": "Nov",
+                    "number": 790
+                },
+                {
+                    "date": "Dec",
+                    "number": 370
+                }
+            ],
+            "title": "ticket/year"
+        },
+        "interval": [
+            "Week",
+            "Month",
+            "Year"
+        ],
+        "title": "Ticket Number"
+    },
+    "id": "dashboard",
+    "dblBarChart": {
+        "yAxis": [
+            {
+                "value": "0"
+            },
+            {
+                "value": "450"
+            },
+            {
+                "value": "900"
+            }
+        ],
+        "xAxis": [
+            {
+                "income": "560",
+                "incomeColor": "#DB4437",
+                "outcomeColor": "#4285F4",
+                "year": "2014",
+                "extra": "20%",
+                "outcome": "660"
+            },
+            {
+                "income": "375",
+                "incomeColor": "#DB4437",
+                "outcomeColor": "#4285F4",
+                "year": "2015",
+                "outcome": "765"
+            },
+            {
+                "income": "350",
+                "incomeColor": "#DB4437",
+                "outcomeColor": "#4285F4",
+                "year": "2016",
+                "outcome": "784"
+            },
+            {
+                "income": "180",
+                "incomeColor": "#DB4437",
+                "outcomeColor": "#4285F4",
+                "year": "2017",
+                "outcome": "665"
+            },
+            {
+                "income": "140",
+                "incomeColor": "#DB4437",
+                "outcomeColor": "#4285F4",
+                "year": "2018",
+                "outcome": "545"
+            },
+            {
+                "income": "240",
+                "incomeColor": "#DB4437",
+                "outcomeColor": "#4285F4",
+                "year": "2019",
+                "outcome": "570"
+            },
+            {
+                "income": "375",
+                "incomeColor": "#DB4437",
+                "outcomeColor": "#4285F4",
+                "year": "2020",
+                "outcome": "650"
+            }
+        ],
+        "title": "Income-Outcome Barchart",
+        "yAxisTitle": "amount/USD"
+    },
+    "pie": {
+        "data": [
+            {
+                "quantity": 30,
+                "color": "yellow",
+                "_string": "",
+                "target": "Economy"
+            },
+            {
+                "quantity": 25,
+                "color": "red",
+                "_string": "",
+                "target": "Business"
+            },
+            {
+                "quantity": 15,
+                "color": "green",
+                "_string": "",
+                "target": "Premium Economy"
+            },
+            {
+                "quantity": "10",
+                "color": "#264a69",
+                "target": "Other"
+            }
+        ],
+        "_string": "",
+        "title": "PieChart"
+    },
+    "rowChart": {
+        "total": "211506",
+        "current": [
+            {
+                "color": "#DB4437",
+                "title": "CURRENT",
+                "value": "125800"
+            }
+        ],
+        "overdue": [
+            {
+                "color": "#4285F4",
+                "title": "OVERDUE",
+                "value": "85706"
+            }
+        ],
+        "title": "Total Recivables"
+    },
+    "__props__": {
+        "id": "X1h7x1p1P0N371z3r6A1r5b5J8",
+        "doc": "dashboard",
+        "creationDate": 1711031361558,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [
+            {
+                "path": [
+                    "singelBarChart",
+                    "monthlyData",
+                    "x-axis"
+                ]
+            },
+            {
+                "path": [
+                    "pieChar"
+                ]
+            },
+            {
+                "path": [
+                    "dblBarChart",
+                    "xAxis"
+                ]
+            },
+            {
+                "path": [
+                    "dblBarChart",
+                    "yAxis"
+                ]
+            },
+            {
+                "path": [
+                    "singelBarChart",
+                    "monthlyData",
+                    "y-axis"
+                ]
+            },
+            {
+                "path": [
+                    "singelBarChart",
+                    "weeklyData",
+                    "x-axis"
+                ]
+            },
+            {
+                "path": [
+                    "singelBarChart",
+                    "weeklyData",
+                    "y-axis"
+                ]
+            },
+            {
+                "path": [
+                    "singelBarChart",
+                    "yearlyData",
+                    "x-axis"
+                ]
+            },
+            {
+                "path": [
+                    "singelBarChart",
+                    "yearlyData",
+                    "y-axis"
+                ]
+            },
+            {
+                "path": [
+                    "pie",
+                    "data"
+                ]
+            },
+            {
+                "path": [
+                    "pie"
+                ]
+            },
+            {
+                "path": [
+                    "singelBarChart",
+                    "weeklyData"
+                ]
+            },
+            {
+                "path": [
+                    "singelBarChart",
+                    "yearlyData"
+                ]
+            },
+            {
+                "path": [
+                    "dblBarChart"
+                ]
+            },
+            {
+                "path": [
+                    "singelBarChart",
+                    "interval"
+                ]
+            },
+            {
+                "path": [
+                    "singelBarChart",
+                    "monthlyData"
+                ]
+            },
+            {
+                "path": [
+                    "singelBarChart"
+                ]
+            }
+        ],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 6,
+        "collection": "publicCollection",
+        "chunk": "chunk1"
+    }
+}

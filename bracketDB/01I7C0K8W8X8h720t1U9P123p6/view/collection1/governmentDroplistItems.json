@@ -1,0 +1,108 @@
+{
+    "view": "View:governmentDroplistItems?class=column;style:[width=100%];().droplistCounter=0;dropListNumber:()=0;#loaded:[selectDefaultValue()]",
+    "children": [
+        {
+            "view": "[View]:[data=range():[if():[governmentAccountsItems:().len()<30]:[[governmentAccountsItems:().len()]-1]:[30]]]?().counter=parent().droplistCounter;parent().droplistCounter+=1;class=flex;style:[width=100%;height=2.8rem;gap=.3rem;padding=0 .5rem;borderRadius=.4rem;cursor=pointer];tooltip:[text=governmentAccountsItems:().[().counter].name];hoverStyle();click:[if():[__.eticket]:[saveEticket()]:[saveValueInInput()];if():[():[droplistItems:().identifier]._.droplistClickAction]:[[():[droplistItems:().identifier]._.droplistClickAction]()]]?governmentAccountsItems:()",
+            "children": [
+                {
+                    "view": "View?class=flex;style:[width=3.5rem]",
+                    "children": [
+                        {
+                            "view": "Text?class=flex;text=governmentAccountsItems:().[dropListNumber:()].number;readonly;style:[fontSize=1.3rem;fontWeight=700;width=100%;justifyContent=end;alignItems=center]"
+                        }
+                    ]
+                },
+                {
+                    "view": "View?class=flex;style:[alignItems=center]",
+                    "children": [
+                        {
+                            "view": "Text?class=flex;text='-';readonly;style:[fontSize=1.3rem;fontWeight=700;alignItems=center]"
+                        }
+                    ]
+                },
+                {
+                    "view": "View?class=flex;style:[alignItems=center;width=calc(100% - 4.5rem);overflow=hidden]",
+                    "children": [
+                        {
+                            "view": "Text?class=flex;handleAccountName();readonly;style:[fontSize=1.3rem;fontWeight=700;textOverflow=ellipsis;display=inline-block;overflow=hidden;white-space=nowrap];dropListNumber:()+=1"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "i1u7Q1f120l3C1T3u6D5N2V0R6",
+        "doc": "governmentDroplistItems",
+        "creationDate": 1711031365206,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "actions": {
+            "fillLeftZeros": "().x=_.text+'t';while():[().x.len()<[_.digits+1]]:[().x='0'+().x];return():[().x.replaceItem():'t':'']",
+            "hoverStyle": "mouseenter:[parent().children().():[style().backgroundColor=white];selectedIndex:()=().counter;style():[backgroundColor=#f4f4f4]];mouseleave:[style():[backgroundColor=white]]",
+            "saveValueInInput": {
+                "saveNameInText": "():[droplistItems:().identifier].2ndChild().1stChild().txt()=3rdChild().1stChild().txt()",
+                "saveNumberInPath": "():[droplistItems:().identifier].data().[():[droplistItems:().identifier]._.inputPath]=_",
+                "saveOnlyLedger": "():[droplistItems:().identifier].data().[():[droplistItems:().identifier].[_.inputPath]]=1stChild().1stChild().txt()",
+                "saveGeneralLedgerInDoc": "():[droplistItems:().identifier].data().[():[droplistItems:().identifier].[_.inputPath]]=1stChild().1stChild().txt()+'/'+():[droplistItems:().identifier].2ndChild().1stChild().txt()",
+                "checkIfAccountExists": "if():[():[droplistItems:().identifier].2ndChild().1stChild().txt()!='']:[saveGeneralLedgerInDoc()]:[saveOnlyLedger()]",
+                "_": "selectedIndex:()=().counter;():[droplistItems:().identifier].1stChild().1stChild().txt()=if():[1stChild().1stChild().txt().includes():['/']||():[droplistItems:().identifier]._.sheetName]:[1stChild().1stChild().txt()]:[setDefaultleftZero():[text=1stChild().1stChild().txt();digits=5]];saveValueInData()",
+                "saveValueInData": "if():[():[droplistItems:().identifier]._.includeLegerAccounts]:[handleIncludeLegerAccountsData()].elif():[():[droplistItems:().identifier]._.govInput]:[saveNameInText();saveNumberInPath():[1stChild().1stChild().txt()]]:[checkIfAccountExists()]",
+                "handleIncludeLegerAccountsData": "saveNameInText();saveNumberInPath():[governmentAccountsItems:().find():[name=3rdChild().1stChild().txt()].ledger];if():[():[droplistItems:().identifier]._.showBalance]:[getAccountBalance():[identifier=():[droplistItems:().identifier].parent().next().id;ledger=():[droplistItems:().identifier].data().[():[droplistItems:().identifier]._.inputPath]]]"
+            },
+            "saveEticket": {
+                "saveInData": "if():[():[droplistItems:().identifier].2ndChild().1stChild().txt()]:[():[droplistItems:().identifier].data().[():[droplistItems:().identifier]._.inputPath]=fillLeftZeros():[text=1stChild().1stChild().txt();digits=3]+fillLeftZeros():[text=():[droplistItems:().identifier].2ndChild().1stChild().txt();digits=10]]:[():[droplistItems:().identifier].data().[():[droplistItems:().identifier]._.inputPath]=fillLeftZeros():[text=1stChild().1stChild().txt();digits=3]]",
+                "_": "selectedIndex:()=().counter;():[droplistItems:().identifier].1stChild().1stChild().txt()=fillLeftZeros():[text=1stChild().1stChild().txt();digits=3];saveInData()"
+            },
+            "getBalance": "searchLastBalance():[ledgerAccount=_]:[if():[_.data.value()]:[_.data.ledger=__;selectedAccountsBalance:().push():[_.data];():[droplistItems:().identifier].parent().next().update()]]",
+            "#selectDefaultValue": "selectedIndex:()=0;if():[():[droplistItems:().identifier].1stChild().1stChild().txt()='']:[1stChild().mouseenter()]:[children().find():[1stChild().1stChild().txt()=():[droplistItems:().identifier].1stChild().1stChild().txt()].mouseenter()]",
+            "handleAccountName": "if():[governmentAccountsItems:().[dropListNumber:()].currency]:[text=governmentAccountsItems:().[dropListNumber:()].name+if():[governmentAccountsItems:().[dropListNumber:()].currency]:['('+governmentAccountsItems:().[dropListNumber:()].currency+')']]:[text=governmentAccountsItems:().[dropListNumber:()].name]"
+        },
+        "collapsed": [
+            {
+                "path": []
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "saveValueInInput"
+                ]
+            },
+            {
+                "path": [
+                    "saveEticket"
+                ]
+            }
+        ],
+        "comments": [],
+        "dirPath": [],
+        "version": 0,
+        "counter": 27,
+        "secure": false,
+        "chunk": "chunk1",
+        "collection": "view"
+    }
+}

@@ -1,0 +1,20 @@
+{
+    "publicID": "8N15v7k02mY1jw0qG3sj7Dz69p05O5ID1B76bZ6",
+    "active": true,
+    "public": true,
+    "host": "test1.brackettechnologies.com",
+    "__props__": {
+        "id": "Q177M2m130Q3v7l6L095a2a4e9",
+        "doc": "host84",
+        "counter": 84,
+        "creationDate": 1721037605249,
+        "collection": "host",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 334
+    }
+}

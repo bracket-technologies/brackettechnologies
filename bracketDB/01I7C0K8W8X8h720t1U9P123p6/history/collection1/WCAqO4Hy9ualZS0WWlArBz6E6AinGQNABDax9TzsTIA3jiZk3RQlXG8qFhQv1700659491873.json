@@ -1,0 +1,39 @@
+{
+    "updateBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+    "difference": [
+        {
+            "new": "",
+            "path": "country",
+            "old": "gg"
+        },
+        {
+            "new": "",
+            "path": "trainName",
+            "old": "g"
+        },
+        {
+            "new": "",
+            "path": "trainStation",
+            "old": "g"
+        }
+    ],
+    "description": "Data has been updated",
+    "sheet": "aRiAoFpuKnap9rZCJcACccDMX29Kai3iT6kFHbYUfHtc2mL9kHAk3wzgai8g1699268378803",
+    "id": "WCAqO4Hy9ualZS0WWlArBz6E6AinGQNABDax9TzsTIA3jiZk3RQlXG8qFhQv1700659491873",
+    "creationDay": 1700611200000,
+    "creationDate": 1700659491873,
+    "__props__": {
+        "id": "T1X7u151a003o1J3G66365R730",
+        "doc": "WCAqO4Hy9ualZS0WWlArBz6E6AinGQNABDax9TzsTIA3jiZk3RQlXG8qFhQv1700659491873",
+        "creationDate": 1711031363570,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 148,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

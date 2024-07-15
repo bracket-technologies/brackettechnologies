@@ -1,0 +1,263 @@
+{
+    "view": "View?id=view5;style=[fontFamily=sans serif];doc;imagePrime():1;counter:()=1",
+    "__props__": {
+        "id": "W1I791p50036S9N648N654U5F3",
+        "doc": "view5",
+        "counter": 17,
+        "creationDate": 1715069686453,
+        "active": true,
+        "actions": {
+            "getView5Data": {
+                "_": "getMainPageSchemas()",
+                "getMainPageSchemas": "search():[collection=mainPageSchema;doc=mainCategoryBar]:[mainCategoryBar:()=_.data;getCategoryNamesByID()]",
+                "getCategoryNamesByID": "search():[collection=category;find:[id.in=mainCategoryBar:().categoryIDs]]:[categories:()=_.data.values();setCategoryNames()]",
+                "setCategoryNames": "mainCategoryBar:().headCategories=:;mainCategoryBar:().categoryIDs._():[mainCategoryBar:().headCategories+=categories:().find():[id=_]]"
+            },
+            "listOfImages": "listOfImages:()=:[ID=1;image='https://cdn.grabon.in/gograbon/images/web-images/uploads/1618754975292/shein-coupons.jpg']:[ID=2;image='https://www.latimes.com/coupon-codes/static/medium/115445/file_name/shein-new-user-discount.png']:[ID=3;image='https://img.lemde.fr/2023/05/03/0/0/4201/2100/1440/720/60/0/baa0180_1683116625854-maxnewsworldfive728741.jpg']",
+            "gridItems": ":[label=Men;img='https://d2bzx2vuetkzse.cloudfront.net/fit-in/0x450/unshoppable_producs/5ddd401d-d0d2-42f2-88ee-5eb1ce8d2d5f.jpeg']:[label=Home;img=]:[label=Test1;img=]:[label=Test2;;img=]:[label=Test3;img=]:[label=Test4;img=]:[label=Test5;img=]:[label=Test6;img=]:[label=Test7;img=]:[label=Test14;img=]:[label=Test15;img=]:[label=Test111;img=]:[label=Test341;img=]:[label=Test1241;img=]",
+            "swipePrev": {
+                "_": "translateX:()-=100;counter:()-=1;checkCounterNegative();swipeBackLastHandler()",
+                "swipeBackLastHandler": "():swiperWrapper.style().transition=0s;():swiperWrapper.insert():[view=():swiperWrapper.lastChild();index=0]:[swipeFirst()]",
+                "swipeBack": "():swiperWrapper.style():[transform='translateX('+translateX:()+'%)'];disableBullets();imageEnable()",
+                "swipeFirst": "():swiperWrapper.():[lastChild().rem();swipeBack();translateX:()=0;timer():[():swiperWrapper.style():[transition=.5s;transform='translateX('+translateX:()+'%)']]:50];",
+                "checkCounterNegative": "counter:()=3?counter:()=0"
+            },
+            "listOfIcons": ":[ID=1;name=radio_button_unchecked]:[ID=2;name=radio_button_unchecked]:[ID=3;name=radio_button_unchecked]",
+            "imageEnable": "():indexes.nthChild():[counter:()].style():[background=black]",
+            "disableBullets": "():indexes.children().():[style():[fontSize=0.7rem;background=none]]",
+            "swipeNext": {
+                "_": "translateX:()+=100;counter:()+=1;checkCounter();swipeLastHandler()",
+                "swipeLastHandler": "():swiperWrapper.style().transition=0s;():swiperWrapper.insert():[view=():swiperWrapper.1stChild();index=():swiperWrapper.children().len()]:[swipeLast()]",
+                "swipeLast": "():swiperWrapper.():[1stChild().rem();swipe();translateX:()-=100;timer():[():swiperWrapper.style():[transition=.5s;transform='translateX('+translateX:()+'%)']]:50]",
+                "swipe": "():swiperWrapper.style():[transform='translateX('+translateX:()+'%)'];disableBullets();imageEnable();",
+                "checkCounter": "counter:()=1?counter:()>3"
+            },
+            "swipeNextTester": {
+                "_": "translateX:()+=100;counter:()+=1;checkCounter1();swipeLastHandler1();log():[tester]",
+                "swipeLastHandler1": "():swiperWrapper.style().transition=0s;():swiperWrapper.insert():[view=():swiperWrapper.1stChild()();index=():swiperWrapper.children().len()]:[swipeLast1()]",
+                "swipeBack1": "():swiperWrapper.style():[transform='translateX(-'+translateX:()+'%)'];disableBullets();imageEnable()",
+                "swipeLast1": "():swiperWrapper.():[1stChild().rem();swipeBack1();translateX:()=0;timer():[():swiperWrapper.style():[transition=.5s;transform='translateX(-'+translateX:()+'%)']]:50];",
+                "checkCounter1": "counter:()=1?counter:()>3"
+            }
+        },
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "view",
+        "createdByUserID": null,
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    2,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "getView5Data"
+                ]
+            }
+        ],
+        "comments": [
+            {
+                "note": "body",
+                "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "mainbar",
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "megaMenu",
+                "path": [
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "topBanner",
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "",
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children1"
+                ]
+            },
+            {
+                "note": "`",
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            }
+        ]
+    },
+    "children": [
+        {
+            "view": "View?id=banner;class=flexbox;style=[padding=0;margin=0;cursor=pointer;width=100%;backgroundColor=rgb(205, 0, 26);color=white]",
+            "children": [
+                {
+                    "view": "Text?text=Extra ;style=[color=white;fontSize=3rem;margin=0.5rem;font-weight=bold]"
+                },
+                {
+                    "view": "Text?text=Discount 20% ;style=[color=yellow;fontSize=3rem;margin=0.5rem;font-weight=bold]"
+                },
+                {
+                    "view": "Text?text=for orders above SR99;style=[color=white;fontSize=3rem;margin=0.5rem;font-weight=bold]"
+                }
+            ]
+        },
+        {
+            "view": "mainbar?getView5Data()"
+        },
+        {
+            "view": "View?id=bodysection;style=[paddingLeft=15%;paddingRight=15%;background=#fff;height=100%;border-top-style=solid;border-color=gray;border-width=1px]",
+            "children": [
+                {
+                    "view": "View?id=UpperPart;style=[display=grid;gridTemplateColumns=1fr 2.1fr 1fr;paddingTop=1rem]",
+                    "children": [
+                        {
+                            "view": "View?id=UpperPartLeft;class=flex column",
+                            "children": [
+                                {
+                                    "view": "Image?src='https://www.washingtonpost.com/coupons/static/medium/115446/file_name/shein-daily-coupon-codes.png';style=[padding=1rem;cursor=pointer;border-radius=20px;height=65%;width=100%]"
+                                },
+                                {
+                                    "view": "Image?src='https://sheinsz.ltwebstatic.com/she_dist/images/prime/renew-shein-club-ar-ff61fcd786.png';style=[border-radius=40px;width=100%;cursor=pointer;height=35%]"
+                                }
+                            ]
+                        },
+                        {
+                            "view": "View?id=upperPartMiddl;style=[overflow=hidden];",
+                            "children": [
+                                {
+                                    "view": "View?id=swiperContainer;style=[position=relative;overflow=hidden;width=95%;]",
+                                    "children": [
+                                        {
+                                            "view": "View?id=swiperWrapper;style=[display=flex;transition=transform 0.5s ease];listOfImages()",
+                                            "children": [
+                                                {
+                                                    "view": "[View]:[data=listOfImages:()]?style=[flex=0 0 auto; position=relative;width=100%];click:[log():[parent().next()]:['hhh']]",
+                                                    "children": [
+                                                        {
+                                                            "view": "View?id=content;style=[position=relative;width=100%];",
+                                                            "children": [
+                                                                {
+                                                                    "view": "Image?src=_.image;style=[height=100%;width=100%;borderRadius=1rem]"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "view": "View?id=indexes;class=flexbox;style=[opacity=70%;cursor=pointer;position=absolute;height=3.5rem;width=3.5rem;right=45%;top=calc(100% - 3rem);];",
+                                            "children": [
+                                                {
+                                                    "view": "[View]:[data=listOfIcons()]?style=[padding=0rem;borderRadius=50%]",
+                                                    "children": [
+                                                        {
+                                                            "view": "Icon?name=_.name;google.symbol;style=[fontSize=0.9rem;color=black;opacity=80%]"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "children": [
+                                                {
+                                                    "view": "Icon?name=Chevron_right;google.symbol;style=[fontSize=2.2rem]"
+                                                }
+                                            ],
+                                            "view": "View?id=buttonNext;class=flexbox;style=[opacity=70%;background=#FFF;cursor=pointer;position=absolute;height=3.5rem;width=3.5rem;right=10px;top=calc(50% - 1.75rem);borderRadius=50%];#translateX=0;hover.style=[opacity=100%];[click?swipeNext()]"
+                                        },
+                                        {
+                                            "view": "View?id=buttonPrev;class=flexbox;style=[opacity=70%;background=#FFF;cursor=pointer;position=absolute;height=3.5rem;width=3.5rem;left=10px;top=calc(50% - 1.75rem);borderRadius=50%];hover.style=[opacity=100%];[click?[swipePrev()]]",
+                                            "children": [
+                                                {
+                                                    "view": "Icon?name=Chevron_left;google.symbol;style=[fontSize=2.2rem]"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "view": "View?id=gridOfItems;style=[width=100;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr;padding=2rem];():indexes.nthChild():1.style():[background=black]",
+                    "children": [
+                        {
+                            "view": "[View]:[data=gridItems()]?",
+                            "children": [
+                                {
+                                    "view": "View?id=contentContainer;class=flexbox column;style=[padding=1.5rem;cursor=pointer]",
+                                    "children": [
+                                        {
+                                            "view": "Image?src=_.img;style=[width=10rem;height=10rem;borderRadius=50%;paddingBottom=0.5rem]"
+                                        },
+                                        {
+                                            "view": "Text?text=_.label;style=[fontSize=1.5rem;fontWeight=bold;text-align=center]"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "view": "megaMenu"
+        }
+    ]
+}

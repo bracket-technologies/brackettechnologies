@@ -1,0 +1,34 @@
+{
+    "creationDate": 1712567715219,
+    "collection": "billingAccount",
+    "chunkMaxSizeMB": 20,
+    "lastChunk": 1,
+    "docsLength": 3,
+    "counter": 72,
+    "reads": 2797,
+    "writes": 300,
+    "deletes": 50,
+    "size": -7,
+    "payloadIn": 171922,
+    "payloadOut": 810784,
+    "dirTree": [],
+    "indexes": [
+        {
+            "find": [
+                "__props__.id"
+            ],
+            "doc": "index1",
+            "lastRead": 1720873451798,
+            "expiryDate": 1723465451798
+        },
+        {
+            "find": [
+                "accountID"
+            ],
+            "doc": "index2",
+            "lastRead": 1721037605305,
+            "expiryDate": 1723629605305
+        }
+    ],
+    "lastIndex": 2
+}

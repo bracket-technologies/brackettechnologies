@@ -1,0 +1,14 @@
+{
+    "docs": [
+        "receivablesAndPayablesManager",
+        "navBar",
+        "incomeManager",
+        "fixedAssetsManager",
+        "financialAccountManager",
+        "expenditureManager",
+        "capitalsManager"
+    ],
+    "chunk": "chunk1",
+    "docsLength": 7,
+    "size": 90
+}

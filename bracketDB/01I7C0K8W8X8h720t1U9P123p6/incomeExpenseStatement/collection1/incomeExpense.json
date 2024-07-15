@@ -1,0 +1,69 @@
+{
+    "monthly": [
+        {
+            "Jul": {
+                "income": "8000",
+                "expense": "3200"
+            },
+            "Oct": {
+                "income": "1300",
+                "expense": "800"
+            },
+            "Feb": {
+                "income": "4200",
+                "expense": "3000"
+            },
+            "Apr": {
+                "income": "10000",
+                "expense": "8200"
+            },
+            "Jun": {
+                "income": "14000",
+                "expense": "12000"
+            },
+            "Aug": {
+                "income": "35000",
+                "expense": "28000"
+            },
+            "Dec": {
+                "income": "12000",
+                "expense": "10000"
+            },
+            "Nov": {
+                "income": "3900",
+                "expense": "3400"
+            },
+            "May": {
+                "income": "43000",
+                "expense": "40000"
+            },
+            "Jan": {
+                "income": "6000",
+                "expense": "3000"
+            },
+            "Mar": {
+                "income": "3200",
+                "expense": "3000"
+            },
+            "Sep": {
+                "income": "26000",
+                "expense": "24000"
+            }
+        }
+    ],
+    "id": "incomeExpense",
+    "__props__": {
+        "id": "h1a7m1f110e3p1u3t6y0V723O0",
+        "doc": "incomeExpense",
+        "creationDate": 1711031360730,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 1,
+        "collection": "incomeExpenseStatement",
+        "chunk": "chunk1"
+    }
+}

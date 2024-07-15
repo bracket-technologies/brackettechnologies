@@ -1,0 +1,2650 @@
+{
+    "create": {
+        "expenseVoucher": {
+            "keyValue": [
+                {
+                    "path": "supplierAccount",
+                    "type": "ledger",
+                    "key": "account"
+                },
+                {
+                    "path": "branch",
+                    "type": "string",
+                    "key": "branch",
+                    "required": "true"
+                },
+                {
+                    "staticValue": "Yes",
+                    "key": "openingBalance"
+                },
+                {
+                    "path": "currency",
+                    "type": "string",
+                    "key": "currency",
+                    "required": "true"
+                },
+                {
+                    "staticValue": "debit",
+                    "key": "credit-debit"
+                }
+            ],
+            "generateReference": true
+        },
+        "transaction": {
+            "keyValue": [
+                {
+                    "listPath": "transactions",
+                    "#input": [
+                        {
+                            "path": "ledgerAccount",
+                            "type": "ledger",
+                            "key": "account",
+                            "required": "true"
+                        },
+                        {
+                            "path": "credit-debit",
+                            "type": "string",
+                            "key": "credit-debit",
+                            "required": true
+                        },
+                        {
+                            "path": "currency",
+                            "type": "string",
+                            "key": "currency",
+                            "required": "true"
+                        },
+                        {
+                            "path": "amount",
+                            "type": "number",
+                            "key": "amount",
+                            "required": true
+                        },
+                        {
+                            "path": "description",
+                            "type": "string",
+                            "key": "description"
+                        },
+                        {
+                            "path": "exchangeRate",
+                            "type": "number",
+                            "key": "exchangeRate",
+                            "required": true
+                        }
+                    ],
+                    "listOfDocs": "true",
+                    "docsKeyValue": [
+                        {
+                            "input": [
+                                {
+                                    "path": "ledgerAccount",
+                                    "type": "string",
+                                    "key": "ledgerAccount",
+                                    "required": true
+                                },
+                                {
+                                    "path": "ledgerAccount",
+                                    "type": "ledger",
+                                    "key": "account",
+                                    "required": "true"
+                                },
+                                {
+                                    "path": "credit-debit",
+                                    "type": "string",
+                                    "key": "credit-debit",
+                                    "required": true
+                                },
+                                {
+                                    "path": "currency",
+                                    "type": "string",
+                                    "key": "currency"
+                                },
+                                {
+                                    "path": "amount",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": true
+                                },
+                                {
+                                    "path": "description",
+                                    "type": "string",
+                                    "key": "description"
+                                },
+                                {
+                                    "path": "exchangeRate",
+                                    "type": "number",
+                                    "key": "exchangeRate",
+                                    "required": true
+                                }
+                            ],
+                            "collection": "transaction"
+                        }
+                    ],
+                    "collection": "transaction",
+                    "generateReference": true
+                }
+            ],
+            "ignoreMainDoc": true
+        },
+        "account": {
+            "beforeSaveStep": {
+                "keyValue": [
+                    {
+                        "path": "ledgerAccount",
+                        "findKey": "helperKey",
+                        "findValue": "getLedgerAccountForMainAccountTransaction",
+                        "key": "ledgerAccount"
+                    },
+                    {
+                        "path": "id",
+                        "findKey": "helperKey",
+                        "findValue": "getLedgerAccountForMainAccountTransaction",
+                        "key": "account"
+                    }
+                ]
+            },
+            "generateReference": true,
+            "keyValue": [
+                {
+                    "generateReference": true,
+                    "listOfDocs": true,
+                    "listPath": "openingBalance",
+                    "collection": "transaction",
+                    "docsKeyValue": [
+                        {
+                            "collection": "transaction",
+                            "input": [
+                                {
+                                    "key": "generalLedger",
+                                    "staticValue": "119"
+                                },
+                                {
+                                    "key": "ledgerAccount",
+                                    "path": "openingBalanceAccount",
+                                    "required": true,
+                                    "type": "string"
+                                },
+                                {
+                                    "path": "openingBalanceAccount",
+                                    "type": "ledger",
+                                    "key": "account",
+                                    "required": "true"
+                                },
+                                {
+                                    "key": "credit-debit",
+                                    "staticValue": "if():[___.data.'credit-debit'=Credit]:[return():['Debit']]:[return():['Credit']]"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                },
+                                {
+                                    "path": "currency",
+                                    "type": "string",
+                                    "key": "currency",
+                                    "required": "true"
+                                },
+                                {
+                                    "staticValue": "Opening",
+                                    "key": "description"
+                                },
+                                {
+                                    "path": "amount",
+                                    "condition": [
+                                        {
+                                            "condition": "Capitals",
+                                            "conditionReference": "ledgerAccountName",
+                                            "operator": "!="
+                                        }
+                                    ],
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": true
+                                },
+                                {
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Capitals"
+                                            ],
+                                            "conditionReference": "ledgerAccountName"
+                                        }
+                                    ],
+                                    "staticValue": 0,
+                                    "key": "amount"
+                                },
+                                {
+                                    "path": "headAccount",
+                                    "type": "string",
+                                    "key": "headAccount"
+                                }
+                            ],
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Yes"
+                                    ],
+                                    "conditionReference": "openingBalance"
+                                }
+                            ]
+                        },
+                        {
+                            "collection": "transaction",
+                            "input": [
+                                {
+                                    "key": "generalLedger",
+                                    "staticValue": "mainReceivedData:().generalLedger"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                },
+                                {
+                                    "path": "credit-debit",
+                                    "type": "string",
+                                    "key": "credit-debit",
+                                    "required": "true"
+                                },
+                                {
+                                    "key": "currency",
+                                    "path": "currency",
+                                    "required": true,
+                                    "static ": "mainReceivedData:().currency",
+                                    "type": "string",
+                                    "#staticValue": "mainReceivedData:().currency"
+                                },
+                                {
+                                    "staticValue": "Opening",
+                                    "key": "description"
+                                },
+                                {
+                                    "path": "amount",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": true
+                                }
+                            ],
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Yes"
+                                    ],
+                                    "conditionReference": "openingBalance"
+                                }
+                            ],
+                            "beforeSaveStep": {
+                                "keyValue": [
+                                    {
+                                        "findKey": "helperKey",
+                                        "findValue": "getLedgerAccountForMainAccountTransaction",
+                                        "key": "ledgerAccount",
+                                        "staticValue": "saveStack:().find():[helperKey=getLedgerAccountForMainAccountTransaction].data.ledgerAccount.[mainReceivedData:().exchangeRates.findIndex():[code=__.data.currency]]"
+                                    },
+                                    {
+                                        "path": "id",
+                                        "findKey": "helperKey",
+                                        "findValue": "getLedgerAccountForMainAccountTransaction",
+                                        "key": "account"
+                                    }
+                                ]
+                            },
+                            "helpersKeyValue": [
+                                {
+                                    "staticValue": "getLastBalanceIdForMainAccountDoc",
+                                    "key": "helperKey"
+                                }
+                            ]
+                        }
+                    ],
+                    "condition": [
+                        {
+                            "conditionReference": "openingBalance"
+                        }
+                    ]
+                },
+                {
+                    "collection": "transaction",
+                    "customCondition": "().setDoc=false;mainReceivedData:().openingBalance._():[if():[_.openingBalance='Yes']:[().setDoc=true]];if():[().setDoc]:[return():[true]]:[return():[false]]",
+                    "#staticDoc": true,
+                    "#beforeSaveStep": {
+                        "keyValue": [
+                            {
+                                "path": "ledgerAccount",
+                                "findKey": "helperKey",
+                                "findValue": "getLedgerAccountForMainAccountTransaction",
+                                "key": "ledgerAccount"
+                            },
+                            {
+                                "path": "id",
+                                "findKey": "helperKey",
+                                "findValue": "getLedgerAccountForMainAccountTransaction",
+                                "key": "account"
+                            }
+                        ]
+                    },
+                    "input": [
+                        {
+                            "key": "generalLedger",
+                            "path": "generalLedger",
+                            "required": true,
+                            "type": "string"
+                        },
+                        {
+                            "path": "credit-debit",
+                            "type": "string",
+                            "key": "credit-debit",
+                            "required": "true"
+                        },
+                        {
+                            "key": "exchangeRates",
+                            "staticValue": "mainReceivedData:().exchangeRates"
+                        },
+                        {
+                            "path": "currency",
+                            "type": "string",
+                            "key": "currency",
+                            "required": "true"
+                        },
+                        {
+                            "staticValue": "Opening",
+                            "key": "description"
+                        },
+                        {
+                            "path": "amount",
+                            "condition": [
+                                {
+                                    "condition": "Capitals",
+                                    "conditionReference": "ledgerAccountName",
+                                    "operator": "!="
+                                }
+                            ],
+                            "type": "number",
+                            "key": "amount",
+                            "required": true
+                        },
+                        {
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Capitals"
+                                    ],
+                                    "conditionReference": "ledgerAccountName"
+                                }
+                            ],
+                            "staticValue": 0,
+                            "key": "amount"
+                        },
+                        {
+                            "path": "headAccount",
+                            "type": "string",
+                            "key": "headAccount"
+                        }
+                    ]
+                }
+            ],
+            "ignoreMainDoc": true,
+            "nextStep": [
+                {
+                    "condition": [
+                        {
+                            "condition": [
+                                "Fixed Assets"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        },
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "createDepreciationAccount"
+                        }
+                    ],
+                    "manager": "assetDepreciation",
+                    "collection": "account"
+                },
+                {
+                    "condition": [
+                        {
+                            "condition": [
+                                "Receivables and Payables"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        },
+                        {
+                            "condition": [
+                                "B2B Customer",
+                                "B2C Customer",
+                                "Corporate Customer",
+                                "Agency Supplier",
+                                "Airline Supplier",
+                                "Other Operational Account"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "createVATAccount"
+                        }
+                    ],
+                    "manager": "vatAccount",
+                    "collection": "account"
+                }
+            ],
+            "#helpersKeyValue": [
+                {
+                    "staticValue": "getLastBalanceIdForMainAccountDoc",
+                    "key": "helperKey"
+                }
+            ]
+        },
+        "invoice": {
+            "generateReference": true,
+            "keyValue": [
+                {
+                    "generateReference": true,
+                    "listOfDocs": true,
+                    "listPath": "bookings",
+                    "collection": "transaction",
+                    "docsKeyValue": [
+                        {
+                            "collection": "transaction",
+                            "input": [
+                                {
+                                    "key": "generalLedger",
+                                    "staticValue": "___.data.supplierAccount.split():'/'.0.toString()"
+                                },
+                                {
+                                    "key": "ledgerAccount",
+                                    "path": "supplierAccount",
+                                    "required": true,
+                                    "type": "string"
+                                },
+                                {
+                                    "path": "supplierAccount",
+                                    "type": "ledger",
+                                    "key": "account",
+                                    "required": "true"
+                                },
+                                {
+                                    "key": "credit-debit",
+                                    "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Credit']]:[return():['Debit']]"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                },
+                                {
+                                    "key": "currency",
+                                    "path": "costCurrency",
+                                    "required": true,
+                                    "type": "string"
+                                },
+                                {
+                                    "path": "costTotalPrice",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true"
+                                },
+                                {
+                                    "path": "costCommission",
+                                    "type": "number",
+                                    "key": "commission",
+                                    "required": "true"
+                                }
+                            ],
+                            "beforeSaveStep": {
+                                "keyValue": [
+                                    {
+                                        "path": "id",
+                                        "findKey": "helperKey",
+                                        "findValue": "getInvoiceIdForAllTransaction",
+                                        "key": "invoiceID"
+                                    },
+                                    {
+                                        "path": "ref",
+                                        "findKey": "helperKey",
+                                        "findValue": "getInvoiceIdForAllTransaction",
+                                        "key": "invoiceRef"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "collection": "transaction",
+                            "input": [
+                                {
+                                    "key": "credit-debit",
+                                    "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Debit']]:[return():['Credit']]"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                },
+                                {
+                                    "key": "currency",
+                                    "path": "costCurrency",
+                                    "required": true,
+                                    "type": "string"
+                                },
+                                {
+                                    "path": "supplierVAT",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true"
+                                }
+                            ],
+                            "beforeSaveStep": {
+                                "keyValue": [
+                                    {
+                                        "path": "id",
+                                        "findKey": "helperKey",
+                                        "findValue": "getInvoiceIdForAllTransaction",
+                                        "key": "invoiceID"
+                                    },
+                                    {
+                                        "path": "ref",
+                                        "findKey": "helperKey",
+                                        "findValue": "getInvoiceIdForAllTransaction",
+                                        "key": "invoiceRef"
+                                    }
+                                ]
+                            },
+                            "customCondition": "[getVatAccount():[ledgerAccount=__.supplierAccount]]():[collection=schemas;doc=transaction]",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Inbound"
+                                    ],
+                                    "conditionReference": "bound"
+                                },
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "collection": "transaction",
+                            "input": [
+                                {
+                                    "key": "generalLedger",
+                                    "staticValue": "601"
+                                },
+                                {
+                                    "key": "ledgerAccount",
+                                    "staticValue": "601/1/+___.data.supplierAccount.split():'/'.2"
+                                },
+                                {
+                                    "type": "ledger",
+                                    "key": "account",
+                                    "staticValue": "601/1/+___.data.supplierAccount.split():'/'.2"
+                                },
+                                {
+                                    "key": "credit-debit",
+                                    "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Debit']]:[return():['Credit']]"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                },
+                                {
+                                    "key": "currency",
+                                    "path": "costCurrency",
+                                    "required": true,
+                                    "type": "string"
+                                },
+                                {
+                                    "path": "costSubTotal",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true",
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Inbound"
+                                            ],
+                                            "conditionReference": "bound"
+                                        },
+                                        {
+                                            "condition": [
+                                                "Hotel"
+                                            ],
+                                            "conditionReference": "type"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "path": "costTotalPrice",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true",
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Outbound"
+                                            ],
+                                            "conditionReference": "bound"
+                                        },
+                                        {
+                                            "condition": [
+                                                "Hotel"
+                                            ],
+                                            "conditionReference": "type"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "path": "costTotalPrice",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true",
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Ticket"
+                                            ],
+                                            "conditionReference": "type"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "beforeSaveStep": {
+                                "keyValue": [
+                                    {
+                                        "path": "id",
+                                        "findKey": "helperKey",
+                                        "findValue": "getInvoiceIdForAllTransaction",
+                                        "key": "invoiceID"
+                                    },
+                                    {
+                                        "path": "ref",
+                                        "findKey": "helperKey",
+                                        "findValue": "getInvoiceIdForAllTransaction",
+                                        "key": "invoiceRef"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "collection": "transaction",
+                            "input": [
+                                {
+                                    "key": "generalLedger",
+                                    "staticValue": "701"
+                                },
+                                {
+                                    "key": "ledgerAccount",
+                                    "staticValue": "701/1/+mainReceivedData:().customerAccount.split():'/'.2"
+                                },
+                                {
+                                    "type": "ledger",
+                                    "key": "account",
+                                    "staticValue": "701/1/+mainReceivedData:().customerAccount.split():'/'.2"
+                                },
+                                {
+                                    "key": "credit-debit",
+                                    "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Credit']]:[return():['Debit']]"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                },
+                                {
+                                    "key": "currency",
+                                    "staticValue": "mainReceivedData:().currency"
+                                },
+                                {
+                                    "path": "sellingTotalPrice",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": true,
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Ticket"
+                                            ],
+                                            "conditionReference": "type"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "path": "sellingSubTotal",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": true,
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Inbound"
+                                            ],
+                                            "conditionReference": "bound"
+                                        },
+                                        {
+                                            "condition": [
+                                                "Hotel"
+                                            ],
+                                            "conditionReference": "type"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "path": "sellingTotalPrice",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": true,
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Outbound"
+                                            ],
+                                            "conditionReference": "bound"
+                                        },
+                                        {
+                                            "condition": [
+                                                "Hotel"
+                                            ],
+                                            "conditionReference": "type"
+                                        }
+                                    ]
+                                }
+                            ],
+                            "beforeSaveStep": {
+                                "keyValue": [
+                                    {
+                                        "path": "id",
+                                        "findKey": "helperKey",
+                                        "findValue": "getInvoiceIdForAllTransaction",
+                                        "key": "invoiceID"
+                                    },
+                                    {
+                                        "path": "ref",
+                                        "findKey": "helperKey",
+                                        "findValue": "getInvoiceIdForAllTransaction",
+                                        "key": "invoiceRef"
+                                    }
+                                ]
+                            }
+                        },
+                        {
+                            "collection": "transaction",
+                            "input": [
+                                {
+                                    "key": "credit-debit",
+                                    "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Credit']]:[return():['Debit']]"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                },
+                                {
+                                    "key": "currency",
+                                    "path": "costCurrency",
+                                    "required": true,
+                                    "type": "string"
+                                },
+                                {
+                                    "path": "customerVAT",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true"
+                                }
+                            ],
+                            "beforeSaveStep": {
+                                "keyValue": [
+                                    {
+                                        "path": "id",
+                                        "findKey": "helperKey",
+                                        "findValue": "getInvoiceIdForAllTransaction",
+                                        "key": "invoiceID"
+                                    },
+                                    {
+                                        "path": "ref",
+                                        "findKey": "helperKey",
+                                        "findValue": "getInvoiceIdForAllTransaction",
+                                        "key": "invoiceRef"
+                                    }
+                                ]
+                            },
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Inbound"
+                                    ],
+                                    "conditionReference": "bound"
+                                },
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ],
+                            "customCondition": "[getVatAccount():[ledgerAccount=mainReceivedData:().customerAccount]]():[collection=schemas;doc=transaction]"
+                        }
+                    ],
+                    "condition": [
+                        {
+                            "condition": [
+                                "Confirmed"
+                            ],
+                            "conditionReference": "status"
+                        }
+                    ]
+                },
+                {
+                    "staticDoc": true,
+                    "collection": "transaction",
+                    "generateReference": true,
+                    "keyValue": [
+                        {
+                            "key": "generalLedger",
+                            "staticValue": "mainReceivedData:().customerAccount.split():'/'.0.toString()"
+                        },
+                        {
+                            "key": "ledgerAccount",
+                            "path": "customerAccount",
+                            "required": true,
+                            "type": "string"
+                        },
+                        {
+                            "path": "customerAccount",
+                            "type": "ledger",
+                            "key": "account",
+                            "required": "true"
+                        },
+                        {
+                            "key": "credit-debit",
+                            "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Debit']]:[return():['Credit']]"
+                        },
+                        {
+                            "key": "exchangeRates",
+                            "staticValue": "mainReceivedData:().exchangeRates"
+                        },
+                        {
+                            "key": "currency",
+                            "staticValue": "mainReceivedData:().currency"
+                        },
+                        {
+                            "key": "amount",
+                            "staticValue": "().amount=0;mainReceivedData:().bookings._():[().amount+=_.sellingTotalPrice];return():[().amount]"
+                        },
+                        {
+                            "key": "commission",
+                            "staticValue": "().commission=0;mainReceivedData:().bookings._():[().commission+=_.sellingCommission];return():[().commission]"
+                        }
+                    ],
+                    "beforeSaveStep": {
+                        "keyValue": [
+                            {
+                                "path": "id",
+                                "findKey": "helperKey",
+                                "findValue": "getInvoiceIdForAllTransaction",
+                                "key": "invoiceID"
+                            },
+                            {
+                                "path": "ref",
+                                "findKey": "helperKey",
+                                "findValue": "getInvoiceIdForAllTransaction",
+                                "key": "invoiceRef"
+                            }
+                        ]
+                    },
+                    "condition": [
+                        {
+                            "condition": [
+                                "Confirmed"
+                            ],
+                            "conditionReference": "status"
+                        }
+                    ]
+                },
+                {
+                    "staticDoc": true,
+                    "collection": "transaction",
+                    "generateReference": true,
+                    "keyValue": [
+                        {
+                            "key": "generalLedger",
+                            "staticValue": "mainReceivedData:().salesmanAccount.split():'/'.0.toString()"
+                        },
+                        {
+                            "key": "ledgerAccount",
+                            "path": "salesmanAccount",
+                            "required": true,
+                            "type": "string"
+                        },
+                        {
+                            "path": "salesmanAccount",
+                            "type": "ledger",
+                            "key": "account",
+                            "required": "true"
+                        },
+                        {
+                            "key": "credit-debit",
+                            "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Credit']]:[return():['Debit']]"
+                        },
+                        {
+                            "key": "exchangeRates",
+                            "staticValue": "mainReceivedData:().exchangeRates"
+                        },
+                        {
+                            "key": "currency",
+                            "staticValue": "mainReceivedData:().currency"
+                        },
+                        {
+                            "key": "amount",
+                            "path": "salesmanCommissionAmount",
+                            "required": true,
+                            "type": "number"
+                        }
+                    ],
+                    "beforeSaveStep": {
+                        "keyValue": [
+                            {
+                                "path": "id",
+                                "findKey": "helperKey",
+                                "findValue": "getInvoiceIdForAllTransaction",
+                                "key": "invoiceID"
+                            },
+                            {
+                                "path": "ref",
+                                "findKey": "helperKey",
+                                "findValue": "getInvoiceIdForAllTransaction",
+                                "key": "invoiceRef"
+                            }
+                        ]
+                    },
+                    "condition": [
+                        {
+                            "condition": [
+                                "yes"
+                            ],
+                            "conditionReference": "salesmanCommission"
+                        },
+                        {
+                            "condition": [
+                                "Confirmed"
+                            ],
+                            "conditionReference": "status"
+                        }
+                    ]
+                },
+                {
+                    "collection": "transaction",
+                    "beforeSaveStep": {
+                        "keyValue": [
+                            {
+                                "path": "id",
+                                "findKey": "helperKey",
+                                "findValue": "getInvoiceIdForAllTransaction",
+                                "key": "invoiceID"
+                            },
+                            {
+                                "path": "ref",
+                                "findKey": "helperKey",
+                                "findValue": "getInvoiceIdForAllTransaction",
+                                "key": "invoiceRef"
+                            }
+                        ]
+                    },
+                    "staticDoc": true,
+                    "generateReference": true,
+                    "keyValue": [
+                        {
+                            "key": "generalLedger",
+                            "staticValue": "60182"
+                        },
+                        {
+                            "key": "ledgerAccount",
+                            "staticValue": "60182/1/0"
+                        },
+                        {
+                            "type": "ledger",
+                            "key": "account",
+                            "staticValue": "60182/1/0"
+                        },
+                        {
+                            "key": "credit-debit",
+                            "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Debit']]:[return():['Credit']]"
+                        },
+                        {
+                            "key": "exchangeRates",
+                            "staticValue": "mainReceivedData:().exchangeRates"
+                        },
+                        {
+                            "key": "currency",
+                            "staticValue": "mainReceivedData:().currency"
+                        },
+                        {
+                            "path": "salesmanCommissionAmount",
+                            "type": "number",
+                            "key": "amount",
+                            "required": "true"
+                        }
+                    ],
+                    "condition": [
+                        {
+                            "condition": [
+                                "yes"
+                            ],
+                            "conditionReference": "salesmanCommission"
+                        },
+                        {
+                            "condition": [
+                                "Confirmed"
+                            ],
+                            "conditionReference": "status"
+                        }
+                    ]
+                }
+            ],
+            "ignoreMainDoc": true
+        },
+        "voucher": {
+            "generateReference": true,
+            "keyValue": [
+                {
+                    "listPath": "from",
+                    "listOfDocs": "true",
+                    "docsKeyValue": [
+                        {
+                            "input": [
+                                {
+                                    "path": "fromAccount",
+                                    "type": "string",
+                                    "key": "ledgerAccount",
+                                    "required": true
+                                },
+                                {
+                                    "path": "fromAccount",
+                                    "type": "ledger",
+                                    "key": "account",
+                                    "required": true
+                                },
+                                {
+                                    "path": "description",
+                                    "type": "string",
+                                    "key": "description"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                },
+                                {
+                                    "path": "amount",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true"
+                                },
+                                {
+                                    "path": "branch",
+                                    "type": "branch",
+                                    "key": "branch"
+                                },
+                                {
+                                    "staticValue": "Credit",
+                                    "key": "credit-debit"
+                                },
+                                {
+                                    "key": "currency",
+                                    "staticValue": "mainReceivedData:().currency"
+                                }
+                            ],
+                            "beforeSaveStep": {
+                                "keyValue": [
+                                    {
+                                        "path": "id",
+                                        "findKey": "collection",
+                                        "findValue": "voucher",
+                                        "key": "voucher"
+                                    },
+                                    {
+                                        "path": "ref",
+                                        "findKey": "collection",
+                                        "findValue": "voucher",
+                                        "key": "voucherRef"
+                                    }
+                                ]
+                            },
+                            "collection": "transaction"
+                        }
+                    ],
+                    "generateReference": "true",
+                    "collection": "transaction"
+                },
+                {
+                    "listPath": "to",
+                    "listOfDocs": "true",
+                    "docsKeyValue": [
+                        {
+                            "input": [
+                                {
+                                    "path": "toAccount",
+                                    "type": "string",
+                                    "key": "ledgerAccount",
+                                    "required": true
+                                },
+                                {
+                                    "path": "toAccount",
+                                    "type": "ledger",
+                                    "key": "account",
+                                    "required": true
+                                },
+                                {
+                                    "path": "description",
+                                    "type": "string",
+                                    "key": "description"
+                                },
+                                {
+                                    "path": "amount",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                },
+                                {
+                                    "path": "branch",
+                                    "type": "branch",
+                                    "key": "branch"
+                                },
+                                {
+                                    "staticValue": "Debit",
+                                    "key": "credit-debit"
+                                },
+                                {
+                                    "key": "currency",
+                                    "staticValue": "mainReceivedData:().currency"
+                                }
+                            ],
+                            "beforeSaveStep": {
+                                "keyValue": [
+                                    {
+                                        "path": "id",
+                                        "findKey": "collection",
+                                        "findValue": "voucher",
+                                        "key": "voucher"
+                                    },
+                                    {
+                                        "path": "ref",
+                                        "findKey": "collection",
+                                        "findValue": "voucher",
+                                        "key": "voucherRef"
+                                    }
+                                ]
+                            },
+                            "collection": "transaction"
+                        }
+                    ],
+                    "generateReference": "true",
+                    "collection": "transaction"
+                }
+            ]
+        }
+    },
+    "id": "transactiondwjiddkpwdnwdejiefwd",
+    "collection": "transaction",
+    "creationDate": 1709111455754,
+    "__props__": {
+        "id": "V1D7Z1i3g9z5W0y772r5O370B1",
+        "doc": "transaction",
+        "counter": 38,
+        "creationDate": 1713950725301,
+        "collection": "schemas",
+        "chunk": "chunk1",
+        "actions": {
+            "getVatAccount": {
+                "_": "search():[collection=account;find=[ledgerAccount.inc=_.ledgerAccount]]:[getAccountDoc()]",
+                "getAccountDoc": "if():[_.data.value()]:[if():[_.data.value().vatLedgerAccount]:[findVatAccount()]:[send():[success=false;msg='Supplier does not have a VAT account!']]]:[send():[success=false;msg='Supplier account does not exist!']]",
+                "findVatAccount": "().isExist=false;_.data.value().vatLedgerAccount._():[if():[___.ledgerAccount.split():'/'.2=_.split():'/'.2]:[().isExist=true;().vatLedgerAccount=_]];if():[().isExist]:[pushData()]",
+                "pushData": "().indexAsDoc.account=_.data.value().vatLedgerAccountID;().indexAsDoc.ledgerAccount=().vatLedgerAccount;().indexAsDoc.generalLedger=().vatLedgerAccount.split():'/'.0"
+            }
+        },
+        "comments": [
+            {
+                "note": "customer transaction",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "note": "salesman transaction",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "note": "salesman commission transaction",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "note": "supplier transaction",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0
+                ]
+            },
+            {
+                "note": "supplier vat transaction",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1
+                ]
+            },
+            {
+                "note": "expense transaction",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2
+                ]
+            },
+            {
+                "note": "income transaction",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3
+                ]
+            },
+            {
+                "note": "customer vat transaction",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4
+                ]
+            },
+            {
+                "note": "transaction on account  (oppening balance)",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1
+                ]
+            },
+            {
+                "note": "transaction on opening balance account (119...)",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0
+                ]
+            }
+        ],
+        "collapsed": [
+            {
+                "path": []
+            },
+            {
+                "path": [
+                    "create",
+                    "transaction",
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    1,
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    3,
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    8,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    8,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    1,
+                    "input",
+                    6,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    1,
+                    "input",
+                    6,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    1,
+                    "input",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    1,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    1,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    1,
+                    "input",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    1,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    1,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    1,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    1,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    1,
+                    "#beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "condition",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    1,
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    2,
+                    "beforeSaveStep",
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    2,
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    2,
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    3,
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "beforeSaveStep",
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "beforeSaveStep",
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "beforeSaveStep",
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "beforeSaveStep",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    0,
+                    "docsKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "voucher"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "transaction"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "condition",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    2,
+                    "condition",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    2,
+                    "condition",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    2,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    3,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep",
+                    0,
+                    "condition",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep",
+                    0,
+                    "condition",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep",
+                    0,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep",
+                    1,
+                    "condition",
+                    2,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep",
+                    1,
+                    "condition",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep",
+                    1,
+                    "condition",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep",
+                    1,
+                    "condition",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep",
+                    1,
+                    "condition",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "expenseVoucher",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "expenseVoucher",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "expenseVoucher",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "expenseVoucher",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "expenseVoucher",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "expenseVoucher"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "beforeSaveStep",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "beforeSaveStep",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    1,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "helpersKeyValue"
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 26332
+    }
+}

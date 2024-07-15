@@ -1,0 +1,42 @@
+{
+    "createdBy": {
+        "lastName": "Assaf",
+        "country": "lebanon",
+        "address": "beirut",
+        "city": "baalbek",
+        "type": "Admin User",
+        "creationDate": 1699559755886,
+        "birthDate": 1698883200000,
+        "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+        "firstName": "Taha",
+        "password": "12345",
+        "ref": "USR-00000003",
+        "nationality": "lebanese",
+        "createdBy": "i4sFsUOhrwc4ahQQqznbaqcj3qJb53Ha9VRkIqeFBuHMFlNxEY9jP7GYwkyt",
+        "contactNumber": "1234567",
+        "creation-date": 1699559717013,
+        "id": "j7neF8CHqumHOGzAXNWi9JcLKTTyx9LRmJptYuYbJeiNWWfSrQMeqwKTZSp01699559755885",
+        "creationDay": 1699488000000,
+        "email": "taha@gmail.com",
+        "username": "tahaassaf"
+    },
+    "description": "account creation",
+    "id": "2P1ILz8D1dJ7PsoPgGCPtaQjKlNeiZumLwyMK9NvsHxun593HQzRIKvR7OkW1700660923296",
+    "creationDay": 1700611200000,
+    "creationDate": 1700660923304,
+    "account": "LeEiv3UX7h1bYRbIkPQhd6tx6Ct3rQpArsqLshCDU9qv94mMwa1rCGIbVkrk1700660922974",
+    "__props__": {
+        "id": "81G701f1Z0G391f3G6L3x19659",
+        "doc": "2P1ILz8D1dJ7PsoPgGCPtaQjKlNeiZumLwyMK9NvsHxun593HQzRIKvR7OkW1700660923296",
+        "creationDate": 1711031363169,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 8,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

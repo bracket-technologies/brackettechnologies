@@ -1,0 +1,59 @@
+{
+    "view": "View:switchInput?class=flex column;style:[width=100%;overflow=hidden;if():[_.pointerEvents]:[pointerEvents=_.pointerEvents]]",
+    "__props__": {
+        "id": "A1f7f181V4Y5654777s5B3o3d9",
+        "doc": "switchInput",
+        "creationDate": 1711455775339,
+        "active": true,
+        "createdByUserID": null,
+        "counter": 6,
+        "comments": [],
+        "actions": {
+            "handleSwitchClick": {
+                "_": "if():[!().on]:[turnOn()]:[turnOff()]",
+                "turnOn": "1stChild().style().transform=translateX(100%);;().on=true;data().[_.inputPath]=_.items.0.value||yes",
+                "turnOff": "1stChild().style().transform=translateX(0);().on=false;data().[_.inputPath]=_.items.1.value||no"
+            },
+            "handleInputValue": ";if():[data().[_.inputPath]=_.items.1.value||data().[_.inputPath]=no]:[parent().on=false;style().transform=translateX(0)]:[parent().on=true;style().transform=translateX(100%)]"
+        },
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    0
+                ]
+            }
+        ],
+        "chunk": "chunk1",
+        "collection": "view"
+    },
+    "children": [
+        {
+            "view": "customInputLabel"
+        },
+        {
+            "view": "View?class=flex;style:[width=100%;height=100%;gap=.2rem;cursor=pointer;inputStyle();justifyContent=center;border=none;alignItems=center]",
+            "children": [
+                {
+                    "view": "View?class=flex;style:[width=100%;height=3.5rem;borderRadius=.4rem;border=1px solid #ddd;position=relative;overflow=hidden];if():[!data().[_.inputPath]]:[data().[_.inputPath]=_.items.1.value||no];click:[handleSwitchClick();if():[_.switchAction]:[[_.switchAction]()]]",
+                    "children": [
+                        {
+                            "view": "View?class=flex #box-shadow;style:[border=1px solid #ddd;transition=.2s;width=calc(50% - 4px);height=calc(100% - 8px);backgroundColor=#fff;borderRadius=.4rem;position=absolute;left=4px;top=4px;zIndex=1];handleInputValue()"
+                        },
+                        {
+                            "view": "View?class=flex;style:[width=100%;height=100%;alignItems=center]",
+                            "children": [
+                                {
+                                    "view": "Text?text=_.items.0.text||Yes;style:[flex=1]"
+                                },
+                                {
+                                    "view": "Text?text=_.items.1.text||No;style:[flex=1]"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

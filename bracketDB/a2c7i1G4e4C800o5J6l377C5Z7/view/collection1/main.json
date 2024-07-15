@@ -1,0 +1,15 @@
+{
+    "view": "View?id=main;title=Playground Platform;#timer()::0",
+    "__props__": {
+        "id": "p1I7M1P4M4e8A49630L1M6L297",
+        "doc": "main",
+        "counter": 1,
+        "creationDate": 1714484601627,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "view",
+        "createdByUserID": "M1X7V1X4O4A8Z076N0c2l5x2R1"
+    }
+}

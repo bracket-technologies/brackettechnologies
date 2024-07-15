@@ -1,0 +1,36 @@
+{
+    "view": "View:imageView?class=column;style:[width=100%;justifyContent=center;paddingTop=2rem]",
+    "children": [
+        {
+            "view": "View?class=flexbox;style:[overflow=hidden;width=100%;height=90%]",
+            "children": [
+                {
+                    "view": "Image?src=__.imageData.url;style:[maxWidth=100%;maxHeight=100%;width=35rem]?__.imageData.type.includes():[image]"
+                },
+                {
+                    "view": "View?class=flexbox;style:[position=relative]?!__.imageData.type.includes():[image]",
+                    "children": [
+                        {
+                            "view": "Icon?name=description;google.symbol;style:[fontSize=15rem]"
+                        },
+                        {
+                            "view": "Icon?name=downloading;google.symbol;download=_.imageData.url;style:[position=absolute;fontSize=4rem;position=absolute;bottom=75%;left=71%;cursor=pointer];click:[window().open():[__.imageData.url]]"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "g177T1e4a7h223i2D3O571H2H6",
+        "doc": "imageView",
+        "counter": 3,
+        "creationDate": 1714723235126,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "view",
+        "createdByUserID": "p1l781A1x043Q1Y3Q6e0K3W1b2"
+    }
+}

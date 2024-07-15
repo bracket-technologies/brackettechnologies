@@ -1,0 +1,20 @@
+{
+    "__props__": {
+        "id": "C1A7c106s7n240u848a5Z4W4w6",
+        "doc": "host7",
+        "counter": 7,
+        "creationDate": 1716720885446,
+        "active": true,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "host"
+    },
+    "host": "brcacc.loca.lt",
+    "active": true,
+    "public": true,
+    "publicID": "1rgwB078m8x8qhgrT5X949d858"
+}

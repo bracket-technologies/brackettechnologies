@@ -1,0 +1,27 @@
+{
+    "docs": [
+        "tttttt",
+        "confirmInvoice",
+        "transaction",
+        "voucher",
+        "sheet",
+        "session",
+        "schedule",
+        "notification",
+        "exchangeRate",
+        "currency",
+        "confirmVoucher",
+        "cancelConfirmedVoucher",
+        "account",
+        "branch",
+        "username",
+        "permission",
+        "user",
+        "password",
+        "signup",
+        "invoice"
+    ],
+    "chunk": "chunk1",
+    "docsLength": 20,
+    "size": 8429
+}

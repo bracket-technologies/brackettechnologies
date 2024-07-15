@@ -1,0 +1,25 @@
+{
+    "0": "",
+    "id": "ledgersBalances",
+    "creationDate": 1709801677526,
+    "__props__": {
+        "id": "d1O7A171g0p3I1s3Z6S1z3x5R5",
+        "doc": "ledgersBalances",
+        "creationDate": 1711031361355,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [
+            {
+                "path": [
+                    "0"
+                ]
+            }
+        ],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 1,
+        "collection": "ledgersBalanceTracker",
+        "chunk": "chunk1"
+    }
+}

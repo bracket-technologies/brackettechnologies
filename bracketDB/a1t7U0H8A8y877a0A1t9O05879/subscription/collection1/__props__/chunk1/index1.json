@@ -1,0 +1,18 @@
+{
+    "subscription1": {
+        "expiryDate": 1721478146736,
+        "publicID": "381dz7Li2DK0y18Iw7di3SE3Vb4WO6654NM1ov8"
+    },
+    "subscription2": {
+        "expiryDate": 1721478251753,
+        "publicID": "991cD7p528b0wu8Go7H73364Lu5oP1qw4My8ZS9"
+    },
+    "subscription3": {
+        "expiryDate": 1721642041246,
+        "publicID": "991cD7p528b0wu8Go7H73364Lu5oP1qw4My8ZS9"
+    },
+    "subscription4": {
+        "expiryDate": 1721642405291,
+        "publicID": "8N15v7k02mY1jw0qG3sj7Dz69p05O5ID1B76bZ6"
+    }
+}

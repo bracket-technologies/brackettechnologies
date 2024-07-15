@@ -1,0 +1,216 @@
+{
+    "__props__": {
+        "id": "i1o7l1n6j5k3u1J8S1E049p1O4",
+        "doc": "signupForm",
+        "counter": 1,
+        "creationDate": 1716531810914,
+        "collection": "schema",
+        "chunk": "chunk1",
+        "actions": {
+            "getDataOnLoaded": {
+                "_": "loader.show;[getCountriesAndCities();getPlugin()]()::[loader.hide]",
+                "getCountriesAndCities": "[getTAPpageData()::[countries:()=_.countries;currencies:()=_.currencies]]():[collection=TAP;doc=actions]",
+                "getPlugin": "[getPlugin():[pluginID=[_.pluginID||'r1c7d176U1B9m6C7i9F8T973T2'];packageID=[_.packageID||'819781E687S3U5e2L9w6v3u9H8']]:[plugin:()=_.plugin;package:()=_.package]]():[collection=actions;doc=main]"
+            }
+        },
+        "comments": [
+            {
+                "note": "checkbox",
+                "path": [
+                    "sections",
+                    3
+                ]
+            },
+            {
+                "note": "subscribe to plugin",
+                "path": [
+                    "sections",
+                    2
+                ]
+            },
+            {
+                "note": "divider",
+                "path": [
+                    "sections",
+                    1
+                ]
+            },
+            {
+                "note": "organization inputs",
+                "path": [
+                    "sections",
+                    0
+                ]
+            },
+            {
+                "note": "conditions",
+                "path": [
+                    "requiredData"
+                ]
+            }
+        ],
+        "collapsed": [
+            {
+                "path": [
+                    "requiredData"
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    2
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 3349
+    },
+    "confirmBtn": {
+        "text": "Get Started!",
+        "action": "[signup():[doc()]:[user:()=_.user;root():projects;end():[_]?_.success?note():[text=_.message;type=danger]]]():[collection=actions;doc=main]",
+        "msg": "We are building your project. Please wait until we finish!"
+    },
+    "title": "Set Up Your Travel Agency Profile!",
+    "requiredData": [
+        "currency",
+        "country",
+        "city",
+        "address",
+        "language",
+        "firstName",
+        "lastName",
+        "organization",
+        "phoneNumber",
+        "email",
+        "password",
+        "agreeToTermsAndConditions"
+    ],
+    "sections": [
+        {
+            "styles": "display=grid;gridTemplateColumns=1fr 1fr;gapX=1rem;gapY=3rem;padding=1rem",
+            "inputs": [
+                {
+                    "label": "First Name",
+                    "path": "firstName",
+                    "required": true
+                },
+                {
+                    "label": "Last Name",
+                    "path": "lastName",
+                    "required": true
+                },
+                {
+                    "label": "Organization Name",
+                    "path": "organization",
+                    "required": true
+                },
+                {
+                    "label": "Phone Number",
+                    "path": "phoneNumber",
+                    "required": true
+                },
+                {
+                    "label": "Email Address",
+                    "path": "email",
+                    "required": true
+                },
+                {
+                    "label": "Password",
+                    "path": "password",
+                    "required": true
+                },
+                {
+                    "label": "Currency",
+                    "path": "currency",
+                    "items": "currencies:()",
+                    "inputType": "stdItems",
+                    "required": true
+                },
+                {
+                    "label": "Language",
+                    "path": "language",
+                    "items": [
+                        "English",
+                        "Arabic"
+                    ],
+                    "inputType": "stdItems",
+                    "required": true
+                },
+                {
+                    "label": "Country",
+                    "path": "country",
+                    "items": "countries:()",
+                    "inputType": "stdItems",
+                    "required": true
+                },
+                {
+                    "label": "City",
+                    "path": "city",
+                    "required": true
+                },
+                {
+                    "label": "Street/Building/Floor",
+                    "path": "address",
+                    "required": true
+                }
+            ],
+            "gridInputs": true
+        },
+        {
+            "divider": true
+        },
+        {
+            "inputs": [
+                {
+                    "label": "Subscribe to TAP",
+                    "path": "subscribeToPlugin",
+                    "defaultValue": true,
+                    "items": [
+                        "Yes",
+                        "No"
+                    ],
+                    "action": "doc().pluginID.del();doc().packageID.del()?!data()?doc().pluginID=plugin:().id();doc().packageID=package:().id()?data()",
+                    "inputType": "yesNo",
+                    "required": true
+                }
+            ],
+            "styles": "display=grid;gridTemplateColumns=1fr 1fr;gapX=1rem;gapY=3rem;padding=1rem",
+            "gridInputs": true
+        },
+        {
+            "styles": "width=100%",
+            "inputs": [
+                {
+                    "label": "I agree to the +tag():[text=Terms of Service;class=pointer;style:[textDecoration=underline]]+ and +tag():[text=Privacy Policy;class=pointer;style:[textDecoration=underline]]+'.'",
+                    "path": "agreeToTermsAndConditions",
+                    "inputType": "checkbox"
+                }
+            ],
+            "gridInputs": true
+        }
+    ],
+    "styles": "width=100rem",
+    "doc": "signupForm",
+    "beforeLoadingActions": "[getDataOnLoaded()]():[doc=signupForm;collection=formSchema]",
+    "reset": true,
+    "data": "[language=English;currency=USD;country=Lebanon;subscribeToPlugin=true;pluginID=plugin:().id();packageID=package:().id()]"
+}

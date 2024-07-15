@@ -1,0 +1,67 @@
+{
+    "view": "View?id=codeDroplist;class=column;style:[width=100%];().droplistCounter=0;dropListNumber:()=0;selectedIndex:()=0",
+    "__props__": {
+        "id": "s1a7X196S8R8q923X2V4F3a4z4",
+        "doc": "codeDroplist",
+        "counter": 9,
+        "creationDate": 1716889324344,
+        "active": true,
+        "actions": {
+            "hoverStyle": "mouseenter:[parent().children().():[style().backgroundColor=white];selectedIndex:()=().counter;style():[backgroundColor=#f4f4f4]];mouseleave:[style():[backgroundColor=white]]",
+            "saveSelected": {
+                "_": "saveSelectedItem():[[__.inputData].flat();codeInput=():[__.identifier].1stChild().1stChild().id;valueInput=():[__.identifier].2ndChild().1stChild().id;selectedItem=__.items.[().counter]]",
+                "#saveSelectedItem": {
+                    "_": "():[_.codeInput].2ndParent().selectedItem=_.selectedItem;if():[_.fillCodeName]:[saveCorrespondingCodeData()]:[saveIfNextInputValid()];if():[_.showBalance]:[showBalance()];if():[_.changeAction]:[[[_.changeAction]()]():[view=():[_.codeInput]]]",
+                    "saveCorrespondingCodeData": "():[_.codeInput].data().[_.inputPath]=_.selectedItem.dataCode;():[_.codeInput].txt()=_.selectedItem.inputCode;():[_.valueInput].txt()=_.selectedItem.name",
+                    "saveIfNextInputValid": "if():[():[_.valueInput].txt()!='']:[():[_.codeInput].data().[_.inputPath]=_.selectedItem.dataCode+[_.separator]+():[_.valueInput].txt()];():[_.codeInput].txt()=_.selectedItem.inputCode",
+                    "showBalance": "getAccountBalance():[identifier=():[___.identifier].parent().next().id;ledger=():[_.codeInput].data().[_.inputPath];currency=():[_.codeInput].doc().currency;exchangeRate=():[_.codeInput].doc().exchangeRates]"
+                },
+                "saveSelectedItem": "():[_.codeInput].2ndParent().selectedItem=_.selectedItem;[saveCodeInData();fillInputCodeInInput();checkToCloseDroplist();if():[_.changeAction]:[[_.changeAction]()]]():[view=():[_.codeInput];path=:codeInputEventsHandler]"
+            }
+        },
+        "comments": [],
+        "collapsed": [
+            {
+                "path": [
+                    "saveSelected",
+                    "#saveSelectedItem"
+                ]
+            }
+        ],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "view"
+    },
+    "children": [
+        {
+            "view": "[View]:[data=range():[if():[_.items.len()<30]:[[_.items.len()]-1]:[30]]]?().counter=parent().droplistCounter;parent().droplistCounter+=1;class=flex;style:[width=100%;height=2.8rem;gap=.3rem;padding=0 .5rem;borderRadius=.4rem;cursor=pointer];tooltip:[text=__.items.[().counter].name];hoverStyle();click:[saveSelected()]",
+            "children": [
+                {
+                    "view": "View?class=flex;style:[width=3.5rem]",
+                    "children": [
+                        {
+                            "view": "Text?class=flex;text=__.items.[dropListNumber:()].code;readonly;style:[fontSize=1.3rem;fontWeight=700;width=100%;justifyContent=end;alignItems=center]"
+                        }
+                    ]
+                },
+                {
+                    "view": "View?class=flex;style:[alignItems=center]",
+                    "children": [
+                        {
+                            "view": "Text?class=flex;text='-';readonly;style:[fontSize=1.3rem;fontWeight=700;alignItems=center]"
+                        }
+                    ]
+                },
+                {
+                    "view": "View?class=flex;style:[alignItems=center;width=calc(100% - 4.5rem);overflow=hidden]",
+                    "children": [
+                        {
+                            "view": "Text?class=flex;text=__.items.[dropListNumber:()].name;readonly;style:[fontSize=1.3rem;fontWeight=700;textOverflow=ellipsis;display=inline-block;overflow=hidden;white-space=nowrap];dropListNumber:()+=1"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

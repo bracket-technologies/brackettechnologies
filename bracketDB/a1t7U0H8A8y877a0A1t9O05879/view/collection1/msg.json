@@ -1,0 +1,33 @@
+{
+    "view": "View?id=msg;class=flexbox;style:[display=none;position=absolute;top=0;left=0;right=0;bottom=0;backgroundColor=#000000cc;zIndex=2]",
+    "__props__": {
+        "id": "b1i7i1j4B3U2N8V5f9l1R0d461",
+        "doc": "msg",
+        "counter": 24,
+        "creationDate": 1714328591041,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "view",
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "comments": [],
+        "collapsed": []
+    },
+    "children": [
+        {
+            "view": "View?class=flex column;style:[padding=3rem;borderRadius=.5rem;backgroundColor=#fff;gap=.5rem]",
+            "children": [
+                {
+                    "view": "Text?text=_.msg;style:[fontSize=1.75rem]"
+                },
+                {
+                    "view": "Text?text=[_.2ndMsg||'It will take only few seconds...'];style:[fontSize=1.75rem]"
+                },
+                {
+                    "view": "View?id=myloader;style:[height=6rem]"
+                }
+            ]
+        }
+    ]
+}

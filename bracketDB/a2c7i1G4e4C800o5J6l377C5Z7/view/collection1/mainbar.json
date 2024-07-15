@@ -1,0 +1,187 @@
+{
+    "view": "View?id=mainbar;class=flex column;style=[background=white;width=100%;padding=0 2rem]",
+    "__props__": {
+        "id": "Z1E7Q1G5o1M7b0e6g8S8o6r5Z8",
+        "doc": "mainbar",
+        "counter": 20,
+        "creationDate": 1715170688658,
+        "active": true,
+        "actions": {
+            "disoff": "hide()",
+            "kidsColl": ":[Label=Ages 0-3;contains=age03]",
+            "ageCat1": ":[test]",
+            "ageCat2": ":[test]",
+            "disNew": "display()",
+            "listOfItems": ":[ID=menColl]:[ID=womenColl]:[ID=kidsColl]",
+            "menTEST2": ":[text=Category1;img='https://i.pinimg.com/474x/e0/94/5f/e0945f2199a1d5b000d6a9c370246b3d.jpg';]:[text=Category2;img='https://m.media-amazon.com/images/I/21nmjj9fhHL._AC_SY580_.jpg']:[text=Category 3;img='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBdJCuZfL3cy--65NcM_-1PHrhxPPGuH67toWf0XWEgQ&s']",
+            "action": "records=menTEST2();():secondpart.update()",
+            "listTest": ":[Label=Test1;ID=1]:[Label=Test2;ID=2]:[Label=Test3;ID=3]",
+            "hideMegaMenu": "timer():[():megaMenu.style():[opacity=0;pointerEvents=none]?!():megaMenu.1stChild().children().find():[mouseentered];!():navbarscroll.children().find():[mouseentered]]:500",
+            "accessList": {},
+            "act1": "#():accessList.nthChild():2.style():[background=gray]",
+            "listOfCategoryIndex": ":[in",
+            "showMegaMenu": "doc().category=_.clone();[getCategoriesByHeadCategory():[doc().category]]():[doc=megaMenu]:[():megaMenu.update()::[():megaMenu.():[position():[placement=bottom;distance=1;preventDefault;bottom=0;left=0;right=0];style():[opacity=1;pointerEvents=auto];():accessList.nthChild():[mainCategoryBar:().headCategories.findIndex():[id=__.id]+1].style():[background=#eee]]]]?mouseentry;"
+        },
+        "comments": [
+            {
+                "note": "Icon?name=Shopping_Cart;google.symbol;style=[color=gray;fontSize=2.4rem;cursor=pointer]",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    2,
+                    "children",
+                    1,
+                    "children"
+                ]
+            },
+            {
+                "note": "mainNav: search input, hot buttons",
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "categorybar",
+                "path": [
+                    "children",
+                    1
+                ]
+            }
+        ],
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    2,
+                    "children",
+                    5
+                ]
+            },
+            {
+                "path": []
+            },
+            {
+                "path": [
+                    "act1"
+                ]
+            }
+        ],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "view",
+        "createdByUserID": null
+    },
+    "children": [
+        {
+            "view": "View?id=topnav;class=flex;style=[display=grid;gridTemplateColumns=1fr 4fr 1fr]",
+            "children": [
+                {
+                    "view": "Image?src='https://logos-world.net/wp-content/uploads/2023/02/Shein-Logo.png';style=[width=15rem;height=8rem]"
+                },
+                {
+                    "view": "View?class=flexbox;style=[width=100%]",
+                    "children": [
+                        {
+                            "view": "View?id=searchbar;class=flex;style=[border-style=solid;border-width=1px;width=50rem;height=3.8rem]",
+                            "children": [
+                                {
+                                    "view": "Input?style=[width=100%;height=100%;display=flex]"
+                                },
+                                {
+                                    "view": "Icon?name=search;google.symbol;style=[right=0;background=black;color=white;display=flex;width=8%;transition=0.5s];hover.style=[background=gray]"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "view": "View?id=iconsection;class=flexbox;",
+                    "children": [
+                        {
+                            "view": "Icon?name=person;google.symbol;style=[color=gray;fontSize=2.5rem;padding-left=1rem;cursor=pointer]"
+                        },
+                        {
+                            "view": "View?id=cartdrop;class=flexbox column;",
+                            "children": [
+                                {
+                                    "view": "View?id=cartsection;class=flex align-center;style=[padding-left=1rem];[mouseenter?[2ndChild().color()=black]];[mouseleave?[2ndChild().color()=gray]]",
+                                    "children": [
+                                        {
+                                            "view": "Icon?name=Shopping_Cart;google.symbol;style=[color=gray;fontSize=2.4rem;cursor=pointer];[mouseenter?[():dropdowncontent.display()]];[mouseleave?[():dropdowncontent.hide()]]"
+                                        },
+                                        {
+                                            "view": "Text?id=test1;text=0;style=[color=gray;fontSize=1.5rem]"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "View?id=dropdowncontainer;class=flexbox style=[overflow=hidden;]",
+                                    "children": [
+                                        {
+                                            "view": "View?id=dropdowncontent;style=[display=none;position=absolute;backgroundColor=#fff;zIndex=1;margin-top=15rem;;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);]",
+                                            "children": [
+                                                {
+                                                    "view": "View?id=box;class=flexbox column;style=[width=30rem;height=15rem;color=#fff;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);]",
+                                                    "children": [
+                                                        {
+                                                            "view": "Text?text=Cart Is Empty;style=[color=gray;fontSize=2rem]"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "view": "View?id=favoritesection;class=flex align-center;style=[padding-left=1rem;cursor=pointer];[mouseenter?[2ndChild().color()=black]];[mouseleave?[2ndChild().color()=gray]]",
+                            "children": [
+                                {
+                                    "view": "Icon?name=Favorite;google.symbol;style=[color=gray;fontSize=2.4rem]"
+                                },
+                                {
+                                    "view": "Text?id=test2;text=0;style=[color=gray;fontSize=1.5rem]"
+                                }
+                            ]
+                        },
+                        {
+                            "view": "Icon?name=Headset_Mic;google.symbol;style=[color=gray;fontSize=2.4rem;padding-left=1rem;cursor=pointer]"
+                        },
+                        {
+                            "view": "Icon?name=Language;google.symbol;style=[color=gray;fontSize=2.4rem;padding-left=1rem;cursor=pointer]"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "view": "View?id=navbarscroll;class=flexbox align-center",
+            "children": [
+                {
+                    "view": "View?class=flexbox;style=[cursor=pointer;minWidth=fit-content;height=3rem;padding=0 1rem;gap=0rem;transition=.2s];hover.style=[background=#eee];[mouseenter?2ndChild().rotate()=180];[mouseleave?2ndChild().rotate()=0];[hover?[timer():showMegaMenu():500];mouseentry=true?mouseentered?mouseentry=false;hideMegaMenu()]",
+                    "children": [
+                        {
+                            "view": "Text?text=mainCategoryBar:().title;style=[fontSize=1.2rem]"
+                        },
+                        {
+                            "view": "Icon?name=expand_more;google.symbol;style:[fontSize=1.8rem;width=1.8rem;transition=.2s]"
+                        }
+                    ]
+                },
+                {
+                    "view": "[View]:[data=mainCategoryBar:().headCategories]?class=flexbox;style=[cursor=pointer;minWidth=fit-content;height=3rem;padding=0 1rem;transition=.2s];hover.style=[background=#eee];[hover?mouseentry=true;[timer():showMegaMenu():200]?mouseentered?mouseentry=false;hideMegaMenu()]",
+                    "children": [
+                        {
+                            "view": "Text?text=_.name;style=[fontSize=1.2rem]"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

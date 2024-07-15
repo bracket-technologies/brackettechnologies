@@ -1,0 +1,58 @@
+{
+    "permission": {
+        "notification": [
+            "Read",
+            "Receive"
+        ],
+        "service": [
+            "Read"
+        ],
+        "voucher": [
+            "Read",
+            "Print",
+            "Create"
+        ],
+        "sheet": [
+            "Read",
+            "Create",
+            "Import",
+            "Export"
+        ],
+        "invoice": [
+            "Read",
+            "Print",
+            "Create"
+        ],
+        "account": [
+            "Edit",
+            "Read",
+            "History",
+            "Create"
+        ],
+        "dashboard": [
+            "Read"
+        ],
+        "gallery": [
+            "Read",
+            "Edit"
+        ]
+    },
+    "id": "nKADUOU34je32OUK0upj0gQoGz5Ac9jkvZWlvClK9R7O9JrBoTkz3pVQNxkn1704994863659",
+    "creationDay": 1704931200000,
+    "creationDate": 1704994863667,
+    "user": "0Hkx3htm35Uhk104PRwr6JugYqXSIrTcyd1s9Z7lX7Y3sYaBsBQ9n2iJyjr31704994862566",
+    "__props__": {
+        "id": "b1a7L1Z1x0l3G143q6d0x7m7S3",
+        "doc": "nKADUOU34je32OUK0upj0gQoGz5Ac9jkvZWlvClK9R7O9JrBoTkz3pVQNxkn1704994863659",
+        "creationDate": 1711031360773,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 14,
+        "collection": "permission",
+        "chunk": "chunk1"
+    }
+}

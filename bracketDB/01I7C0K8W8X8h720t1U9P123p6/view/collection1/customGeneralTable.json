@@ -1,0 +1,695 @@
+{
+    "view": "View:customGeneralTable?class=flex;style:[width=100%;cursor=default;height=100%];if():[_.noCheckbox]:[removeCheckBoxes()]",
+    "children": [
+        {
+            "view": "View?class=flex column;style:[width=100%;height=100%;().[[_.tableHeaderAndBody.style].flat()?_.tableHeaderAndBody.style]]",
+            "children": [
+                {
+                    "view": "View?data=_.tableHeaderAndBody.header;class=flex;style:[display=grid;height=4.5rem;gridTemplateColumns='2rem '+setTableDataPath():[items=_.items;tableHeaderAndBody=__.tableHeaderAndBody].():fraction.join():' ';width=100%;alignItems=center;if():[_.style]:[[_.style].flat()]]",
+                    "children": [
+                        {
+                            "view": "View?class=flexbox?!_.noCounter",
+                            "children": [
+                                {
+                                    "view": "Text?text='#';style:[fontSize=1.3rem]"
+                                }
+                            ]
+                        },
+                        {
+                            "view": "[View]:[data=setTableDataPath():[items=_.items;tableHeaderAndBody=__.tableHeaderAndBody]]?class=flex;style:[height=100%;alignItems=center;overflow=hidden;padding=.4rem;backgroundColor=white;().[[_.cellStyle].flat()?_.cellStyle]]",
+                            "children": [
+                                {
+                                    "view": "View?class=flex;allSelected=false;style:[align-content=center;flex-wrap=wrap];click:[selectAllResult()]?_.checkbox",
+                                    "children": [
+                                        {
+                                            "view": "customCheckbox?height=2rem;width=2rem;iconSize=3rem"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "View?class=flex;style:[gap=.5rem;overflow=hidden]",
+                                    "children": [
+                                        {
+                                            "view": "Text?text=_.header;style:[color=#555;fontSize=1.3rem;textOverflow=ellipsis;overflow=hidden;whiteSpace=nowrap;[[_.textStyle].flat()?_.textStyle]]"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "view": "View?data=_.tableHeaderAndBody.body;class=flex column;style:[overflowY=auto;height=if():[__.tableHeaderAndBody.footer]:[auto]:[calc(100% - 4.5rem)];[[_.containerStyle].flat()?_.containerStyle]];hideScrollBar;scroll:[getDataOnScroll()]",
+                    "children": [
+                        {
+                            "view": "View?class=flex column",
+                            "children": [
+                                {
+                                    "view": "[View]:[if():[__.tablePath]:[data().[__.tablePath]=__.tablePathData;path=__.tablePath]:[data=[__.itemsList]()]]?;class=flex column;style:[width=100%];click:[log():[_]];displayAndHideHotBtns()",
+                                    "children": [
+                                        {
+                                            "view": "View?class=flex;style:[backgroundColor=if():[parent().i%2=0]:[#f3f3f3]:[white];minHeight=4.5rem;width=100%;height=100%;display=grid;gridTemplateColumns='2rem '+setTableDataPath():[items=__.items;tableHeaderAndBody=___.tableHeaderAndBody].():fraction.join():' ';alignItems=center;().[[__.rowStyle].flat()?__.rowStyle]]",
+                                            "children": [
+                                                {
+                                                    "view": "View?class=flexbox;style:[height=100%]?!__.noCounter",
+                                                    "children": [
+                                                        {
+                                                            "view": "Text?text=3rdParent().i+1;style:[fontSize=1.3rem;color=#535353]"
+                                                        }
+                                                    ]
+                                                },
+                                                {
+                                                    "view": "[View]:[data=setTableDataPath():[items=__.items;tableHeaderAndBody=___.tableHeaderAndBody]]?class=flex;style:[overflow=hidden;padding=.4rem;height=100%;cursor=pointer;width=100%;alignItems=center;if():[_.cellStyle]:[[_.cellStyle].flat()]]",
+                                                    "children": [
+                                                        {
+                                                            "view": "View?click:[checkIfMaxSelected()];selected=false;loaded:[checkIfAlreadySelected()]?_.checkbox",
+                                                            "children": [
+                                                                {
+                                                                    "view": "customCheckbox?height=2rem;width=2rem;iconSize=3rem"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "view": "Text?textHandler();styleCell();#if():[_.path=ref]:[click:[[openFormRead()]():[path=hotButtonsClickHandler]]];tooltipCell()?_.path||_.value||_.formatCell;!_.customInputInfo"
+                                                        },
+                                                        {
+                                                            "view": "View?class=flex;style:[width=100%]?_.customInputInfo",
+                                                            "children": [
+                                                                {
+                                                                    "view": "customInput?;[_.customInputInfo].flat()"
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "view": "View?class=flexbox;style:[width=100%;justifyContent=end;gap=2rem;transition=.2s;opacity=0]?_.read||_.edit||_.delete||_.remove||_.customIcon",
+                                                            "children": [
+                                                                {
+                                                                    "view": "Icon?name=close;google.symbol;style:[fontSize=2rem;cursor=pointer];click:[removeItemFromTableAndDoc()]?_.remove;#userData:().permission.[currentOpenManager:().managerName].inc():Remove"
+                                                                },
+                                                                {
+                                                                    "view": "[View]:[data=_.customIcon]?class=flex;().display=true;if():[_.condition]:[().display=customCondition():[data=___;condition=_.condition]]:[().display=true];style:[height=2.25rem;width=2.25rem];click:[[_.action]()]?__.customIcon;!_.hide",
+                                                                    "children": [
+                                                                        {
+                                                                            "view": "Icon?name=_.icon;google.symbol;tooltip:[text=_.tooltip];style:[fontSize=2.2rem;cursor=pointer]?_.icon;parent().display"
+                                                                        },
+                                                                        {
+                                                                            "view": "Image?src=_.imageUrl;tooltip:[text=_.tooltip];style:[height=2.25rem;width=2.25rem]?_.imageUrl;parent().display"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "view": "[View]:[data=_.customImages]?style:[height=100%;width=100%]?__.customImages||false",
+                                                                    "children": [
+                                                                        {
+                                                                            "view": "Image?src='https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/lWkr0s4n3hnxjysQQ8l2?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=FS9Hm17Ii4EzE5T%2FyG4jxtmIzx6xEc5a5TasItHDv2o0C6o0S69NukvudFLJL%2BOj5GWa9SyxGBUA858tSQgG9PnupoUSzy4kTWHfK6RIVoUsZZBUfKU4vUap6Cl0RcJxAncxNTZNNSDL%2BP%2BASl%2FoJlLpYyoISp8NBCnpaq06map5KSeoaNzijL8DXdj4tQmgoCNO9wPfHBL88V%2FrJLzw0zEnXWcg2bFwSMsMhlJtoK9kX6Xbn2RltkD05tXVrqlvG2JgJwpWM9fuiUsGWfH2z0kNUOG17%2BtsaP1FEb3AhO44t%2FByQ4uh2mz13dpKb%2BRKBBoh5Wn3lYyh9II%2BMXL0fQ%3D%3D';tooltip:[text=_.tooltip];style:[height=2rem;width=2rem]"
+                                                                        }
+                                                                    ]
+                                                                },
+                                                                {
+                                                                    "view": "View?class=flex;style:[height=2.25rem;width=2.25rem];hotButtonsList();hotButtonsClickHandler()",
+                                                                    "children": [
+                                                                        {
+                                                                            "view": "Image?src='https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/ILBFnaqvbsjv9AgmO2J4?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=h8BNgMj72GuebLu2d5K7XWW38ykjI2iGdGBNsGEo3wvinMAb%2BM5sBzEqbIPKnCRt%2FVVestwtzHpqZnZVO%2BhnOtjOEE50uks0cta67XLAyaBnL5kvUnnt2H0NfXj24yAvKQG9XHp1LRFfpY1paD0Hn356gFQeDwW99e1VINtzA40phtpFk%2F8RsxLRVHpz5mNeFWLvBFTRNnTesGOioQSJHafw8rLhY8cpy8bH7%2FF66fJT3lE90n23aFLuqKPpg1zVOHK956XBZ23tnYy6FsE16pQxLDQ%2FimN6B9nWX36Rer75Q83s6V4xlXucxawtrHHB%2B98HRk9ordnm0c1k6kl3mw%3D%3D';tooltip:[text=Setting];style:[height=2.25rem;width=2.25rem]"
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "view": "View?id=tableFooter;data=_.tableHeaderAndBody.footer;class=flex column;style:[[[_.style].flat()?_.style]]?_.tableHeaderAndBody.footer",
+                    "children": [
+                        {
+                            "view": "View?class=flex  column;style:[height=fit-content]",
+                            "children": [
+                                {
+                                    "view": "[View]:[data=[__.footerList]()]?class=flex column;style:[position=relative;width=100%]",
+                                    "children": [
+                                        {
+                                            "view": "View?class=flex;style:[display=grid;gridTemplateColumns=setTableDataPath():[items=__.items;tableHeaderAndBody=___.tableHeaderAndBody].():fraction.join():' ';[[_.rowStyle].flat()?_.rowStyle]]",
+                                            "children": [
+                                                {
+                                                    "view": "[View]:[data=setTableDataPath():[items=__.items;tableHeaderAndBody=___.tableHeaderAndBody]]?class=flex;style:[backgroundColor=white;height=100%;cursor=pointer;width=100%;alignItems=center;padding=.4rem;if():[_.cellStyle]:[[_.cellStyle].flat()]]",
+                                                    "children": [
+                                                        {
+                                                            "view": "Text?textHandler();styleCell();tooltipCell()?_.path;!_.customInputInfo"
+                                                        },
+                                                        {
+                                                            "view": "View?class=flex;style:[width=100%]?_.customInputInfo",
+                                                            "children": [
+                                                                {
+                                                                    "view": "customInput?[_.customInputInfo].flat()"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "Y1F781N5g1j5m4O8p5m0u1k4O3",
+        "doc": "customGeneralTable",
+        "counter": 6,
+        "creationDate": 1715154850143,
+        "active": true,
+        "actions": {
+            "markNotificationsAsRead": {
+                "updateSession": "getSessionAndMarkNotificationAsRead():[session=getCookie():session;notification=___.id]:[if():[_.success]:[dueNotifications:().pullItem():[____.id];1stChild().read=true;1stChild().color=#00a4e5;():notificationIcon.update();]:[note():[text='something went wrong!';wornig]]]",
+                "_": "if():[!1stChild().read]:[updateSession()]"
+            },
+            "openBalanceSheet": {
+                "setPopup": "allSelected:().push():[ref=__.ref;id=__.id;generalLedger=__.generalLedger];generalPopup:()=[title='Balance Sheet';popupName=statementOfAccount;statementInfo=[account=_]];openPopup()",
+                "openPopup": "timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1];]:10",
+                "_": "loader.show;setPopup()"
+            },
+            "openDepreciationForm": {
+                "setPopup": "allSelected:().push():[ref=__.ref;id=__.id;generalLedger=__.generalLedger];generalPopup:()=[title='Depreciation Form';popupName=customForm;inputInfo=currentOpenManager:().depreciationFormInputs;docName=currentOpenManager:().depreciationInfo.docName;docValues=[currency=__.currency.clone();currentRate=__.currentValue.clone()]];openPopup()",
+                "openPopup": "timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1];]:10",
+                "_": "loader.show;setPopup()"
+            },
+            "hotButtonsList": {
+                "removeIcon": "if():[userData:().permission.[currentOpenManager:().managerName].inc():'Remove'||true]:[icon=[name=Delete;google.symbol;style:[fontSize=2.3rem;width=3.5rem;height=3.5rem;display=flex]];tooltip.text='remove']",
+                "readIcon": "if():[_.read;userData:().permission.[currentOpenManager:().managerName].inc():'Read'||true]:[icon=[name=Visibility;google.symbol;style:[fontSize=2.3rem;width=3.5rem;height=3.5rem;display=flex]];tooltip.text='read']",
+                "handleDroplistItems": ":[readIcon()]:[editIcon()]:[historyIcon()]:[removeIcon()]",
+                "editIcon": "if():[_.edit;userData:().permission.[currentOpenManager:().managerName].inc():'Edit'||true]:[icon=[name=Edit;google.symbol;style:[fontSize=2.3rem;width=3.5rem;height=3.5rem;display=flex]];tooltip.text='edit']",
+                "historyIcon": "if():[userData:().permission.[currentOpenManager:().managerName].inc():'History'||true]:[icon=[name=history;google.symbol;style:[fontSize=2.3rem;width=3.5rem;height=3.5rem;display=flex]];tooltip.text='history']",
+                "_": "droplist:[preventDefault;items=handleDroplistItems();style:[width=4rem];item.style:[padding=0;justifyContent=center];placement=left;align=center]"
+            },
+            "refundVoucher": {
+                "changeToRefunded": "search():[collection=voucher;doc=____.id]:[if():[_.data]:[_.data.status='Canceled';_.data.refunded=true;saveData()]:[loader.hide;note():[text='Something went wrong!';danger]]]",
+                "openPaymentForm": "[mhmd:()=start();openCreateForm():[title='Payment Voucher Form';inputInfo=[collection=voucher;subInput=sharedManagersInfo:().voucherSharedInfo.createFormInputs.subInput];createable=true;read=true;docName=refundVoucherInfo;docValues=[transactions=___.transactions;type='Payment Voucher']]]()::[if():[_.success]:[loader.show;changeToRefunded()]:[loader.hide;note():[text='Something went wrong!';danger]]]",
+                "saveData": "save():[collection=voucher;data=_.data]:[______.status='Canceled';nthParent():3.update()::[loader.hide;note():[text='Voucher refunded successfully!']]]",
+                "openReceiptForm": "openCreateForm():[title='Receipt Voucher Form';inputInfo=[collection=voucher;subInput=sharedManagersInfo:().voucherSharedInfo.createFormInputs.subInput];createable=true;read=true;docName=refundVoucherInfo;docValues=[transactions=___.transactions;type='Receipt Voucher']]",
+                "_": "if():[___.type='Receipt Voucher']:[loader.show;openPaymentForm()]:[loader.show;openReceiptForm()]"
+            },
+            "cancelVoucher": {
+                "saveData": "save():[collection=voucher;data=_.data]:[if():[_.data]:[successHandler()]:[failedHandler()]]",
+                "openConfirmWindow": "[mhmd:()=start();confirmWindow:()=[title='Confirm!';text='Are you sure you want to cancel this voucher?'];():confirmWindow.update()::[():confirmWindow.style():[visibility=visible;opacity=1]]]()::[if():[_.confirm]:[loader.show;if():[____.status='Pending']:[getVoucher()]:[cancelConfirmedVoucher()]]]",
+                "cancelConfirmedVoucher": "saveThroughSchema():[session=getCookie():session;data=____;collection=cancelConfirmedVoucher]:[if():[_.success]:[getVoucher():[id=_____.id]]:[failedHandler()]]",
+                "failedHandler": "loader.hide;note():[text='Something went wrong!';danger]",
+                "getVoucher": "search():[collection=voucher;doc=_.id||____.id]:[if():[_.data]:[_.data.status='Canceled';saveData()]:[failedHandler()]]",
+                "successHandler": "if():[().status='Pending']:[______.status='Canceled']:[________.status='Canceled'];nthParent():3.update()::[loader.hide;note():[text='Status updated successfully!']]",
+                "_": "().status=___.status;openConfirmWindow()"
+            },
+            "hotButtonsClickHandler": {
+                "#openFormEdit": "loader.show;group=collectionsInfo:().find():[managers.():collection.inc():[[___.collection]()]];manager=[().group.groupName]:().[().group.managers.find():[collection=[___.collection]()].manager];subGeneralPopup:()=[title=___.collection.capitalize()+' Form';popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName;docValues=__.clone();edit=true];timer():[():subGeneralPopup.update():[loader.hide];():subGeneralPopup.style():[visibility=visible;opacity=1]]:100",
+                "deleteItem": "confirmWindow:()=[title='Confirm!';text='Are you sure you want to delete this?';data=[id=__.id;collection=___.collection];action='deleteItemFromTable()'];():confirmWindow.update()::[():confirmWindow.style():[visibility=visible;opacity=1]]",
+                "#openFormReadOnly": "loader.show;group=collectionsInfo:().find():[managers.():collection.inc():[[___.collection]()]];manager=[().group.groupName]:().[().group.managers.find():[collection=[___.collection]()].manager];subGeneralPopup:()=[title=().manager.popupInfo.title.split():[' '].0.capitalize()+' Details';popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName;docValues=__.clone();read=true];():subGeneralPopup.update()::[loader.hide;():subGeneralPopup.style():[visibility=visible;opacity=1]]",
+                "openFormEdit": "openCreateForm():[manager=currentOpenManager:();docValues=__.clone();edit=true]",
+                "_": "[click:droplist?if():[clicked().txt()='Edit']:[openFormEdit()].elif():[clicked().txt()='Visibility']:[openFormRead()].elif():[clicked().txt()='history']:[#openHistoryForm()].elif():[clicked().txt()='Delete']:[deleteItem()]]",
+                "openFormRead": "openCreateForm():[manager=currentOpenManager:();docValues=__.clone();read=true]"
+            },
+            "selectAllResult": {
+                "selectAllResults": "2ndParent().next().1stChild().children().():[if():[!1stChild().2ndChild().1stChild().selected]:[1stChild().2ndChild().1stChild().click()]];1stChild().1stChild().1stChild().style().opacity=1;allSelected=true",
+                "unselectAllResults": "2ndParent().next().1stChild().children().():[if():[1stChild().2ndChild().1stChild().selected]:[1stChild().2ndChild().1stChild().click()]];1stChild().1stChild().1stChild().style().opacity=0;allSelected=false",
+                "_": "if():[!allSelected]:[selectAllResults()]:[unselectAllResults()]"
+            },
+            "openHistoryForm": {
+                "setPopup": "allSelected:().push():[ref=__.ref;id=__.id;generalLedger=__.generalLedger];#generalPopup:()=[title='History Form';popupName=statementOfAccount;statementInfo=[account=_]];#openPopup();getHistoryData()",
+                "getHistoryData": "search():[collection=history;doc=__.id]:[if():[_.data]:[]:[note():[text='No history found!';warning]]]",
+                "openPopup": "timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1];]:10",
+                "_": ";#loader.show;setPopup()"
+            },
+            "styleCell": "style:[if():[!style().color]:[color=if():[_.path=ref]:[#0035ff]:[#535353]];fontSize=1.3rem;if():[!_.preventDefault]:[whiteSpace=nowrap]:[wordWrap=break-word];textOverflow=ellipsis;overflow=hidden;if():[_.clickAction]:[textDecoration=underline;cursor=pointer];if():[_.textStyle]:[[_.textStyle].flat()]];if():[_.clickAction]:[click():[[_.clickAction]()]]",
+            "openFilterDroplist": "droplistItems:()=[viewName=filterDroplist;identifier=parent().id];():customDroplist.style():[visibility=visible;opacity=1;transform=scale(1)];():customDroplist.update()::[():customDroplist.position():[positioner=parent().id;placement=bottom]]",
+            "getDataOnScroll": {
+                "getSearchResult": {
+                    "successSearch": "if():[___.searchBoxPage]:[searchBoxResults:().push():[_.data];():searchBoxTable.1stChild().1stChild().2ndChild().1stChild().update()]:[managersSearchResult:().[currentOpenManager:().managerName].push():[_.data];():customManagerTable.1stChild().1stChild().2ndChild().1stChild().update()]",
+                    "handleFailedResponse": "().noMoreData=true;",
+                    "_": "().counter=managersSearchResult:().[currentOpenManager:().managerName].len();loader.show;guideSearchResult():[data=customManagerSearchEngine:();receivedDataCounter=().counter]:[loader.hide;if():[_.success]:[successSearch()]:[handleFailedResponse()]]"
+                },
+                "_": "if():[el().scrollHeight-[el().clientHeight+el().scrollTop]<1]:[if():[!().noMoreData]:[getSearchResult()]]"
+            },
+            "checkIfMaxSelected": {
+                "checkTheLengthOfSelected": "if():[!selected:().[___.collection.toLowerCase()]||selected:().[___.collection.toLowerCase()].len()<[___.maxSelected]]:[selectSearchResult()]:[checkToUnselect()]",
+                "checkToUnselect": "if():[selected]:[selectSearchResult()]:[note():[text='You cant select more than '+[___.maxSelected];danger]]",
+                "_": "if():[___.maxSelected]:[checkTheLengthOfSelected()]:[selectSearchResult()]"
+            },
+            "checkIfAlreadySelected": {
+                "checkSelectedFromListInDoc": "if():[[2ndParent().___.docName]:().[2ndParent().___.listName].inc():[__.id]]:[click()]",
+                "checkSelectedFromSpecificValuesInPath": "[2ndParent().___.varName].keys()._():[if():[[2ndParent().___.docName]:().[2ndParent().___.path].[[2ndParent().___.index]].[_]=[___.id]]:[click()]]",
+                "checkSelectedFromVariabletInPath": "if():[[2ndParent().___.docName]:().[2ndParent().___.path].[[2ndParent().___.index]].[2ndParent().___.listName]=__.id]:[click()]",
+                "checkSelectedFromListInPath": "if():[[2ndParent().___.docName]:().[2ndParent().___.path].[[2ndParent().___.index]].[2ndParent().___.listName].inc():[__.id]]:[click()]",
+                "checkSelectedFromVariableInDoc": "if():[[2ndParent().___.docName]:().[2ndParent().___.varName]=__.id]:[click()]",
+                "[object Object]": "if():[2ndParent(]:[if():[2ndParent().___.listName]:[checkSelectedFromListInPath()].elif():[[2ndParent().___.varName].type()=map]:[checkSelectedFromSpecificValuesInPath()]:[checkSelectedFromVariabletInPath()]]:[if():[2ndParent().___.listName]:[checkSelectedFromListInDoc()]:[checkSelectedFromVariableInDoc()]]",
+                "_": "if():[2ndParent().___.path]:[if():[2ndParent().___.listName]:[checkSelectedFromListInPath()].elif():[[2ndParent().___.varName].type()=map]:[checkSelectedFromSpecificValuesInPath()]:[checkSelectedFromVariabletInPath()]]:[if():[2ndParent().___.listName]:[checkSelectedFromListInDoc()]:[checkSelectedFromVariableInDoc()]]"
+            },
+            "tooltipCell": "tooltip:[text=txt()]",
+            "getTableFr": "if():[_.service]:[dataPath:().find():[service=_.service].table.():fraction.join():' ']:[dataPath:().find():[collection=_.collection].table.():fraction.join():' ']",
+            "selectSearchResult": {
+                "checkToSelectAllCheckbox": "allCheckboxesSelected:()=true;3rdParent().parent().children().():[if():[1stChild().2ndChild().1stChild().selected=false]:[allCheckboxesSelected:()=false]];if():[allCheckboxesSelected:()]:[3rdParent().2ndParent().prev().2ndChild().1stChild().allSelected=true;3rdParent().2ndParent().prev().2ndChild().1stChild().1stChild().1stChild().1stChild().style().opacity=1]",
+                "selectData": "selected=true;if():[selected:().[___.collection.toLowerCase()]]:[;selected:().[___.collection.toLowerCase()].replaceItem():[__]]:[;selected:().[___.collection.toLowerCase()].push():[__]];1stChild().1stChild().1stChild().style().opacity=1;checkToSelectAllCheckbox()",
+                "unselectData": "selected:().[___.collection.toLowerCase()].pullItem():[__];1stChild().1stChild().1stChild().style().opacity=0;unselectSelectAllCheckbox()",
+                "unselectSelectAllCheckbox": "3rdParent().2ndParent().prev().2ndChild().1stChild().allSelected=false;3rdParent().2ndParent().prev().2ndChild().1stChild().1stChild().1stChild().1stChild().style().opacity=0",
+                "_": "if():[!selected]:[selectData()]:[unselectData();selected=false]"
+            },
+            "displayAndHideHotBtns": "if():[[setTableDataPath():[items=__.items;tableHeaderAndBody=___.tableHeaderAndBody].[-1]].read]:[mouseenter:[1stChild().lastChild().1stChild().style().opacity=1];mouseleave:[1stChild().lastChild().1stChild().style().opacity=0]]",
+            "setTableDataPath": "if():[_.items.type()=string]:[_.tableHeaderAndBody.[_.items]]:[_.items]",
+            "textHandler": {
+                "textHandler": {
+                    "_": "if():[_.value]:[text=[_.value]()].elif():[__.[_.path].type()=array]:[handleIfList()].elif():[__.[_.path]]:[text=if():[!_.innerPath]:[__.[_.path]+if():[_.leftUnit]:[' '+_.leftUnit]:[' ']]:[__.[_.path].[_.innerPath]]]:[text='-';style.justifyContent=center]",
+                    "handleIfList": "().i=0;__.[_.path]._():[().i+=1;if():[__.innerPath]:[().cellText+=_.[__.innerPath]]:[().cellText+=_];if():[___.[__.path].len()>().i]:[().cellText+=', ']];text=().cellText",
+                    "#handleIfListxx": "if():[__.[_.path].len()<2;false]:[if():[__.[_.path].0.type()=map]:[().cellText=__.[_.path].0.[_.innerPath]]:[().cellText=__.[_.path].0]]:[().i=0;__.[_.path]._():[().i+=1;().cellText+=_;if():[___.[__.path].len()>().i]:[().cellText+=', ']]];txt()=().cellText"
+                },
+                "toPrice": {
+                    "handleToPrice": "txt()=if():[__.[_.currency]]:[__.[_.currency]+' ']:[().currencySymbol+' ']+if():[__.[_.path]<0]:['('+[__.[_.path]*[-1]].price()+')']:[__.[_.path].price()]",
+                    "fillZero": "txt()=().currencySymbol+' 0'",
+                    "_": "setCurrencySymbol();if():[_.innerPath]:[if():[__.[_.path].type()=array]:[if():[__.[_.path].0.[_.innerPath]]:[handlePathValueIfList()]].elif():[__.[_.path].type()=map]:[handlePathValueIfMap()]:[fillZero()]]:[if():[__.[_.path]]:[handleToPrice()]:[fillZero()]]",
+                    "handlePathValueIfList": "txt()=if():[__.[_.currency]]:[__.[_.currency]+' ']:[().currencySymbol+' ']+if():[__.[_.path].0.[_.innerPath]<0]:['('+[__.[_.path].value().[_.innerPath]*[-1]].price()+')']:[__.[_.path].0.[_.innerPath].price()]",
+                    "handlePathValueIfMap": "txt()=if():[__.[_.path].[_.innerPath]]:[__.[_.path].[_.innerPath].price()+' '+if():[__.currency]:[getCurrencySymbole():[__.currency]:[().currencySymbol]]]:['0 '+().currencySymbol]",
+                    "getCurrencySymbole": "return():[userData:().currency.find():[code=_].symbole]",
+                    "setCurrencySymbol": "().currencySymbol=userData:().currency.find():[code=__.currency].symbole||userData:().currency.find():[counter=0].symbole||' '"
+                },
+                "toCellDate": "txt()=if():[_.path=reset]:[[__.[_.path]+timestamp()].toDateFormat()]:[__.[_.path].toDateFormat()];#toSimplifiedDateTime()",
+                "_": "if():[_.formatCell]:[[_.formatCell]()]:[if():[_.emptyCell]:[txt()='']:[textHandler()]]"
+            },
+            "confirmPendingInvoice": {
+                "saveData": "save():[collection=invoice;data=_.data.value()]:[nthParent():3._.status='Confirmed';nthParent():3.update()::[loader.hide;note():[text='Status updated successfully!']]]",
+                "openConfirmWindow": "[mhmd:()=start();confirmWindow:()=[title='Confirm!';text='Are you sure you want to confirm this Invoice?'];():confirmWindow.update()::[():confirmWindow.style():[visibility=visible;opacity=1]]]()::[if():[_.confirm]:[loader.show;saveUsingSchema()]]",
+                "_": "openConfirmWindow()",
+                "saveUsingSchema": "saveThroughSchema():[session=getCookie():session;data=__.itemData;collection=confirmInvoice]:[if():[_.success]:[updateInvoiceStatus()]:[loader.hide;note():[text='Something went wrong!';danger]]]",
+                "updateInvoiceStatus": "search():[collection=invoice;find=[id=___.itemData.id]]:[if():[_.data.value()]:[_.data.value().status='Confirmed';saveData()]]"
+            },
+            "confirmPendingVoucher": {
+                "updateVoucherStatus": "search():[collection=voucher;find=[id=___.itemData.id]]:[if():[_.data.value()]:[_.data.value().status='Confirmed';saveData()]]",
+                "saveData": "save():[collection=voucher;data=_.data.value()]:[nthParent():3._.status='Confirmed';nthParent():3.update()::[loader.hide;note():[text='Status updated successfully!']]]",
+                "openConfirmWindow": "[mhmd:()=start();confirmWindow:()=[title='Confirm!';text='Are you sure you want to confirm this voucher?'];():confirmWindow.update()::[():confirmWindow.style():[visibility=visible;opacity=1]]]()::[if():[_.confirm]:[loader.show;saveUsingSchema()]]",
+                "_": "openConfirmWindow()",
+                "saveUsingSchema": "saveThroughSchema():[session=getCookie():session;data=__.itemData;collection=confirmVoucher]:[if():[_.success]:[updateVoucherStatus()]:[loader.hide;note():[text='Something went wrong!';danger]]]"
+            },
+            "#openFormEdit": "loader.show;group=collectionsInfo:().find():[managers.():collection.inc():[[___.collection]()]];manager=[().group.groupName]:().[().group.managers.find():[collection=[___.collection]()].manager];subGeneralPopup:()=[title=___.collection.capitalize()+' Form';popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName;docValues=__.clone();edit=true];timer():[():subGeneralPopup.update():[loader.hide];():subGeneralPopup.style():[visibility=visible;opacity=1]]:100",
+            "#openFormReadOnly": "loader.show;grouviewView?class=flex;style:[height=2.25rem;width=2.25rem];hotButtonsList();hotButtonsClickHandler()childrenviewImage?src='https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/ILBFnaqvbsjv9AgmO2J4?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=h8BNgMj72GuebLu2d5K7XWW38ykjI2iGdGBNsGEo3wvinMAb%2BM5sBzEqbIPKnCRt%2FVVestwtzHpqZnZVO%2BhnOtjOEE50uks0cta67XLAyaBnL5kvUnnt2H0NfXj24yAvKQG9XHp1LRFfpY1paD0Hn356gFQeDwW99e1VINtzA40phtpFk%2F8RsxLRVHpz5mNeFWLvBFTRNnTesGOioQSJHafw8rLhY8cpy8bH7%2FF66fJT3lE90n23aFLuqKPpg1zVOHK956XBZ23tnYy6FsE16pQxLDQ%2FimN6B9nWX36Rer75Q83s6V4xlXucxawtrHHB%2B98HRk9ordnm0c1k6kl3mw%3D%3D';tooltip:[text=Setting];style:[height=2.25rem;width=2.25rem]...#footerexpand_morebottom_panel_closetop_panel_closeexpand_morep=collectionsInfo:().find():[managers.():collection.inc():[[___.collection]()]];manager=[().group.groupName]:().[().group.managers.find():[collection=[___.collection]()].manager];subGeneralPopup:()=[title=().manager.popupInfo.title.split():[' '].0.capitalize()+' Details';popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName;docValues=__.clone();read=true];():subGeneralPopup.update()::[loader.hide;():subGeneralPopup.style():[visibility=visible;opacity=1]]"
+        },
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "view",
+        "createdByUserID": null,
+        "collapsed": [
+            {
+                "path": [
+                    "cancelVoucher"
+                ]
+            },
+            {
+                "path": [
+                    "checkIfAlreadySelected"
+                ]
+            },
+            {
+                "path": [
+                    "checkIfMaxSelected"
+                ]
+            },
+            {
+                "path": [
+                    "openHistoryForm"
+                ]
+            },
+            {
+                "path": [
+                    "refundVoucher"
+                ]
+            },
+            {
+                "path": [
+                    "selectSearchResult"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "selectAllResult"
+                ]
+            },
+            {
+                "path": [
+                    "textHandler",
+                    "toPrice"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "textHandler"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    2,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    2,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    3,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "openDepreciationForm"
+                ]
+            },
+            {
+                "path": [
+                    "openBalanceSheet"
+                ]
+            },
+            {
+                "path": [
+                    "hotButtonsList"
+                ]
+            },
+            {
+                "path": [
+                    "getDataOnScroll",
+                    "getSearchResult"
+                ]
+            },
+            {
+                "path": [
+                    "getDataOnScroll"
+                ]
+            },
+            {
+                "path": [
+                    "markNotificationsAsRead"
+                ]
+            },
+            {
+                "path": [
+                    "confirmPendingVoucher"
+                ]
+            },
+            {
+                "path": [
+                    "confirmPendingInvoice"
+                ]
+            }
+        ],
+        "comments": [
+            {
+                "note": "header",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "body",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "footer",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "row counter",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "custom input",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "hot btns",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "text",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "checkbox",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "0",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    2,
+                    "children"
+                ]
+            }
+        ]
+    }
+}

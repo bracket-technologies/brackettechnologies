@@ -1,0 +1,34 @@
+{
+    "__props__": {
+        "id": "p1x7Q137s4B1D7I0B2q3P0V3l9",
+        "doc": "navbarselect",
+        "counter": 5,
+        "creationDate": 1717417023039,
+        "active": true,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "pageNav"
+    },
+    "sections": [
+        {
+            "id": "Accounts",
+            "schemaToOpen": "ffff"
+        },
+        {
+            "id": "AccountingJournals",
+            "schemaToOpen": "rfrf"
+        },
+        {
+            "id": "Vouchers",
+            "schemaToOpen": "rfrf"
+        },
+        {
+            "id": "Invoices",
+            "schemaToOpen": "hjyjh"
+        }
+    ]
+}

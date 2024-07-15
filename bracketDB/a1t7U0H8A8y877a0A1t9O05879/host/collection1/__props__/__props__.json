@@ -1,0 +1,57 @@
+{
+    "creationDate": 1716719387112,
+    "collection": "host",
+    "chunkMaxSizeMB": 20,
+    "lastChunk": 1,
+    "docsLength": 14,
+    "counter": 84,
+    "reads": 69786,
+    "writes": 129,
+    "deletes": 0,
+    "size": 4640,
+    "payloadIn": 45222,
+    "payloadOut": 25858324,
+    "indexes": [
+        {
+            "find": [
+                "__props__.id"
+            ],
+            "doc": "index1"
+        },
+        {
+            "find": [
+                "port"
+            ],
+            "doc": "index2",
+            "lastRead": 1721037804692,
+            "expiryDate": 1723629804692
+        },
+        {
+            "find": [
+                "__props__.counter",
+                "port"
+            ],
+            "doc": "index3",
+            "lastRead": 1720684304792,
+            "expiryDate": 1723276304792
+        },
+        {
+            "find": [
+                "private",
+                "publicID"
+            ],
+            "doc": "index4",
+            "lastRead": 1721037792096,
+            "expiryDate": 1723629792096
+        },
+        {
+            "find": [
+                "localhost"
+            ],
+            "doc": "index5",
+            "lastRead": 1721037659250,
+            "expiryDate": 1723629659250
+        }
+    ],
+    "lastIndex": 5
+}

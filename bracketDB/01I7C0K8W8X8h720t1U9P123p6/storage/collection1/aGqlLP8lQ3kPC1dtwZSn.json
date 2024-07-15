@@ -1,0 +1,23 @@
+{
+    "count": 69,
+    "description": "",
+    "type": "image/png",
+    "creationDate": 1701856093479,
+    "title": "IMAGE/PNG",
+    "url": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/aGqlLP8lQ3kPC1dtwZSn?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=atVxbvcazoKEE0tFS1HrzF8jaRbcYoKOwAgFEmcgcIuPv1scpqWCSIzhARp7Pi6YVyyeu21fJeAuBB1MdpRKHGenFwZ8DtkttTDqqyYBPuLdNbVWxeHAnz6Hs1eBhKwf47RAsdCw4bVIUFgVldttP5KcCylX8TUSEmY1034V5OmOXhJ4Czy%2B%2F%2FU5xai7%2FMLj87L1O7WkazIfO6fZye%2BD6BTthkGIjKCuilbKH15PDoC1bZK6MDJp8L4XPmF5nH8fV4oV2F06hPL9BxEHDp5WWg4BG%2FZ2HBxQHLnrEhtFoLPrGiXq7TXFHstPG3uuMBM%2BchVcODktMfQ4YcKvQ9HQcQ%3D%3D",
+    "tags": [],
+    "ref": "IMG-00000069",
+    "size": 22906,
+    "name": "transaction.png",
+    "lastModified": 1701855957973,
+    "__props__": {
+        "id": "K107e1N1g0n3l1g3A685B841O9",
+        "creationDate": 1711031365819,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "doc": "aGqlLP8lQ3kPC1dtwZSn",
+        "counter": 47,
+        "collection": "storage",
+        "chunk": "chunk1"
+    }
+}

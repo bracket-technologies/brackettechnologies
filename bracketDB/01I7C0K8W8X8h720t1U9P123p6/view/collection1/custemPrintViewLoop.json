@@ -1,0 +1,82 @@
+{
+    "view": "View?class=_.class;style:[width=100%;height=100%;if():[_.mainContainerStyle]:[[_.mainContainerStyle].flat()]]",
+    "__props__": {
+        "id": "o1C7f1W6q4V681z0U4K5T5N0W5",
+        "doc": "custemPrintViewLoop",
+        "counter": 8,
+        "creationDate": 1716461045505,
+        "active": true,
+        "actions": {},
+        "comments": [
+            {
+                "note": "false",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            }
+        ],
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            }
+        ],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "view"
+    },
+    "children": [
+        {
+            "view": "[View]:[data=_.mainInfo]?class=flex;style:[width=100%;if():[_.containerStyle]:[[_.containerStyle].flat()]]",
+            "children": [
+                {
+                    "view": "View?class=flexbox;style:[width=100%;if():[_.subContainerStyle]:[[_.subContainerStyle].flat()]]",
+                    "children": [
+                        {
+                            "view": "Text?text=[[_.text]()];if():[_.textStyle]:[style:[[_.textStyle].flat()]]?_.text.type()=string"
+                        },
+                        {
+                            "view": "View?class=flex;style:[width=100%;if():[_.inputsWrapperStyle]:[[_.inputsWrapperStyle].flat()]]?_.text.type()=array",
+                            "children": [
+                                {
+                                    "view": "[View]:[data=_.text]?if():[_.containerStyle]:[style:[[_.containerStyle].flat()]]",
+                                    "children": [
+                                        {
+                                            "view": "Text?text=[[_.text]()];if():[_.textStyle]:[style:[[_.textStyle].flat()]]"
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "view": "custemPrintViewLoop??_.mainInfo"
+                        },
+                        {
+                            "view": "View?class=flex;style:[width=100%]?_.customViews",
+                            "children": [
+                                {
+                                    "view": "[View]:[data=_.customViews]?class=flexbox;style:[width=100%;if():[_.containerStyle]:[[_.containerStyle].flat()]]",
+                                    "children": [
+                                        {
+                                            "view": "_.viewName?[_.viewInfo].flat();style:[width=100%]"
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

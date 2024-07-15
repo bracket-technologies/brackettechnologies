@@ -1,0 +1,28 @@
+{
+    "updateBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+    "difference": [
+        {
+            "new": "Admin User",
+            "path": "position"
+        }
+    ],
+    "description": "Data has been updated",
+    "id": "xgYPPfJqyC2xoM6QcApuQcNOdCrFTmlDfgEQtbqdpTVFebpAr4OT5vjlsrst1700828410102",
+    "creationDay": 1700784000000,
+    "creationDate": 1700828410102,
+    "user": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+    "__props__": {
+        "id": "r1Z7O1V1b0U3B1t3O6B3t9N6l6",
+        "doc": "xgYPPfJqyC2xoM6QcApuQcNOdCrFTmlDfgEQtbqdpTVFebpAr4OT5vjlsrst1700828410102",
+        "creationDate": 1711031363966,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 280,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

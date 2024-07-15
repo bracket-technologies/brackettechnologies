@@ -1,0 +1,729 @@
+{
+    "view": "View:portal?class=column;title=Travel Accounting Platform;createFormStack:()=:;style:[height=100vh]",
+    "children": [
+        {
+            "view": "View?class=column;style:[height=100%]?!mobile()",
+            "children": [
+                {
+                    "view": "topbar"
+                },
+                {
+                    "view": "View?class=flex;style:[height=calc(100% - 4.5rem)]",
+                    "children": [
+                        {
+                            "view": "View?class=flexbox",
+                            "children": [
+                                {
+                                    "view": "sidebar"
+                                }
+                            ]
+                        },
+                        {
+                            "view": "View?class=flex;style:[flex=1;height=100%]",
+                            "children": [
+                                {
+                                    "view": "mainbody"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "view": "customDroplist"
+                },
+                {
+                    "view": "miniPopup"
+                },
+                {
+                    "view": "confirmWindow"
+                },
+                {
+                    "view": "generalPopup"
+                },
+                {
+                    "view": "subGeneralPopup"
+                }
+            ]
+        },
+        {
+            "view": "View?class=column;style:[height=calc(100vh - 4.5rem)];mainMobilePageInfo:()=publicData:().mobileMainPage.mainItems?mobile();false",
+            "children": [
+                {
+                    "view": "generalPopup"
+                },
+                {
+                    "view": "customDroplist"
+                },
+                {
+                    "view": "#subGeneralPopup"
+                },
+                {
+                    "view": "mobileTopbar"
+                },
+                {
+                    "view": "#View?class=flex",
+                    "children": [
+                        {
+                            "view": "View?class=flexbox",
+                            "children": [
+                                {
+                                    "view": "sidebar"
+                                }
+                            ]
+                        },
+                        {
+                            "view": "View?class=flex;style:[width=100%;overflowY=auto]",
+                            "children": [
+                                {
+                                    "view": "mainbody"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "view": "mobileMainPage"
+                },
+                {
+                    "view": "#customDroplist"
+                },
+                {
+                    "view": "#confirmWindow"
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "r1G7N1i1E0N3Q1M346g5I2l039",
+        "doc": "portal",
+        "creationDate": 1711031365209,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "actions": {
+            "fillInSearchboxSelected": {
+                "fillInSelected": "selected:().defaults.currency.push():[id=userData:().currency;code=userData:().currencyCode;ref=userData:().currencyRef];selected:().defaults.branch.push():[id=userData:().branch;ref=userData:().branchRef];selected:().currency.push():[id=userData:().currency;code=userData:().currencyCode;ref=userData:().currencyRef];selected:().branch.push():[id=userData:().branch;ref=userData:().branchRef]",
+                "fillInAllSelected": "allSelected:().push():[id=userData:().currency;code=userData:().currencyCode;ref=userData:().currencyRef];allSelected:().push():[id=userData:().branch;ref=userData:().branchRef]",
+                "[object Object]": "fillInAllSelected();fillInSelected()",
+                "_": "fillInAllSelected();fillInSelected()"
+            },
+            "mobileAction": {
+                "updatePage": "():mobileMainPage.update();():mobileTopbar.update()",
+                "titleStack": "if():[!mobileMainPage:().identifier]:[title:()=mobileStack:().mainTitle.[[mobileStack:().mainTitle.len()]-1];mobileStack:().mainTitle.pull():[[mobileStack:().mainTitle.len()]-1]];mobileMainPage:()='';updatePage()",
+                "mainPage": "mobileMainPage:()='';mainMobilePageInfo:()=data:().collection.mobileMainPage.mainItems;updatePage()",
+                "prevPage": "mainMobilePageInfo:()=mobileStack:().pageInfo.[[mobileStack:().pageInfo.len()]-1];mobileStack:().pageInfo.pull():[[mobileStack:().pageInfo.len()]-1];titleStack()",
+                "_": "if():[_.actionName=mainPage]:[mainPage()]:[prevPage()]"
+            }
+        },
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4",
+                    "children",
+                    "2"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4",
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4",
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "5"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "6"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "1",
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "1",
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "2"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "3"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4"
+                ]
+            },
+            {
+                "path": [
+                    "functions"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    4,
+                    "children"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            }
+        ],
+        "comments": [
+            {
+                "note": "sidebar",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "timeView",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "time",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "verticalLine",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "note": "airplaneView",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "note": "airplane",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "1",
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "verticalLine",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "1",
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "note": "plane + calendar view",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "2"
+                ]
+            },
+            {
+                "note": "verticalLine",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "2",
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "planeview",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "2",
+                    "children",
+                    "0"
+                ]
+            },
+            {
+                "note": "plane",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "2",
+                    "children",
+                    "0",
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "verticalLine",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "2",
+                    "children",
+                    "0",
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "note": "calendarView",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "2",
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "note": "calendar",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "2",
+                    "children",
+                    "1",
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "verticalLine",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "2",
+                    "children",
+                    "1",
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "note": "HotelView",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "3"
+                ]
+            },
+            {
+                "note": "Hotel",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "3",
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "verticalLine",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "3",
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "note": "home + bed + calendar view",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4"
+                ]
+            },
+            {
+                "note": "homeView",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4",
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "verticalLine",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4",
+                    "children",
+                    0,
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "note": "bedView",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4",
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "note": "bedIcon",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4",
+                    "children",
+                    "1",
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "verticalLine",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4",
+                    "children",
+                    "1",
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "note": "calendarView",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4",
+                    "children",
+                    "2"
+                ]
+            },
+            {
+                "note": "calendarIcon",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4",
+                    "children",
+                    "2",
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "verticalLine",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4",
+                    "children",
+                    "2",
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "note": "accountingView",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "5"
+                ]
+            },
+            {
+                "note": "accountingIcon",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "5",
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "verticalLine",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "5",
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "note": "settingsView",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "6"
+                ]
+            },
+            {
+                "note": "settingsIcon",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "6",
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "verticalLine",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "6",
+                    "children",
+                    "1"
+                ]
+            }
+        ],
+        "dirPath": [],
+        "version": 0,
+        "counter": 34,
+        "secure": false,
+        "chunk": "chunk1",
+        "collection": "view"
+    }
+}

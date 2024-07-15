@@ -1,0 +1,29 @@
+{
+    "view": "View?id=view3;style:[margin=0;padding=0;border=none;outline=none;box-sizing=border-box;font-family: sans serif]",
+    "__props__": {
+        "id": "y1i711D4I4S957l7v9j0O2I4L7",
+        "doc": "view3",
+        "counter": 10,
+        "creationDate": 1714497790247,
+        "active": true,
+        "actions": {
+            "info": ":[Name=2023-05-02]:[Type=Expenses]:[Sect=Office Supplies]:[price=250]:[sectarea=Office Expenses]:[action=Pending]:[actiontype=Edit]"
+        },
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "view",
+        "createdByUserID": "M1X7V1X4O4A8Z076N0c2l5x2R1",
+        "collapsed": [],
+        "comments": []
+    },
+    "children": [
+        {
+            "view": "[View]:[data=info()]?id=test;style=[display=inline-block;background=rgba(113,99,186,255)]",
+            "children": [
+                {
+                    "view": "Text?text=[_.Name?!_.Name=2016?_.Name=2016]"
+                }
+            ]
+        }
+    ]
+}

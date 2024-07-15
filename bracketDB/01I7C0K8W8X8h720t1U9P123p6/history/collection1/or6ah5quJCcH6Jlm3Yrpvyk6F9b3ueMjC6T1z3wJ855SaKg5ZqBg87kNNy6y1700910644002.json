@@ -1,0 +1,34 @@
+{
+    "updateBy": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+    "difference": [
+        {
+            "new": "Readonly",
+            "path": "type",
+            "old": "Editable"
+        },
+        {
+            "new": "ABdalla",
+            "path": "title",
+            "old": "ABdallah"
+        }
+    ],
+    "description": "Data has been updated",
+    "sheet": "Z4RW8b99lcjPNpiOdrd6vPNNpA2fE7Br1CXyLRYf8PRRkdlxnKLHrrhPzvSU1700904423690",
+    "id": "or6ah5quJCcH6Jlm3Yrpvyk6F9b3ueMjC6T1z3wJ855SaKg5ZqBg87kNNy6y1700910644002",
+    "creationDay": 1700870400000,
+    "creationDate": 1700910644003,
+    "__props__": {
+        "id": "Z1D7z1H1z0X3d1i3J6I348n657",
+        "doc": "or6ah5quJCcH6Jlm3Yrpvyk6F9b3ueMjC6T1z3wJ855SaKg5ZqBg87kNNy6y1700910644002",
+        "creationDate": 1711031363867,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 242,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

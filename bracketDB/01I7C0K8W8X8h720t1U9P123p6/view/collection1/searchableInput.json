@@ -1,0 +1,254 @@
+{
+    "view": "View:searchableInput?class=flex column",
+    "children": [
+        {
+            "view": "customInputLabel"
+        },
+        {
+            "view": "View?class=flex;style:[width=100%;gap=.2rem]",
+            "children": [
+                {
+                    "view": "View?class=flex;style:[inputStyle();if():[_.hotCreateable]:[width=calc(100% - 3rem)]];if():[_.clearable||_.allInputClearable]:[mouseenter:[3rdChild().style().opacity=1];mouseleave:[3rdChild().style().opacity=0]]",
+                    "children": [
+                        {
+                            "view": "View?class=flexbox;style:[width=if():[_.collection.type()=array]:[6rem]:[5rem];height=100%;backgroundColor=#f3f3f3;position=relative]",
+                            "children": [
+                                {
+                                    "view": "Text?class=flexbox;collectionHandler();#checkToHideHotCreate:()=().collection;#if():[_.collection.type()=array]:[style.cursor=pointer;[click:droplist?parent().next().1stChild().clear();doc().[_.inputPath].del();collectionListDroplistClickHandler()]];text=().code;style:[fontSize=1.2rem;height=100%;fontSize=1.4rem;width=100%];tooltip:[text=().collection.capitalize()]"
+                                },
+                                {
+                                    "view": "Icon?name=expand_more;google.symbol;style:[fontSize=2rem;color=#666;cursor=pointer];click:[prev().click()]?_.collection.type()=array"
+                                }
+                            ]
+                        },
+                        {
+                            "view": "View?style:[width=calc(100% - 8rem);height=100%;position=relative]",
+                            "children": [
+                                {
+                                    "view": "Input?input.type=number;#preventDefault;style:[fontSize=1.2rem;height=100%;width=100%;color=#444];loaded:[().collection=2ndParent().1stChild().1stChild().collection;FillTextFromData()];blur:[checkExistenceAndSaveData()];#keydown:[if():[txt();txt()!='0']:[checkExistance()]?e().key=Enter];#checkRefInDoc()"
+                                }
+                            ]
+                        },
+                        {
+                            "view": "Icon?name=close;google.symbol;style:[fontSize=2rem;color=#666;transition=.2s;padding=.5rem 0 .5rem .5rem;cursor=pointer;opacity=0];click:[prev().1stChild().clear();prev().2ndChild().clear();doc().[[_.inputPath]()].del();if():[_.allInputClearable]:[2ndPrev().1stChild().txt()='';doc().[_.collectionTypePath].del()]]?_.clearable||_.allInputClearable"
+                        },
+                        {
+                            "view": "Icon?name=Search;google.symbol;style:[fontSize=2rem;color=#666;padding=.5rem;cursor=pointer];tooltip:[text='open search box'];click:[callOpenSearchBox()]?!_.hideSearchIcon"
+                        }
+                    ]
+                },
+                {
+                    "view": "View?class=flexbox;style:[backgroundColor=#fff;width=3.5rem;border=1px solid #ddd;borderRadius=.4rem;cursor=pointer];tooltip:[text='create'];click:[openHotCreateForm()]?!_.hideHotCreate;false",
+                    "children": [
+                        {
+                            "view": "Icon?name=add;google.symbol;style:[fontSize=2rem]"
+                        }
+                    ]
+                },
+                {
+                    "view": "View?class=flexbox;style:[width=3.5rem;border=1px solid #ddd;borderRadius=.4rem;cursor=pointer;backgroundColor=#fff];click:[if():[_.switchableAction]:[[_.switchableAction]()]:[switchInput()]]?_.switchable",
+                    "children": [
+                        {
+                            "view": "Icon?name=Swap_Vert;google.symbol;style:[fontSize=2rem;color=#666]"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "h187v1Z1F0W3Y1F3d6h592G1X5",
+        "doc": "searchableInput",
+        "creationDate": 1711031365215,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "actions": {
+            "checkExistenceAndSaveData": {
+                "successExistence": "data().[_.inputPath]=().ref;",
+                "setRefFormat": "().ref=2ndParent().1stChild().1stChild().code+'-'+addLeftZeros():[text=txt();digits=8]",
+                "checkExistence": "loader.show;[data=[identifier=().collection.toLowerCase();ref=().ref];customSearchEngine():[().data]:[loader.hide;if():[_.success]:[successExistence()]]:[failExistence()]]",
+                "addLeftZeros": "_.text=_.text+'t';while():[[_.digits+1]-[_.text.len()]>0]:[_.text='0'+_.text];return():[_.text.replaceItem():'t':'']",
+                "failExistence": "note():[text=().collection.capitalize()+' does not exist!']",
+                "_": "if():[txt();]:[setRefFormat();if():[().ref!=data().[_.inputPath]]:[successExistence();#checkExistence()]]"
+            },
+            "collectionHandler": {
+                "saveCollection": "().collection=[_.collection]();code=collectionsInfo:().find():[managers.():collection.inc():[[_.collection]().toLowerCase()]].managers.find():[collection=[_.collection]().toLowerCase()].code",
+                "taha": "droplist:[preventDefault;items=().manager.():code];if():[!doc().[_.collectionTypePath]]:[code=().manager.0.code;().collection=().manager.0.collection;fillInDoc()]:[collection=().manager.find():[collection=doc().[_.collectionTypePath]].collection;code=().manager.find():[collection=doc().[_.collectionTypePath]].code]",
+                "fillInDoc": "if():[___.path]:[__.[_.collectionTypePath]=[().collection]]:[doc().[_.collectionTypePath]=[().collection]]",
+                "createCollectionList": "_.collection._():[().manager.push():[code=collectionsInfo:().find():[managers.():collection.inc():[_.toLowerCase()]].managers.find():[collection=[_]().toLowerCase()].code;collection=_.toLowerCase()]];taha()",
+                "_": "if():[_.collection.type()=array;false]:[#createCollectionList()]:[saveCollection()]"
+            },
+            "FillTextFromData": "if():[data().[_.inputPath]]:[txt()=data().[_.inputPath].split():'-'.1.num()]",
+            "#checkRefInDoc": {
+                "checkInPath": "if():[__.[_.inputPath]]:[input.value=allSelected:().find():[id=__.[_.inputPath]].ref.slice():[4]+0]",
+                "checkInDoc": "if():[doc().[[_.inputPath]()]]:[input.value=allSelected:().find():[id=doc().[[_.inputPath]()]].ref.slice():[4]+0];#if():[doc().[[_.inputPath]()]]:[txt()=selected:().[().collection].find():[id=doc().[[_.inputPath]()]].ref.slice():[4]+0]"
+            },
+            "#handelRef": {
+                "handelValueInDoc": "createRef();if():[__.searchEngineInputs;_.inputPath=ref]:[if():[txt()=''||txt().num()=0]:[doc().[_.inputPath].del()]:[doc().[_.inputPath]=[2ndParent().1stChild().1stChild().code+'-'+().ref]]]:[searchByRefNumber()]"
+            },
+            "searchByRefNumber": {
+                "noDataAction": "if():[__.varName]:[selected:().[().collection]=false;if():[().___.path]:[().__.[__.inputPath].del()]:[doc().[__.inputPath].del()]];txt()='';note():[text=().collection.capitalize()+' does not exist';type=danger]",
+                "saveSpecificValuesInDoc": "selected:().[().collection]=false;selected:().[().collection].push():[_.data];allSelected:().replaceItem():[_.data];__.varName.keys()._():[doc().[_]=__.data.[___.varName._]]",
+                "searchRef": "searchReferences():[id=_.id;collection=__]:[allSelected:().replaceItem():[_.data]]",
+                "saveVariable": "selected:().[().collection]=false;selected:().[().collection].push():[_.data];allSelected:().replaceItem():[_.data];#saveInDoc():[_.data.id];if():[().___.path]:[().__.[__.inputPath]=_.data.id]:[doc().[[__.inputPath]()]=_.data.id]",
+                "saveListInPath": "if():[!___.[__.inputPath]]:[___.[__.inputPath]=_list];___.[__.inputPath].replaceItem():[_.data.id];():[().___.table.tableId].update()",
+                "checkVarOrList": "if():[__.varName.type()!=map]:[if():[__.varName]:[saveVariable()]:[saveList()]].elif():[____.path]:[saveSpecificValuesInPath()]:[saveSpecificValuesInDoc()]",
+                "saveList": "txt()='';if():[!selected:().[().collection]]:[selected:().[().collection]=_list];selected:().[().collection].replaceItem():[_.data];allSelected:().replaceItem():[_.data];if():[().___.path]:[saveListInPath()]:[saveListInDoc()]",
+                "saveListInDoc": "if():[!doc().[__.inputPath]]:[doc().[__.inputPath]=_list];doc().[__.inputPath].replaceItem():[_.data.id];():[parent().___.table.tableId].update()",
+                "saveSpecificValuesInPath": "selected:().[().collection].replaceItem():[_.data];allSelected:().replaceItem():[_.data];__.varName.keys()._():[____.[_]=__.data.[___.varName._];if():[[__.data.[___.varName._]].len()>=60;![__.data.[___.varName._]].inc():' ';_!=id]:[searchRef():[id=__.data.[___.varName._]]]]",
+                "_": "if():[txt()]:[loader.show;data=[identifier=().collection.toLowerCase();ref=parent().prev().1stChild().txt()+'-'+().ref];customSearchEngine():[().data]:[if():[_.success]:[[checkVarOrList()]()::[updateWrapper():[loader.hide]]]:[noDataAction()]]]"
+            },
+            "callOpenSearchBox": {
+                "setsearchBoxParams": "().searchBoxParams=[docName=generalPopup:().docName;collection=parent().1stChild().1stChild().collection];if():[_.varName]:[().searchBoxParams.varName=[_.varName]()].elif():[_.listName]:[().searchBoxParams.listName=[_.listName]()]:[().searchBoxParams.varName=inputPath];if():[___.path]:[().searchBoxParams.path=___.path;().searchBoxParams.index=3rdParent().3rdParent().3rdParent().parent().i]",
+                "_": "setsearchBoxParams();openSearchBox():[().searchBoxParams]"
+            },
+            "collectionListDroplistClickHandler": "txt()=droplist-txt:();selected:().[().collection].del();doc().[_.inputPath].del();if():[_.viewToUpdateName]:[():[_.viewToUpdateName].update()];collection=().manager.find():[code=droplist-txt:()].collection;code=().manager.find():[code=droplist-txt:()].code;doc().[_.collectionTypePath]=().collection;if():[_.droplistClickAction]:[[_.droplistClickAction]()]"
+        },
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "searchByRefNumber"
+                ]
+            },
+            {
+                "path": [
+                    "collectionHandler"
+                ]
+            },
+            {
+                "path": [
+                    "callOpenSearchBox"
+                ]
+            },
+            {
+                "path": [
+                    "#handelRef"
+                ]
+            },
+            {
+                "path": [
+                    "#checkRefInDoc"
+                ]
+            }
+        ],
+        "comments": [
+            {
+                "note": "search icon",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "clear icon",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "code input",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "input",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "switch",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "hot create",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "().code: collection code (read from globalPathes) ; ().collection:selected collection From _.collection",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "().collction",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "tew7id open searchbox",
+                "path": [
+                    "#openSearchBox"
+                ]
+            },
+            {
+                "note": "().ref: reference number as data format",
+                "path": [
+                    "checkExistenceAndSaveData",
+                    "setRefFormat"
+                ]
+            }
+        ],
+        "dirPath": [],
+        "version": 0,
+        "counter": 47,
+        "secure": false,
+        "chunk": "chunk1",
+        "collection": "view"
+    }
+}

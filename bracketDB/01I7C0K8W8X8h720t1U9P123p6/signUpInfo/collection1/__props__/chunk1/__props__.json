@@ -1,0 +1,10 @@
+{
+    "docs": [
+        "branchManager",
+        "userManager",
+        "currencyManager"
+    ],
+    "chunk": "chunk1",
+    "docsLength": 3,
+    "size": 15434
+}

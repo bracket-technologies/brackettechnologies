@@ -1,0 +1,522 @@
+{
+    "identifier": "currency",
+    "searchEngineInputs": [
+        {
+            "clearable": "true",
+            "inputPath": "ref",
+            "inputLabel": "Currency#",
+            "hideSearchIcon": true,
+            "collection": "currency",
+            "searchable": true
+        },
+        {
+            "clearable": true,
+            "inputPath": "name",
+            "readonly": "readonly",
+            "inputLabel": "Name",
+            "items": "userData:().currency.():name"
+        },
+        {
+            "clearable": "true",
+            "inputPath": "country",
+            "readonly": "readonly",
+            "sheetName": "Countries",
+            "inputLabel": "Country",
+            "sheetHeader": "country"
+        },
+        {
+            "clearable": true,
+            "items=": "",
+            "inputPath": "code",
+            "inputLabel": "Code"
+        }
+    ],
+    "createFormInputs": {
+        "subInput": [
+            {
+                "input": [
+                    {
+                        "inputPath": "country",
+                        "sheetName": "Currencies",
+                        "readonly": "readonly",
+                        "hideInEditForm": "true",
+                        "inputLabel": "Country",
+                        "sheetHeader": "country",
+                        "droplistClickAction": "customUpdate():[section=:1:2:0]",
+                        "required": true
+                    },
+                    {
+                        "inputPath": "name",
+                        "readonly": "readonly",
+                        "hideInEditForm": "true",
+                        "inputLabel": "Name",
+                        "inputValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].name]:['']",
+                        "executeEveryLoad": true,
+                        "required": true
+                    },
+                    {
+                        "inputPath": "code",
+                        "readonly": "readonly",
+                        "hideInEditForm": "true",
+                        "inputLabel": "Code",
+                        "inputValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].code]:['']",
+                        "executeEveryLoad": true,
+                        "required": "true"
+                    },
+                    {
+                        "inputPath": "symbole",
+                        "readonly": "readonly",
+                        "hideInEditForm": "true",
+                        "inputLabel": "Symbole",
+                        "inputValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].symbol]:['']",
+                        "executeEveryLoad": true,
+                        "required": true
+                    },
+                    {
+                        "inputPath": "decimals",
+                        "inputLabel": "Decimal digits",
+                        "inputValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].decimalDigits]:['']",
+                        "executeEveryLoad": true
+                    }
+                ],
+                "grid": "1fr 1fr 1fr 1fr 1fr 1fr",
+                "title": "General Information"
+            },
+            {
+                "grid": "1fr 1fr 1fr",
+                "title": "Government Rate",
+                "input": [
+                    {
+                        "multiInput": [
+                            {
+                                "inputPath": "governmentRate",
+                                "inputLabel": "Government Rate",
+                                "icon": "Equal",
+                                "executeUnitEveryLoad": true,
+                                "fr": "1.3fr",
+                                "required": "true",
+                                "unitValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].code]:['']",
+                                "inputValue": 1,
+                                "#blurAction": "calcExchangeRate():[firstRatePath=governmentRate;secondeRatePath=systemCurrencyRate]"
+                            },
+                            {
+                                "inputPath": "systemCurrencyRateForGovernment",
+                                "inputValue": 1,
+                                "executeUnitEveryLoad": true,
+                                "fr": "1fr",
+                                "required": "true",
+                                "unitValue": "userData:().defaultCurrency.value",
+                                "#blurAction": "calcExchangeRate():[firstRatePath=governmentRate;secondeRatePath=systemCurrencyRate]"
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "grid": "1fr 1fr 1fr",
+                "title": "Exchange Rate",
+                "input": [
+                    {
+                        "multiInput": [
+                            {
+                                "inputPath": "createdCurrencyRate",
+                                "inputLabel": "Exchange Rate",
+                                "inputValue": 1,
+                                "icon": "Equal",
+                                "executeUnitEveryLoad": true,
+                                "fr": "1.3fr",
+                                "blurAction": "calcExchangeRate():[firstRatePath=createdCurrencyRate;secondeRatePath=systemCurrencyRate]",
+                                "required": "true",
+                                "unitValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].code]:['']"
+                            },
+                            {
+                                "inputPath": "systemCurrencyRate",
+                                "inputValue": 1,
+                                "executeUnitEveryLoad": true,
+                                "fr": "1fr",
+                                "blurAction": "calcExchangeRate():[firstRatePath=createdCurrencyRate;secondeRatePath=systemCurrencyRate]",
+                                "required": "true",
+                                "unitValue": "userData:().defaultCurrency.value"
+                            }
+                        ]
+                    }
+                ]
+            }
+        ],
+        "collection": "currency"
+    },
+    "title": "Currency Manager",
+    "managerName": "currency",
+    "creationDate": 1709032381100,
+    "searchFields": "currencySearchFields",
+    "id": "currencyManager",
+    "popupInfo": {
+        "docName": "currencyInfo",
+        "title": "Currency Form"
+    },
+    "__props__": {
+        "id": "a1C7r1H1H0E3V1n3f6d143t7V3",
+        "doc": "currencyManager",
+        "creationDate": 1711031361373,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    7,
+                    "items"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    9,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    8,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "popupInfo"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs"
+                ]
+            },
+            {
+                "path": [
+                    "tabl",
+                    0,
+                    "table",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "tabl",
+                    0,
+                    "table",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "tabl",
+                    0,
+                    "table",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "tabl",
+                    0,
+                    "table",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "tabl",
+                    0,
+                    "table",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "tabl",
+                    0,
+                    "table",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "tabl",
+                    0,
+                    "table",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "body"
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "header"
+                ]
+            },
+            {
+                "path": [
+                    "tabl",
+                    0,
+                    "table"
+                ]
+            },
+            {
+                "path": [
+                    "tabl"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    0,
+                    "multiInput",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    0,
+                    "multiInput",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs"
+                ]
+            },
+            {
+                "path": [
+                    "table"
+                ]
+            }
+        ],
+        "comments": [
+            {
+                "note": "general information",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0
+                ]
+            },
+            {
+                "note": "Reference Date",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    8
+                ]
+            },
+            {
+                "note": "Duration",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    9
+                ]
+            },
+            {
+                "note": "government rate",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1
+                ]
+            },
+            {
+                "note": "exchange rate",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2
+                ]
+            }
+        ],
+        "dirPath": [],
+        "actions": {},
+        "counter": 2,
+        "chunk": "chunk1",
+        "collection": "settings"
+    },
+    "table": {
+        "body": {
+            "items": "table"
+        },
+        "header": {
+            "items": "table"
+        },
+        "table": [
+            {
+                "path": "ref",
+                "header": "Currency#",
+                "fraction": "1fr"
+            },
+            {
+                "path": "name",
+                "header": "Name",
+                "fraction": "1.5fr"
+            },
+            {
+                "path": "country",
+                "header": "Country",
+                "fraction": "1fr"
+            },
+            {
+                "path": "code",
+                "header": "Code",
+                "fraction": "1fr"
+            },
+            {
+                "path": "decimals",
+                "header": "Decimal Digits",
+                "fraction": "1fr"
+            },
+            {
+                "path": "vatRate",
+                "leftUnit": "%",
+                "header": "VAT Rate",
+                "fraction": "1fr"
+            },
+            {
+                "path": "exchangeRate",
+                "header": "Exchange Rate",
+                "currency": "symbole",
+                "formatCell": "toPrice()",
+                "fraction": "1fr"
+            },
+            {
+                "read": true,
+                "edit": "true",
+                "delete": true,
+                "fraction": ".6fr",
+                "customIcon": [
+                    {
+                        "tooltip": "exchange rate",
+                        "icon": "currency_exchange",
+                        "action": "openexchangeRateView()"
+                    }
+                ]
+            }
+        ]
+    }
+}

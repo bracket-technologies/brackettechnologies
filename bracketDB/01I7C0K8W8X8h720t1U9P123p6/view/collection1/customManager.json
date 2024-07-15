@@ -1,0 +1,49 @@
+{
+    "view": "View:customManager?class=column;style:[width=100%;height=100%]",
+    "children": [
+        {
+            "view": "customSearchEngine?data=searchEngineParams()"
+        },
+        {
+            "view": "View:customManagerTable?style:[width=100%;padding=0 .5rem;overflow=hidden];loaded:[().h=prev().el().scrollHeight+'px';style().height='calc(100% - '+().h+')']",
+            "children": [
+                {
+                    "view": "customGeneralTable?itemsList=managersSearchResult:().[currentOpenManager:().managerName];tableHeaderAndBody=setManagerTable()?managersSearchResult:().[currentOpenManager:().managerName];currentOpenManager:().table"
+                },
+                {
+                    "view": "currentOpenManager:().searchResultView??currentOpenManager:().searchResultView"
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "n1z7A1W1I0N3g1J3p6G582a0W0",
+        "doc": "customManager",
+        "creationDate": 1711031365200,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "actions": {
+            "searchEngineParams": "[searchEngineDefaultInputs=publicData:().searchEngineDefaultValues.searchEngineInputs.find():[manager=currentOpenManager:().managerName];title=currentOpenManager:().title;filterSearchEngineInputs=currentOpenManager:().filterSearchEngineInputs;navBar=currentManager:().navBar.navBar;searchEngineInputs=searchEngineInputs();searchAction=currentOpenManager:().searchAction;addAction=currentOpenManager:().addAction]",
+            "searchEngineInputs": "if():[currentOpenManager:().searchEngineInputs.type()=array]:[return():[currentOpenManager:().searchEngineInputs.clone()]]:[return():[sharedManagersInfo:().[currentOpenManager:().searchEngineInputs].searchEngineInputs]]",
+            "tableParams": "collection=currentOpenManager:().table.0.collection;itemsList=managersSearchResult:().[().collection];tableHeaderAndBody=currentOpenManager:().table?managersSearchResult:().[currentOpenManager:().createFormInputs.collection];currentOpenManager:().table",
+            "setManagerTable": "if():[currentOpenManager:().table.type()=string]:[return():[sharedManagersInfo:().[currentOpenManager:().table].table]]:[return():[currentOpenManager:().table]]"
+        },
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            }
+        ],
+        "comments": [],
+        "dirPath": [],
+        "version": 0,
+        "counter": 15,
+        "secure": false,
+        "chunk": "chunk1",
+        "collection": "view"
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "publicID": "8N15v7k02mY1jw0qG3sj7Dz69p05O5ID1B76bZ6",
+    "port": [
+        87
+    ],
+    "localhost": "test1.localhost",
+    "active": true,
+    "subdomain": "test1",
+    "private": true,
+    "__props__": {
+        "id": "W1p7k251x0H3y7t6I0T5S2b2X8",
+        "doc": "host83",
+        "counter": 83,
+        "creationDate": 1721037605228,
+        "collection": "host",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 358
+    }
+}

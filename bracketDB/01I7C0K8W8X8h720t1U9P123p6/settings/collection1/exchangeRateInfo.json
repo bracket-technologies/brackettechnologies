@@ -1,0 +1,114 @@
+{
+    "__props__": {
+        "id": "W1R7d142o2y3o6A028O7f8B860",
+        "doc": "exchangeRateInfo",
+        "counter": 8,
+        "creationDate": 1712236087880,
+        "active": true,
+        "createdByUserID": null,
+        "collapsed": [
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    2,
+                    "multiInput",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "buttons",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "#docDefaultValues"
+                ]
+            },
+            {
+                "path": []
+            }
+        ],
+        "comments": [],
+        "chunk": "chunk1",
+        "collection": "settings"
+    },
+    "createFormInputs": {
+        "collection": "exchangeRate",
+        "buttons": [
+            {
+                "btnAction": "closeSubGeneralPopup()",
+                "style": "width=9rem;height=3rem;border=1px solid #ccc;borderRadius=.4rem;cursor=pointer;opacity=.8",
+                "hoverStyle": "opacity=1",
+                "text": "Discard"
+            },
+            {
+                "btnAction": "if():[createFormStack:().len()>0]:[saveExhangeRateInPrevForm()]:[updateExchangeRate()]",
+                "style": "width=9rem;height=3rem;backgroundColor=#33d17a;borderRadius=.4rem;cursor=pointer;opacity=1",
+                "hoverStyle": "backgroundColor=#2ccb73",
+                "text": "Save",
+                "textStyle": "color=white"
+            }
+        ],
+        "subInput": [
+            {
+                "input": [
+                    {
+                        "inputValue": "data().[name]",
+                        "readonly": true,
+                        "containerStyle": {
+                            "border": "none"
+                        }
+                    },
+                    {
+                        "multiInput": [
+                            {
+                                "inputPath": "createdCurrencyRate",
+                                "unitPath": "code",
+                                "inputLabel": "Exchange Rate",
+                                "icon": "Equal",
+                                "executeUnitEveryLoad": true,
+                                "fr": "1.3fr",
+                                "blurAction": "calcExchangeRate():[firstRatePath=exchangeRate;secondeRatePath=systemCurrencyRate]",
+                                "required": "true",
+                                "#unitValue": "data().code",
+                                "#inputValue": "data().exchangeRate"
+                            },
+                            {
+                                "inputPath": "systemCurrencyRate",
+                                "executeUnitEveryLoad": true,
+                                "fr": "1fr",
+                                "blurAction": "calcExchangeRate():[firstRatePath=exchangeRate;secondeRatePath=systemCurrencyRate]",
+                                "required": "true",
+                                "#inputValue": 1,
+                                "unitValue": "userData:().defaultCurrency.value"
+                            }
+                        ]
+                    }
+                ],
+                "path": "exchangeRates",
+                "hideAddPath": true,
+                "grid": "1fr 2fr .5fr"
+            }
+        ],
+        "#docDefaultValues": {
+            "exchangeRates": "if():[createFormStack:().len()>0]:[return():[[generalPopup:().docName]:().exchangeRates.clone().pullIndex():0]]:[return():[__.docDefaultValues]]"
+        }
+    },
+    "popupInfo": {
+        "title": "Currency Rate",
+        "docName": "exchangeRate"
+    }
+}

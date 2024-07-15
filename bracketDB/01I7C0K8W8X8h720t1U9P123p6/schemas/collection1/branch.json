@@ -1,0 +1,190 @@
+{
+    "create": {
+        "signUp": {
+            "keyValue": [
+                {
+                    "path": "branchInfo.name",
+                    "type": "string",
+                    "required": "true",
+                    "key": "name"
+                },
+                {
+                    "path": "country",
+                    "type": "string",
+                    "required": true,
+                    "key": "country"
+                },
+                {
+                    "path": "city",
+                    "type": "string",
+                    "required": true,
+                    "key": "city"
+                },
+                {
+                    "path": "address",
+                    "type": "string",
+                    "required": true,
+                    "key": "address"
+                },
+                {
+                    "path": "email",
+                    "type": "array",
+                    "required": true,
+                    "key": "email"
+                },
+                {
+                    "path": "contactNumber",
+                    "type": "array",
+                    "required": true,
+                    "key": "contactNumber"
+                },
+                {
+                    "listPath": "members",
+                    "input": [
+                        {
+                            "path": "title",
+                            "type": "string",
+                            "key": "title"
+                        },
+                        {
+                            "path": "gender",
+                            "type": "string",
+                            "key": "gender"
+                        },
+                        {
+                            "path": "position",
+                            "type": "string",
+                            "key": "position"
+                        },
+                        {
+                            "path": "name",
+                            "type": "string",
+                            "key": "name"
+                        },
+                        {
+                            "path": "email",
+                            "type": "string",
+                            "key": "email"
+                        },
+                        {
+                            "path": "contactNumber",
+                            "type": "string",
+                            "key": "contactNumber"
+                        }
+                    ]
+                }
+            ],
+            "generateReference": true,
+            "nextStep": {
+                "manager": "signUp",
+                "collection": "user"
+            }
+        },
+        "branch": {
+            "keyValue": [
+                {
+                    "path": "name",
+                    "type": "string",
+                    "required": "true",
+                    "key": "name"
+                },
+                {
+                    "path": "country",
+                    "type": "string",
+                    "required": true,
+                    "key": "country"
+                },
+                {
+                    "path": "city",
+                    "type": "string",
+                    "required": true,
+                    "key": "city"
+                },
+                {
+                    "path": "address",
+                    "type": "string",
+                    "required": true,
+                    "key": "address"
+                },
+                {
+                    "path": "email",
+                    "type": "array",
+                    "required": true,
+                    "key": "email"
+                },
+                {
+                    "path": "contactNumber",
+                    "type": "array",
+                    "required": true,
+                    "key": "contactNumber"
+                },
+                {
+                    "listPath": "members",
+                    "input": [
+                        {
+                            "path": "title",
+                            "type": "string",
+                            "key": "title"
+                        },
+                        {
+                            "path": "gender",
+                            "type": "string",
+                            "key": "gender"
+                        },
+                        {
+                            "path": "position",
+                            "type": "string",
+                            "key": "position"
+                        },
+                        {
+                            "path": "name",
+                            "type": "string",
+                            "key": "name"
+                        },
+                        {
+                            "path": "email",
+                            "type": "string",
+                            "key": "email"
+                        },
+                        {
+                            "path": "contactNumber",
+                            "type": "string",
+                            "key": "contactNumber"
+                        }
+                    ]
+                },
+                {
+                    "path": "overview",
+                    "type": "string",
+                    "key": "overview"
+                },
+                {
+                    "path": "note",
+                    "type": "string",
+                    "key": "note"
+                },
+                {
+                    "path": "images",
+                    "type": "image",
+                    "key": "images"
+                }
+            ],
+            "generateReference": true
+        }
+    },
+    "id": "YA9Btbty9akhfk968HEK",
+    "collection": "branch",
+    "creationDate": 1709555435385,
+    "__props__": {
+        "id": "T117V1O3e91540R5y7H7U274N1",
+        "doc": "branch",
+        "counter": 27,
+        "creationDate": 1713950577241,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "schemas",
+        "createdByUserID": "91l7f111C0i3r1J3V6L0C2c5n1"
+    }
+}

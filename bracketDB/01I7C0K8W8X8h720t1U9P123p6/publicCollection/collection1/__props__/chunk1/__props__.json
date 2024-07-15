@@ -1,0 +1,26 @@
+{
+    "docs": [
+        "statementOfAccountTemplate",
+        "searchEngineDefaultValues",
+        "testTables",
+        "stayDuration",
+        "standards",
+        "sideBar",
+        "roomPricing",
+        "policyTypes",
+        "mostPopularFacilities",
+        "mobileTopbar",
+        "mobileMainPage",
+        "loginPage",
+        "defaults",
+        "dashboard",
+        "createRoomInfo",
+        "countries",
+        "amenities",
+        "allLanguages",
+        "age-titleRelation"
+    ],
+    "chunk": "chunk1",
+    "docsLength": 19,
+    "size": 40875
+}

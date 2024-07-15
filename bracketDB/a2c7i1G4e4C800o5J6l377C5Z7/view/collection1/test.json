@@ -1,0 +1,195 @@
+{
+    "view": "View?id=test;class=flex;var1=():sideBarCon.el().clientWidth;style=[height=100%;flex=1];[loaded?getManagersList()]",
+    "__props__": {
+        "id": "01n7b1s7m4e06534N8B9b3S247",
+        "doc": "test",
+        "counter": 57,
+        "creationDate": 1717405489327,
+        "active": true,
+        "actions": {
+            "getManagersList": "managersSearch()::[accountManagers:()=_.data?_.success=true?note():[text=_.message]];",
+            "openManagerSect": "log():[_.id];search():[collection=accountManagers;find:[id=_.id]]:[activeManagerSect:()=_.data.value();():test.update()]"
+        },
+        "comments": [
+            {
+                "note": "LOOP HERE",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    2,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            }
+        ],
+        "collapsed": [],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "view"
+    },
+    "children": [
+        {
+            "view": "View?id=mainbody;style=[width=100%;padding=0 2rem]?activeManager:()",
+            "children": [
+                {
+                    "view": "View?id=customManager;class=column;style=[width=100%;height=100%];",
+                    "children": [
+                        {
+                            "view": "View?id=customSearchEngine;class=column;style=[position=relative;flex=1]",
+                            "children": [
+                                {
+                                    "view": "View?class=flexbox;style=[height=4rem;justifyContent=space-between;position=relative]",
+                                    "children": [
+                                        {
+                                            "view": "View?class=flexbox",
+                                            "children": [
+                                                {
+                                                    "view": "View?style=[height=2rem;width=0.2rem;backgroundColor=#fb3b1e]"
+                                                },
+                                                {
+                                                    "view": "Text?text=activeManagerSect:().name;style=[fontSize=1.5rem;fontWeight=bold;paddingLeft=0.8rem]"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "view": "View?class=flex;style=[gap=0.5rem]",
+                                            "children": [
+                                                {
+                                                    "view": "Icon?name=;google.symbol;style=[fontSize:2rem; padding=0.5rem; border=1px solid #ddd; borderRadius=0.8rem;cursor=pointer]"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "View?class=flexbox;style=[width=7rem; height=2rem;backgroundColor=rgb(255, 255, 255);borderRight=0.1rem solid rgb(221, 221, 221);borderBottom=0.1rem solid rgb(221, 221, 221);borderLeft= 0.1rem solid rgb(221, 221, 221);borderRadius=0px 0px 0.4rem 0.4rem;position=absolute;right=53%;top=2rem;cursor=pointer;transition=top 0.2s ease 0s;zIndex= 2]",
+                                    "children": [
+                                        {
+                                            "view": "Icon?name=expand_more;google.symbol;class=flexbox;style=[fontSize=2rem;color=rgb(102, 102, 102);transition=all 0.1s ease 0s;transform=rotate(180deg)]"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "View?class=column;style=[height=12.5rem;backgroundColor=rgb(245, 245, 245);borderBottom=1px solid rgb(221, 221, 221);borderTop=1px solid rgb(221, 221, 221);overflow=hidden;transition: all 0.2s ease 0.1s; zIndex=1;]",
+                                    "children": [
+                                        {
+                                            "view": "View?class=flex;style=[padding=1rem]",
+                                            "children": [
+                                                {
+                                                    "view": "View?class=flex;style=[width=100%;gap=1rem]",
+                                                    "children": [
+                                                        {
+                                                            "view": "[View]:[data=activeManager:().navbar.navbarList]?class=flexbox;style=[padding=0.4rem 1.5rem;borderRadius=0.4rem;cursor=pointer;transition=0.2s;overflow=hidden;];[click?openManagerSect()]",
+                                                            "children": [
+                                                                {
+                                                                    "view": "Text?text=_.name;style=[fontSize=1.2rem;color=#fb3b1e];[loaded?log():[managerList:()]]"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "view": "View?class=flex;style=[gap=1rem;padding=0.7rem;justifyContent=space-between]",
+                                            "children": [
+                                                {
+                                                    "view": "View?class=flex;style=[gap=3rem;justifyContent=space-between;width=100%]",
+                                                    "children": [
+                                                        {
+                                                            "view": "View?class=flex;style=[gap=0.5rem;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr;width=100%]",
+                                                            "children": [
+                                                                {
+                                                                    "view": "[View]:[data=[activeManagerSect:().defaultInput]]?",
+                                                                    "children": [
+                                                                        {
+                                                                            "view": "View?class=flex column ;style=[width=100%;overflow=hidden;alignSelf=end]",
+                                                                            "children": [
+                                                                                {
+                                                                                    "view": "View?class=flex column;style=[width=100%;position=relative;opacity=1]",
+                                                                                    "children": [
+                                                                                        {
+                                                                                            "view": "View?class=flex;style=[padding=0.4rem;textAlign=start;gap=0.4rem;justifyContent=space-between;height=2.6rem]",
+                                                                                            "children": [
+                                                                                                {
+                                                                                                    "view": "View?class=flex;style=[textAlign=start;gap=0.3rem;overflow=hidden]",
+                                                                                                    "children": [
+                                                                                                        {
+                                                                                                            "view": "Text?text=_.name;style=[fontSize=1.2rem;textAlign=start;textOverflow=ellipsis;overflow=hidden;];[loaded?log():[_.name]]"
+                                                                                                        }
+                                                                                                    ]
+                                                                                                }
+                                                                                            ]
+                                                                                        },
+                                                                                        {
+                                                                                            "view": "View?class=flex;style=[width=100%;gap=0.2rem;zIndex=2]",
+                                                                                            "children": [
+                                                                                                {
+                                                                                                    "view": "View?class=flex;style=[width=100%;height=3.5rem;borderRadius=.4rem;border=1px solid #ddd;backgroundColor=#fff;color=#444]",
+                                                                                                    "children": [
+                                                                                                        {
+                                                                                                            "view": "View?class=flexbox;style=[width=5.6rem;height=100%;backgroundColor=#f3f3f3;position=relative]?_.type=ledger",
+                                                                                                            "children": [
+                                                                                                                {
+                                                                                                                    "view": "Input?style=[border=0;width=100%;padding=0.5rem;color=#444;backgroundColor=inherit;height=100%;borderRadius=0.25rem;fontSize=1.2rem;transition=border .1s;paddingRight=0rem]"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "view": "Icon?name=expand_more;google.symbol;style=[fontSize=1.8rem;color=#666;cursor=pointer;position=absolute;right=-1px]?_.type=ledger"
+                                                                                                                }
+                                                                                                            ]
+                                                                                                        },
+                                                                                                        {
+                                                                                                            "view": "View?class=flexbox;style=[display=flex;flex=1;position=relative]",
+                                                                                                            "children": [
+                                                                                                                {
+                                                                                                                    "view": "Input?style=[border=0;width=100%;padding=0.5rem;color=#444;backgroundColor=white;height=100%;borderRadius=0.25rem;fontSize=1.2rem;transition=border .1s;textOverflow=ellipsis;paddingRight=0]"
+                                                                                                                },
+                                                                                                                {
+                                                                                                                    "view": "Icon?name=close;google.symbol;style=[fontSize=1.8rem;cursor=pointer;color=black;opacity=0;transition=all 0.2s ease 0s;paddingRight=0.5rem;alignSelf=center;position=absolute;right=0px]"
+                                                                                                                }
+                                                                                                            ]
+                                                                                                        }
+                                                                                                    ]
+                                                                                                }
+                                                                                            ]
+                                                                                        }
+                                                                                    ]
+                                                                                }
+                                                                            ]
+                                                                        }
+                                                                    ]
+                                                                }
+                                                            ]
+                                                        },
+                                                        {
+                                                            "view": ""
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "view": "View?id=customManagerTable;style=[overflow=hidden;padding=0 0.5rem]"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

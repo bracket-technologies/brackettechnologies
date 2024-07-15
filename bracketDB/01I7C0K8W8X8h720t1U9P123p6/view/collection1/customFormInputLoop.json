@@ -1,0 +1,849 @@
+{
+    "view": "View?id=customFormInputLoop;class=flex column;style:[width=100%]",
+    "children": [
+        {
+            "view": "View?handleGrid();style:[display=grid;gridTemplateColumns=if():[__.customSectionView]:[__.grid].elif():[__.grid]:[().grid]:[1fr 1fr 1fr 1fr 1fr 1fr 1fr];gap=.5rem;width=100%;opacity=0];loaded:[style().opacity=1]?!__.tableView",
+            "children": [
+                {
+                    "view": "[View]:[inputsDataPath()]?if():[_.fraction]:[handleInputFraction()];if():[_.subInput]:[parent().style():[display=flex;flexDirection=column]];class=flex;style:[width=if():[_.width]:[_.width].elif():[___.customSectionView]:[18rem]:[100%];if():[!_.inputLabel]:[align-self=end];overflow=hidden;align-content=start;flex-wrap=wrap;if():[____.edit;_.hideInEditForm]:[display=none]]",
+                    "children": [
+                        {
+                            "view": "View?class=flex column;saveInputIdInFormIds();#if():[_.unitValue||_.multiInput]:[unitValueAndMultiInputHandler()];style:[width=100%];().display=true;if():[_.exchangeRate]:[handleExchangeRateDisplayInput()];if():[_.customCondition]:[[_.customCondition]()];conditionHandler();if():[().display]:[parent().style().display=flex]:[parent().style().display=none]?!_.subInput",
+                            "children": [
+                                {
+                                    "view": "View?class=flexbox;style:[width=100%]?parent().display",
+                                    "children": [
+                                        {
+                                            "view": "customInput??!_.emptyView;!_.multiInput;!_.duplicatedInput"
+                                        },
+                                        {
+                                            "view": "View?class=flex;style:[gap=.5rem;width=100%;display=grid;gridTemplateColumns=[_.multiInput.():fr.join():' ']]?_.multiInput",
+                                            "children": [
+                                                {
+                                                    "view": "[View]:[data=_.multiInput]?class=flexbox;style:[overflow=hidden;width=100%;gap=.5rem]",
+                                                    "children": [
+                                                        {
+                                                            "view": "customInput"
+                                                        },
+                                                        {
+                                                            "view": "Icon?name=_.icon;google.symbol;style:[fontSize=1.4rem;color=#5b5959ad;cursor=pointer;marginTop=3rem]?_.icon"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "view": "View?class=flex column;style:[width=100%]?_.duplicatedInput",
+                                            "children": [
+                                                {
+                                                    "view": "[View]:[if():[!data().[_.duplicatedInputPath];_.duplicatedInputPath]:[..data().[_.duplicatedInputPath]=:''];path=_.duplicatedInputPath]?data=__.clone();class=flexbox;style:[width=100%;overflow=hidden;gap=.5rem]",
+                                                    "children": [
+                                                        {
+                                                            "view": "customInput"
+                                                        },
+                                                        {
+                                                            "view": "View?class=flex;style:[gap=.3rem;marginTop=3rem]?!generalPopup:().read",
+                                                            "children": [
+                                                                {
+                                                                    "view": "Icon?name=Do_Not_Disturb_On;google.symbol;style:[fontSize=2.3rem;handleRemoveIconColor()];click:[handleRemDuplicatedInput()]"
+                                                                },
+                                                                {
+                                                                    "view": "Icon?name=Add_Circle;google.symbol;style:[fontSize=2.3rem;color=if():[[_.duplicatableLimit]()<=nthParent():3.data().[_.duplicatedInputPath].len()]:[#b9b9b9ad]:[#5b5959ad];cursor=pointer];click:[addRow()]"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "view": "View?class=flex column;style:[width=100%];?_.subInput",
+                            "children": [
+                                {
+                                    "view": "[View]:[if():[!data().[_.path].0;_.path]:[data().[_.path]=:[]];path=_.path]?class=flex column;style:[width=100%;#padding=1rem;gap=2rem;align-items=center];if():[__.defaultValues||_.defaultValues]:[handlePathDefaultValues()];if():[!selectedPath:().[____.index]]:[selectedPath:().[____.index]=0]?checkSelectedPath()",
+                                    "children": [
+                                        {
+                                            "view": "View?class=flex;style:[width=100%;if():[__.path]:[padding=0rem 1rem 1rem 1rem;transform=if():[2ndParent().position=right]:[translateX(1500px)].elif():[2ndParent().position=left]:[translateX(-1500px)]:[translateX(0px)];transition=.4s]];if():[__.path]:[timer():[style().transform=translateX(0px)]:100]",
+                                            "children": [
+                                                {
+                                                    "view": "customFormSectionLoop?inputInfo=__"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "View?class=flex;style:[gap=.4rem;paddingRight=1rem;width=100%;justifyContent=center;borderTop=1px solid #ddd;padding=1rem]?_.path",
+                                    "children": [
+                                        {
+                                            "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;borderRadius=.4rem;cursor=pointer];click:[displayPrevPath()];timer():[handleArrowsColors()]:0",
+                                            "children": [
+                                                {
+                                                    "view": "Icon?name=keyboard_arrow_left;tooltip.text=prev;google.symbol;style:[fontSize=2.5rem]"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "view": "View?class=flexbox;style:[width=3rem;height=2.4rem;backgroundColor=#fff;border=1px solid #ddd;borderRadius=.4rem]",
+                                            "children": [
+                                                {
+                                                    "view": "Text?text=3rdParent().1stChild().path().[-1]+1;style:[fontSize=1.3rem]"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;borderRadius=.4rem;cursor=pointer];click:[displayNextPath()];timer():[handleArrowsColors()]:0",
+                                            "children": [
+                                                {
+                                                    "view": "Icon?name=keyboard_arrow_right;tooltip.text=next;google.symbol;style:[fontSize=2.5rem]"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "view": "View?style:[backgroundColor=#b2beb5;width=1px]?!generalPopup:().read"
+                                        },
+                                        {
+                                            "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;cursor=pointer;#border=1px solid #ddd;#borderRadius=.4rem];click:[if():[_.maxLen]:[if():[3rdParent().data().[_.path].len()<[_.maxLen]()]:[insertNewSubSection():[data=2ndParent().1stChild().data();index=___.index]]]:[insertNewSubSection():[data=2ndParent().1stChild().data();index=___.index]]]?!_.hideClone;!generalPopup:().read",
+                                            "children": [
+                                                {
+                                                    "view": "Icon?name=content_copy;tooltip.text=duplicate;google.symbol;style:[fontSize=1.7rem]"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;cursor=pointer];click:[removeSubSection()]?!generalPopup:().read",
+                                            "children": [
+                                                {
+                                                    "view": "Icon?name=delete;google.symbol;tooltip.text=remove;style:[fontSize=2rem]"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;borderRadius=.4rem;cursor=pointer];click:[if():[_.maxLen]:[if():[2ndParent().data().[_.path].len()<[_.maxLen]()]:[insertNewSubSection():[index=___.index]]]:[insertNewSubSection():[index=___.index]]]?!generalPopup:().read",
+                                            "children": [
+                                                {
+                                                    "view": "Icon?name=add;tooltip.text=add;google.symbol;style:[fontSize=2rem]"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "view": "View?class=flex;style:[gap=.3rem;marginTop=3rem;if():[mobile()]:[justify-self=center]]?__.path;!__.hideAddPath;!generalPopup:().read;![generalPopup:().edit;!__.edit]",
+                    "children": [
+                        {
+                            "view": "Icon?name=Do_Not_Disturb_On;google.symbol;style:[fontSize=2.3rem;handleRemoveIconColor()];click:[removeRow()]"
+                        },
+                        {
+                            "view": "Icon?name=Add_Circle;google.symbol;style:[fontSize=2.3rem;color=#5b5959ad;cursor=pointer];click:[addRow()]"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "view": "View?style:[width=100%]?__.tableView",
+            "children": [
+                {
+                    "view": "View?class=flex;style:[width=100%];toTableList()",
+                    "children": [
+                        {
+                            "view": "customGeneralTable?collection=tableOfInputs;tableHeaderAndBody=parent().tableInfo;tablePath=__.tablePath"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "view": "View?class=flexbox;style:[width=100%;marginTop=auto;gap=1rem;#paddingBottom=.5rem]?_.mobile;false",
+            "children": [
+                {
+                    "view": "View?class=flexbox;style:[width=100%;height=4rem;border=1px solid #ccc;borderRadius=.4rem;cursor=pointer;opacity=.8];click:[checkIfOpenPrevForm()];hover.style.opacity=1",
+                    "children": [
+                        {
+                            "view": "Text?text=Discard;style:[fontSize=1.4rem;color=#666]"
+                        }
+                    ]
+                },
+                {
+                    "view": "View?class=flexbox;style:[width=100%;height=4rem;backgroundColor=#33d17a;borderRadius=.4rem;cursor=pointer;opacity=1];click:[if():[_.collection=storage]:[getImage()]:[getSearchResult()]];hover.style.backgroundColor=#2ccb73",
+                    "children": [
+                        {
+                            "view": "Text?text=if():[_.branch]:[Select]:[Search];style:[fontSize=1.4rem;color=#fff]"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "u107H191d161T2V164F8s6A5v3",
+        "doc": "customFormInputLoop",
+        "creationDate": 1711112148653,
+        "active": true,
+        "createdByUserID": null,
+        "counter": 5,
+        "actions": {
+            "handleInputFraction": "loaded:[().parentFraction=parent().style.gridTemplateColumns;().splittedArray=().parentFraction.split():' ';().splittedArray.[[parent().children().filter():[style.display!='none'].indexOf():[()]]]=_.fraction;parent().style().gridTemplateColumns=().splittedArray.join():' ']",
+            "addRow": {
+                "handleDuplicatedInput": "if():[[_.duplicatableLimit]()>nthParent():3.data().[_.duplicatedInputPath].len()||!_.duplicatableLimit]:[nthParent():3.insert();prev().style():[color=#5b5959ad;cursor=pointer];nthParent():3.update()]",
+                "_": "if():[_.duplicatedInputPath]:[handleDuplicatedInput()]:[nthParent():7.insert();if():[[().path().1]+1!=[__.constantRows]()]:[prev().style():[color=#5b5959ad;cursor=pointer]]]"
+            },
+            "getSearchResult": {
+                "notSuccess": "mainMobilePageInfo:()=false;#managersSearchResult:().[doc().identifier]=false;():customManagerTable.update():[loader.hide];openNewForm();doc().identifier='';():searchBoxTable.update():[loader.hide];note():[text=_.message;danger]",
+                "searchEngineSearch": "loader.show;doc().branch=userData:().currentBranch;customSearchEngine():[doc()]:[if():[_.success]:[successSearch()]:[notSuccess()]]",
+                "getIdentifier": "doc().keys()._():[if():[doc().[_].len()<1]:[doc().[_].del()]];doc().identifier=_.collection;searchEngineSearch()",
+                "closeGeneralPopup": "():generalPopup.style():[visibility=hidden;opacity=0];():generalPopup.update()",
+                "_": "if():[true]:[getIdentifier()]:[note():[text='Please, fill at least one input!';type=danger]]"
+            },
+            "fillInSearchboxSelected": "selected:().currency.push():[id=userData:().currency;code=userData:().currencyCode;ref=userData:().currencyRef];selected:().branch.push():[id=userData:().branch;ref=userData:().branchRef]",
+            "removeRow": {
+                "changeRemBtnColor": "nthParent():7.children().():[1stChild().1stChild().1stChild().1stChild().lastChild().1stChild().style():[color=#b9b9b9ad;cursor=not-allowed]]",
+                "handleConstantRows": "if():[[().path().1]+1!=[__.constantRows]()]:[nthParent():5.rem()]",
+                "checkIfLastIndex": "if():[nthParent():7.data().[__.path].len()=2]:[changeRemBtnColor()];if():[nthParent():7.data().[__.path].len()>1]:[;#removeIndexFromFormsId();nthParent():[6].rem()]",
+                "getSectionNameByCounter": "formIds:().keys()._():[if():[formIds:().[_].sectionCounter=__]:[return():[_]]]",
+                "removeIndexFromFormsId": "formIds:().[getSectionNameByCounter():[__.index]].inputsId.pull():[path().1]",
+                "_": "if():[[__.constantRows]()]:[handleConstantRows()]:[checkIfLastIndex()]"
+            },
+            "inputsDataPath": {
+                "handelMultiSection": "if():[!selectedSection:().[__.index]]:[selectedSection:().[__.index]=__.sectionsInfo.0.id];handelSubInputOrInputInMultiSectionInDoc()",
+                "handelSubInputOrInputInMultiSectionInDoc": "if():[__.sectionsInfo.find():[id=selectedSection:().[__.index]].subInput]:[data=__.sectionsInfo.find():[id=selectedSection:().[__.index]].clone()]:[data=__.sectionsInfo.find():[id=selectedSection:().[__.index]].input.clone()]",
+                "_": "if():[__.multiSection]:[handelMultiSection()]:[if():[__.subInput]:[data=__.clone()]:[data=__.input.clone()]]"
+            },
+            "handleRemDuplicatedInput": {
+                "changeRemBtnColor": "nthParent():3.children().():[lastChild().1stChild().style():[color=#b9b9b9ad;cursor=not-allowed]]",
+                "_": "if():[generalPopup:().edit]:[if():[!_.editable.addOnly||[_.editable.addOnly;!data().in():[_.initialValue]]]:[handleRem()]]:[handleRem()]",
+                "handleRem": "if():[nthParent():3.data().[_.duplicatedInputPath].len()>1]:[if():[nthParent():3.data().[_.duplicatedInputPath].len()=2]:[changeRemBtnColor()];data().del();nthParent():3.update()]"
+            },
+            "getImage": "timer():[loader.show]:0;getGallery():[imgCounter=if():[searchDataImage:()]:[searchDataImage:().len()]:[0]]:[if():[_.success]:[if():[_.data.len()<25]:[moreImage:()=false]:[moreImage:()=true];mainMobilePageInfo:()=_.data;():mobileMainPage.update();():mobileTopbar.update();loader.hide;closeGeneralPopup()]:[loader.hide;moreImage:()=false;closeGeneralPopup()]]",
+            "handleRemoveIconColor": {
+                "checkIfLastIndex": "if():[nthParent():7.data().[__.path||__.duplicatedInputPath].len()=1]:[color=#b9b9b9ad;cursor=not-allowed]:[color=#5b5959ad;cursor=pointer]",
+                "handleConstantRows": "if():[[[().path().1]+1=[__.constantRows]()]||doc().[__.path].len()=1]:[color=#b9b9b9ad;cursor=not-allowed]:[color=#5b5959ad;cursor=pointer]",
+                "_": "if():[[__.constantRows]()]:[handleConstantRows()]:[checkIfLastIndex()]"
+            },
+            "displayPrevPath": {
+                "_": "if():[2ndParent().1stChild().path().[-1]>0]:[2ndParent().position=left;selectedPath:().[___.index]=2ndParent().1stChild().path().[-1]-1;insertPrevPath();handlePageNumber();handleArrowsColors()]",
+                "insertPrevPath": "2ndParent().insert():[preventDefault;path=2ndParent().path().clone().push():[_.path].push():[2ndParent().1stChild().path().[-1]-1];view=2ndParent().1stChild()];removeSectionFromFormIds():[index=___.index];2ndParent().1stChild().rem():[preventDefault=true]",
+                "#handlePageNumber": "parent().2ndChild().1stChild().txt()=2ndParent().1stChild().path().[-1]+1"
+            },
+            "displayNextPath": "if():[2ndParent().1stChild().path().[-1]<2ndParent().data().[_.path].len()-1]:[2ndParent().position=right;selectedPath:().[___.index]=2ndParent().1stChild().path().[-1]+1;2ndParent().insert():[preventDefault;path=2ndParent().path().clone().push():[_.path].push():[2ndParent().1stChild().path().[-1]+1];view=2ndParent().1stChild()];removeSectionFromFormIds():[index=___.index];2ndParent().1stChild().rem():[preventDefault=true];handlePageNumber();handleArrowsColors()]",
+            "insertNewSubSection": {
+                "_": "selectedPath:().[_.index]=parent().prev().path().[-1]+1;handleInputValueForSectionsWithSamePath();[().yy=().pathData.clone();2ndParent().position=right;if():[_.data]:[yy=().pathData.clone();().pathData+=[_.data]];2ndParent().insert():[data=().pathData;view=2ndParent().1stChild()]]()::[hideSiblingPaths()]",
+                "hideSiblingPaths": ";#removeSectionFromFormIds():[index=_.index];2ndParent().1stChild().rem():[preventDefault=true];handlePageNumber();handleArrowsColors():[path=__.path]",
+                "handleInputValueForSectionsWithSamePath": {
+                    "_": "().pathData=[];if():[__.path]:[____.sectionsInfo._():[if():[_.path=___.path]:[setInputValues()]]]",
+                    "setInputValues": "if():[_.subInput]:[_.subInput._():[handleinputsValues()]]:[_.input._():[handleinputsValues()]]",
+                    "handleinputsValues": "_.input._():[if():[_.inputLabel;_.inputValue;!_.executeEveryLoad;conditionTrue()]:[().pathData.[_.inputPath]=_.inputValue]]",
+                    "conditionTrue": "if():[_.condition||_.orCondition]:[customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone();path=parent().prev().path().[-2];index=parent().prev().path().[-1]+1]]:[true]"
+                }
+            },
+            "removeSubSection": {
+                "_": "if():[doc().[_.path].len()>1]:[displayOtherPath()::[2ndParent().1stChild().rem();handlePageNumber();handleArrowsColors()]]",
+                "displayOtherPath": "if():[parent().prev().path().[-1]>0]:[2ndParent().position=left;displayPrevPath()]:[2ndParent().position=right;displayNextPath()]",
+                "displayPrevPath": "selectedPath:().[___.index]=parent().prev().path().[-1]-1;2ndParent().insert():[preventDefault;path=2ndParent().path().clone().push():[_.path].push():[parent().prev().path().[-1]-1];view=parent().prev()]",
+                "displayNextPath": "selectedPath:().[___.index]=parent().prev().path().[-1]+1;2ndParent().insert():[preventDefault;path=2ndParent().path().clone().push():[_.path].push():[parent().prev().path().[-1]+1];view=parent().prev()]"
+            },
+            "handleArrowsColors": {
+                "_": "prevArrowColor();nextArrowColor();remBtnColor();addBtnColor()",
+                "nextArrowColor": "if():[2ndParent().1stChild().path().[-1]=2ndParent().data().[_.path].len()-1]:[parent().3rdChild().1stChild().style():[color=#b9b9b9ad]]:[parent().3rdChild().1stChild().style():[color=#444]]",
+                "prevArrowColor": "if():[2ndParent().1stChild().path().[-1]=0]:[parent().1stChild().1stChild().style():[color=#b9b9b9ad]]:[parent().1stChild().1stChild().style():[color=#444]]",
+                "remBtnColor": "if():[2ndParent().data().[_.path].len()=1]:[parent().2ndLastChild().1stChild().style():[color=#b9b9b9ad]]:[parent().2ndLastChild().1stChild().style():[color=#444]]",
+                "addBtnColor": "if():[()._.maxLen]:[if():[2ndParent().data().[_.path].len()=[()._.maxLen]()]:[parent().lastChild().1stChild().style():[color=#b9b9b9ad]]:[parent().lastChild().1stChild().style():[color=#444]]]"
+            },
+            "handlePageNumber": "parent().2ndChild().1stChild().txt()=2ndParent().1stChild().path().[-1]+1",
+            "handleGrid": {
+                "_": "if():[__.grid.type()=array]:[handleGridCondition()]:[().grid=__.grid]",
+                "handleGridCondition": "__.grid._():[().conditionApplied=customCondition():[condition=_.condition;data=doc().clone();path=bookings;index=path().[-1]];if():[().conditionApplied=true]:[().grid=_.grid]]"
+            },
+            "saveInputIdInFormIds": "().sectionIndex=if():[___.path]:[___.index+'.'+path().[-1]]:[___.index];formIds:().find():[sectionCounter=().sectionIndex].inputs.replace():[index=parent().index()]:[index=parent().index();id=().id]",
+            "conditionHandler": {
+                "_": "if():[path().len()>0]:[handleConditionInPath()]:[handleConditionInDoc()]",
+                "handleConditionInPath": "().display=customCondition():[orCondition=_.orCondition;condition=_.condition;data=doc();path=path().[-2];index=path().[-1]];if():[!().display]:[delFromDoc()]",
+                "handleConditionInDoc": "().display=customCondition():[orCondition=_.orCondition;condition=_.condition;data=doc()];if():[!().display]:[delFromDoc()]",
+                "delFromDoc": "parent().data().[()._.inputPath].del()"
+            },
+            "checkSelectedPath": "if():[__.path;_.type!=image]:[if():[selectedPath:().[____.index]||selectedPath:().[____.index]=0]:[if():[selectedPath:().[____.index]=path().[-1]]:[return():[true]]:[return():[false]]]:[return():[true]]]:[return():[true]]"
+        },
+        "comments": [
+            {
+                "note": "add and rem path",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "subSection",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "section inputs",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "clone",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "remove",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "add",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    4
+                ]
+            },
+            {
+                "note": "mobile",
+                "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "table",
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "arrow left",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "page counter",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "arrow right",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "add new item in path",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    6
+                ]
+            },
+            {
+                "note": "subSection controllers",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "normal input",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "multiInput",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "duplicatedInput",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "remove item from path",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    5
+                ]
+            },
+            {
+                "note": "add new clone item in path",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    4
+                ]
+            },
+            {
+                "note": "separator",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": " old code",
+                "path": [
+                    "#unitValueAndMult"
+                ]
+            },
+            {
+                "note": "duplicated input controlers",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    2,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "custom input",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    2,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            }
+        ],
+        "collapsed": [
+            {
+                "path": [
+                    "#handleInputValueInDocForAllSections"
+                ]
+            },
+            {
+                "path": [
+                    "#openLimitCheckBox"
+                ]
+            },
+            {
+                "path": [
+                    "insertNewSubSectionnnnn"
+                ]
+            },
+            {
+                "path": [
+                    "#removeSubSectionnnnn"
+                ]
+            },
+            {
+                "path": [
+                    "#insertNewSubSectionnnnn"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "insertNewSubSection",
+                    "handleInputValueForSectionsWithSamePath"
+                ]
+            },
+            {
+                "path": [
+                    "#unitValueAndMult"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "conditionHandler"
+                ]
+            },
+            {
+                "path": [
+                    "getSearchResult"
+                ]
+            },
+            {
+                "path": [
+                    "handleArrowsColors"
+                ]
+            },
+            {
+                "path": [
+                    "handleGrid"
+                ]
+            },
+            {
+                "path": [
+                    "removeRow"
+                ]
+            },
+            {
+                "path": [
+                    "removeSubSection"
+                ]
+            },
+            {
+                "path": [
+                    "insertNewSubSection"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "displayPrevPath"
+                ]
+            },
+            {
+                "path": [
+                    "inputsDataPath"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "handleRemDuplicatedInput"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            }
+        ],
+        "chunk": "chunk1",
+        "collection": "view"
+    }
+}

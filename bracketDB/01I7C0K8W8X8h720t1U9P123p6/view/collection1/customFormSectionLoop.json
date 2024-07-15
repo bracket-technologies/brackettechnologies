@@ -1,0 +1,298 @@
+{
+    "view": "View?id=customFormSectionLoop;class=column;style:[gap=2em;width=100%]",
+    "children": [
+        {
+            "view": "[View]:[data=_.inputInfo.subInput.clone()||_.inputInfo.clone()]?if():[_.multiSection]:[handleInputValueInDocForAllSections()];setSectionIndex();class=flex column;if():[_.onLoadSectionAction]:[[_.onLoadSectionAction]()]",
+            "children": [
+                {
+                    "view": "View?class=flex column;if():[!__.stopFormIds]:[if():[!__.stopFormIds]:[saveSectionIdInFormIds():[index=_.index;if():[_.input;!_.path]:[input=true]]]];handleDisplaySection();if():[().displaySection=false]:[parent().style().display=none]:[parent().style().display=flex]",
+                    "children": [
+                        {
+                            "view": "customTitle??parent().displaySection;_.title"
+                        },
+                        {
+                            "view": "View?class=flex column;style:[width=100%]?!_.customSectionView;parent().displaySection;!_.type||_.type!=image",
+                            "children": [
+                                {
+                                    "view": "[View]:[if():[!_.subInput]:[if():[!data().[_.path].0;_.path]:[..data().[_.path]=:[]];path=_.path]]?if():[!___.stopFormIds;__.path]:[if():[!___.stopFormIds]:[saveSectionIdInFormIds():[index=__.index;pathIndex=path().[-1];input=true]]];class=flex column;style:[width=100%;gap=1rem]",
+                                    "children": [
+                                        {
+                                            "view": "View?class=flex column;style:[width=100%;height=fit-content;overflow=hidden;gap=1rem];if():[__.defaultValues]:[handlePathDefaultValues()]",
+                                            "children": [
+                                                {
+                                                    "view": "View?style:[width=100%;height=fit-content;padding=1rem 1rem 0 1rem]",
+                                                    "children": [
+                                                        {
+                                                            "view": "customFormInputLoop"
+                                                        },
+                                                        {
+                                                            "view": "customFormTable"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            "view": "View?style:[width=100%;height=fit-content;overflow=hidden;padding=1rem]?_.customSectionView;parent().displaySection",
+                            "children": [
+                                {
+                                    "view": "_.customSectionView"
+                                }
+                            ]
+                        },
+                        {
+                            "view": "View?style:[width=100%]?_.type=image;parent().displaySection",
+                            "children": [
+                                {
+                                    "view": "View?class=flex;style:[;overflow=hidden;overflowX=auto;padding=1.5rem 1rem]",
+                                    "children": [
+                                        {
+                                            "view": "View?class=flex;style:[gap=1rem;width=fit-content]?doc().[_.path].len()>0",
+                                            "children": [
+                                                {
+                                                    "view": "[View]:[path=_.path]?class=flexbox",
+                                                    "children": [
+                                                        {
+                                                            "view": "View?class=flexbox;style:[border=1px solid #ddd;#backgroundColor=#f3f3f3;width=if():[mobile()]:[15rem]:[23rem];height=10rem;borderRadius=.5rem;padding=0;transition=.3s ease;overflow=hidden;cursor=pointer;position=relative]",
+                                                            "children": [
+                                                                {
+                                                                    "view": "Image?src=_.url;style:[maxWidth=100%;maxHeight=100%]"
+                                                                },
+                                                                {
+                                                                    "view": "Icon?name=Close;google.symbol;style:[fontSize=2.3rem;color=#5b5959ad;cursor=pointer;position=absolute;top=0.25rem;right=0.25rem];click:[2ndParent().rem()]"
+                                                                }
+                                                            ]
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "x1f7V1b1u0K32133T6D5P2I1K9",
+        "doc": "customFormSectionLoop",
+        "creationDate": 1711031365219,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "actions": {
+            "setSectionIndex": {
+                "_": "if():[______.index]:[if():[____.path]:[_.index=______.index+'.'+path().1]:[_.index=______.index];_.index=_.index+'.'+index()]:[_.index=index().toString()]"
+            },
+            "saveSectionIdInFormIds": {
+                "_": "().index=if():[_.pathIndex||_.pathIndex=0]:[_.index+'.'+_.pathIndex]:[_.index];cleanFormIds();saveSectionID()",
+                "saveSectionID": "formIds:().push():[id=().id;sectionCounter=().index;if():[_.input]:[inputs=:]]",
+                "cleanFormIds": "formIds:()._():[if():[_.sectionCounter.startsWith():[().index]]:[().repeatedSections.push():[_]]];if():[().repeatedSections]:[().repeatedSections._():[formIds:().pullItem():[_]]]"
+            },
+            "handleDisplaySection": {
+                "sectionConditionHandler": "().displaySection=customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone();path=path().[-2];index=path().[-1]];if():[!().displaySection]:[delSectionFromDoc()]",
+                "delSectionFromDoc": "if():[_.path]:[doc().[_.path].del()]:[_.input._():[doc().[_.inputPath].del()]]",
+                "_": "().displaySection=true;if():[_.condition||_.orCondition]:[sectionConditionHandler()]"
+            },
+            "handleInputValueInDocForAllSections": {
+                "handeItemsCondition": "_.items._():[().tahaa=customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone();path=___.path;index=0];if():[().tahaa]:[().items=_.items]]",
+                "setItems": "if():[_.items.0.condition||_.items.0.orCondition]:[handeItemsCondition()]:[().items=_.items]",
+                "_": "_.sectionsInfo._():[if():[_.condition]:[checkSectionCondition()]:[checkIfSubInput()]]",
+                "handleFirstItemAsValue": "setItems();if():[___.path]:[if():[!doc().[___.path].0.[_.inputPath]]:[doc().[___.path].0.[_.inputPath]=().items.0]]:[if():[!doc().[_.inputPath]]:[doc().[_.inputPath]=().items.0]]",
+                "handleAllowedLedgersCondition": "_.allowedCode._():[().tahaq=customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone();path=___.path;index=0];if():[().tahaq]:[().allowedLedger=_.allowedCode.0.toString()]]",
+                "checkSectionCondition": "().taha=customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone()];if():[().taha]:[checkIfSubInput()]",
+                "checkIfSubInput": "if():[_.subInput]:[_.subInput._():[_.input._():[handleInputValueInDoc()]]]:[_.input._():[handleInputValueInDoc()]]",
+                "handleInputValueInDoc": "if():[_.condition||_.orCondition]:[().tahae=customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone();path=___.path;index=0]]:[().tahae=true];if():[_.inputLabel;[_.inputValue||_.inputValue=0];!_.executeEveryLoad;().tahae]:[if():[___.path]:[if():[!doc().[___.path].0.[_.inputPath]]:[doc().[___.path].0.[_.inputPath]=[_.inputValue]()]]:[if():[!doc().[_.inputPath]]:[doc().[_.inputPath]=[_.inputValue]()]]].elif():[_.inputLabel;_.inputValue;_.executeEveryLoad;().tahae]:[if():[___.path]:[doc().[___.path].0.[_.inputPath]=[_.inputValue]()]:[doc().[_.inputPath]=[_.inputValue]()]].elif():[_.fillFirstItemAsValue;().tahae]:[handleFirstItemAsValue()];#.elif():[_.allowedCode;().tahae]:[handleAllowedLedgers()]",
+                "#handleAllowedLedgers": "setAllowedLedger();if():[___.path]:[if():[!doc().[___.path].0.[_.inputPath]]:[doc().[___.path].0.[_.inputPath]=().allowedLedger]]:[if():[!doc().[_.inputPath]||true]:[doc().[_.inputPath]=().allowedLedger]]",
+                "#setAllowedLedger": "if():[_.allowedCode.0.condition||_.allowedCode.0.orCondition]:[handleAllowedLedgersCondition()]:[().allowedLedger=_.allowedCode]"
+            }
+        },
+        "collapsed": [
+            {
+                "path": [
+                    "#saveSectionIdInFormI"
+                ]
+            },
+            {
+                "path": [
+                    "#saveSectionIdInForm"
+                ]
+            },
+            {
+                "path": [
+                    "#saveSectionIdInFormIdsssssssssssssss"
+                ]
+            },
+            {
+                "path": [
+                    "#saveSectionIdInFormIdstttt"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "#custo",
+                    "getSectionPathBySectionIndex"
+                ]
+            },
+            {
+                "path": [
+                    "#getSectionPathBySectionIn"
+                ]
+            },
+            {
+                "path": [
+                    "#saveSectionIdInForm"
+                ]
+            },
+            {
+                "path": [
+                    "setSectionIndex"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "cu"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "saveSectionIdInFormIds"
+                ]
+            },
+            {
+                "path": [
+                    "handleInputValueInDocForAllSections"
+                ]
+            },
+            {
+                "path": [
+                    "handleDisplaySection"
+                ]
+            }
+        ],
+        "comments": [
+            {
+                "note": "if you need to look at all templates;please change the template Name and the collection in order to change the structure and the table;(rows of the table are already filled so you can also fill your data);i put the data of all templates in parameter",
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "image",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            false,
+            {
+                "note": "customSectionView",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "take path and edit on it if not pathsIds",
+                "path": [
+                    "#saveSectionIdInForm",
+                    "addSectionIdInPath"
+                ]
+            },
+            {
+                "note": "table",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "to be reBuild",
+                "path": [
+                    "handleInputValueInDocForAllSections"
+                ]
+            }
+        ],
+        "folderPath": [],
+        "version": 0,
+        "counter": 54,
+        "secure": false,
+        "chunk": "chunk1",
+        "collection": "view"
+    }
+}

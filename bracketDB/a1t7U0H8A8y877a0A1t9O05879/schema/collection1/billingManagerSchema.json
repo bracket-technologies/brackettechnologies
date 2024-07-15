@@ -1,0 +1,397 @@
+{
+    "__props__": {
+        "id": "b1V782r0Q828G7B1U0z9p1l3X0",
+        "doc": "billingManagerSchema",
+        "counter": 1,
+        "creationDate": 1720887109130,
+        "collection": "schema",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [
+            {
+                "note": "billing account",
+                "path": [
+                    "billing",
+                    0
+                ]
+            },
+            {
+                "note": "payment methods",
+                "path": [
+                    "billing",
+                    1
+                ]
+            },
+            {
+                "note": "purchases",
+                "path": [
+                    "billing",
+                    2
+                ]
+            },
+            {
+                "note": "subscriptions",
+                "path": [
+                    "billing",
+                    3
+                ]
+            }
+        ],
+        "collapsed": [
+            {
+                "path": [
+                    "billing",
+                    2,
+                    "manager",
+                    "search"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    3,
+                    "manager",
+                    "search"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    2,
+                    "manager",
+                    "title"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    3,
+                    "manager",
+                    "title"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    0,
+                    "manager",
+                    "search"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    0,
+                    "manager",
+                    "title"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    1,
+                    "manager",
+                    "search"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    1,
+                    "manager",
+                    "table",
+                    "data"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    0,
+                    "manager",
+                    "table"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    1,
+                    "manager",
+                    "table"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    1,
+                    "manager",
+                    "title"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    2
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 4427
+    },
+    "billing": [
+        {
+            "text": "Billing Accounts",
+            "tooltip": "billing accounts",
+            "icon": "account_balance",
+            "manager": {
+                "table": {
+                    "headers": {
+                        "styles": "gridTemplateColumns=3rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+                        "headers": [
+                            {
+                                "header": "Name",
+                                "path": "name"
+                            },
+                            {
+                                "header": "Organization",
+                                "path": "organizationName"
+                            },
+                            {
+                                "header": "Country",
+                                "path": "country"
+                            },
+                            {
+                                "header": "Currency",
+                                "path": "currency"
+                            },
+                            {
+                                "header": "Credit Limit",
+                                "path": "creditLimit.price()"
+                            },
+                            {
+                                "header": "Debits",
+                                "text": "data:().lastTransactions.find():[billingAccountID=__.id()].totalDebits",
+                                "styles": "color=blue"
+                            },
+                            {
+                                "header": "Credits",
+                                "text": "data:().lastTransactions.find():[billingAccountID=__.id()].totalCredits",
+                                "style": "color=blue"
+                            },
+                            {
+                                "header": "Balance",
+                                "text": "data:().lastTransactions.find():[billingAccountID=__.id()].balance",
+                                "styles": "color=[blue?data:().lastTransactions.find():[billingAccountID=__.id()].balance>=0?red]"
+                            },
+                            {
+                                "header": ""
+                            }
+                        ]
+                    },
+                    "data": {
+                        "action": "[getBillingAccounts():[accountID=billingAccount:().accountID]:[data:().():[billingAccounts=_.billingAccounts;lastTransactions=_.lastTransactions]]]():[collection=actions;doc=main]",
+                        "publicID": "billingAccounts"
+                    }
+                },
+                "search": {
+                    "searchInputs": [
+                        {
+                            "label": "Billing Account#",
+                            "path": "billingAccount"
+                        },
+                        {
+                            "label": "Currency",
+                            "path": "currency",
+                            "items": [
+                                "USD",
+                                "COIN"
+                            ],
+                            "inputType": "stdItems"
+                        },
+                        {
+                            "label": "Transaction From Date",
+                            "path": "transactionFromDate",
+                            "type": "date"
+                        },
+                        {
+                            "label": "Transaction To Date",
+                            "path": "transactionToDate",
+                            "type": "date"
+                        }
+                    ],
+                    "schema": "billingAccountSearchSchema"
+                },
+                "title": {
+                    "btns": [
+                        {
+                            "name": "add",
+                            "text": "new billing account",
+                            "form": "newBillingAccountForm"
+                        }
+                    ],
+                    "title": "Billing Account Manager"
+                }
+            }
+        },
+        {
+            "text": "Payment Methods",
+            "tooltip": "payment methods",
+            "icon": "credit_card",
+            "manager": {
+                "title": {
+                    "title": "Payment Method Manager",
+                    "btns": [
+                        {
+                            "name": "add",
+                            "text": "new payment method",
+                            "form": "newPaymentMethodForm"
+                        }
+                    ]
+                },
+                "search": {
+                    "searchInputs": [
+                        {
+                            "label": "Payment Method#",
+                            "path": "paymentMethod"
+                        },
+                        {
+                            "label": "Payment Card Name",
+                            "path": "paymentCard"
+                        }
+                    ]
+                },
+                "table": {
+                    "headers": {
+                        "styles": "gridTemplateColumns=3rem 1fr 1fr 1fr 1fr 1fr",
+                        "headers": [
+                            {
+                                "header": "Name",
+                                "path": "name"
+                            },
+                            {
+                                "header": "Type",
+                                "path": "type"
+                            },
+                            {
+                                "header": "Card#",
+                                "path": "cardNumber"
+                            },
+                            {
+                                "header": "Expiry Date",
+                                "text": "__.expiryMonth+'/'+__.expiryYear"
+                            },
+                            {
+                                "header": ""
+                            }
+                        ]
+                    },
+                    "data": {
+                        "action": "[getPaymentMethods():[accountID=billingAccount:().accountID]:[data:().paymentMethods=_.paymentMethods]]():[collection=actions;doc=main]",
+                        "publicID": "paymentMethods"
+                    }
+                }
+            }
+        },
+        {
+            "text": "Purchaces",
+            "tooltip": "purchaces",
+            "icon": "monetization_on",
+            "manager": {
+                "title": {
+                    "title": "Purchace Manager",
+                    "btns": [
+                        {
+                            "name": "new_releases",
+                            "text": "generate coins",
+                            "form": "genCoinsForm",
+                            "conditions": "user:().username=Obeid"
+                        },
+                        {
+                            "name": "shopping_bag",
+                            "text": "buy coins",
+                            "form": "chargeAccountForm"
+                        },
+                        {
+                            "name": "sell",
+                            "text": "sell coins",
+                            "form": "sellCoinsForm"
+                        }
+                    ]
+                },
+                "search": {
+                    "searchInputs": [
+                        {
+                            "label": "Coin Invoice#",
+                            "path": "coinInvoice"
+                        },
+                        {
+                            "label": "From Date",
+                            "path": "fromDate",
+                            "type": "date",
+                            "defaultValue": "[todayStart().timestamp()]().toDateInputFormat()"
+                        },
+                        {
+                            "label": "To Date",
+                            "path": "toDate",
+                            "type": "date"
+                        }
+                    ]
+                }
+            }
+        },
+        {
+            "text": "Subscriptions",
+            "tooltip": "subscriptions",
+            "icon": "subscriptions",
+            "manager": {
+                "title": {
+                    "title": "Subscription Invoice Manager",
+                    "btns": [
+                        {
+                            "name": "add_business",
+                            "text": "subscribe",
+                            "form": "subscriptionForm"
+                        }
+                    ]
+                },
+                "search": {
+                    "searchInputs": [
+                        {
+                            "label": "Subscription#",
+                            "path": "subscription"
+                        },
+                        {
+                            "label": "From Date",
+                            "path": "fromDate",
+                            "type": "date",
+                            "defaultValue": "[todayStart().timestamp()]().toDateInputFormat()"
+                        },
+                        {
+                            "label": "To Date",
+                            "path": "toDate",
+                            "type": "date"
+                        }
+                    ]
+                }
+            }
+        }
+    ]
+}

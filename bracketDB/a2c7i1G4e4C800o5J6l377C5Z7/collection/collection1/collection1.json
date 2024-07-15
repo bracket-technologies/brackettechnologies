@@ -1,0 +1,24 @@
+{
+    "__props__": {
+        "id": "Q1Q7i195F3Q493O127t9h2u5N5",
+        "doc": "collection1",
+        "counter": 1,
+        "creationDate": 1715343179255,
+        "active": true,
+        "actions": {},
+        "comments": {},
+        "collapsed": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "collection",
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2"
+    },
+    "title": "NEW IN WOMEN'S CLOTHING",
+    "id": "1",
+    "categoryIDs": [
+        "1",
+        "2",
+        "5",
+        "11"
+    ]
+}

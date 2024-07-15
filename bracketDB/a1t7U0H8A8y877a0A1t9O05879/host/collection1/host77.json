@@ -1,0 +1,24 @@
+{
+    "publicID": "381dz7Li2DK0y18Iw7di3SE3Vb4WO6654NM1ov8",
+    "port": [
+        84
+    ],
+    "localhost": "skylagroup.localhost",
+    "active": true,
+    "subdomain": "skylagroup",
+    "private": true,
+    "__props__": {
+        "id": "N157S2x00827I3M3o4R6m5m8t4",
+        "doc": "host77",
+        "counter": 77,
+        "creationDate": 1720873346584,
+        "collection": "host",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 368
+    }
+}

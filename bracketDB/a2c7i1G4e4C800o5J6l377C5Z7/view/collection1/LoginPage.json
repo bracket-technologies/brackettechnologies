@@ -1,0 +1,125 @@
+{
+    "view": "View?doc=LoginData;id=LoginPage;class=flexbox;style=[backgroundColor=#f8f8f8;height=100vh;width=100vw]",
+    "__props__": {
+        "id": "E167E1a6m4O555N6O1W0S3L718",
+        "doc": "LoginPage",
+        "counter": 26,
+        "creationDate": 1716455610378,
+        "active": true,
+        "actions": {
+            "display2ndIcon": "next().style():[display=flex]",
+            "display1stIcon": "prev().style():[display=flex]",
+            "searchLoginInfo": {
+                "_": "log():[test];search():[collection=usernameInfo;find:[username=doc().username]]:[checkPassword()?_.data.value()?note():[text=Incorrect Username or Password;danger]]",
+                "checkPassword": "search():[collection=password;find:[password=doc().password]]:[note():Logged In?_.data.value()?note():[text=Incorrect Username or Password;danger]]"
+            }
+        },
+        "comments": [],
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    2,
+                    "children"
+                ]
+            }
+        ],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "view"
+    },
+    "children": [
+        {
+            "view": "View?id=LoginPart;class=flexbox column;style=[height=63%;padding=4rem 3rem;backgroundColor=white;width=45rem;gap=3rem;borderRadius=10px]",
+            "children": [
+                {
+                    "view": "View?id=topContainer;class=flexbox column;style=[gap=2rem]",
+                    "children": [
+                        {
+                            "view": "Image?src='https://storage.googleapis.com/bracket-technologies.appspot.com/storage-tt/XPj7rpzqqcYaio0jdejE?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=BaeQg0yFhhoHkbcBMfX4tFfKR%2BaanI7YY6qCnRPW2oS6AqLvfeNl3OqfBQhKCk%2Fg2bn0x4OR%2FQKwYEI7SIFCqFG09WYwnp4v4EHwOsMKM7KB6ocxSEqIn3W0%2BAi6vqseocZky5Ms15WfSyc4GtD%2BrbsFZkEO%2F9zB9I80nwUSeVF1BcUp0juRGKdyge6B31t66J9iKiy2mCAnoXN4I61OVojFghacVVSq8bu1WVrggOjp1Z0H%2BifUxpCZ68rXI%2BcqsglgVT6RMqamDGa32XEKB9jOh3IN09XwwE8if5LBwlGEiocVvJ4tKGLWFfPQdhFk37fogg8GM9ivvjMSFPYGIg%3D%3D';style=[height=12rem;width=10rem]"
+                        },
+                        {
+                            "view": "View?id=textContainer;class=flexbox column;style=[gap=.5rem]",
+                            "children": [
+                                {
+                                    "view": "Text?text=Welcome To;style=[fontWeight=900;fontSize=1.5rem]"
+                                },
+                                {
+                                    "view": "Text?text=Travel Accounting Platform;style=[fontWeight=900;fontSize=2rem]"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "view": "View?id=infoContainer;class=flex column;style=[gap=2rem;width=100%]",
+                    "children": [
+                        {
+                            "view": "View?id=userName;class=flex column;style=[textAlign=left]",
+                            "children": [
+                                {
+                                    "view": "Text?text=Username;style=[fontSize=1.5rem;textAlign=left]"
+                                },
+                                {
+                                    "view": "Input?;style=[borderRadius=0.25rem;width=100%;border=1px solid #ddd;height=4rem];path=username;"
+                                }
+                            ]
+                        },
+                        {
+                            "view": "View?id=passwordInfo;class=flex column;style=[textAlign=left]",
+                            "children": [
+                                {
+                                    "view": "Text?text=Password;style=[fontSize=1.5rem;textAlign=left];"
+                                },
+                                {
+                                    "view": "View?style=[display=inline-flex;borderRadius=0.25rem;width=100%;border=1px solid #ddd;height=4rem]",
+                                    "children": [
+                                        {
+                                            "view": "Input?style=[width=100%;height=4rem];path=password;[keyup?searchLoginInfo()?e().key='Enter']"
+                                        },
+                                        {
+                                            "view": "View?id=iconHolder;class=flexbox;style=[height=100%;width=4rem;cursor=pointer];hover.style=[backgroundColor=rgb(238,238,238];transition=0.1s]",
+                                            "children": [
+                                                {
+                                                    "view": "Icon?name=Visibility;google.symbol;style=[fontSize=2rem;height=100%;display=flex];[click?display2ndIcon();style():[display=none]]"
+                                                },
+                                                {
+                                                    "view": "Icon?name=Visibility_off;google.symbol;style=[fontSize=2rem;height=100%;display=none];[click?display1stIcon();style():[display=none]]"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "view": "View?class=flexbox;style=[width=100%;backgroundColor=rgb(251,59,30);borderRadius=7.5px;height=4rem;cursor=pointer;transition=0.2s ease-in-out];hover.style=[backgroundColor=rgb(222,35,7)];[click?searchLoginInfo()]",
+                    "children": [
+                        {
+                            "view": "Text?text=Login;style=[fontSize=2rem;color=white]"
+                        }
+                    ]
+                },
+                {
+                    "view": "View?class=flex;style=[width=100%;fontSize=1.2rem;gap=0.5rem]",
+                    "children": [
+                        {
+                            "view": "Text?text='Don\\'t have an account? ';style=[textAlign=left]"
+                        },
+                        {
+                            "view": "Text?text= Sign up;style=[color=#fb3b1e;text-decoration=underline;cursor=pointer]"
+                        },
+                        {
+                            "view": "Text?text='Forgot Password?';style=[textAlign=right;text-decoration=underline;margin-left=auto;cursor=pointer]"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

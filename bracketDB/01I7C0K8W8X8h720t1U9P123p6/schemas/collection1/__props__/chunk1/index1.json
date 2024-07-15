@@ -1,0 +1,60 @@
+{
+    "confirmInvoice": {
+        "collection": "confirmInvoice"
+    },
+    "transaction": {
+        "collection": "transaction"
+    },
+    "voucher": {
+        "collection": "voucher"
+    },
+    "sheet": {
+        "collection": "sheet"
+    },
+    "session": {
+        "collection": "session"
+    },
+    "schedule": {
+        "collection": "schedule"
+    },
+    "notification": {
+        "collection": "notification"
+    },
+    "exchangeRate": {
+        "collection": "exchangeRate"
+    },
+    "currency": {
+        "collection": "currency"
+    },
+    "confirmVoucher": {
+        "collection": "confirmVoucher"
+    },
+    "cancelConfirmedVoucher": {
+        "collection": "cancelConfirmedVoucher"
+    },
+    "account": {
+        "collection": "account"
+    },
+    "branch": {
+        "collection": "branch"
+    },
+    "username": {
+        "collection": "username"
+    },
+    "permission": {
+        "collection": "permission"
+    },
+    "user": {
+        "collection": "user"
+    },
+    "password": {
+        "collection": "password"
+    },
+    "signup": {
+        "collection": "signup"
+    },
+    "invoice": {
+        "collection": "invoice"
+    },
+    "tttttt": {}
+}

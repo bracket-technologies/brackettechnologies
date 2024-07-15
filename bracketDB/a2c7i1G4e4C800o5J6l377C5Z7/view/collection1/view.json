@@ -1,0 +1,24 @@
+{
+    "view": "View?id=view;class=flexbox;title=Playground Platform",
+    "__props__": {
+        "id": "K1g7z1e4w4E9X5l9248302P3a8",
+        "doc": "view",
+        "counter": 7,
+        "creationDate": 1714495943238,
+        "active": true,
+        "actions": {
+            "product": ":[offerPrice=100;priceUsd=150]"
+        },
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "view",
+        "createdByUserID": "M1X7V1X4O4A8Z076N0c2l5x2R1",
+        "comments": [],
+        "collapsed": []
+    },
+    "children": [
+        {
+            "view": "View?class=flexbox column;style:[border=1px solid #ddd;border-Radius=2rem;padding=1rem;text-align:=left;position-left]"
+        }
+    ]
+}

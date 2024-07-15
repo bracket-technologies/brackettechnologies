@@ -1,0 +1,62 @@
+{
+    "name": "rrr",
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "headers": [
+        {
+            "text": "r1",
+            "key": "r1"
+        },
+        {
+            "text": "r2",
+            "key": "r2"
+        }
+    ],
+    "data": [
+        {
+            "r1": "r",
+            "r2": "t"
+        },
+        {
+            "r1": "rr",
+            "r2": "tt"
+        },
+        {
+            "r1": "rrr",
+            "r2": "ttt"
+        }
+    ],
+    "type": "Editable",
+    "width": [
+        {
+            "column": 2,
+            "width": "200px"
+        }
+    ],
+    "id": "Gfbjub6kf29xQizIks5m1cgzrXQV1Cf9dmabQGo4YybkuDs0tDoAzncG17yM-1719399068642",
+    "creationDate": 1719399068642,
+    "creationDay": 1719360000000,
+    "__props__": {
+        "id": "i11771H9f3U9B9N0V6x876d478",
+        "doc": "sheet16",
+        "counter": 16,
+        "creationDate": 1719399068648,
+        "actions": {},
+        "comments": [],
+        "collapsed": [
+            {
+                "path": [
+                    "data"
+                ]
+            },
+            {
+                "path": [
+                    "headers"
+                ]
+            }
+        ],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "sheet"
+    }
+}

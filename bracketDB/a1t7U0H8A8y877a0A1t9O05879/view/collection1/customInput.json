@@ -1,0 +1,201 @@
+{
+    "view": "View?id=customInput;style:[width=100%;flex=1;[display=_.display?_.display]]",
+    "__props__": {
+        "id": "G1D751F6K3Z7o049G268P0R812",
+        "doc": "customInput",
+        "counter": 99,
+        "creationDate": 1716370928082,
+        "collection": "view",
+        "chunk": "chunk1",
+        "actions": {
+            "droplistHandler": "input().txt()=clicked().txt();[data()=clicked().txt()?_.inputType!=yesNo?data()=[true?clicked().txt()=Yes?false]];[_.action]()",
+            "toggleCheck": "1stChild().():[doc().[_]=true;display()?hidden()?doc().[_]=false;hide()]"
+        },
+        "comments": [
+            {
+                "note": "std input",
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "droplist input",
+                "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "yes no input",
+                "path": [
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "multi single input",
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "checkbox",
+                "path": [
+                    "children",
+                    4
+                ]
+            }
+        ],
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    3
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 4271
+    },
+    "children": [
+        {
+            "view": "View?class=flex column;style:[width=100%]?_.inputType=multiSingle",
+            "children": [
+                {
+                    "view": "View?class=flex",
+                    "children": [
+                        {
+                            "view": "Text?class=pointer;text=_.label;[required?_.required];style:[textAlign=left;fontSize=1.4rem;width=fit-content;color=#666];[click?next().click()]"
+                        }
+                    ]
+                },
+                {
+                    "view": "View?class=flex column;style:[width=100%;gap=.5rem];_.multiSingle.del()",
+                    "children": [
+                        {
+                            "view": "[View]:[().[data()=:?!data()];path=_.path]?class=flex align-center;style:[gap=.5rem;width=100%]",
+                            "children": [
+                                {
+                                    "view": "customInput?data=__"
+                                },
+                                {
+                                    "view": "View?class=flex align-center;style:[gap=1rem]",
+                                    "children": [
+                                        {
+                                            "view": "View?class=flexbox;style:[height=100%]",
+                                            "children": [
+                                                {
+                                                    "view": "Icon?name=delete;google.symbol;style:[fontSize=1.5rem]"
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            "view": "View?class=flexbox;style:[height=100%]",
+                                            "children": [
+                                                {
+                                                    "view": "Icon?name=add_circle;google.symbol;style:[fontSize=1.5rem]"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "view": "Input?label:[text=[_.label]();style:[fontSize=1.4rem;color=#666]];style:[width=100%;fontSize=1.4rem;color=#666;backgroundColor=#fff];path=_.path;type=[_.type||text];[text=[_.defaultValue]()?_.defaultValue];[password=true?_.path=password];[clearable?_.clearable!=false];[required?_.required];[readonly;droplist:[items=_.items]?_.items]?!_.inputType||_.inputType=std"
+        },
+        {
+            "view": "View?class=flex column;style:[width=100%;gap=.5rem]?_.inputType=stdItems",
+            "children": [
+                {
+                    "view": "Text?class=pointer;text=_.label;[required?_.required];style:[textAlign=left;fontSize=1.4rem;width=fit-content;color=#666];[click?next().click()]"
+                },
+                {
+                    "view": "View?class=flexbox pointer;style:[border=1px solid #ccc;position=relative;height=4rem;borderRadius=.25rem;backgroundColor=#fff];path=_.path;droplist:[preventDefault;items=_.items;align=left];[click:droplist?droplistHandler()]",
+                    "children": [
+                        {
+                            "view": "Input?style:[flex=1;height=100%;fontSize=1.4rem;color=#666];[readonly?!_.editable];[clearable?_.clearable!=false]"
+                        },
+                        {
+                            "view": "Icon?name=keyboard_arrow_up;google.symbol;style:[color=#888;fontSize=2.25rem;height=2rem;width=2rem;marginRight=.5rem;transform=rotate(180deg)]"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "view": "View?class=flex column;style:[width=100%;gap=.5rem]?_.inputType=yesNo",
+            "children": [
+                {
+                    "view": "Text?class=pointer;text=_.label;[required?_.required];style:[textAlign=left;fontSize=1.4rem;width=fit-content;color=#666];[click?next().click()]"
+                },
+                {
+                    "view": "View?class=flexbox pointer;style:[border=1px solid #ccc;position=relative;height=4rem;borderRadius=.25rem;backgroundColor=#fff];path=_.path;[data()=[_.defaultValue]()?_.defaultValue!=undefined];droplist:[preventDefault;items=_.items;align=left];[click:droplist?droplistHandler()]",
+                    "children": [
+                        {
+                            "view": "Input?style:[flex=1;height=100%;fontSize=1.4rem;color=#666];readonly;text=[Yes?data()=true?No?!data();_.items=:Yes:No?data()]"
+                        },
+                        {
+                            "view": "Icon?name=keyboard_arrow_up;google.symbol;style:[color=#888;fontSize=2.25rem;height=2rem;width=2rem;marginRight=.5rem;transform=rotate(180deg)]"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "view": "View?class=flex;style:[gap=1rem;alignItems=center;padding=1rem]?_.inputType=checkbox",
+            "children": [
+                {
+                    "view": "View?class=pointer flexbox;style:[border=1px solid #ccc;borderRadius=.25rem;height=1.75rem;width=1.75rem;backgroundColor=#fff];[click?toggleCheck():[_.path]]",
+                    "children": [
+                        {
+                            "view": "Icon?name=bi-check;style:[display=[flex?data().[_.path]?none];color=blue;fontSize=2rem]"
+                        }
+                    ]
+                },
+                {
+                    "view": "Text?text=[_.label]();style:[fontSize=1.4rem;fontWeight=bold]"
+                }
+            ]
+        }
+    ]
+}

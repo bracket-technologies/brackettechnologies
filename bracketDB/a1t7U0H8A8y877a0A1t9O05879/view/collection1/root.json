@@ -1,0 +1,49 @@
+{
+    "view": "View?id=root;class=column;style:[minHeight=100vh]",
+    "children": [
+        {
+            "view": "manifest:().page"
+        },
+        {
+            "view": "droplist"
+        },
+        {
+            "view": "mininote"
+        },
+        {
+            "view": "note"
+        },
+        {
+            "view": "loader"
+        },
+        {
+            "view": "tooltip"
+        },
+        {
+            "view": "confirmationPopup"
+        },
+        {
+            "view": "form"
+        },
+        {
+            "view": "msg"
+        }
+    ],
+    "__props__": {
+        "db": "views",
+        "collection": "view",
+        "id": "i1I7F1L0f3a3U0G798f6s5k4B3",
+        "doc": "root",
+        "creationDate": 1710330786543,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "actions": {},
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "version": 0,
+        "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+        "counter": 21,
+        "chunk": "chunk1"
+    }
+}

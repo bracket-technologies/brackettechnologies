@@ -1,0 +1,12 @@
+{
+    "docs": [
+        "paymentsManager",
+        "receiptsManager",
+        "accountingJournalManager",
+        "journalsManager",
+        "navBar"
+    ],
+    "chunk": "chunk1",
+    "docsLength": 5,
+    "size": 15807
+}

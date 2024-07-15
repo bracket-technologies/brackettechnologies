@@ -1,0 +1,22 @@
+{
+    "createdBy": "Udf9J6L5mSDwJKGictin1xutMwalegfs9wnDoxKVbXriRv2gupogDCF3MUtG1700573330426",
+    "description": "asset creation",
+    "id": "bTejx1bzLBRfhcVuZgrMzBTNyxhh4njTPunk2cpcoT6YMv43jqYkOyAgQoWb1701863767635",
+    "creationDay": 1701820800000,
+    "asset": "AieKQLgkCw6Kec2lxcac5Ic9bX1kQQswlX9VOxHuAhMVgC6G14xnFOP7nYnY1701863767314",
+    "creationDate": 1701863767636,
+    "__props__": {
+        "id": "O17751Z160f3a1d3o6B3K6P608",
+        "doc": "bTejx1bzLBRfhcVuZgrMzBTNyxhh4njTPunk2cpcoT6YMv43jqYkOyAgQoWb1701863767635",
+        "creationDate": 1711031363668,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 170,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

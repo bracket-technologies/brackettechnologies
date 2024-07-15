@@ -1,0 +1,126 @@
+{
+    "headers": [
+        {
+            "text": "Cities",
+            "key": "cites"
+        }
+    ],
+    "data": [
+        {
+            "cities": "Baghdad"
+        },
+        {
+            "cities": "Mosul"
+        },
+        {
+            "cities": "Basra"
+        },
+        {
+            "cities": "Erbil (Hawler)"
+        },
+        {
+            "cities": "Sulaymaniyah"
+        },
+        {
+            "cities": "Najaf"
+        },
+        {
+            "cities": "Karbala"
+        },
+        {
+            "cities": "Kirkuk"
+        },
+        {
+            "cities": "Ramadi"
+        },
+        {
+            "cities": "Hilla"
+        },
+        {
+            "cities": "Fallujah"
+        },
+        {
+            "cities": "Tikrit"
+        },
+        {
+            "cities": "Samarra"
+        },
+        {
+            "cities": "Amarah"
+        },
+        {
+            "cities": "Diwaniyah"
+        },
+        {
+            "cities": "Kut"
+        },
+        {
+            "cities": "Baqubah"
+        },
+        {
+            "cities": "Hillah"
+        },
+        {
+            "cities": "Nasiriyah"
+        },
+        {
+            "cities": "Kufa"
+        }
+    ],
+    "active": true,
+    "permission": "Readonly",
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "createdBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+    "name": "Iraq Cities",
+    "columnWidth": {
+        "A": {
+            "columnWidth": "210px"
+        },
+        "B": {
+            "columnWidth": "87px"
+        }
+    },
+    "rowCount": 50,
+    "id": "UoWhGLHd3Lz8wWrLmQJsQ4X1CgbU3CivRTpYvHRKoDCYvEtsBoEtsouK7t391698744843457",
+    "creationDay": 1705410771391,
+    "__props__": {
+        "id": "Z107z1f1B0m3A1b3R67222a0P6",
+        "doc": "UoWhGLHd3Lz8wWrLmQJsQ4X1CgbU3CivRTpYvHRKoDCYvEtsBoEtsouK7t391698744843457",
+        "creationDate": 1711031362206,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [
+            {
+                "path": [
+                    "keys"
+                ]
+            },
+            {
+                "path": [
+                    "columnWidth"
+                ]
+            },
+            {
+                "path": [
+                    "titles"
+                ]
+            },
+            {
+                "path": [
+                    "headers"
+                ]
+            },
+            {
+                "path": [
+                    "data"
+                ]
+            }
+        ],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 3,
+        "collection": "sheet",
+        "chunk": "chunk1"
+    }
+}

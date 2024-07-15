@@ -1,0 +1,22 @@
+{
+    "subscription1": {
+        "publicID": "381dz7Li2DK0y18Iw7di3SE3Vb4WO6654NM1ov8",
+        "pluginID": "r1c7d176U1B9m6C7i9F8T973T2",
+        "expiryDate": 1721478146736
+    },
+    "subscription2": {
+        "publicID": "991cD7p528b0wu8Go7H73364Lu5oP1qw4My8ZS9",
+        "pluginID": "r1c7d176U1B9m6C7i9F8T973T2",
+        "expiryDate": 1721478251753
+    },
+    "subscription3": {
+        "publicID": "991cD7p528b0wu8Go7H73364Lu5oP1qw4My8ZS9",
+        "pluginID": "Q1p78107R4j1n2Z9a2E1K1r912",
+        "expiryDate": 1721642041246
+    },
+    "subscription4": {
+        "publicID": "8N15v7k02mY1jw0qG3sj7Dz69p05O5ID1B76bZ6",
+        "pluginID": "r1c7d176U1B9m6C7i9F8T973T2",
+        "expiryDate": 1721642405291
+    }
+}

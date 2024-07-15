@@ -1,0 +1,60 @@
+{
+    "updateBy": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+    "difference": [
+        {
+            "new": {
+                "row11": "2.88rem",
+                "row12": "2.88rem",
+                "row31": "2.88rem",
+                "row10": "2.88rem",
+                "row15": "2.88rem",
+                "row16": "2.88rem",
+                "row13": "2.88rem",
+                "row14": "2.88rem",
+                "row30": "2.88rem",
+                "row28": "2.88rem",
+                "row29": "2.88rem",
+                "row22": "2.88rem",
+                "row23": "2.88rem",
+                "row1": "2.88rem",
+                "row20": "2.88rem",
+                "row21": "2.88rem",
+                "row26": "2.88rem",
+                "row27": "2.88rem",
+                "row24": "2.88rem",
+                "row25": "2.88rem",
+                "row7": "2.88rem",
+                "row6": "2.88rem",
+                "row9": "2.88rem",
+                "row8": "2.88rem",
+                "row3": "2.88rem",
+                "row2": "343px",
+                "row5": "2.88rem",
+                "row4": "2.88rem",
+                "row19": "2.88rem",
+                "row17": "2.88rem",
+                "row18": "2.88rem"
+            },
+            "path": "rowHeight"
+        }
+    ],
+    "description": "Data has been updated",
+    "sheet": "3iegNm9EvaiF8jhuaL5JjL0W5mtaAVcd7w7HbzoM6wPPFQDtYrwRfA1beCCM1700661202715",
+    "id": "giEny02rSegi2Tpb20DF6aLTDVhAP1A0AqTgMOO4tF3ayIaoo8eeIhpgZsjY1700661351878",
+    "creationDay": 1700611200000,
+    "creationDate": 1700661351884,
+    "__props__": {
+        "id": "w177v14130v3s1Y3J6b3R7g3T2",
+        "doc": "giEny02rSegi2Tpb20DF6aLTDVhAP1A0AqTgMOO4tF3ayIaoo8eeIhpgZsjY1700661351878",
+        "creationDate": 1711031363732,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 195,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

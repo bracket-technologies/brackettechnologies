@@ -1,0 +1,49 @@
+{
+    "__props__": {
+        "id": "x1s7i1U5N070F0S6P0H8u25800",
+        "doc": "accountingJournalManager",
+        "counter": 3,
+        "creationDate": 1715000608280,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "vouchersInfo",
+        "createdByUserID": null,
+        "comments": [],
+        "collapsed": [
+            {
+                "path": [
+                    "searchEngineInputs"
+                ]
+            }
+        ]
+    },
+    "title": "Accounting Journal Manager",
+    "identifier": "accounting journal",
+    "managerName": "accountingJournalManager",
+    "searchEngineInputs": [
+        {
+            "inputLabel": "Type",
+            "inputPath": "type",
+            "items": [
+                "Journals",
+                "Receipts",
+                "Payments"
+            ],
+            "readonly": true
+        },
+        {
+            "clearable": true,
+            "inputPath": "fromDate",
+            "inputLabel": "From Date",
+            "type": "date"
+        },
+        {
+            "clearable": true,
+            "inputPath": "toDate",
+            "inputLabel": "To Date",
+            "type": "date"
+        }
+    ]
+}

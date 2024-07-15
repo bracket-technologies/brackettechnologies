@@ -1,0 +1,34 @@
+{
+    "creationDate": 1712567715888,
+    "collection": 1,
+    "lastChunk": 1,
+    "docsLength": 3,
+    "counter": 12,
+    "reads": 27727,
+    "writes": 36,
+    "deletes": 0,
+    "size": 1801,
+    "payloadIn": 28712,
+    "payloadOut": 19728530,
+    "dirTree": [],
+    "maxSize": 1000,
+    "indexes": [
+        {
+            "find": [
+                "counter"
+            ],
+            "doc": "index1",
+            "lastRead": 1721037182699,
+            "expiryDate": 1723629182699
+        },
+        {
+            "find": [
+                "code"
+            ],
+            "doc": "index2",
+            "lastRead": 1721037781201,
+            "expiryDate": 1723629781201
+        }
+    ],
+    "lastIndex": 2
+}

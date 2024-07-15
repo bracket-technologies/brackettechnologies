@@ -1,0 +1,333 @@
+{
+    "view": "View?class=flex;style:[width=100%]",
+    "__props__": {
+        "id": "21x7o1M6l5y6c0S7P4v9b274X7",
+        "doc": "card",
+        "counter": 143,
+        "creationDate": 1716560749247,
+        "collection": "view",
+        "chunk": "chunk1",
+        "actions": {
+            "defaultSelectedPackage": "doc().qty=1;[[setChosenPackage()]():[path=[chooseCoinPackage?__.coinPackage?chooseSubscriptionPackage?__.subscriptionPackage]]?_.selected]",
+            "chooseCoinPackage": {
+                "_": "parent().siblings().():[1stChild().style().transform=scale(1)];doc().qty=1;setChosenPackage();setSelected();beat();updatePackages()?doc().packageID!=_.id()?addQty()",
+                "setSelected": "packages:().():[selected=false];packages:().find():[__props__.id=_.id()].selected=true",
+                "updatePackages": "3rdParent().next().update()::[class():'subscription-details'.0.update()]",
+                "setChosenPackage": "doc().packageID=_.id();doc().packageName=_.name;doc().priceUSD=_.priceUSD*doc().qty;doc().coins=_.coins*doc().qty",
+                "addQty": "doc().qty+=1;setChosenPackage();beat();class():'subscription-details'.0.update()?doc().qty<[_.max||9]?note():[text=You have reached maximum limit!;danger]",
+                "beat": "clearTimer():[().myTimer];style().transform=scale(1.06);myTimer=timer():[style().transform=scale(1.04)]:200"
+            },
+            "coinTotals": ":[label=Package Name;path=packageName]:[label=Quantity;path=qty;preUnit='x']:[label=Payment Amount;path=priceUSD;unit=USD]:[label=Coins Purchased;path=coins;unit=COIN]",
+            "subscriptionDetails": ":[label=Package Name;path=packageName;text=true]:[label=Quantity;path=qty;preUnit='x']:[label=Start Date;path=startDate;date=true]:[label=End Date;path=endDate;date=true]:[label=Coins;path=priceCoins;unit=COINS]",
+            "chooseSubscriptionPackage": {
+                "_": "parent().siblings().():[1stChild().style().transform=scale(1)];doc().qty=1;setChosenPackage();[setSelected();beat();updatePackages()]():[path=:chooseCoinPackage]?doc().packageID!=_.id()?addQty()",
+                "setChosenPackage": "doc().packageID=_.id();doc().packageName=_.name;doc().priceCoins=_.priceCoins*doc().qty;doc().startDate=timestamp();subscriptions:()._():[doc().startDate=_.expiryDate?_.expiryDate>doc().startDate];doc().endDate=doc().startDate+[_.duration*doc().qty]",
+                "addQty": "doc().qty+=1;setChosenPackage();[beat()]():[path=:chooseCoinPackage];class():'subscription-details'.0.update()?doc().qty<[_.max||9]?note():[text=You have reached maximum limit!;danger]"
+            },
+            "timeUnit": "_/31536000000+' Year'+['s'?_/31536000000!=1?'']?_%31536000000=0?_/2592000000+' Month'+['s'?_/2592000000!=1?'']?_%2592000000=0?_/86400000+' Day'+['s'?_/86400000!=1?'']?_%86400000=0"
+        },
+        "comments": [
+            {
+                "note": "coin package",
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "coin totals",
+                "path": [
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "coin totals",
+                "path": [
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "package",
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "selected",
+                "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "subscription details",
+                "path": [
+                    "children",
+                    4
+                ]
+            },
+            {
+                "note": "name",
+                "path": [
+                    "children",
+                    4,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "label",
+                "path": [
+                    "children",
+                    4,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "qty",
+                "path": [
+                    "children",
+                    4,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "unit",
+                "path": [
+                    "children",
+                    4,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "date",
+                "path": [
+                    "children",
+                    4,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    4
+                ]
+            }
+        ],
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "chooseCoinPackage"
+                ]
+            },
+            {
+                "path": [
+                    "chooseSubscriptionPackage"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 9162
+    },
+    "children": [
+        {
+            "view": "View?class=flex column pointer;style:[alignItems=center;borderRadius=1rem;border=1px solid #ddd;gap=2rem;transition=.2s;overflow=hidden;width=100%;[transform=scale(1.04)?_.selected]];defaultSelectedPackage();[click?chooseCoinPackage();log():[doc()]]?__.coinPackage",
+            "__props__": {
+                "id": "M1L791R6B5E507i5w9R8s9f0p2",
+                "doc": "packageCard",
+                "counter": 108,
+                "creationDate": 1716557598902,
+                "active": true,
+                "actions": {
+                    "defaultSelectedPackage": "doc().qty=1;[[setChosenPackage()]():[path=choosePackage]?_.selected]",
+                    "choosePackage": {
+                        "_": "siblings().():[style().transform=scale(1)];doc().qty=1;setChosenPackage();setSelected();updatePackages();beat()?doc().packageName!=_.name?addQty()",
+                        "setSelected": "packages:().():[selected=false];packages:().find():[name=_.name].selected=true",
+                        "updatePackages": "parent().next().update()::[_.view.parent().2ndNext().1stChild().update()]",
+                        "setChosenPackage": "doc().packageName=_.name;doc().priceUSD=_.priceUSD*doc().qty;doc().coins=_.coins*doc().qty",
+                        "addQty": "doc().qty+=1;setChosenPackage();beat();2ndParent().2ndNext().1stChild().update()",
+                        "beat": "clearTimer():[().myTimer];style().transform=scale(1.06);myTimer=timer():[style().transform=scale(1.04)]:200"
+                    }
+                },
+                "comments": [],
+                "collapsed": [],
+                "arrange": [],
+                "chunk": "chunk1",
+                "secured": false,
+                "collection": "view"
+            },
+            "children": [
+                {
+                    "view": "Text?text=_.name;style:[fontSize=1.75rem;borderBottom=1px solid #ddd;padding=1rem 3rem;width=100%;textAlign=center;backgroundColor=#f6f6f6]"
+                },
+                {
+                    "view": "Text?text=tag():[text=_.coins.price();style:[color=blue;fontSize=2.5rem]]+' COIN = '+tag():[text=_.priceUSD.price();style:[color=blue;fontSize=2.5rem]]+' USD';style:[fontSize=1.75rem;width=100%;textAlign=center]"
+                },
+                {
+                    "view": "Text?text='1 COIN = '+[_.priceUSD/_.coins].price()+' USD';style:[fontSize=1.4rem;textAlign=center;paddingTop=1rem;borderTop=1px solid #ddd;marginTop=-1rem]"
+                },
+                {
+                    "view": "View?class=flex column;style:[gap=2rem;padding=3rem;width=100%]",
+                    "children": [
+                        {
+                            "view": "Text?text='Minimum Purchase = '+_.priceUSD.price()+' USD';style:[fontSize=1.4rem;textAlign=left]"
+                        },
+                        {
+                            "view": "Text?text='Save '+[_.coins-_.priceUSD||0].price()+' USD';style:[fontSize=1.75rem;textAlign=left]"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "view": "View?class=flex column pointer;style:[alignItems=center;borderRadius=1rem;border=1px solid #ddd;gap=2rem;transition=.2s;overflow=hidden;paddingBottom=1rem;width=100%;[transform=scale(1.04)?_.selected]];defaultSelectedPackage();[click?chooseSubscriptionPackage()]?__.subscriptionPackage",
+            "__props__": {
+                "id": "M1L791R6B5E507i5w9R8s9f0p2",
+                "doc": "packageCard",
+                "counter": 108,
+                "creationDate": 1716557598902,
+                "active": true,
+                "actions": {
+                    "defaultSelectedPackage": "doc().qty=1;[[setChosenPackage()]():[path=choosePackage]?_.selected]",
+                    "choosePackage": {
+                        "_": "siblings().():[style().transform=scale(1)];doc().qty=1;setChosenPackage();setSelected();updatePackages();beat()?doc().packageName!=_.name?addQty()",
+                        "setSelected": "packages:().():[selected=false];packages:().find():[name=_.name].selected=true",
+                        "updatePackages": "parent().next().update()::[_.view.parent().2ndNext().1stChild().update()]",
+                        "setChosenPackage": "doc().packageName=_.name;doc().priceUSD=_.priceUSD*doc().qty;doc().coins=_.coins*doc().qty",
+                        "addQty": "doc().qty+=1;setChosenPackage();beat();2ndParent().2ndNext().1stChild().update()",
+                        "beat": "clearTimer():[().myTimer];style().transform=scale(1.06);myTimer=timer():[style().transform=scale(1.04)]:200"
+                    }
+                },
+                "comments": [],
+                "collapsed": [],
+                "arrange": [],
+                "chunk": "chunk1",
+                "secured": false,
+                "collection": "view"
+            },
+            "children": [
+                {
+                    "view": "Text?text=_.name;style:[fontSize=1.75rem;borderBottom=1px solid #ddd;padding=1rem 3rem;width=100%;textAlign=center;backgroundColor=#f6f6f6]"
+                },
+                {
+                    "view": "Text?text=_.description;style:[fontSize=1.5rem;width=100%;textAlign=center]"
+                },
+                {
+                    "view": "Text?text=[_.priceCoins.price()+' COINS'?_.priceCoins!=0?Free]+' for '+timeUnit():[_.duration];style:[fontSize=1.5rem;textAlign=center;paddingTop=1rem;borderTop=1px solid #ddd;marginTop=-1rem]"
+                }
+            ]
+        },
+        {
+            "view": "Text?text=[Selected!?_.selected?];style:[fontSize=1.6rem;width=100%;textAlign=center]?__.selected"
+        },
+        {
+            "view": "View?class=flex subscription-details;style:[justifyContent=flex-end;width=100%]?__.coinTotals",
+            "children": [
+                {
+                    "view": "View?class=flex column;style:[gap=1.5rem;padding=0 4rem;padding=2rem;borderRadius=1rem;border=1px solid #ddd]",
+                    "children": [
+                        {
+                            "view": "[View]:[data=coinTotals()]?class=flexbox;style:[justifyContent=flex-end;gap=1.5rem]",
+                            "children": [
+                                {
+                                    "view": "Text?text=_.label;style:[fontSize=1.5rem]"
+                                },
+                                {
+                                    "view": "Text?text=[doc().[_.path]||0].price()+' '+tag():[text=_.unit;style:[fontSize=1.3rem]];style:[fontSize=1.5rem;color=blue;width=12.5rem;textAlign=right]?_.unit"
+                                },
+                                {
+                                    "view": "Text?text=doc().[_.path];style:[fontSize=1.5rem;color=blue;width=12.5rem;textAlign=right]?!_.unit;!_.preUnit"
+                                },
+                                {
+                                    "view": "Text?text=_.preUnit+doc().[_.path];style:[fontSize=1.5rem;width=12.5rem;textAlign=right]?_.preUnit"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "view": "View?class=flex subscription-details;style:[justifyContent=flex-end;width=100%]?__.subscriptionDetails",
+            "children": [
+                {
+                    "view": "View?class=flex column;style:[gap=1.5rem;padding=0 4rem;padding=2rem;borderRadius=1rem;border=1px solid #ddd]",
+                    "children": [
+                        {
+                            "view": "[View]:[data=subscriptionDetails()]?class=flexbox;style:[justifyContent=flex-end;gap=1.5rem]",
+                            "children": [
+                                {
+                                    "view": "Text?text=_.label;style:[fontSize=1.5rem]"
+                                },
+                                {
+                                    "view": "Text?text=doc().[_.path];style:[fontSize=1.5rem;width=12.5rem;textAlign=right]?_.text"
+                                },
+                                {
+                                    "view": "Text?text=[doc().[_.path]||0].price()+' '+tag():[text=_.unit;style:[fontSize=1.3rem]];style:[fontSize=1.5rem;color=blue;width=12.5rem;textAlign=right]?_.unit"
+                                },
+                                {
+                                    "view": "Text?text=_.preUnit+doc().[_.path];style:[fontSize=1.5rem;width=12.5rem;textAlign=right]?_.preUnit"
+                                },
+                                {
+                                    "view": "Text?text=doc().[_.path].toDateFormat():format4.slice():4:[-8];style:[fontSize=1.5rem;width=12.5rem;textAlign=right]?_.date"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

@@ -1,0 +1,86 @@
+{
+    "view": "View?id=filterDroplist;class=flex column;style:[width=100%;height=auto];selectedInputs:()=_.selectedInputs",
+    "children": [
+        {
+            "view": "View:droplistItems?class=column;style:[width=100%;height=100%]",
+            "children": [
+                {
+                    "view": "View?class=flex column;style:[width=100%;height=100%;#overflow=auto]",
+                    "children": [
+                        {
+                            "view": "[View]:[data=_.inputs]?class=flexbox;style:[width=100%;height=2.8rem;padding=0 .5rem;borderRadius=.4rem;cursor=pointer];#click:[saveSelected()];mouseenter:[style():[backgroundColor=#f3f3f3]];mouseleave:[style():[backgroundColor=white]]",
+                            "children": [
+                                {
+                                    "view": "View?selected=false;timer():[checkIfAlreadySelected()]:50;click:[selectSearchResult()]",
+                                    "children": [
+                                        {
+                                            "view": "customCheckbox?height=1.7rem;width=1.7rem;iconSize=1.5rem"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "Text?class=flex;text=_.inputLabel;style:[width=100%;height=100%;fontSize=if():[__.fontSize]:[fontSize]:[1.3rem];align-items=center;fontWeight=if():[_.fontWeight]:[_.fontWeight]:[700];textOverflow=ellipsis;overflow=hidden;whiteSpace=nowrap];click:[prev().click()]"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "T1p771n1Q0h3o133t6U5j2w0Z5",
+        "doc": "filterDroplist",
+        "creationDate": 1711031365205,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "actions": {
+            "selectSearchResult": {
+                "selectData": "selectedInputs:().push():[_.inputPath];selected=true;1stChild().1stChild().1stChild().style().opacity=1;if():[_.select]:[handleSelectAndUnselect():[_.select]]",
+                "unselectData": "selectedInputs:().pullItem():[_.inputPath];selected=false;1stChild().1stChild().1stChild().style().opacity=0;if():[_.unselect]:[handleSelectAndUnselect():[_.unselect]]",
+                "_": "if():[!selected]:[selectData()]:[unselectData()];():customSearchEngine.3rdChild().1stChild().update()",
+                "handleSelectAndUnselect": ";if():[_.itemsToSelect]:[checkToSelectRelatedInputs()];if():[_.itemsToUnselect]:[checkToUnselectRelatedInputs()]",
+                "#checkToUnselectRelatedInputs": "2ndParent().children()._():[if():[_._.inputPath.in():[__.itemsToUnselect];_.1stChild().selected]:[_.1stChild().click()]]",
+                "checkToUnselectRelatedInputs": "2ndParent().children()._():[if():[_._.inputPath.in():[__.itemsToUnselect];_.1stChild().selected]:[_.1stChild().selected=false;_.1stChild().1stChild().1stChild().1stChild().style().opacity=0;selectedInputs:().pullItem():[_._.inputPath]]]",
+                "#checkToSelectRelatedInputs": "2ndParent().children()._():[if():[_._.inputPath.in():[__.itemsToSelect];!_.1stChild().selected]:[_.1stChild().click()]]",
+                "checkToSelectRelatedInputs": "2ndParent().children()._():[if():[_._.inputPath.in():[__.itemsToSelect];!_.1stChild().selected]:[_.1stChild().selected=true;_.1stChild().1stChild().1stChild().1stChild().style().opacity=1;selectedInputs:().push():[_._.inputPath]]]"
+            },
+            "checkIfAlreadySelected": {
+                "_": "if():[[_.inputPath].in():[__.selectedInputs]]:[selected=true;1stChild().1stChild().1stChild().style().opacity=1]"
+            }
+        },
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    0,
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "checkIfAlreadySelected"
+                ]
+            }
+        ],
+        "comments": [],
+        "dirPath": [],
+        "version": 0,
+        "counter": 25,
+        "secure": false,
+        "chunk": "chunk1",
+        "collection": "view"
+    }
+}

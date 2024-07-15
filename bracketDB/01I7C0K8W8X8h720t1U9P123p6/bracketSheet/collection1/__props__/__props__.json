@@ -1,0 +1,17 @@
+{
+    "creationDate": 1712567715841,
+    "collection": 1,
+    "lastChunk": 1,
+    "docsLength": 1,
+    "counter": 1,
+    "reads": 8178,
+    "writes": 1,
+    "deletes": 0,
+    "size": 2959,
+    "payloadIn": 5817,
+    "payloadOut": 23855304,
+    "dirTree": [],
+    "maxSize": 1000,
+    "indexes": [],
+    "lastIndex": 0
+}

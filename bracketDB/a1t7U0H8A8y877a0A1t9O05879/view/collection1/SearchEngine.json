@@ -1,0 +1,32 @@
+{
+    "view": "View?id=SearchEngine;class=flex align-center;style:[borderTop=1px solid #ddd;borderBottom=1px solid #ddd;width=100%;padding=2rem;backgroundColor=#f6f6f6];doc",
+    "__props__": {
+        "id": "q1u7k1N4L4p0S0p0n9x9N942O3",
+        "doc": "SearchEngine",
+        "counter": 28,
+        "creationDate": 1714400099923,
+        "collection": "view",
+        "chunk": "chunk1",
+        "actions": {
+            "searchData": "searchBySchema():[schema=_.schema;data=doc()]:[data:().[__.table.data.publicID]=_.data;parent().next().update()?_.success?note():[text=_.message;danger=true]]"
+        },
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 951
+    },
+    "children": [
+        {
+            "view": "View?style:[display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr;gap=1rem;width=100%]",
+            "children": [
+                {
+                    "view": "[customInput]:[data=_.searchInputs]"
+                }
+            ]
+        },
+        {
+            "view": "Text?class=flexbox pointer;text=Search;style:[borderRadius=.5rem;color=#fff;padding=.75rem 4rem;fontSize=1.3rem;backgroundColor=#fb3e1e;opacity=.8;transition=.2s];hover.style.opacity=1;click:[searchData()]"
+        }
+    ]
+}

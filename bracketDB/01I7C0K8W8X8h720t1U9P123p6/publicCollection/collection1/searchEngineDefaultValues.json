@@ -1,0 +1,155 @@
+{
+    "__props__": {
+        "id": "W1M7C1z3z2K7Z4U5d9w5v8q7r9",
+        "doc": "searchEngineDefaultValues",
+        "counter": 19,
+        "creationDate": 1713274595879,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "createdByUserID": "91l7f111C0i3r1J3V6L0C2c5n1",
+        "comments": [],
+        "collapsed": [
+            {
+                "path": [
+                    "searchEngineInputs",
+                    5,
+                    "defaultInputs"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    7,
+                    "defaultInputs"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    4,
+                    "defaultInputs"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    3,
+                    "defaultInputs"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    6,
+                    "defaultInputs"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    1,
+                    "defaultInputs"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    2,
+                    "defaultInputs"
+                ]
+            }
+        ],
+        "collection": "publicCollection"
+    },
+    "searchEngineInputs": [
+        {
+            "manager": "invoice",
+            "defaultInputs": [
+                "status",
+                "type",
+                "ref",
+                "customer",
+                "supplier"
+            ]
+        },
+        {
+            "manager": "transactionManager",
+            "defaultInputs": [
+                "generalLedger",
+                "accountNumber",
+                "currency",
+                "fromDate",
+                "toDate"
+            ]
+        },
+        {
+            "manager": "equityAndLongTermDebtsManager",
+            "defaultInputs": [
+                "generalLedger",
+                "accountNumber",
+                "currency",
+                "name",
+                "transactionFromDate",
+                "transactionToDate"
+            ]
+        },
+        {
+            "manager": "expenditureManager",
+            "defaultInputs": [
+                "generalLedger",
+                "accountNumber",
+                "currency",
+                "name",
+                "transactionFromDate",
+                "transactionToDate"
+            ]
+        },
+        {
+            "manager": "financialAccountManager",
+            "defaultInputs": [
+                "type",
+                "generalLedger",
+                "accountNumber",
+                "currency",
+                "name",
+                "transactionFromDate",
+                "transactionToDate"
+            ]
+        },
+        {
+            "manager": "fixedAssetManager",
+            "defaultInputs": [
+                "generalLedger",
+                "accountNumber",
+                "currency",
+                "name",
+                "transactionFromDate",
+                "transactionToDate"
+            ]
+        },
+        {
+            "manager": "incomeManager",
+            "defaultInputs": [
+                "generalLedger",
+                "accountNumber",
+                "currency",
+                "name",
+                "transactionFromDate",
+                "transactionToDate"
+            ]
+        },
+        {
+            "manager": "receivablesAndPayablesManager",
+            "defaultInputs": [
+                "type",
+                "generalLedger",
+                "accountNumber",
+                "currency",
+                "name",
+                "transactionFromDate",
+                "transactionToDate"
+            ]
+        }
+    ]
+}

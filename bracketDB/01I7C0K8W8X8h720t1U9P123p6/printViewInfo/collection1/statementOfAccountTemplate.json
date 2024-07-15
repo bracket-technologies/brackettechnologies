@@ -1,0 +1,1639 @@
+{
+    "__props__": {
+        "id": "m1f7E187e6E7H3I8f6b6S5w795",
+        "doc": "statementOfAccountTemplate",
+        "counter": 8,
+        "creationDate": 1717673866575,
+        "actions": {},
+        "comments": [
+            {
+                "note": "branch",
+                "path": [
+                    "mainInfo",
+                    0
+                ]
+            },
+            {
+                "note": "name",
+                "path": [
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    0
+                ]
+            },
+            {
+                "note": "address",
+                "path": [
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "note": "contact number",
+                "path": [
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    2
+                ]
+            },
+            {
+                "note": "date, title",
+                "path": [
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "note": "date",
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0
+                ]
+            },
+            {
+                "note": "title",
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "note": "account",
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0
+                ]
+            },
+            {
+                "note": "from-to date",
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "note": "account info, from-to date",
+                "path": [
+                    "mainInfo",
+                    2
+                ]
+            },
+            {
+                "note": "date",
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    0
+                ]
+            },
+            {
+                "note": "voucher",
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    1
+                ]
+            },
+            {
+                "note": "description",
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    2
+                ]
+            },
+            {
+                "note": "debit usd",
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    3
+                ]
+            },
+            {
+                "note": "credit usd",
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    4
+                ]
+            },
+            {
+                "note": "balance usd",
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    5
+                ]
+            }
+        ],
+        "collapsed": [
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAn",
+                    0,
+                    "#bodyRowStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAn",
+                    0,
+                    "#bodyStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAn",
+                    0,
+                    "#footerRowStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAn",
+                    0,
+                    "#footerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAn",
+                    0,
+                    "#headerRowStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAn",
+                    0,
+                    "#table"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAn",
+                    0,
+                    "tableStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0,
+                    "#subContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0,
+                    "text",
+                    0,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0,
+                    "text",
+                    1,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    1,
+                    "subContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    1,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "text",
+                    0,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "text",
+                    1,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "text",
+                    2,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    1,
+                    "text",
+                    0,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "text",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "text",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "subContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "text"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    1,
+                    "text"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    0,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    0,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    1,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    2,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    3,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    3,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    4,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    5,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    5,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    4,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    0,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    1,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    3,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    3,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    4,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    4,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    5,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    5,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    2,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    1,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    0,
+                    "mainInfo"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    2,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "style"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "#st"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "containerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    0,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    0,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    1,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    1,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    2,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    2,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    3,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    3,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    4,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    4,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    5,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "style"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "style"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "rowStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body"
+                ]
+            }
+        ],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "printViewInfo"
+    },
+    "mainInfo": [
+        {
+            "mainInfo": [
+                {
+                    "subContainerStyle": {
+                        "width": "100%",
+                        "justify-content": "start"
+                    },
+                    "text": "data().name",
+                    "textStyle": {
+                        "fontSize": "3.5rem"
+                    }
+                },
+                {
+                    "subContainerStyle": {
+                        "width": "100%",
+                        "justify-content": "start"
+                    },
+                    "text": "data().address+'-'+data().city+'-'+data().country",
+                    "textStyle": {
+                        "fontSize": "1.5rem",
+                        "fontWeight": "Bold"
+                    }
+                },
+                {
+                    "subContainerStyle": {
+                        "width": "100%",
+                        "justify-content": "start"
+                    },
+                    "text": "'TEL: '+data().contactNumber.0",
+                    "textStyle": {
+                        "fontSize": "1.5rem",
+                        "fontWeight": "Bold"
+                    }
+                }
+            ],
+            "class": "flex column",
+            "path": "branch"
+        },
+        {
+            "mainInfo": [
+                {
+                    "text": [
+                        {
+                            "text": "DATE",
+                            "textStyle": {
+                                "fontSize": "1.5rem",
+                                "fontWeight": "Bold"
+                            }
+                        },
+                        {
+                            "text": "todayStart().toDateFormat()",
+                            "textStyle": {
+                                "fontSize": "1.5rem",
+                                "fontWeight": "Bold"
+                            }
+                        }
+                    ],
+                    "#subContainerStyle": {
+                        "gap": "2rem",
+                        "width": "100%",
+                        "justify-content": "start"
+                    }
+                },
+                {
+                    "subContainerStyle": {
+                        "width": "100%"
+                    },
+                    "text": "STATEMENT OF ACCOUNT",
+                    "textStyle": {
+                        "fontSize": "2rem",
+                        "fontWeight": "Bold"
+                    }
+                }
+            ],
+            "class": "flexbox",
+            "mainContainerStyle": {
+                "gridTemplateColumns": "1fr 1fr 1fr",
+                "display": "grid",
+                "padding": "2rem 0"
+            }
+        },
+        {
+            "mainInfo": [
+                {
+                    "subContainerStyle": {
+                        "width": "100%"
+                    },
+                    "text": [
+                        {
+                            "text": "ACCOUNT",
+                            "textStyle": {
+                                "textAlign": "left",
+                                "fontSize": "1.5rem",
+                                "paddingLeft": "1rem"
+                            }
+                        },
+                        {
+                            "text": "doc().accountInfo.ledgerAccount.0",
+                            "textStyle": {
+                                "fontSize": "1.3rem"
+                            }
+                        },
+                        {
+                            "text": "doc().accountInfo.name+'('+doc().accountInfo.currency.0+')'",
+                            "textStyle": {
+                                "fontSize": "1.3rem"
+                            }
+                        }
+                    ],
+                    "class": "flexbox",
+                    "inputsWrapperStyle": {
+                        "gap": "1rem"
+                    }
+                },
+                {
+                    "subContainerStyle": {
+                        "borderLeft": "1px solid #000",
+                        "width": "100%"
+                    },
+                    "text": [
+                        {
+                            "text": "FROM+' '+doc().fromDate.toDateFormat()",
+                            "textStyle": {
+                                "fontSize": "1.5rem"
+                            }
+                        },
+                        {
+                            "text": "TO+' '+doc().toDate.toDateFormat()",
+                            "textStyle": {
+                                "fontSize": "1.5rem"
+                            }
+                        }
+                    ],
+                    "class": "flexbox",
+                    "inputsWrapperStyle": {
+                        "gap": "3rem",
+                        "width": "auto"
+                    }
+                }
+            ],
+            "class": "flex",
+            "mainContainerStyle": {
+                "border": "2px solid #000",
+                "height": "3rem",
+                "display": "grid",
+                "gridTemplateColumns": "4fr 3fr"
+            }
+        },
+        {
+            "mainInfo": [
+                {
+                    "class": "flexbox",
+                    "customViews": {
+                        "viewName": "customGeneralTable",
+                        "viewInfo": {
+                            "containerStyle": {
+                                "width": "100%"
+                            },
+                            "tableHeaderAndBody": {
+                                "body": {
+                                    "items": [
+                                        {
+                                            "path": "creationDate",
+                                            "formatCell": "toCellDate()",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000",
+                                                "paddingLeft": ".5rem"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            }
+                                        },
+                                        {
+                                            "path": "voucher",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000",
+                                                "paddingLeft": ".5rem"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            }
+                                        },
+                                        {
+                                            "path": "description",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000",
+                                                "paddingLeft": ".5rem",
+                                                "justifyContent": "center"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            }
+                                        },
+                                        {
+                                            "path": "debit",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000",
+                                                "paddingRight": ".5rem",
+                                                "justifyContent": "right"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            }
+                                        },
+                                        {
+                                            "path": "credit",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000",
+                                                "paddingRight": ".5rem",
+                                                "justifyContent": "right"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            }
+                                        },
+                                        {
+                                            "path": "balance",
+                                            "cellStyle": {
+                                                "paddingRight": ".5rem",
+                                                "justifyContent": "right"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            }
+                                        }
+                                    ],
+                                    "rowStyle": {
+                                        "gridTemplateColumns": "1.1fr .7fr 3fr .7fr .7fr .7fr",
+                                        "display": "grid",
+                                        "min-height": "auto",
+                                        "height": "2.5rem"
+                                    },
+                                    "noCounter": true
+                                },
+                                "footer": {
+                                    "items": [
+                                        {
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000",
+                                                "paddingLeft": ".5rem"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            },
+                                            "fraction": "1.1fr"
+                                        },
+                                        {
+                                            "fraction": " .7fr",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000",
+                                                "paddingLeft": ".5rem"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            }
+                                        },
+                                        {
+                                            "fraction": "3fr",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000",
+                                                "justifyContent": "center"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            },
+                                            "path": "description"
+                                        },
+                                        {
+                                            "fraction": ".7fr",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000",
+                                                "paddingRight": ".5rem",
+                                                "justifyContent": "right"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            },
+                                            "path": "debit"
+                                        },
+                                        {
+                                            "fraction": ".7fr",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000",
+                                                "paddingRight": ".5rem",
+                                                "justifyContent": "right"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            },
+                                            "path": "credit"
+                                        },
+                                        {
+                                            "fraction": ".7fr",
+                                            "cellStyle": {
+                                                "paddingRight": ".5rem",
+                                                "justifyContent": "right"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            },
+                                            "path": "balance"
+                                        }
+                                    ],
+                                    "style": {
+                                        "border-top": "2px solid #000"
+                                    },
+                                    "rowStyle": {
+                                        "height": "2.5rem"
+                                    },
+                                    "noCounter": true
+                                },
+                                "header": {
+                                    "items": [
+                                        {
+                                            "header": "Date",
+                                            "fraction": "1fr",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            }
+                                        },
+                                        {
+                                            "header": "VOUCHER",
+                                            "fraction": "1.5fr",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            }
+                                        },
+                                        {
+                                            "header": "DESCRIPTION",
+                                            "fraction": "1.5fr",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000",
+                                                "justifyContent": "center"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            }
+                                        },
+                                        {
+                                            "header": "DEBIT USD",
+                                            "fraction": "1fr",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            }
+                                        },
+                                        {
+                                            "header": "CREDIT USD",
+                                            "fraction": "2fr",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            }
+                                        },
+                                        {
+                                            "header": "BALANCE USD",
+                                            "fraction": "2fr",
+                                            "cellStyle": {
+                                                "borderRight": "0px solid #000"
+                                            },
+                                            "textStyle": {
+                                                "fontSize": "1.1rem"
+                                            }
+                                        }
+                                    ],
+                                    "style": {
+                                        "gridTemplateColumns": "1.1fr .7fr 3fr .7fr .7fr .7fr",
+                                        "display": "grid",
+                                        "borderBottom": "1px solid #000",
+                                        "height": "3rem"
+                                    },
+                                    "noCounter": true
+                                },
+                                "style": {
+                                    "border": "2px solid #000",
+                                    "width": "100%",
+                                    "marginTop": "1.5rem",
+                                    "height": "auto"
+                                }
+                            },
+                            "itemsList": "data()",
+                            "footerList": "doc().footerList"
+                        }
+                    }
+                }
+            ],
+            "path": "transactionData"
+        }
+    ]
+}

@@ -1,0 +1,125 @@
+{
+    "difference": [
+        {
+            "new": null,
+            "path": "keys"
+        },
+        {
+            "new": null,
+            "path": "keys"
+        },
+        {
+            "new": null,
+            "path": "keys"
+        },
+        {
+            "new": null,
+            "path": "keys"
+        },
+        {
+            "new": "GermanAirways",
+            "path": "name"
+        },
+        {
+            "new": "Air China",
+            "path": "name"
+        },
+        {
+            "new": "China",
+            "path": "nation"
+        },
+        {
+            "new": "British Airways",
+            "path": "name"
+        },
+        {
+            "new": "United Kingdom",
+            "path": "nation"
+        },
+        {
+            "new": {},
+            "path": "list"
+        },
+        {
+            "new": {},
+            "path": "list"
+        },
+        {
+            "new": {},
+            "path": "list"
+        },
+        {
+            "new": {},
+            "path": "list"
+        },
+        {
+            "new": {},
+            "path": "list"
+        },
+        {
+            "new": {},
+            "path": "list"
+        },
+        {
+            "new": {},
+            "path": "list"
+        },
+        {
+            "new": {},
+            "path": "list"
+        },
+        {
+            "new": {},
+            "path": "list"
+        },
+        {
+            "new": {},
+            "path": "list"
+        },
+        {
+            "new": {},
+            "path": "list"
+        },
+        {
+            "new": "Readonly",
+            "path": "type"
+        },
+        {
+            "new": {
+                "columnWidth": {
+                    "B": "222px",
+                    "C": "333px",
+                    "D": "235px"
+                }
+            },
+            "path": "style"
+        },
+        {
+            "new": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+            "path": "branch"
+        },
+        {
+            "new": "jTHiW6Ze96wxuZq2c7woB1o4YW7tjsz7mEK7rDruM3II7XZVFIaqCXgGKYyq1699560058406",
+            "path": "createdBy"
+        }
+    ],
+    "description": "Data has been updated",
+    "sheet": "ogm8XIDOQOjzxR56agxkjqwjUWw0V2YEYctEZxJDekkHoeBiJ0i1808GT4Ny",
+    "id": "QAK0DFP120LWzLKKfSbxHz1AfTM7q3PH5sP7BfeEljgErHbcC4dyqynU3L1v1700300599029",
+    "creationDay": 1700265600000,
+    "creationDate": 1700300599030,
+    "__props__": {
+        "id": "F1j7f1y1g0d3w1I3h6x3q466L2",
+        "doc": "QAK0DFP120LWzLKKfSbxHz1AfTM7q3PH5sP7BfeEljgErHbcC4dyqynU3L1v1700300599029",
+        "creationDate": 1711031363462,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 117,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

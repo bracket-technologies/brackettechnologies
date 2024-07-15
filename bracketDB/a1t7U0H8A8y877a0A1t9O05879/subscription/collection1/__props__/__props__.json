@@ -1,0 +1,47 @@
+{
+    "creationDate": 1720873346743,
+    "collection": 1,
+    "maxSize": 1000,
+    "lastChunk": 1,
+    "docsLength": 4,
+    "counter": 4,
+    "reads": 26,
+    "writes": 5,
+    "deletes": 0,
+    "size": 2202,
+    "payloadIn": 2202,
+    "payloadOut": 19734,
+    "indexes": [
+        {
+            "find": [
+                "expiryDate",
+                "publicID"
+            ],
+            "doc": "index1",
+            "lastRead": 1721037804707,
+            "expiryDate": 1723629804707
+        },
+        {
+            "find": [
+                "publicID",
+                "pluginID",
+                "expiryDate"
+            ],
+            "doc": "index2",
+            "lastRead": 1721037627674,
+            "expiryDate": 1723629627674
+        },
+        {
+            "find": [
+                "publicID",
+                "pluginID",
+                "packageID",
+                "expiryDate"
+            ],
+            "doc": "index3",
+            "lastRead": 1721037605288,
+            "expiryDate": 1723629605288
+        }
+    ],
+    "lastIndex": 3
+}

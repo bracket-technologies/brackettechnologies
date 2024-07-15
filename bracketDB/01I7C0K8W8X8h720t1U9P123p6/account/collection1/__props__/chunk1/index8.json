@@ -1,0 +1,42 @@
+{
+    "account767": {
+        "name.lowercase()": "1111",
+        "startsWith": [
+            "1"
+        ],
+        "currency": [
+            "USD"
+        ]
+    },
+    "account768": {
+        "name.lowercase()": "2222",
+        "startsWith": [
+            "1"
+        ],
+        "currency": [
+            "USD"
+        ]
+    },
+    "account769": {
+        "name.lowercase()": "hhhh",
+        "startsWith": [
+            "1",
+            "11",
+            "119"
+        ],
+        "currency": [
+            "USD"
+        ]
+    },
+    "account770": {
+        "name.lowercase()": "customer",
+        "startsWith": [
+            "4",
+            "41",
+            "413"
+        ],
+        "currency": [
+            "USD"
+        ]
+    }
+}

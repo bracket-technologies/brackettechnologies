@@ -1,0 +1,257 @@
+{
+    "view": "View:inputTableComponent?class=column;doc=sheet;allDataInfo:()=:[]style:[width=100%;gap=1rem];beforeload:[retrieve()]",
+    "children": [
+        {
+            "view": "View?style:[width=100%]",
+            "children": [
+                {
+                    "view": "customTitle?title='General Info'"
+                },
+                {
+                    "view": "View?style:[display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;gap=.5rem;width=100%;padding=1rem]",
+                    "children": [
+                        {
+                            "view": "customInput?required;inputPath='sheetName';inputLabel='Name';if():[currentSheetInfo:().updateStatus=true]:[doc().sheetName=currentSheetInfo:().title;newDataInfo:().name=currentSheetInfo:().title;placeholder=currentSheetInfo:().title]:[doc().sheetName.del()];if():[currentSheetInfo:().title]:[readonly=readonly]:[editable];change:[newDataInfo:().name=1stChild().2ndChild().1stChild().1stChild().txt()]"
+                        },
+                        {
+                            "view": "customInput?required;inputPath='sheetType';inputLabel='Type';items=[if():[!currentSheetInfo:().changeable]:[:Readonly:Editable]];readonly=readonly;if():[currentSheetInfo:().permission]:[doc().sheetType=currentSheetInfo:().permission;newDataInfo:().permission=currentSheetInfo:().permission;inputValue=currentSheetInfo:().permission]:[doc().sheetType=Editable];droplistClickAction='[newDataInfo:().permission=1stChild().2ndChild().1stChild().1stChild().txt()]()'"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "view": "View:excelTable?class=column;style:[width=fit-content];rowIndex:()=-1",
+            "children": [
+                {
+                    "view": "customTitle?title='Sheet';style:[width=100%]?false"
+                },
+                {
+                    "view": "View?class=flex column;style:[#overflow=auto;border=1px solid #CCC;background=#e3e3e3;gap=2px]",
+                    "children": [
+                        {
+                            "view": "View?class=flexbox;style:[width=max-content;display=grid;gridTemplateColumns='5rem repeat(14,auto)';grid-gap=2px]",
+                            "children": [
+                                {
+                                    "view": "[View]:[data=bracketSheetTable:().sheetTable.sheetTable.headers]?id=_.header;class=flex;style:[width=if():[_.header='']:[100%]:[9rem];textOverflow=ellipsis;white-space=nowrap;cursor=pointer;justifyContent=center;height='-webkit-fill-available';overflow=hidden;backgroundColor=#f7f7f7;border=0;if():[_.header!='']:[resize=horizontal];if():[currentSheetInfo:()]:[width=currentSheetInfo:().columnWidth.[_.header].columnWidth]];mousedown:[headerNameDetector:()=_.header]",
+                                    "children": [
+                                        {
+                                            "view": "Input?style:[fontSize=1.3rem;fontWeight=bold;color=#555;border=0;height=100%;width=100%;text-align=center;borderRadius=0];value=_.header;readonly"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "Icon?name=add;google.symbol;click:[insertColumn()]?false"
+                                }
+                            ]
+                        },
+                        {
+                            "view": "View:sheetRowsView?class=flex column;style:[gap=2px]",
+                            "children": [
+                                {
+                                    "view": "[View]:[data=range():[if():[currentSheetInfo:().list.len()<50;currentSheetInfo:().permission='Readonly']:[currentSheetInfo:().list.len()]:[rowRange:()]]]?style:[width=max-content;gridTemplateColumns='5rem repeat(14,auto)';grid-gap=2px;display=grid];().keyCounter=0;().valueCounter=0",
+                                    "children": [
+                                        {
+                                            "view": "[View]:[data=bracketSheetTable:().sheetTable.sheetTable.headers]?if():[_.header='']:[rowIndex:()+=1];rowIndex=rowIndex:();id=if():[_.header='']:['row'+rowIndex:()]:[_.header+rowIndex:()];class=flex;style:[if():[selectedOption:();!selectedOption:().includes():[cellsIds:().[rowIndex:()]]]:[display=none];width=if():[_.header='']:[100%]:[9rem];if():[currentSheetInfo:()]:[width=currentSheetInfo:().columnWidth.[_.header].columnWidth]:[height=2.88rem]]",
+                                            "children": [
+                                                {
+                                                    "view": "View?class=flexbox column;inputParentConditions()",
+                                                    "children": [
+                                                        {
+                                                            "view": "Text?preventDefault;text='';style:[overflow=auto;fontSize=1.4rem;text-align=start;borderRadius=0;width=100%;backgroundColor=white;height=100%];inputConditions();if():[2ndParent().rowIndex=0;_header!='']:[focus:[prevKeyName:()=().txt()];blur:[checkTitle()]]:[blur:[blurCell()]];focus:[focusCell()]"
+                                                        },
+                                                        {
+                                                            "view": "Input?input:[type=color];style():[border=0;borderRadius=0;width=revert;backgroundColor=#f7f7f7;height=revert;display=none];change:[().lineColor=text();rowClickActions():[itemName='changeColor']];blur:[style():[display=none];prev().style():[display=flex]];().lineColor=#FFFFFF?if():[!_.header]:[true]"
+                                                        },
+                                                        {
+                                                            "view": "Icon?name='expand_more';google.symbol;style:[width=1rem;position=absolute;bottom=2%;right=0%;paddingRight=2.5rem;opacity=0;cursor=pointer];click:[openFilter()]?if():[[2ndParent().rowIndex]=0]:[true]:[false]"
+                                                        }
+                                                    ]
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "B1w761v170R3L1O3U6J5H2Q0b7",
+        "doc": "inputTableComponent",
+        "creationDate": 1711031365207,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "actions": {
+            "rowClickActions": {
+                "reIndexRows": "timer():[():['row'+[rowIndex:()]].1stChild().1stChild().txt()=[3rdParent().prev().1stChild().1stChild().1stChild().txt()+2]]:20;timer():[cellId=1;range():[rowIndex:()].():[():['row'+[().cellId]].1stChild().1stChild().txt()=[():['row'+[().cellId]].parent().prev().1stChild().1stChild().1stChild().txt()+1];().cellId+=1]]:50",
+                "[object Object]": "3rdParent().parent().insert():[view=():sheetRowsView.children.0;index=[3rdParent().prev().1stChild().1stChild().1stChild().txt()+1];():sheetRowsView.children.0.children.0.lineType='insertedLine'];reIndexRows()",
+                "_": "3rdParent().parent().insert():[view=():sheetRowsView.children.0;index=[3rdParent().prev().1stChild().1stChild().1stChild().txt()+1];():sheetRowsView.children.0.children.0.lineType='insertedLine'];reIndexRows()"
+            },
+            "newTitleblur": {
+                "changeCellKey": "allDataInfo:().[().num-1].[().oldkey].del();allDataInfo:().[().num-1].push().[0]:[[().key]=[():[_.header+().num].1stChild().1stChild().txt()]];allDataInfo:().[().num-1].pullItem()",
+                "loopOnCells": "range():[rowIndex:()].():[if():[():[_.header+().num].1stChild().1stChild().txt()]:[currentCellText=[_.header+[().num]];changeCellKey();().num+=1]];reEmptyVariable()",
+                "camelCase": "().pathCellName=():[_.header+'0'].1stChild().1stChild().text();().prevCamelCase=prevKeyName:().charAt():[0].toLowerCase();().oldkey=prevKeyName:().toLowerCase().capitalize().replaceAll():' ':''.replaceItem():[().prevCamelCase.capitalize()]:[().prevCamelCase];().camelCase=().pathCellName.charAt():[0].toLowerCase();().key=().pathCellName.toLowerCase().capitalize().replaceAll():' ':''.replaceItem():[().camelCase.capitalize()]:[().camelCase];loopOnCells()",
+                "[object Object]": "if():[():[_.header+'0'].1stChild().1stChild().txt()]:[().num=1;camelCase()]:[revertStyle()]",
+                "revertStyle": "():[_.header+'0'].1stChild().1stChild().style():[backgroundColor=white]",
+                "_": "if():[():[_.header+'0'].1stChild().1stChild().txt()]:[().num=1;camelCase()]:[revertStyle()]"
+            },
+            "insertedRow": {
+                "mainCellIdInfo": "().titleCellName=[_.header+'0'];().pathCellName=():[().titleCellName].1stChild().1stChild().txt();().inputCellName=().text();turnTitleToCamleCase()",
+                "pushNewData": "insertedDataInfo:().[3rdParent().mapIndex].push().[0]:[[().key]=[().inputCellName]];insertedDataInfo:().[3rdParent().mapIndex].pullItem()",
+                "turnTitleToCamleCase": "().camelCase=().pathCellName.charAt():[0].toLowerCase();().key=().pathCellName.toLowerCase().capitalize().replaceAll():' ':''.replaceItem():[().camelCase.capitalize()]:[().camelCase];pushNewData()",
+                "[object Object]": "mainCellIdInfo()",
+                "_": "mainCellIdInfo()"
+            },
+            "inputConditions": {
+                "inputCondition": "if():[currentSheetInfo:();2ndParent().rowIndex=0]:[text=currentSheetInfo:().titles.[3rdParent().().keyCounter];3rdParent().().keyCounter+=1]:[text=currentSheetInfo:().list.[2ndParent().rowIndex-1].[currentSheetInfo:().keys.[3rdParent().().valueCounter]];3rdParent().().valueCounter+=1];if():[2ndParent().rowIndex!=0]:[().titleCellName=[_.header+'0'];currentSheetInfo:().permission='Readonly'||():[().titleCellName].1stChild().1stChild().txt()='']:[editable=false;style():[cursor=default]]:[editable=true;style():[cursor=auto]]]:[if():[currentSheetInfo:().permission='Readonly']:[editable=false]:[editable=true];blur:[if():[().text()]:[fillUnTitledInputs()]:[recloseUnTitledInputs()]]];style():[padding=.5rem;height=if():[currentSheetInfo:();currentSheetInfo:().cellStyle.['row'+2ndParent().rowIndex].cellheight]:[currentSheetInfo:().cellStyle.['row'+2ndParent().rowIndex].cellheight]:[2.88rem];#backgroundColor=if():[currentSheetInfo:()]:[currentSheetInfo:().cellStyle.[2ndParent().rowIndex].cellBackgroundColor]:[white]]",
+                "rowCondition": "text=[2ndParent().rowIndex+1];style:[textAlign=center;backgroundColor=#f7f7f7;user-select=none;height=if():[currentSheetInfo:();currentSheetInfo:().cellStyle.['row'+2ndParent().rowIndex].cellheight]:[currentSheetInfo:().cellStyle.['row'+2ndParent().rowIndex].cellheight]:[2.88rem];display=flex;justify-content=center;align-items=center];dropListItem=bracketSheetTable:().sheetTable.sheetTable.dropList.():[dropListTitle];droplist=[preventDefault;items=().dropListItem];[click:droplist?rowClickActions():[itemName=droplist-txt:()]]",
+                "!header": "text=[2ndParent().rowIndex+1];style:[textAlign=center;backgroundColor=#f7f7f7;user-select=none;height=if():[currentSheetInfo:();currentSheetInfo:().cellStyle.['row'+2ndParent().rowIndex].cellheight]:[currentSheetInfo:().cellStyle.['row'+2ndParent().rowIndex].cellheight]:[2.88rem];display=flex;justify-content=center;align-items=center];dropListItem=bracketSheetTable:().sheetTable.sheetTable.dropList.():[dropListTitle];droplist=[preventDefault;items=().dropListItem];[click:droplist?rowClickActions():[itemName=droplist-txt:()]]",
+                "[object Object]": "if():[!_.header]:[rowCondition()]:[inputCondition()]",
+                "_": "if():[!_.header]:[rowCondition()]:[inputCondition()]"
+            },
+            "blurCell": {
+                "[object Object]": "if():[!txt()]:[changeCellStyle();ifCellIsEmpty()]:[checkIfNotARowCell()]",
+                "_": "if():[!txt()]:[changeCellStyle();ifCellIsEmpty()]:[checkIfNotARowCell()]",
+                "changeCellStyle": "style():[backgroundColor=white]",
+                "ifCellIsEmpty": "if():[allDataInfo:().[2ndParent().rowIndex].len()=0]:[allDataInfo:().pull():[2ndParent().rowIndex]]:[allDataInfo:().[2ndParent().rowIndex].[txt().del()]]",
+                "checkIfNotARowCell": "if():[txt();2ndParent().rowIndex!=0;_.header!='']:[if():[!2ndParent().lineType]:[rowBlur()]:[insertedRow()]]"
+            },
+            "checkTitle": {
+                "removeLastChar": "():[().cellId].1stChild().1stChild().txt()='';changeStyle()",
+                "activateNote": "note():[text=Title already exists, Please enter a different one!;type=danger]",
+                "changeStyle": "():[().cellId].1stChild().1stChild().style():[backgroundColor=#ffeeee;border=1px solid red;padding=0];timer():[if():[!():[().cellId].1stChild().1stChild().txt()]:[():[().cellId].1stChild().1stChild().style():[backgroundColor=white;border=0;padding=0.5rem]]]:3000;activateNote()",
+                "[object Object]": "currentTxt=txt();cellId=[_.header+'0'];3rdParent().children().():[if():[1stChild().1stChild().txt()!='';id!=().cellId]:[if():[1stChild().1stChild().txt()=().currentTxt]:[removeLastChar()]]];newTitleblur()",
+                "_": "currentTxt=txt();cellId=[_.header+'0'];3rdParent().children().():[if():[1stChild().1stChild().txt()!='';id!=().cellId]:[if():[1stChild().1stChild().txt()=().currentTxt]:[removeLastChar()]]];newTitleblur()"
+            },
+            "alertFillTitle": {
+                "activateNote": "note():[text=Please Fill Marked Inputs;type=danger];changeTitleColor()",
+                "changeTitleColor": "().titleCellName.1stChild().1stChild().style():[backgroundColor=#ffeeee;border=1px solid red;padding=0];timer():[().titleCellName.1stChild().1stChild().style():[backgroundColor=white;border=0;padding=0.5rem]]:3000",
+                "[object Object]": "if():[():[().titleCellName].1stChild().1stChild().text()='';_.header!='';currentSheetInfo:().permission!='Readonly']:[activateNote()]",
+                "_": "if():[():[().titleCellName].1stChild().1stChild().text()='';_.header!='';currentSheetInfo:().permission!='Readonly']:[activateNote()]"
+            },
+            "focusCell": {
+                "changeColor": "style():[backgroundColor=3rdParent().1stChild().1stChild().2ndChild().().lineColor];checkCellId()",
+                "checkCellId": "if():[2ndParent().rowIndex=0]:[changeCellStyle()]",
+                "[object Object]": "changeColor()",
+                "_": "changeColor()",
+                "changeCellStyle": "style():[fontSize=1.4rem;#text-align=center;#backgroundColor=#f7f7f7;padding=0.5rem;border=0]"
+            },
+            "insertColumn": {
+                "[object Object]": "parent().insert():[view=():excelTable.children.0.children.0.children.0.children.0;value='PPP']",
+                "_": "parent().insert():[view=():excelTable.children.0.children.0.children.0.children.0;value='PPP']"
+            },
+            "titleBlur": {
+                "mainCellIdInfo": "().titleCellName=[_.header+'0'];().pathCellName=():[().titleCellName].1stChild().1stChild().text();camelCase()",
+                "reEmptyVariable": "prevKeyName:().del()",
+                "checkIfCellIsFilled": "if():[():[().currentCellId].1stChild().1stChild().text()]:[ifCellIsFilled()]",
+                "loopedCellsId": "().currentCellId=[_.header+[().num]];().currentCellText=[().currentCellId].1stChild().1stChild().text();checkIfCellIsFilled()",
+                "ifCellIsFilled": "if():[().num!=0]:[allDataInfo:().[().num+1].[().oldkey].del();allDataInfo:().[().num+1].push().[0]:[[().key]=[().currentCellText]];allDataInfo:().[().num+1].pullItem()]",
+                "loopOnCells": "range():[rowIndex:()].():[loopedCellsId();().num+=1];reEmptyVariable()",
+                "revertCellColor": "():[[_.header+'0']].1stChild().1stChild().style():[backgroundColor=white]",
+                "camelCase": "().prevCamelCase=prevKeyName:().charAt():[0].toLowerCase();().oldkey=prevKeyName:().toLowerCase().capitalize().replaceAll():' ':''.replaceItem():[().prevCamelCase.capitalize()]:[().prevCamelCase];().camelCase=().pathCellName.charAt():[0].toLowerCase();().key=().pathCellName.toLowerCase().capitalize().replaceAll():' ':''.replaceItem():[().camelCase.capitalize()]:[().camelCase];loopOnCells()",
+                "[object Object]": "().num=0;mainCellIdInfo();if():[!():[[_.header+'0']].1stChild().1stChild().txt()]:[revertCellColor()]",
+                "_": "().num=0;mainCellIdInfo();if():[!():[[_.header+'0']].1stChild().1stChild().txt()]:[revertCellColor()]"
+            },
+            "openFilter": {
+                "titleToCamelCase": "().titleCellName=[_.header+'0'];().pathCellName=():[().titleCellName].1stChild().1stChild().txt();().camelCase=().pathCellName.charAt():[0].toLowerCase();().key=().pathCellName.toLowerCase().capitalize().replaceAll():' ':''.replaceItem():[().camelCase.capitalize()]:[().camelCase];fillData()",
+                "openPopup": "subGeneralPopup:()=[title=Filter;popupName=inputMiniPopup;topSize=20vh;bottomSize=20vh;leftSize=45vh;rightSize=45vh;miniPopupType='filter';currentTitle=parent().1stChild().text();cellHeader=_.header];():subGeneralPopup.update();():subGeneralPopup.style():[visibility=visible;opacity=1]",
+                "[object Object]": "titleToCamelCase()",
+                "fillData": "filterValue:()=:;().cellCounter=0;range():[currentSheetInfo:().list.len()].():[if():[allDataInfo:().[().cellCounter].0.[().key]]:[filterValue:().push():[_map:[[[cellText]=[allDataInfo:().[().cellCounter].0.[().key]]];[[cellId]=[_.header+[().cellCounter+1]]];[[rowId]=['row'+[().cellCounter+1]]]]]];().cellCounter+=1];openPopup()",
+                "_": "titleToCamelCase()"
+            },
+            "retrieve": {
+                "existingSheet": "fillExistingSheetInfo()",
+                "newSheet": "rowRange:()=40;currentSheetInfo:().del()",
+                "fillExistingSheetInfo": "newDataInfo:().columnWidth=currentSheetInfo:().columnWidth;rowRange:()=currentSheetInfo:().rowCount;currentSheetInfo:()=[currentSheetInfo:()];loopAroundData()",
+                "loopAroundData": "().i=0;while():[currentSheetInfo:().list.[().i]]:[allDataInfo:().[().i].push():[currentSheetInfo:().list.[().i]];allDataInfo:().[().i].pull():[1];().i+=1]",
+                "[object Object]": "if():[currentSheetInfo:()]:[existingSheet()]:[newSheet()]",
+                "_": "if():[currentSheetInfo:()]:[existingSheet()]:[newSheet()]"
+            },
+            "inputParentConditions": {
+                "ifFirstRow": "mouseenter:[2ndChild().style():[opacity=1]];mouseleave:[2ndChild().style():[opacity=0]]",
+                "ifNotFirstRow": "().titleCellName=[_.header+'0'];click:[alertFillTitle()]",
+                "ifHeaderIsEmpty": "mousedown:[rowColorId:()='row'+parent().rowIndex];style:[overflow=auto;resize=vertical;width=inherit;height=if():[currentSheetInfo:();currentSheetInfo:().cellStyle.['row'+parent().rowIndex].cellheight]:[currentSheetInfo:().cellStyle.['row'+parent().rowIndex].cellheight]:[2.88rem]]",
+                "ifHeaderNotEmpty": "style:[width=inherit;height=100%;position=relative]",
+                "[object Object]": "if():[_.header='']:[ifHeaderIsEmpty()]:[ifHeaderNotEmpty()];if():[parent().rowIndex!=0]:[ifNotFirstRow()]:[ifFirstRow()]",
+                "_": "if():[_.header='']:[ifHeaderIsEmpty()]:[ifHeaderNotEmpty()];if():[parent().rowIndex!=0]:[ifNotFirstRow()]:[ifFirstRow()]"
+            },
+            "rowBlur": {
+                "mainCellIdInfo": "().titleCellName=[_.header+'0'];().pathCellName=():[().titleCellName].1stChild().1stChild().txt();().inputCellName=().text();turnTitleToCamleCase()",
+                "pushNewData": "allDataInfo:().[2ndParent().rowIndex-1].push().[0]:[[().key]=[().inputCellName]];allDataInfo:().[2ndParent().rowIndex-1].pullItem()",
+                "turnTitleToCamleCase": "().camelCase=().pathCellName.charAt():[0].toLowerCase();().key=().pathCellName.toLowerCase().capitalize().replaceAll():' ':''.replaceItem():[().camelCase.capitalize()]:[().camelCase];pushNewData()",
+                "[object Object]": "mainCellIdInfo()",
+                "_": "mainCellIdInfo()"
+            },
+            "fillUnTitledInputs": {
+                "changeCellPointer": "():[().CellId].1stChild().1stChild().style():[cursor=auto]",
+                "loopedCellsId": "().CellId=[_.header+[().cellCounter]];changeCellPointer()",
+                "changeCellType": "():[().CellId].1stChild().1stChild().editable()=true",
+                "loopOnCells": "range():[1]:[rowIndex:()+1].():[loopedCellsId();changeCellType();().cellCounter+=1]",
+                "[object Object]": "().cellCounter=0;loopOnCells()",
+                "_": "().cellCounter=0;loopOnCells()"
+            },
+            "recloseUnTitledInputs": {
+                "counterDifferentThen0": "().CellId=[_.header+[().cellCounter]];():[().CellId].1stChild().1stChild().style():[cursor=default];editable=false",
+                "loopOnCells": "range():[1]:[rowIndex:()+1].():[checkCounter();().cellCounter+=1]",
+                "checkCounter": "if():[().cellCounter!=0]:[counterDifferentThen0()]",
+                "[object Object]": "().cellCounter=0;loopOnCells()",
+                "_": "().cellCounter=0;loopOnCells()"
+            }
+        },
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    "2"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    "2"
+                ]
+            },
+            "_map:path:path()",
+            "_map:path:path()"
+        ],
+        "comments": [],
+        "dirPath": [],
+        "version": 0,
+        "counter": 30,
+        "secure": false,
+        "chunk": "chunk1",
+        "collection": "view"
+    }
+}

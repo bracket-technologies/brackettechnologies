@@ -1,0 +1,53 @@
+{
+    "view": "View?id=view1;class=flexbox;style:[height=100vh];title=Playground Platform",
+    "__props__": {
+        "id": "v1u7v1w474k9P449D0p4S599x6",
+        "doc": "view1",
+        "counter": 6,
+        "creationDate": 1714494904596,
+        "active": true,
+        "actions": {
+            "searchEvents": {
+                "_": "[mouseenter?menter()];[mouseleave?[mleave()]():[doc=test1;collection=test]]",
+                "menter": "style():[color=red;transform=scale(1.1)]",
+                "#mleave": "style():[color=#888;transform=scale(1)]"
+            },
+            "#mleave": "style():[color=#888;transform=scale(1)]"
+        },
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "view",
+        "createdByUserID": "M1X7V1X4O4A8Z076N0c2l5x2R1",
+        "collapsed": [],
+        "comments": [
+            {
+                "note": "product [Offerprice=100]product [Offerprice=100]",
+                "path": []
+            }
+        ]
+    },
+    "children": [
+        {
+            "view": "View?data=Hello Gaza;id=navbar;class=flexbox column;style:[border=1px solid #ddd;padding=1rem];#[click?root():view]",
+            "children": [
+                {
+                    "view": "Text?id=test;text=_"
+                },
+                {
+                    "view": "Icon?name=person;google.symbol.rounded;style:[fontSize=2rem]"
+                },
+                {
+                    "view": "View?class=flex align-center;style:[border=1px solid #ddd;borderRadius=2rem;padding=0 1rem;width=30rem;height=3.5rem;overflow=hidden]",
+                    "children": [
+                        {
+                            "view": "Icon?name=search;google.symbol;style:[fontSize=1.8rem;color=#888];searchEvents();[change:[next()]?[():test.txt()=txt();note():[text=Thank you!]]():[next()]]"
+                        },
+                        {
+                            "view": "Input?style:[height=100%;flex=1]"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

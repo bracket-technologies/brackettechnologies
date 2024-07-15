@@ -1,0 +1,23 @@
+{
+    "publicID": "991cD7p528b0wu8Go7H73364Lu5oP1qw4My8ZS9",
+    "pluginID": "Q1p78107R4j1n2Z9a2E1K1r912",
+    "packageID": "O1B7Z1b7B4o2u0Q833o9R5o2e9",
+    "startDate": 1721037241246,
+    "status": "Confirmed",
+    "description": "Subscribed to plugin: Console | Developer Editor, package: Starter.",
+    "expiryDate": 1721642041246,
+    "__props__": {
+        "id": "f1p7h2U1h0l3l7E2g4U1D2R4Y7",
+        "doc": "subscription3",
+        "counter": 3,
+        "creationDate": 1721037241247,
+        "collection": "subscription",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 520
+    }
+}

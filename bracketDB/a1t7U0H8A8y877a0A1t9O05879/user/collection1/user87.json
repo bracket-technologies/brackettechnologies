@@ -1,0 +1,22 @@
+{
+    "firstName": "Ali",
+    "lastName": "Al Khansa",
+    "accountID": "31G7d2T0P8F743F344c6H3Y3O3",
+    "email": "cto@skylagroup.com",
+    "username": "alialkhansa",
+    "newUser": false,
+    "__props__": {
+        "id": "y1z7T2h0C8A7d393a4e6U3V615",
+        "doc": "user87",
+        "counter": 87,
+        "creationDate": 1720873346365,
+        "collection": "user",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 366
+    }
+}

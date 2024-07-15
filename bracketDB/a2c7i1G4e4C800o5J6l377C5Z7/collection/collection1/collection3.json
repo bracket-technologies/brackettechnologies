@@ -1,0 +1,29 @@
+{
+    "__props__": {
+        "id": "Q1Y7E1K556C2O4w9N636w001b6",
+        "doc": "collection3",
+        "counter": 6,
+        "creationDate": 1715624966016,
+        "active": true,
+        "actions": {},
+        "comments": {},
+        "collapsed": [
+            {
+                "path": [
+                    "headCategoryID"
+                ]
+            }
+        ],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "collection",
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2"
+    },
+    "id": "3",
+    "categoryIDs": [
+        "3",
+        "6",
+        "9"
+    ],
+    "title": "New Sales"
+}

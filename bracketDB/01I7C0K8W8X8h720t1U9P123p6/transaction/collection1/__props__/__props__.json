@@ -1,0 +1,70 @@
+{
+    "creationDate": 1712658264771,
+    "collection": 1,
+    "lastChunk": 1,
+    "docsLength": 5,
+    "counter": 580,
+    "reads": 19853,
+    "writes": 1311,
+    "deletes": 0,
+    "size": 10465,
+    "payloadIn": 1845924,
+    "payloadOut": 27908016,
+    "dirTree": [],
+    "maxSize": 1000,
+    "indexes": [
+        {
+            "find": [
+                "id"
+            ],
+            "doc": "index1",
+            "lastRead": 1721037766357,
+            "expiryDate": 1723629766357
+        },
+        {
+            "find": [
+                "voucher",
+                "ledgerAccount"
+            ],
+            "doc": "index2",
+            "lastRead": 1720771319943,
+            "expiryDate": 1723363319943
+        },
+        {
+            "find": [
+                "systemAccountBalances",
+                "creationDate"
+            ],
+            "doc": "index3",
+            "lastRead": 1720771235786,
+            "expiryDate": 1723363235786
+        },
+        {
+            "find": [
+                "id",
+                "creationDay"
+            ],
+            "doc": "index4",
+            "lastRead": 1720772839704,
+            "expiryDate": 1723364839704
+        },
+        {
+            "find": [
+                "systemAccountBalances.account",
+                "creationDate"
+            ],
+            "doc": "index5",
+            "lastRead": 1720771319953,
+            "expiryDate": 1723363319953
+        },
+        {
+            "find": [
+                "account"
+            ],
+            "doc": "index6",
+            "lastRead": 1721034228909,
+            "expiryDate": 1723626228909
+        }
+    ],
+    "lastIndex": 6
+}

@@ -1,0 +1,1524 @@
+{
+    "create": {
+        "vatAccount": {
+            "generateLedger": "_.data.generalLedger",
+            "keyValue": [
+                {
+                    "staticValue": "mainReceivedData:().name+'-VAT Account'",
+                    "key": "name"
+                },
+                {
+                    "path": "vatAccount",
+                    "type": "string",
+                    "key": "generalLedger",
+                    "required": "true"
+                },
+                {
+                    "path": "currency",
+                    "type": "array",
+                    "key": "currency",
+                    "required": "true"
+                },
+                {
+                    "key": "accountNumber",
+                    "path": "accountNumber",
+                    "required": true,
+                    "type": "number"
+                },
+                {
+                    "staticValue": "No",
+                    "key": "blockAccount"
+                },
+                {
+                    "path": "branch",
+                    "type": "string",
+                    "key": "branch",
+                    "required": "true"
+                },
+                {
+                    "path": "financialNumber",
+                    "type": "string",
+                    "key": "financialNumber"
+                },
+                {
+                    "path": "description",
+                    "type": "string",
+                    "key": "description"
+                },
+                {
+                    "staticValue": "().startsWith=:;().currentNumber='';range():[_.data.vatAccount.len()-1]._():[().currentNumber+=__.data.vatAccount.[_];().startsWith.push():[().currentNumber]];return():[().startsWith]",
+                    "key": "startsWith"
+                }
+            ],
+            "beforeSaveStep": {
+                "keyValue": [
+                    {
+                        "path": "id",
+                        "findKey": "helperKey",
+                        "findValue": "toGetLastTransactionForVatAccount",
+                        "key": "lastBalance"
+                    }
+                ]
+            },
+            "helpersKeyValue": [
+                {
+                    "staticValue": "toGetLedgerAccountFromVatAccount",
+                    "key": "helperKey"
+                }
+            ],
+            "generateReference": true
+        },
+        "account": {
+            "generateLedger": true,
+            "beforeSaveStep": {
+                "keyValue": [
+                    {
+                        "path": "id",
+                        "findKey": "helperKey",
+                        "findValue": "getLastBalanceIdForMainAccountDoc",
+                        "key": "lastBalance"
+                    },
+                    {
+                        "path": "ledgerAccount",
+                        "findKey": "helperKey",
+                        "findValue": "toGetLedgerAccount",
+                        "key": "vatLedgerAccount"
+                    },
+                    {
+                        "path": "ledgerAccount",
+                        "findKey": "helperKey",
+                        "findValue": "toGetDepreciationLedgerAccount",
+                        "key": "depreciationAccount"
+                    },
+                    {
+                        "path": "ledgerAccount",
+                        "findKey": "helperKey",
+                        "findValue": "toGetLedgerAccountFromVatAccount",
+                        "key": "vatLedgerAccount"
+                    },
+                    {
+                        "path": "id",
+                        "findKey": "helperKey",
+                        "findValue": "toGetLedgerAccountFromVatAccount",
+                        "key": "vatLedgerAccountID"
+                    }
+                ]
+            },
+            "helpersKeyValue": [
+                {
+                    "staticValue": "getLedgerAccountForMainAccountTransaction",
+                    "key": "helperKey"
+                }
+            ],
+            "generateReference": true,
+            "nextStep": {
+                "collection": "transaction",
+                "manager": "account"
+            },
+            "keyValue": [
+                {
+                    "path": "name",
+                    "type": "string",
+                    "key": "name",
+                    "required": true
+                },
+                {
+                    "path": "isSubAccount",
+                    "type": "string",
+                    "key": "isSubAccount",
+                    "required": "true"
+                },
+                {
+                    "path": "ledgerAccount",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "isSubAccount"
+                        }
+                    ],
+                    "keyToPushInReceivedData": "generalLedger",
+                    "type": "generalLedger",
+                    "key": "generalLedger",
+                    "required": "true"
+                },
+                {
+                    "path": "ledgerAccount",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "isSubAccount"
+                        }
+                    ],
+                    "keyToPushInReceivedData": "headAccount",
+                    "type": "ledger",
+                    "key": "headAccount",
+                    "required": "true"
+                },
+                {
+                    "path": "generalLedger",
+                    "condition": [
+                        {
+                            "condition": [
+                                "No"
+                            ],
+                            "conditionReference": "isSubAccount"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "generalLedger",
+                    "required": "true"
+                },
+                {
+                    "key": "autoGenerateAccountNumber",
+                    "path": "autoGenerateAccountNumber",
+                    "type": "string",
+                    "required": true
+                },
+                {
+                    "key": "accountNumber",
+                    "path": "accountNumber",
+                    "type": "number",
+                    "required": true,
+                    "condition": [
+                        {
+                            "condition": [
+                                "No"
+                            ],
+                            "conditionReference": "autoGenerateAccountNumber"
+                        }
+                    ]
+                },
+                {
+                    "path": "currency",
+                    "type": "array",
+                    "key": "currency",
+                    "required": "true"
+                },
+                {
+                    "path": "createDepreciationAccount",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Fixed Assets"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "createDepreciationAccount",
+                    "required": true
+                },
+                {
+                    "path": "depreciationAccount",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Fixed Assets"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        },
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "createDepreciationAccount"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "depreciationAccount"
+                },
+                {
+                    "path": "autoDepreciation",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Fixed Assets"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        },
+                        {
+                            "condition": [
+                                "createDepreciationAccount"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "autoDepreciation"
+                },
+                {
+                    "path": "yearlyRate",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Fixed Assets"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        },
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "autoDepreciation"
+                        }
+                    ],
+                    "type": "number",
+                    "key": "yearlyRate",
+                    "required": true
+                },
+                {
+                    "path": "yearlyRateUnit",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Fixed Assets"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        },
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "autoDepreciation"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "yearlyRateUnit",
+                    "required": true
+                },
+                {
+                    "path": "startDate",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Fixed Assets"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        },
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "autoDepreciation"
+                        }
+                    ],
+                    "type": "number",
+                    "key": "startDate",
+                    "required": true
+                },
+                {
+                    "path": "notificationForDepreciation",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Fixed Assets"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        },
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "autoDepreciation"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "notificationForDepreciation"
+                },
+                {
+                    "path": "stopDate",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Fixed Assets"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        },
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "autoDepreciation"
+                        }
+                    ],
+                    "type": "number",
+                    "key": "stopDate",
+                    "required": true
+                },
+                {
+                    "path": "type",
+                    "orCondition": [
+                        {
+                            "condition": [
+                                "Receivables and Payables"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        },
+                        {
+                            "condition": [
+                                "Financial Accounts"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "type",
+                    "required": "true"
+                },
+                {
+                    "path": "createVATAccount",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Receivables and Payables"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        },
+                        {
+                            "condition": [
+                                "B2B Customer",
+                                "B2C Customer",
+                                "Corporate Customer",
+                                "Agency Supplier",
+                                "Airline Supplier",
+                                "Other Operational Account"
+                            ],
+                            "conditionReference": "type"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "createVATAccount",
+                    "required": true
+                },
+                {
+                    "path": "vatAccount",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "createVATAccount"
+                        },
+                        {
+                            "condition": [
+                                "Receivables and Payables"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        },
+                        {
+                            "condition": [
+                                "B2B Customer",
+                                "B2C Customer",
+                                "Corporate Customer",
+                                "Agency Supplier",
+                                "Airline Supplier",
+                                "Other Operational Account"
+                            ],
+                            "conditionReference": "type"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "vatAccount"
+                },
+                {
+                    "path": "financialNumber",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Receivables and Payables"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        },
+                        {
+                            "condition": [
+                                "B2B Customer",
+                                "B2C Customer",
+                                "Corporate Customer",
+                                "Agency Supplier",
+                                "Airline Supplier",
+                                "Other Operational Account"
+                            ],
+                            "conditionReference": "type"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "financialNumber"
+                },
+                {
+                    "path": "accountType",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Receivables and Payables"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        },
+                        {
+                            "condition": [
+                                "Customer"
+                            ],
+                            "conditionReference": "type"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "accountType",
+                    "required": "true"
+                },
+                {
+                    "key": "openingBalance",
+                    "path": "openingBalance",
+                    "type": "array"
+                },
+                {
+                    "path": "preferredPaymentTerms",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Customer",
+                                "Supplier"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "Receivables and Payables"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "preferredPaymentTerms"
+                },
+                {
+                    "path": "preferredCommission",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Customer",
+                                "Supplier",
+                                "Salesman"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "Receivables and Payables"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        }
+                    ],
+                    "type": "number",
+                    "key": "preferredCommission"
+                },
+                {
+                    "path": "preferredExpenseAccount",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Supplier"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "Receivables and Payables"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "preferredExpenseAccount"
+                },
+                {
+                    "path": "autoSendEmails",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Customer",
+                                "Salesman",
+                                "Supplier",
+                                "Employee"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "Receivables and Payables"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        }
+                    ],
+                    "type": "boolean",
+                    "key": "autoSendEmails"
+                },
+                {
+                    "path": "portalAccess",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Customer",
+                                "Salesman",
+                                "Supplier",
+                                "Employee"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "Receivables and Payables"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        }
+                    ],
+                    "type": "boolean",
+                    "key": "portalAccess"
+                },
+                {
+                    "path": "amount",
+                    "type": "number",
+                    "key": "amount"
+                },
+                {
+                    "path": "email",
+                    "type": "string",
+                    "key": "email"
+                },
+                {
+                    "path": "address",
+                    "type": "string",
+                    "key": "address"
+                },
+                {
+                    "path": "limit",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Receivables and Payables"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        }
+                    ],
+                    "type": "number",
+                    "key": "limit",
+                    "required": true
+                },
+                {
+                    "path": "notification",
+                    "type": "string",
+                    "key": "notification"
+                },
+                {
+                    "path": "notifyAmount",
+                    "condition": [
+                        {
+                            "condition": [
+                                "true"
+                            ],
+                            "conditionReference": "notification"
+                        }
+                    ],
+                    "type": "number",
+                    "required": true,
+                    "key": "notifyAmount"
+                },
+                {
+                    "path": "repeat",
+                    "condition": [
+                        {
+                            "condition": [
+                                true
+                            ],
+                            "conditionReference": "notification"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "repeat",
+                    "required": "true"
+                },
+                {
+                    "path": "maturatyPeriod",
+                    "condition": [
+                        {
+                            "condition": [
+                                true
+                            ],
+                            "conditionReference": "notification"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "maturatyPeriod",
+                    "required": "true"
+                },
+                {
+                    "path": "maturatyPeriodUnit",
+                    "condition": [
+                        {
+                            "condition": [
+                                "true"
+                            ],
+                            "conditionReference": "notification"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "maturatyPeriodUnit",
+                    "required": "true"
+                },
+                {
+                    "path": "resetDuration",
+                    "condition": [
+                        {
+                            "condition": [
+                                "true"
+                            ],
+                            "conditionReference": "notification"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "resetDuration",
+                    "required": "true"
+                },
+                {
+                    "path": "contactNumber",
+                    "type": "array",
+                    "key": "contactNumber"
+                },
+                {
+                    "path": "branch",
+                    "type": "string",
+                    "key": "branch",
+                    "required": "true"
+                },
+                {
+                    "path": "createdBy",
+                    "type": "string",
+                    "key": "createdBy",
+                    "required": "true"
+                },
+                {
+                    "path": "description",
+                    "type": "string",
+                    "key": "description"
+                },
+                {
+                    "path": "note",
+                    "type": "string",
+                    "key": "note"
+                },
+                {
+                    "path": "logo",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Customer"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "B2B",
+                                "Corporate"
+                            ],
+                            "conditionReference": "accountType"
+                        }
+                    ],
+                    "type": "image",
+                    "key": "logo"
+                },
+                {
+                    "path": "officialDocuments",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Customer"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "B2B",
+                                "Corporate"
+                            ],
+                            "conditionReference": "accountType"
+                        }
+                    ],
+                    "type": "image",
+                    "key": "officialDocuments"
+                },
+                {
+                    "path": "passport",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Customer"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "B2C"
+                            ],
+                            "conditionReference": "accountType"
+                        }
+                    ],
+                    "type": "image",
+                    "key": "passport"
+                },
+                {
+                    "staticValue": "().startsWith=:;().currentNumber='';range():[mainReceivedData:().generalLedger.len()-1]._():[().currentNumber+=mainReceivedData:().generalLedger.[_];().startsWith.push():[().currentNumber]];return():[().startsWith]",
+                    "key": "startsWith"
+                },
+                {
+                    "path": "bankName",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Bank"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "Financial Accounts"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "bankName",
+                    "required": true
+                },
+                {
+                    "path": "bankAccountNumber",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Bank"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "Financial Accounts"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "bankAccountNumber",
+                    "required": true
+                }
+            ]
+        },
+        "assetDepreciation": {
+            "generateLedger": "_.data.generalLedger",
+            "keyValue": [
+                {
+                    "staticValue": "mainReceivedData:().name+'-Depreciation'",
+                    "key": "name"
+                },
+                {
+                    "path": "depreciationAccount",
+                    "type": "string",
+                    "key": "generalLedger",
+                    "required": "true"
+                },
+                {
+                    "path": "currency",
+                    "type": "array",
+                    "key": "currency",
+                    "required": "true"
+                },
+                {
+                    "staticValue": "No",
+                    "key": "blockAccount"
+                },
+                {
+                    "path": "autoDepreciation",
+                    "type": "string",
+                    "key": "autoDepreciation"
+                },
+                {
+                    "path": "branch",
+                    "type": "string",
+                    "key": "branch",
+                    "required": "true"
+                },
+                {
+                    "path": "yearlyRate",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "autoDepreciation"
+                        }
+                    ],
+                    "type": "number",
+                    "key": "yearlyRate",
+                    "required": true
+                },
+                {
+                    "path": "yearlyRateUnit",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "autoDepreciation"
+                        }
+                    ],
+                    "type": "number",
+                    "key": "yearlyRateUnit",
+                    "required": false
+                },
+                {
+                    "path": "startDate",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "autoDepreciation"
+                        }
+                    ],
+                    "type": "number",
+                    "key": "startDate",
+                    "required": true
+                },
+                {
+                    "path": "stopDate",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "autoDepreciation"
+                        }
+                    ],
+                    "type": "number",
+                    "key": "stopDate",
+                    "required": true
+                },
+                {
+                    "path": "notificationForDepreciation",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "autoDepreciation"
+                        }
+                    ],
+                    "type": "number",
+                    "key": "notificationForDepreciation"
+                },
+                {
+                    "path": "description",
+                    "type": "string",
+                    "key": "description"
+                },
+                {
+                    "staticValue": "().startsWith=:;().currentNumber='';range():[_.data.depreciationAccount.len()-1]._():[().currentNumber+=[__.data.depreciationAccount].[_];().startsWith.push():[().currentNumber]];return():[().startsWith]",
+                    "key": "startsWith"
+                }
+            ],
+            "beforeSaveStep": {
+                "keyValue": [
+                    {
+                        "path": "id",
+                        "findKey": "helperKey",
+                        "findValue": "toGetLastTransactionForDepreciation",
+                        "key": "lastBalance"
+                    }
+                ]
+            },
+            "helpersKeyValue": [
+                {
+                    "staticValue": "toGetDepreciationLedgerAccount",
+                    "key": "helperKey"
+                }
+            ],
+            "generateReference": true,
+            "#nextStep": {
+                "manager": "assetDepreciation",
+                "collection": "transaction"
+            }
+        }
+    },
+    "id": "accountmemkekoweffbeuheijer",
+    "collection": "account",
+    "creationDate": 1709041633557,
+    "__props__": {
+        "id": "31K7d1S3K9g5x0Q6C040w7W810",
+        "doc": "account",
+        "counter": 28,
+        "creationDate": 1713950600780,
+        "collection": "schemas",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "helpersKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "#nextStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "helpersKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "beforeSaveStep",
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "helpersKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    18,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    18
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    5,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    10,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    8,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    9,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    10,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    10
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    11
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    12
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    13
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    17,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    15,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    16,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    17,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    17
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    18
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    16
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    15
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    14
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "vatAccount"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue"
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 16742
+    },
+    "update": {
+        "account": {
+            "keyValue": [
+                {
+                    "path": "id",
+                    "type": "string",
+                    "key": "id",
+                    "required": true
+                },
+                {
+                    "path": "name",
+                    "type": "string",
+                    "key": "name",
+                    "required": true
+                },
+                {
+                    "path": "currency",
+                    "type": "array",
+                    "key": "currency",
+                    "required": "true"
+                },
+                {
+                    "path": "email",
+                    "type": "string",
+                    "key": "email"
+                },
+                {
+                    "path": "address",
+                    "type": "string",
+                    "key": "address"
+                },
+                {
+                    "path": "limit",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Receivables and Payables"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        }
+                    ],
+                    "type": "number",
+                    "key": "limit",
+                    "required": true
+                },
+                {
+                    "path": "notification",
+                    "type": "string",
+                    "key": "notification"
+                },
+                {
+                    "path": "notifyAmount",
+                    "condition": [
+                        {
+                            "condition": [
+                                "true"
+                            ],
+                            "conditionReference": "notification"
+                        }
+                    ],
+                    "type": "number",
+                    "required": true,
+                    "key": "notifyAmount"
+                },
+                {
+                    "path": "repeat",
+                    "condition": [
+                        {
+                            "condition": [
+                                true
+                            ],
+                            "conditionReference": "notification"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "repeat",
+                    "required": "true"
+                },
+                {
+                    "path": "maturatyPeriod",
+                    "condition": [
+                        {
+                            "condition": [
+                                true
+                            ],
+                            "conditionReference": "notification"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "maturatyPeriod",
+                    "required": "true"
+                },
+                {
+                    "path": "maturatyPeriodUnit",
+                    "condition": [
+                        {
+                            "condition": [
+                                "true"
+                            ],
+                            "conditionReference": "notification"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "maturatyPeriodUnit",
+                    "required": "true"
+                },
+                {
+                    "path": "contactNumber",
+                    "type": "array",
+                    "key": "contactNumber"
+                },
+                {
+                    "path": "description",
+                    "type": "string",
+                    "key": "description"
+                },
+                {
+                    "path": "note",
+                    "type": "string",
+                    "key": "note"
+                },
+                {
+                    "path": "logo",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Customer"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "B2B",
+                                "Corporate"
+                            ],
+                            "conditionReference": "accountType"
+                        }
+                    ],
+                    "type": "image",
+                    "key": "logo"
+                },
+                {
+                    "path": "officialDocuments",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Customer"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "B2B",
+                                "Corporate"
+                            ],
+                            "conditionReference": "accountType"
+                        }
+                    ],
+                    "type": "image",
+                    "key": "officialDocuments"
+                },
+                {
+                    "path": "passport",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Customer"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "B2C"
+                            ],
+                            "conditionReference": "accountType"
+                        }
+                    ],
+                    "type": "image",
+                    "key": "passport"
+                },
+                {
+                    "path": "bankName",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Bank"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "Financial Accounts"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "bankName",
+                    "required": true
+                },
+                {
+                    "path": "bankAccountNumber",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Bank"
+                            ],
+                            "conditionReference": "type"
+                        },
+                        {
+                            "condition": [
+                                "Financial Accounts"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "bankAccountNumber",
+                    "required": true
+                }
+            ],
+            "update": true
+        }
+    }
+}

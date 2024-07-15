@@ -1,0 +1,21 @@
+{
+    "accountID": "k1A7R0N8X8Y8l7c030q8S8W7O3",
+    "approved": true,
+    "releaseDate": 1713533620115,
+    "expiryDate": 1797692580000,
+    "status": "Confirmed",
+    "name": "Travel Accounting Platform",
+    "__props__": {
+        "id": "r1c7d176U1B9m6C7i9F8T973T2",
+        "doc": "plugin3",
+        "counter": 3,
+        "creationDate": 1716196798932,
+        "active": true,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "plugin"
+    }
+}

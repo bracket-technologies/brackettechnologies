@@ -1,0 +1,42 @@
+{
+    "__props__": {
+        "id": "r1W7Y1H7c4z9J4I3s9O4v405W7",
+        "doc": "equityManager",
+        "counter": 2,
+        "creationDate": 1717494394457,
+        "active": true,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "accountManagers"
+    },
+    "id": "equityManager",
+    "name": "Equity & Long Term Debts Manager",
+    "defaultInput": [
+        {
+            "name": "General Ledger",
+            "type": "ledger"
+        },
+        {
+            "name": "Account Number"
+        },
+        {
+            "name": "Currency",
+            "type": "dropdown"
+        },
+        {
+            "name": "Name"
+        },
+        {
+            "name": "Transaction From Date",
+            "type": "date"
+        },
+        {
+            "name": "Transaction To Date",
+            "type": "date"
+        }
+    ]
+}

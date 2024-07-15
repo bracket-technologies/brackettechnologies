@@ -1,0 +1,24 @@
+{
+    "__props__": {
+        "id": "819781E687S3U5e2L9w6v3u9H8",
+        "doc": "package1",
+        "counter": 1,
+        "creationDate": 1716735296398,
+        "active": true,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "package"
+    },
+    "name": "Free Tier",
+    "description": "Free tier",
+    "duration": 604800000,
+    "freeTier": true,
+    "accessabilityID": "I14741U6b1B9B7U6S0q6L408x4",
+    "savings": 0,
+    "pluginID": "r1c7d176U1B9m6C7i9F8T973T2",
+    "priceCoins": 0
+}

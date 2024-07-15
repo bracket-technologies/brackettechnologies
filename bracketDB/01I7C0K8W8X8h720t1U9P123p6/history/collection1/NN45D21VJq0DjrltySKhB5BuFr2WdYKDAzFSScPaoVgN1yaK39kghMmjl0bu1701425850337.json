@@ -1,0 +1,139 @@
+{
+    "createdBy": {
+        "lastName": "test",
+        "country": "Lebanon",
+        "address": "werwer",
+        "city": "Zgharta",
+        "permission": {
+            "creation-date": 1700573235660,
+            "permission": {
+                "voucher": [
+                    "Remove",
+                    "Create",
+                    "Edit",
+                    "Read",
+                    "Import",
+                    "Export"
+                ],
+                "expense": [
+                    "Create",
+                    "Edit",
+                    "Read",
+                    "Remove"
+                ],
+                "branch": [
+                    "Read",
+                    "Edit",
+                    "Create",
+                    "History",
+                    "Remove",
+                    "Switch Branches"
+                ],
+                "notification": [
+                    "Create",
+                    "Edit",
+                    "Read",
+                    "Remove",
+                    "Receive"
+                ],
+                "service": [
+                    "Remove",
+                    "History",
+                    "Create",
+                    "Edit",
+                    "Read",
+                    "Print"
+                ],
+                "sheet": [
+                    "Remove",
+                    "Create",
+                    "Edit",
+                    "Read",
+                    "Import",
+                    "Export"
+                ],
+                "currency": [
+                    "Create",
+                    "Edit",
+                    "Read",
+                    "Remove"
+                ],
+                "invoice": [
+                    "Remove",
+                    "History",
+                    "Create",
+                    "Edit",
+                    "Read",
+                    "Print"
+                ],
+                "asset": [
+                    "Read",
+                    "Remove",
+                    "Create",
+                    "History",
+                    "Edit"
+                ],
+                "user": [
+                    "Edit",
+                    "Remove",
+                    "History",
+                    "Create",
+                    "Read"
+                ],
+                "account": [
+                    "Edit",
+                    "Remove",
+                    "Transaction Sheet",
+                    "History",
+                    "Cash Flow",
+                    "Income Statement",
+                    "Create",
+                    "Read"
+                ],
+                "dashboard": [
+                    "Read"
+                ],
+                "gallery": [
+                    "Upload",
+                    "Read",
+                    "#Edit",
+                    "Remove"
+                ]
+            },
+            "id": "qgZpEBDIN2bOI8soQeEXwS2wgcIDl0PsG2sRPmTqIkOSN4kaqox2mpZYpU1r1700573331130",
+            "creationDay": 1700524800000,
+            "creationDate": 1700573331131,
+            "user": "Udf9J6L5mSDwJKGictin1xutMwalegfs9wnDoxKVbXriRv2gupogDCF3MUtG1700573330426"
+        },
+        "creationDate": 1700573330426,
+        "birthDate": 1700697600000,
+        "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+        "firstName": "test",
+        "nationality": "lebanese",
+        "createdBy": "j7neF8CHqumHOGzAXNWi9JcLKTTyx9LRmJptYuYbJeiNWWfSrQMeqwKTZSp01699559755885",
+        "contactNumber": "lebanese",
+        "creation-date": 1700573235660,
+        "id": "Udf9J6L5mSDwJKGictin1xutMwalegfs9wnDoxKVbXriRv2gupogDCF3MUtG1700573330426",
+        "creationDay": 1700524800000,
+        "email": "lebanese"
+    },
+    "description": "account creation",
+    "id": "NN45D21VJq0DjrltySKhB5BuFr2WdYKDAzFSScPaoVgN1yaK39kghMmjl0bu1701425850337",
+    "creationDay": 1701388800000,
+    "creationDate": 1701425850337,
+    "account": "FgaSROwXqukqY02NYjLvE0LbxG74t30HMGDIfMelvvqcLgchM5NZzOQ1MAdL1701425850244",
+    "__props__": {
+        "id": "c1r7J1o1t0O3I1V3260334D092",
+        "doc": "NN45D21VJq0DjrltySKhB5BuFr2WdYKDAzFSScPaoVgN1yaK39kghMmjl0bu1701425850337",
+        "creationDate": 1711031363402,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 94,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

@@ -1,0 +1,566 @@
+{
+    "identifier": "account",
+    "terminateForm": {
+        "inputInfo": {
+            "subInput": [
+                {
+                    "input": [
+                        {
+                            "inputPath": "firstName",
+                            "inputLabel": "First Name",
+                            "required": "true"
+                        },
+                        {
+                            "inputPath": "lastName",
+                            "inputLabel": "Last Name",
+                            "required": "true"
+                        },
+                        {
+                            "inputPath": "birthDate",
+                            "inputLabel": "DOB",
+                            "type": "date"
+                        },
+                        {
+                            "inputPath": "nationality",
+                            "readonly": "readonly",
+                            "inputLabel": "Nationality",
+                            "items": "data:().collection.countries.countries.():[nationality]",
+                            "required": "true"
+                        },
+                        {
+                            "inputPath": "contactNumber",
+                            "inputLabel": "Contact#",
+                            "required": "true"
+                        },
+                        {
+                            "inputPath": "email",
+                            "inputLabel": "Email",
+                            "required": "true"
+                        }
+                    ],
+                    "title": "General Information"
+                },
+                {
+                    "input": [
+                        {
+                            "inputPath": "country",
+                            "sheetName": "Countries",
+                            "inputLabel": "Country",
+                            "sheetHeader": "country",
+                            "droplistClickAction": "if():[doc().city;!sheetData:().[doc().country].list.():cities.inc():[doc().city]]:[doc().city.del()];customUpdate():[input=2]"
+                        },
+                        {
+                            "inputPath": "city",
+                            "#data:().collection.countries.countries.[doc().country]": "#data:().collection.countries.countries.[doc().country]",
+                            "sheetName": "doc().country",
+                            "requiredInput": "country",
+                            "inputLabel": "City",
+                            "data:().collection.countries.countries.[doc().country]": "data:().collection.countries.countries.[doc().country]",
+                            "sheetHeader": "cities",
+                            "openSheet": true
+                        },
+                        {
+                            "inputPath": "address",
+                            "inputLabel": "Address"
+                        }
+                    ],
+                    "title": "Address Information"
+                },
+                {
+                    "input": [
+                        {
+                            "inputPath": "position",
+                            "readonly": "readonly",
+                            "inputLabel": "Permission",
+                            "editIcon": true,
+                            "items": [
+                                "User",
+                                "Admin User",
+                                "Master User"
+                            ],
+                            "droplistClickAction": "setPermission()",
+                            "required": "true"
+                        },
+                        {
+                            "idGeneratorAction": "generateUsernamee()",
+                            "inputPath": "username",
+                            "inputLabel": "Username",
+                            "required": "true"
+                        },
+                        {
+                            "inputPath": "password",
+                            "inputLabel": "Password",
+                            "required": "true"
+                        }
+                    ],
+                    "title": "User "
+                }
+            ],
+            "collection": "user"
+        },
+        "docName": "terminateAssetInfo",
+        "title": "Terminate Asset Form"
+    },
+    "searchEngineInputs": [
+        {
+            "inputPath": "generalLedger",
+            "inputLabel": "General Ledger",
+            "select": {
+                "itemsToUnselect": [
+                    "ledgerAccount"
+                ]
+            },
+            "unselect": {
+                "itemsToSelect": [
+                    "ledgerAccount"
+                ]
+            },
+            "codeInput": "true",
+            "generalLedgers": true,
+            "allowedCode": {
+                "allowedCode": [
+                    "2"
+                ]
+            },
+            "fillCodeName": true,
+            "initializeValue": true
+        },
+        {
+            "inputPath": "ledgerAccount",
+            "inputLabel": "Ledger Account",
+            "unselect": {
+                "itemsToSelect": [
+                    "generalLedger"
+                ]
+            },
+            "select": {
+                "itemsToUnselect": [
+                    "generalLedger",
+                    "accountNumber",
+                    "currency"
+                ]
+            },
+            "codeInput": true,
+            "generalLedgers": true,
+            "separator": "/",
+            "allowedCode": {
+                "allowedCode": [
+                    "2"
+                ]
+            },
+            "placeholder": "--/-"
+        },
+        {
+            "inputPath": "accountNumber",
+            "inputLabel": "Account Number",
+            "type": "number",
+            "select": {
+                "itemsToUnselect": [
+                    "ledgerAccount"
+                ],
+                "itemsToSelect": [
+                    "generalLedger"
+                ]
+            }
+        },
+        {
+            "inputLabel": "Currency",
+            "readonly": true,
+            "items": "userData:().currency.sort():[path=counter;ascending].():code",
+            "inputPath": "currency",
+            "select": {
+                "itemsToUnselect": [
+                    "ledgerAccount"
+                ],
+                "itemsToSelect": [
+                    "generalLedger"
+                ]
+            }
+        },
+        {
+            "clearable": true,
+            "inputPath": "name",
+            "inputLabel": "Name"
+        },
+        {
+            "clearable": true,
+            "inputPath": "transactionFromDate",
+            "inputLabel": "Transaction From Date",
+            "type": "date"
+        },
+        {
+            "clearable": true,
+            "inputPath": "transactionToDate",
+            "inputLabel": "Transaction To Date",
+            "type": "date"
+        }
+    ],
+    "ledgerAccountCode": "2",
+    "createFormInputs": "ledgerSharedManagerInfo",
+    "title": "Fixed Assets Manager",
+    "managerName": "fixedAssetManager",
+    "creationDate": 1709896590938,
+    "ledgerAccountName": "Fixed Assets",
+    "popupInfo": {
+        "docName": "assetInfo",
+        "title": "Fixed Asset Account Form"
+    },
+    "id": "fixedAssetsManager",
+    "__props__": {
+        "id": "U1y7A1R1p0t3W19336A1a0w7L4",
+        "doc": "fixedAssetsManager",
+        "creationDate": 1711031361074,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "#input"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs"
+                ]
+            },
+            {
+                "path": [
+                    "#createFormInputs",
+                    "subInput",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "#createFormInputs",
+                    "subInput",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "#createFormInputs",
+                    "subInput",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "#createFormInputs",
+                    "subInput",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "#createFormInputs",
+                    "subInput",
+                    1,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "#createFormInputs",
+                    "subInput",
+                    0,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "#createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    2,
+                    "#items"
+                ]
+            },
+            {
+                "path": [
+                    "terminateForm",
+                    "inputInfo",
+                    "subInput",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "terminateForm",
+                    "inputInfo",
+                    "subInput",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "terminateForm",
+                    "inputInfo",
+                    "subInput",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "terminateForm",
+                    "inputInfo",
+                    "subInput",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "terminateForm",
+                    "inputInfo",
+                    "subInput",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "terminateForm"
+                ]
+            },
+            {
+                "path": [
+                    "popupInfo"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    2,
+                    "allowedLedgers"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    4,
+                    "select",
+                    "itemsToSelect"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    4,
+                    "select"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    4,
+                    "select"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    2,
+                    "unselect"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    0,
+                    "select"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    0,
+                    "unselect"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    1,
+                    "select"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    1,
+                    "allowedCode"
+                ]
+            }
+        ],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 4,
+        "chunk": "chunk1",
+        "collection": "generalLedgerInfo"
+    },
+    "table": {
+        "body": {
+            "items": "table"
+        },
+        "header": {
+            "items": "table"
+        },
+        "table": [
+            {
+                "path": "name",
+                "header": "Name",
+                "fraction": "1fr"
+            },
+            {
+                "path": "generalLedger",
+                "header": "General Ledger",
+                "fraction": "1fr"
+            },
+            {
+                "header": "Account#",
+                "fraction": "1fr",
+                "formatCell": "txt()=__.ledgerAccount.0.split():'/'.1"
+            },
+            {
+                "path": "currency",
+                "header": "Currency",
+                "fraction": "1fr"
+            },
+            {
+                "header": "Depreciation Account",
+                "fraction": "1fr",
+                "formatCell": "if():[__.depreciationAccount.len()>0]:[txt()='✔']:[txt()='✘']"
+            },
+            {
+                "path": "debit",
+                "header": "Debit",
+                "formatCell": "toPrice()",
+                "fraction": "1fr"
+            },
+            {
+                "path": "credit",
+                "header": "Credit",
+                "formatCell": "toPrice()",
+                "fraction": "1fr"
+            },
+            {
+                "path": "balance",
+                "header": "Balance",
+                "formatCell": "toPrice()",
+                "fraction": "1fr"
+            },
+            {
+                "read": true,
+                "edit": "true",
+                "delete": true,
+                "justifyContent": "end",
+                "depreciation": true,
+                "customIcon": [
+                    {
+                        "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/7IEGMhmSOOgct5SP69XB?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=fNlNDSvZbSTlBzUXddngDHAPfoGWK0L8y2qms7%2FMd3x8vm1uTplMf2PQvWT7vIYFd6QXMrrM4OSfALLtIQYyBz4MfQeSNDAIsIFr7BrSG3E7oc%2BIh1V9lCJnf6kz2j747vZ8dt%2FDxInWCSNHg%2FC6uOfMMRqyAiDhGJb0ZhypRXDaLEj8PdawRiXLmZ7zKub%2FEpVcNfzLVeQ1LTN6e6Y3B%2FU0O28KrYx086SMuyPEYxBmiTfKdVNETZp6w1oU13HdTWkUzcZEJLQGYiJudQY14FQb0WOpPi2MJpp%2Bo8EgkB5ODFLoZ1G1YUv2HPpUfRTxuWygMEVCHLZM4kGlkAyVjQ%3D%3D",
+                        "tooltip": "terminate",
+                        "action": "#openCreateForm():[title=currentOpenManager:().terminateForm.title;inputInfo=currentOpenManager:().terminateForm.inputInfo;docName=currentOpenManager:().terminateForm.docName]",
+                        "hide": true
+                    },
+                    {
+                        "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/3CNNtNpKFjqTKkecvYra?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=RRWjQIyV1jcxHkqjD3SW7bH9KpAAdIETwa5Gvcb0MrEp0Is%2B6zuYcpm7ST9E2apOviohTkvIxJ0X%2F3Gq0AjKmZZ%2B32sVhr192p2yqhB4dXlf4C%2B0%2FmmHJbTitWGIQmv9p6m39oS%2BXpKW1sLBPsXIuPV%2BtWvBMMj%2F4S%2FGaGNqoZ%2FxvkmQap68QD6aERcMlEwBkxbwfR%2F7KLyYKIptK6GCVv6w5wMWQIpYq7sX5%2Bsu7ISOHA6yqA3B%2B6rvMg1JBVSEwgy289B2y3M3sX4PhFIoK2bw1Jk5RHpqUTmFJz3KT7%2FiaiFzDYnkHC403WWsCUxKdr7lCeAXrHVoJ2YdCA%2BdSQ%3D%3D",
+                        "tooltip": "sell",
+                        "hide": true
+                    },
+                    {
+                        "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/MMwVEfvl24OIA0TNWH9L?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=inEzvk3W8EntXUGnBWRlS9XZssV4KU0iJ8K2RFcNf4cm4%2FhWKJH1Sx6ZmcIWocM8s2BQMJzb1huVynOcifzmY9RXNKqHawSOCsMNQo%2FzSH%2F8kdLAFBfPlCwhLX6dsLmRjJy7A4e0gP6qKzk65I%2FxOYGkNGxy2URLOA69IJnCSD4ug23t%2BjYbSqFvupsMuNPkecDWaLk5kEEG7VZHbIp1G%2FIUwuD6v%2BwvydGSD4PnNrnlC5oYBYTLsW8Rosn9syHc6TAC1IjSioTICX3PeTl9FCQBmR8mTTG8WJH3wRAICdKUONA1Vlf5EAHP4PeOAQjWzmlig1MEHETmOIpG%2BOwZ0g%3D%3D",
+                        "tooltip": "transactions",
+                        "action": "().customManagerSearchEngineClone=customManagerSearchEngine:().clone();openSearchBox():[redeclareSearchEngineDoc=().customManagerSearchEngineClone;hideButtons=true;collection=transaction;tableHeaderAndBody=accountingJournalInfo:().transactionManager.table;searchEngineDefaultValues=[ledgerAccount=[___.ledgerAccount]._find():[_.split():'/'.2.num()=0]];autoSearch=true;uploadFalse=true;downloadFalse=true;printFalse=true]"
+                    }
+                ],
+                "fraction": "1.5fr"
+            }
+        ]
+    },
+    "filterSearchEngineInputs": true
+}

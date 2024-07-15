@@ -1,0 +1,82 @@
+{
+    "creationDate": 1713253034353,
+    "collection": 1,
+    "lastChunk": 1,
+    "docsLength": 2,
+    "counter": 2,
+    "reads": 2790,
+    "writes": 368,
+    "deletes": 0,
+    "size": 2277,
+    "payloadIn": 407820,
+    "payloadOut": 2953749,
+    "maxSize": 1000,
+    "indexes": [
+        {
+            "find": [
+                "type"
+            ],
+            "doc": "index1",
+            "lastRead": 1721035309732,
+            "expiryDate": 1723627309732
+        },
+        {
+            "find": [
+                "ref",
+                "type"
+            ],
+            "doc": "index2",
+            "lastRead": 1720786523933,
+            "expiryDate": 1723378523933
+        },
+        {
+            "find": [
+                "type",
+                "financialLedgerAccounts"
+            ],
+            "doc": "index3",
+            "lastRead": 1720786591298,
+            "expiryDate": 1723378591298
+        },
+        {
+            "find": [
+                "type",
+                "creationDay"
+            ],
+            "doc": "index4",
+            "lastRead": 1720787313576,
+            "expiryDate": 1723379313576
+        },
+        {
+            "find": [
+                "type",
+                "creationDate"
+            ],
+            "doc": "index5",
+            "lastRead": 1720787112034,
+            "expiryDate": 1723379112034
+        },
+        {
+            "find": [
+                "type",
+                "creationDate",
+                "creationDay"
+            ],
+            "doc": "index6",
+            "lastRead": 1720787317379,
+            "expiryDate": 1723379317379
+        },
+        {
+            "find": [
+                "type",
+                "status",
+                "creationDate",
+                "creationDay"
+            ],
+            "doc": "index7",
+            "lastRead": 1720787326989,
+            "expiryDate": 1723379326989
+        }
+    ],
+    "lastIndex": 7
+}

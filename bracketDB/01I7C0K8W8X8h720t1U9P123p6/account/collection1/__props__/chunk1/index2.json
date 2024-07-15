@@ -1,0 +1,27 @@
+{
+    "account767": {
+        "startsWith": [
+            "1"
+        ]
+    },
+    "account768": {
+        "startsWith": [
+            "1"
+        ]
+    },
+    "account769": {
+        "startsWith": [
+            "1",
+            "11",
+            "119"
+        ]
+    },
+    "account770": {
+        "type": "B2B Customer",
+        "startsWith": [
+            "4",
+            "41",
+            "413"
+        ]
+    }
+}

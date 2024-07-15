@@ -1,0 +1,14 @@
+{
+    "counter1": {},
+    "counter2": {
+        "collection": "transaction"
+    },
+    "counter3": {
+        "collection": "account"
+    },
+    "counter4": {
+        "collection": "voucher"
+    },
+    "counter5": {},
+    "counter6": {}
+}

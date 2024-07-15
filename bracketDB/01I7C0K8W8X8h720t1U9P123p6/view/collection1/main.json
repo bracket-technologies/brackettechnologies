@@ -1,0 +1,18 @@
+{
+    "view": "View:main?root():login",
+    "__props__": {
+        "id": "f1m7p1v3i0G0C08430B1q8W9C9",
+        "doc": "main",
+        "counter": 1,
+        "creationDate": 1713000401899,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "comments": [],
+        "collapsed": [],
+        "comments||:": "Kce03",
+        "collapsed||:": "XQvZc",
+        "collection": "view"
+    }
+}

@@ -1,0 +1,246 @@
+{
+    "view": "View:unitPathInput?class=flex column;style:[width=100%;overflow=hidden;if():[_.pointerEvents]:[pointerEvents=_.pointerEvents]]",
+    "children": [
+        {
+            "view": "customInputLabel"
+        },
+        {
+            "view": "View?class=flex;style:[width=100%;height=100%;gap=.2rem]",
+            "children": [
+                {
+                    "view": "View?class=flex;style:[inputStyle();if():[_.faded]:[backgroundColor=#f3f3f3]];clearableAndGeneratorHandler()",
+                    "children": [
+                        {
+                            "view": "View?class=flex;style:[width=100%;height=100%;justifyContent=space-between];if():[_.onLoadAction]:[[_.onLoadAction]()]",
+                            "children": [
+                                {
+                                    "view": "View?class=flex;style:[position=relative;width=100%];handleCleareIconDisplay()",
+                                    "children": [
+                                        {
+                                            "view": "Input?path=_.inputPath;fillDefaultZero();if():[_.preventDefault]:[preventDefault=true];if():[_.readonly]:[readonly=true];#if():[_.items]:[droplistHandler()]:[if():[_.sheetName]:[autoFillItems()]];style:[width=100%;height=100%;overflow=hidden;if():[_.readonly]:[cursor=default]];if():[!_.timeFormat]:[priceFormatHandler()]:[toTimeFormat()]"
+                                        },
+                                        {
+                                            "view": "Icon?name=Close;google.symbol;style:[fontSize=1.8rem;cursor=pointer;color=#666;opacity=0;transition=.2s;align-self=center;position=absolute;right=1px];click:[data().[_.inputPath]=0;prev().txt()='0']?createFormStack:().len()=0||createFormStack:().[-1].searchbox"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "view": "View?class=flex;style:[gap=1rem;position=relative;justifyContent=start]",
+                                    "children": [
+                                        {
+                                            "view": "View?class=flexbox;style:[position=relative;padding=0 .2rem;cursor=if():[_.subItemsList]:[pointer]:default;height=100%;borderLeft=1px solid #ddd;if():[_.subItemsList]:[paddingRight=1.5rem]]?_.unitPath||_.unitValue",
+                                            "children": [
+                                                {
+                                                    "view": "Input?class=flexbox;unitInputHandler();attribute=[tabindex=-1];style:[fontSize=1.2rem;minWidth=2.6rem;;height=100%;if():[_.subItemsList]:[cursor=pointer]:default;padding=0]"
+                                                },
+                                                {
+                                                    "view": "Icon?name=expand_more;google.symbol;style:[position=absolute;right=-2px;fontSize=2rem;color=#666];#click:[prev().click()]?!____.read;_.subItemsList"
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "y167E1I1O0G3D1A3L6q5i232G0",
+        "doc": "unitPathInput",
+        "creationDate": 1711031365220,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "actions": {
+            "toTimeFormat": {
+                "convertToTimestamp": {
+                    "toYear": "().resetDuration=txt().num()*31557600000;().reset=().startDate+().resetDuration",
+                    "toDay": "().resetDuration=txt().num()*86400000;().reset=().startDate+().resetDuration",
+                    "toMonth": "().resetDuration=txt().num()*2629743000;().reset=().startDate+().resetDuration",
+                    "toWeek": "().resetDuration=txt().num()*604800016.56;().reset=().startDate+().resetDuration",
+                    "saveResetDurationInDoc": "parent().data().resetDuration=().resetDuration;parent().data().[_.inputPath]=().reset",
+                    "specifyDurationUnit": "if():[next().1stChild().1stChild().txt()='Hr']:[toHour()].elif():[next().1stChild().1stChild().txt()='Day']:[toDay()].elif():[next().1stChild().1stChild().txt()='Week']:[toWeek()].elif():[next().1stChild().1stChild().txt()='Month']:[toMonth()].elif():[next().1stChild().1stChild().txt()='Year']:[toYear()]",
+                    "_": "().startDate=if():[_.referenceDate]:[parent().data().[_.referenceDate]]:[todayStart()];if():[().startDate]:[specifyDurationUnit();saveResetDurationInDoc()]",
+                    "toHour": "().resetDuration=txt().num()*3600000;().reset=().startDate+().resetDuration"
+                },
+                "convertToTimeFormat": {
+                    "toYear": "().duration=[().resetDuration/31557600000]",
+                    "toDay": "().duration=[().resetDuration/86400000]",
+                    "toMonth": "().duration=[().resetDuration/2629743000]",
+                    "toWeek": "().duration=[().resetDuration/604800016.56]",
+                    "specifyDurationUnit": "if():[parent().data().[_.unitPath]='Hr']:[toHour()].elif():[parent().data().[_.unitPath]='Day']:[toDay()].elif():[parent().data().[_.unitPath]='Week']:[toWeek()].elif():[parent().data().[_.unitPath]='Month']:[toMonth()].elif():[parent().data().[_.unitPath]='Year']:[toYear()]",
+                    "_": "().resetDuration=parent().data().[resetDuration];specifyDurationUnit();txt()=().duration",
+                    "toHour": "().duration=[().resetDuration/3600000]"
+                },
+                "removeChar": "if():[[e().keyCode>=48;e().keyCode<=57]||[e().keyCode>=96;e().keyCode<=105]||[e().keyCode=110||e().keyCode=8]||[e().keyCode>=37;e().keyCode<=40]||[e().keyCode>=16;e().keyCode<=20]||[e().keyCode>=112;e().keyCode<=123]||[e().keyCode=13]]:[if():[e().keyCode=13]:[blur()]]:[preventDefault()]",
+                "_": "keydown:[removeChar()];blur:[convertToTimestamp()];loaded:[if():[parent().data().[resetDuration]||true]:[convertToTimeFormat()];if():[doc().resetDuration||__.resetDuration;txt()]:[convertToTimestamp()]]"
+            },
+            "fillDefaultZero": "if():[!_.inputValue;!data()]:[if():[_.inputPath]:[data()=0]]",
+            "handleCleareIconDisplay": ";[mouseenter?2ndChild().style():[opacity=1]?createFormStack:().len()=0||createFormStack:().[-1].searchbox];[mouseleave?2ndChild().style():[opacity=0]?createFormStack:().len()=0||createFormStack:().[-1].searchbox]",
+            "unitInputHandler": {
+                "_": "if():[_.unitValue]:[handleInputValue()];readonly;if():[_.unitPath]:[path=_.unitPath];if():[_.subItemsList]:[handleSubItemsList()];",
+                "handleInputValue": "if():[_.executeUnitEveryLoad]:[txt()=[_.unitValue]()]:[if():[!data()]:[#input.value;txt()=[_.unitValue]()]]",
+                "handleSubItemsList": {
+                    "handleInputValue": "if():[!().droplistItems.inc():[data()]]:[txt()=().droplistItems.0;data()=().droplistItems.0]",
+                    "handleDropListItemsAndInputValue": "().droplistItems=:;_.subItemsList._():[().droplistItems.push():[[_]()]]",
+                    "handleDroplistClick": "txt()=droplist-txt:();data()=droplist-txt:();if():[_.subItemsDroplistClickAction]:[[_.subItemsDroplistClickAction]()]",
+                    "_": "handleDropListItemsAndInputValue();handleInputValue();droplistHandler():[items=().droplistItems];[click:droplist?handleDroplistClick()]"
+                }
+            },
+            "#autoFillSubItems": {
+                "getSheetData": "if():[![[_.subSheetName]()].inc():['coded']]:[timer():[dropListFromSheet():[name=[_.subSheetName]()]:[if():[_.success]:[sheetData:().[[__.subSheetName]()]=_.data;__.subItemsList=sheetData:().[[__.subSheetName]()].list.():[[__.subSheetHeader]];#droplistHandler();parent().update()]:[sheetData:().[[__.subSheetName]()]=false]]]:0]",
+                "[object Object]": "if():[!she:().list.[[_.subShe]()]]:[getSheetData()]:[_.subItemsList=sheetData:().list.[[_.subSheetName]()].():[[_.subSheetHeader]];timer():[parent().update()]:100]",
+                "_": "if():[!sheetData:().list.[[_.subSheetName]()]]:[getSheetData()]:[_.subItemsList=sheetData:().list.[[_.subSheetName]()].():[[_.subSheetHeader]];timer():[parent().update()]:100]"
+            },
+            "calcExchangeRate": {
+                "showNoteAndDel": "if():[_____.path]:[____.exchangeRate.del()]:[doc().exchangeRate.del()];note():[text='Rate must be greater than 0!';danger]",
+                "handleExchangeRateInDoc": "if():[[doc().[_.firstRatePath]+0]>0;[doc().[_.secondeRatePath]+0]>0]:[calcRate()]:[showNoteAndDel()]",
+                "calcRate": "if():[_____.path]:[____.exchangeRate=[____.[_.firstRatePath]/____.[_.secondeRatePath]]]:[doc().exchangeRate=[doc().[_.firstRatePath]/doc().[_.secondeRatePath]]]",
+                "handleExchangeRateInPath": "if():[[____.[_.firstRatePath]+0]>0;[____.[_.secondeRatePath]+0]>0]:[calcRate()]:[showNoteAndDel()]",
+                "_": "if():[_____.path]:[handleExchangeRateInPath()]:[handleExchangeRateInDoc()];#if():[[doc().createdCurrencyRate+0]>0;[doc().systemCurrencyRate+0]>0]:[calcRate()]:[showNoteAndDel()]"
+            },
+            "priceFormatHandler": {
+                "removeChar": "if():[[e().keyCode>=48;e().keyCode<=57]||[e().keyCode>=96;e().keyCode<=105]||[e().keyCode=110||e().keyCode=8]||[e().keyCode>=37;e().keyCode<=40]||[e().keyCode>=16;e().keyCode<=20]||[e().keyCode>=112;e().keyCode<=123]||[e().keyCode=190]]:[]:[if():[e().keyCode=9]:[blur()]:[preventDefault()]]",
+                "_": "keydown:[removeChar()];[change?txt()=toPriceFormat():[data=data()];handlePriceInputInDoc()?!_.preventDefault];[blur?txt()=toPriceFormat():[data=data();round=true];handlePriceInputInDoc()?!_.preventDefault];focus:[if():[txt()='0';!().readonly]:[clear()]];if():[!data()]:[if():[_.inputValue]:[data()=[_.inputValue]()]];inputCustomEvents();loaded:[if():[data();data()!=0]:[txt()=toPriceFormat():[data=data()]]:[data()=0]]",
+                "handlePriceInputInDoc": "if():[txt()='']:[data()=0]:[data()=[txt().replaceAll():',':''].num()]"
+            },
+            "#handleSubItemsList": {
+                "handleInputValue": "if():[!().droplistItems.inc():[data()]]:[txt()=().droplistItems.0;data()=().droplistItems.0]",
+                "handleDropListItemsAndInputValue": "().droplistItems=:;_.subItemsList._():[().droplistItems.push():[[_]()]]",
+                "handleDroplistClick": "txt()=droplist-txt:();data()=droplist-txt:();if():[_.subItemsDroplistClickAction]:[[_.subItemsDroplistClickAction]()]",
+                "_": "handleDropListItemsAndInputValue();handleInputValue();droplistHandler():[items=().droplistItems];[click:droplist?handleDroplistClick()]"
+            }
+        },
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "#calcAmoun"
+                ]
+            },
+            {
+                "path": [
+                    "#autoFillSubItems"
+                ]
+            },
+            {
+                "path": [
+                    "toTimeFormat",
+                    "convertToTimeFormat"
+                ]
+            },
+            {
+                "path": [
+                    "toTimeFormat",
+                    "convertToTimestamp"
+                ]
+            },
+            {
+                "path": [
+                    "toTimeFormat"
+                ]
+            },
+            {
+                "path": [
+                    "calcExchangeRate"
+                ]
+            },
+            {
+                "path": [
+                    "priceFormatHandler",
+                    "#toPriceForm"
+                ]
+            },
+            {
+                "path": [
+                    "#handleSubItemsList"
+                ]
+            }
+        ],
+        "comments": [
+            {
+                "note": "false",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "2nd unit",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    4
+                ]
+            },
+            {
+                "note": "switchable",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "label",
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "main input",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "unit input",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            }
+        ],
+        "dirPath": [],
+        "version": 0,
+        "counter": 56,
+        "secure": false,
+        "chunk": "chunk1",
+        "collection": "view"
+    }
+}

@@ -1,0 +1,66 @@
+{
+    "create": {
+        "notification": {
+            "keyValue": [
+                {
+                    "path": "users",
+                    "type": "array",
+                    "key": "users",
+                    "required": "true"
+                },
+                {
+                    "path": "dueDate",
+                    "type": "number",
+                    "key": "dueDate",
+                    "required": "true"
+                },
+                {
+                    "path": "msg",
+                    "type": "string",
+                    "key": "msg",
+                    "required": "true"
+                },
+                {
+                    "path": "overview",
+                    "type": "string",
+                    "key": "overview"
+                },
+                {
+                    "path": "note",
+                    "type": "string",
+                    "key": "note"
+                },
+                {
+                    "path": "branch",
+                    "type": "string",
+                    "key": "branch",
+                    "required": "true"
+                },
+                {
+                    "path": "createdBy",
+                    "type": "string",
+                    "key": "createdBy",
+                    "required": "true"
+                }
+            ],
+            "nextStep": {
+                "manager": "notification",
+                "collection": "schedule"
+            }
+        }
+    },
+    "id": "notificationLUR1alpgE4Jyrn0eWWd1",
+    "collection": "notification",
+    "__props__": {
+        "id": "W1S7L1D3a9T5h016x7r634S8A9",
+        "doc": "notification",
+        "counter": 33,
+        "creationDate": 1713950676489,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "schemas",
+        "createdByUserID": "91l7f111C0i3r1J3V6L0C2c5n1"
+    }
+}

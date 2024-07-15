@@ -1,0 +1,146 @@
+{
+    "headers": [
+        {
+            "text": "Name",
+            "key": "name"
+        },
+        {
+            "text": "Country",
+            "key": "country"
+        },
+        {
+            "text": "Code",
+            "key": "code"
+        },
+        {
+            "text": "Symbol",
+            "key": "symbol"
+        },
+        {
+            "text": "Decimal Digits",
+            "key": "decimalDigits"
+        }
+    ],
+    "data": [
+        {
+            "symbol": "$",
+            "country": "United States",
+            "code": "USD",
+            "name": "United States Dollar (USD)",
+            "decimalDigits": "2"
+        },
+        {
+            "symbol": "€",
+            "country": "European Union",
+            "code": "EUR",
+            "name": "Euro (EUR)",
+            "decimalDigits": "2"
+        },
+        {
+            "symbol": "L.L",
+            "country": "Lebanon",
+            "code": "LBP",
+            "name": "Lebanese Pound (LBP)",
+            "decimalDigits": "2"
+        },
+        {
+            "symbol": "CA$",
+            "country": "Canada",
+            "code": "CAD",
+            "name": "Canadian Dollar (CAD)",
+            "decimalDigits": "2"
+        },
+        {
+            "country": "Iran",
+            "code": "IRR",
+            "symbol": "Rial",
+            "decimalDigits": "2",
+            "name": "Iraqi Dinar"
+        }
+    ],
+    "name": "Currencies",
+    "id": "kGXZFhBsg5NUyB67gska",
+    "creationDay": 1705411295880,
+    "creationDate": 1705411306084,
+    "__props__": {
+        "id": "i1m7T101O0O3k1i3z642L2V2n1",
+        "doc": "kGXZFhBsg5NUyB67gska",
+        "creationDate": 1711031362221,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [
+            {
+                "path": [
+                    "keys"
+                ]
+            },
+            {
+                "path": [
+                    "list",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "list",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "list",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "list",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "data",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "data",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "data"
+                ]
+            }
+        ],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 8,
+        "chunk": "chunk1",
+        "collection": "sheet"
+    },
+    "type": "Editable",
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "width": [
+        {
+            "column": 1,
+            "width": "209px"
+        },
+        {
+            "column": 2,
+            "width": "122px"
+        },
+        {
+            "column": 3,
+            "width": "99px"
+        },
+        {
+            "column": 5,
+            "width": "111px"
+        }
+    ]
+}

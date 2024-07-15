@@ -1,0 +1,23 @@
+{
+    "__props__": {
+        "id": "b1L7f156K7v3p5Y4b241n7N5U7",
+        "doc": "package2",
+        "counter": 2,
+        "creationDate": 1716735421757,
+        "active": true,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "package"
+    },
+    "pluginID": "r1c7d176U1B9m6C7i9F8T973T2",
+    "name": "Starter",
+    "description": "Monthly subscription",
+    "duration": 2592000000,
+    "accessabilityID": "I14741U6b1B9B7U6S0q6L408x4",
+    "savings": 0,
+    "priceCoins": 50
+}

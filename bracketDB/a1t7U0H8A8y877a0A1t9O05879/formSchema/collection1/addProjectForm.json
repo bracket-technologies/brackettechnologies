@@ -1,0 +1,158 @@
+{
+    "__props__": {
+        "id": "613711m6c5y5e2L0B8l8T224K2",
+        "doc": "addProjectForm",
+        "counter": 5,
+        "creationDate": 1716552088242,
+        "collection": "schema",
+        "chunk": "chunk1",
+        "actions": {
+            "branchHandler": "2ndParent().next().display()?data()=true?2ndParent().next().():[hide();input().txt()=];doc().headProjectPublicID.del()",
+            "subscribeToTapHandler": "doc().pluginID=plugin:().id();doc().packageID=package:().id()?doc().subscribeToPlugin?doc().pluginID.del();doc().packageID.del()"
+        },
+        "comments": [
+            {
+                "note": "subscription inputs",
+                "path": [
+                    "sections",
+                    2
+                ]
+            },
+            {
+                "note": "divider",
+                "path": [
+                    "sections",
+                    1
+                ]
+            },
+            {
+                "note": "organization input",
+                "path": [
+                    "sections",
+                    0
+                ]
+            },
+            {
+                "note": "conditions",
+                "path": [
+                    "requiredData"
+                ]
+            },
+            {
+                "note": "tap plugin",
+                "path": [
+                    "sections",
+                    3
+                ]
+            }
+        ],
+        "collapsed": [
+            {
+                "path": [
+                    "requiredData"
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    3
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 2511
+    },
+    "confirmBtn": {
+        "text": "Create Project",
+        "action": "[addProject():[doc()]:[[root():projects?_.success];end():[_]]]():[collection=actions;doc=main]",
+        "msg": "We are building your project. Please wait until we finish!"
+    },
+    "title": "Think big, start small, then scale or fail fast! Scale now and start your new project.",
+    "requiredData": [
+        "organization"
+    ],
+    "sections": [
+        {
+            "styles": "display=grid;gridTemplateColumns=1fr 1fr;gapX=1rem;gapY=3rem;padding=1rem",
+            "inputs": [
+                {
+                    "label": "New Organization Name",
+                    "path": "organization",
+                    "required": true
+                }
+            ],
+            "gridInputs": true
+        },
+        {
+            "divider": true
+        },
+        {
+            "inputs": [
+                {
+                    "label": "This project is a branch",
+                    "path": "addBranch",
+                    "defaultValue": false,
+                    "items": [
+                        "Yes",
+                        "No"
+                    ],
+                    "action": "[branchHandler()]():[collection=formSchema;doc=addProjectForm]",
+                    "inputType": "yesNo",
+                    "required": true
+                },
+                {
+                    "label": "Head Project",
+                    "path": "headProjectPublicID",
+                    "items": "projects:().filter():main.():name",
+                    "display": "none",
+                    "action": "doc().headProjectPublicID=projects:().filter():main.find():[name=data()].publicID",
+                    "inputType": "stdItems",
+                    "required": true
+                }
+            ],
+            "styles": "display=grid;gridTemplateColumns=1fr 1fr;gapX=1rem;gapY=3rem;padding=1rem",
+            "gridInputs": true
+        },
+        {
+            "inputs": [
+                {
+                    "label": "Subscribe to TAP (Travel Accounting Platform)",
+                    "path": "subscribeToPlugin",
+                    "defaultValue": false,
+                    "items": [
+                        "Yes",
+                        "No"
+                    ],
+                    "action": "[subscribeToTapHandler()]():[collection=schema;doc=addProjectForm]",
+                    "inputType": "yesNo",
+                    "required": true
+                }
+            ],
+            "styles": "display=grid;gridTemplateColumns=1fr 1fr;gapX=1rem;gapY=3rem;padding=1rem",
+            "gridInputs": true
+        }
+    ],
+    "styles": "width=100rem",
+    "doc": "newProject",
+    "reset": true,
+    "beforeLoadingActions": "[getPlugin()]():[collection=schema;doc=signupForm;path=:getDataOnLoaded]"
+}

@@ -1,0 +1,2502 @@
+{
+    "create": {
+        "confirmInvoice": {
+            "ignoreMainDoc": true,
+            "keyValue": [
+                {
+                    "generateReference": true,
+                    "listOfDocs": true,
+                    "listPath": "bookings",
+                    "collection": "transaction",
+                    "docsKeyValue": [
+                        {
+                            "collection": "transaction",
+                            "input": [
+                                {
+                                    "key": "generalLedger",
+                                    "staticValue": "___.data.supplierAccount.split():'/'.0.toString()"
+                                },
+                                {
+                                    "key": "ledgerAccount",
+                                    "path": "supplierAccount",
+                                    "required": true,
+                                    "type": "string"
+                                },
+                                {
+                                    "path": "supplierAccount",
+                                    "type": "ledger",
+                                    "key": "account",
+                                    "required": "true"
+                                },
+                                {
+                                    "key": "credit-debit",
+                                    "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Credit']]:[return():['Debit']]"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                },
+                                {
+                                    "key": "currency",
+                                    "path": "costCurrency",
+                                    "required": true,
+                                    "type": "string"
+                                },
+                                {
+                                    "path": "costTotalPrice",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true"
+                                },
+                                {
+                                    "path": "costCommission",
+                                    "type": "number",
+                                    "key": "commission",
+                                    "required": "true"
+                                },
+                                {
+                                    "key": "invoiceRef",
+                                    "staticValue": "mainReceivedData:().ref"
+                                },
+                                {
+                                    "key": "invoiceID",
+                                    "staticValue": "mainReceivedData:().id"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                }
+                            ]
+                        },
+                        {
+                            "collection": "transaction",
+                            "input": [
+                                {
+                                    "key": "credit-debit",
+                                    "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Debit']]:[return():['Credit']]"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                },
+                                {
+                                    "key": "currency",
+                                    "path": "costCurrency",
+                                    "required": true,
+                                    "type": "string"
+                                },
+                                {
+                                    "path": "supplierVAT",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true"
+                                },
+                                {
+                                    "key": "invoiceRef",
+                                    "staticValue": "mainReceivedData:().ref"
+                                },
+                                {
+                                    "key": "invoiceID",
+                                    "staticValue": "mainReceivedData:().id"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                }
+                            ],
+                            "customCondition": "[getVatAccount():[ledgerAccount=__.supplierAccount]]():[collection=schemas;doc=transaction]",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Inbound"
+                                    ],
+                                    "conditionReference": "bound"
+                                },
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "collection": "transaction",
+                            "input": [
+                                {
+                                    "key": "generalLedger",
+                                    "staticValue": "601"
+                                },
+                                {
+                                    "key": "ledgerAccount",
+                                    "staticValue": "601/1/+___.data.supplierAccount.split():'/'.2"
+                                },
+                                {
+                                    "type": "ledger",
+                                    "key": "account",
+                                    "staticValue": "601/1/+___.data.supplierAccount.split():'/'.2"
+                                },
+                                {
+                                    "key": "credit-debit",
+                                    "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Debit']]:[return():['Credit']]"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                },
+                                {
+                                    "key": "currency",
+                                    "path": "costCurrency",
+                                    "required": true,
+                                    "type": "string"
+                                },
+                                {
+                                    "path": "costSubTotal",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true",
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Inbound"
+                                            ],
+                                            "conditionReference": "bound"
+                                        },
+                                        {
+                                            "condition": [
+                                                "Hotel"
+                                            ],
+                                            "conditionReference": "type"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "path": "costTotalPrice",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true",
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Outbound"
+                                            ],
+                                            "conditionReference": "bound"
+                                        },
+                                        {
+                                            "condition": [
+                                                "Hotel"
+                                            ],
+                                            "conditionReference": "type"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "path": "costTotalPrice",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true",
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Ticket"
+                                            ],
+                                            "conditionReference": "type"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "invoiceID",
+                                    "staticValue": "mainReceivedData:().id"
+                                },
+                                {
+                                    "key": "invoiceRef",
+                                    "staticValue": "mainReceivedData:().ref"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                }
+                            ]
+                        },
+                        {
+                            "collection": "transaction",
+                            "input": [
+                                {
+                                    "key": "generalLedger",
+                                    "staticValue": "701"
+                                },
+                                {
+                                    "key": "ledgerAccount",
+                                    "staticValue": "701/1/+mainReceivedData:().customerAccount.split():'/'.2"
+                                },
+                                {
+                                    "type": "ledger",
+                                    "key": "account",
+                                    "staticValue": "701/1/+mainReceivedData:().customerAccount.split():'/'.2"
+                                },
+                                {
+                                    "key": "credit-debit",
+                                    "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Credit']]:[return():['Debit']]"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                },
+                                {
+                                    "key": "currency",
+                                    "staticValue": "mainReceivedData:().currency"
+                                },
+                                {
+                                    "path": "sellingTotalPrice",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": true,
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Ticket"
+                                            ],
+                                            "conditionReference": "type"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "path": "sellingSubTotal",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": true,
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Inbound"
+                                            ],
+                                            "conditionReference": "bound"
+                                        },
+                                        {
+                                            "condition": [
+                                                "Hotel"
+                                            ],
+                                            "conditionReference": "type"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "path": "sellingTotalPrice",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": true,
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Outbound"
+                                            ],
+                                            "conditionReference": "bound"
+                                        },
+                                        {
+                                            "condition": [
+                                                "Hotel"
+                                            ],
+                                            "conditionReference": "type"
+                                        }
+                                    ]
+                                },
+                                {
+                                    "key": "invoiceID",
+                                    "staticValue": "mainReceivedData:().id"
+                                },
+                                {
+                                    "key": "invoiceRef",
+                                    "staticValue": "mainReceivedData:().ref"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                }
+                            ]
+                        },
+                        {
+                            "collection": "transaction",
+                            "input": [
+                                {
+                                    "key": "credit-debit",
+                                    "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Credit']]:[return():['Debit']]"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                },
+                                {
+                                    "key": "currency",
+                                    "path": "costCurrency",
+                                    "required": true,
+                                    "type": "string"
+                                },
+                                {
+                                    "path": "customerVAT",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true"
+                                },
+                                {
+                                    "key": "invoiceID",
+                                    "staticValue": "mainReceivedData:().id"
+                                },
+                                {
+                                    "key": "invoiceRef",
+                                    "staticValue": "mainReceivedData:().ref"
+                                },
+                                {
+                                    "key": "exchangeRates",
+                                    "staticValue": "mainReceivedData:().exchangeRates"
+                                }
+                            ],
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Inbound"
+                                    ],
+                                    "conditionReference": "bound"
+                                },
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ],
+                            "customCondition": "[getVatAccount():[ledgerAccount=mainReceivedData:().customerAccount]]():[collection=schemas;doc=transaction]"
+                        }
+                    ]
+                },
+                {
+                    "staticDoc": true,
+                    "collection": "transaction",
+                    "generateReference": true,
+                    "keyValue": [
+                        {
+                            "key": "generalLedger",
+                            "staticValue": "mainReceivedData:().customerAccount.split():'/'.0.toString()"
+                        },
+                        {
+                            "key": "ledgerAccount",
+                            "path": "customerAccount",
+                            "required": true,
+                            "type": "string"
+                        },
+                        {
+                            "path": "customerAccount",
+                            "type": "ledger",
+                            "key": "account",
+                            "required": "true"
+                        },
+                        {
+                            "key": "credit-debit",
+                            "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Debit']]:[return():['Credit']]"
+                        },
+                        {
+                            "key": "exchangeRates",
+                            "staticValue": "mainReceivedData:().exchangeRates"
+                        },
+                        {
+                            "key": "currency",
+                            "staticValue": "mainReceivedData:().currency"
+                        },
+                        {
+                            "key": "amount",
+                            "staticValue": "().amount=0;mainReceivedData:().bookings._():[().amount+=_.sellingTotalPrice];return():[().amount]"
+                        },
+                        {
+                            "key": "commission",
+                            "staticValue": "().commission=0;mainReceivedData:().bookings._():[().commission+=_.sellingCommission];return():[().commission]"
+                        },
+                        {
+                            "key": "invoiceID",
+                            "staticValue": "mainReceivedData:().id"
+                        },
+                        {
+                            "key": "invoiceRef",
+                            "staticValue": "mainReceivedData:().ref"
+                        },
+                        {
+                            "key": "exchangeRates",
+                            "staticValue": "mainReceivedData:().exchangeRates"
+                        }
+                    ]
+                },
+                {
+                    "staticDoc": true,
+                    "collection": "transaction",
+                    "generateReference": true,
+                    "keyValue": [
+                        {
+                            "key": "generalLedger",
+                            "staticValue": "mainReceivedData:().salesmanAccount.split():'/'.0.toString()"
+                        },
+                        {
+                            "key": "ledgerAccount",
+                            "path": "salesmanAccount",
+                            "required": true,
+                            "type": "string"
+                        },
+                        {
+                            "path": "salesmanAccount",
+                            "type": "ledger",
+                            "key": "account",
+                            "required": "true"
+                        },
+                        {
+                            "key": "credit-debit",
+                            "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Credit']]:[return():['Debit']]"
+                        },
+                        {
+                            "key": "exchangeRates",
+                            "staticValue": "mainReceivedData:().exchangeRates"
+                        },
+                        {
+                            "key": "currency",
+                            "staticValue": "mainReceivedData:().currency"
+                        },
+                        {
+                            "key": "amount",
+                            "path": "salesmanCommissionAmount",
+                            "required": true,
+                            "type": "number"
+                        },
+                        {
+                            "key": "invoiceID",
+                            "staticValue": "mainReceivedData:().id"
+                        },
+                        {
+                            "key": "invoiceRef",
+                            "staticValue": "mainReceivedData:().ref"
+                        },
+                        {
+                            "key": "exchangeRates",
+                            "staticValue": "mainReceivedData:().exchangeRates"
+                        }
+                    ],
+                    "condition": [
+                        {
+                            "condition": [
+                                "yes"
+                            ],
+                            "conditionReference": "salesmanCommission"
+                        }
+                    ]
+                },
+                {
+                    "collection": "transaction",
+                    "staticDoc": true,
+                    "generateReference": true,
+                    "keyValue": [
+                        {
+                            "key": "generalLedger",
+                            "staticValue": "60182"
+                        },
+                        {
+                            "key": "ledgerAccount",
+                            "staticValue": "60182/1/0"
+                        },
+                        {
+                            "type": "ledger",
+                            "key": "account",
+                            "staticValue": "60182/1/0"
+                        },
+                        {
+                            "key": "credit-debit",
+                            "staticValue": "if():[mainReceivedData:().type='Sales']:[return():['Debit']]:[return():['Credit']]"
+                        },
+                        {
+                            "key": "exchangeRates",
+                            "staticValue": "mainReceivedData:().exchangeRates"
+                        },
+                        {
+                            "key": "currency",
+                            "staticValue": "mainReceivedData:().currency"
+                        },
+                        {
+                            "path": "salesmanCommissionAmount",
+                            "type": "number",
+                            "key": "amount",
+                            "required": "true"
+                        },
+                        {
+                            "key": "invoiceID",
+                            "staticValue": "mainReceivedData:().id"
+                        },
+                        {
+                            "key": "invoiceRef",
+                            "staticValue": "mainReceivedData:().ref"
+                        },
+                        {
+                            "key": "exchangeRates",
+                            "staticValue": "mainReceivedData:().exchangeRates"
+                        }
+                    ],
+                    "condition": [
+                        {
+                            "condition": [
+                                "yes"
+                            ],
+                            "conditionReference": "salesmanCommission"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "id": "confirmVoucherqjkngqweofnqwefuiqwef",
+    "collection": "confirmInvoice",
+    "__props__": {
+        "id": "U1r791b9J8W372v2853949C1h0",
+        "doc": "confirmInvoice",
+        "counter": 46,
+        "creationDate": 1719832259910,
+        "actions": {},
+        "comments": [
+            {
+                "note": "if journal (from)",
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    0
+                ]
+            },
+            {
+                "note": "if journal (to)",
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    1
+                ]
+            },
+            {
+                "note": "if receipt (from)",
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2
+                ]
+            },
+            {
+                "note": "if receipt (to)",
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    3
+                ]
+            },
+            {
+                "note": "if payment (from)",
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    4
+                ]
+            },
+            {
+                "note": "if payment (to)",
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    5
+                ]
+            },
+            {
+                "note": "supplier transaction",
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0
+                ]
+            },
+            {
+                "note": "supplier vat transaction",
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1
+                ]
+            },
+            {
+                "note": "expense transaction",
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2
+                ]
+            },
+            {
+                "note": "income transaction",
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3
+                ]
+            },
+            {
+                "note": "customer vat transaction",
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4
+                ]
+            },
+            {
+                "note": "customer transaction",
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "note": "salesman transaction",
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "note": "salesman commission transaction",
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    3
+                ]
+            }
+        ],
+        "collapsed": [
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    3,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    4,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    5,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    3,
+                    "docsKeyValue",
+                    0,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    4,
+                    "docsKeyValue",
+                    0,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    1,
+                    "docsKeyValue",
+                    0,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    5,
+                    "docsKeyValue",
+                    0,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    1,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    0,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2,
+                    "docsKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    5,
+                    "docsKeyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    5,
+                    "docsKeyValue",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    5,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    5,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    5,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    5,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    5,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    5,
+                    "docsKeyValue",
+                    1,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    5,
+                    "docsKeyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    0,
+                    "docsKeyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "#beforeS",
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "beforeSa"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    2,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    0,
+                    "docsKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    0,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmVoucher",
+                    "#keyV"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "#beforeSa",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "#beforeSa"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2,
+                    "input",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2,
+                    "input",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    1,
+                    "#befor",
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    3,
+                    "#beforeS"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    1,
+                    "#befor"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "#bef"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2,
+                    "input",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    3,
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    3,
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    3,
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    3,
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    3,
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    3,
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    3,
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2,
+                    "input",
+                    10
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2,
+                    "input",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input",
+                    10
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    1,
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    1,
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    1,
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    1,
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    1,
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    1,
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    1,
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    1,
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    1,
+                    "keyValue",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    1,
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    2,
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    2,
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    2,
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    2,
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    2,
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    2,
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    2,
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    2,
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    2,
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    3,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    3,
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    3,
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    10
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    1,
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    3,
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "confirmInvoice",
+                    "keyValue",
+                    3
+                ]
+            }
+        ],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "schemas"
+    }
+}

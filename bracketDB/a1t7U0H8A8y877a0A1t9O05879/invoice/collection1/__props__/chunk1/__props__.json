@@ -1,0 +1,11 @@
+{
+    "docs": [
+        "invoice4",
+        "invoice3",
+        "invoice2",
+        "invoice1"
+    ],
+    "chunk": "chunk1",
+    "docsLength": 4,
+    "size": 1700
+}

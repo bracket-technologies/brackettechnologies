@@ -1,0 +1,35 @@
+{
+    "updateBy": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+    "difference": [
+        {
+            "new": {
+                "columnWidth": {
+                    "A": "201px",
+                    "B": "225px",
+                    "C": "288px",
+                    "D": "201px"
+                }
+            },
+            "path": "style"
+        }
+    ],
+    "description": "Data has been updated",
+    "sheet": "aRiAoFpuKnap9rZCJcACccDMX29Kai3iT6kFHbYUfHtc2mL9kHAk3wzgai8g1699268378803",
+    "id": "APNgxlM9lpt2YJTIjEWACAqq62YRoQGPZPKsHbwE438B7afQhFlS3b2PnxiG1701182270035",
+    "creationDay": 1701129600000,
+    "creationDate": 1701182270113,
+    "__props__": {
+        "id": "Y1P7N1k1N0W3O1x3m6I39215n1",
+        "doc": "APNgxlM9lpt2YJTIjEWACAqq62YRoQGPZPKsHbwE438B7afQhFlS3b2PnxiG1701182270035",
+        "creationDate": 1711031363251,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 37,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

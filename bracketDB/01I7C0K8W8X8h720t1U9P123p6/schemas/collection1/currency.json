@@ -1,0 +1,546 @@
+{
+    "create": {
+        "exchangeRate": {
+            "keyValue": [
+                {
+                    "path": "code",
+                    "type": "string",
+                    "key": "code",
+                    "required": true
+                },
+                {
+                    "path": "country",
+                    "type": "string",
+                    "key": "country",
+                    "required": true
+                },
+                {
+                    "path": "governmentRate",
+                    "type": "number",
+                    "key": "governmentRate"
+                },
+                {
+                    "path": "symbole",
+                    "type": "string",
+                    "key": "symbole",
+                    "required": true
+                },
+                {
+                    "path": "decimals",
+                    "type": "number",
+                    "key": "decimals"
+                },
+                {
+                    "path": "name",
+                    "type": "string",
+                    "key": "name",
+                    "required": true
+                },
+                {
+                    "path": "id",
+                    "type": "string",
+                    "key": "id",
+                    "required": true
+                },
+                {
+                    "path": "createdCurrencyRate",
+                    "type": "number",
+                    "key": "createdCurrencyRate",
+                    "required": true
+                },
+                {
+                    "path": "systemCurrencyRateForGovernment",
+                    "type": "number",
+                    "key": "systemCurrencyRateForGovernment",
+                    "required": true
+                },
+                {
+                    "path": "systemCurrencyRate",
+                    "type": "number",
+                    "key": "systemCurrencyRate",
+                    "required": true
+                }
+            ],
+            "generateReference": true,
+            "beforeSaveStep": {
+                "keyValue": [
+                    {
+                        "path": "id",
+                        "findKey": "manager",
+                        "findValue": "exchangeRate",
+                        "key": "lastExchangeRate"
+                    }
+                ]
+            },
+            "helpersKeyValue": [
+                {
+                    "staticValue": "currency",
+                    "key": "manager"
+                },
+                {
+                    "staticValue": "mainReceivedData:().id",
+                    "key": "id"
+                }
+            ],
+            "update": true
+        },
+        "currency": {
+            "keyValue": [
+                {
+                    "path": "code",
+                    "type": "string",
+                    "key": "code",
+                    "required": true
+                },
+                {
+                    "path": "country",
+                    "type": "string",
+                    "key": "country",
+                    "required": true
+                },
+                {
+                    "path": "governmentRate",
+                    "type": "number",
+                    "key": "governmentRate"
+                },
+                {
+                    "path": "symbole",
+                    "type": "string",
+                    "key": "symbole",
+                    "required": true
+                },
+                {
+                    "path": "decimals",
+                    "type": "number",
+                    "key": "decimals"
+                },
+                {
+                    "path": "name",
+                    "type": "string",
+                    "key": "name",
+                    "required": true
+                },
+                {
+                    "path": "systemCurrencyRateForGovernment",
+                    "type": "number",
+                    "key": "systemCurrencyRateForGovernment",
+                    "required": true
+                },
+                {
+                    "path": "systemCurrencyRate",
+                    "type": "number",
+                    "key": "systemCurrencyRate",
+                    "required": true
+                },
+                {
+                    "path": "createdCurrencyRate",
+                    "type": "number",
+                    "key": "createdCurrencyRate",
+                    "required": true
+                }
+            ],
+            "generateReference": true,
+            "nextStep": {
+                "manager": "currency",
+                "collection": "exchangeRate"
+            },
+            "beforeSaveStep": {
+                "keyValue": [
+                    {
+                        "path": "id",
+                        "findKey": "manager",
+                        "findValue": "exchangeRate",
+                        "key": "lastExchangeRate"
+                    }
+                ]
+            },
+            "helpersKeyValue": [
+                {
+                    "staticValue": "currency",
+                    "key": "manager"
+                }
+            ]
+        }
+    },
+    "id": "currencynifwijeifwebfiuww",
+    "collection": "currency",
+    "__props__": {
+        "id": "61J7g1C3e9z5W0j6c5h0I695z0",
+        "doc": "currency",
+        "counter": 31,
+        "creationDate": 1713950650650,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "schemas",
+        "createdByUserID": "91l7f111C0i3r1J3V6L0C2c5n1",
+        "collapsed": [
+            {
+                "path": [
+                    "create",
+                    "sign"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency",
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency",
+                    "helpersKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "helpersKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    9
+                ]
+            }
+        ],
+        "comments": [
+            {
+                "note": "systemCurrencyRateForGovernment",
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "note": "name",
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "note": "decimals",
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "note": "symbole",
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "note": "governmentRate",
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "note": "country",
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "note": "code",
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "note": "systemCurrencyRate",
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "note": "createdCurrencyRate",
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "note": "id",
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "note": "name",
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "note": "decimal",
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "note": "symbole",
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "note": "governmentRate",
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "note": "country",
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "note": "code",
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "note": "createdCurrencyRate",
+                "path": [
+                    "create",
+                    "currency",
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "note": "systemCurrencyRateForGovernment",
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "note": "systemCurrencyRate",
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    9
+                ]
+            }
+        ]
+    }
+}

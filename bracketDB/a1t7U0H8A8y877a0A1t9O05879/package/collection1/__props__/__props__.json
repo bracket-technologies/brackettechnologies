@@ -1,0 +1,40 @@
+{
+    "creationDate": 1716735288431,
+    "collection": "package",
+    "chunkMaxSizeMB": 20,
+    "lastChunk": 1,
+    "docsLength": 5,
+    "counter": 11,
+    "reads": 2113,
+    "writes": 105,
+    "deletes": 0,
+    "size": 1580,
+    "payloadIn": 43125,
+    "payloadOut": 896809,
+    "indexes": [
+        {
+            "find": [
+                "__props__.id"
+            ],
+            "doc": "index1"
+        },
+        {
+            "find": [
+                "pluginID"
+            ],
+            "doc": "index2",
+            "lastRead": 1721037627886,
+            "expiryDate": 1723629627886
+        },
+        {
+            "find": [
+                "__props__.id",
+                "pluginID"
+            ],
+            "doc": "index3",
+            "lastRead": 1721037605277,
+            "expiryDate": 1723629605277
+        }
+    ],
+    "lastIndex": 3
+}

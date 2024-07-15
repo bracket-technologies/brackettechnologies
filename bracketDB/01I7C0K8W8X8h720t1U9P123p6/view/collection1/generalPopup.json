@@ -1,0 +1,175 @@
+{
+    "view": "View:generalPopup?class=flexbox;style:[height=100vh;width=100vw;position=fixed;top=0;right=0;zIndex=5;opacity=0;transition='opacity .2s';visibility=hidden]",
+    "children": [
+        {
+            "view": "View?style:[height=100%;width=100%;backgroundColor=black;opacity=0.5]"
+        },
+        {
+            "view": "View?data=generalPopup:();class=flex column;style:[if():[_.back]:[transform=translateX(-100vw)].elif():[createFormStack:().len()>1]:[transform=translateX(100vw)];transition=.2s;position=absolute;overflow=hidden;top=setTop();bottom=setBottom();right=setRight();left=setLeft();backgroundColor=#fff;padding=1rem;gap=.2rem;border-radius=_.borderRadius||.4rem]",
+            "children": [
+                {
+                    "view": "View?class=flexbox;style:[width=100%;height=4.5rem;justifyContent=space-between;backgroundColor=#f3f3f3;borderRadius=.4rem .4rem 0rem 0rem;padding=0rem 1rem]",
+                    "children": [
+                        {
+                            "view": "Text?text=_.title+if():[generalPopup:().read]:[' (Readonly)']:[''];style:[fontSize=1.6rem;fontWeight=bolder];#loaded:[timer():[next().focus()]:100]"
+                        },
+                        {
+                            "view": "Input:hello?attribute=[tabindex=1];readonly;style:[height=0;width=0]?false"
+                        },
+                        {
+                            "view": "View?class=flex;style:[gap=1.3rem]",
+                            "children": [
+                                {
+                                    "view": "Icon?name=print;google.symbol;style:[fontSize=2.5rem;cursor=pointer];click:[printAction()]"
+                                },
+                                {
+                                    "#view": "Icon?name=save_as;google.symbol;style:[fontSize=2.1rem;cursor=pointer;paddingTop=.2rem];click:[saveSheet()]?_.saveAs"
+                                },
+                                {
+                                    "view": "Icon?name=Upload;google.symbol;style:[fontSize=2.5rem;cursor=pointer];click:[exportView()]?_.uploadIcon"
+                                },
+                                {
+                                    "view": "Icon?name=fullscreen;google.symbol;style:[display=if():[!mobile()]:[flex]:[none];fontSize=2.5rem;cursor=pointer];click:[fullscreen()]?!_.fullScreen"
+                                },
+                                {
+                                    "view": "Icon?name=Fullscreen_Exit;google.symbol;style:[display=if():[mobile()]:[flex]:[none];fontSize=2.5rem;cursor=pointer];click:[exitFullscreen()]"
+                                },
+                                {
+                                    "view": "Icon:closeGeneralPopup?name=Close;google.symbol;style:[fontSize=2.5rem;cursor=pointer];click:[checkIfOpenPrevForm();if():[generalPopup:().popupName=sheet]:[clearSheet()]]"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "view": "View?style:[height='calc(100% - 4.5rem)';width=100%;transition=.2s;overflowY=auto]",
+                    "children": [
+                        {
+                            "view": "_.popupName"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "B1y7U1g1z0v3X103s6R5F2U0r5",
+        "doc": "generalPopup",
+        "creationDate": 1711031365205,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "actions": {
+            "exportView": "():customPrintView.style():[visibility=visible;opacity=1]",
+            "addCustomInput": "_.inputInfo.subInput.push():[title=hello;grid=1fr 1fr 1fr 1fr 1fr]:[_.inputInfo.subInput.len()-1];",
+            "setLeft": "if():[_.leftSize]:[_.leftSize]:[if():[mobile()]:[0vw]:[13vw]]",
+            "clearSheet": "currentHeader:().del();currentRow:().del()sheet:().del();currentSheetInfo:().del()",
+            "setTop": "if():[_.topSize]:[_.topSize]:[if():[mobile()]:[0vw]:[13vh]]",
+            "exitFullscreen": "3rdParent().style():[top=setTop();bottom=setBottom();right=setRight();left=setLeft();borderRadius=.4rem];prev().style().display=flex;style().display=none",
+            "fullscreen": "3rdParent().style():[top=0;bottom=0;right=0;left=0;borderRadius=0];next().style().display=flex;style().display=none",
+            "setBottom": "if():[_.bottomSize]:[_.bottomSize]:[if():[mobile()]:[0vw]:[13vh]]",
+            "setRight": "if():[_.rightSize]:[_.rightSize]:[if():[mobile()]:[0vw]:[13vw]]",
+            "closeGeneralPopup": "():generalPopup.style():[visibility=hidden;opacity=0];#searchBoxResults:().del();[_.docName]:()='';generalPopup:().del();TableRowData:().del()",
+            "#printAction": {
+                "_": "if():[_.inputInfo.collection='voucher']:[printVoucher()].elif():[_.inputInfo.collection='invoice']:[printInvoice()]",
+                "printInvoice": {
+                    "callPrintView": "generalPopup:()=[title=Print;popupName=customPrintView2;data=().printViewData];():generalPopup.update()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1];#():customPrintView2.html2pdf():[name='Voucher']]",
+                    "_": "setPrintViewData();callPrintView()",
+                    "setPrintViewData": "().printViewData.data.branch=userData:().branch.find():[id=userData:().currentBranch];().printViewData.schema=printView:().invoiceTemplate.mainInfo;().printViewData.data.invoiceInfo=[_.docName]:()"
+                },
+                "printVoucher": {
+                    "callPrintView": "generalPopup:()=[title=Print;popupName=customPrintView2;data=().printViewData];():generalPopup.update()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1];#():customPrintView2.html2pdf():[name='Voucher']]",
+                    "_": "setPrintViewData();callPrintView()",
+                    "setPrintViewData": "().printViewData.data.branch=userData:().branch.find():[id=userData:().currentBranch];().printViewData.schema=printView:().voucherTemplate.mainInfo;().printViewData.data.voucherInfo=[_.docName]:()"
+                }
+            },
+            "printAction": {
+                "_": "[setPrintViewData()]()::[callPrintView()]",
+                "setPrintViewData": {
+                    "_": "setBranch();if():[_.inputInfo.collection='voucher']:[setVoucherInfo()].elif():[_.inputInfo.collection='invoice']:[setInvoiceInfo()].elif():[currentOpenManager:().managerName=transactionManager;managersSearchResult:().transactionManager]:[setStatmentOfAccountInfo()]",
+                    "setBranch": "().printViewData.data.branch=userData:().branch.find():[id=userData:().currentBranch];",
+                    "setVoucherInfo": "().printViewData.schema=printView:().voucherTemplate.mainInfo;().printViewData.data.voucherInfo=[_.docName]:()",
+                    "setInvoiceInfo": "().printViewData.schema=printView:().invoiceTemplate.mainInfo;().printViewData.data.invoiceInfo=[_.docName]:()",
+                    "setStatmentOfAccountInfo": {
+                        "_": "getAccountInfo();setFromToDate();setData()",
+                        "setData": "().printViewData.schema=printView:().statementOfAccountTemplate.mainInfo;().printViewData.data.setStatmentOfAccountInfo=[_.docName]:()",
+                        "getAccountInfo": "searchAccount():[data=[ledgerAccount=customManagerSearchEngine:().ledgerAccount]]:[if():[_.success]:[().printViewData.data.accountInfo=_.data.vaalue()]]",
+                        "setFromToDate": "if():[customManagerSearchEngine:().fromDate]:[().printViewData.data.fromDate=customManagerSearchEngine:().fromDate]:[getFirstDateFromData()];if():[customManagerSearchEngine:().toDate]:[().printViewData.data.toDate=customManagerSearchEngine:().toDate]:[getLastDateFromData()]",
+                        "getFirstDateFromData": "().printViewData.data.fromDate=managersSearchResult:().transactionManager.clone().sort():[path=creationDate;ascending].0.creationDate",
+                        "getLastDateFromData": "().printViewData.data.toDate=managersSearchResult:().transactionManager.clone().sort():[path=creationDate;descending].0.creationDate",
+                        "#setFooterList": "footerItemsList:()=:;().credit=managersSearchResult:().transactionManager.():credit.sum();().debit=managersSearchResult:().transactionManager.():debit.sum();().balance=().debit-().credit;if():[().balance<0]:[().balance='('+().balance+')'];footerItemsList:().push():[balance=().balance;debit=().debit;credit=().credit;description='*REQUESTED PERIOD TOTALS*']"
+                    }
+                },
+                "callPrintView": "generalPopup:()=[title=Print;popupName=customPrintView2;data=().printViewData];():generalPopup.update()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1];#():customPrintView2.html2pdf():[name='Voucher']]"
+            }
+        },
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "functions"
+                ]
+            },
+            {
+                "path": [
+                    "addRowsOnScroll2"
+                ]
+            },
+            {
+                "path": [
+                    "#rowBlur"
+                ]
+            },
+            {
+                "path": [
+                    "#saveSheet"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "#printAction"
+                ]
+            },
+            {
+                "path": [
+                    "printTransa"
+                ]
+            },
+            {
+                "path": [
+                    "printAction",
+                    "setPrintViewData",
+                    "setStatmentOfAccountInfo"
+                ]
+            },
+            {
+                "path": [
+                    "printAction"
+                ]
+            }
+        ],
+        "comments": [],
+        "folderPath": [],
+        "version": 0,
+        "counter": 26,
+        "secure": false,
+        "chunk": "chunk1",
+        "collection": "view"
+    }
+}

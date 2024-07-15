@@ -1,0 +1,47 @@
+{
+    "firstTrigger": 1721028567208,
+    "serverTriggers": 565,
+    "date": 1720990800000,
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "activityPerHour": [
+        {
+            "time": 1721026800000,
+            "firstTrigger": 1721028567208,
+            "serverTriggers": 120,
+            "lastTrigger": 1721030388805
+        },
+        {
+            "time": 1721030400000,
+            "firstTrigger": 1721030426746,
+            "serverTriggers": 142,
+            "lastTrigger": 1721033987874
+        },
+        {
+            "time": 1721034000000,
+            "firstTrigger": 1721034004809,
+            "serverTriggers": 280,
+            "lastTrigger": 1721037571386
+        },
+        {
+            "time": 1721037600000,
+            "firstTrigger": 1721037605033,
+            "serverTriggers": 23,
+            "lastTrigger": 1721037804703
+        }
+    ],
+    "lastTrigger": 1721037804703,
+    "__props__": {
+        "id": "i137F2u1U0J2B8n596l772m3q8",
+        "doc": "projectActivity9",
+        "counter": 9,
+        "creationDate": 1721028567238,
+        "collection": "projectActivity",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 797
+    }
+}

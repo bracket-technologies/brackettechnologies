@@ -1,0 +1,28 @@
+{
+    "updateBy": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+    "difference": [
+        {
+            "new": "sdf",
+            "path": ""
+        }
+    ],
+    "description": "Data has been updated",
+    "sheet": "OfH212xe6tmlLkIdgu58ARtg7BetJsFsTDMl3lFKJ23mbyeQaUZGcC5X2NjC1700923292622",
+    "id": "kjUWlD4qAPvHxAGtV7s4JLCquuBIDdtf4Jj1Y7rEuGaSLeYRHWabM7uSdyIZ1700923510007",
+    "creationDay": 1700870400000,
+    "creationDate": 1700923510008,
+    "__props__": {
+        "id": "p1a7F1216053O1i346S3X7T9g7",
+        "doc": "kjUWlD4qAPvHxAGtV7s4JLCquuBIDdtf4Jj1Y7rEuGaSLeYRHWabM7uSdyIZ1700923510007",
+        "creationDate": 1711031363797,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 218,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

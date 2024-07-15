@@ -1,0 +1,42 @@
+{
+    "__props__": {
+        "id": "H1O7r197w45221d7K1n5A2g438",
+        "doc": "navbar",
+        "counter": 1,
+        "creationDate": 1717421715248,
+        "active": true,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "accountManagers"
+    },
+    "navbarList": [
+        {
+            "name": "Equity & Long Term Debts Manager",
+            "id": "equityManager"
+        },
+        {
+            "id": "fixedAssets",
+            "name": "Fixed Assets"
+        },
+        {
+            "name": "Receivables and Payables",
+            "id": "receivablesAndPayables"
+        },
+        {
+            "id": "financialAccounts",
+            "name": "Financial Accounts"
+        },
+        {
+            "id": "expenditures",
+            "name": "Expenditures"
+        },
+        {
+            "name": "Incomes",
+            "id": "incomes"
+        }
+    ]
+}

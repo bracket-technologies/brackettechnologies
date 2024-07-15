@@ -1,1 +1,11 @@
-[["creationDate","collectionsLength","docsLength","reads","writes","deletes","size","payloadIn","payloadOut","a|0|1|2|3|4|5|6|7|8","n|U9gFc77","n|a","n|Bf","n|3pKQbp","n|7Tl","n|FH","n|5eZQ","n|KmtRw","n|97iEjhBd","o|9|A|B|C|D|E|F|G|H|I"],"J"]
+{
+    "creationDate": 1712876590553,
+    "collectionsLength": 36,
+    "docsLength": 758,
+    "reads": 3506970428,
+    "writes": 33138,
+    "deletes": 947,
+    "size": -50182,
+    "payloadIn": 346168910,
+    "payloadOut": 32139991630576
+}

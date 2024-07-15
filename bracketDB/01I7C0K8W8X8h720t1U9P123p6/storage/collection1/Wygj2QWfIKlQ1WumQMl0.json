@@ -1,0 +1,23 @@
+{
+    "count": 25,
+    "description": "",
+    "type": "image/png",
+    "creationDate": 1701077672949,
+    "title": "IMAGE/PNG",
+    "url": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/Wygj2QWfIKlQ1WumQMl0?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=FClhVRREZLDkgt%2FKF20rZMkpBgynKseBzd7Sb6NcNq%2FMd4FiD%2BmeXQkBgTIcXpwuCQCFYSRxFtJYMHr7dgJU53%2BGinSDH5QNzknhO7qrrqqYGIG1NWD%2BufUsagtwJB5E0SRDojgTFCKEY%2Bp5jvO4O9gINkzFrru1nlZGCQQKhWHuRrQqx75hoe2RPlaJTJC1uCVawUlCccJNZPT%2B5ovPF2hpMBlmMDait1UUpaQYMibC3igIRQQpoisKSsRkRBn9KQJXAhpjd7sjT5OQWy%2B91VGj%2BN8G3JbraI%2F25BVdk2gEdYTrQ37tAflDyH1JcrDJfDHKw8iwpD%2F1YNdLrP2pUQ%3D%3D",
+    "tags": [],
+    "ref": "IMG-00000025",
+    "size": 12571,
+    "name": "invoice.png",
+    "lastModified": 1701077567704,
+    "__props__": {
+        "id": "P1t7R1J1X0C3K1D3v6G5o8O118",
+        "creationDate": 1711031365818,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "doc": "Wygj2QWfIKlQ1WumQMl0",
+        "counter": 43,
+        "collection": "storage",
+        "chunk": "chunk1"
+    }
+}

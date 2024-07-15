@@ -1,0 +1,62 @@
+{
+    "policies": [
+        {
+            "dateReference": [
+                "Pre Payment",
+                "Due Payment",
+                "Close Payment"
+            ],
+            "type": "Payment Policy"
+        },
+        {
+            "dateReference": [
+                "Booking",
+                "Effective Date",
+                "Penalty Assesment Date"
+            ],
+            "type": "Penalty Policy"
+        },
+        {
+            "dateReference": [
+                "Booking",
+                "Travel Start",
+                "Travel End",
+                "Cancellation",
+                "Refund Request"
+            ],
+            "type": "Refund Policy"
+        },
+        {
+            "dateReference": [
+                "Booking Date",
+                "Confirmation Date",
+                "Check In"
+            ],
+            "type": "Booking Policy"
+        },
+        {
+            "dateReference": [
+                "Booking Date",
+                "Travel Start",
+                "Cancellation Request",
+                "Penalty Assessment"
+            ],
+            "type": "Cancellation Policy"
+        }
+    ],
+    "id": "policyTypes",
+    "__props__": {
+        "id": "Q1J751L1R0K321a30691B5p7t7",
+        "doc": "policyTypes",
+        "creationDate": 1711031361577,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 12,
+        "collection": "publicCollection",
+        "chunk": "chunk1"
+    }
+}

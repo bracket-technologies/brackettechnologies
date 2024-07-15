@@ -1,0 +1,22 @@
+{
+    "createdBy": "i4sFsUOhrwc4ahQQqznbaqcj3qJb53Ha9VRkIqeFBuHMFlNxEY9jP7GYwkyt",
+    "description": "currency creation",
+    "currency": "tTvVsxPEIP1rkgoZWthk8z5N9htIXzWimsnFpdeK6baMhqvlSRPqAYbOFUf61700376032941",
+    "id": "7lzTGCNY9WyX7xdwpzumbVc73nOqpGYhc3Kc6cNaMHs4a4E4UYSBPgAoETyU1700376033475",
+    "creationDay": 1700352000000,
+    "creationDate": 1700376033476,
+    "__props__": {
+        "id": "a1l73181s0q3i1H3G6S3y272U9",
+        "doc": "7lzTGCNY9WyX7xdwpzumbVc73nOqpGYhc3Kc6cNaMHs4a4E4UYSBPgAoETyU1700376033475",
+        "creationDate": 1711031363229,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 29,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

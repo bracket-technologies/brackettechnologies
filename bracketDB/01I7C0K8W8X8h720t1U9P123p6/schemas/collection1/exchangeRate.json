@@ -1,0 +1,151 @@
+{
+    "__props__": {
+        "id": "g1h7R1h3R9Y5S0Z6B6w5e8p4L1",
+        "doc": "exchangeRate",
+        "counter": 32,
+        "creationDate": 1713950665841,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "schemas",
+        "createdByUserID": "91l7f111C0i3r1J3V6L0C2c5n1",
+        "collapsed": [
+            {
+                "path": [
+                    "create",
+                    "sign"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency",
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency",
+                    "helpersKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "helpersKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "keyValue",
+                    1
+                ]
+            }
+        ],
+        "comments": []
+    },
+    "id": "exchangeRatehfsdkjld4g56egerfoeif5e4rf789erf",
+    "create": {
+        "currency": {
+            "keyValue": [
+                {
+                    "path": "exchangeRate",
+                    "type": "number",
+                    "key": "exchangeRate",
+                    "required": true
+                },
+                {
+                    "path": "code",
+                    "type": "string",
+                    "key": "code",
+                    "required": true
+                },
+                {
+                    "path": "createdCurrencyRate",
+                    "type": "number",
+                    "key": "createdCurrencyRate",
+                    "required": true
+                }
+            ],
+            "helpersKeyValue": [
+                {
+                    "staticValue": "exchangeRate",
+                    "key": "manager"
+                }
+            ],
+            "beforeSaveStep": {
+                "keyValue": [
+                    {
+                        "path": "id",
+                        "findKey": "manager",
+                        "findValue": "currency",
+                        "key": "currency"
+                    }
+                ]
+            }
+        },
+        "exchangeRate": {
+            "keyValue": [
+                {
+                    "path": "exchangeRate",
+                    "type": "number",
+                    "key": "exchangeRate",
+                    "required": true
+                },
+                {
+                    "path": "code",
+                    "type": "string",
+                    "key": "code",
+                    "required": true
+                }
+            ],
+            "beforeSaveStep": {
+                "keyValue": [
+                    {
+                        "path": "id",
+                        "findKey": "manager",
+                        "findValue": "currency",
+                        "key": "currency"
+                    }
+                ]
+            },
+            "helpersKeyValue": [
+                {
+                    "staticValue": "exchangeRate",
+                    "key": "manager"
+                }
+            ],
+            "nextStep": {
+                "manager": "exchangeRate",
+                "collection": "currency"
+            }
+        }
+    },
+    "collection": "exchangeRate"
+}

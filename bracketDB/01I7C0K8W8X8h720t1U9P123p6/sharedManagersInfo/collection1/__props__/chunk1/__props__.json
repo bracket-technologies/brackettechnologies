@@ -1,0 +1,10 @@
+{
+    "docs": [
+        "voucherSharedInfo",
+        "ledgerSharedManagerInfo",
+        "invoiceSharedInfo"
+    ],
+    "chunk": "chunk1",
+    "docsLength": 3,
+    "size": 334
+}

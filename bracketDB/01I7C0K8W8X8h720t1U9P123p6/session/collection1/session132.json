@@ -1,0 +1,19 @@
+{
+    "id": "cCuKrBDXLDUJ6k3vp0191719217793323",
+    "session": "HbkmC7hALtQHenidIJqk1720695508981",
+    "user": "5i7aFi1VZvdJzdVB5WTK0KOJGqJuerg3X2A8fjNqFxLXXU4NaOKpEH0iVnGU1700835548602",
+    "expiryDate": 1720781908981,
+    "__props__": {
+        "id": "T1s7b1y9N2S1U707E9F3J342O4",
+        "doc": "session132",
+        "counter": 132,
+        "creationDate": 1719217793324,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "session"
+    }
+}

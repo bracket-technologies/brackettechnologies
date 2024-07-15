@@ -1,0 +1,661 @@
+{
+    "__props__": {
+        "id": "g1H7b1J3f8L8i1a5d1g4d6r5J0",
+        "doc": "signup",
+        "counter": 22,
+        "creationDate": 1713881514650,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "schemas",
+        "createdByUserID": "p1l781A1x043Q1Y3Q6e0K3W1b2",
+        "comments": [
+            {
+                "note": "branch",
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "note": "user",
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "note": "currency",
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "note": "exchange rate",
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "note": "permission",
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "note": "username",
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "note": "password",
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    3
+                ]
+            }
+        ],
+        "collapsed": [
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    0,
+                    "keyValue",
+                    6,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    0,
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    0,
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    0,
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    0,
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    0,
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    0,
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    0,
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    5,
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    6,
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    6,
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    6,
+                    "helpersKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    5,
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    5,
+                    "helpersKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    2,
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    3,
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    3,
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    4,
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    4,
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    2,
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    1,
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    0,
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    1,
+                    "helpersKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signup",
+                    "keyValue",
+                    1
+                ]
+            }
+        ]
+    },
+    "create": {
+        "signup": {
+            "ignoreMainDoc": true,
+            "keyValue": [
+                {
+                    "collection": "branch",
+                    "staticDoc": true,
+                    "keyValue": [
+                        {
+                            "path": "name",
+                            "type": "string",
+                            "required": "true",
+                            "key": "name"
+                        },
+                        {
+                            "path": "country",
+                            "type": "string",
+                            "required": true,
+                            "key": "country"
+                        },
+                        {
+                            "path": "city",
+                            "type": "string",
+                            "required": true,
+                            "key": "city"
+                        },
+                        {
+                            "path": "address",
+                            "type": "string",
+                            "required": true,
+                            "key": "address"
+                        },
+                        {
+                            "path": "email",
+                            "type": "array",
+                            "required": true,
+                            "key": "email"
+                        },
+                        {
+                            "path": "contactNumber",
+                            "type": "array",
+                            "required": true,
+                            "key": "contactNumber"
+                        },
+                        {
+                            "listPath": "members",
+                            "input": [
+                                {
+                                    "path": "title",
+                                    "type": "string",
+                                    "key": "title"
+                                },
+                                {
+                                    "path": "gender",
+                                    "type": "string",
+                                    "key": "gender"
+                                },
+                                {
+                                    "path": "position",
+                                    "type": "string",
+                                    "key": "position"
+                                },
+                                {
+                                    "path": "name",
+                                    "type": "string",
+                                    "key": "name"
+                                },
+                                {
+                                    "path": "email",
+                                    "type": "string",
+                                    "key": "email"
+                                },
+                                {
+                                    "path": "contactNumber",
+                                    "type": "string",
+                                    "key": "contactNumber"
+                                }
+                            ]
+                        }
+                    ],
+                    "path": "branchInfo"
+                },
+                {
+                    "collection": "user",
+                    "staticDoc": true,
+                    "path": "userInfo",
+                    "keyValue": [
+                        {
+                            "path": "firstName",
+                            "type": "string",
+                            "required": "true",
+                            "key": "firstName"
+                        },
+                        {
+                            "path": "lastName",
+                            "type": "string",
+                            "required": "true",
+                            "key": "lastName"
+                        },
+                        {
+                            "path": "birthDate",
+                            "type": "number",
+                            "key": "birthDate"
+                        },
+                        {
+                            "path": "nationality",
+                            "type": "string",
+                            "required": "true",
+                            "key": "nationality"
+                        },
+                        {
+                            "path": "contactNumber",
+                            "type": "string",
+                            "required": "true",
+                            "key": "contactNumber"
+                        },
+                        {
+                            "path": "email",
+                            "type": "string",
+                            "required": "true",
+                            "key": "email"
+                        },
+                        {
+                            "path": "country",
+                            "type": "string",
+                            "key": "country"
+                        },
+                        {
+                            "path": "city",
+                            "#data:().collection.countries.countries.[doc().country]": "#data:().collection.countries.countries.[doc().country]",
+                            "data:().collection.countries.countries.[doc().country]": "data:().collection.countries.countries.[doc().country]",
+                            "type": "string",
+                            "key": "city"
+                        },
+                        {
+                            "path": "address",
+                            "type": "string",
+                            "key": "address"
+                        }
+                    ],
+                    "helpersKeyValue": [
+                        {
+                            "staticValue": "user",
+                            "key": "manager"
+                        }
+                    ]
+                },
+                {
+                    "collection": "username",
+                    "staticDoc": true,
+                    "path": "userInfo",
+                    "keyValue": [
+                        {
+                            "path": "username",
+                            "type": "string",
+                            "required": "true",
+                            "key": "username"
+                        }
+                    ],
+                    "beforeSaveStep": {
+                        "keyValue": [
+                            {
+                                "path": "id",
+                                "findKey": "manager",
+                                "findValue": "user",
+                                "key": "user"
+                            }
+                        ]
+                    },
+                    "helpersKeyValue": [
+                        {
+                            "staticValue": "userName",
+                            "key": "manager"
+                        }
+                    ]
+                },
+                {
+                    "collection": "password",
+                    "staticDoc": true,
+                    "path": "userInfo",
+                    "keyValue": [
+                        {
+                            "path": "password",
+                            "type": "string",
+                            "required": "true",
+                            "key": "password"
+                        }
+                    ],
+                    "beforeSaveStep": {
+                        "keyValue": [
+                            {
+                                "path": "id",
+                                "findKey": "manager",
+                                "findValue": "userName",
+                                "key": "username"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "collection": "permission",
+                    "staticDoc": true,
+                    "path": "userInfo",
+                    "keyValue": [
+                        {
+                            "path": "permission",
+                            "type": "map",
+                            "key": "permission",
+                            "required": "true"
+                        }
+                    ],
+                    "beforeSaveStep": {
+                        "keyValue": [
+                            {
+                                "path": "id",
+                                "findKey": "manager",
+                                "findValue": "user",
+                                "key": "user"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "collection": "currency",
+                    "staticDoc": true,
+                    "path": "currencyInfo",
+                    "keyValue": [
+                        {
+                            "path": "code",
+                            "type": "string",
+                            "key": "code",
+                            "required": true
+                        },
+                        {
+                            "path": "country",
+                            "type": "string",
+                            "key": "country",
+                            "required": true
+                        },
+                        {
+                            "key": "governmentRate",
+                            "staticValue": "1"
+                        },
+                        {
+                            "path": "symbole",
+                            "type": "string",
+                            "key": "symbole",
+                            "required": true
+                        },
+                        {
+                            "path": "decimals",
+                            "type": "number",
+                            "key": "decimals"
+                        },
+                        {
+                            "path": "name",
+                            "type": "string",
+                            "key": "name",
+                            "required": true
+                        }
+                    ],
+                    "beforeSaveStep": {
+                        "keyValue": [
+                            {
+                                "path": "id",
+                                "findKey": "manager",
+                                "findValue": "exchangeRate",
+                                "key": "lastExchangeRate"
+                            }
+                        ]
+                    },
+                    "helpersKeyValue": [
+                        {
+                            "staticValue": "currency",
+                            "key": "manager"
+                        }
+                    ]
+                },
+                {
+                    "collection": "exchangeRate",
+                    "staticDoc": true,
+                    "path": "currencyInfo",
+                    "keyValue": [
+                        {
+                            "key": "exchangeRate",
+                            "staticValue": "1"
+                        },
+                        {
+                            "path": "code",
+                            "type": "string",
+                            "key": "code",
+                            "required": true
+                        }
+                    ],
+                    "beforeSaveStep": {
+                        "keyValue": [
+                            {
+                                "path": "id",
+                                "findKey": "manager",
+                                "findValue": "currency",
+                                "key": "currency"
+                            }
+                        ]
+                    },
+                    "helpersKeyValue": [
+                        {
+                            "staticValue": "exchangeRate",
+                            "key": "manager"
+                        }
+                    ]
+                }
+            ]
+        }
+    },
+    "collection": "signup"
+}

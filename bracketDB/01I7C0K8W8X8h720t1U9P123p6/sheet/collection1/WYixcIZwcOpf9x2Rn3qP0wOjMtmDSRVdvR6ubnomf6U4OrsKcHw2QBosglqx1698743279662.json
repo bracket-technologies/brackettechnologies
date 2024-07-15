@@ -1,0 +1,135 @@
+{
+    "headers": [
+        {
+            "text": "Cities",
+            "key": "cities"
+        },
+        null
+    ],
+    "data": [
+        {
+            "cities": "Beirut",
+            "tttt": ""
+        },
+        {
+            "cities": "Tripoli"
+        },
+        {
+            "cities": "Sidon (Saida)"
+        },
+        {
+            "cities": "Tyre (Sour)"
+        },
+        {
+            "cities": "Byblos (Jbeil)"
+        },
+        {
+            "cities": "Zahle"
+        },
+        {
+            "cities": "Baalbek"
+        },
+        {
+            "cities": "Nabatieh"
+        },
+        {
+            "cities": "Jounieh"
+        },
+        {
+            "cities": "Aley"
+        },
+        {
+            "cities": "Jbeil"
+        },
+        {
+            "cities": "Choueifat"
+        },
+        {
+            "cities": "Hermel"
+        },
+        {
+            "cities": "Kfarshima"
+        },
+        {
+            "cities": "Zgharta"
+        },
+        {
+            "cities": "Marjayoun"
+        },
+        {
+            "cities": "Bsharri"
+        },
+        {
+            "cities": "Rashaya"
+        },
+        {
+            "cities": "Bint Jbeil"
+        },
+        {
+            "cities": "Batroun"
+        }
+    ],
+    "keys": [
+        {
+            "text": "Cities",
+            "key": "cities"
+        }
+    ],
+    "active": true,
+    "creationDate": 1705410861166,
+    "type": "Readonly",
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "name": "Lebanon Cities",
+    "columnWidth": {
+        "A": {
+            "columnWidth": "210px"
+        },
+        "B": {
+            "columnWidth": "511px"
+        }
+    },
+    "rowCount": 50,
+    "id": "WYixcIZwcOpf9x2Rn3qP0wOjMtmDSRVdvR6ubnomf6U4OrsKcHw2QBosglqx1698743279662",
+    "creationDay": 1705410832217,
+    "__props__": {
+        "id": "7147A1y1v0F3P1F3S6k292O1G0",
+        "doc": "WYixcIZwcOpf9x2Rn3qP0wOjMtmDSRVdvR6ubnomf6U4OrsKcHw2QBosglqx1698743279662",
+        "creationDate": 1711031362210,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [
+            {
+                "path": [
+                    "columnWidth"
+                ]
+            },
+            {
+                "path": [
+                    "list"
+                ]
+            },
+            {
+                "path": [
+                    "keys"
+                ]
+            },
+            {
+                "path": [
+                    "data"
+                ]
+            }
+        ],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 4,
+        "chunk": "chunk1",
+        "collection": "sheet"
+    },
+    "width": [
+        {
+            "column": 1,
+            "width": "127px"
+        }
+    ]
+}

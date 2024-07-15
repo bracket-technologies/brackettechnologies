@@ -1,0 +1,36 @@
+{
+    "creationDate": 1712567716531,
+    "collection": 1,
+    "lastChunk": 1,
+    "docsLength": 0,
+    "counter": 65,
+    "reads": 1359,
+    "writes": 240,
+    "deletes": 0,
+    "size": -6261,
+    "payloadIn": 338033,
+    "payloadOut": 2151032,
+    "dirTree": [],
+    "maxSize": 1000,
+    "indexes": [
+        {
+            "find": [
+                "status",
+                "customerAccount"
+            ],
+            "doc": "index1",
+            "lastRead": 1720786137265,
+            "expiryDate": 1723378137265
+        },
+        {
+            "find": [
+                "type",
+                "status"
+            ],
+            "doc": "index2",
+            "lastRead": 1720787032751,
+            "expiryDate": 1723379032751
+        }
+    ],
+    "lastIndex": 2
+}

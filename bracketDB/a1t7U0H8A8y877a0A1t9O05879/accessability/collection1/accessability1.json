@@ -1,0 +1,26 @@
+{
+    "__props__": {
+        "id": "I14741U6b1B9B7U6S0q6L408x4",
+        "doc": "accessability1",
+        "counter": 1,
+        "creationDate": 1716197606484,
+        "active": true,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "accessability"
+    },
+    "accessabilities": [
+        {
+            "actions": [
+                "search"
+            ],
+            "collections": true,
+            "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6"
+        }
+    ],
+    "packageID": "819781E687S3U5e2L9w6v3u9H8",
+    "pluginID": "r1c7d176U1B9m6C7i9F8T973T2"
+}

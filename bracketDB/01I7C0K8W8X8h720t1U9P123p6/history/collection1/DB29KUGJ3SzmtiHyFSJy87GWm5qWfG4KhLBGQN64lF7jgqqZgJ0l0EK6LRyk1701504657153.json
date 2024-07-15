@@ -1,0 +1,143 @@
+{
+    "createdBy": {
+        "lastName": "Zoghbi",
+        "country": "Lebanon",
+        "address": "beirut",
+        "city": "beirut",
+        "permission": {
+            "creation-date": 1700573235660,
+            "permission": {
+                "voucher": [
+                    "Remove",
+                    "Create",
+                    "Edit",
+                    "Read",
+                    "Import",
+                    "Export"
+                ],
+                "expense": [
+                    "Create",
+                    "Edit",
+                    "Read",
+                    "Remove"
+                ],
+                "branch": [
+                    "Read",
+                    "Edit",
+                    "Create",
+                    "History",
+                    "Remove",
+                    "Switch Branches"
+                ],
+                "notification": [
+                    "Create",
+                    "Edit",
+                    "Read",
+                    "Remove",
+                    "Receive"
+                ],
+                "service": [
+                    "Remove",
+                    "History",
+                    "Create",
+                    "Edit",
+                    "Read",
+                    "Print"
+                ],
+                "sheet": [
+                    "Remove",
+                    "Create",
+                    "Edit",
+                    "Read",
+                    "Import",
+                    "Export"
+                ],
+                "currency": [
+                    "Create",
+                    "Edit",
+                    "Read",
+                    "Remove"
+                ],
+                "invoice": [
+                    "Remove",
+                    "History",
+                    "Create",
+                    "Edit",
+                    "Read",
+                    "Print"
+                ],
+                "asset": [
+                    "Read",
+                    "Remove",
+                    "Create",
+                    "History",
+                    "Edit"
+                ],
+                "user": [
+                    "Edit",
+                    "Remove",
+                    "History",
+                    "Create",
+                    "Read"
+                ],
+                "account": [
+                    "Edit",
+                    "Remove",
+                    "Transaction Sheet",
+                    "History",
+                    "Cash Flow",
+                    "Income Statement",
+                    "Create",
+                    "Read"
+                ],
+                "dashboard": [
+                    "Read"
+                ],
+                "gallery": [
+                    "Upload",
+                    "Read",
+                    "Edit",
+                    "Remove"
+                ]
+            },
+            "id": "qgZpEBDIN2bOI8soQeEXwS2wgcIDl0PsG2sRPmTqIkOSN4kaqox2mpZYpU1r1700573331130",
+            "creationDay": 1700524800000,
+            "creationDate": 1700573331131,
+            "user": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932"
+        },
+        "type": "Admin User",
+        "creationDate": 1699560006936,
+        "birthDate": 1699056000000,
+        "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+        "firstName": "Mohamad",
+        "password": "54321",
+        "ref": "USR-00000001",
+        "nationality": "lebanese",
+        "createdBy": "j7neF8CHqumHOGzAXNWi9JcLKTTyx9LRmJptYuYbJeiNWWfSrQMeqwKTZSp01699559755885",
+        "contactNumber": "13457892",
+        "creation-date": 1699559967729,
+        "id": "Zs7NKOX09nIIbBMpYWAqmTsLfNOmU30mhOVRCz1N73tD1jAaKLiCqLKhLHNL1699560006932",
+        "creationDay": 1699488000000,
+        "email": "mohamad@gmail.com",
+        "username": "mohamadz"
+    },
+    "description": "account creation",
+    "id": "DB29KUGJ3SzmtiHyFSJy87GWm5qWfG4KhLBGQN64lF7jgqqZgJ0l0EK6LRyk1701504657153",
+    "creationDay": 1701475200000,
+    "creationDate": 1701504657157,
+    "account": "Mp0UvU2R7fko9U5gSHTcJg6uCWoMaAa1LQtlwFyDEyJzNOPgGD5XFpcLhm8N1701504656991",
+    "__props__": {
+        "id": "41V7115110A3w123z6B352I707",
+        "doc": "DB29KUGJ3SzmtiHyFSJy87GWm5qWfG4KhLBGQN64lF7jgqqZgJ0l0EK6LRyk1701504657153",
+        "creationDate": 1711031363277,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 47,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

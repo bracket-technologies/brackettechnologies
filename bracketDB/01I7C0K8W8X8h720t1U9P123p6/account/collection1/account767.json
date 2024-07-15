@@ -1,0 +1,37 @@
+{
+    "name": "1111",
+    "isSubAccount": "No",
+    "generalLedger": "1",
+    "autoGenerateAccountNumber": "Yes",
+    "currency": [
+        "USD"
+    ],
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "createdBy": "5i7aFi1VZvdJzdVB5WTK0KOJGqJuerg3X2A8fjNqFxLXXU4NaOKpEH0iVnGU1700835548602",
+    "startsWith": [
+        "1"
+    ],
+    "id": "Hk4WshztSc6RHvsEQVTWTqNJbcYhNNYnpCM264WWPdlk4CGh9VVPkBDh54zc-1721035206228",
+    "creationDate": 1721035206228,
+    "creationDay": 1720990800000,
+    "accountNumber": "2",
+    "ledgerAccount": [
+        "1/2/0"
+    ],
+    "ref": "ACC-00000001",
+    "__props__": {
+        "id": "l1V7u2x1w0G3x5Z2b0j6J3W0K6",
+        "doc": "account767",
+        "counter": 767,
+        "creationDate": 1721035206306,
+        "collection": "account",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 805
+    },
+    "lastBalance": "4MlC72M4F99aDIGKKSw4O5NFuixBC8qYrNe0xPj2NkjgylA0PHmazzlB2kFG-1721035308500"
+}

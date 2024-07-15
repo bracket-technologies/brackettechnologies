@@ -1,0 +1,78 @@
+{
+    "view": "View:customPrintView2?class=column;style:[width=100%;height=100%;gap=1.5rem;padding=2rem];if():[_.data.data]:[customPrintView:()=_.data.data];doc=customPrintView",
+    "children": [
+        {
+            "view": "View?data=_.data;class=flex column;style:[padding=1rem]",
+            "children": [
+                {
+                    "view": "[View]:[data=_.schema]?if():[_.path]:[path=_.path]",
+                    "children": [
+                        {
+                            "view": "custemPrintViewLoop??_.mainInfo"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "u1K7u1y1X0n3B143E6b5B2T0r1",
+        "doc": "customPrintView2",
+        "creationDate": 1711031365201,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "actions": {},
+        "collapsed": [
+            {
+                "path": [
+                    "functions"
+                ]
+            }
+        ],
+        "comments": [
+            {
+                "note": "custom view + table",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "many tables",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    -1
+                ]
+            },
+            {
+                "note": "1 table",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            }
+        ],
+        "dirPath": [],
+        "version": 0,
+        "counter": 18,
+        "secure": false,
+        "chunk": "chunk1",
+        "collection": "view"
+    }
+}

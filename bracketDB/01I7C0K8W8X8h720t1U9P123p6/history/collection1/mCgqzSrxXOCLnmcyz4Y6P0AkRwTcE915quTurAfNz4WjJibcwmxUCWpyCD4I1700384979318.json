@@ -1,0 +1,31 @@
+{
+    "difference": [
+        {
+            "new": 0,
+            "path": "credit"
+        },
+        {
+            "new": 0,
+            "path": "debit"
+        }
+    ],
+    "description": "Data has been updated",
+    "id": "mCgqzSrxXOCLnmcyz4Y6P0AkRwTcE915quTurAfNz4WjJibcwmxUCWpyCD4I1700384979318",
+    "creationDay": 1700352000000,
+    "creationDate": 1700384979319,
+    "account": "DhtEUXDDQ0W5Yz2CQCDjqwVraGRPIlD0REtjZYBHVl0ogWphoT2Ry7HWZ0qC1700375151583",
+    "__props__": {
+        "id": "31l7h1j1t07361F3a6I3O8h2w9",
+        "doc": "mCgqzSrxXOCLnmcyz4Y6P0AkRwTcE915quTurAfNz4WjJibcwmxUCWpyCD4I1700384979318",
+        "creationDate": 1711031363829,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 228,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

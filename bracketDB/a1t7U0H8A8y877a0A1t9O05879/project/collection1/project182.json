@@ -1,0 +1,27 @@
+{
+    "name": "Branch",
+    "active": true,
+    "main": false,
+    "mainProjectID": "s1e7K2u088l7J3A3z4J6M4m3x0",
+    "branch": true,
+    "accountID": "31G7d2T0P8F743F344c6H3Y3O3",
+    "publicID": "991cD7p528b0wu8Go7H73364Lu5oP1qw4My8ZS9",
+    "subdomain": "branch.skylagroup",
+    "__props__": {
+        "id": "81E7k2605847K3w4U5A1b540Y2",
+        "doc": "project182",
+        "counter": 182,
+        "creationDate": 1720873451502,
+        "collection": "project",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 450
+    },
+    "db": "Nd1xf7JQ25z0rE8D47YZ3XF4VO5HM1NA5n70RS2",
+    "devDB": "QF1wk7N221d09O8pJ7qH3US4i95VX19I5pp0FO2",
+    "storage": "5u16q7wP2aa0km8yr7qu3e64oK5tr1j25ES0Xz2"
+}

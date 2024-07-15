@@ -1,0 +1,28 @@
+{
+    "difference": [
+        {
+            "new": "UcfBt",
+            "path": "inputId",
+            "old": "gjf5R"
+        }
+    ],
+    "description": "Data has been updated",
+    "sheet": "aRiAoFpuKnap9rZCJcACccDMX29Kai3iT6kFHbYUfHtc2mL9kHAk3wzgai8g1699268378803",
+    "id": "2EmEXPAKE65TGvay6V0AyTMIK6CjR9gmKfDzydN1AeGGvKNCVpSjOxjHwBmy1700645198579",
+    "creationDay": 1700611200000,
+    "creationDate": 1700645198579,
+    "__props__": {
+        "id": "O1m7Q1B1k0n3d1j376n3f1m6k5",
+        "doc": "2EmEXPAKE65TGvay6V0AyTMIK6CjR9gmKfDzydN1AeGGvKNCVpSjOxjHwBmy1700645198579",
+        "creationDate": 1711031363165,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 6,
+        "collection": "history",
+        "chunk": "chunk1"
+    }
+}

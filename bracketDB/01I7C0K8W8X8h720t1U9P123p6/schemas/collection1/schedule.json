@@ -1,0 +1,38 @@
+{
+    "create": {
+        "notification": {
+            "keyValue": [
+                {
+                    "path": "branch",
+                    "type": "string",
+                    "key": "branch",
+                    "required": "true"
+                },
+                {
+                    "path": "notificationId",
+                    "type": "string",
+                    "key": "notification",
+                    "required": "true"
+                }
+            ],
+            "nextStep": {
+                "manager": "notification",
+                "collection": "session"
+            }
+        }
+    },
+    "id": "scheduleMK3MEwes1g8Awg9f4pYR",
+    "collection": "schedule",
+    "__props__": {
+        "id": "Z1w791w31955O076m849i4G2m2",
+        "doc": "schedule",
+        "counter": 34,
+        "creationDate": 1713950689422,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "schemas",
+        "createdByUserID": "91l7f111C0i3r1J3V6L0C2c5n1"
+    }
+}

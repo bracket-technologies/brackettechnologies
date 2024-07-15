@@ -1,0 +1,23 @@
+{
+    "billingAccountID": "n1C792G098y7S3b3i4I6z6s6I6",
+    "subscriptionID": "w1m7S2w0O8d773D4D5u1V7F5x5",
+    "status": "Confirmed",
+    "type": "credit",
+    "priceCoins": 0,
+    "unit": "Coins",
+    "paymentStatus": "Paid",
+    "__props__": {
+        "id": "o1b7h2Z0H8V7P3v495u1h8q1U8",
+        "doc": "invoice3",
+        "counter": 3,
+        "creationDate": 1720873451818,
+        "collection": "invoice",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 402
+    }
+}

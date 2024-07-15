@@ -1,0 +1,23 @@
+{
+    "count": 54,
+    "description": "",
+    "type": "image/png",
+    "creationDate": 1701683696361,
+    "title": "IMAGE/PNG",
+    "url": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/cfcu4HTkS33hnO4yLXil?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=DEVaQrVH4uccXyiCBN7PPUs4ffVaQ9cmZc%2F0J9YlvuS%2FZC1JGcn5s1m3%2FmWSXGxZwLCmAWiePcVHuSH1ouVcXNSzD75bbqkm%2Bugt3Cw%2BIxMb3Z3RxWQOA0iS2NHF0YRi4A%2BjdtFGzL1guzpal82UualoaRFfxF4Jm%2Fx6lBcypziPtngztbp4LHEY8TwulxS4pT2uvhb%2FuJI1AWx7lEkHpKHaAGhoiD5z6CshQBzmQlVPedy%2FP7ylRXzPLniUyHxpPfv%2FEqZU4yXJsHpwgyUPUwv5Q6q%2F6gZdHTo9fv3kzIvNfKxqh4HjKNUQ8CUQz0DpGnhwLWmGkWZEmS5EIMDF6g%3D%3D",
+    "tags": [],
+    "ref": "IMG-00000054",
+    "size": 10147,
+    "name": "bank.png",
+    "lastModified": 1701683558307,
+    "__props__": {
+        "id": "U1f7i1A1R0z3J1h3U695n8d281",
+        "creationDate": 1711031365821,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "doc": "cfcu4HTkS33hnO4yLXil",
+        "counter": 51,
+        "collection": "storage",
+        "chunk": "chunk1"
+    }
+}

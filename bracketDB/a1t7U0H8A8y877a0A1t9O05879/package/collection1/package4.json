@@ -1,0 +1,24 @@
+{
+    "__props__": {
+        "id": "O1B7Z1b7B4o2u0Q833o9R5o2e9",
+        "doc": "package4",
+        "counter": 4,
+        "creationDate": 1717420839529,
+        "active": true,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "package"
+    },
+    "name": "Starter",
+    "description": "1 week free subscription",
+    "duration": 604800000,
+    "freeTier": true,
+    "savings": 0,
+    "pluginID": "Q1p78107R4j1n2Z9a2E1K1r912",
+    "priceCoins": 0,
+    "max": 1
+}

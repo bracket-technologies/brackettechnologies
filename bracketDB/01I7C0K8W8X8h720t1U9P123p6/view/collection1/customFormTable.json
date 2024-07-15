@@ -1,0 +1,64 @@
+{
+    "view": "View:customFormTable?class=column",
+    "children": [
+        {
+            "view": "View?class=flex;style:[width=100%]?__.table;!__.table.table",
+            "children": [
+                {
+                    "view": "View?class=flex;style:[width=100%]?doc().[__.table.docListName].len()>0||_.[__.table.docListName].len()>0",
+                    "children": [
+                        {
+                            "view": "View?style:[width=100%;paddingTop=1.5rem]",
+                            "children": [
+                                {
+                                    "view": "customGeneralTable?collection=[[__.table.collection]()];itemsList=selected:().[().collection];#.filter:():[id.in():[doc().[__.table.docListName]]];docListName=__.table.docListName;noCheckbox=true"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "view": "View:[__.table.tableId]?class=flex column;style:[width=100%;gap=2rem]?__.table.table",
+            "children": [
+                {
+                    "view": "[View]:[data=__.table.table]?class=flex;style:[width=100%]?selected:().[___.table.collection].filter():[service=_.filterValue].len()>0",
+                    "children": [
+                        {
+                            "view": "View?style:[width=100%;paddingTop=1.5rem]",
+                            "children": [
+                                {
+                                    "view": "customGeneralTable?collection=[_.collection]();itemsList=selected:().[___.table.collection].filter():[service=_.filterValue];docListName=_.docListName"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "q1A7Z1T1E0U3N1S3R6N5u1H9p7",
+        "doc": "customFormTable",
+        "creationDate": 1711031365197,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "actions": {},
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    1
+                ]
+            }
+        ],
+        "comments": [],
+        "dirPath": [],
+        "version": 0,
+        "counter": 10,
+        "secure": false,
+        "collection": "view",
+        "chunk": "chunk1"
+    }
+}

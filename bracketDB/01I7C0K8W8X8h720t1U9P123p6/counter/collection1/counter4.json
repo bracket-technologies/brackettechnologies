@@ -1,0 +1,27 @@
+{
+    "collection": "voucher",
+    "id": "P9DEej2k0L35k8KEUN6nL368JshhEMFlIS70dFEzpz1MoLBYjBYBt9FQ70jM1721035229542",
+    "creationDate": 1721035229542,
+    "creationDay": 1720990800000,
+    "code": "VCH",
+    "length": 8,
+    "counter": 2,
+    "max": 99999999,
+    "timestamp": 1721035229542,
+    "reset": "yearly",
+    "__props__": {
+        "id": "S157g2S1y0z3X5q2O2y9r5f4w3",
+        "doc": "counter4",
+        "counter": 4,
+        "creationDate": 1721035229543,
+        "collection": "counter",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 488
+    },
+    "end": 99999999
+}

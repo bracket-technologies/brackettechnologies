@@ -1,0 +1,30 @@
+{
+    "host80": {},
+    "host79": {
+        "localhost": "branch.skylagroup.localhost"
+    },
+    "host78": {},
+    "host77": {
+        "localhost": "skylagroup.localhost"
+    },
+    "host1": {
+        "localhost": "localhost"
+    },
+    "host2": {
+        "localhost": "acc.localhost"
+    },
+    "host3": {
+        "localhost": "playground.localhost"
+    },
+    "host6": {},
+    "host7": {},
+    "host8": {},
+    "host81": {
+        "localhost": "dev.branch.skylagroup.localhost"
+    },
+    "host82": {},
+    "host83": {
+        "localhost": "test1.localhost"
+    },
+    "host84": {}
+}

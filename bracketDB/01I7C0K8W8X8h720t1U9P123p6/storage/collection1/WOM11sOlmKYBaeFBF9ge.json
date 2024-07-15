@@ -1,0 +1,23 @@
+{
+    "count": 43,
+    "description": "",
+    "type": "image/png",
+    "creationDate": 1701672151544,
+    "title": "IMAGE/PNG",
+    "url": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/WOM11sOlmKYBaeFBF9ge?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=Zern1c8IEjPGVMsInH0HfbZMNXQsT5hnMBBXSkuQDCU1gDpc%2FHGEVjQBC4mxChoOZbSctxuFd9bdWYZ2CUvU9y4AZuXvS6yRW6XjoQcK9TUMqYh1khL5YZQMePZIt629IFatoOxocrVnwWcGpQy1uG77OVmphaBS6l3bAuOEsImi4a2AXZAtEGUieoB%2FNNXbM6Dv5%2Fu0iIlnrNplM6QIbrv6TDQtT1lC0vfYo%2FBnU16CeM4gWz8X0h%2FSx1VUe%2F0tYYzrl1bEVWPPAFgbCoawVkizSaGWsQbnzg385AjNItzlS9EXm8Sjm%2FBQOnEvQaV8BPkd7%2F4D1mEfrQVmHwYKvA%3D%3D",
+    "tags": [],
+    "ref": "IMG-00000043",
+    "size": 18541,
+    "name": "dashboard.png",
+    "lastModified": 1701672016617,
+    "__props__": {
+        "id": "A1C7A1A1z0S3J183Y6J5i8b1X7",
+        "creationDate": 1711031365817,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "doc": "WOM11sOlmKYBaeFBF9ge",
+        "counter": 42,
+        "collection": "storage",
+        "chunk": "chunk1"
+    }
+}

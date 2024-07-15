@@ -1,0 +1,861 @@
+{
+    "create": {
+        "invoice": {
+            "keyValue": [
+                {
+                    "path": "invoiceDate",
+                    "type": "number",
+                    "key": "invoiceDate",
+                    "required": true
+                },
+                {
+                    "path": "type",
+                    "type": "string",
+                    "key": "type",
+                    "required": true
+                },
+                {
+                    "path": "status",
+                    "type": "string",
+                    "key": "status",
+                    "required": true
+                },
+                {
+                    "path": "currency",
+                    "type": "string",
+                    "key": "currency",
+                    "required": true
+                },
+                {
+                    "path": "customerAccount",
+                    "type": "string",
+                    "key": "customerAccount",
+                    "required": true
+                },
+                {
+                    "listPath": "bookings",
+                    "input": [
+                        {
+                            "path": "supplierAccount",
+                            "type": "string",
+                            "key": "supplierAccount",
+                            "required": true
+                        },
+                        {
+                            "path": "costCurrency",
+                            "type": "string",
+                            "key": "costCurrency"
+                        },
+                        {
+                            "path": "issueDate",
+                            "type": "number",
+                            "key": "issueDate",
+                            "required": true
+                        },
+                        {
+                            "path": "type",
+                            "type": "string",
+                            "key": "type",
+                            "required": true
+                        },
+                        {
+                            "path": "PNR",
+                            "type": "string",
+                            "key": "PNR",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "passengerFullName",
+                            "type": "string",
+                            "key": "passengerFullName",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "eTicket",
+                            "type": "string",
+                            "key": "eTicket",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "country",
+                            "type": "string",
+                            "key": "country",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ],
+                            "required": true
+                        },
+                        {
+                            "path": "city",
+                            "type": "string",
+                            "key": "city",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "hotelName",
+                            "type": "string",
+                            "key": "hotelName",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "roomType",
+                            "type": "string",
+                            "key": "roomType",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "roomName",
+                            "type": "string",
+                            "key": "roomName",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "extraBed",
+                            "type": "string",
+                            "key": "extraBed",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "listPath": "flightDetails",
+                            "input": [
+                                {
+                                    "path": "arrivalAirport",
+                                    "type": "string",
+                                    "key": "arrivalAirport"
+                                },
+                                {
+                                    "path": "departureAirport",
+                                    "type": "string",
+                                    "key": "departureAirport"
+                                },
+                                {
+                                    "path": "flightDate",
+                                    "type": "number",
+                                    "key": "flightDate"
+                                }
+                            ],
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "fareBasis",
+                            "type": "string",
+                            "key": "fareBasis",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "class",
+                            "type": "string",
+                            "key": "class",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "grossFare",
+                            "type": "number",
+                            "key": "grossFare",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "tax1",
+                            "type": "number",
+                            "key": "tax1",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "tax2",
+                            "type": "number",
+                            "key": "tax2",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "tax3",
+                            "type": "number",
+                            "key": "tax3",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "tax4",
+                            "type": "number",
+                            "key": "tax4",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "tax5",
+                            "type": "number",
+                            "key": "tax5",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "tax6",
+                            "type": "number",
+                            "key": "tax6",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "tax7",
+                            "type": "number",
+                            "key": "tax7",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "tax8",
+                            "type": "number",
+                            "key": "tax8",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "totalTaxes",
+                            "type": "number",
+                            "key": "totalTaxes",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "costCutFare",
+                            "type": "number",
+                            "key": "costCutFare",
+                            "required": true,
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "sellingNetPrice",
+                            "type": "number",
+                            "key": "sellingNetPrice",
+                            "required": true,
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "costSubTotal",
+                            "type": "number",
+                            "key": "costSubTotal",
+                            "required": true,
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Inbound"
+                                    ],
+                                    "conditionReference": "bound"
+                                },
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "supplierVAT",
+                            "type": "number",
+                            "key": "supplierVAT",
+                            "required": true,
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Inbound"
+                                    ],
+                                    "conditionReference": "bound"
+                                },
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "costNetPrice",
+                            "type": "number",
+                            "key": "costNetPrice",
+                            "required": true,
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "sellingSubTotal",
+                            "type": "number",
+                            "key": "sellingSubTotal",
+                            "required": true,
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Inbound"
+                                    ],
+                                    "conditionReference": "bound"
+                                },
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "customerVAT",
+                            "type": "number",
+                            "key": "customerVAT",
+                            "required": true,
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Inbound"
+                                    ],
+                                    "conditionReference": "bound"
+                                },
+                                {
+                                    "condition": [
+                                        "Hotel"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "costCommission",
+                            "type": "number",
+                            "key": "costCommission"
+                        },
+                        {
+                            "path": "costCommissionOn",
+                            "type": "string",
+                            "key": "costCommissionOn"
+                        },
+                        {
+                            "path": "costCommissionUnit",
+                            "type": "string",
+                            "key": "costCommissionUnit"
+                        },
+                        {
+                            "path": "costCommissionMagnitude",
+                            "type": "number",
+                            "key": "costCommissionMagnitude"
+                        },
+                        {
+                            "path": "costIATAInsurance",
+                            "type": "number",
+                            "key": "costIATAInsurance"
+                        },
+                        {
+                            "path": "costServiceCharge",
+                            "type": "number",
+                            "key": "costServiceCharge"
+                        },
+                        {
+                            "path": "costTotalPrice",
+                            "type": "number",
+                            "key": "costTotalPrice",
+                            "required": true
+                        },
+                        {
+                            "path": "sellingCutFare",
+                            "type": "number",
+                            "key": "sellingCutFare",
+                            "required": true,
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
+                        },
+                        {
+                            "path": "sellingCommissionMagnitude",
+                            "type": "number",
+                            "key": "sellingCommissionMagnitude"
+                        },
+                        {
+                            "path": "sellingCommission",
+                            "type": "number",
+                            "key": "sellingCommission"
+                        },
+                        {
+                            "path": "sellingCommissionUnit",
+                            "type": "string",
+                            "key": "sellingCommissionUnit"
+                        },
+                        {
+                            "path": "sellingCommissionOn",
+                            "type": "string",
+                            "key": "sellingCommissionOn"
+                        },
+                        {
+                            "path": "sellingIATAInsurance",
+                            "type": "number",
+                            "key": "sellingIATAInsurance"
+                        },
+                        {
+                            "path": "sellingServiceCharge",
+                            "type": "number",
+                            "key": "sellingServiceCharge"
+                        },
+                        {
+                            "path": "sellingTotalPrice",
+                            "type": "number",
+                            "key": "sellingTotalPrice",
+                            "required": true
+                        }
+                    ]
+                },
+                {
+                    "path": "supplierPaymentTermsDueDate",
+                    "type": "number",
+                    "key": "supplierPaymentTermsDueDate"
+                },
+                {
+                    "path": "supplierPaymentTerms",
+                    "type": "string",
+                    "key": "supplierPaymentTerms"
+                },
+                {
+                    "path": "customerPaymentTermsDueDate",
+                    "type": "number",
+                    "key": "customerPaymentTermsDueDate"
+                },
+                {
+                    "path": "customerPaymentTerms",
+                    "type": "string",
+                    "key": "customerPaymentTerms"
+                },
+                {
+                    "path": "salesmanCommission",
+                    "type": "string",
+                    "key": "salesmanCommission"
+                },
+                {
+                    "path": "salesmanAccount",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "salesmanCommission"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "salesmanAccount",
+                    "required": true
+                },
+                {
+                    "path": "salesmanCommissionAmount",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Yes"
+                            ],
+                            "conditionReference": "salesmanCommission"
+                        }
+                    ],
+                    "type": "number",
+                    "key": "salesmanCommissionAmount",
+                    "required": true
+                },
+                {
+                    "key": "receivables",
+                    "staticValue": "[handleReceivablesKey()]():[collection=schemas;doc=invoice]"
+                },
+                {
+                    "key": "payables",
+                    "staticValue": "[handlePayablesKey()]():[collection=schemas;doc=invoice]"
+                },
+                {
+                    "key": "suppliers",
+                    "staticValue": "[handleSuppliersKey()]():[collection=schemas;doc=invoice]"
+                },
+                {
+                    "path": "exchangeRates",
+                    "type": "array",
+                    "key": "exchangeRates",
+                    "required": true
+                }
+            ],
+            "generateReference": "true",
+            "nextStep": {
+                "collection": "transaction",
+                "manager": "invoice"
+            },
+            "helpersKeyValue": [
+                {
+                    "staticValue": "getInvoiceIdForAllTransaction",
+                    "key": "helperKey"
+                }
+            ]
+        }
+    },
+    "collection": "invoice",
+    "creationDate": 1710838351047,
+    "__props__": {
+        "id": "g1w7I101H0739143L6V2D4c6B0",
+        "doc": "invoice",
+        "creationDate": 1711031362460,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "helpersKeyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    10
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    11
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    12
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    13
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    14
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    15
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "nextStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    16
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "helpersKeyValue"
+                ]
+            }
+        ],
+        "comments": [],
+        "dirPath": [],
+        "actions": {
+            "handleReceivablesKey": {
+                "_": "handleAmountCalculation();return():[().receivables]",
+                "handleAmountCalculation": "().receivablesAmount=0;mainReceivedData:().bookings._():[().receivablesAmount+=_.sellingTotalPrice];().receivables.totalAmount=().receivablesAmount;().receivables.remainingAmount=().receivablesAmount"
+            },
+            "handlePayablesKey": {
+                "_": "handleAmountCalculation();return():[().payables]",
+                "handleAmountCalculation": "mainReceivedData:().bookings._():[if():[().payables.find():[supplier=_.supplierAccount]]:[updateExistingItem()]:[pushNewItem()]]",
+                "pushNewItem": "().payables.push():[supplier=_.supplierAccount;totalAmount=_.costTotalPrice;remainingAmount=_.costTotalPrice]",
+                "updateExistingItem": "().payables.find():[supplier=_.supplierAccount]._():[_.totalAmount+=__.costTotalPrice;_.remainingAmount=__.costTotalPrice]"
+            },
+            "handleSuppliersKey": "().suppliers=:;mainReceivedData:().bookings._():[().suppliers.push():[_.supplierAccount]];().suppliers.removeDuplicates();return():[().suppliers]"
+        },
+        "counter": 11,
+        "chunk": "chunk1",
+        "collection": "schemas"
+    }
+}

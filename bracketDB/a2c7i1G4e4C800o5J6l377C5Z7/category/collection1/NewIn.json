@@ -1,0 +1,26 @@
+{
+    "__props__": {
+        "id": "Q1A7m1Z5d3n4z2Y946b7M9A2e4",
+        "doc": "NewIn",
+        "counter": 11,
+        "creationDate": 1715342967924,
+        "active": true,
+        "actions": {},
+        "comments": {},
+        "collapsed": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "category",
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2"
+    },
+    "name": "New In",
+    "imageURL": "",
+    "link": "",
+    "id": "6",
+    "firstCollectionIDs": [
+        "1"
+    ],
+    "secondCollectionIDs": [
+        "2"
+    ]
+}

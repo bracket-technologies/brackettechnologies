@@ -1,9 +1,9 @@
 const http = require('node:http')
-const EasyTunnel = require("./action/easy-tunnel")
-const { getData, start } = require("./action/kernel")
-const { toArray } = require('./action/toArray')
-const router = require('./action/router')
-const { generate } = require('./action/generate')
+const EasyTunnel = require("./functions/easy-tunnel")
+const { getData, start } = require("./functions/kernel")
+const { toArray } = require('./functions/toArray')
+const router = require('./functions/router')
+const { generate } = require('./functions/generate')
 const networkInterfaces = require('os').networkInterfaces()
 
 // config
@@ -28,7 +28,6 @@ const app = (req, res) => {
 
       req.ip = ip
       req.body = JSON.parse(Buffer.concat(req.body).toString() || "{}")
-      // server id
       res.serverID = serverID
 
       router({ req, res })
@@ -45,18 +44,12 @@ if (port) {
     console.log(`Server Listening to Port ${port}`)
     //new EasyTunnel(port, "brc" + host.subdomain).start()
   })
-  server.on("error", () => {console.log("Error running server!");})
-
+  server.on("error", (err) => {console.log("Error running server!", err);})
+  
 } else {
 
   // get hosts
   getData({ search: { db: bracketDB, collection: "host", find: { port: { gte: 80 } } } }).then(({ data }) => {
-
-    hosts = Object.values(data)
-    if (!hosts[0]) return
-    
-    hosts.map(host => {
-      toArray(host.port).map(async port => start(port))
-    })
+    Object.values(data).map(host => host.port.map(port => start(port)))
   })
 }

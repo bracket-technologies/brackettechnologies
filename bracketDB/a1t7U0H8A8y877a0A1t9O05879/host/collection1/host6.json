@@ -1,0 +1,20 @@
+{
+    "__props__": {
+        "id": "M1b7L196Z742I0k549B2S8o3y7",
+        "doc": "host6",
+        "counter": 6,
+        "creationDate": 1716720592837,
+        "active": true,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "host"
+    },
+    "host": "brcbrackettechnologies.loca.lt",
+    "active": true,
+    "public": true,
+    "publicID": "e4t6R0N8X8Yrtyc030q8S8W7O3"
+}

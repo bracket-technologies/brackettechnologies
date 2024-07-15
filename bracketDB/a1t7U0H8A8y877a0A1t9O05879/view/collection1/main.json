@@ -1,0 +1,14 @@
+{
+    "view": "View?id=main;root():tap",
+    "__props__": {
+        "id": "Z1k7y1V3F680p5o6S9R7I2y1v7",
+        "doc": "main",
+        "counter": 17,
+        "creationDate": 1713605697217,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "collection": "view",
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2"
+    }
+}

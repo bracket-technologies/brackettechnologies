@@ -1,0 +1,15 @@
+{
+    "docs": [
+        "userManager",
+        "scheduleManager",
+        "paymentTermsManager",
+        "notificationManager",
+        "navBar",
+        "exchangeRateInfo",
+        "currencyManager",
+        "branchManager"
+    ],
+    "chunk": "chunk1",
+    "docsLength": 8,
+    "size": 34441
+}

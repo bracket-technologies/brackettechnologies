@@ -1,0 +1,27 @@
+{
+    "collection": "account",
+    "id": "6b0mmoWVwKcwtv9mhDxMTXrMUSpuEzXUdxBxuq1RKyVAymcxN6bp8SknsFc71721035206246",
+    "creationDate": 1721035206246,
+    "creationDay": 1720990800000,
+    "code": "ACC",
+    "length": 8,
+    "counter": 9,
+    "max": 99999999,
+    "timestamp": 1721035206246,
+    "reset": "yearly",
+    "__props__": {
+        "id": "d1Z7i2z1y0f3w5z2n066m2l4T7",
+        "doc": "counter3",
+        "counter": 3,
+        "creationDate": 1721035206247,
+        "collection": "counter",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 488
+    },
+    "end": 99999999
+}

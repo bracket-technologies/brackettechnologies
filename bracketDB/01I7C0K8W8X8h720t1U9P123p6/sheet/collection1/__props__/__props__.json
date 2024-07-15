@@ -1,0 +1,26 @@
+{
+    "creationDate": 1712567716978,
+    "collection": 1,
+    "lastChunk": 1,
+    "docsLength": 13,
+    "counter": 16,
+    "reads": 18918,
+    "writes": 26,
+    "deletes": 0,
+    "size": 99513,
+    "payloadIn": 436989,
+    "payloadOut": 505938635,
+    "dirTree": [],
+    "maxSize": 1000,
+    "indexes": [
+        {
+            "find": [
+                "name"
+            ],
+            "doc": "index1",
+            "lastRead": 1721037684951,
+            "expiryDate": 1723629684951
+        }
+    ],
+    "lastIndex": 1
+}

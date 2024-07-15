@@ -1,0 +1,186 @@
+{
+    "searchEngineInputs": [
+        {
+            "inputPath": "name",
+            "inputLabel": "Name"
+        }
+    ],
+    "createFormInputs": {
+        "subInput": [
+            {
+                "input": [
+                    {
+                        "inputPath": "name",
+                        "inputLabel": "Name",
+                        "required": true
+                    }
+                ],
+                "title": "General Information"
+            },
+            {
+                "path": "details",
+                "input": [
+                    {
+                        "inputPath": "maturityPeriod",
+                        "subItemsList": [
+                            "Day",
+                            "Week",
+                            "Month",
+                            "Year"
+                        ],
+                        "unitPath": "maturatyPeriodUnit",
+                        "timeFormat": true,
+                        "inputLabel": "Maturity Period",
+                        "required": true,
+                        "unitValue": "Day"
+                    },
+                    {
+                        "inputPath": "rate",
+                        "inputLabel": "Rate",
+                        "executeUnitEveryLoad": true,
+                        "required": true,
+                        "unitValue": "USD"
+                    },
+                    {
+                        "inputPath": "repeat",
+                        "readonly": true,
+                        "inputLabel": "Repeat?",
+                        "inputValue": "No",
+                        "items": [
+                            "Yes",
+                            "No"
+                        ],
+                        "required": true
+                    }
+                ],
+                "#input": [
+                    {
+                        "inputPath": "dateReference",
+                        "readonly": true,
+                        "inputLabel": "Date Reference",
+                        "items": [
+                            "Pre Payment",
+                            "Due Payment",
+                            "Close Payment"
+                        ],
+                        "required": true
+                    },
+                    {
+                        "inputPath": "beforeAfter",
+                        "readonly": true,
+                        "inputLabel": "Before/After",
+                        "items": [
+                            "Before",
+                            "After"
+                        ],
+                        "required": true
+                    },
+                    {
+                        "inputPath": "timeLimit",
+                        "timeFormat": true,
+                        "inputLabel": "Time Limit (dd:hh:mm)",
+                        "required": true
+                    },
+                    {
+                        "inputPath": "charge",
+                        "inputLabel": "Charge",
+                        "executeUnitEveryLoad": true,
+                        "required": true,
+                        "unitValue": "USD"
+                    }
+                ],
+                "title": "Details"
+            },
+            {
+                "input": [
+                    {
+                        "inputPath": "note",
+                        "inputLabel": "Note",
+                        "containerStyle": {
+                            "height": "12rem"
+                        }
+                    },
+                    {
+                        "inputPath": "overview",
+                        "inputLabel": "Brief Overview",
+                        "containerStyle": {
+                            "height": "12rem"
+                        }
+                    }
+                ],
+                "grid": "1fr 1fr",
+                "title": "Note & Overview"
+            }
+        ],
+        "collection": "paymentTerms"
+    },
+    "id": "paymentTermsManager",
+    "popupInfo": {
+        "docName": "paymentPolicyInfo",
+        "title": "Payment Policy Form"
+    },
+    "title": "Payment Policy Manager",
+    "__props__": {
+        "id": "11t731a1e0G3H143v6Y1m3P9q2",
+        "doc": "paymentTermsManager",
+        "creationDate": 1711031361392,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [
+            {
+                "path": [
+                    "popupInfo"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    0,
+                    "items"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "#input"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1
+                ]
+            }
+        ],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 5,
+        "chunk": "chunk1",
+        "collection": "settings"
+    }
+}

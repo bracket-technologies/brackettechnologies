@@ -1,0 +1,2835 @@
+{
+    "id": "invoiceTemplate",
+    "__props__": {
+        "id": "818751H1a0R3i1u3Z6z1t7W413",
+        "doc": "invoiceTemplate",
+        "creationDate": 1711031361743,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    5,
+                    "#footer",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    4,
+                    "#body",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    0,
+                    "subContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    0,
+                    "text",
+                    2,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    0,
+                    "text",
+                    3,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    1,
+                    "subContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    1,
+                    "text",
+                    1,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    2,
+                    "#header",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    1,
+                    "#body",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    1,
+                    "#header",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    0,
+                    "mainInfo",
+                    1,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    1,
+                    "mainInfo",
+                    1,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    1,
+                    "mainInfo",
+                    0,
+                    "text",
+                    0,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    1,
+                    "mainContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    0,
+                    "#header",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    2,
+                    "#body",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#bodyRowStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#bodyStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    1,
+                    "mainInfo",
+                    0,
+                    "text",
+                    1,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    1,
+                    "mainInfo",
+                    0,
+                    "subContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    0,
+                    "text",
+                    1,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    0,
+                    "text",
+                    0,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    0,
+                    "text",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    0,
+                    "text",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    0,
+                    "text",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    0,
+                    "text",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    1,
+                    "text",
+                    0,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    1,
+                    "text",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#footerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "style"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "style"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "rowStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#footerRowStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "style"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "rowStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    0,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    0,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    0,
+                    "#header",
+                    "#textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    1,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    1,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    1,
+                    "#header",
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    1,
+                    "#header"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    2,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    2,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    2,
+                    "#header"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    3,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    3,
+                    "#header",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    3,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    3,
+                    "#header",
+                    "#textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    3,
+                    "#header"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    4,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    4,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    4,
+                    "#header",
+                    "#textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    4,
+                    "#header",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    5,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    5,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    5,
+                    "#header"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "viewInfo",
+                    "unpaidInvoiceTable",
+                    "footer",
+                    "items",
+                    5,
+                    "customIn"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    0,
+                    "#header"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    1,
+                    "#footer",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    1,
+                    "#footer",
+                    "#textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    0,
+                    "#footer",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    0,
+                    "#footer",
+                    "#textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    0,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    0,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    1,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    0,
+                    "#footer"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    1,
+                    "#footer"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    2,
+                    "#footer",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    2,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    2,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    2,
+                    "#footer",
+                    "#textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    2,
+                    "#footer"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    3,
+                    "#footer",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    3,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    3,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    3,
+                    "#footer"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    4,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    4,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    4,
+                    "#footer",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    4,
+                    "#footer",
+                    "#textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    4,
+                    "#footer"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    5,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    5,
+                    "#footer",
+                    "#textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    5,
+                    "#footer"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer",
+                    "items",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    0,
+                    "#body",
+                    "#textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    0,
+                    "#body",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    0,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    0,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    0,
+                    "#body"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    1,
+                    "#body"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    2,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    2,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    2,
+                    "#body"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    3,
+                    "#body",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    3,
+                    "#body",
+                    "#textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    3,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    3,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    3,
+                    "#body"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    4,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    4,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    4,
+                    "#body",
+                    "#textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    4,
+                    "#header"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    5,
+                    "#body",
+                    "#cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    5,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    5,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "tableStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#table"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody",
+                    0,
+                    "#headerRowStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "#tableHeaderAndBody"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    0,
+                    "mainInfo",
+                    0,
+                    "textStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    0,
+                    "mainInfo",
+                    0,
+                    "subContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    0,
+                    "mainInfo",
+                    1,
+                    "subContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    0,
+                    "mainInfo",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    0,
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    0,
+                    "mainInfo",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    1,
+                    "mainInfo",
+                    0,
+                    "text",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    1,
+                    "mainInfo",
+                    0,
+                    "text",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    1,
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0,
+                    "mainInf"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    1,
+                    "#main",
+                    0,
+                    "customViews"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    1,
+                    "#subContain"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0,
+                    "#mainI",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    1,
+                    "containerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0,
+                    "containerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "containerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "rowStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    1,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    1,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "style"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    1,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "rowStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    1,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "containerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    0,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items",
+                    2,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "rowStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    0,
+                    "text"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    1,
+                    "#mai",
+                    0,
+                    "#subContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    0,
+                    "mainContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    0,
+                    "mainInfo"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    1,
+                    "text"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    2,
+                    "text"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    3,
+                    "text"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    4,
+                    "text"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    3,
+                    "containerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    4,
+                    "#subContainer"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    4,
+                    "containerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    2,
+                    "containerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    1,
+                    "#subCo"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "mainInfo",
+                    1,
+                    "containerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "style"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body",
+                    "items"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "style"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    1,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    1,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "style"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1,
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "containerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "items"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "style"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header",
+                    "style"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2,
+                    "mainInfo",
+                    0,
+                    "customViews",
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3,
+                    "mainInfo",
+                    0,
+                    "mainContainerStyle"
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "mainInfo"
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    1,
+                    "mainInfo",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "#mai",
+                    3
+                ]
+            }
+        ],
+        "comments": [
+            {
+                "note": "branchName-location-phone",
+                "path": [
+                    "#mai",
+                    0
+                ]
+            },
+            {
+                "note": "branchName-location-phone",
+                "path": [
+                    "#mai",
+                    1
+                ]
+            },
+            {
+                "note": "title",
+                "path": [
+                    "#mai",
+                    1,
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "note": "date",
+                "path": [
+                    "#mai",
+                    1,
+                    "mainInfo",
+                    0
+                ]
+            },
+            {
+                "note": "fromToDate-account info",
+                "path": [
+                    "#mai",
+                    2
+                ]
+            },
+            {
+                "note": "account info",
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    0
+                ]
+            },
+            {
+                "note": "from-to date",
+                "path": [
+                    "#mai",
+                    2,
+                    "mainInfo",
+                    1
+                ]
+            },
+            {
+                "note": "table of statment of account",
+                "path": [
+                    "#mai",
+                    3
+                ]
+            },
+            {
+                "note": "@",
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "header"
+                ]
+            },
+            {
+                "note": "@",
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "footer"
+                ]
+            },
+            {
+                "note": "@",
+                "path": [
+                    "#mai",
+                    3,
+                    "viewInfo",
+                    "tableHeaderAndBody",
+                    "body"
+                ]
+            },
+            {
+                "note": "branch Info",
+                "path": [
+                    "mainInfo",
+                    0
+                ]
+            }
+        ],
+        "dirPath": [],
+        "actions": {},
+        "counter": 4,
+        "chunk": "chunk1",
+        "collection": "printViewInfo"
+    },
+    "mainInfo": [
+        {
+            "class": "flex",
+            "path": "branch",
+            "mainContainerStyle": {
+                "justifyContent": "space-between",
+                "paddingBottom": "5rem"
+            },
+            "mainInfo": [
+                {
+                    "mainInfo": [
+                        {
+                            "subContainerStyle": {
+                                "width": "100%",
+                                "justify-content": "start"
+                            },
+                            "text": "data().name",
+                            "textStyle": {
+                                "fontSize": "2.5rem"
+                            }
+                        },
+                        {
+                            "subContainerStyle": {
+                                "width": "100%",
+                                "justify-content": "start"
+                            },
+                            "text": "data().address+'-'+data().city+'-'+data().country",
+                            "textStyle": {
+                                "fontSize": "1.5rem",
+                                "fontWeight": "Bold"
+                            }
+                        },
+                        {
+                            "subContainerStyle": {
+                                "width": "100%",
+                                "justify-content": "start"
+                            },
+                            "text": "'TEL: '+data().contactNumber.0",
+                            "textStyle": {
+                                "fontSize": "1.5rem",
+                                "fontWeight": "Bold"
+                            }
+                        }
+                    ],
+                    "class": "flex column"
+                },
+                {
+                    "subContainerStyle": {
+                        "width": "100%",
+                        "justify-content": "center"
+                    },
+                    "text": "doc().invoiceInfo.invoiceType",
+                    "textStyle": {
+                        "fontSize": "2.5rem",
+                        "fontWeight": "Bold"
+                    }
+                }
+            ]
+        },
+        {
+            "class": "flex",
+            "path": "voucherInfo",
+            "mainInfo": [
+                {
+                    "class": "flexbox",
+                    "containerStyle": {
+                        "width": "80%",
+                        "borderRadius": ".8rem",
+                        "border": "1px solid #000",
+                        "padding": ".2rem"
+                    },
+                    "customViews": {
+                        "viewName": "customGeneralTable",
+                        "viewInfo": {
+                            "tableHeaderAndBody": {
+                                "body": {
+                                    "items": [
+                                        {
+                                            "fraction": "1fr",
+                                            "path": "from.fromAccount"
+                                        },
+                                        {
+                                            "path": "generalLedger",
+                                            "fraction": "1fr"
+                                        },
+                                        {
+                                            "path": "aa",
+                                            "header": "Account#",
+                                            "fraction": "1fr",
+                                            "formatCell": "txt()=__.ledgerAccount.0.split():'/'.1"
+                                        },
+                                        {
+                                            "path": "currency",
+                                            "header": "Currency",
+                                            "fraction": "1fr"
+                                        }
+                                    ],
+                                    "rowStyle": {
+                                        "grid-template-rows": "1fr 1fr 1fr 1fr",
+                                        "grid-template-columns": "none",
+                                        "backgroundColor": "none"
+                                    },
+                                    "containerStyle": {
+                                        "height": "100%",
+                                        "width": "50rem"
+                                    },
+                                    "noCounter": true
+                                },
+                                "header": {
+                                    "items": [
+                                        {
+                                            "header": "Messrs",
+                                            "fraction": "1fr"
+                                        },
+                                        {
+                                            "header": "Address 1\n",
+                                            "fraction": "1fr"
+                                        },
+                                        {
+                                            "header": "Address 2",
+                                            "fraction": "1fr"
+                                        },
+                                        {
+                                            "header": "Telephone",
+                                            "fraction": "1fr"
+                                        }
+                                    ],
+                                    "style": {
+                                        "grid-template-rows": "1fr 1fr 1fr 1fr",
+                                        "grid-template-columns": "none",
+                                        "width": "auto",
+                                        "height": "auto"
+                                    },
+                                    "noCounter": true
+                                },
+                                "style": {
+                                    "flexDirection": "row",
+                                    "gap": "1rem"
+                                }
+                            },
+                            "#itemsList": "taha"
+                        }
+                    }
+                },
+                {
+                    "class": "flexbox",
+                    "containerStyle": {
+                        "width": "20%",
+                        "borderRadius": ".8rem",
+                        "border": "1px solid #000",
+                        "padding": ".2rem"
+                    },
+                    "customViews": {
+                        "viewName": "customGeneralTable",
+                        "viewInfo": {
+                            "tableHeaderAndBody": {
+                                "body": {
+                                    "items": [
+                                        {
+                                            "fraction": "1fr",
+                                            "path": "from.fromAccount"
+                                        },
+                                        {
+                                            "path": "generalLedger",
+                                            "fraction": "1fr"
+                                        },
+                                        {
+                                            "path": "aa",
+                                            "header": "Account#",
+                                            "fraction": "1fr",
+                                            "formatCell": "txt()=__.ledgerAccount.0.split():'/'.1"
+                                        },
+                                        {
+                                            "path": "currency",
+                                            "header": "Currency",
+                                            "fraction": "1fr"
+                                        }
+                                    ],
+                                    "rowStyle": {
+                                        "grid-template-rows": "1fr 1fr 1fr 1fr",
+                                        "grid-template-columns": "none",
+                                        "backgroundColor": "none"
+                                    },
+                                    "containerStyle": {
+                                        "height": "100%"
+                                    },
+                                    "noCounter": true
+                                },
+                                "header": {
+                                    "items": [
+                                        {
+                                            "header": "Invoice No",
+                                            "fraction": "1fr"
+                                        },
+                                        {
+                                            "header": "Invoice Date",
+                                            "fraction": "1fr"
+                                        },
+                                        {
+                                            "header": "Salesman",
+                                            "fraction": "1fr"
+                                        },
+                                        {
+                                            "header": "Branch",
+                                            "fraction": "1fr"
+                                        }
+                                    ],
+                                    "style": {
+                                        "grid-template-rows": "1fr 1fr 1fr 1fr",
+                                        "grid-template-columns": "none",
+                                        "width": "auto",
+                                        "height": "auto"
+                                    },
+                                    "noCounter": true
+                                },
+                                "style": {
+                                    "flexDirection": "row",
+                                    "gap": "1rem"
+                                }
+                            },
+                            "#itemsList": "taha"
+                        }
+                    }
+                }
+            ],
+            "mainContainerStyle": {
+                "padding": "1rem",
+                "gap": "1rem",
+                "width": "auto"
+            }
+        },
+        {
+            "class": "flex",
+            "path": "voucherInfo",
+            "mainInfo": [
+                {
+                    "class": "flexbox",
+                    "customViews": {
+                        "viewName": "customGeneralTable",
+                        "viewInfo": {
+                            "tableHeaderAndBody": {
+                                "body": {
+                                    "items": [
+                                        {
+                                            "fraction": "3fr",
+                                            "path": "from.fromAccount",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000"
+                                            }
+                                        },
+                                        {
+                                            "path": "generalLedger",
+                                            "fraction": "1fr",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000"
+                                            }
+                                        },
+                                        {
+                                            "path": "aa",
+                                            "fraction": "1fr",
+                                            "cellStyle": {
+                                                "justifyContent": "end"
+                                            }
+                                        }
+                                    ],
+                                    "noCounter": true,
+                                    "rowStyle": {
+                                        "backgroundColor": "none",
+                                        "gridTemplateColumns": "3fr 1fr 1fr"
+                                    },
+                                    "containerStyle": {
+                                        "border": "2px solid #000",
+                                        "borderTop": "none",
+                                        "height": "calc(100% - 2.5rem)"
+                                    }
+                                },
+                                "header": {
+                                    "items": [
+                                        {
+                                            "header": "DESCRIPTION",
+                                            "fraction": "3fr",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000",
+                                                "justifyContent": "center"
+                                            }
+                                        },
+                                        {
+                                            "header": "COST ITEM",
+                                            "fraction": "1fr",
+                                            "cellStyle": {
+                                                "borderRight": "1px solid #000",
+                                                "justifyContent": "center"
+                                            }
+                                        },
+                                        {
+                                            "header": "AMOUNT XOF",
+                                            "fraction": "1fr",
+                                            "cellStyle": {
+                                                "justifyContent": "center"
+                                            }
+                                        }
+                                    ],
+                                    "noCounter": true,
+                                    "style": {
+                                        "border": "2px solid #000",
+                                        "gridTemplateColumns": "3fr 1fr 1fr",
+                                        "height": "2.5rem"
+                                    }
+                                },
+                                "style": {
+                                    "borderRadius": ".2rem"
+                                }
+                            },
+                            "#itemsList": "to be continued",
+                            "containerStyle": {
+                                "width": "100%"
+                            }
+                        }
+                    }
+                }
+            ],
+            "mainContainerStyle": {
+                "padding": "1rem",
+                "width": "auto"
+            }
+        },
+        {
+            "class": "flex column",
+            "path": "voucherInfo",
+            "mainInfo": [
+                {
+                    "class": "flexbox",
+                    "mainInfo": [
+                        {
+                            "text": [
+                                {
+                                    "text": "TOTAL AMOUNTS"
+                                },
+                                {
+                                    "text": "39400.00"
+                                }
+                            ],
+                            "containerStyle": {
+                                "width": "100%",
+                                "border": "1px solid #000",
+                                "borderRadius": ".4rem",
+                                "height": "100%",
+                                "padding": ".5rem"
+                            }
+                        },
+                        {
+                            "text": [
+                                {
+                                    "text": "TOTAL AMOUNTS"
+                                },
+                                {
+                                    "text": "39400.00"
+                                }
+                            ],
+                            "containerStyle": {
+                                "width": "100%",
+                                "border": "1px solid #000",
+                                "borderRadius": ".4rem",
+                                "height": "100%",
+                                "padding": ".5rem"
+                            }
+                        },
+                        {
+                            "text": [
+                                {
+                                    "text": "IATA INSUR\n"
+                                },
+                                {
+                                    "text": "39400.00"
+                                }
+                            ],
+                            "containerStyle": {
+                                "width": "100%",
+                                "border": "1px solid #000",
+                                "borderRadius": ".4rem",
+                                "height": "100%",
+                                "padding": ".5rem"
+                            }
+                        },
+                        {
+                            "text": [
+                                {
+                                    "text": "TOTAL AMOUNTS"
+                                },
+                                {
+                                    "text": "39400.00"
+                                }
+                            ],
+                            "containerStyle": {
+                                "width": "100%",
+                                "border": "1px solid #000",
+                                "borderRadius": ".4rem",
+                                "height": "100%",
+                                "padding": ".5rem"
+                            }
+                        },
+                        {
+                            "text": [
+                                {
+                                    "text": "NET XOF"
+                                },
+                                {
+                                    "text": "39400.00"
+                                }
+                            ],
+                            "containerStyle": {
+                                "width": "100%",
+                                "border": "1px solid #000",
+                                "borderRadius": ".4rem",
+                                "height": "100%",
+                                "padding": ".5rem"
+                            }
+                        }
+                    ],
+                    "mainContainerStyle": {
+                        "display": "grid",
+                        "gridTemplateColumns": "1fr 1fr 1fr 1fr 1fr",
+                        "width": "100%",
+                        "grid-gap": ".5rem",
+                        "height": "3rem"
+                    }
+                },
+                {
+                    "text": "Thirty Nine Thousand Four Hundred XOF Only",
+                    "subContainerStyle": {
+                        "width": "100%",
+                        "borderRadius": ".4rem",
+                        "border": "1px solid #000",
+                        "height": "3rem",
+                        "padding": ".5rem"
+                    },
+                    "#class": "flex"
+                }
+            ],
+            "mainContainerStyle": {
+                "gap": "1rem",
+                "width": "auto",
+                "padding": "0 1rem 1rem 1rem",
+                "border-bottom": "2px solid #000"
+            }
+        }
+    ]
+}

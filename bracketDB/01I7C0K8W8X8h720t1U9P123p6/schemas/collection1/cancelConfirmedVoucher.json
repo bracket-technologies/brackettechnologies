@@ -1,0 +1,410 @@
+{
+    "create": {
+        "cancelConfirmedVoucher": {
+            "keyValuettt": {
+                "listPath": "transactions",
+                "listOfDocs": "true",
+                "collection": "transaction",
+                "generateReference": "true",
+                "multipleDocs": [
+                    {
+                        "input": [
+                            {
+                                "path": "paymentWay",
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Receipt Voucher",
+                                            "Payment Voucher",
+                                            "Expense Voucher"
+                                        ],
+                                        "conditionReferenceInDoc": "type"
+                                    }
+                                ],
+                                "type": "ledger",
+                                "key": "account",
+                                "required": "true"
+                            },
+                            {
+                                "path": "fromAccount",
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Transfer Voucher"
+                                        ],
+                                        "conditionReferenceInDoc": "type"
+                                    }
+                                ],
+                                "type": "ledger",
+                                "key": "account",
+                                "required": "true"
+                            },
+                            {
+                                "path": "description",
+                                "type": "string",
+                                "key": "description"
+                            },
+                            {
+                                "path": "amount",
+                                "type": "number",
+                                "key": "amount",
+                                "required": "true"
+                            },
+                            {
+                                "path": "branch",
+                                "type": "branch",
+                                "key": "branch"
+                            },
+                            {
+                                "staticValue": "Credit",
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Receipt Voucher"
+                                        ],
+                                        "conditionReferenceInDoc": "type"
+                                    }
+                                ],
+                                "key": "credit-debit"
+                            },
+                            {
+                                "staticValue": "Debit",
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Payment Voucher",
+                                            "Expense Voucher",
+                                            "Transfer Voucher"
+                                        ],
+                                        "conditionReferenceInDoc": "type"
+                                    }
+                                ],
+                                "key": "credit-debit"
+                            },
+                            {
+                                "path": "exchangeRate",
+                                "type": "number",
+                                "key": "exchangeRate",
+                                "required": true
+                            }
+                        ],
+                        "beforeSaveStep": {
+                            "keyValue": [
+                                {
+                                    "path": "id",
+                                    "findKey": "collection",
+                                    "findValue": "voucher",
+                                    "key": "voucher"
+                                }
+                            ]
+                        },
+                        "collection": "transaction"
+                    },
+                    {
+                        "input": [
+                            {
+                                "path": "ledgerAccount",
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Receipt Voucher",
+                                            "Payment Voucher",
+                                            "Expense Voucher"
+                                        ],
+                                        "conditionReferenceInDoc": "type"
+                                    }
+                                ],
+                                "type": "ledger",
+                                "key": "account",
+                                "required": "true"
+                            },
+                            {
+                                "path": "toAccount",
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Transfer Voucher"
+                                        ],
+                                        "conditionReferenceInDoc": "type"
+                                    }
+                                ],
+                                "type": "ledger",
+                                "key": "account",
+                                "required": "true"
+                            },
+                            {
+                                "path": "description",
+                                "type": "string",
+                                "key": "description"
+                            },
+                            {
+                                "path": "amount",
+                                "type": "number",
+                                "key": "amount",
+                                "required": "true"
+                            },
+                            {
+                                "path": "branch",
+                                "type": "branch",
+                                "key": "branch"
+                            },
+                            {
+                                "staticValue": "Credit",
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Payment Voucher",
+                                            "Expense Voucher",
+                                            "Transfer Voucher"
+                                        ],
+                                        "conditionReferenceInDoc": "type"
+                                    }
+                                ],
+                                "key": "credit-debit"
+                            },
+                            {
+                                "staticValue": "Debit",
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Receipt Voucher"
+                                        ],
+                                        "conditionReferenceInDoc": "type"
+                                    }
+                                ],
+                                "key": "credit-debit"
+                            },
+                            {
+                                "path": "exchangeRate",
+                                "type": "number",
+                                "key": "exchangeRate",
+                                "required": true
+                            }
+                        ],
+                        "beforeSaveStep": {
+                            "keyValue": [
+                                {
+                                    "path": "id",
+                                    "findKey": "collection",
+                                    "findValue": "voucher",
+                                    "key": "voucher"
+                                }
+                            ]
+                        },
+                        "collection": "transaction"
+                    }
+                ]
+            },
+            "keyValue": [
+                {
+                    "listPath": "transactions",
+                    "generateReference": true,
+                    "collection": "transaction",
+                    "multipleDocs": [
+                        {
+                            "input": [
+                                {
+                                    "path": "paymentWay",
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Receipt Voucher",
+                                                "Payment Voucher",
+                                                "Expense Voucher"
+                                            ],
+                                            "conditionReferenceInDoc": "type"
+                                        }
+                                    ],
+                                    "type": "ledger",
+                                    "key": "account",
+                                    "required": "true"
+                                },
+                                {
+                                    "path": "fromAccount",
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Transfer Voucher"
+                                            ],
+                                            "conditionReferenceInDoc": "type"
+                                        }
+                                    ],
+                                    "type": "ledger",
+                                    "key": "account",
+                                    "required": "true"
+                                },
+                                {
+                                    "path": "description",
+                                    "type": "string",
+                                    "key": "description"
+                                },
+                                {
+                                    "path": "amount",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true"
+                                },
+                                {
+                                    "path": "branch",
+                                    "type": "branch",
+                                    "key": "branch"
+                                },
+                                {
+                                    "staticValue": "Credit",
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Receipt Voucher"
+                                            ],
+                                            "conditionReferenceInDoc": "type"
+                                        }
+                                    ],
+                                    "key": "credit-debit"
+                                },
+                                {
+                                    "staticValue": "Debit",
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Payment Voucher",
+                                                "Expense Voucher",
+                                                "Transfer Voucher"
+                                            ],
+                                            "conditionReferenceInDoc": "type"
+                                        }
+                                    ],
+                                    "key": "credit-debit"
+                                },
+                                {
+                                    "path": "exchangeRate",
+                                    "type": "number",
+                                    "key": "exchangeRate",
+                                    "required": true
+                                }
+                            ],
+                            "beforeSaveStep": {
+                                "keyValue": [
+                                    {
+                                        "path": "id",
+                                        "findKey": "collection",
+                                        "findValue": "voucher",
+                                        "key": "voucher"
+                                    }
+                                ]
+                            },
+                            "collection": "transaction"
+                        },
+                        {
+                            "input": [
+                                {
+                                    "path": "ledgerAccount",
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Receipt Voucher",
+                                                "Payment Voucher",
+                                                "Expense Voucher"
+                                            ],
+                                            "conditionReferenceInDoc": "type"
+                                        }
+                                    ],
+                                    "type": "ledger",
+                                    "key": "account",
+                                    "required": "true"
+                                },
+                                {
+                                    "path": "toAccount",
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Transfer Voucher"
+                                            ],
+                                            "conditionReferenceInDoc": "type"
+                                        }
+                                    ],
+                                    "type": "ledger",
+                                    "key": "account",
+                                    "required": "true"
+                                },
+                                {
+                                    "path": "description",
+                                    "type": "string",
+                                    "key": "description"
+                                },
+                                {
+                                    "path": "amount",
+                                    "type": "number",
+                                    "key": "amount",
+                                    "required": "true"
+                                },
+                                {
+                                    "path": "branch",
+                                    "type": "branch",
+                                    "key": "branch"
+                                },
+                                {
+                                    "staticValue": "Credit",
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Payment Voucher",
+                                                "Expense Voucher",
+                                                "Transfer Voucher"
+                                            ],
+                                            "conditionReferenceInDoc": "type"
+                                        }
+                                    ],
+                                    "key": "credit-debit"
+                                },
+                                {
+                                    "staticValue": "Debit",
+                                    "condition": [
+                                        {
+                                            "condition": [
+                                                "Receipt Voucher"
+                                            ],
+                                            "conditionReferenceInDoc": "type"
+                                        }
+                                    ],
+                                    "key": "credit-debit"
+                                },
+                                {
+                                    "path": "exchangeRate",
+                                    "type": "number",
+                                    "key": "exchangeRate",
+                                    "required": true
+                                }
+                            ],
+                            "beforeSaveStep": {
+                                "keyValue": [
+                                    {
+                                        "path": "id",
+                                        "findKey": "collection",
+                                        "findValue": "voucher",
+                                        "key": "voucher"
+                                    }
+                                ]
+                            },
+                            "collection": "transaction"
+                        }
+                    ]
+                }
+            ],
+            "ignoreMainDoc": true
+        }
+    },
+    "id": "cancelConfirmedVouchersidfiwiebfwe",
+    "collection": "cancelConfirmedVoucher",
+    "__props__": {
+        "id": "D177v1n3u9N5q0N692A1M2P9h6",
+        "doc": "cancelConfirmedVoucher",
+        "counter": 29,
+        "creationDate": 1713950621296,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "schemas",
+        "createdByUserID": "91l7f111C0i3r1J3V6L0C2c5n1"
+    }
+}

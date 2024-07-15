@@ -1,0 +1,22 @@
+{
+    "firstName": "Test",
+    "lastName": "test",
+    "accountID": "M1u7M2F120c3g7O6v0q571o3s3",
+    "email": "cto@alikhansa.com",
+    "username": "testtest",
+    "newUser": false,
+    "__props__": {
+        "id": "P1H7J2y1u0H3t7j6p0c5K1m4r7",
+        "doc": "user88",
+        "counter": 88,
+        "creationDate": 1721037605147,
+        "collection": "user",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 358
+    }
+}

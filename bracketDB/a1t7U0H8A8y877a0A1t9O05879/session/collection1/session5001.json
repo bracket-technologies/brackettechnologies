@@ -1,0 +1,30 @@
+{
+    "accountID": "31G7d2T0P8F743F344c6H3Y3O3",
+    "accountName": "account87",
+    "publicID": "991cD7p528b0wu8Go7H73364Lu5oP1qw4My8ZS9",
+    "projectID": "81E7k2605847K3w4U5A1b540Y2",
+    "projectDoc": "project182",
+    "subdomain": "branch.skylagroup",
+    "host": "192.168.0.100:85",
+    "db": "Nd1xf7JQ25z0rE8D47YZ3XF4VO5HM1NA5n70RS2",
+    "dev": false,
+    "devDB": "",
+    "expiryDate": 1720961578660,
+    "encryptionKey": "6GDbs",
+    "userID": "",
+    "username": "",
+    "__props__": {
+        "id": "31g7G290c887h5s1n728E6V6f2",
+        "doc": "session5001",
+        "counter": 5001,
+        "creationDate": 1720875178662,
+        "collection": "session",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 616
+    }
+}

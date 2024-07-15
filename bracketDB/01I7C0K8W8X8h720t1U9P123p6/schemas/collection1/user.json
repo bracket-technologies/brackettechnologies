@@ -1,0 +1,199 @@
+{
+    "create": {
+        "signUp": {
+            "keyValue": [
+                {
+                    "path": "firstName",
+                    "type": "string",
+                    "required": "true",
+                    "key": "firstName"
+                },
+                {
+                    "path": "lastName",
+                    "type": "string",
+                    "required": "true",
+                    "key": "lastName"
+                },
+                {
+                    "path": "birthDate",
+                    "type": "number",
+                    "key": "birthDate"
+                },
+                {
+                    "path": "nationality",
+                    "type": "string",
+                    "required": "true",
+                    "key": "nationality"
+                },
+                {
+                    "path": "contactNumber",
+                    "type": "array",
+                    "required": "true",
+                    "key": "contactNumber"
+                },
+                {
+                    "path": "email",
+                    "type": "array",
+                    "required": "true",
+                    "key": "email"
+                },
+                {
+                    "path": "country",
+                    "type": "string",
+                    "key": "country"
+                },
+                {
+                    "path": "city",
+                    "#data:().collection.countries.countries.[doc().country]": "#data:().collection.countries.countries.[doc().country]",
+                    "data:().collection.countries.countries.[doc().country]": "data:().collection.countries.countries.[doc().country]",
+                    "type": "string",
+                    "key": "city"
+                },
+                {
+                    "path": "address",
+                    "type": "string",
+                    "key": "address"
+                }
+            ],
+            "nextStep": {
+                "manager": "signUp",
+                "collection": "username"
+            },
+            "generateReference": true
+        },
+        "user": {
+            "keyValue": [
+                {
+                    "path": "firstName",
+                    "type": "string",
+                    "required": "true",
+                    "key": "firstName"
+                },
+                {
+                    "path": "lastName",
+                    "type": "string",
+                    "required": "true",
+                    "key": "lastName"
+                },
+                {
+                    "path": "birthDate",
+                    "type": "number",
+                    "key": "birthDate"
+                },
+                {
+                    "path": "nationality",
+                    "type": "string",
+                    "required": "true",
+                    "key": "nationality"
+                },
+                {
+                    "path": "contactNumber",
+                    "type": "string",
+                    "required": "true",
+                    "key": "contactNumber"
+                },
+                {
+                    "path": "email",
+                    "type": "string",
+                    "required": "true",
+                    "key": "email"
+                },
+                {
+                    "path": "country",
+                    "type": "string",
+                    "key": "country"
+                },
+                {
+                    "path": "city",
+                    "#data:().collection.countries.countries.[doc().country]": "#data:().collection.countries.countries.[doc().country]",
+                    "data:().collection.countries.countries.[doc().country]": "data:().collection.countries.countries.[doc().country]",
+                    "type": "string",
+                    "key": "city"
+                },
+                {
+                    "path": "address",
+                    "type": "string",
+                    "key": "address"
+                },
+                {
+                    "path": "position",
+                    "type": "string",
+                    "key": "position",
+                    "required": true
+                },
+                {
+                    "path": "description",
+                    "type": "string",
+                    "key": "description"
+                },
+                {
+                    "path": "note",
+                    "type": "string",
+                    "key": "note"
+                },
+                {
+                    "path": "branch",
+                    "type": "string",
+                    "required": "true",
+                    "key": "branch"
+                },
+                {
+                    "path": "createdBy",
+                    "type": "string",
+                    "required": "true",
+                    "key": "createdBy"
+                },
+                {
+                    "path": "profilePicture",
+                    "type": "image",
+                    "key": "profilePicture"
+                }
+            ],
+            "nextStep": {
+                "manager": "user",
+                "collection": "username"
+            },
+            "generateReference": true
+        }
+    },
+    "id": "ayU0y0J4e9POx2skeopo",
+    "collection": "user",
+    "__props__": {
+        "id": "I147J183h9B570r5s1j8q30184",
+        "doc": "user",
+        "counter": 24,
+        "creationDate": 1713950518314,
+        "active": true,
+        "actions": {},
+        "chunk": "chunk1",
+        "secured": false,
+        "collection": "schemas",
+        "createdByUserID": "91l7f111C0i3r1J3V6L0C2c5n1",
+        "collapsed": [
+            {
+                "path": [
+                    "create"
+                ]
+            }
+        ],
+        "comments": []
+    },
+    "dddd": [
+        {
+            "listOfDocs": true,
+            "docsKeyValue": [
+                {
+                    "collection": "hello",
+                    "input": [
+                        {
+                            "key": "mohamad",
+                            "path": "invoicesInfo",
+                            "type": "array"
+                        }
+                    ]
+                }
+            ],
+            "#listPath": "from"
+        }
+    ]
+}

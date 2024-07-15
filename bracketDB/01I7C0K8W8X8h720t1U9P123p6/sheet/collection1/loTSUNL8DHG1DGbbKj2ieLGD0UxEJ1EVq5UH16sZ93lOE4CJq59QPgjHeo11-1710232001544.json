@@ -1,0 +1,90 @@
+{
+    "headers": [
+        {
+            "text": "Cities",
+            "key": "cities"
+        }
+    ],
+    "data": [
+        {
+            "cities": "Kabul"
+        },
+        {
+            "cities": "Herat"
+        },
+        {
+            "cities": "Kandahar"
+        },
+        {
+            "cities": "Mazar-i-Sharif"
+        },
+        {
+            "cities": "Jalalabad"
+        },
+        {
+            "cities": "Balkh"
+        },
+        {
+            "cities": "Lashkar Gah"
+        },
+        {
+            "cities": "Kunduz"
+        },
+        {
+            "cities": "Ghazni"
+        },
+        {
+            "cities": "Bamyan"
+        },
+        {
+            "cities": ""
+        },
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {},
+        {}
+    ],
+    "name": "Afghanistan Cities",
+    "style": [
+        {
+            "columnWidth": {
+                "A": "209px"
+            }
+        }
+    ],
+    "id": "loTSUNL8DHG1DGbbKj2ieLGD0UxEJ1EVq5UH16sZ93lOE4CJq59QPgjHeo11-1710232001544",
+    "creationDay": 1710201600000,
+    "type": "Readonly",
+    "creationDate": 1710232001545,
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "__props__": {
+        "id": "b1M7g191p083z1B3w6m2E2K2l4",
+        "doc": "loTSUNL8DHG1DGbbKj2ieLGD0UxEJ1EVq5UH16sZ93lOE4CJq59QPgjHeo11-1710232001544",
+        "creationDate": 1711031362224,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 9,
+        "collection": "sheet",
+        "chunk": "chunk1"
+    }
+}

@@ -1,0 +1,1202 @@
+{
+    "identifier": "user",
+    "createFormInputs": {
+        "subInput": [
+            {
+                "input": [
+                    {
+                        "inputPath": "firstName",
+                        "inputLabel": "First Name",
+                        "required": "true"
+                    },
+                    {
+                        "inputPath": "lastName",
+                        "inputLabel": "Last Name",
+                        "required": "true"
+                    },
+                    {
+                        "inputPath": "birthDate",
+                        "inputLabel": "DOB",
+                        "type": "date"
+                    },
+                    {
+                        "inputPath": "nationality",
+                        "inputLabel": "Nationality",
+                        "required": "true",
+                        "#items": "publicData:().countries.countries.():[nationality]",
+                        "#readonly": "readonly"
+                    },
+                    {
+                        "inputPath": "contactNumber",
+                        "inputLabel": "Contact#",
+                        "required": "true"
+                    },
+                    {
+                        "inputPath": "email",
+                        "inputLabel": "Email",
+                        "required": "true"
+                    }
+                ],
+                "title": "General Information"
+            },
+            {
+                "input": [
+                    {
+                        "inputPath": "country",
+                        "sheetName": "Countries",
+                        "inputLabel": "Country",
+                        "sheetHeader": "country",
+                        "droplistClickAction": "if():[doc().city;!sheetData:().[doc().country].list.():cities.inc():[doc().city]]:[doc().city.del()];customUpdate():[input=2]",
+                        "hideHotCreate": true
+                    },
+                    {
+                        "inputPath": "city",
+                        "#data:().collection.countries.countries.[doc().country]": "#data:().collection.countries.countries.[doc().country]",
+                        "sheetName": "doc().country",
+                        "requiredInput": "country",
+                        "inputLabel": "City",
+                        "data:().collection.countries.countries.[doc().country]": "data:().collection.countries.countries.[doc().country]",
+                        "sheetHeader": "cities",
+                        "openSheet": true,
+                        "hideHotCreate": true
+                    },
+                    {
+                        "inputPath": "address",
+                        "inputLabel": "Address"
+                    }
+                ],
+                "title": "Address Information"
+            },
+            {
+                "input": [
+                    {
+                        "idGeneratorAction": "generateUsernamee()",
+                        "inputPath": "username",
+                        "inputLabel": "Username",
+                        "required": "true"
+                    },
+                    {
+                        "inputPath": "password",
+                        "inputLabel": "Password",
+                        "required": "true"
+                    }
+                ],
+                "title": "User "
+            }
+        ],
+        "collection": "user",
+        "buttons": [
+            {
+                "style": "border=1px solid #ccc;borderRadius=.4rem;cursor=pointer;opacity=.8;if():[mobile()]:[width=100%;height=4rem]:[width=9rem;height=3rem]",
+                "text": "Previous",
+                "textStyle": "fontSize=1.4rem;color=#666",
+                "btnAction": "signupNextPage():[btnType='prev']"
+            },
+            {
+                "style": "backgroundColor=#33d17a;borderRadius=.4rem;cursor=pointer;opacity=1;if():[mobile()]:[width=100%;height=4rem]:[width=9rem;height=3rem]",
+                "text": "Next",
+                "textStyle": "fontSize=1.4rem;color=#FFF",
+                "btnAction": "signupNextPage():[btnType='next']"
+            }
+        ],
+        "docDefaultValues": {
+            "permission": "[__.defaultPermission.'Master User']"
+        }
+    },
+    "permission": [
+        {
+            "permissions": [
+                "Select All",
+                "Create",
+                "Edit",
+                "Read",
+                "History",
+                "Remove",
+                "Switch Branches"
+            ],
+            "title": "branch"
+        },
+        {
+            "permissions": [
+                "Select All",
+                "Create",
+                "Edit",
+                "Read",
+                "History",
+                "Remove",
+                "Transaction Sheet",
+                "Cash Flow",
+                "Income Statement"
+            ],
+            "title": "account"
+        },
+        {
+            "permissions": [
+                "Select All",
+                "Create",
+                "Edit",
+                "Read",
+                "History",
+                "Remove"
+            ],
+            "title": "user"
+        },
+        {
+            "permissions": [
+                "Select All",
+                "Create",
+                "Edit",
+                "Read",
+                "Remove"
+            ],
+            "title": "currency"
+        },
+        {
+            "permissions": [
+                "Select All",
+                "Create",
+                "Edit",
+                "Read",
+                "History",
+                "Remove"
+            ],
+            "title": "asset"
+        },
+        {
+            "permissions": [
+                "Select All",
+                "Create",
+                "Edit",
+                "Read",
+                "History",
+                "Remove",
+                "Print"
+            ],
+            "title": "invoice"
+        },
+        {
+            "permissions": [
+                "Select All",
+                "Create",
+                "Edit",
+                "Read",
+                "History",
+                "Remove",
+                "Print"
+            ],
+            "title": "voucher"
+        },
+        {
+            "permissions": [
+                "Select All",
+                "Create",
+                "Edit",
+                "Read",
+                "Remove",
+                "Import",
+                "Export"
+            ],
+            "title": "sheet"
+        },
+        {
+            "permissions": [
+                "Select All",
+                "Read"
+            ],
+            "title": "dashboard"
+        },
+        {
+            "permissions": [
+                "Select All",
+                "Create",
+                "Edit",
+                "Read",
+                "Remove",
+                "Receive"
+            ],
+            "title": "notification"
+        },
+        {
+            "permissions": [
+                "Select All",
+                "Create",
+                "Edit",
+                "Read",
+                "Remove",
+                "Receive"
+            ],
+            "title": "schedule"
+        },
+        {
+            "permissions": [
+                "Select All",
+                "Upload",
+                "Read",
+                "Edit",
+                "Remove"
+            ],
+            "title": "gallery"
+        },
+        {
+            "#title": "expense",
+            "#permissions": [
+                "Select All",
+                "Create",
+                "Edit",
+                "Read",
+                "Remove"
+            ]
+        }
+    ],
+    "managerName": "user",
+    "creationDate": 1711015627555,
+    "defaultPermission": {
+        "User": {
+            "notification": [
+                "Read",
+                "Receive"
+            ],
+            "service": [
+                "Read"
+            ],
+            "voucher": [
+                "Read",
+                "Print",
+                "Create"
+            ],
+            "sheet": [
+                "Read",
+                "Create",
+                "Import",
+                "Export"
+            ],
+            "invoice": [
+                "Read",
+                "Print",
+                "Create"
+            ],
+            "account": [
+                "Edit",
+                "Read",
+                "History",
+                "Create"
+            ],
+            "dashboard": [
+                "Read"
+            ],
+            "gallery": [
+                "Read",
+                "Edit"
+            ]
+        },
+        "Admin User": {
+            "notification": [
+                "Create",
+                "Edit",
+                "Read",
+                "Remove",
+                "Receive"
+            ],
+            "schedule": [
+                "Create",
+                "Edit",
+                "Read",
+                "Remove",
+                "Receive"
+            ],
+            "service": [
+                "Read"
+            ],
+            "voucher": [
+                "Read",
+                "Create",
+                "Print"
+            ],
+            "sheet": [
+                "Read",
+                "Create",
+                "Import",
+                "Export",
+                "Edit"
+            ],
+            "invoice": [
+                "Read",
+                "Create",
+                "Print"
+            ],
+            "asset": [
+                "Read"
+            ],
+            "branch": [
+                "Read",
+                "History",
+                "Remove"
+            ],
+            "account": [
+                "Edit",
+                "Remove",
+                "Read",
+                "History",
+                "Balance Sheet",
+                "Create"
+            ],
+            "dashboard": [
+                "Read"
+            ],
+            "gallery": [
+                "Upload",
+                "Read",
+                "Edit",
+                "Remove"
+            ]
+        },
+        "Master User": {
+            "notification": [
+                "Create",
+                "Edit",
+                "Read",
+                "Remove",
+                "Receive"
+            ],
+            "schedule": [
+                "Create",
+                "Edit",
+                "Read",
+                "Remove",
+                "Receive"
+            ],
+            "service": [
+                "Remove",
+                "History",
+                "Create",
+                "Edit",
+                "Read"
+            ],
+            "voucher": [
+                "Remove",
+                "History",
+                "Create",
+                "Edit",
+                "Read",
+                "Print"
+            ],
+            "sheet": [
+                "Remove",
+                "History",
+                "Create",
+                "Edit",
+                "Read",
+                "Import",
+                "Export"
+            ],
+            "invoice": [
+                "Remove",
+                "History",
+                "Create",
+                "Edit",
+                "Read",
+                "Print"
+            ],
+            "asset": [
+                "Read",
+                "Remove",
+                "Create",
+                "History",
+                "Edit"
+            ],
+            "branch": [
+                "Read",
+                "Edit",
+                "Create",
+                "History",
+                "Remove"
+            ],
+            "account": [
+                "Edit",
+                "Remove",
+                "Balance Sheet",
+                "History",
+                "Create",
+                "Read"
+            ],
+            "dashboard": [
+                "Read",
+                "Edit"
+            ],
+            "gallery": [
+                "Upload",
+                "Read",
+                "Edit",
+                "Remove"
+            ]
+        }
+    },
+    "popupInfo": {
+        "docName": "signUp",
+        "title": "User Form",
+        "path": "userInfo"
+    },
+    "id": "userManager",
+    "__props__": {
+        "id": "p1Z7e1U1N0p3f13376f1C4r0S2",
+        "doc": "userManager",
+        "creationDate": 1711031361402,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collapsed": [
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    "0"
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    0,
+                    "multiInput"
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs",
+                    "subInput"
+                ]
+            },
+            {
+                "path": [
+                    "createUserInputs"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    0,
+                    "multiInput"
+                ]
+            },
+            {
+                "path": [
+                    "tabl",
+                    0,
+                    "table",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "tabl",
+                    0,
+                    "table",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "tabl",
+                    0,
+                    "table",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "tabl",
+                    0,
+                    "table",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "tabl",
+                    0,
+                    "table",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    6
+                ]
+            },
+            "_map:path:path()",
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    10
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    12,
+                    "#permissions"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "User",
+                    "dashboard"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "User",
+                    "service"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Master User",
+                    "asset"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Master User",
+                    "dashboard"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Master User",
+                    "branch"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Master User",
+                    "service"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    8,
+                    "permissions"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Admin User",
+                    "branch"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Admin User",
+                    "service"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Admin User",
+                    "account"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Admin User",
+                    "asset"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Admin User",
+                    "dashboard"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    8,
+                    "permissions"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    0,
+                    "permissions"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    8,
+                    "permissions"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    4,
+                    "permissions"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    3,
+                    "permissions"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    1,
+                    "permissions"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    10,
+                    "permissions"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    9,
+                    "permissions"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    11,
+                    "permissions"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    6,
+                    "permissions"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    2,
+                    "permissions"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Master User",
+                    "invoice"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Master User",
+                    "voucher"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Master User",
+                    "account"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Master User",
+                    "schedule"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    10
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Admin User",
+                    "notification"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Admin User",
+                    "schedule"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Master User",
+                    "sheet"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Master User",
+                    "gallery"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "User",
+                    "gallery"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Master User",
+                    "notification"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Master User"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "User",
+                    "account"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "User",
+                    "invoice"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "User",
+                    "voucher"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "User",
+                    "sheet"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "User",
+                    "notification"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Admin User",
+                    "invoice"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Admin User",
+                    "voucher"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Admin User",
+                    "sheet"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Admin User",
+                    "gallery"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "Admin User"
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    11
+                ]
+            },
+            {
+                "path": [
+                    "permission",
+                    12
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "docDefaultValues"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "buttons"
+                ]
+            },
+            {
+                "path": [
+                    "permission"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "popupInfo"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs"
+                ]
+            },
+            {
+                "path": [
+                    "defaultPermission",
+                    "User"
+                ]
+            }
+        ],
+        "comments": [],
+        "dirPath": [],
+        "actions": {},
+        "counter": 7,
+        "chunk": "chunk1",
+        "collection": "signUpInfo"
+    }
+}
