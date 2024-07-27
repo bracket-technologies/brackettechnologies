@@ -1,0 +1,33 @@
+{
+    "code": "xof",
+    "country": "abj",
+    "governmentRate": 1,
+    "symbole": "xof",
+    "decimals": 2,
+    "name": "abidjan",
+    "systemCurrencyRateForGovernment": 1,
+    "systemCurrencyRate": 1,
+    "createdCurrencyRate": 100,
+    "id": "00Jgyd23K9zNzI6nqsoQg2kMyH0lry4ejzP0y9vKrNg8qyNsI2cCO6VtRtiD-1721908426639",
+    "creationDate": 1721908426640,
+    "creationDay": 1721854800000,
+    "ref": "CRN-00000001",
+    "counter": 1,
+    "lastExchangeRate": "xjvj8KPlLfytoYk1I4nZUbYOFML13kR6EtFTteQybkLSefKrYR38Q5KIpEGo-1721908426663",
+    "__props__": {
+        "id": "E1a7W2e1d9g0u8D4K2d6I6n6U6",
+        "doc": "currency2",
+        "counter": 2,
+        "creationDate": 1721908426666,
+        "collection": "currency",
+        "chunk": "chunk1",
+        "lastModified": 1721908426666,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 708
+    }
+}

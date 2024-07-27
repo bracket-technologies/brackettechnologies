@@ -61,7 +61,7 @@
                             "view": "View?class=grid;style:[alignItems=center;gap=2rem;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr 1fr;width=if():[mobile()]:[100%]:[70%];height=100%]",
                             "children": [
                                 {
-                                    "view": "[View]:[data=_.xAxis]?class=flex;style:[zIndex=1;width=100%;height=100%;alignItems=end];mouseenter:[barData:()=[_];2ndParent().next().next().style():[visibility=visible;opacity=1];2ndParent().next().next().update()];mouseleave:[2ndParent().next().next().style():[visibility=hidden;opacity=0];2ndParent().next().next().update()",
+                                    "view": "[View]:[data=_.xAxis]?class=flex;style:[zIndex=1;width=100%;height=100%;alignItems=end];mouseenter:[barData:()=[_];2ndParent().next().next().style():[visibility=visible;opacity=1];2ndParent().next().next().refresh()];mouseleave:[2ndParent().next().next().style():[visibility=hidden;opacity=0];2ndParent().next().next().refresh()",
                                     "children": [
                                         {
                                             "view": "View?maxOfList():[data:().collection.dashboard.dblBarChart.yAxis.():value];style:[width=100%;height=[_.income*100]/().max+%;backgroundColor=_.incomeColor;cursor=pointer;opacity=.8]"

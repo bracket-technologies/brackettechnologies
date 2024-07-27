@@ -1,0 +1,24 @@
+{
+    "account767": {
+        "startsWith": [
+            "1",
+            "11",
+            "119"
+        ],
+        "currency": [
+            "USD",
+            "xof"
+        ]
+    },
+    "account768": {
+        "type": "B2B Customer",
+        "startsWith": [
+            "4",
+            "41",
+            "413"
+        ],
+        "currency": [
+            "xof"
+        ]
+    }
+}

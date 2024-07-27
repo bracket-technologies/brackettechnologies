@@ -6,7 +6,7 @@
         "customGeneralTable",
         "checkboxes",
         "root",
-        "router",
+        "view",
         "imageView",
         "main",
         "unitPathInput",
@@ -37,7 +37,6 @@
         "generalPopup",
         "GalleryManager",
         "filterDroplist",
-        "eticketInput",
         "document",
         "dashbaord",
         "customTitle",
@@ -58,6 +57,6 @@
         "confirmWindow"
     ],
     "chunk": "chunk1",
-    "docsLength": 56,
-    "size": -2674
+    "docsLength": 55,
+    "size": 154
 }

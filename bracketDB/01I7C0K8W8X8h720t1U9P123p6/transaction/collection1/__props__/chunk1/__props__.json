@@ -1,13 +1,9 @@
 {
     "docs": [
-        "transaction580",
-        "transaction579",
-        "transaction578",
-        "transaction577",
         "transaction576",
         "transaction575"
     ],
     "chunk": "chunk1",
-    "docsLength": 6,
-    "size": 8884
+    "docsLength": 2,
+    "size": 2588
 }

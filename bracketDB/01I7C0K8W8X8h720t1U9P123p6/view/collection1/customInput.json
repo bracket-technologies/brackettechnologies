@@ -75,41 +75,44 @@
         "creationDate": 1711031365199,
         "collection": "view",
         "chunk": "chunk1",
+        "lastModified": 1721902410585,
+        "dev": false,
         "actions": {
             "openPermissionPopup": {
                 "_": "if():[parent().1stChild().1stChild().txt()]:[setSubgeneralPopupInfo();openSubGeneralPopup()]:[note():[text=Please select the type of user;warning]]",
-                "openSubGeneralPopup": "():subGeneralPopup.update()::[():subGeneralPopup.style():[visibility=visible;opacity=1];():subGeneralPopup.2ndChild().style():[transform=translateY(0)]]",
+                "openSubGeneralPopup": "():subGeneralPopup.refresh()::[():subGeneralPopup.style():[visibility=visible;opacity=1];():subGeneralPopup.2ndChild().style():[transform=translateY(0)]]",
                 "setSubgeneralPopupInfo": "subGeneralPopup:()=[borderRadius=0 0 .4rem .4rem;leftSize=15%;bottomSize=35%;rightSize=15%;title='Permission Form';popupName=permissionView;permission=____.permission;defaultPermission=____.defaultPermission;doc=____.docName;userType=parent().1stChild().1stChild().txt()]"
             },
-            "setPermission": "if():[____.defaultPermission.[txt()]]:[doc().permission=____.defaultPermission.[txt()]]:[doc().permission.del()]",
-            "readNameFromSelected": "if():[_.readNameFromSelected]:[input.value=selected:().[_.collection].find():[doc().[_.inputPath]].name]",
+            "setPermission": "if():[____.defaultPermission.[txt()]]:[form().permission=____.defaultPermission.[txt()]]:[form().permission.del()]",
+            "readNameFromSelected": "if():[_.readNameFromSelected]:[input.value=selected:().[_.collection].find():[form().[_.inputPath]].name]",
             "generateUsernamee": "if():[data().firstName;data().lastName]:[generateUsername():[firstName=data().firstName;lastName=data().lastName]:[parent().prev().txt()=_.username;data().username=_.username]]:[note():[text=please enter your name first]]",
             "inputStyle": "if():[__.customInputInfo]:[height=if():[mobile()]:[5rem]:[4.5rem];width=100%;backgroundColor=#fff;color=#444]:[width=100%;height=if():[mobile()]:[4rem]:[3.5rem];borderRadius=.4rem;border=1px solid #ddd;#if():[!generalPopup:().read]:[border=1px solid #ddd];backgroundColor=#fff;color=#444]",
             "inputCustomEvents": "if():[_.clickAction]:[click:[[_.clickAction]()]];if():[_.focusAction]:[focus:[[_.focusAction]()]];if():[_.keydownAction]:[keydown:[[_.keydownAction]()]];if():[_.onChangeAction]:[change:[[_.onChangeAction]()]];if():[_.loadedAction]:[loaded:[[_.loadedAction]()]];if():[_.blurAction]:[blur:[[_.blurAction]()]]",
-            "generateAccountNumber": "loader.show;checkAccountNumberExistence():[code=doc().generalLedger;accountNumber=doc().accountNumber;if():[doc().ledgerAccountName='Receivables and Payables';[doc().type='Airline Supplier'||'doc().type=Agency Supplier']]:[type=doc().type]]:[loader.hide;if():[_.success]:[if():[_.accountNumber]:[if():[!__.blur;!__.enter]:[2ndParent().prev().txt()=_.accountNumber]:[txt()=_.accountNumber];doc().accountNumber=_.accountNumber];if():[_.message]:[note():[text=_.message]]]:[note():[text=_.message;danger]]]",
+            "generateAccountNumber": "loader.show;checkAccountNumberExistence():[code=form().generalLedger;accountNumber=form().accountNumber;if():[form().ledgerAccountName='Receivables and Payables';[form().type='Airline Supplier'||'form().type=Agency Supplier']]:[type=form().type]]:[loader.hide;if():[_.success]:[if():[_.accountNumber]:[if():[!__.blur;!__.enter]:[2ndParent().prev().txt()=_.accountNumber]:[txt()=_.accountNumber];form().accountNumber=_.accountNumber];if():[_.message]:[note():[text=_.message]]]:[note():[text=_.message;danger]]]",
             "customInputHandler": {
                 "_": "handleAttributes();handleInputEvents()",
                 "handleInputEvents": "if():[_.items]:[droplistHandler();filterable;searchable];loaded:[if():[!_.items;[_.sheetName]();[_.sheetHeader]()]:[autoFillItems()]];if():[_.type=date||_.type=time||_.type='datetime-local']:[timeAndDateHandler()];if():[_.timeFormat]:[handelDurationFormat()];inputCustomEvents()",
-                "handleAttributes": "if():[_.capitalizeInput]:[entry:[txt()=txt().toUpperCase();data()=txt()]];if():[_.inputValue;!_.inputPath;!_.duplicatedInputPath]:[value=[_.inputValue]()];if():[_.inputPath]:[path=_.inputPath];copyable=_.copyable;if():[_.readonly]:[readonly=true];generatore=_.generatore;placeholder=_.placeHolder;password=_.password;textarea=_.textarea;input.type=_.type;if():[_.type=number]:[preventDefault.zeroValue];if():[_.tabindex]:[attribute=[tabindex=_.tabindex.num()]];",
+                "handleAttributes": "if():[_.capitalizeInput]:[entry:[txt()=txt().capitalize();data()=txt()]];if():[_.inputValue;!_.inputPath;!_.duplicatedInputPath]:[value=[_.inputValue]()];if():[_.inputPath]:[path=_.inputPath];copyable=_.copyable;if():[_.readonly]:[readonly=true];generatore=_.generatore;placeholder=_.placeHolder;password=_.password;textarea=_.textarea;input.type=_.type;if():[_.type=number]:[preventDefault.zeroValue];if():[_.tabindex]:[attribute=[tabindex=_.tabindex.num()]];",
                 "autoFillItems": {
                     "checkFields": "if():[_.inputLabel='City']:[[_.sheetName]()+' Cities']:[[_.sheetName]()]",
-                    "getSheetData": "dropListFromSheet():[name=checkFields()]:[if():[_.success]:[successHandler()]:[falseHandler()]]",
+                    "getSheetData": "dropListFromSheet():[name=checkFields()]:[if():[_.data.data]:[successHandler()]:[falseHandler()]]",
                     "falseHandler": "sheetData:().[[__.sheetName]()]=false;note():[text=if():[__.inputLabel='City']:['Cities not found!']:['Sheet not found!'];danger]",
-                    "checkToDeleteOldCity": "if():[_.inputPath='city']:[if():[!sheetData:().[doc().country].data.():cities.inc():[doc().city]]:[doc().city.del()]]",
-                    "successHandler": "if():[_.data.data]:[__.items=_.data.data.():[.[__.sheetHeader]];sheetData:().[[__.sheetName]()]=_.data;parent().update()]",
-                    "fillItemsFromExistData": "if():[sheetData:().[[_.sheetName]()].data]:[_.items=sheetData:().[[_.sheetName]()].data.():[.[_.sheetHeader]];parent().update()]",
+                    "checkToDeleteOldCity": "if():[_.inputPath='city']:[if():[!sheetData:().[form().country].data.():cities.inc():[form().city]]:[form().city.del()]]",
+                    "successHandler": "__.items=_.data.data.():[.[__.sheetHeader]];sheetData:().[[__.sheetName]()]=_.data;parent().refresh()",
+                    "fillItemsFromExistData": "_.items=sheetData:().[[_.sheetName]()].data.():[.[_.sheetHeader]];parent().refresh()",
                     "_": "#checkToDeleteOldCity();if():[!sheetData:().[[_.sheetName]()]]:[getSheetData()]:[fillItemsFromExistData()]"
                 },
                 "timeAndDateHandler": {
                     "convertToDate": {
-                        "saveAsTimeStampp": "().date=doc().[_.inputPath]||__.[_.inputPath];if():[().date]:[if():[().type='datetime-local']:[txt()=[().date].toDateInputFormat():'yyyy-mm-ddthh:mm']:[txt()=[().date].toDateInputFormat()]]",
-                        "calculateResetDuration": "().date=__.[resetDuration]||doc().[resetDuration];().startDate=__.[_.referenceDate]||doc().[_.referenceDate];if():[().date;().startDate]:[saveInDoc():[().startDate+().date];txt()=[().startDate+().date].toDateInputFormat()]",
+                        "saveAsTimeStampp": "if():[data()]:[if():[().type='datetime-local']:[txt()=data().toDateInputFormat():'yyyy-mm-ddthh:mm']:[txt()=data().toDateInputFormat()]]",
+                        "calculateResetDuration": "().date=parent().data().resetDuration;().startDate=parent().data().[_.referenceDate];if():[().date;().startDate]:[data()=().startDate+().date;txt()=[().startDate+().date].toDateInputFormat()]",
                         "_": "if():[_.referenceDate]:[calculateResetDuration()]:[saveAsTimeStampp()]"
                     },
                     "saveAsTimeStamp": {
-                        "delInputPathFromDoc": "data().del();#delFromDoc():[_.inputPath]",
-                        "saveAsTimeStamp": "if():[___.path||true]:[data()=txt().timestamp();if():[_.referenceDate]:[parent().data().resetDuration=[data()-[parent().data().[_.referenceDate]]]]];#:[doc().[_.inputPath]=txt().timestamp();if():[_.referenceDate]:[doc().resetDuration=txt().timestamp()-[doc().[_.referenceDate]]]]",
-                        "_": "if():[txt()='']:[delInputPathFromDoc()]:[saveAsTimeStamp();if():[_.maxDuration]:[checkMaxDuration():[maxDuration=_.maxDuration]]]"
+                        "delInputPathFromDoc": "data().del()",
+                        "saveAsTimeStamp": "data()=txt().timestamp();if():[_.referenceDate]:[parent().data().resetDuration=[data()-[parent().data().[_.referenceDate]]]]",
+                        "_": "if():[txt()='']:[delInputPathFromDoc()]:[saveAsTimeStamp();if():[_.maxDuration]:[if():[_.maxDuration='today']:[checkMaxDuration():[maxDuration=today().timestamp()]]:[checkMaxDuration():[maxDuration=today().timestamp()+_.maxDuration*86400000]]]]",
+                        "checkMaxDuration": "if():[data()>_.maxDuration]:[data()=today().timestamp();txt()=data().toDateInputFormat();note():[text='Can not exceed max date ('+_.maxDuration.toDateInputFormat()+')';type=danger]]"
                     },
                     "_": "change:[saveAsTimeStamp()];loaded:[convertToDate()]"
                 },
@@ -118,28 +121,28 @@
                     "removeChar": "if():[[e().keyCode>=48;e().keyCode<=57]||[e().keyCode>=96;e().keyCode<=105]||[e().keyCode=110||e().keyCode=8]||[e().keyCode>=37;e().keyCode<=40]||[e().keyCode>=16;e().keyCode<=20]||[e().keyCode>=112;e().keyCode<=123]]:[]:[pullChar()]",
                     "convertTimeStampToDateFormat": {
                         "calcTime": "().days=math().floor():[().timestampSec/86400]+'';().hours=math().floor():[[().timestampSec%86400]/3600]+'';().minutes=math().floor():[[().timestampSec%3600]/60]+'';fillInText()",
-                        "readFromDoc": "if():[doc().resetDuration]:[().timestampSec=doc().resetDuration/1000;calcTime()]",
+                        "readFromDoc": "if():[form().resetDuration]:[().timestampSec=form().resetDuration/1000;calcTime()]",
                         "readFromPath": "if():[__.resetDuration]:[().timestampSec=[__.resetDuration/1000];calcTime()]",
                         "fillInText": "txt()=[().days.padStart():2:0+':'+().hours.padStart():2:0+':'+().minutes.padStart():2:0]",
                         "_": "if():[___.path]:[readFromPath()]:[readFromDoc()]"
                     },
                     "convertToTimeStamp": {
-                        "fillInDoc": "doc().resetDuration=[[().parts.0*24*3600]+[().parts.1*3600]+[().parts.2*60]]*1000;doc().[_.inputPath]=doc().[_.referenceDate]+doc().[resetDuration]",
+                        "fillInDoc": "form().resetDuration=[[().parts.0*24*3600]+[().parts.1*3600]+[().parts.2*60]]*1000;form().[_.inputPath]=form().[_.referenceDate]+form().[resetDuration]",
                         "fillInPath": "__.resetDuration=[[().parts.0*24*3600]+[().parts.1*3600]+[().parts.2*60]]*1000;__.[_.inputPath]=__.[_.referenceDate]+__.[resetDuration]",
-                        "_": "if():[__.[_.referenceDate]||doc().[_.referenceDate]]:[().parts=[];parts=txt().split():[':'];if():[___.path]:[fillInPath()]:[fillInDoc()]]"
+                        "_": "if():[__.[_.referenceDate]||form().[_.referenceDate]]:[().parts=[];parts=txt().split():[':'];if():[___.path]:[fillInPath()]:[fillInDoc()]]"
                     },
                     "_": "loaded:[convertTimeStampToDateFormat();convertToTimeStamp()];entry:[toTimeFormat()];keydown:[removeChar()];blur:[convertToTimeStamp()]"
                 },
                 "switchInput": {
                     "deleteUnderscoreKeys": "underscoreKeys=_.keys();().underscoreKeys._():[__.[_].del()];().switchParams.0.keys()._():[__.[_]=().switchParams.0.[_]];().switchParams.pullItem():[().switchParams.0];().switchParams.push():[().currentInputParams];_.switchable=().switchParams",
-                    "delFromDoc": "if():[___.path]:[__.[_.inputPath].del()]:[doc().[_.inputPath].del()]",
+                    "delFromDoc": "if():[___.path]:[__.[_.inputPath].del()]:[form().[_.inputPath].del()]",
                     "_": "delFromDoc();().switchParams=_.switchable.clone();_.switchable.del();().currentInputParams=_.clone();deleteUnderscoreKeys();updateInputWrapper()"
                 }
             },
             "droplistHandler": {
                 "getItemsFromData": "loader.show;getDataForDroplist():[collection=_.items.collection;fields=_.items.fields]:[loader.hide;if():[_.success]:[droplist.items=_.data.():[__.items.returnKey]]]",
                 "handleDroplistClickIfMap": "saveInDoc():[_.items.find():[text=clicked().txt()].pathValue];txt()=clicked().txt();[_.droplistClickAction]()",
-                "handeItemsCondition": "_.items._():[().isConditionTrue=true;_.condition._():[if():[!doc().[_.conditionReference].in():[_.condition]]:[().isConditionTrue=false]];if():[().isConditionTrue]:[if():[_.items.type()=array]:[().droplist.items=_.items]:[getItemsFromData()]]]",
+                "handeItemsCondition": "_.items._():[().isConditionTrue=true;_.condition._():[if():[!form().[_.conditionReference].in():[_.condition]]:[().isConditionTrue=false]];if():[().isConditionTrue]:[if():[_.items.type()=array]:[().droplist.items=_.items]:[getItemsFromData()]]]",
                 "handleDroplistItems": "if():[_.items.collection]:[getItemsFromData()].elif():[_.items.0.text]:[droplist.items=_.items.():text].elif():[_.items.0.condition]:[handeItemsCondition()]:[().droplist.items=[_.items]()]",
                 "_": "handleDroplistItems();droplist:[preventDefault;style:[maxHeight=20rem]];if():[_.items.0.text]:[[click:droplist?handleDroplistClickIfMap()]]:[[click:droplist?;log():['bbbbn'];handleDroplistClick()]]",
                 "handleDroplistClick": "if():[__.unitPath]:[saveInDoc():[inputPath=__.unitPath;value=clicked().txt()]]:[data()=clicked().txt()];txt()=clicked().txt();[_.droplistClickAction]()"
@@ -148,7 +151,7 @@
                 "_": "mouseenter:[2ndChild().1stChild().style():[opacity=1]];mouseleave:[2ndChild().1stChild().style():[opacity=0]];"
             },
             "searchEngineUpdateWrapper": {
-                "_": "if():[_.inputLabel='Country']:[if():[doc().city]:[doc().city.del()].elif():[__.city]:[__.city.del()]];3rdParent().3rdParent().parent().update();"
+                "_": "if():[_.inputLabel='Country']:[if():[form().city]:[form().city.del()].elif():[__.city]:[__.city.del()]];3rdParent().3rdParent().parent().refresh();"
             },
             "clearableAndGeneratorHandler": {
                 "_": "if():[createFormStack:().len()=0||createFormStack:().[-1].searchbox]:[showAndHideClearIcon();if():[_.idGeneratorAction]:[mouseenter:[2ndChild().2ndChild().child().style():[opacity=1]];mouseleave:[2ndChild().2ndChild().child().style():[opcity=0]]]]:[if():[_.idGeneratorAction]:[mouseenter:[2ndChild().1stChild().1stChild().style():[opacity=1]];mouseleave:[2ndChild().1stChild().1stChild().style():[opacity=0]]]];",
@@ -554,18 +557,6 @@
             {
                 "path": [
                     "customInputHandler",
-                    "autoFillItems"
-                ]
-            },
-            {
-                "path": [
-                    "customInputHandler",
-                    "timeAndDateHandler"
-                ]
-            },
-            {
-                "path": [
-                    "customInputHandler",
                     "handelDurationFormat"
                 ]
             },
@@ -578,11 +569,6 @@
                 "path": [
                     "customInputHandler",
                     "switchInput"
-                ]
-            },
-            {
-                "path": [
-                    "showAndHideClearIcon"
                 ]
             },
             {
@@ -624,11 +610,6 @@
             },
             {
                 "path": [
-                    "searchEngineUpdateWrapper"
-                ]
-            },
-            {
-                "path": [
                     "children",
                     4
                 ]
@@ -652,10 +633,73 @@
                 "path": [
                     "handleInitailValue"
                 ]
+            },
+            {
+                "path": [
+                    "customInputHandler",
+                    "timeAndDateHandler"
+                ]
+            },
+            {
+                "path": [
+                    "droplistHandler"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineUpdateWrapper"
+                ]
+            },
+            {
+                "path": [
+                    "showAndHideClearIcon"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    2
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 16417
+        "size": 16681
     }
 }

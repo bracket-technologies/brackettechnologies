@@ -6,6 +6,8 @@
         "creationDate": 1714592888052,
         "collection": "actions",
         "chunk": "chunk1",
+        "lastModified": 1721314156027,
+        "dev": false,
         "actions": {
             "getUserAccount": {
                 "_": "start();[getPermission();getUser()]()::[getAccount()::[end():[account=account:();user=user:();permission=permission:()]]]",
@@ -259,12 +261,12 @@
                 "endHandler": "end():[billingAccounts=billingAccounts:();lastTransactions=lastTransactions:()]?_.end||stack().renderer?send():[billingAccounts=billingAccounts:();lastTransactions=lastTransactions:()]",
                 "_": "start();getBillingAccounts()::[getLastTransactions()::[endHandler()]]?manifest:().session.permissions.getBillingAccounts",
                 "getBillingAccounts": "search():[collection=billingAccount;find:[[accountID=_.accountID?_.accountID]]]:[billingAccounts:()=_.data.values()]",
-                "getLastTransactions": "search():[collection=transaction;find:['__props__.id'.in=billingAccounts:().():lastTransactionID]]:[lastTransactions:()=[_.data.values()||[]];endHandler()]"
+                "getLastTransactions": "search():[collection=transaction;find:['__props__.id'.in=billingAccounts:().():lastTransactionID]]:[lastTransactions:()=[_.data.values()||[]]]"
             },
             "getBillingAccount": {
                 "endHandler": "end():[billingAccount=billingAccount:();lastTransaction=lastTransaction:()]?_.end||stack().renderer?send():[billingAccount=billingAccount:();lastTransaction=lastTransaction:()]",
                 "_": "start();getBillingAccount()::[getLastTransaction()::[endHandler()]]?manifest:().session.permissions.getBillingAccounts",
-                "getLastTransaction": "search():[collection=transaction;findOne:['__props__.id'=billingAccount:().lastTransactionID]]:[lastTransaction:()=[_.data||[]];endHandler()]",
+                "getLastTransaction": "search():[collection=transaction;findOne:['__props__.id'=billingAccount:().lastTransactionID]]:[lastTransaction:()=[_.data||[]]]",
                 "getBillingAccount": "search():[collection=billingAccount;[doc=_.doc?_.doc];findOne:[[accountID=_.accountID?_.accountID];['__props__.id'=_.id?_.id]]]:[billingAccount:()=_.data]"
             },
             "searchBySchema": {
@@ -276,6 +278,9 @@
                 "checkData": "send():[success=false;msg=Missing Data!]?!_.accountID",
                 "getPaymentMethods": "search():[collection=paymentMethod;find:[[accountID=_.accountID?_.accountID]]]:[paymentMethods:()=_.data.values()]",
                 "endHandler": "send():[paymentMethods=paymentMethods:()]?!stack().renderer;!_.end?end():[paymentMethods=paymentMethods:()]"
+            },
+            "getHost": {
+                "_": "search():[collection=host;findOne:[publicID=_.publicID;port.gte=80;dev=true]]:[_.data.ip=localIP()+_.data.port.0;send():[host=_.data]]"
             }
         },
         "comments": [
@@ -307,6 +312,12 @@
                 "note": "charge account",
                 "path": [
                     "chargeAccount"
+                ]
+            },
+            {
+                "note": "used in console preview btn",
+                "path": [
+                    "getHost"
                 ]
             }
         ],
@@ -377,11 +388,6 @@
             },
             {
                 "path": [
-                    "genCoins"
-                ]
-            },
-            {
-                "path": [
                     "createHost"
                 ]
             },
@@ -398,11 +404,6 @@
             },
             {
                 "path": [
-                    "subscribe"
-                ]
-            },
-            {
-                "path": [
                     "signup",
                     "createAccount"
                 ]
@@ -414,33 +415,12 @@
             },
             {
                 "path": [
-                    "signup",
-                    "createBillingAccount"
-                ]
-            },
-            {
-                "path": [
-                    "signup"
-                ]
-            },
-            {
-                "path": [
                     "chargeAccount"
                 ]
             },
             {
                 "path": [
                     "getBillingAccountBySession"
-                ]
-            },
-            {
-                "path": [
-                    "getBillingAccount"
-                ]
-            },
-            {
-                "path": [
-                    "getBillingAccounts"
                 ]
             },
             {
@@ -460,17 +440,69 @@
             },
             {
                 "path": [
+                    "createProject"
+                ]
+            },
+            {
+                "path": [
+                    "signup",
+                    "createBillingAccount"
+                ]
+            },
+            {
+                "path": [
+                    "signup"
+                ]
+            },
+            {
+                "path": [
                     "createSubscription"
                 ]
             },
             {
                 "path": [
-                    "createProject"
+                    "getBillingAccount"
+                ]
+            },
+            {
+                "path": [
+                    "getBillingAccounts"
+                ]
+            },
+            {
+                "path": [
+                    "createInvoice",
+                    "createTransaction"
+                ]
+            },
+            {
+                "path": [
+                    "charge"
+                ]
+            },
+            {
+                "path": [
+                    "createInvoice"
+                ]
+            },
+            {
+                "path": [
+                    "genCoins"
+                ]
+            },
+            {
+                "path": [
+                    "getHost"
+                ]
+            },
+            {
+                "path": [
+                    "subscribe"
                 ]
             }
         ],
         "arrange": [],
         "secured": true,
-        "size": 28445
+        "size": 28786
     }
 }

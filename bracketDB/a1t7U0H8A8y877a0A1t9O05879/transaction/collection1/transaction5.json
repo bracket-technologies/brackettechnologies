@@ -1,0 +1,27 @@
+{
+    "invoiceID": "e1X71271b3o112U7N4P8m1o218",
+    "billingAccountID": "31v7G0g8u8O817H0Y0S9d1W0c0",
+    "transactionDate": 1721312748135,
+    "credit": 0,
+    "debit": 0,
+    "balance": 0,
+    "totalDebits": 0,
+    "totalCredits": 0,
+    "type": "credit",
+    "__props__": {
+        "id": "N1F7x2D1S3h122T7W4O8m1I3p6",
+        "doc": "transaction5",
+        "counter": 5,
+        "creationDate": 1721312748136,
+        "collection": "transaction",
+        "chunk": "chunk1",
+        "lastModified": 1721312748136,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 470
+    }
+}

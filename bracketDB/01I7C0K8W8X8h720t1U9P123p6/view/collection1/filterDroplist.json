@@ -38,7 +38,7 @@
             "selectSearchResult": {
                 "selectData": "selectedInputs:().push():[_.inputPath];selected=true;1stChild().1stChild().1stChild().style().opacity=1;if():[_.select]:[handleSelectAndUnselect():[_.select]]",
                 "unselectData": "selectedInputs:().pullItem():[_.inputPath];selected=false;1stChild().1stChild().1stChild().style().opacity=0;if():[_.unselect]:[handleSelectAndUnselect():[_.unselect]]",
-                "_": "if():[!selected]:[selectData()]:[unselectData()];():customSearchEngine.3rdChild().1stChild().update()",
+                "_": "if():[!selected]:[selectData()]:[unselectData()];():customSearchEngine.3rdChild().1stChild().refresh()",
                 "handleSelectAndUnselect": ";if():[_.itemsToSelect]:[checkToSelectRelatedInputs()];if():[_.itemsToUnselect]:[checkToUnselectRelatedInputs()]",
                 "#checkToUnselectRelatedInputs": "2ndParent().children()._():[if():[_._.inputPath.in():[__.itemsToUnselect];_.1stChild().selected]:[_.1stChild().click()]]",
                 "checkToUnselectRelatedInputs": "2ndParent().children()._():[if():[_._.inputPath.in():[__.itemsToUnselect];_.1stChild().selected]:[_.1stChild().selected=false;_.1stChild().1stChild().1stChild().1stChild().style().opacity=0;selectedInputs:().pullItem():[_._.inputPath]]]",

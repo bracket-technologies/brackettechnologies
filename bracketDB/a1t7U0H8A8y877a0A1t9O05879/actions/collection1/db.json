@@ -6,14 +6,16 @@
         "creationDate": 1717509735612,
         "collection": "actions",
         "chunk": "chunk1",
+        "lastModified": 1721999952777,
+        "dev": false,
         "actions": {
             "getData": {
                 "_": "[getProject()?_.publicID]()::[getData()]?_.publicID?send():[success=false;msg=Missing data!]",
-                "getData": "search():[[db=project:().db;devDB=project:().devDB?_.publicID];[_].flat();unsecure=true]:[send():[success=_.success;message=_.message;data=_.data]]"
+                "getData": "search():[db=[project:().storage?_.storage?project:().db];devDB=project:().devDB;[_].flat();unsecure=true]:[send():[success=_.success;message=_.message;data=_.data]]"
             },
             "saveData": {
                 "_": "[getProject()]()::[saveDoc()]?_.collection;_.publicID?send():[success=false;msg=Missing data!]",
-                "saveDoc": "save():[db=project:().db;devDB=project:().devDB;[_].flat()]:[send():[data=_.data;msg=Data saved successfully!]]"
+                "saveDoc": "save():[db=[project:().storage?_.storage?project:().db];devDB=project:().devDB;[_].flat()]:[send():[data=_.data;msg=Data saved successfully!]]"
             },
             "getProject": {
                 "_": "[getProject():[[_].flat();end=true]:[checkPermission()]]():[collection=actions;doc=main]?_.publicID?send():[success=false;msg=Missing data!]",
@@ -26,7 +28,7 @@
             "checkSubscibedToConsole": "[getSubscription():[publicID=_.publicID;pluginID='Q1p78107R4j1n2Z9a2E1K1r912';expiryDate=timestamp()]]():[doc=main]",
             "eraseData": {
                 "_": "[getProject():[[_].flat();end=true]]():[collection=actions;doc=main]:[eraseDoc()]?_.collection;_.publicID?send():[success=false;msg=Missing data!]",
-                "eraseDoc": "erase():[devDB=project:().devDB;db=project:().db;[_].flat()]:[send():[data=_.data;msg=Data erased successfully!]]"
+                "eraseDoc": "erase():[db=[project:().storage?_.storage?project:().db];devDB=project:().devDB;[_].flat()]:[send():[data=_.data;msg=Data erased successfully!]]"
             },
             "getSchema": "start();search():[collection=_.collection;doc=_.schema]:[send():[success=_.success;message=_.message;schema=_.data]?!stack().server=render?end():[success=_.success;message=_.message;schema=_.data]]"
         },
@@ -34,6 +36,6 @@
         "collapsed": [],
         "arrange": [],
         "secured": true,
-        "size": 1973
+        "size": 2094
     }
 }

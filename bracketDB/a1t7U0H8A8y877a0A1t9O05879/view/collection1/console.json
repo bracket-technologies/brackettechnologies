@@ -11,7 +11,7 @@
                     "view": "View?style.display=flex;style.alignItems=center;style.height=100%;style.width=100%;style.position=relative",
                     "children": [
                         {
-                            "view": "Image?class=pointer;src='https://firebasestorage.googleapis.com/v0/b/bracket-technologies.appspot.com/o/storage-engagement%2Foutput-onlinepngtools%20(1).png?alt=media&token=8e574d65-0021-40ed-be04-df86005f7676';style:[height=80%;marginLeft=.75rem];[click?[clearPrevProjectData()]():[path=:projectDroplistHandler];root():main]"
+                            "view": "Image?class=pointer;src='/storage/eU1YM75W2Nq1Xo8JS3a24tw3d48yg5Mw0GI4Ff7/files/bucket1/xw15d77t2CV2f90Jh03q53l61e59t1Cl5DM1S58.png';style:[height=80%;marginLeft=.75rem];[click?[clearPrevProjectData()]():[path=:projectDroplistHandler];root():main]"
                         },
                         {
                             "view": "View?class=flex-box;style.justifyContent=flex-end;style.flex=1;style.height=100%",
@@ -102,7 +102,7 @@
                                             ]
                                         },
                                         {
-                                            "view": "View?class=flexbox;[click?document().documentElement.classList.toggle():darkmode]",
+                                            "view": "View?class=flexbox;[click?formument().documentElement.classList.toggle():darkmode]",
                                             "children": [
                                                 {
                                                     "view": "Icon?class=flexbox pointer;name=light_mode;google.symbol.outlined;style:[fontSize=2.2rem;width=2.2rem;transition=.2s];hover.style.color=orange"
@@ -196,7 +196,7 @@
                                     ]
                                 },
                                 {
-                                    "view": "View?class=flexbox pointer;tooltip.text=preview;hover.style.backgroundColor=#ddd;style:[width=4.5rem;height=100%;transition=.2s];click:[win().open():[project:().host]]",
+                                    "view": "View?class=flexbox pointer;tooltip.text=preview;hover.style.backgroundColor=#ddd;style:[width=4.5rem;height=100%;transition=.2s];click:[openHost()]",
                                     "children": [
                                         {
                                             "view": "Icon?name=preview;google.symbol.outlined;style:[fontSize=2.4rem;width=2.4rem]"
@@ -338,7 +338,7 @@
                                     ]
                                 },
                                 {
-                                    "view": "galleryView"
+                                    "view": "gallery"
                                 }
                             ]
                         }
@@ -356,6 +356,9 @@
                     "view": "Icon?class=pointer;tooltip.text=duplicate;name=bi-files;style:[fontSize=1.5rem;width=3.25rem;height=3.5rem];hover.style.backgroundColor=#f0f0f0;click:[duplicateDoc()]"
                 },
                 {
+                    "view": "Icon?class=pointer;tooltip.text=info;name=bi-info-circle;style:[fontSize=1.5rem;width=3.25rem;height=3.5rem];hover.style.backgroundColor=#f0f0f0;[data=[collection=parent().openCollection;doc=parent().openDoc];infoDroplist()]():[doc=Map]"
+                },
+                {
                     "view": "Icon?class=pointer;tooltip.text=export;name=bi-upload;style:[fontSize=1.5rem;width=3.25rem;height=3.5rem];hover.style.backgroundColor=#f0f0f0;click:[exportDoc()]"
                 },
                 {
@@ -364,7 +367,7 @@
             ]
         },
         {
-            "view": "image-window"
+            "view": "fileForm"
         }
     ],
     "__props__": {
@@ -374,17 +377,19 @@
         "creationDate": 1710330786487,
         "collection": "view",
         "chunk": "chunk1",
+        "lastModified": 1722005811146,
+        "dev": false,
         "actions": {
             "openActionPopup": "():actionPopup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform='scale(1)']",
             "hotBtnsHoverEffects": "mouseenter:[style():[backgroundColor=#ddd];1stChild().style():[color=#000]];mouseleave:[style():[backgroundColor=#fff];1stChild().style():[color=#888]]",
             "blurSearchInput": "2ndParent().style().width=3.5rem;parent().style().border=1px solid #00000000;focused=false?!2ndParent().contains():[clicked()]",
-            "exportDoc": "().exportData=data:().editor.[parent().openCollection].[parent().openDoc].clone();().exportData.__props__.del();export():[json;name=parent().openDoc;data=data:().editor.[parent().openCollection].[parent().openDoc]];hideActionPopup()",
+            "exportDoc": "export():[json;name=parent().openDoc;data=data:().editor.[parent().openCollection].[parent().openDoc]];hideActionPopup()",
             "hideActionPopup": "():actionPopup.style():[opacity=0;pointerEvents=none;transform='scale(0)']",
             "focusSearchInput": "2ndParent().style().width=50rem;focused=true",
-            "redo": "if():[redoEdit:().[openDoc:()+'/'+openCollection:()].len()>0]:[loader.show;class():dataViewer.find():[openDoc=openDoc:();openCollection=openCollection:();openDB=openDB:()].():[doc()=redoEdit:().[openDoc:()+'/'+openCollection:()].lastEl().value.clone();update()::[loader.hide]];undoEdit:().[openDoc:()+'/'+openCollection:()].push():[redoEdit:().[openDoc:()+'/'+openCollection:()].lastEl().clone()];redoEdit:().[openDoc:()+'/'+openCollection:()].pullLast()]?false",
+            "redo": "if():[redoEdit:().[openDoc:()+'/'+openCollection:()].len()>0]:[loader.show;class():dataViewer.find():[openDoc=openDoc:();openCollection=openCollection:();openDB=openDB:()].():[form()=redoEdit:().[openDoc:()+'/'+openCollection:()].lastEl().value.clone();refresh()::[loader.hide]];undoEdit:().[openDoc:()+'/'+openCollection:()].push():[redoEdit:().[openDoc:()+'/'+openCollection:()].lastEl().clone()];redoEdit:().[openDoc:()+'/'+openCollection:()].pullLast()]?false",
             "duplicateDoc": "duplicateData:()=data:().editor.[parent().openCollection].[parent().openDoc].clone();duplicateData:().__props__.():[id.del();doc.del()];():[parent().openCollection].nthChild():4.click();hideActionPopup()",
             "clickCloseTab": "e().preventDefault();[closeTab()]():[view=lastChild()]?e().button=1||=4",
-            "undo": "if():[undoEdit:().[openDoc:()+'/'+openCollection:()].len()>0]:[loader.show;class():dataViewer.find():[openDoc=openDoc:();openCollection=openCollection:()].():[doc()=undoEdit:().[openDoc:()+'/'+openCollection:()].lastEl().prev_value.clone();update()::[loader.hide]];redoEdit:().[openDoc:()+'/'+openCollection:()].push():[undoEdit:().[openDoc:()+'/'+openCollection:()].lastEl().clone()];undoEdit:().[openDoc:()+'/'+openCollection:()].pullLast()]?false",
+            "undo": "if():[undoEdit:().[openDoc:()+'/'+openCollection:()].len()>0]:[loader.show;class():dataViewer.find():[openDoc=openDoc:();openCollection=openCollection:()].():[form()=undoEdit:().[openDoc:()+'/'+openCollection:()].lastEl().prev_value.clone();refresh()::[loader.hide]];redoEdit:().[openDoc:()+'/'+openCollection:()].push():[undoEdit:().[openDoc:()+'/'+openCollection:()].lastEl().clone()];undoEdit:().[openDoc:()+'/'+openCollection:()].pullLast()]?false",
             "accountDroplistHandler": {
                 "openAccountDoc": "root():profile?clicked().txt()=Manage Account",
                 "_": "signout()?clicked().txt()=Sign out?openAccountDoc()",
@@ -395,11 +400,11 @@
                 "clickPrevTab": "():dataViewerBar.children().find():[openCollection=parent().openCollection;openDoc=parent().openDoc].lastChild().click()?!():dataViewerBar.children().find():[openCollection=parent().openCollection;openDoc=parent().openDoc].hidden()",
                 "handler": "loader.hide;note():[text='Document has been erased!'];data:().editor.[parent().openCollection].[parent().openDoc].del();openDocs:().pullItem():[parent().openCollection+'/'+parent().openDoc]",
                 "closeCollection": "[closeCollection()]():[doc=collections;path=openCollection;view=():[parent().openCollection]]?data:().editor.[parent().openCollection].keys().len()=0",
-                "updateCollection": "handler();():[parent().openCollection+'-list'].update()::[_.view.display();clickPrevTab();closeCollection()]"
+                "updateCollection": "handler();():[parent().openCollection+'-list'].refresh()::[_.view.display();clickPrevTab();closeCollection()]"
             },
             "toggleActionEditor": "[():hide.click()?actionsFitted:()?():fit.click()]?e().ctrlKey;e().keyCode=192?actionsFitted:()=false?openCollection:()!=view;e().ctrlKey;e().keyCode=192",
             "hasNestedArray": "if():_:[if():[_.values()._find():[if():[_.type()=array]:[_._find():[if():[_.type()=array]:true.elif():[_.type()=map]:[hasNestedArray():_]:false]].elif():[_.type()=map]:[hasNestedArray():_]:false]]:[note():[text=You cannot create nested arrays!;danger];true]:false]:false",
-            "getViewLength": "if():[_.data.type()=array]:[range():[_.data.len()-1]]:[_.data.keys()]._():[if():[_!='actions']:[if():[[doc()._view_;_.type()!=number;_!=children]||!doc()._view_]:[numbersColumn:().[2ndParent().id].push():[index=numbersColumn:().[2ndParent().id].len()+1;path=__.path.clone().push():[_]]];if():[__.data.[_].type()=array||__.data.[_].type()=map]:[getViewLength():[data=__.data.[_];path=__.path.clone().push():[_]]]]]",
+            "getViewLength": "if():[_.data.type()=array]:[range():[_.data.len()-1]]:[_.data.keys()]._():[if():[_!='actions']:[if():[[form()._view_;_.type()!=number;_!=children]||!form()._view_]:[numbersColumn:().[2ndParent().id].push():[index=numbersColumn:().[2ndParent().id].len()+1;path=__.path.clone().push():[_]]];if():[__.data.[_].type()=array||__.data.[_].type()=map]:[getViewLength():[data=__.data.[_];path=__.path.clone().push():[_]]]]]",
             "changeActionsViewHeight": "diff=[e().screenY-().screenY]/10;if():[actionsHeight:()=7.5]:[actionsHeight:()=parent().el().offsetHeight/10];parent().style().height=[actionsHeight:()-().diff]+rem;():dataViewer.style().height='calc(100% - '+[actionsHeight:()-().diff]+'rem)'?mousedowned",
             "leaveNotificationIcon": "clearTimer():[trans-bell-1:()]:[trans-bell-2:()]:[trans-bell-3:()]:[trans-bell-4:()];style().transform=rotate(0)",
             "switchTab": {
@@ -451,7 +456,7 @@
             "ctrlSaveHandler": "[keydown:document?[e().preventDefault();():saveBtn.click()?e().ctrlKey;e().key=s];toggleActionEditor()]",
             "searchCollection": {
                 "_": "searchTimer.clearTimer();searchTimer=timer():[[start();getData():[publicID=project:().publicID;collection=next().1stChild().txt();findAny=txt()]:[end():_]]():[collection=actions;doc=db]:[resultHandler()]]:200?e().key!=Control;txt().len()>2;[true?next().1stChild().txt()?note():[text=Enter collection name!;type=danger]]?resultHandler():[data=[]]?txt().len()<=2",
-                "resultHandler": "():searchResults.update():[data=_.data]:[_.view.style():[height=fit-content;opacity=1]?__.data.keys().len()>0?_.view.style():[height=0;opacity=0]]"
+                "resultHandler": "():searchResults.refresh():[data=_.data]:[_.view.style():[height=fit-content;opacity=1]?__.data.keys().len()>0?_.view.style():[height=0;opacity=0]]"
             },
             "getCollections": "[getCollections()::[clicked()=null;click()]]():[doc=collections;path=toggleCollectionsFolder]?!collections:().len()",
             "searchCollectionDroplistHandler": "input().txt()=clicked().txt();[[searchCollection()]():[prev()]?prev().txt().len()>2]",
@@ -476,7 +481,8 @@
                 "clearPrevProjectData": "data:().editor.del();collections:().del();openData:().del();openDocs:().del();export:().del();openDoc:().del();openCollection:().del();projectName:()=clicked().txt();projectDB:().del();data:().editor=[]",
                 "_": "clearPrevProjectData();root():[path='/console/'+projects:().find():[name=clicked().txt()].publicID]"
             },
-            "publish": "[publish():[publicID=project:().publicID]:[note():[text=_.message;[danger=true?!_.success]]]]():[collection=actions;doc=db]"
+            "publish": "[publish():[publicID=project:().publicID]:[note():[text=_.message;[danger=true?!_.success]]]]():[collection=actions;doc=db]",
+            "openHost": "[getHost():[publicID=project:().publicID]:[win().open():[_.host.ip]]]():[collection=actions;doc=main]"
         },
         "comments": [
             {
@@ -1373,7 +1379,7 @@
                 ]
             },
             {
-                "note": "icon",
+                "note": "logo",
                 "path": [
                     "children",
                     1,
@@ -1930,12 +1936,6 @@
             {
                 "path": [
                     "children",
-                    4
-                ]
-            },
-            {
-                "path": [
-                    "children",
                     1,
                     "children",
                     0,
@@ -1977,12 +1977,6 @@
                     0,
                     "children",
                     2
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    3
                 ]
             },
             {
@@ -2051,24 +2045,7 @@
                     "children",
                     1,
                     "children",
-                    5
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
                     4
-                ]
-            },
-            {
-                "path": [
-                    "saveDocHandler"
                 ]
             },
             {},
@@ -2086,16 +2063,6 @@
             {
                 "path": [
                     "searchCollection"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0
                 ]
             },
             {
@@ -2167,10 +2134,69 @@
                     "children",
                     5
                 ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "saveDocHandler"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 36562
+        "size": 36857
     }
 }

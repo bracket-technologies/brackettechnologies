@@ -1,5 +1,5 @@
 {
-    "view": "View:customSearchEngine?class=column;style:[position=relative];doc=customManagerSearchEngine;initializeDoc()",
+    "view": "View:customSearchEngine?class=column;style:[position=relative];form=customManagerSearchEngine;initializeDoc()",
     "children": [
         {
             "view": "View?class=flexbox;style:[height=if():[_.titleInput]:[fit-content]:[4rem];#marginTop=.2rem;justifyContent=space-between;backgroundColor=white;position=relative;zIndex=3];mouseenter:[next().style():[top=4rem]];mouseleave:[next().style():[top=2rem]]",
@@ -62,7 +62,7 @@
             ]
         },
         {
-            "view": "View?class=flexbox;style:[width=7rem;height=2rem;backgroundColor=#fff;borderRight=.1rem solid #ddd;borderBottom=.1rem solid #ddd;borderLeft=.1rem solid #ddd;borderRadius=0 0 .4rem .4rem;position=absolute;right=53%;top=2rem;cursor=pointer;transition=top .2s;zIndex=2];mouseenter:[style():[top=4rem]];mouseleave:[style():[top=2rem]];click:[hideAndShowBody()]",
+            "view": "View?class=flexbox;style:[width=7rem;height=2rem;backgroundColor=#fff;borderRight=.1rem solid #ddd;borderBottom=.1rem solid #ddd;borderLeft=.1rem solid #ddd;borderRadius=0 0 .4rem .4rem;position=absolute;right=53%;top=2rem;cursor=pointer;transition=top .2s;zIndex=2;if():[_.hideSearchEngine]:[display=none]];mouseenter:[style():[top=4rem]];mouseleave:[style():[top=2rem]];click:[hideAndShowBody()]",
             "children": [
                 {
                     "view": "Icon?name=expand_more;google.symbol;style:[fontSize=2rem;color=#666;transition=.1s;transform=rotate(180deg)]"
@@ -70,7 +70,7 @@
             ]
         },
         {
-            "view": "View?class=column;style:[height=fit-content;backgroundColor=#f5f5f5;borderBottom=1px solid #ddd;borderTop=1px solid #ddd;overflow=hidden;transition=.2s;zIndex=1]",
+            "view": "View?class=column;style:[height=fit-content;backgroundColor=#f5f5f5;borderBottom=1px solid #ddd;borderTop=1px solid #ddd;overflow=hidden;transition=.2s;zIndex=1;if():[_.hideSearchEngine]:[display=none]]",
             "children": [
                 {
                     "view": "View?class=column",
@@ -103,7 +103,7 @@
                                             "view": "View?class=flex;style:[gap=.5rem;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr;width=100%];if():[!().displayedInputsCounter]:[().displayedInputsCounter=_.searchEngineInputs.len()]",
                                             "children": [
                                                 {
-                                                    "view": "[View]:[data=_.searchEngineInputs]?if():[_.inputValue;!doc().[_.inputPath]]:[doc().[_.inputPath]=[_.inputValue]()];display=true;conditionHandler();if():[!display]:[doc().[_.inputPath].del();style:[display=none]]",
+                                                    "view": "[View]:[data=_.searchEngineInputs]?if():[_.inputValue;!form().[_.inputPath]]:[form().[_.inputPath]=[_.inputValue]()];display=true;conditionHandler();if():[!display]:[form().[_.inputPath].del();style:[display=none]]",
                                                     "children": [
                                                         {
                                                             "view": "customInput??if():[parent().display]:[true]:[false]"
@@ -128,7 +128,7 @@
                                                             "view": "View?class=flex;style:[height=3rem;alignItems=center;gap=.5rem]",
                                                             "children": [
                                                                 {
-                                                                    "view": "[View]:[data=range():4]?class=flexbox;style:[height=3rem;alignItems=center;cursor=pointer];click:[activeClassStars();doc().starsRating=starsCount:()];loaded:[if():[doc().starsRating]:[if():[i=[doc().starsRating]-1]:[click()]]]",
+                                                                    "view": "[View]:[data=range():4]?class=flexbox;style:[height=3rem;alignItems=center;cursor=pointer];click:[activeClassStars();form().starsRating=starsCount:()];loaded:[if():[form().starsRating]:[if():[i=[form().starsRating]-1]:[click()]]]",
                                                                     "children": [
                                                                         {
                                                                             "view": "Icon?name=bi-star-fill;style:[fontSize=1.9rem;color=#aaa]"
@@ -145,13 +145,13 @@
                                             ]
                                         },
                                         {
-                                            "view": "View:searchBtn?class=flexbox;style:[width=12rem;height=3rem;backgroundColor=#fb3b1e;cursor=pointer;borderRadius=.4rem;marginTop=auto];click:[if():[_.searchAction]:[[_.searchAction]()]:[getSearchResult()]];loaded:[if():[_.autoSearch]:[click()]]",
+                                            "view": "View:searchBtn?class=flexbox;style:[width=12rem;height=3rem;backgroundColor=#fb3b1e;cursor=pointer;borderRadius=.4rem;marginTop=auto;overflow=hidden];click:[if():[_.searchAction]:[[_.searchAction]()]:[getSearchResult()]];loaded:[if():[_.autoSearch]:[click()]]",
                                             "children": [
                                                 {
                                                     "view": "Text?text=Search;style:[fontSize=1.4rem;color=#fff];if():[_.getDataOnLoad]:[timer():[parent().click()]:0;_.getDataOnLoad='']?false"
                                                 },
                                                 {
-                                                    "view": "Input?readonly;value=Search;style:[color=white];keydown:[if():[e().code='Enter'||'NumpadEnter']:[parent().click()]];if():[_.getDataOnLoad]:[timer():[parent().click()]:0;_.getDataOnLoad='']"
+                                                    "view": "Input?class=flexbox;readonly;value=Search;style:[color=white;width=12rem;height=3rem];keydown:[if():[e().code='Enter'||'NumpadEnter']:[parent().click()]];if():[_.getDataOnLoad]:[timer():[parent().click()]:0;_.getDataOnLoad='']"
                                                 }
                                             ]
                                         }
@@ -164,7 +164,7 @@
             ]
         },
         {
-            "view": "View?class=flexbox;style:[width=7rem;height=2rem;backgroundColor=#fff;borderRight=.1rem solid #ddd;borderBottom=.1rem solid #ddd;borderLeft=.1rem solid #ddd;borderRadius=0 0 .4rem .4rem;position=absolute;right=50%;top=14.2rem;cursor=pointer;transition=top .2s];mouseenter:[style():[top=16.2rem]];mouseleave:[style():[top=14.2rem]];click:[hideAndShowSubBody()]?false",
+            "view": "View?class=flexbox;style:[width=7rem;if():[_.hideSearchEngine]:[display=none];height=2rem;backgroundColor=#fff;borderRight=.1rem solid #ddd;borderBottom=.1rem solid #ddd;borderLeft=.1rem solid #ddd;borderRadius=0 0 .4rem .4rem;position=absolute;right=50%;top=14.2rem;cursor=pointer;transition=top .2s];mouseenter:[style():[top=16.2rem]];mouseleave:[style():[top=14.2rem]];click:[hideAndShowSubBody()]?false",
             "children": [
                 {
                     "view": "Icon?name=expand_more;google.symbol;style:[fontSize=2rem;color=#666;transition=.1s;transform=rotate(180deg)]"
@@ -172,7 +172,7 @@
             ]
         },
         {
-            "view": "View?class=flex;style:[width=100%;height=10rem;transition=.2s;backgroundColor=#f5f5f5;overflow=hidden];mouseenter:[prev().style():[top=16.2rem]];mouseleave:[prev().style():[top=14.2rem]]?false",
+            "view": "View?class=flex;style:[width=100%;if():[_.hideSearchEngine]:[display=none];height=10rem;transition=.2s;backgroundColor=#f5f5f5;overflow=hidden];mouseenter:[prev().style():[top=16.2rem]];mouseleave:[prev().style():[top=14.2rem]]?false",
             "children": [
                 {
                     "view": "View?class=flex;style:[width=100%;padding=1rem .75rem 0 .75rem;gap=.5rem]",
@@ -196,20 +196,23 @@
     "__props__": {
         "id": "D1q7j1Y190p3K1K3h62502g0z2",
         "doc": "customSearchEngine",
+        "counter": 19,
         "creationDate": 1711031365202,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1721818423035,
+        "dev": false,
         "actions": {
             "clickUploadImg": "():uploadImageInput.click()",
             "navBarSwitchAction": {
                 "changeCurrentOpenManager": "currentOpenManager:()=currentManager:().[_.id]",
                 "changeDoc": "if():[![currentManager:().[_.id].searchFields]:()]:[[currentManager:().[_.id].searchFields]:()=[];customManagerSearchEngine:()=[currentManager:().[_.id].searchFields]:()]:[customManagerSearchEngine:()=[currentManager:().[_.id].searchFields]:()]",
-                "_": "changeDoc();changeCurrentOpenManager();():customManager.update();#::[changeFocusedNavBarBtn()]"
+                "_": "changeDoc();changeCurrentOpenManager();():customManager.refresh();#::[changeFocusedNavBarBtn()]"
             },
             "getSearchResult": {
-                "successSearch": "if():[createFormStack:();createFormStack:().[-1].searchbox]:[;#inSearchBox;searchBoxResults:()=_.data;():searchBoxTable.update()]:[;#inManager;managersSearchResult:().[currentOpenManager:().managerName]=_.data;():customManagerTable.update()]",
-                "handleFailedResponse": "if():[createFormStack:();createFormStack:().[-1].searchbox]:[#inSearchBox;searchBoxResults:().del();():searchBoxTable.update()]:[#inManager;managersSearchResult:().[currentOpenManager:().managerName].del();():customManagerTable.update()];note():[text=_.msg||_.message||'No data found!';danger]",
-                "_": "loader.show;guideSearchResult():[data=doc();receivedDataCounter=0]:[loader.hide;if():[_.success]:[successSearch()]:[handleFailedResponse()]]"
+                "successSearch": "if():[createFormStack:();createFormStack:().[-1].searchbox]:[;#inSearchBox;searchBoxResults:()=_.data;():searchBoxTable.refresh()]:[;#inManager;managersSearchResult:().[currentOpenManager:().managerName]=_.data;():customManagerTable.refresh()]",
+                "handleFailedResponse": "if():[createFormStack:();createFormStack:().[-1].searchbox]:[#inSearchBox;searchBoxResults:().del();():searchBoxTable.refresh()]:[#inManager;managersSearchResult:().[currentOpenManager:().managerName].del();():customManagerTable.refresh()];note():[text=_.msg||_.message||'No data found!';danger]",
+                "_": "loader.show;guideSearchResult():[data=form();receivedDataCounter=0]:[loader.hide;if():[_.success]:[successSearch()]:[handleFailedResponse()]]"
             },
             "iconStyle": "style:[fontSize=2rem;padding=.5rem;border=1px solid #ddd;borderRadius=.8rem;cursor=pointer]",
             "hideAndShowBody": {
@@ -218,28 +221,28 @@
                 "_": "if():[mainSearchEngineClosed]:[openMainSearchEngine()]:[closeMainSearchEngine()]"
             },
             "directsearchAction": {
-                "getAccounts": "searchAccount():[data=doc()]:[if():[_.success]:[managersSearchResult:().account=_.data;():customManagerTable.update()::[loader.hide]]:[handleFailedResponse()]]",
-                "handleFailedResponse": "managersSearchResult:().[currentOpenManager:().createFormInputs.collection].del();():customManagerTable.update()::[loader.hide];note():[text='No data found!';danger]",
-                "getAssets": "searchAssets():[data=doc()]:[if():[_.success]:[managersSearchResult:().asset=_.data;():customManagerTable.update()::[loader.hide]]:[handleFailedResponse()]]",
-                "_": "loader.show;doc().branch=userData:().currentBranch;if():[currentOpenManager:().createFormInputs.collection=account]:[getAccounts()].elif():[currentOpenManager:().createFormInputs.collection=asset]:[getAssets()].elif():[currentOpenManager:().createFormInputs.collection=transaction]:[getTransaction()]",
-                "getTransaction": "searchTransaction():[data=doc()]:[if():[_.success]:[if():[__.navBar]:[managersSearchResult:().transaction=_.data;():customManagerTable.update()::[loader.hide]]:[searchResults:().transaction=_.data;():searchBoxTable.update()::[loader.hide]]]:[handleFailedResponse()]]"
+                "getAccounts": "searchAccount():[data=form()]:[if():[_.success]:[managersSearchResult:().account=_.data;():customManagerTable.refresh()::[loader.hide]]:[handleFailedResponse()]]",
+                "handleFailedResponse": "managersSearchResult:().[currentOpenManager:().createFormInputs.collection].del();():customManagerTable.refresh()::[loader.hide];note():[text='No data found!';danger]",
+                "getAssets": "searchAssets():[data=form()]:[if():[_.success]:[managersSearchResult:().asset=_.data;():customManagerTable.refresh()::[loader.hide]]:[handleFailedResponse()]]",
+                "_": "loader.show;form().branch=userData:().currentBranch;if():[currentOpenManager:().createFormInputs.collection=account]:[getAccounts()].elif():[currentOpenManager:().createFormInputs.collection=asset]:[getAssets()].elif():[currentOpenManager:().createFormInputs.collection=transaction]:[getTransaction()]",
+                "getTransaction": "searchTransaction():[data=form()]:[if():[_.success]:[if():[__.navBar]:[managersSearchResult:().transaction=_.data;():customManagerTable.refresh()::[loader.hide]]:[searchResults:().transaction=_.data;():searchBoxTable.refresh()::[loader.hide]]]:[handleFailedResponse()]]"
             },
             "navBarCondition": "currentManager:().[_.id].title=currentOpenManager:().title",
             "currentManager": "().splitedTitle=_.title.split():' ';().currentManager=().splitedTitle.0.toLowerCase()",
             "initializeDoc": {
-                "setTypeInDoc": "if():[createFormStack:();createFormStack:().[-1].searchbox]:[getManagerFromCollection():[collection=voucher].type]:[doc().type=currentOpenManager:().type]",
-                "setIdentifierInDoc": "if():[createFormStack:();createFormStack:().[-1].searchbox]:[doc().identifier=__.collection]:[doc().identifier=currentOpenManager:().identifier];if():[doc().identifier='voucher']:[setTypeInDoc()]",
-                "_": "if():[_.searchEngineDefaultValues]:[customManagerSearchEngine:()=[[_.searchEngineDefaultValues].flat();]]:[customManagerSearchEngine:()=[]];setIdentifierInDoc()"
+                "setTypeInDoc": "if():[createFormStack:();createFormStack:().[-1].searchbox]:[getManagerFromCollection():[collection=voucher].type]:[form().type=currentOpenManager:().type]",
+                "setIdentifierInDoc": "if():[createFormStack:();createFormStack:().[-1].searchbox]:[form().identifier=__.collection]:[form().identifier=currentOpenManager:().identifier];if():[form().identifier='voucher']:[setTypeInDoc()]",
+                "_": "if():[_.searchEngineDefaultValues]:[customManagerSearchEngine:()=[_.searchEngineDefaultValues]]:[customManagerSearchEngine:()=[]];setIdentifierInDoc()"
             },
             "conditionHandler": {
-                "handleCondition": "parent().displayedInputsCounter--;().display=false;_.condition._():[if():[[doc().[_.conditionReference]].in():[_.condition]]:[;parent().displayedInputsCounter+=1;().display=true]]",
+                "handleCondition": "parent().displayedInputsCounter--;().display=false;_.condition._():[if():[[form().[_.conditionReference]].in():[_.condition]]:[;parent().displayedInputsCounter+=1;().display=true]]",
                 "_": "if():[__.searchEngineDefaultInputs]:[if():[_.inputPath.in():[__.searchEngineDefaultInputs.defaultInputs]]:[checkCondition()]:[parent().displayedInputsCounter--;().display=false]]:[checkCondition()];loaded:[setSearchEngineHeight()]",
                 "checkCondition": "if():[_.customCondition]:[[_.customCondition]()].elif():[_.condition]:[handleCondition()]",
                 "setSearchEngineHeight": "nthParent():5.style().height=[math().ceil():[parent().displayedInputsCounter/6]*6.5+1.5+if():[__.navBar]:[4.5]:[0]]+'rem'"
             },
             "checkClickedByTitle": "!currentOpenManager:().title",
             "openSearchEngineInputsFilterDroplist": {
-                "_": "setInputsList();droplistItems:()=[viewInfo=[inputs=().inputs;selectedInputs=_.searchEngineDefaultInputs.defaultInputs];viewName=filterDroplist;identifier=().id;width=30rem;];():customDroplist.update()::[():customDroplist.position():[positioner=().id;placement=bottom];():customDroplist.style():[opacity=1;height=40rem]]",
+                "_": "setInputsList();droplistItems:()=[viewInfo=[inputs=().inputs;selectedInputs=_.searchEngineDefaultInputs.defaultInputs];viewName=filterDroplist;identifier=().id;width=30rem;];():customDroplist.refresh()::[():customDroplist.position():[positioner=().id;placement=bottom];():customDroplist.style():[opacity=1;height=40rem]]",
                 "setInputsList": "().inputs=:;_.searchEngineInputs._():[().inputs.push():[unselect=_.unselect;select=_.select;inputLabel=_.inputLabel;inputPath=_.inputPath]]"
             },
             "printTransation": {
@@ -248,185 +251,10 @@
                 "getAccountInfo": "searchAccount():[data=[ledgerAccount=customManagerSearchEngine:().ledgerAccount]]:[if():[_.success]:[accountForStatement:().():[[_.data.value()].flat()]]]",
                 "getLastDateFromData": "accountForStatement:().toDate=managersSearchResult:().transactionManager.clone().sort():[path=creationDate;descending].0.creationDate",
                 "setFromToDate": "if():[customManagerSearchEngine:().fromDate]:[accountForStatement:().fromDate=customManagerSearchEngine:().fromDate]:[getFirstDateFromData()];if():[customManagerSearchEngine:().toDate]:[accountForStatement:().toDate=customManagerSearchEngine:().toDate]:[getLastDateFromData()]",
-                "callPrintView": "generalPopup:()=[title=Print;popupName=customPrintView2;uploadIcon=true];():generalPopup.update()::[():customPrintView2.html2pdf():[name='statement of account']]",
+                "callPrintView": "generalPopup:()=[title=Print;popupName=customPrintView2;uploadIcon=true];():generalPopup.refresh()::[():customPrintView2.html2pdf():[name='statement of account']]",
                 "_": "if():[currentOpenManager:().managerName=transactionManager;managersSearchResult:().transactionManager]:[setStatmentOfAccount()]"
             }
         },
-        "collapsed": [
-            {
-                "path": [
-                    "children",
-                    "0",
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    "0",
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    "0",
-                    "children",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    "1",
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    "3"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    "4"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    2,
-                    "children",
-                    2,
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    2,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    2,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    2,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "#getSearchEngineSearchResult"
-                ]
-            },
-            {
-                "path": [
-                    "#getSearchBoxSearchResult"
-                ]
-            },
-            {
-                "path": [
-                    "#openCreateForm"
-                ]
-            },
-            {
-                "path": [
-                    "#customSearch"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    3,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    4
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {}
-        ],
         "comments": [
             {
                 "note": "title",
@@ -585,11 +413,210 @@
                 ]
             }
         ],
-        "dirPath": [],
-        "version": 0,
-        "counter": 19,
-        "secure": false,
-        "chunk": "chunk1",
-        "collection": "view"
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    "0",
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    "0",
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    "0",
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    "1",
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    "3"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    "4"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    2,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "#getSearchEngineSearchResult"
+                ]
+            },
+            {
+                "path": [
+                    "#getSearchBoxSearchResult"
+                ]
+            },
+            {
+                "path": [
+                    "#openCreateForm"
+                ]
+            },
+            {
+                "path": [
+                    "#customSearch"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    3,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {},
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    4
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 16610
     }
 }

@@ -86,7 +86,7 @@
     },
     "confirmBtn": {
         "text": "Get Started!",
-        "action": "[signup():[doc()]:[user:()=_.user;root():projects;end():[_]?_.success?note():[text=_.message;type=danger]]]():[collection=actions;doc=main]",
+        "action": "[signup():[form()]:[user:()=_.user;root():projects;end():[_]?_.success?note():[text=_.message;type=danger]]]():[collection=actions;doc=main]",
         "msg": "We are building your project. Please wait until we finish!"
     },
     "title": "Set Up Your Travel Agency Profile!",
@@ -188,7 +188,7 @@
                         "Yes",
                         "No"
                     ],
-                    "action": "doc().pluginID.del();doc().packageID.del()?!data()?doc().pluginID=plugin:().id();doc().packageID=package:().id()?data()",
+                    "action": "form().pluginID.del();form().packageID.del()?!data()?form().pluginID=plugin:().id();form().packageID=package:().id()?data()",
                     "inputType": "yesNo",
                     "required": true
                 }

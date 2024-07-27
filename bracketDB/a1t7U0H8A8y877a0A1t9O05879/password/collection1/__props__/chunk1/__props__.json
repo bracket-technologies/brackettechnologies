@@ -1,6 +1,5 @@
 {
     "docs": [
-        "password88",
         "password87",
         "password1",
         "password2",
@@ -9,6 +8,6 @@
         "password5"
     ],
     "indexes": [],
-    "docsLength": 7,
-    "size": 2227
+    "docsLength": 6,
+    "size": 1905
 }

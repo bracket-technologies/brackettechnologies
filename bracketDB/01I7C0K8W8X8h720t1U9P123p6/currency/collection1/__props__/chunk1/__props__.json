@@ -1,10 +1,9 @@
 {
     "docs": [
-        "currency12",
-        "currency11",
-        "XfRKzdOKS7OoUBwL8yP2"
+        "currency2",
+        "currency1"
     ],
     "chunk": "chunk1",
-    "docsLength": 3,
-    "size": 2047
+    "docsLength": 2,
+    "size": 1441
 }

@@ -1,24 +1,24 @@
 {
-    "creationDate": 1720873346813,
+    "creationDate": 1721048631005,
     "collection": 1,
     "maxSize": 1000,
     "lastChunk": 1,
-    "docsLength": 4,
-    "counter": 4,
-    "reads": 266,
-    "writes": 5,
+    "docsLength": 10,
+    "counter": 10,
+    "reads": 8,
+    "writes": 11,
     "deletes": 0,
-    "size": 1826,
-    "payloadIn": 1826,
-    "payloadOut": 121296,
+    "size": 4814,
+    "payloadIn": 4814,
+    "payloadOut": 3853,
     "indexes": [
         {
             "find": [
                 "__props__.id"
             ],
             "doc": "index1",
-            "lastRead": 1721036453092,
-            "expiryDate": 1723628453092
+            "lastRead": 1722005175282,
+            "expiryDate": 1724597175282
         }
     ],
     "lastIndex": 1

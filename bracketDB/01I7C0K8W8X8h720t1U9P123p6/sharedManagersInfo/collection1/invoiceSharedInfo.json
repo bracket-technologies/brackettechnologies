@@ -155,9 +155,641 @@
     "__props__": {
         "id": "Y1L7t1Q1l033m1E3t66129c5u9",
         "doc": "invoiceSharedInfo",
+        "counter": 1,
         "creationDate": 1711031361959,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "sharedManagersInfo",
+        "chunk": "chunk1",
+        "lastModified": 1721811074123,
+        "dev": false,
+        "actions": {
+            "calcTotalTaxis": "parent().data().totalTaxes=if():[parent().data().tax1]:[parent().data().tax1+parent().data().tax2+parent().data().tax3+parent().data().tax4+parent().data().tax5+parent().data().tax6+parent().data().tax7+parent().data().tax8]:[0];if():[_.self]:[txt()=parent().data().totalTaxes]:[customUpdate():[:[section='0.'+path().[-2]+'.0';input=:3]:[section='0.'+path().[-2]+'.1';input=:1]]]",
+            "calcTax1": "parent().data().tax1=parent().data().totalTaxes-parent().data().tax2-parent().data().tax3-parent().data().tax4-parent().data().tax5-parent().data().tax6-parent().data().tax7-parent().data().tax8;customUpdate():[section='0.'+path().[-2]+'.1';input=:1]",
+            "calcGrosFare": "parent().data().grossFare=parent().data().costCutFare-parent().data().totalTaxes;customUpdate():[section='0.'+path().[-2]+'.0';input=:13]",
+            "calcCostSubTotalForHotel": "if():[parent().data().bound=Inbound]:[parent().data().costSubTotal=parent().data().costNetPrice+parent().data().costServiceCharge-parent().data().costCommission;customUpdate():[section='0.'+path().[-2]+'.3';input=:6]]",
+            "calcCostCutFare": "if():[parent().data().type='Ticket']:[parent().data().costCutFare=parent().data().grossFare+parent().data().totalTaxes;if():[_.self]:[txt()=parent().data().costCutFare]:[customUpdate():[section='0.'+path().[-2]+'.3';input=:1]]]",
+            "calcCostTotalPrice": {
+                "_": "if():[parent().data().type='Ticket']:[calcCostTotalPriceForFlight()]:[calcCostTotalPriceForHotel()];if():[_.self]:[txt()=parent().data().costTotalPrice]:[customUpdate():[section='0.'+path().[-2]+'.3';input=:8]]",
+                "calcCostTotalPriceForHotel": "parent().data().costTotalPrice=parent().data().costNetPrice-parent().data().costCommissionMagnitude+parent().data().costServiceCharge+if():[parent().data().bound='Inbound']:[parent().data().supplierVAT]:[0]",
+                "calcCostTotalPriceForFlight": "parent().data().costTotalPrice=parent().data().costCutFare-parent().data().costCommissionMagnitude+parent().data().costServiceCharge"
+            },
+            "calcSellingSubTotalForHotel": "if():[parent().data().bound=Inbound]:[parent().data().sellingSubTotal=parent().data().sellingNetPrice+parent().data().sellingServiceCharge-parent().data().sellingCommission;customUpdate():[section='0.'+path().[-2]+'.3';input=:15]]",
+            "calcSellingTotalPrice": {
+                "_": "if():[parent().data().type='Ticket']:[calcTotalPriceForFlight()]:[calcTotalPriceForHotel()];if():[_.self]:[txt()=parent().data().sellingTotalPrice]:[customUpdate():[section='0.'+path().[-2]+'.3';input=:17]]",
+                "calcTotalPriceForFlight": "parent().data().sellingTotalPrice=parent().data().sellingCutFare-parent().data().sellingCommissionMagnitude+parent().data().sellingServiceCharge",
+                "calcTotalPriceForHotel": "parent().data().sellingTotalPrice=parent().data().sellingNetPrice-parent().data().sellingCommissionMagnitude+parent().data().sellingServiceCharge+if():[parent().data().bound='Inbound']:[parent().data().customerVAT]:[0]"
+            },
+            "calcCostCommission": {
+                "_": "if():[parent().data().costCommissionUnit='%']:[parent().data().costCommissionMagnitude=if():[parent().data().type='Hotel']:[parent().data().costCommission*parent().data().costNetPrice/100]:[parent().data().costCommission*parent().data().[parent().data().costCommissionOn]/100]]:[parent().data().costCommissionMagnitude=parent().data().costCommission]"
+            },
+            "calcSellingCommission": {
+                "_": "if():[parent().data().sellingCommissionUnit='%']:[parent().data().sellingCommissionMagnitude=if():[parent().data().type='Hotel']:[parent().data().sellingCommission*parent().data().sellingNetPrice/100]:[parent().data().sellingCommission*parent().data().[parent().data().sellingCommissionOn]/100]]:[parent().data().sellingCommissionMagnitude=parent().data().sellingCommission]"
+            },
+            "delPricingDetails": {
+                "_": "delTaxes();parent().data().costCutFare.del();parent().data().costNetPrice.del();parent().data().costCommission.del();parent().data().sellingCommissionMagnitude.del();parent().data().costCommissionMagnitude.del();parent().data().costIATAInsurance.del();parent().data().costServiceCharge.del();parent().data().costSubTotal.del();parent().data().supplierVAT.del();parent().data().costTotalPrice.del();parent().data().sellingCutFare.del();parent().data().sellingNetPrice.del();parent().data().sellingCommission.del();parent().data().sellingIATAInsurance.del();parent().data().sellingServiceCharge.del();parent().data().sellingSubTotal.del();parent().data().customerVAT.del();parent().data().sellingTotalPrice",
+                "delTaxes": "[:1:2:3:4:5:6:7:8]._():[parent().data().['tax'+_.toString()].del()];parent().data().totalTaxes.del()"
+            },
+            "updateAccountCurrency": {
+                "_": "().currencyCode=userData:().currency.find():[code=__.costCurrency].counter;().supplierAccount=__.supplierAccount.split():'/';().supplierAccount.2=().currencyCode.toString();().supplierAccount=().supplierAccount.join():'/';setSupplierAccount()",
+                "setSupplierAccount": "__.supplierAccount=().supplierAccount"
+            },
+            "calcSellingCutFare": "if():[parent().data().type='Ticket']:[parent().data().sellingCutFare=parent().data().grossFare+parent().data().totalTaxes;if():[_.self]:[txt()=parent().data().sellingCutFare]:[customUpdate():[section='0.'+path().[-2]+'.3';input=:10]]]"
+        },
+        "comments": [
+            {
+                "note": "general info",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1
+                ]
+            },
+            {
+                "note": "passengers",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2
+                ]
+            },
+            {
+                "note": "services",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    3
+                ]
+            },
+            {
+                "note": "cost and sellings",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    4
+                ]
+            },
+            {
+                "note": "attachments",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    5
+                ]
+            },
+            {
+                "note": "note and message on invoice",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    6
+                ]
+            },
+            {
+                "note": "general info",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0
+                ]
+            },
+            {
+                "note": "booking details",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1
+                ]
+            },
+            {
+                "note": "payment terms",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    2
+                ]
+            },
+            {
+                "note": "demo1",
+                "path": [
+                    "unpaidInvoiceTable"
+                ]
+            },
+            {
+                "note": "costNetPrice",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "note": "costCommissionOn",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "note": "costCommission",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "note": "costServiceCharge",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "note": "costSubTotal",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    6
+                ]
+            },
+            {
+                "note": "supplierVAT",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    7
+                ]
+            },
+            {
+                "note": "costTotalPrice",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    8
+                ]
+            },
+            {
+                "note": "2",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    9
+                ]
+            },
+            {
+                "note": "sellingCutFare",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    10
+                ]
+            },
+            {
+                "note": "totalTaxes",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    14
+                ]
+            },
+            {
+                "note": "currency",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "note": "issueDate",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "note": "type",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "note": "pnr",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "note": "trip",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "note": "passnegerName",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    6
+                ]
+            },
+            {
+                "note": "e-ticket",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    7
+                ]
+            },
+            {
+                "note": "bound",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    8
+                ]
+            },
+            {
+                "note": "country",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    9
+                ]
+            },
+            {
+                "note": "city",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    10
+                ]
+            },
+            {
+                "note": "hotelName",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    11
+                ]
+            },
+            {
+                "note": "class",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    12
+                ]
+            },
+            {
+                "note": "grossFare",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    13
+                ]
+            },
+            {
+                "note": "total Taxes",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    14
+                ]
+            },
+            {
+                "note": "Booking Details",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0
+                ]
+            },
+            {
+                "note": "Supplier",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "note": "costCutFare",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "note": "sellingNetPrice",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    11
+                ]
+            },
+            {
+                "note": "sellingCommissionOn",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    12
+                ]
+            },
+            {
+                "note": "sellingCommission",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    13
+                ]
+            },
+            {
+                "note": "sellingServiceCharge",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    14
+                ]
+            },
+            {
+                "note": "sellingSubTotal",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    15
+                ]
+            },
+            {
+                "note": "customerVAT",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    16
+                ]
+            },
+            {
+                "note": "sellingTotalPrice",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    17
+                ]
+            },
+            {
+                "note": "hotel Details",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    1
+                ]
+            },
+            {
+                "note": "Flight Details",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    2
+                ]
+            },
+            {
+                "note": "paynebts details",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3
+                ]
+            }
+        ],
         "collapsed": [
             {
                 "path": [
@@ -2024,19 +2656,6 @@
                     "sectionsInfo",
                     1,
                     "subInput",
-                    0,
-                    "input",
-                    13
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
                     3,
                     "input",
                     3,
@@ -2163,13 +2782,6 @@
                     "subInput",
                     1,
                     "input"
-                ]
-            },
-            {
-                "path": [
-                    "unpaidInvoiceTable",
-                    "body",
-                    "items"
                 ]
             },
             {
@@ -2464,12 +3076,6 @@
             {
                 "path": [
                     "unpaidInvoiceTable",
-                    "body"
-                ]
-            },
-            {
-                "path": [
-                    "unpaidInvoiceTable",
                     "header",
                     "items",
                     0
@@ -2489,28 +3095,6 @@
                     "header",
                     "items",
                     2
-                ]
-            },
-            {
-                "path": [
-                    "unpaidInvoiceTable",
-                    "header",
-                    "items",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "unpaidInvoiceTable",
-                    "header",
-                    "items",
-                    4
-                ]
-            },
-            {
-                "path": [
-                    "unpaidInvoiceTable",
-                    "header"
                 ]
             },
             {
@@ -2551,19 +3135,6 @@
                     0,
                     "input",
                     0
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
-                    1
                 ]
             },
             {
@@ -3125,30 +3696,6 @@
                     "sectionsInfo",
                     1,
                     "subInput",
-                    3,
-                    "input",
-                    4,
-                    "subItemsList"
-                ]
-            },
-            {
-                "path": [
-                    "delPricingDetails"
-                ]
-            },
-            {
-                "path": [
-                    "updateAccountCurrency"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
                     1,
                     "input",
                     0,
@@ -3234,51 +3781,7 @@
             },
             {
                 "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
-                    14
-                ]
-            },
-            {
-                "path": [
                     "calcSellingCommission"
-                ]
-            },
-            {
-                "path": [
-                    "calcSellingTotalPrice"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    1
                 ]
             },
             {
@@ -3305,73 +3808,8 @@
                     "subInput",
                     3,
                     "input",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    6
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    7
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    8
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
                     9,
                     "containerStyle"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    9
                 ]
             },
             {
@@ -3398,47 +3836,8 @@
                     "subInput",
                     3,
                     "input",
-                    10
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    11
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
                     12,
                     "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    13
                 ]
             },
             {
@@ -3516,24 +3915,6 @@
                     "sectionsInfo",
                     1,
                     "subInput",
-                    3,
-                    "input",
-                    17
-                ]
-            },
-            {
-                "path": [
-                    "calcCostCommission"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
                     1,
                     "input"
                 ]
@@ -3547,22 +3928,6 @@
                     1,
                     "subInput",
                     1
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "unpaidInvoiceTable"
                 ]
             },
             {
@@ -3590,425 +3955,71 @@
             },
             {
                 "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    5
+                    "calcCostTotalPrice"
                 ]
             },
             {
                 "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
+                    "unpaidInvoiceTable",
+                    "header",
+                    "items",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "unpaidInvoiceTable",
+                    "header",
+                    "items",
                     4
                 ]
             },
             {
                 "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    3
-                ]
-            }
-        ],
-        "comments": [
-            {
-                "note": "general info",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    1
+                    "unpaidInvoiceTable",
+                    "header",
+                    "items"
                 ]
             },
             {
-                "note": "passengers",
                 "path": [
-                    "createFormInputs",
-                    "subInput",
-                    2
+                    "unpaidInvoiceTable",
+                    "header"
                 ]
             },
             {
-                "note": "services",
                 "path": [
-                    "createFormInputs",
-                    "subInput",
-                    3
-                ]
-            },
-            {
-                "note": "cost and sellings",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    4
-                ]
-            },
-            {
-                "note": "attachments",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    5
-                ]
-            },
-            {
-                "note": "note and message on invoice",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    6
-                ]
-            },
-            {
-                "note": "general info",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
+                    "unpaidInvoiceTable",
+                    "body",
+                    "items",
                     0
                 ]
             },
             {
-                "note": "booking details",
                 "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
+                    "unpaidInvoiceTable",
+                    "body",
+                    "items",
                     1
                 ]
             },
             {
-                "note": "payment terms",
                 "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
+                    "unpaidInvoiceTable",
+                    "body",
+                    "items",
                     2
                 ]
             },
             {
-                "note": "demo1",
                 "path": [
-                    "unpaidInvoiceTable"
-                ]
-            },
-            {
-                "note": "costNetPrice",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    2
-                ]
-            },
-            {
-                "note": "costCommissionOn",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
+                    "unpaidInvoiceTable",
+                    "body",
+                    "items",
                     3
                 ]
             },
             {
-                "note": "costCommission",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    4
-                ]
-            },
-            {
-                "note": "costServiceCharge",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    5
-                ]
-            },
-            {
-                "note": "costSubTotal",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    6
-                ]
-            },
-            {
-                "note": "supplierVAT",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    7
-                ]
-            },
-            {
-                "note": "costTotalPrice",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    8
-                ]
-            },
-            {
-                "note": "2",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    9
-                ]
-            },
-            {
-                "note": "sellingCutFare",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3,
-                    "input",
-                    10
-                ]
-            },
-            {
-                "note": "totalTaxes",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
-                    14
-                ]
-            },
-            {
-                "note": "currency",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
-                    1
-                ]
-            },
-            {
-                "note": "issueDate",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
-                    2
-                ]
-            },
-            {
-                "note": "type",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
-                    3
-                ]
-            },
-            {
-                "note": "pnr",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
-                    4
-                ]
-            },
-            {
-                "note": "trip",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
-                    5
-                ]
-            },
-            {
-                "note": "passnegerName",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
-                    6
-                ]
-            },
-            {
-                "note": "e-ticket",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
-                    7
-                ]
-            },
-            {
-                "note": "bound",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
-                    8
-                ]
-            },
-            {
-                "note": "country",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
-                    9
-                ]
-            },
-            {
-                "note": "city",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
-                    10
-                ]
-            },
-            {
-                "note": "hotelName",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
-                    11
-                ]
-            },
-            {
-                "note": "class",
                 "path": [
                     "createFormInputs",
                     "subInput",
@@ -4022,7 +4033,6 @@
                 ]
             },
             {
-                "note": "grossFare",
                 "path": [
                     "createFormInputs",
                     "subInput",
@@ -4030,63 +4040,12 @@
                     "sectionsInfo",
                     1,
                     "subInput",
-                    0,
+                    3,
                     "input",
-                    13
+                    9
                 ]
             },
             {
-                "note": "total Taxes",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
-                    14
-                ]
-            },
-            {
-                "note": "Booking Details",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0
-                ]
-            },
-            {
-                "note": "Flight Details",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3
-                ]
-            },
-            {
-                "note": "Pricing",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    3
-                ]
-            },
-            {
-                "note": "Supplier",
                 "path": [
                     "createFormInputs",
                     "subInput",
@@ -4100,7 +4059,6 @@
                 ]
             },
             {
-                "note": "costCutFare",
                 "path": [
                     "createFormInputs",
                     "subInput",
@@ -4110,11 +4068,10 @@
                     "subInput",
                     3,
                     "input",
-                    1
+                    10
                 ]
             },
             {
-                "note": "sellingNetPrice",
                 "path": [
                     "createFormInputs",
                     "subInput",
@@ -4128,7 +4085,19 @@
                 ]
             },
             {
-                "note": "sellingCommissionOn",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    2
+                ]
+            },
+            {
                 "path": [
                     "createFormInputs",
                     "subInput",
@@ -4142,7 +4111,6 @@
                 ]
             },
             {
-                "note": "sellingCommission",
                 "path": [
                     "createFormInputs",
                     "subInput",
@@ -4152,11 +4120,10 @@
                     "subInput",
                     3,
                     "input",
-                    13
+                    3
                 ]
             },
             {
-                "note": "sellingServiceCharge",
                 "path": [
                     "createFormInputs",
                     "subInput",
@@ -4166,11 +4133,10 @@
                     "subInput",
                     3,
                     "input",
-                    14
+                    5
                 ]
             },
             {
-                "note": "sellingSubTotal",
                 "path": [
                     "createFormInputs",
                     "subInput",
@@ -4180,11 +4146,10 @@
                     "subInput",
                     3,
                     "input",
-                    15
+                    6
                 ]
             },
             {
-                "note": "customerVAT",
                 "path": [
                     "createFormInputs",
                     "subInput",
@@ -4194,11 +4159,23 @@
                     "subInput",
                     3,
                     "input",
-                    16
+                    7
                 ]
             },
             {
-                "note": "sellingTotalPrice",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    8
+                ]
+            },
+            {
                 "path": [
                     "createFormInputs",
                     "subInput",
@@ -4212,7 +4189,6 @@
                 ]
             },
             {
-                "note": "hotel Details",
                 "path": [
                     "createFormInputs",
                     "subInput",
@@ -4220,46 +4196,125 @@
                     "sectionsInfo",
                     1,
                     "subInput",
+                    0,
+                    "input",
+                    14,
+                    "customLabelBtn"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    14,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "delPricingDetails"
+                ]
+            },
+            {
+                "path": [
+                    "calcSellingTotalPrice"
+                ]
+            },
+            {
+                "path": [
+                    "calcCostCommission"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    13
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    14
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
                     1
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    4,
+                    "subItemsList"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    3,
+                    "input",
+                    13,
+                    "subItemsList"
                 ]
             }
         ],
-        "dirPath": [],
-        "actions": {
-            "calcTotalTaxis": "parent().data().totalTaxes=if():[parent().data().tax1]:[parent().data().tax1+parent().data().tax2+parent().data().tax3+parent().data().tax4+parent().data().tax5+parent().data().tax6+parent().data().tax7+parent().data().tax8]:[0];if():[_.self]:[txt()=parent().data().totalTaxes]:[customUpdate():[:[section='0.'+path().[-2]+'.0';input=:3]:[section='0.'+path().[-2]+'.1';input=:1]]]",
-            "calcTax1": "parent().data().tax1=parent().data().totalTaxes-parent().data().tax2-parent().data().tax3-parent().data().tax4-parent().data().tax5-parent().data().tax6-parent().data().tax7-parent().data().tax8;customUpdate():[section='0.'+path().[-2]+'.1';input=:1]",
-            "calcGrosFare": "parent().data().grossFare=parent().data().costCutFare-parent().data().totalTaxes;customUpdate():[section='0.'+path().[-2]+'.0';input=:16]",
-            "calcCostSubTotalForHotel": "if():[parent().data().bound=Inbound]:[parent().data().costSubTotal=parent().data().costNetPrice+parent().data().costServiceCharge-parent().data().costCommission;customUpdate():[section='0.'+path().[-2]+'.3';input=:6]]",
-            "calcCostCutFare": "if():[parent().data().type='Ticket']:[parent().data().costCutFare=parent().data().grossFare+parent().data().totalTaxes;if():[_.self]:[txt()=parent().data().costCutFare]:[customUpdate():[section='0.'+path().[-2]+'.3';input=:1]]]",
-            "calcCostTotalPrice": {
-                "_": "if():[parent().data().type='Ticket']:[calcCostTotalPriceForFlight()]:[calcCostTotalPriceForHotel()];if():[_.self]:[txt()=parent().data().costTotalPrice]:[customUpdate():[section='0.'+path().[-2]+'.3';input=:8]]",
-                "calcCostTotalPriceForHotel": "parent().data().costTotalPrice=parent().data().costNetPrice-parent().data().costCommissionMagnitude+parent().data().costServiceCharge+if():[parent().data().bound='Inbound']:[parent().data().supplierVAT]:[0]",
-                "calcCostTotalPriceForFlight": "parent().data().costTotalPrice=parent().data().costCutFare-parent().data().costCommissionMagnitude+parent().data().costServiceCharge"
-            },
-            "calcSellingSubTotalForHotel": "if():[parent().data().bound=Inbound]:[parent().data().sellingSubTotal=parent().data().sellingNetPrice+parent().data().sellingServiceCharge-parent().data().sellingCommission;customUpdate():[section='0.'+path().[-2]+'.3';input=:15]]",
-            "calcSellingTotalPrice": {
-                "_": "if():[parent().data().type='Ticket']:[calcTotalPriceForFlight()]:[calcTotalPriceForHotel()];if():[_.self]:[txt()=parent().data().sellingTotalPrice]:[customUpdate():[section='0.'+path().[-2]+'.3';input=:17]]",
-                "calcTotalPriceForFlight": "parent().data().sellingTotalPrice=parent().data().sellingCutFare-parent().data().sellingCommissionMagnitude+parent().data().sellingServiceCharge",
-                "calcTotalPriceForHotel": "parent().data().sellingTotalPrice=parent().data().sellingNetPrice-parent().data().sellingCommissionMagnitude+parent().data().sellingServiceCharge+if():[parent().data().bound='Inbound']:[parent().data().customerVAT]:[0]"
-            },
-            "calcCostCommission": {
-                "_": "if():[parent().data().costCommissionUnit='%']:[parent().data().costCommissionMagnitude=if():[parent().data().type='Hotel']:[parent().data().costCommission*parent().data().costNetPrice/100]:[parent().data().costCommission*parent().data().[parent().data().costCommissionOn]/100]]:[parent().data().costCommissionMagnitude=parent().data().costCommission]"
-            },
-            "calcSellingCommission": {
-                "_": "if():[parent().data().sellingCommissionUnit='%']:[parent().data().sellingCommissionMagnitude=if():[parent().data().type='Hotel']:[parent().data().sellingCommission*parent().data().sellingNetPrice/100]:[parent().data().sellingCommission*parent().data().[parent().data().sellingCommissionOn]/100]]:[parent().data().sellingCommissionMagnitude=parent().data().sellingCommission]"
-            },
-            "delPricingDetails": {
-                "_": "delTaxes();parent().data().costCutFare.del();parent().data().costNetPrice.del();parent().data().costCommission.del();parent().data().sellingCommissionMagnitude.del();parent().data().costCommissionMagnitude.del();parent().data().costIATAInsurance.del();parent().data().costServiceCharge.del();parent().data().costSubTotal.del();parent().data().supplierVAT.del();parent().data().costTotalPrice.del();parent().data().sellingCutFare.del();parent().data().sellingNetPrice.del();parent().data().sellingCommission.del();parent().data().sellingIATAInsurance.del();parent().data().sellingServiceCharge.del();parent().data().sellingSubTotal.del();parent().data().customerVAT.del();parent().data().sellingTotalPrice",
-                "delTaxes": "[:1:2:3:4:5:6:7:8]._():[parent().data().['tax'+_.toString()].del()];parent().data().totalTaxes.del()"
-            },
-            "updateAccountCurrency": {
-                "_": "().currencyCode=userData:().currency.find():[code=__.costCurrency].counter;().supplierAccount=__.supplierAccount.split():'/';().supplierAccount.2=().currencyCode.toString();().supplierAccount=().supplierAccount.join():'/';setSupplierAccount()",
-                "setSupplierAccount": "__.supplierAccount=().supplierAccount"
-            }
-        },
-        "counter": 1,
-        "chunk": "chunk1",
-        "collection": "sharedManagersInfo"
+        "arrange": [],
+        "secured": false,
+        "size": 51689
     },
     "createFormInputs": {
         "docDefaultValues": {
@@ -4335,7 +4390,7 @@
                                                 "41"
                                             ]
                                         },
-                                        "referenceCurrency": "doc().currency"
+                                        "referenceCurrency": "form().currency"
                                     }
                                 ]
                             },
@@ -4504,7 +4559,7 @@
                                         "droplistClickAction": "customUpdate():[section=0]"
                                     },
                                     {
-                                        "#droplistClickAction": "if():[doc().city;!sheetData:().[doc().country].list.():cities.inc():[doc().city]]:[doc().city.del()];customUpdate():[input=3]",
+                                        "#droplistClickAction": "if():[form().city;!sheetData:().[form().country].list.():cities.inc():[form().city]]:[form().city.del()];customUpdate():[input=3]",
                                         "condition": [
                                             {
                                                 "condition": [
@@ -4529,7 +4584,7 @@
                                             }
                                         ],
                                         "inputPath": "city",
-                                        "sheetName": "doc().country",
+                                        "sheetName": "form().country",
                                         "requiredInput": "country",
                                         "inputLabel": "City",
                                         "sheetHeader": "cities"
@@ -4572,7 +4627,7 @@
                                         "inputLabel": "Gross Fare",
                                         "executeUnitEveryLoad": true,
                                         "unitValue": "data().costCurrency",
-                                        "onChangeAction": "[calcCostCutFare();calcCostCommission();calcCostTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]",
+                                        "onChangeAction": "[calcSellingCutFare();calcCostCutFare();calcSellingCommission();calcCostCommission();calcSellingTotalPrice();calcCostTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]",
                                         "condition": [
                                             {
                                                 "condition": [
@@ -4587,7 +4642,7 @@
                                         "inputLabel": "Total Taxes",
                                         "executeUnitEveryLoad": true,
                                         "unitValue": "data().costCurrency",
-                                        "onChangeAction": "[calcTax1();calcCostCutFare();calcCostCommission();calcCostTotalPrice()]():[doc=invoiceSharedInfo;collection=sharedManagersInfo]",
+                                        "onChangeAction": "[calcTax1();calcSellingCutFare();calcCostCutFare();calcSellingCommission();calcCostCommission();calcSellingTotalPrice();calcCostTotalPrice()]():[doc=invoiceSharedInfo;collection=sharedManagersInfo]",
                                         "customLabelBtn": [
                                             {
                                                 "icon": "receipt",
@@ -4750,14 +4805,14 @@
                                     {
                                         "inputPath": "costCommission",
                                         "inputLabel": "Commission",
-                                        "unitValue": "doc().currency",
+                                        "unitValue": "%",
                                         "subItemsList": [
                                             "return():[parent().data().costCurrency]",
                                             "%"
                                         ],
-                                        "unitPath": "costCommissionUnit",
                                         "subItemsDroplistClickAction": "if():[txt()='%']:[_.preventDefault=true]:[_.preventDefault.del()];if():[parent().data().type='Hotel']:[[calcCostCommission();calcCostSubTotalForHotel();calcCostTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]]:[[calcCostCommission();calcCostTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]]",
-                                        "onChangeAction": "if():[parent().data().type='Hotel']:[[calcCostCommission();calcCostSubTotalForHotel();calcCostTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]]:[[calcCostCommission();calcCostTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]]"
+                                        "onChangeAction": "if():[parent().data().type='Hotel']:[[calcCostCommission();calcCostSubTotalForHotel();calcCostTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]]:[[calcCostCommission();calcCostTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]]",
+                                        "unitPath": "costCommissionUnit"
                                     },
                                     {
                                         "inputPath": "costServiceCharge",
@@ -4842,8 +4897,9 @@
                                         "inputLabel": "Cut Fare",
                                         "executeUnitEveryLoad": true,
                                         "required": true,
-                                        "unitValue": "doc().currency",
-                                        "onChangeAction": "[calcSellingCommission();calcSellingTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]"
+                                        "unitValue": "form().currency",
+                                        "onChangeAction": "[calcSellingCommission();calcSellingTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]",
+                                        "loadedAction": "#;[calcCostCutFare():[self=true]]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]"
                                     },
                                     {
                                         "condition": [
@@ -4857,7 +4913,7 @@
                                         "inputPath": "sellingNetPrice",
                                         "inputLabel": "Net Price",
                                         "required": true,
-                                        "unitValue": "doc().currency",
+                                        "unitValue": "form().currency",
                                         "executeUnitEveryLoad": true,
                                         "onChangeAction": "[calcSellingCommission();calcSellingSubTotalForHotel();calcSellingTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]"
                                     },
@@ -4889,28 +4945,27 @@
                                     {
                                         "inputPath": "sellingCommission",
                                         "inputLabel": "Commission",
-                                        "executeUnitEveryLoad": true,
-                                        "unitValue": "doc().currency",
                                         "onChangeAction": "if():[parent().data().type='Hotel']:[[calcSellingCommission();calcSellingSubTotalForHotel();calcSellingTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]]:[[calcSellingCommission();calcSellingTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]]",
                                         "subItemsList": [
-                                            "doc().currency",
+                                            "form().currency",
                                             "%"
                                         ],
                                         "unitPath": "sellingCommissionUnit",
-                                        "subItemsDroplistClickAction": "if():[txt()='%']:[_.preventDefault=true]:[_.preventDefault.del()];if():[parent().data().type='Hotel']:[[calcSellingCommission();calcSellingSubTotalForHotel();calcSellingTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]]:[[calcSellingCommission();calcSellingTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]]"
+                                        "subItemsDroplistClickAction": "if():[txt()='%']:[_.preventDefault=true]:[_.preventDefault.del()];if():[parent().data().type='Hotel']:[[calcSellingCommission();calcSellingSubTotalForHotel();calcSellingTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]]:[[calcSellingCommission();calcSellingTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]]",
+                                        "unitValue": "%"
                                     },
                                     {
                                         "inputPath": "sellingServiceCharge",
                                         "inputLabel": "Service Charge",
                                         "executeUnitEveryLoad": true,
-                                        "unitValue": "doc().currency",
+                                        "unitValue": "form().currency",
                                         "onChangeAction": "if():[parent().data().type='Hotel']:[[calcSellingSubTotalForHotel();calcSellingTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]]:[[calcSellingTotalPrice()]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]]"
                                     },
                                     {
                                         "inputLabel": "Sub Total",
                                         "inputPath": "sellingSubTotal",
                                         "executeUnitEveryLoad": true,
-                                        "unitValue": "doc().currency",
+                                        "unitValue": "form().currency",
                                         "required": true,
                                         "pointerEvent": "none",
                                         "readonly": true,
@@ -4933,7 +4988,7 @@
                                         "inputLabel": "VAT",
                                         "inputPath": "customerVAT",
                                         "executeUnitEveryLoad": true,
-                                        "unitValue": "doc().currency",
+                                        "unitValue": "form().currency",
                                         "required": true,
                                         "condition": [
                                             {
@@ -4956,10 +5011,11 @@
                                         "inputLabel": "Total Price",
                                         "executeUnitEveryLoad": true,
                                         "required": true,
-                                        "unitValue": "doc().currency",
+                                        "unitValue": "form().currency",
                                         "readonly": true,
                                         "pointerEvent": "none",
-                                        "loadedAction": "[calcSellingTotalPrice():[self=true]]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]"
+                                        "loadedAction": "[calcSellingTotalPrice():[self=true]]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]",
+                                        "": "#;[calcCostTotalPrice():[self=true]]():[collection=sharedManagersInfo;doc=invoiceSharedInfo]"
                                     }
                                 ],
                                 "title": "Pricing",
@@ -5107,7 +5163,7 @@
                                                 "conditionReference": "salesmanCommission"
                                             }
                                         ],
-                                        "referenceCurrency": "doc().currency"
+                                        "referenceCurrency": "form().currency"
                                     },
                                     {
                                         "condition": [
@@ -5122,7 +5178,7 @@
                                         "inputLabel": "Commission",
                                         "executeUnitEveryLoad": true,
                                         "required": true,
-                                        "unitValue": "doc().currency"
+                                        "unitValue": "form().currency"
                                     }
                                 ],
                                 "title": "Commission"
@@ -5174,11 +5230,12 @@
                     "fraction": "2fr",
                     "customInputInfo": {
                         "inputPath": "payment",
-                        "onChangeAction": "TableRowData:().[nthParent():[9].index()].[_.inputPath]=data();doc().unpaidInvoice._():[().totalPayments+=_.payment];doc().payment=().totalPayments;().totalPayments=0;():tableFooter.1stChild().update()",
+                        "onChangeAction": "TableRowData:().[nthParent():[9].index()].[_.inputPath]=data();form().unpaidInvoice._():[().totalPayments+=_.payment];form().payment=().totalPayments;().totalPayments=0;():tableFooter.1stChild().refresh()",
                         "inputValue": "[______.docName]:().from.[______.index].invoicesInfo.find():[invoiceNumber=parent().data().invoiceNumber].payment||0",
-                        "blurAction": "if():[data()>parent().data().remainingAmount]:[data()=parent().data().remainingAmount;txt()=data();note():[text='Amount changed to reflect the outstanding balance for this invoice!';warning]];doc().unpaidInvoice._():[().totalPayments+=_.payment];doc().payment=().totalPayments;().totalPayments=0;():tableFooter.1stChild().update()",
+                        "blurAction": "if():[data()>parent().data().remainingAmount]:[data()=parent().data().remainingAmount;txt()=data();note():[text='Amount changed to reflect the outstanding balance for this invoice!';warning]];form().unpaidInvoice._():[().totalPayments+=_.payment];form().payment=().totalPayments;().totalPayments=0;():tableFooter.1stChild().refresh()",
                         "executeUnitEveryLoad": true,
-                        "unitValue": "doc().currency"
+                        "unitValue": "form().currency",
+                        "#editable": true
                     },
                     "path": "payment"
                 }
@@ -5212,7 +5269,7 @@
                     "customInputInfo": {
                         "inputPath": "payment",
                         "readonly": true,
-                        "unitValue": "doc().currency",
+                        "unitValue": "form().currency",
                         "executeUnitEveryLoad": true
                     },
                     "#path": "payment"

@@ -1,0 +1,24 @@
+{
+    "view": "View?id=main;class=flexbox;style:[height=100vh;width=100vw;gap=3rem]",
+    "children": [
+        {
+            "view": "Text?text=Welcome to Bracket Technologies!;style:[fontSize=4rem]"
+        }
+    ],
+    "__props__": {
+        "id": "51x7g2y1L3Z113X043U5G3i6H9",
+        "doc": "main",
+        "counter": 4,
+        "creationDate": 1721313035369,
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1721313035369,
+        "dev": true,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 418
+    }
+}

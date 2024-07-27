@@ -7,13 +7,15 @@
         "creationDate": 1711031365213,
         "collection": "view",
         "chunk": "chunk1",
+        "lastModified": 1721901096800,
+        "dev": false,
         "actions": {
             "callOpenCreateForm": "if():[createFormStack:().len()>0]:[openCreateForm():[manager=getManagerFromCollection(l):[collection=_.collection];read=_.read]]:[openCreateForm():[manager=currentOpenManager:()]]",
             "setDefaultleftZero": "while():[[_.digits]-[_.text.toString().len()]>0]:[_.text=_.text*10];return():[_.text]",
             "openCreateForm": {
-                "openFirstTime": "():generalPopup.update()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1]]",
+                "openFirstTime": "():generalPopup.refresh()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1]]",
                 "openPopup": "if():[createFormStack:().len()=1;!_.back]:[openFirstTime()]:[openStackForms()]",
-                "openStackForms": "():generalPopup.2ndChild().style():[transform=if():[!_.back]:[translateX(-100vw)]:[translateX(100vw)]];timer():[():generalPopup.2ndChild().style():[transition=none;transform=if():[!_.back]:[translateX(100vw)]:[translateX(-100vw)]]]:200;timer():[():generalPopup.2ndChild().update()::[loader.hide;():generalPopup.2ndChild().style():[transition=.2s;transform=translateX(0)]]]:300;#timer():[():generalPopup.2ndChild().style():[transition=.2s;transform=translateX(0)]]:300",
+                "openStackForms": "():generalPopup.2ndChild().style():[transform=if():[!_.back]:[translateX(-100vw)]:[translateX(100vw)]];timer():[():generalPopup.2ndChild().style():[transition=none;transform=if():[!_.back]:[translateX(100vw)]:[translateX(-100vw)]]]:200;timer():[():generalPopup.2ndChild().refresh()::[loader.hide;():generalPopup.2ndChild().style():[transition=.2s;transform=translateX(0)]]]:300;#timer():[():generalPopup.2ndChild().style():[transition=.2s;transform=translateX(0)]]:300",
                 "setInputInfo": "if():[_.inputInfo]:[().inputInfo=_.inputInfo.clone()]:[if():[_.manager.createFormInputs.type()=map]:[().inputInfo=_.manager.createFormInputs.clone()]:[().inputInfo=sharedManagersInfo:().[_.manager.createFormInputs].createFormInputs.clone()]];if():[_.docDefaultValues]:[().inputInfo.docDefaultValues+=_.docDefaultValues];createFormStack:().[-1].docDefaultValues=[().inputInfo.docDefaultValues]()",
                 "_": "if():[createFormStack:().len()=0]:[selectedPath:()=[]];if():[!_.back]:[createFormStack:().[-1].():[selectedSection=selectedSection:();selectedPath=selectedPath:()];createFormStack:().push():[collection=_.manager.identifier;id=_.manager.id]]:[selectedPath:()=createFormStack:().[-1].selectedPath];#loader.show;setGeneralPopup()",
                 "setGeneralPopup": "setInputInfo();generalPopup:()=[read=_.read;back=_.back;getterKeyValue=_.getterKeyValue;title=_.title||_.manager.popupInfo.title.clone();popupName=[_.manager.popupInfo.view||customForm];inputInfo=().inputInfo;docName=_.docName||_.manager.popupInfo.docName;saveAction=_.manager.saveAction];if():[_.manager.permission]:[generalPopup:().permission=_.manager.permission;generalPopup:().defaultPermission=_.manager.defaultPermission];if():[_.docValues]:[generalPopup:().():[read=_.read;edit=_.edit;createable=_.createable;docValues=_.docValues]];openPopup()"
@@ -52,26 +54,26 @@
                 "setSearchBoxCustomInputs": "if():[().manager.searchEngineInputs.type()=array]:[searchBoxCustomInputs:()=().manager.searchEngineInputs.clone()]:[searchBoxCustomInputs:()=sharedManagersInfo:().[().manager.searchEngineInputs].searchEngineInputs.clone()];if():[_.allowedLedgers]:[searchBoxCustomInputs:().0.allowedLedgers=_.allowedLedgers]:[searchBoxCustomInputs:().0.allowedLedgers.del()]",
                 "fillGeneralPopupCommonParams": "generalPopup:().():[title='Search Box';popupName=searchBoxPage;[_].flat()]",
                 "pushVarNameData": "generalPopup:().():[varName=[_.varName]();maxSelected=1]",
-                "_": "if():[!_.back]:[createFormStack:().push():[searchbox=true;[_].flat()]];generalPopup:()=[];if():[_.path]:[pushPathData()];if():[_.varName]:[pushVarNameData()]:[pushListNameData()];fillGeneralPopupCommonParams();if():[_.searchEngineInputs]:[searchBoxCustomInputs:()=_.searchEngineInputs]:[fillSearchEngineInputs()];():generalPopup.update()::[():generalPopup.style():[visibility=visible;opacity=1]]"
+                "_": "if():[!_.back]:[createFormStack:().push():[searchbox=true;[_].flat()]];generalPopup:()=[];if():[_.path]:[pushPathData()];if():[_.varName]:[pushVarNameData()]:[pushListNameData()];fillGeneralPopupCommonParams();if():[_.searchEngineInputs]:[searchBoxCustomInputs:()=_.searchEngineInputs]:[fillSearchEngineInputs()];():generalPopup.refresh()::[():generalPopup.style():[visibility=visible;opacity=1]]"
             },
-            "setDueNotifications": "dueNotifications:()=_;():notificationIcon.update();",
+            "setDueNotifications": "dueNotifications:()=_;():notificationIcon.refresh();",
             "getManagerFromCollection": "().group=collectionsInfo:().find():[managers.():collection.inc():[_.collection]];().manager=[().group.groupName]:().[().group.managers.find():[collection=_.collection].manager];return():[().manager]",
             "setPublicSettings": "publicSettings:()=[inputStyle=[fontSize=1.3rem];inputContainerStyle=[];inputLableStyle=[];btnsStyle;sectionTitleStyle=[fontSize=1.4rem];formTitleStyle=[fontSize=1.5rem];sideBarItemsStyle=[];]",
             "getManagerFromManager": "().group=collectionsInfo:().find():[managers.():manager.inc():[_.id]];().manager=[().group.groupName]:().[().group.managers.find():[manager=_.id].manager];return():[().manager]",
             "getAccountBalance": {
-                "_": "searchAccount():[data=[ledgerAccount=_.ledger]]:[if():[_.success]:[setBalance();().account=[creditDebit=if():[().amount>=0]:['Debit']:['Credit'];balance=().balance;ledger=__.ledger];cleanSelectedAccountsBalance();selectedAccountsBalance:().push():[().account];():[__.identifier].update()]]",
+                "_": "searchAccount():[data=[ledgerAccount=_.ledger]]:[if():[_.success]:[setBalance();().account=[creditDebit=if():[().amount>=0]:['Debit']:['Credit'];balance=().balance;ledger=__.ledger];cleanSelectedAccountsBalance();selectedAccountsBalance:().push():[().account];():[__.identifier].refresh()]]",
                 "setBalance": "().amount=_.data.value().balance||0;().balance=toPriceFormat():[data=().amount*[__.exchangeRate.find():[code=__.currency].exchangeRate]]+' '+__.currency",
-                "cleanSelectedAccountsBalance": "selectedAccountsBalance:().pull():[ledger=().account.ledger]"
+                "cleanSelectedAccountsBalance": "if():[selectedAccountsBalance:().find():[ledger=().account.ledger]]:[selectedAccountsBalance:().pull():[ledger=().account.ledger]]"
             },
             "checkIfOpenPrevForm": {
                 "callOpenCreateForm": "openCreateForm():[back=true;manager=getManagerFromManager():[id=createFormStack:().at():[-1].id]]",
                 "callSearchBox": "openSearchBox():[back=true;[createFormStack:().[-1]].flat()]",
-                "[object Object]": "if():[:().len(1]:[create:().pullItem():[createFormStack:().at():[-1]];().group=collectionsInfo:().find():[managers.():collection.inc():[createFormStack:().at():[-1]]];manager=[().group.groupName]:().[().group.managers.find():[collection=createFormStack:().at():[-1]].manager];#if():[_.data]:[addResponseInDoc()];updatePopup()]:[closeGeneralPopup()]",
-                "_": "if():[_.redeclareSearchEngineDoc]:[customManagerSearchEngine:()=_.redeclareSearchEngineDoc];if():[createFormStack:().len()>1]:[createFormStack:().pullIndex():[-1];if():[createFormStack:().at():[-1].searchbox]:[callSearchBox()]:[#[_.docName]:()='';callOpenCreateForm()];if():[__.getterKeyValue||true]:[saveResponseInDoc()]]:[createFormStack:()=:;closeGeneralPopup()]",
-                "saveResponseInDoc": "__.getterKeyValue.getterKeyValue.keys()._():[().x=___.getterKeyValue.path.clone();().x.push():[_];().dataPath=[[___.getterKeyValue.getterKeyValue].[_]]().split():'.';[____.docName]:().reduce():[path=().x;data=__.data.data.reduce():[path=().dataPath]];log():[doc=[____.docName]:().clone();data=__.data.data.reduce():[path=().dataPath];path=().x]:['qqqqq0000']]"
+                "[object Object]": "if():[:().le(1:[c:().pullItem():[createFormStack:().at():[-1]];().group=collectionsInfo:().find():[managers.():collection.inc():[createFormStack:().at():[-1]]];manager=[().group.groupName]:().[().group.managers.find():[collection=createFormStack:().at():[-1]].manager];#if():[_.data]:[addResponseInDoc()];updatePopup()]:[closeGeneralPopup()]",
+                "_": "if():[_.redeclareSearchEngineDoc]:[customManagerSearchEngine:()=_.redeclareSearchEngineDoc];if():[createFormStack:().len()>1]:[createFormStack:().pullIndex():[-1];if():[createFormStack:().at():[-1].searchbox]:[callSearchBox()]:[[_.docName]:()='';callOpenCreateForm()];if():[__.getterKeyValue||true]:[saveResponseInDoc()]]:[createFormStack:()=:;closeGeneralPopup()]",
+                "saveResponseInDoc": "__.getterKeyValue.getterKeyValue.keys()._():[().x=___.getterKeyValue.path.clone();().x.push():[_];().dataPath=[[___.getterKeyValue.getterKeyValue].[_]]().split():'.';[____.docName]:().reduce():[path=().x;data=__.data.data.reduce():[path=().dataPath]];log():[form=[____.docName]:().clone();data=__.data.data.reduce():[path=().dataPath];path=().x]:['qqqqq0000']]"
             },
             "checkSession": {
-                "checkSessionExist": "login():[session=getCookie():session]:[if():[_.success]:[loader.show;getAllData()::[setCookie():[name=session;value=_.session];userData:()=_.data;[root():portal?manifest:().page!=portal]()::[updateProfileName();():sidebar.update()::[loader.hide]]]]:[root():login?manifest:().page!=login?loader.hide;eraseCookie():session;note():[text=_.message;danger]]]",
+                "checkSessionExist": "login():[session=getCookie():session]:[if():[_.success]:[loader.show;getAllData()::[setCookie():[name=session;value=_.session];userData:()=_.data;[root():portal?manifest:().page!=portal]()::[updateProfileName();():sidebar.refresh()::[loader.hide]]]]:[root():login?manifest:().page!=login?loader.hide;eraseCookie():session;note():[text=_.message;danger]]]",
                 "updateProfileName": "if():[!mobile()]:[():profileName.txt()=userData:().firstName.capitalize()+' '+userData:().lastName.capitalize();():branchDroplist.txt()=userData:().branch.find():[headQuarter].name]:[():mobileProfileName.txt()=userData:().firstName.0.capitalize()+userData:().lastName.0.capitalize()]",
                 "_": "if():[getCookie():session]:[loader.show;checkSessionExist()]:[root():login?manifest:().page!=login]?!userData:();manifest:().page!=main"
             },
@@ -95,7 +97,7 @@
             "openexchangeRateView": {
                 "_": "setDocValues();setSubGeneralPopupParams();openSubGeneralPopup()",
                 "setSubGeneralPopupParams": "setDocDefaultValues();subGeneralPopup:()=[docValues=().docValues;borderRadius=0 0 .4rem .4rem;stopFormIds=true;title='Currency Rate';docName=settingsInfo:().exchangeRateInfo.popupInfo.docName;popupName=customForm;inputInfo=settingsInfo:().exchangeRateInfo.createFormInputs.clone();saveAction=settingsInfo:().exchangeRateInfo.saveAction;discardAction=settingsInfo:().exchangeRateInfo.discardAction]",
-                "openSubGeneralPopup": "():subGeneralPopup.update()::[():subGeneralPopup.style():[visibility=visible;opacity=1];():subGeneralPopup.2ndChild().style():[transform=translateY(0)]]",
+                "openSubGeneralPopup": "():subGeneralPopup.refresh()::[():subGeneralPopup.style():[visibility=visible;opacity=1];():subGeneralPopup.2ndChild().style():[transform=translateY(0)]]",
                 "setDocDefaultValues": "exchangeRate:()=[exchangeRates=:[___]]",
                 "setDocValues": "___._():[().docValues.exchangeRates=:[systemCurrencyRate=_.systemCurrencyRate;name=_.name;counter=_.counter;code=_.code;createdCurrencyRate=_.createdCurrencyRate;exchangeRate=_.exchangeRate]]"
             },
@@ -117,7 +119,7 @@
                         "setFooterList": "().credit=managersSearchResult:().transactionManager.():credit.sum();().debit=managersSearchResult:().transactionManager.():debit.sum();().balance=().debit-().credit;if():[().balance<0]:[().balance='('+().balance+')'];().printViewData.data.footerList.push():[balance=().balance;debit=().debit;credit=().credit;description='*REQUESTED PERIOD TOTALS*']"
                     }
                 },
-                "callPrintView": "generalPopup:()=[title=Print;popupName=customPrintView2;data=().printViewData];():generalPopup.update()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1];#():customPrintView2.html2pdf():[name='Voucher']]"
+                "callPrintView": "generalPopup:()=[title=Print;popupName=customPrintView2;data=().printViewData];():generalPopup.refresh()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1];#():customPrintView2.html2pdf():[name='Voucher']]"
             },
             "toPriceFormat": {
                 "_": "splitTextByDot();handleDecimalPart();splitNumberBeforeDot();addCommas();combineDecimalPart();().num=().num.replaceAll():['t']:[''];return():[().num]",
@@ -131,10 +133,10 @@
             "customUpdate": {
                 "_": "if():[_.type()=array]:[handleListUpdates()].elif():[_.section;_.input]:[updateInputInSpecificSection()].elif():[_.section||_.section=0]:[updateSpecificSection()].elif():[_.input]:[updateInputInSameSection()]:[updateForm()]",
                 "handleListUpdates": "_._():[customUpdate():[_]]",
-                "updateInputInSpecificSection": "getSectionByIndex():[_.section]._():[__.input._():[():[__.inputs.[_].id].update()]]",
+                "updateInputInSpecificSection": "getSectionByIndex():[_.section]._():[__.input._():[():[__.inputs.[_].id].refresh()]]",
                 "getSectionByIndex": "return():[formIds:().find():[sectionCounter=_.toString()]]",
-                "updateSpecificSection": "_.section._():[():[getSectionByIndex():[_].id].update()]",
-                "updateInputInSameSection": "getSectionByIndex():[____.index]._():[__.input._():[():[__.inputs.[_].id].update()]]"
+                "updateSpecificSection": "_.section._():[():[getSectionByIndex():[_].id].refresh()]",
+                "updateInputInSameSection": "getSectionByIndex():[____.index]._():[__.input._():[():[__.inputs.[_].id].refresh()]]"
             }
         },
         "comments": [],
@@ -183,16 +185,6 @@
             },
             {
                 "path": [
-                    "openSearchBox"
-                ]
-            },
-            {
-                "path": [
-                    "openCreateForm"
-                ]
-            },
-            {
-                "path": [
                     "printAction",
                     "setPrintViewData",
                     "setStatmentOfAccountInfo"
@@ -221,7 +213,32 @@
             },
             {
                 "path": [
+                    "getAllData"
+                ]
+            },
+            {
+                "path": [
+                    "customUpdate"
+                ]
+            },
+            {
+                "path": [
+                    "customCondition"
+                ]
+            },
+            {
+                "path": [
                     "getAccountBalance"
+                ]
+            },
+            {
+                "path": [
+                    "openexchangeRateView"
+                ]
+            },
+            {
+                "path": [
+                    "openSearchBox"
                 ]
             },
             {
@@ -231,23 +248,13 @@
             },
             {
                 "path": [
-                    "getAllData"
-                ]
-            },
-            {
-                "path": [
-                    "checkIfOpenPrevForm"
-                ]
-            },
-            {
-                "path": [
-                    "customUpdate"
+                    "openCreateForm"
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 22326
+        "size": 22471
     },
     "children": [
         {

@@ -697,6 +697,10 @@
         {
             "country": "Tanzania",
             "capital": "Dodoma (official), Dar es Salaam (administrative)"
+        },
+        {
+            "country": "taha",
+            "capital": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
         }
     ],
     "active": "true",
@@ -717,9 +721,14 @@
     "__props__": {
         "id": "01N761H1N0D3t123J6y2O2F2J6",
         "doc": "qIEfAMzW1gALmPVxTlf1mgoz3Sku2OlMwOxQefl3nz5uhG2dpzeTDy6fFz5F",
+        "counter": 10,
         "creationDate": 1711031362226,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "sheet",
+        "chunk": "chunk1",
+        "lastModified": 1721900415533,
+        "dev": false,
+        "actions": {},
+        "comments": [],
         "collapsed": [
             {
                 "path": [
@@ -742,12 +751,9 @@
                 ]
             }
         ],
-        "comments": [],
-        "dirPath": [],
-        "actions": {},
-        "counter": 10,
-        "chunk": "chunk1",
-        "collection": "sheet"
+        "arrange": [],
+        "secured": false,
+        "size": 8813
     },
     "width": [
         {
@@ -756,7 +762,7 @@
         },
         {
             "column": 2,
-            "width": "218px"
+            "width": "429px"
         }
     ]
 }

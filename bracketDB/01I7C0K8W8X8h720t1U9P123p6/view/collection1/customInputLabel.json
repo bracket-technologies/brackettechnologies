@@ -8,7 +8,7 @@
                     "view": "Text?inputLabelHandler();style:[if():[_.hotCreatable||_.sheetName;!generalPopup:().read;!_.hideHotCreate]:[text-decoration=underline;cursor=pointer];fontSize=1.3rem;color=if():[_.required]:[handleRequiredLabel()];textAlign=start;text-overflow=ellipsis;overflow=hidden;whiteSpace=nowrap;fontSize=1.2rem;if():[_.lableStyle]:[[_.lableStyle].flat()]];if():[_.hotCreatable||_.sheetName;!_.hideHotCreate]:[handleHotCreatableEvents()];tooltip:[text=txt();#if():[_.question]:[_.inputLabel+'？']:[_.inputLabel]]?!_.editableLabel"
                 },
                 {
-                    "view": "Text?text=' *';style:[fontSize=1.3rem;color=#e54643]?customCondition():[data=doc();condition=_.required];!generalPopup:().read"
+                    "view": "Text?text=' *';style:[fontSize=1.3rem;color=#e54643]?customCondition():[data=form();condition=_.required];!generalPopup:().read"
                 }
             ]
         },
@@ -45,27 +45,30 @@
     "__props__": {
         "id": "X1U7L1r140e341U3C6Z5h1T9J9",
         "doc": "customInputLabel",
+        "counter": 14,
         "creationDate": 1711031365199,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1721902412678,
+        "dev": false,
         "actions": {
             "handleRequiredLabel": {
-                "handleRequiredCondition": "if():[customCondition():[data=doc();condition=_.required]]:[return():['#e54643']]:[return():['#555']]",
+                "handleRequiredCondition": "if():[customCondition():[data=form();condition=_.required]]:[return():['#e54643']]:[return():['#555']]",
                 "_": "if():[!generalPopup:().read]:[if():[_.required.type()=array]:[return():[handleRequiredCondition()]]:[return():['#e54643']]]:[return():['#555']]"
             },
-            "handleIfListOfMap": "_.allowedLedgers._():[().isTrue=customCondition():[data=doc().clone();condition=_.condition];if():[().isTrue]:[().allowedLedger=_.allowedLedgers]];().inputText=if():[().allowedLedger]:[_.inputLabel+' ('+().allowedLedger.join():['-']+')']:[_.inputLabel];().text=().inputText",
+            "handleIfListOfMap": "_.allowedLedgers._():[().isTrue=customCondition():[data=form().clone();condition=_.condition];if():[().isTrue]:[().allowedLedger=_.allowedLedgers]];().inputText=if():[().allowedLedger]:[_.inputLabel+' ('+().allowedLedger.join():['-']+')']:[_.inputLabel];().text=().inputText",
             "openexchangeRateView": {
                 "_": "setDocValues();setSubGeneralPopupParams();openSubGeneralPopup()",
                 "setSubGeneralPopupParams": "subGeneralPopup:()=[docValues=().docValues;borderRadius=0 0 .4rem .4rem;stopFormIds=true;title='Currency Rate';docName=settingsInfo:().exchangeRateInfo.popupInfo.docName;popupName=customForm;inputInfo=settingsInfo:().exchangeRateInfo.createFormInputs.clone();saveAction=settingsInfo:().exchangeRateInfo.saveAction;discardAction=settingsInfo:().exchangeRateInfo.discardAction]",
-                "openSubGeneralPopup": "():subGeneralPopup.update()::[():subGeneralPopup.style():[visibility=visible;opacity=1];():subGeneralPopup.2ndChild().style():[transform=translateY(0)]]",
+                "openSubGeneralPopup": "():subGeneralPopup.refresh()::[():subGeneralPopup.style():[visibility=visible;opacity=1];():subGeneralPopup.2ndChild().style():[transform=translateY(0)]]",
                 "setDocValues": "().docValues.exchangeRates=[generalPopup:().docName]:().exchangeRates.clone();().docValues.exchangeRates.pullIndex():0;"
             },
-            "handleIconsCondition": "if():[_.condition]:[return():[customCondition():[condition=_.condition;data=doc()]]]:[return():[true]]",
+            "handleIconsCondition": "if():[_.condition]:[return():[customCondition():[condition=_.condition;data=form()]]]:[return():[true]]",
             "openTaxesForm": {
                 "_": "setSubGeneralPopupParams();openSubGeneralPopup()",
                 "setSubGeneralPopupParams": "setIdsToUpdate();;setDocValues();subGeneralPopup:()=[viewToUpdate=().ids;dataPath=path().[-1];leftSize=20%;bottomSize=45%;rightSize=20%;borderRadius=0 0 .4rem .4rem;stopFormIds=true;title='Taxes Details';docValues=().docValues;docName=taxesInfo;popupName=customForm;inputInfo=ticketInvoiceInfo:().ticketInvoiceManager.taxesFormInputs.clone()]",
-                "openSubGeneralPopup": "():subGeneralPopup.update()::[():subGeneralPopup.style():[visibility=visible;opacity=1];():subGeneralPopup.2ndChild().style():[transform=translateY(0)]]",
-                "setDocValues": "().docValues=[currency=doc().currency;tax1=data().tax1;tax2=data().tax2;tax3=data().tax3;tax4=data().tax4;tax5=data().tax5;tax6=data().tax6;tax7=data().tax7;tax8=data().tax8]",
+                "openSubGeneralPopup": "():subGeneralPopup.refresh()::[():subGeneralPopup.style():[visibility=visible;opacity=1];():subGeneralPopup.2ndChild().style():[transform=translateY(0)]]",
+                "setDocValues": "().docValues=[currency=form().currency;tax1=data().tax1;tax2=data().tax2;tax3=data().tax3;tax4=data().tax4;tax5=data().tax5;tax6=data().tax6;tax7=data().tax7;tax8=data().tax8]",
                 "setIdsToUpdate": "().index=:['0.'+path().[-1]+'.0']:['0.'+path().[-1]+'.2'];().index._():[().ids.push():[formIds:().find():[sectionCounter=_].id]]"
             },
             "openUnpaidInvoicesNew": {
@@ -76,22 +79,22 @@
                 "setInvoicesDataIfCustomer": "().itemsData=:;_.data.values()._():[if():[_.receivables.remainingAmount>0]:[().itemsData.push():[id=_.id;date=_.invoiceDate;invoiceNumber=_.ref;totalAmount=_.receivables.totalAmount;remainingAmount=_.receivables.remainingAmount]]];if():[().itemsData.len()>0]:[setSubGeneralPopupParams()]:[note():[text='No unpaid invoices found for this customer!';warning]]",
                 "setInvoicesDataIfSupplier": "().itemsData=:;_.data.values()._():[if():[_.payables.find():[supplier=_____.receivablesAndPayablesAccount].remainingAmount>0]:[().itemsData.push():[id=_.id;date=_.invoiceDate;invoiceNumber=_.ref;totalAmount=_.payables.find():[supplier=_____.receivablesAndPayablesAccount].totalAmount;remainingAmount=_.payables.find():[supplier=_____.receivablesAndPayablesAccount].remainingAmount]]];if():[().itemsData.len()>0]:[setSubGeneralPopupParams()]:[note():[text='No unpaid invoices found for this supplier!';warning]]",
                 "setSubGeneralPopupParams": "subGeneralPopup:()=[path=path().[-2];identifierToUpdate=3rdParent().id;discardAction='closeSubGeneralPopup()';index=path().[-1];doneAction='saveUnpaidedInvoiceInData()';docName=generalPopup:().docName;tablePath=unpaidInvoice;tablePathData=().itemsData;tableDocName=unpaidInvoiceInfo;tableHeaderAndBody=sharedManagersInfo:().invoiceSharedInfo.unpaidInvoiceTable;borderRadius=0 0 .4rem .4rem;stopFormIds=true;title='Unpaid Invoices';noSearchEngine=true;popupName=searchBoxPage;footerList=().footerList];openSubGeneralPopup()",
-                "openSubGeneralPopup": "():subGeneralPopup.update()::[():subGeneralPopup.style():[visibility=visible;opacity=1];():subGeneralPopup.2ndChild().style():[transform=translateY(0)]]",
-                "setFooterList": "unpaidInvoiceInfo:().payment=data().amount||0;unpaidInvoiceInfo:().currency=doc().currency;().footerList=:[payment=if():[data().invoicesInfo]:[data().amount]:[0]]",
-                "checkIfValidLedger": "if():[[doc().type='Receipt Voucher';___.receivablesAndPayablesLedgerAccount.slice():0:2='41']||[doc().type='Payment Voucher';___.receivablesAndPayablesLedgerAccount.slice():0:2='40']]:[getInvoices()]:[note():[text='You can not append invoice for this ledger account!';warning]]"
+                "openSubGeneralPopup": "():subGeneralPopup.refresh()::[():subGeneralPopup.style():[visibility=visible;opacity=1];():subGeneralPopup.2ndChild().style():[transform=translateY(0)]]",
+                "setFooterList": "unpaidInvoiceInfo:().payment=data().amount||0;unpaidInvoiceInfo:().currency=form().currency;().footerList=:[payment=if():[data().invoicesInfo]:[data().amount]:[0]]",
+                "checkIfValidLedger": "if():[[form().type='Receipt Voucher';___.receivablesAndPayablesLedgerAccount.slice():0:2='41']||[form().type='Payment Voucher';___.receivablesAndPayablesLedgerAccount.slice():0:2='40']]:[getInvoices()]:[note():[text='You can not append invoice for this ledger account!';warning]]"
             },
             "handleHotCreatableEvents": {
                 "callOpenHotCreateFormForAccount": {
-                    "readFromAllowedLedgers": "().getterKeyValue=[path=path();getterKeyValue=_.getterKeyValue];().formManagerData=generalLedgerInfo:().values().find():[ledgerAccountCode.toString()=().codeTypes.0.toString().0];openCreateForm():[getterKeyValue=().getterKeyValue;title=().formManagerData.popupInfo.title;manager=().formManagerData;docName=().formManagerData.popupInfo.docName;docDefaultValues=[ledgerAccountName=().formManagerData.ledgerAccountName]]",
+                    "readFromAllowedLedgers": "().getterKeyValue=[path=path();getterKeyValue=_.getterKeyValue];().formManagerData=generalLedgerInfo:().values().find():[ledgerAccountCode.toString()=().codeTypes.0.toString().0];openCreateForm():[getterKeyValue=().getterKeyValue;title=().formManagerData.popupInfo.title;manager=().formManagerData;docName=().formManagerData.popupInfo.docName;docDefaultValues=[ledgerType=_.ledgerType;ledgerAccountName=().formManagerData.ledgerAccountName]]",
                     "_": "if():[().codeTypes.len()=1]:[readFromAllowedLedgers()]:[readFromDroplistText()]",
                     "readFromDroplistText": "().manager=generalLedgerInfo:().values().find():[ledgerAccountName=().ledger];().getterKeyValue=[path=path();getterKeyValue=_.getterKeyValue];openCreateForm():[getterKeyValue=().getterKeyValue;title=().manager.popupInfo.title;docName=().manager.popupInfo.docName;manager=().manager;docDefaultValues=[ledgerAccountName=().manager.ledgerAccountName]]"
                 },
                 "_": "mouseenter:[style().color=#3290ff];mouseleave:[if():[_.required]:[style().color=#e54643]:[style().color=#555]];if():[_.collection='account']:[timer():[handleAccountTypeFromAllowedLedgers()]:0];droplist:[preventDefault=true];[click:droplist?().ledger=clicked().txt();callOpenHotCreateFormForAccount()];click:[if():[_.sheetName]:[openSheet()]:[if():[().isSpecificCode]:[callOpenHotCreateFormForAccount()]]]",
                 "openSheet": {
-                    "setNewCurrentSheetInfo": "().key.push():[_.sheetHeader];().title.push():[_.sheetHeader.capitalize()];currentSheetInfo:()=[name=doc().country+' '+_.sheetHeader.capitalize();type=Editable;keys=().key;titles=().title]",
+                    "setNewCurrentSheetInfo": "().key.push():[_.sheetHeader];().title.push():[_.sheetHeader.capitalize()];currentSheetInfo:()=[name=form().country+' '+_.sheetHeader.capitalize();type=Editable;keys=().key;titles=().title]",
                     "setCurrentSheetInfo": "if():[sheetData:().[[_.sheetName]()]]:[setExistingData()]:[setNewCurrentSheetInfo()]",
                     "requiredInput": "if():[data().[_.requiredInput]]:[loader.show;currentSheetInfo:()='';().key='';().title='';setCurrentSheetInfo();openSheett()]:[note():[text='Select a '+[_.requiredInput]+'!';type=danger]]",
-                    "openSheett": "createFormStack:().push():[collection='sheet';selectedSection=selectedSection:()];timer():[generalPopup:()=[sheet;title=Sheet Form;popupName=sheet;currentSheetInfo:().status=hotCreateSheet;inputId=prev().id;uneditableInputs=true];():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:100",
+                    "openSheett": "createFormStack:().push():[collection='sheet';selectedSection=selectedSection:()];timer():[generalPopup:()=[sheet;title=Sheet Form;popupName=sheet;currentSheetInfo:().status=hotCreateSheet;inputId=prev().id;uneditableInputs=true];():generalPopup.refresh():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:100",
                     "setExistingData": "currentSheetInfo:()=sheetData:().[[_.sheetName]()]",
                     "_": "if():[_.requiredInput]:[requiredInput()]:[loader.show;currentSheetInfo:()=sheetData:().[_.sheetName];openCreateForm():[manager=bracketSheetTable:().sheetTable;docValues=sheetData:().[[_.sheetName]()]]]"
                 },
@@ -106,12 +109,29 @@
             },
             "inputLabelHandler": {
                 "_": "if():[_.allowedCode]:[if():[_.allowedCode.type()=array]:[handleAllowedCodeCondition()]:[().appliedCode=_.allowedCode;setAppliedCode()]]:[if():[_.question]:[text=_.inputLabel+'？']:[handleNormalLabel()]];if():[_.hotCreatable;!generalPopup:().read]:[().text='~'+txt()]",
-                "handleAllowedCodeCondition": "_.allowedCode._():[if():[customCondition():[data=doc().clone();condition=_.condition]]:[().appliedCode=_]];setAppliedCode()",
+                "handleAllowedCodeCondition": "_.allowedCode._():[().cinditionApplied=customCondition():[data=form().clone();condition=_.condition];if():[().cinditionApplied]:[().appliedCode=_]];setAppliedCode()",
                 "handleNormalLabel": "if():[_.inputLabel.type()=array]:[handleLabelCondition()]:[text=_.inputLabel]",
-                "handleLabelCondition": "_.inputLabel._():[if():[customCondition():[data=doc().clone();condition=_.condition]]:[().text=_.inputLabel]]",
+                "handleLabelCondition": "_.inputLabel._():[if():[customCondition():[data=form().clone();condition=_.condition]]:[().text=_.inputLabel]]",
                 "setAppliedCode": "txt()=if():[().appliedCode]:[_.inputLabel+' ('+().appliedCode.allowedCode.list().join():['-']+')']:[_.inputLabel]"
             }
         },
+        "comments": [
+            {
+                "note": "add",
+                "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "().appliedCode is a variable from inputLableHandler(); it contains the allowed codes for the droplist",
+                "path": [
+                    "handleHotCreatableEvents",
+                    "handleAccountTypeFromAllowedLedgers",
+                    "specificLedger"
+                ]
+            }
+        ],
         "collapsed": [
             {
                 "path": [
@@ -199,35 +219,13 @@
             },
             {
                 "path": [
-                    "inputLabelHandler"
-                ]
-            },
-            {
-                "path": [
                     "handleRequiredLabel"
                 ]
             },
             {
                 "path": [
                     "handleHotCreatableEvents",
-                    "openSheet"
-                ]
-            },
-            {
-                "path": [
-                    "handleHotCreatableEvents",
                     "handleAccountTypeFromAllowedLedgers"
-                ]
-            },
-            {
-                "path": [
-                    "handleHotCreatableEvents",
-                    "callOpenHotCreateFormForAccount"
-                ]
-            },
-            {
-                "path": [
-                    "handleHotCreatableEvents"
                 ]
             },
             {
@@ -239,30 +237,38 @@
                 "path": [
                     "openUnpaidInvoicesNew"
                 ]
-            }
-        ],
-        "comments": [
+            },
             {
-                "note": "add",
                 "path": [
-                    "children",
-                    2
+                    "openexchangeRateView"
                 ]
             },
             {
-                "note": "().appliedCode is a variable from inputLableHandler(); it contains the allowed codes for the droplist",
+                "path": [
+                    "inputLabelHandler"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
                 "path": [
                     "handleHotCreatableEvents",
-                    "handleAccountTypeFromAllowedLedgers",
-                    "specificLedger"
+                    "callOpenHotCreateFormForAccount"
                 ]
             }
         ],
-        "dirPath": [],
-        "version": 0,
-        "counter": 14,
-        "secure": false,
-        "chunk": "chunk1",
-        "collection": "view"
+        "arrange": [],
+        "secured": false,
+        "size": 12968
     }
 }

@@ -1,5 +1,5 @@
 {
-    "view": "View?id=view5;style=[fontFamily=sans serif];doc;imagePrime():1;counter:()=1",
+    "view": "View?id=view5;style=[fontFamily=sans serif];form;imagePrime():1;counter:()=1",
     "__props__": {
         "id": "W1I791p50036S9N648N654U5F3",
         "doc": "view5",

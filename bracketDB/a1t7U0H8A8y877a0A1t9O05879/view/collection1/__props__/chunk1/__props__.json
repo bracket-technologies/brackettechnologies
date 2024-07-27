@@ -1,5 +1,6 @@
 {
     "docs": [
+        "gallery",
         "actionlist",
         "Authorize",
         "billing",
@@ -15,9 +16,8 @@
         "database",
         "document",
         "form",
-        "galleryView",
+        "fileForm",
         "help",
-        "image-window",
         "login",
         "main",
         "ManagerHeader",
@@ -25,7 +25,7 @@
         "msg",
         "projects",
         "root",
-        "router",
+        "view",
         "SearchEngine",
         "sidebar",
         "subscriptionForm",
@@ -35,6 +35,6 @@
         "tree"
     ],
     "indexes": [],
-    "docsLength": 33,
-    "size": -12
+    "docsLength": 28,
+    "size": -15113
 }

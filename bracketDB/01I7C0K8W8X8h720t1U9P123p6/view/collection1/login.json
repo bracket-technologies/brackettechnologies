@@ -1,5 +1,5 @@
 {
-    "view": "View?id=login;class=flexbox;style:[minHeight=100vh;width=100%;backgroundColor=#f8f8f8];title=Login | Travel Accounting Platform;doc=login;signupPageIndex:()=0;getLoginPage()",
+    "view": "View?id=login;class=flexbox;style:[minHeight=100vh;width=100%;backgroundColor=#f8f8f8];title=Login | Travel Accounting Platform;form=login;signupPageIndex:()=0;getLoginPage()",
     "children": [
         {
             "view": "View?class=flexbox column;style:[padding=if():[mobile()]:[0rem 3rem 0rem 3rem]:[5rem 3rem];backgroundColor=#fff;borderRadius=1rem;width=45rem;gap=3rem;if():[mobile()]:[height=100vh]]",
@@ -48,9 +48,12 @@
     "__props__": {
         "id": "q14761u1A0p311A3m6b5m2k0H8",
         "doc": "login",
+        "counter": 33,
         "creationDate": 1711031365208,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1721650369912,
+        "dev": false,
         "actions": {
             "configs": "publicData:().loginPage",
             "getLoginPage": "search():[collection=publicCollection;doc=loginPage]:[publicData:().loginPage=_.data]",
@@ -58,52 +61,18 @@
             "loginInputsData": ":[path=username;label=configs().usernamePlaceholder]:[path=password;label=configs().passwordPlaceholder;password=true]",
             "logintt": {
                 "wrongUserNote": "note():[text='Wrong username or password!';type=danger]",
-                "emailAndPasswordExist": "login():[doc()]:[if():[_.success]:[loader.show;getAllData()::[setCookie():[name=session;value=_.session];log():['zzzxxx']:[_.data];userData:()=_.data;root():portal;loader.hide]]:[loader.hide;wrongUserNote()]]",
-                "emailAndPasswordDoesNotExist": "note():[text=if():[!doc().username]:[configs().noEmailAlert]:[configs().noPasswordAlert];danger]",
-                "_": "loader.show;if():[doc().username;doc().password]:[emailAndPasswordExist()]:[loader.hide;emailAndPasswordDoesNotExist()]"
+                "emailAndPasswordExist": "login():[form()]:[if():[_.success]:[loader.show;getAllData()::[setCookie():[name=session;value=_.session];log():['zzzxxx']:[_.data];userData:()=_.data;root():portal;loader.hide]]:[loader.hide;wrongUserNote()]]",
+                "emailAndPasswordDoesNotExist": "note():[text=if():[!form().username]:[configs().noEmailAlert]:[configs().noPasswordAlert];danger]",
+                "_": "loader.show;if():[form().username;form().password]:[emailAndPasswordExist()]:[loader.hide;emailAndPasswordDoesNotExist()]"
             },
             "signUp": {
                 "setGeneralPopup": "setDataSource();generalPopup:()=[path=().manager.popupInfo.path;defaultPermission=().manager.defaultPermission;title=().manager.popupInfo.title;popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName];openPopup()",
-                "openPopup": "():generalPopup.update()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1]]",
+                "openPopup": "():generalPopup.refresh()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1]]",
                 "getAgentInfo": "signupForm()::[if():[_.success]:[signInForm:()=_.data];setGeneralPopup()]",
                 "_": "loader.show;().DocsIds=:branchManager:userManager:currencyManager;if():[!signInForm:()]:[getAgentInfo()]:[setGeneralPopup()]",
                 "setDataSource": "().manager=signInForm:().find():[id=().DocsIds.[signupPageIndex:()]]"
             }
         },
-        "collapsed": [
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    3
-                ]
-            }
-        ],
         "comments": [
             {
                 "note": "",
@@ -155,11 +124,52 @@
                 ]
             }
         ],
-        "dirPath": [],
-        "version": 0,
-        "counter": 33,
-        "secure": false,
-        "chunk": "chunk1",
-        "collection": "view"
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "logintt"
+                ]
+            },
+            {
+                "path": [
+                    "signUp"
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 4966
     }
 }

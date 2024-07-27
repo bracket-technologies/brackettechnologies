@@ -71,7 +71,7 @@
                     "view": "View?class=flex;style:[gap=.5rem]?_.path",
                     "children": [
                         {
-                            "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;borderRadius=.4rem;border=1px solid #ddd;cursor=pointer];click:[if():[doc().[___.path].len()>1]:[nthParent():4.rem()]]",
+                            "view": "View?class=flexbox;style:[height=2.4rem;width=2.4rem;borderRadius=.4rem;border=1px solid #ddd;cursor=pointer];click:[if():[form().[___.path].len()>1]:[nthParent():4.rem()]]",
                             "children": [
                                 {
                                     "view": "Icon?name=Remove;google.symbol;style:[fontSize=2rem]"
@@ -103,19 +103,19 @@
             },
             "checkSectionCondition": {
                 "removeTitle": "__.title.pull():[id=_.id];removeFromDoc()",
-                "checkCondition": "if():[!__.titleClone]:[__.titleClone=__.title.clone()];().taha=customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone()];if():[!().taha]:[removeTitle()].elif():[!__.title.find():[id=_.id]]:[pushTitle()]",
+                "checkCondition": "if():[!__.titleClone]:[__.titleClone=__.title.clone()];().taha=customCondition():[condition=_.condition;orCondition=_.orCondition;data=form().clone()];if():[!().taha]:[removeTitle()].elif():[!__.title.find():[id=_.id]]:[pushTitle()]",
                 "checkIfIncSelectedSection": "if():[!selectedSection:().[____.index].in():[__.title]]:[selectedSection:().[____.index]=__.title.0.id]",
-                "removeFromDoc": "_.input._():[if():[doc().[_.inputPath]]:[doc().[_.inputPath].del()]];checkIfIncSelectedSection()",
+                "removeFromDoc": "_.input._():[if():[form().[_.inputPath]]:[form().[_.inputPath].del()]];checkIfIncSelectedSection()",
                 "_": "_.sectionsInfo._():[if():[_.condition]:[checkCondition()]]",
                 "pushTitle": "__.title.push():[__.titleClone.find():[id=_.id]]:[__.titleClone.findIndex():[id=_.id]]"
             },
             "openGalleryManager": {
                 "_": "setGeneralPopupParams();updateGeneralPopup()",
                 "setGeneralPopupParams": "createFormStack:().push():[collection='gallery'];generalPopup:()=[title='Select Images From Gallery';popupName=photosPopup;docName=generalPopup:().docName;path=_.path;maxSelected=_.maxSelected]",
-                "updateGeneralPopup": "():generalPopup.2ndChild().style():[transform=translateX(-100vw)];timer():[():generalPopup.2ndChild().style():[transition=none;transform=translateX(100vw)]]:200;timer():[():generalPopup.2ndChild().update()::[loader.hide;():generalPopup.2ndChild().style():[transition=.2s;transform=translateX(0)]]]:300"
+                "updateGeneralPopup": "():generalPopup.2ndChild().style():[transform=translateX(-100vw)];timer():[():generalPopup.2ndChild().style():[transition=none;transform=translateX(100vw)]]:200;timer():[():generalPopup.2ndChild().refresh()::[loader.hide;():generalPopup.2ndChild().style():[transition=.2s;transform=translateX(0)]]]:300"
             },
             "handleRequiredTitle": {
-                "checkCondition": "_.condition._():[if():[doc().[_.conditionReference].in():[_.condition];__.required]:[().requiredTitle=true]]",
+                "checkCondition": "_.condition._():[if():[form().[_.conditionReference].in():[_.condition];__.required]:[().requiredTitle=true]]",
                 "checkRequired": "__.input.find():[id=_.id].input._():[if():[_.required;!_.condition]:[().requiredTitle=true].elif():[_.condition]:[checkCondition()]];if():[().requiredTitle]:[1stChild().style().color=#fb3b1e]",
                 "_": "().requiredTitle=false;checkRequired()"
             },

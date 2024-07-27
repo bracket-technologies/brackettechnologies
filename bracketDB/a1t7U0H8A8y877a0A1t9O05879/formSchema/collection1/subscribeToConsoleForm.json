@@ -85,7 +85,7 @@
     },
     "confirmBtn": {
         "text": "Subscribe Now",
-        "action": "[subscribe():[doc()]:[[checkSubscription():[_]]():[collection=view;doc=projects;path=:openConsole]:[end():[_]]?_.success;_.subscription?note():[text=_.message;type=danger]]]():[collection=actions;doc=main]",
+        "action": "[subscribe():[form()]:[[checkSubscription():[_]]():[collection=view;doc=projects;path=:openConsole]:[end():[_]]?_.success;_.subscription?note():[text=_.message;type=danger]]]():[collection=actions;doc=main]",
         "msg": "We are getting you started. Please wait until we finish!"
     },
     "title": "Get full access to your database, write Bracket code, and much more...! Start now and get 1 week full access for free!",

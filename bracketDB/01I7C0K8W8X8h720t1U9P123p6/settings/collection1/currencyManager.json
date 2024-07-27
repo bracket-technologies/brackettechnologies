@@ -50,7 +50,7 @@
                         "readonly": "readonly",
                         "hideInEditForm": "true",
                         "inputLabel": "Name",
-                        "inputValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].name]:['']",
+                        "inputValue": "if():[form().country]:[sheetData:().Currencies.data.find():[country=form().country].name]:['']",
                         "executeEveryLoad": true,
                         "required": true
                     },
@@ -59,7 +59,7 @@
                         "readonly": "readonly",
                         "hideInEditForm": "true",
                         "inputLabel": "Code",
-                        "inputValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].code]:['']",
+                        "inputValue": "if():[form().country]:[sheetData:().Currencies.data.find():[country=form().country].code]:['']",
                         "executeEveryLoad": true,
                         "required": "true"
                     },
@@ -68,14 +68,14 @@
                         "readonly": "readonly",
                         "hideInEditForm": "true",
                         "inputLabel": "Symbole",
-                        "inputValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].symbol]:['']",
+                        "inputValue": "if():[form().country]:[sheetData:().Currencies.data.find():[country=form().country].symbol]:['']",
                         "executeEveryLoad": true,
                         "required": true
                     },
                     {
                         "inputPath": "decimals",
                         "inputLabel": "Decimal digits",
-                        "inputValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].decimalDigits]:['']",
+                        "inputValue": "if():[form().country]:[sheetData:().Currencies.data.find():[country=form().country].decimalDigits]:['']",
                         "executeEveryLoad": true
                     }
                 ],
@@ -95,7 +95,7 @@
                                 "executeUnitEveryLoad": true,
                                 "fr": "1.3fr",
                                 "required": "true",
-                                "unitValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].code]:['']",
+                                "unitValue": "if():[form().country]:[sheetData:().Currencies.data.find():[country=form().country].code]:['']",
                                 "inputValue": 1,
                                 "#blurAction": "calcExchangeRate():[firstRatePath=governmentRate;secondeRatePath=systemCurrencyRate]"
                             },
@@ -127,7 +127,7 @@
                                 "fr": "1.3fr",
                                 "blurAction": "calcExchangeRate():[firstRatePath=createdCurrencyRate;secondeRatePath=systemCurrencyRate]",
                                 "required": "true",
-                                "unitValue": "if():[doc().country]:[sheetData:().Currencies.data.find():[country=doc().country].code]:['']"
+                                "unitValue": "if():[form().country]:[sheetData:().Currencies.data.find():[country=form().country].code]:['']"
                             },
                             {
                                 "inputPath": "systemCurrencyRate",

@@ -3,13 +3,13 @@
     "collection": 1,
     "lastChunk": 1,
     "docsLength": 0,
-    "counter": 65,
-    "reads": 1359,
-    "writes": 240,
+    "counter": 0,
+    "reads": 1529,
+    "writes": 257,
     "deletes": 0,
-    "size": -6261,
-    "payloadIn": 338033,
-    "payloadOut": 2151032,
+    "size": -6899,
+    "payloadIn": 370203,
+    "payloadOut": 2476209,
     "dirTree": [],
     "maxSize": 1000,
     "indexes": [
@@ -19,8 +19,8 @@
                 "customerAccount"
             ],
             "doc": "index1",
-            "lastRead": 1720786137265,
-            "expiryDate": 1723378137265
+            "lastRead": 1721823022187,
+            "expiryDate": 1724415022187
         },
         {
             "find": [
@@ -28,9 +28,43 @@
                 "status"
             ],
             "doc": "index2",
-            "lastRead": 1720787032751,
-            "expiryDate": 1723379032751
+            "lastRead": 1721820278094,
+            "expiryDate": 1724412278094
+        },
+        {
+            "find": [
+                "type"
+            ],
+            "doc": "index3",
+            "lastRead": 1721638653028,
+            "expiryDate": 1724230653028
+        },
+        {
+            "find": [
+                "id"
+            ],
+            "doc": "index4",
+            "lastRead": 1721648927624,
+            "expiryDate": 1724240927624
+        },
+        {
+            "find": [
+                "type",
+                "status",
+                "passengerName"
+            ],
+            "doc": "index5",
+            "lastRead": 1721733090806,
+            "expiryDate": 1724325090806
+        },
+        {
+            "find": [
+                "ref"
+            ],
+            "doc": "index6",
+            "lastRead": 1721820275893,
+            "expiryDate": 1724412275893
         }
     ],
-    "lastIndex": 2
+    "lastIndex": 6
 }

@@ -1,0 +1,335 @@
+{
+    "__props__": {
+        "id": "e137t291k034J605k1n387S0P3",
+        "doc": "transactionForAccontClone",
+        "counter": 51,
+        "creationDate": 1721046513703,
+        "collection": "schemas",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [
+            {
+                "path": [
+                    "account"
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 4724
+    },
+    "account": {
+        "beforeSaveStep": {
+            "keyValue": [
+                {
+                    "path": "ledgerAccount",
+                    "findKey": "helperKey",
+                    "findValue": "getLedgerAccountForMainAccountTransaction",
+                    "key": "ledgerAccount"
+                },
+                {
+                    "path": "id",
+                    "findKey": "helperKey",
+                    "findValue": "getLedgerAccountForMainAccountTransaction",
+                    "key": "account"
+                }
+            ]
+        },
+        "generateReference": true,
+        "keyValue": [
+            {
+                "generateReference": true,
+                "listOfDocs": true,
+                "listPath": "openingBalance",
+                "collection": "transaction",
+                "docsKeyValue": [
+                    {
+                        "collection": "transaction",
+                        "input": [
+                            {
+                                "key": "generalLedger",
+                                "staticValue": "119"
+                            },
+                            {
+                                "key": "ledgerAccount",
+                                "path": "openingBalanceAccount",
+                                "required": true,
+                                "type": "string"
+                            },
+                            {
+                                "path": "openingBalanceAccount",
+                                "type": "ledger",
+                                "key": "account",
+                                "required": "true"
+                            },
+                            {
+                                "key": "credit-debit",
+                                "staticValue": "if():[___.data.'credit-debit'=Credit]:[return():['Debit']]:[return():['Credit']]"
+                            },
+                            {
+                                "key": "exchangeRates",
+                                "staticValue": "mainReceivedData:().exchangeRates"
+                            },
+                            {
+                                "path": "currency",
+                                "type": "string",
+                                "key": "currency",
+                                "required": "true"
+                            },
+                            {
+                                "staticValue": "Opening",
+                                "key": "description"
+                            },
+                            {
+                                "path": "amount",
+                                "condition": [
+                                    {
+                                        "condition": "Capitals",
+                                        "conditionReference": "ledgerAccountName",
+                                        "operator": "!="
+                                    }
+                                ],
+                                "type": "number",
+                                "key": "amount",
+                                "required": true
+                            },
+                            {
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Capitals"
+                                        ],
+                                        "conditionReference": "ledgerAccountName"
+                                    }
+                                ],
+                                "staticValue": 0,
+                                "key": "amount"
+                            },
+                            {
+                                "path": "headAccount",
+                                "type": "string",
+                                "key": "headAccount"
+                            }
+                        ],
+                        "condition": [
+                            {
+                                "condition": [
+                                    "Yes"
+                                ],
+                                "conditionReference": "openingBalance"
+                            }
+                        ]
+                    },
+                    {
+                        "collection": "transaction",
+                        "input": [
+                            {
+                                "key": "generalLedger",
+                                "staticValue": "mainReceivedData:().generalLedger"
+                            },
+                            {
+                                "key": "exchangeRates",
+                                "staticValue": "mainReceivedData:().exchangeRates"
+                            },
+                            {
+                                "path": "credit-debit",
+                                "type": "string",
+                                "key": "credit-debit",
+                                "required": "true"
+                            },
+                            {
+                                "key": "currency",
+                                "path": "currency",
+                                "required": true,
+                                "static ": "mainReceivedData:().currency",
+                                "type": "string",
+                                "#staticValue": "mainReceivedData:().currency"
+                            },
+                            {
+                                "staticValue": "Opening",
+                                "key": "description"
+                            },
+                            {
+                                "path": "amount",
+                                "type": "number",
+                                "key": "amount",
+                                "required": true
+                            }
+                        ],
+                        "condition": [
+                            {
+                                "condition": [
+                                    "Yes"
+                                ],
+                                "conditionReference": "openingBalance"
+                            }
+                        ],
+                        "beforeSaveStep": {
+                            "keyValue": [
+                                {
+                                    "findKey": "helperKey",
+                                    "findValue": "getLedgerAccountForMainAccountTransaction",
+                                    "key": "ledgerAccount",
+                                    "staticValue": "saveStack:().find():[helperKey=getLedgerAccountForMainAccountTransaction].data.ledgerAccount.[mainReceivedData:().exchangeRates.findIndex():[code=__.data.currency]]"
+                                },
+                                {
+                                    "path": "id",
+                                    "findKey": "helperKey",
+                                    "findValue": "getLedgerAccountForMainAccountTransaction",
+                                    "key": "account"
+                                }
+                            ]
+                        },
+                        "helpersKeyValue": [
+                            {
+                                "staticValue": "getLastBalanceIdForMainAccountDoc",
+                                "key": "helperKey"
+                            }
+                        ]
+                    }
+                ],
+                "condition": [
+                    {
+                        "conditionReference": "openingBalance"
+                    }
+                ]
+            },
+            {
+                "collection": "transaction",
+                "customCondition": "().setDoc=false;mainReceivedData:().openingBalance._():[if():[_.openingBalance='Yes']:[().setDoc=true]];if():[().setDoc]:[return():[true]]:[return():[false]]",
+                "#staticDoc": true,
+                "#beforeSaveStep": {
+                    "keyValue": [
+                        {
+                            "path": "ledgerAccount",
+                            "findKey": "helperKey",
+                            "findValue": "getLedgerAccountForMainAccountTransaction",
+                            "key": "ledgerAccount"
+                        },
+                        {
+                            "path": "id",
+                            "findKey": "helperKey",
+                            "findValue": "getLedgerAccountForMainAccountTransaction",
+                            "key": "account"
+                        }
+                    ]
+                },
+                "input": [
+                    {
+                        "key": "generalLedger",
+                        "path": "generalLedger",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "path": "credit-debit",
+                        "type": "string",
+                        "key": "credit-debit",
+                        "required": "true"
+                    },
+                    {
+                        "key": "exchangeRates",
+                        "staticValue": "mainReceivedData:().exchangeRates"
+                    },
+                    {
+                        "path": "currency",
+                        "type": "string",
+                        "key": "currency",
+                        "required": "true"
+                    },
+                    {
+                        "staticValue": "Opening",
+                        "key": "description"
+                    },
+                    {
+                        "path": "amount",
+                        "condition": [
+                            {
+                                "condition": "Capitals",
+                                "conditionReference": "ledgerAccountName",
+                                "operator": "!="
+                            }
+                        ],
+                        "type": "number",
+                        "key": "amount",
+                        "required": true
+                    },
+                    {
+                        "condition": [
+                            {
+                                "condition": [
+                                    "Capitals"
+                                ],
+                                "conditionReference": "ledgerAccountName"
+                            }
+                        ],
+                        "staticValue": 0,
+                        "key": "amount"
+                    },
+                    {
+                        "path": "headAccount",
+                        "type": "string",
+                        "key": "headAccount"
+                    }
+                ]
+            }
+        ],
+        "ignoreMainDoc": true,
+        "nextStep": [
+            {
+                "condition": [
+                    {
+                        "condition": [
+                            "Fixed Assets"
+                        ],
+                        "conditionReference": "ledgerAccountName"
+                    },
+                    {
+                        "condition": [
+                            "Yes"
+                        ],
+                        "conditionReference": "createDepreciationAccount"
+                    }
+                ],
+                "manager": "assetDepreciation",
+                "collection": "account"
+            },
+            {
+                "condition": [
+                    {
+                        "condition": [
+                            "Receivables and Payables"
+                        ],
+                        "conditionReference": "ledgerAccountName"
+                    },
+                    {
+                        "condition": [
+                            "B2B Customer",
+                            "B2C Customer",
+                            "Corporate Customer",
+                            "Agency Supplier",
+                            "Airline Supplier",
+                            "Other Operational Account"
+                        ],
+                        "conditionReference": "type"
+                    },
+                    {
+                        "condition": [
+                            "Yes"
+                        ],
+                        "conditionReference": "createVATAccount"
+                    }
+                ],
+                "manager": "vatAccount",
+                "collection": "account"
+            }
+        ],
+        "helpersKeyValue": [
+            {
+                "staticValue": "getLastBalanceIdForMainAccountDoc",
+                "key": "helperKey"
+            }
+        ]
+    }
+}

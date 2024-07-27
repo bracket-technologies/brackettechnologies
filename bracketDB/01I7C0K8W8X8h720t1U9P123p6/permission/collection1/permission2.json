@@ -1,0 +1,83 @@
+{
+    "permission": {
+        "notification": [
+            "Create",
+            "Edit",
+            "Read",
+            "Remove",
+            "Receive"
+        ],
+        "schedule": [
+            "Create",
+            "Edit",
+            "Read",
+            "Remove",
+            "Receive"
+        ],
+        "service": [
+            "Read"
+        ],
+        "voucher": [
+            "Read",
+            "Create",
+            "Print"
+        ],
+        "sheet": [
+            "Read",
+            "Create",
+            "Import",
+            "Export",
+            "Edit"
+        ],
+        "invoice": [
+            "Read",
+            "Create",
+            "Print"
+        ],
+        "asset": [
+            "Read"
+        ],
+        "branch": [
+            "Read",
+            "History",
+            "Remove"
+        ],
+        "account": [
+            "Edit",
+            "Remove",
+            "Read",
+            "History",
+            "Balance Sheet",
+            "Create"
+        ],
+        "dashboard": [
+            "Read"
+        ],
+        "gallery": [
+            "Upload",
+            "Read",
+            "Edit",
+            "Remove"
+        ]
+    },
+    "user": "ztxZgVucjYy24oFsj2AkhhKe1l6CsYwqlTkZ43HLLOmXdbFpybw6b5zRVwS8-1721654858348",
+    "id": "gybumsfLFBqjf6TcSRFkBj0tca8HvnO8N2FPuXipN3ChMb2EU5iCDZzV0IX4-1721654858397",
+    "creationDate": 1721654858397,
+    "creationDay": 1721595600000,
+    "__props__": {
+        "id": "o1X7E2L1I6q5t4v8O5u8d4g2S6",
+        "doc": "permission2",
+        "counter": 2,
+        "creationDate": 1721654858426,
+        "collection": "permission",
+        "chunk": "chunk1",
+        "lastModified": 1721654858426,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 948
+    }
+}

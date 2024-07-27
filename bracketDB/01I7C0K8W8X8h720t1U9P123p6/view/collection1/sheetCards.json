@@ -48,25 +48,25 @@
         "actions": {
             "iconEvent": "mouseenter:[3rdParent().().dropListClick=true];mouseleave:[3rdParent().().dropListClick=false]",
             "checkIfFilled": {
-                "changeName": "changeSheetName():[id=_.id;newName=doc().newSheetName]:[updateNewName()]",
+                "changeName": "changeSheetName():[id=_.id;newName=form().newSheetName]:[updateNewName()]",
                 "changeStyle": "style():[display=none];prev().style():[display=block];3rdParent().style():[backgroundColor=transparent;borderRadius=0;border=0]",
                 "updateNewName": "if():[_.success]:[note():[text=_.message];prev().txt()=txt();changeStyle()]:[note():[text=somthing went wrong!;type=warning]]",
-                "_": "changeStyle();if():[doc().newSheetName]:[changeName()];doc().newSheetName=''"
+                "_": "changeStyle();if():[form().newSheetName]:[changeName()];form().newSheetName=''"
             },
             "sheetDroplist": "droplist:[preventDefault;items=:[icon=[name=Visibility;google.symbol];tooltip.text='readonly']:[icon=[name=Edit;google.symbol];tooltip.text='change name']:[icon=[name=history;google.symbol];tooltip.text='history']:[icon=[name=Delete;google.symbol];tooltip.text='remove'];style:[width=3rem];item.style:[padding=0;justifyContent=center];placement=right;align=center]",
-            "#openExcelSheet": "[loader.show;generalPopup:()=[sheet;title=Sheet Form;popupName=sheet;saveAs];updateStatus:()=false;sheetName:().del();timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:10",
+            "#openExcelSheet": "[loader.show;generalPopup:()=[sheet;title=Sheet Form;popupName=sheet;saveAs];updateStatus:()=false;sheetName:().del();timer():[():generalPopup.refresh():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:10",
             "openExcelSheet": "openCreateForm():[manager=bracketSheetTable:().value();docValues=_;if():[_.type=Readonly]:[read=true]]",
             "openHistoryForm": {
                 "setPopup": "generalPopup:()=[title='History Form';searchTitle=_.name+' Sheet History';popupName=customHotPopup;inputListName=bracketSheetTable:().sheetTable.historySearchEngine;iconFalse=true;clickedId=_.id;identifier='history';searchKey=bracketSheetTable:().sheetTable.managerName;tableHeaders=bracketSheetTable:().sheetTable.historyTable];openPopup();getHistoryData()",
                 "getHistoryData": "#tahaHistory():[id=_.id;collection=sheet]:[ddd]",
-                "openPopup": "timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1];]:10",
+                "openPopup": "timer():[():generalPopup.refresh():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1];]:10",
                 "_": ";#loader.show;setPopup()"
             },
             "#droplistClickHandler": {
                 "openEdit": "currentSheetInfo:()=_;currentSheetInfo:().permission='Editable';currentSheetInfo:().title=_.name;currentSheetInfo:().updateStatus=true;currentSheetInfo:().sheetId=_.id;openExcelSheet()",
                 "focusOnName": "parent().next().1stChild().style():[display=none];parent().next().2ndChild().style():[display=block];parent().next().2ndChild().focus();ChangeName()",
                 "openReadOnly": "currentSheetInfo:()=_;currentSheetInfo:().permission='Readonly';currentSheetInfo:().title=_.name;currentSheetInfo:().updateStatus=true;currentSheetInfo:().sheetId=_.id;openExcelSheet()",
-                "sheetErase": "loader.show;eraseSheet():[_.id]:[note():[text=_.message];sheetInfo:().pull():[name=_.name];():sheetsView.update();loader.hide];",
+                "sheetErase": "loader.show;eraseSheet():[_.id]:[note():[text=_.message];sheetInfo:().pull():[name=_.name];():sheetsView.refresh();loader.hide];",
                 "_": "if():[droplist-txt:()='Edit']:[focusOnName()].elif():[droplist-txt:()='Visibility']:[openReadOnly()].elif():[droplist-txt:()='history']:[openHistoryForm()]:[#sheetErase()]"
             }
         },

@@ -8,7 +8,7 @@
         "active": true,
         "actions": {
             "getCategoriesByHeadCategory": {
-                "_": "getCollectionIDsFromCategory();getCollectionByHeadCategoryID()::[getCategoryIdsFromCollection();getCategoriesByID();#log():[doc().category.clone()]]",
+                "_": "getCollectionIDsFromCategory();getCollectionByHeadCategoryID()::[getCategoryIdsFromCollection();getCategoriesByID();#log():[form().category.clone()]]",
                 "getCollectionByHeadCategoryID": "search():[collection=collection;find:[id.in=().collectionIDs]]:[pushFirstCollections();pushSecondCollections()]",
                 "pushSecondCollections": "__.secondCollections=:;__.secondCollectionIDs._():[___.secondCollections+=__.data.values().find():[id=_]]",
                 "pushFirstCollections": "__.firstCollections=:;__.firstCollectionIDs._():[___.firstCollections+=__.data.values().find():[id=_]]",
@@ -24,7 +24,7 @@
                 "setCategoryToSecondMenu": "mainMenu:().[mainCategoryBar:().headCategories.1.id].categories=:;mainMenu:().[mainCategoryBar:().headCategories.1.id].categoryIDs._():[mainMenu:().[mainCategoryBar:().headCategories.1.id].categories+=categories:().find():[id=_]]"
             },
             "mouseOverTheUpperNavBar": {
-                "_": "doc().category=_.clone();getCategoriesByHeadCategory():[doc().category]:[():collectionOne.update();():collectionTwo.update()]?mouseentered"
+                "_": "form().category=_.clone();getCategoriesByHeadCategory():[form().category]:[():collectionOne.refresh();():collectionTwo.refresh()]?mouseentered"
             },
             "hideMenu": "():megaMenu.style():[opacity=0;pointerEvents=none]",
             "resetAccessList": "():accessList.children().():[style():[background=white]]"
@@ -112,13 +112,13 @@
                                     "view": "View?class=flex column;style:[height=100%;border-right-style=solid;border-left-style=solid;border-width=1px;border-color=#ddd;padding=0rem 2rem]",
                                     "children": [
                                         {
-                                            "view": "Text?text=doc().category.firstCollections.0.title;#log():[doc().category.clone()];style=[fontSize=1.5rem;color=orange;]"
+                                            "view": "Text?text=form().category.firstCollections.0.title;#log():[form().category.clone()];style=[fontSize=1.5rem;color=orange;]"
                                         },
                                         {
                                             "view": "View?style=[display=grid;gridTemplateColumns=1fr 1fr 1fr;padding-top=2rem]",
                                             "children": [
                                                 {
-                                                    "view": "[View]:[data=[doc().category.firstCollections.0.categories]]?style=[padding-bottom=1rem;text-align=center;transition=0.5s];[mouseenter?1stChild().scale()=1.1];[mouseleave?1stChild().scale()=1]",
+                                                    "view": "[View]:[data=[form().category.firstCollections.0.categories]]?style=[padding-bottom=1rem;text-align=center;transition=0.5s];[mouseenter?1stChild().scale()=1.1];[mouseleave?1stChild().scale()=1]",
                                                     "children": [
                                                         {
                                                             "view": "Image?src=_.imageURL;style=[height=7.5rem;width=7.5rem;borderRadius=50%]"
@@ -141,13 +141,13 @@
                                     "view": "View?class=flex column;style=[width=100%;height=100%;padding=2rem 0]",
                                     "children": [
                                         {
-                                            "view": "Text?text=doc().category.secondCollections.0.title;style=[fontSize=1.5rem;fontWeight=bold]"
+                                            "view": "Text?text=form().category.secondCollections.0.title;style=[fontSize=1.5rem;fontWeight=bold]"
                                         },
                                         {
                                             "view": "View?style=[display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr 1fr;width=70%]",
                                             "children": [
                                                 {
-                                                    "view": "[View]:[data=[doc().category.secondCollections.0.categories]]?class=flexbox column;style=[padding-top=1rem];[mouseenter?1stChild().scale()=1.1];[mouseleave?1stChild().scale()=1]",
+                                                    "view": "[View]:[data=[form().category.secondCollections.0.categories]]?class=flexbox column;style=[padding-top=1rem];[mouseenter?1stChild().scale()=1.1];[mouseleave?1stChild().scale()=1]",
                                                     "children": [
                                                         {
                                                             "view": "Image?src=_.imageURL;style=[height=8rem;width=8rem;borderRadius=50%]"

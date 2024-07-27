@@ -34,9 +34,12 @@
     "__props__": {
         "id": "71f7V1c0V3A330O7B8a6d466V9",
         "doc": "actionlist",
+        "counter": 6,
         "creationDate": 1710330786469,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1721983688663,
+        "dev": false,
         "actions": {
             "updateNextSiblingsIndexesForPush": "if():[data().type()=array]:[():[actionlistCaller:()].parent().next().1stChild().children().slice():[_.index?_.index.type()=number?clicked().txt().num()]._():[theIndex:()=_.path().lastIndex();theNewValue:()=_.path().lastEl().num()+1;_.1stChild().2ndChild().txt()=theNewValue:();updateCommentAndClose();_.deepChildren()._():[_.path().[theIndex:()]=theNewValue:()]]]",
             "updateNextSiblingsIndexesForErase": "if():[():[actionlistCaller:()].3rdParent().data().type()=array]:[():[actionlistCaller:()].2ndParent().nextSiblings()._():[theIndex:()=_.path().len()-1;theNewValue:()=_.path().[-1].num()-1;_.1stChild().2ndChild().txt()=theNewValue:()]]",
@@ -44,12 +47,12 @@
             "insertView": "if():[():[actionlistCaller:()].mainMapContainer]:[().container=():[actionlistCaller:()].2ndParent();().theView=():[actionlistCaller:()].2ndParent()]:[().container=():[actionlistCaller:()].parent().next().1stChild();().theView=():[actionlistCaller:()].3rdParent()];().container.insert():[log():'here1';view=().theView;log():'here2';preventDefault;viewPath=:children:1;path=if():[data().type()=array]:[path().clone().push():[_.index?_.index.type()=number?clicked().txt().num()]]:[path().clone().push():[_.key]];if():[():[actionlistCaller:()].mainMapContainer]:[index=[_.index?_.index.type()=number?clicked().txt().num()]+1]:[index=[_.index?_.index.type()=number?clicked().txt().num()]];log():[.]:[path()]]:[_.view.input().focus()]",
             "importData": "insertHandler():[key=_.data.name.split():'.json'.0;value=_.data.data.clone();index=().droplistIndexClicked]",
             "hideActionListOnBodyClick": "mouseleave()?!contains():[clicked()];!clicked().classList().inc():'actionlister'",
-            "pushToUndo": "undoEdit:().[openDoc:()+'/'+openCollection:()]||=:;if():[():actionlist.prev_value!=():actionlist.doc()]:[undoEdit:().[openDoc:()+'/'+openCollection:()].push():[openDoc=openDoc:();openCollection=openCollection:();value=():actionlist.doc().clone();prev_value=():actionlist.prev_value]]",
+            "pushToUndo": "undoEdit:().[openDoc:()+'/'+openCollection:()]||=:;if():[():actionlist.prev_value!=():actionlist.form()]:[undoEdit:().[openDoc:()+'/'+openCollection:()].push():[openDoc=openDoc:();openCollection=openCollection:();value=():actionlist.form().clone();prev_value=():actionlist.prev_value]]",
             "createDroplistItems": "droplistLength:()=data().len();droplistItems:()=:;while():[droplistLength:()>-1]:[droplistItems:().push():[droplistLength:()];droplistLength:()--];droplist:[items=droplistItems:();placement=left;align=center;readonly;preventDefault]",
             "exportData": "export():[type=json;data=data().clone();name=path().lastEl()||openDoc:()]",
             "copyData": "copiedData:()=data().clone();copiedFileName:()=path().lastEl()",
             "hideActionList": "clearTimer():[actionlistTimer:()];actionlistTimer:()=timer():[():actionlist.():[children().():[style().pointerEvents=none];style():[opacity=0;transform='scale(0.5)';pointerEvents=none]]]:400",
-            "updateIndexColumn": "():dataViewer.children().find():[openDoc=openDoc:();openCollection=openCollection:()].1stChild().1stChild().update()",
+            "updateIndexColumn": "():dataViewer.children().find():[openDoc=openDoc:();openCollection=openCollection:()].1stChild().1stChild().refresh()",
             "removeView": "decrementCommentAndClosed():[path=path()];updateNextSiblingsIndexesForErase();():[actionlistCaller:()].2ndParent().rem();pushToUndo()",
             "highlightTab": "():dataViewerBar.children().find():[openCollection=openCollection:();openDoc=openDoc:()].2ndChild().style().border=1px solid #888",
             "updateCommentAndClose": "_.class():'Map'._():[openData:().__props__.comments.find():[path=_.path()].path.[theIndex:()]=theNewValue:();openData:().__props__.collapsed.find():[path=_.path()].path.[theIndex:()]=theNewValue:()]",
@@ -69,13 +72,6 @@
                 "removeCurrent": "[openData:().__props__.comments||:].pull():[path.slice():0:[_.path.len()]=_.path];[openData:().__props__.collapsed||:].pull():[path.slice():0:[_.path.len()]=_.path]"
             }
         },
-        "collapsed": [
-            {
-                "path": [
-                    "decrementCommentAndClosed"
-                ]
-            }
-        ],
         "comments": [
             {
                 "note": "remove",
@@ -127,10 +123,15 @@
                 ]
             }
         ],
-        "dirPath": [],
-        "version": 0,
-        "counter": 6,
-        "chunk": "chunk1",
-        "collection": "view"
+        "collapsed": [
+            {
+                "path": [
+                    "decrementCommentAndClosed"
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 7700
     }
 }

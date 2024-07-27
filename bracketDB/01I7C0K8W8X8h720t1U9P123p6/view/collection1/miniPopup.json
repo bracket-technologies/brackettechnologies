@@ -1,5 +1,5 @@
 {
-    "view": "View:miniPopup?class=flexbox;style:[height=100vh;width=100vw;position=fixed;top=0;right=0;zIndex=5;opacity=0;transition='opacity .2s';visibility=hidden];doc=sheetExreaInfo",
+    "view": "View:miniPopup?class=flexbox;style:[height=100vh;width=100vw;position=fixed;top=0;right=0;zIndex=5;opacity=0;transition='opacity .2s';visibility=hidden];form=sheetExreaInfo",
     "children": [
         {
             "view": "View?style:[height=100%;width=100%;backgroundColor=black;opacity=0.5]"
@@ -46,9 +46,9 @@
                 "checkSaveCondition": "if():[!currentSheetInfo:()]:[currentSheetInfo:().updateStatus='false'];checkSheet():[data=newDataInfo:();updateStatus=currentSheetInfo:().updateStatus;id=currentSheetInfo:().sheetId]:[if():[_.success]:[note():[text='Sheet created successfully']]:[note():[text=No result found;type=danger]]];deleteVariables()",
                 "fillDataInDataInfo": "i=0;range():[rowRange:()].():[if():[allDataInfo:().[().i]]:[newDataInfo:().sheetName.push():[allDataInfo:().[().i]];().i+=1]:[().i+=1]];fillSheetNameAndPermission()",
                 "deleteVariables": "newDataInfo:().del();newDataInfo:().del();allDataInfo:().del();updateStatus:().del();sheetName:().del();sheetId:().del();closeWindow()",
-                "fillSheetNameAndPermission": "newDataInfo:().rowCount=50;newDataInfo:().name=doc().sheetName;newDataInfo:().permission=doc().sheetType;newDataInfo:().active=true;checkSaveCondition()",
+                "fillSheetNameAndPermission": "newDataInfo:().rowCount=50;newDataInfo:().name=form().sheetName;newDataInfo:().permission=form().sheetType;newDataInfo:().active=true;checkSaveCondition()",
                 "[object Object]": "fillDataInDataInfo()",
-                "closeWindow": "():generalPopup.style():[visibility=hidden;opacity=0];():generalPopup.update();selected:().del();[_.docName]:()='';currentSheetInfo:().del();allDataInfo:().del()",
+                "closeWindow": "():generalPopup.style():[visibility=hidden;opacity=0];():generalPopup.refresh();selected:().del();[_.docName]:()='';currentSheetInfo:().del();allDataInfo:().del()",
                 "_": "fillDataInDataInfo()"
             }
         },

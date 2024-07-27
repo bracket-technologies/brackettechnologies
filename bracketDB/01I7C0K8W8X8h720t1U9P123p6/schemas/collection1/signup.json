@@ -472,8 +472,8 @@
                         },
                         {
                             "path": "city",
-                            "#data:().collection.countries.countries.[doc().country]": "#data:().collection.countries.countries.[doc().country]",
-                            "data:().collection.countries.countries.[doc().country]": "data:().collection.countries.countries.[doc().country]",
+                            "#data:().collection.countries.countries.[form().country]": "#data:().collection.countries.countries.[form().country]",
+                            "data:().collection.countries.countries.[form().country]": "data:().collection.countries.countries.[form().country]",
                             "type": "string",
                             "key": "city"
                         },

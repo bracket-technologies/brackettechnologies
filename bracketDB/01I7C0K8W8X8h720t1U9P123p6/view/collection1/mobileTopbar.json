@@ -109,19 +109,19 @@
             "profileDroplist": "droplist:[items=:Branch:Profile:Logout;align=right;style:[width=10rem];item.text.style:[justifyContent=center];preventDefault];[click:droplist?if():[droplist-txt:()=Logout]:[eraseCookie():session;route():login].elif():[droplist-txt:()=Branch]:[openBranchForm()]:[openProfileWindow()]]",
             "openCreateForm": {
                 "setGeneralPopup": "group=collectionsInfo:().find():[managers.():collection.inc():[mobileMainPage:().identifier]];manager=[().group.groupName]:().[().group.managers.find():[collection=mobileMainPage:().identifier].manager];loader.show;generalPopup:()=[title=mobileMainPage:().identifier.capitalize()+' Form';popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName];openPopup()",
-                "openPopup": "timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:10",
+                "openPopup": "timer():[():generalPopup.refresh():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:10",
                 "_": "createFormStack:().del();createFormStack:().push():[mobileMainPage:().identifier];loader.show;setGeneralPopup()"
             },
             "openForm": {
                 "openSheet": "loader.show;generalPopup:()=[sheet;title=Sheet Form;popupName=sheet;saveAs];updateStatus:()=false;sheetName:().del();openGeneralPopup()",
                 "openGallery": "read():[file:()]:[image:()=_.data;openViewUpload();NewImg:()=image:()];openViewUpload()",
-                "openViewUpload": "generalPopup:()=[title='Upload Image';popupName=imageView;imageData=image:();action='saveImage()'];():generalPopup.update();():generalPopup.style():[visibility=visible;opacity=1]",
-                "openGeneralPopup": "timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:10",
+                "openViewUpload": "generalPopup:()=[title='Upload Image';popupName=imageView;imageData=image:();action='saveImage()'];():generalPopup.refresh();():generalPopup.style():[visibility=visible;opacity=1]",
+                "openGeneralPopup": "timer():[():generalPopup.refresh():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:10",
                 "_": "if():[mobileMainPage:().identifier=gallery]:[openGallery()].elif():[mobileMainPage:().identifier=sheet]:[openSheet()]:[openCreateForm()]"
             },
-            "openBranchForm": "generalPopup:()=[mobile=true;branch=true;topSize=40vh;bottomSize=40vh;leftSize=5vw;rightSize=5vw;removeFullScreen=false;inputLabel=Name;searchEngine=true;clearable=true;title=Branche;popupName=customFormInputLoop;inputs=:[inputLabel=Branch;inputPath=branch;items='userData:().branch.():name']];():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]",
+            "openBranchForm": "generalPopup:()=[mobile=true;branch=true;topSize=40vh;bottomSize=40vh;leftSize=5vw;rightSize=5vw;removeFullScreen=false;inputLabel=Name;searchEngine=true;clearable=true;title=Branche;popupName=customFormInputLoop;inputs=:[inputLabel=Branch;inputPath=branch;items='userData:().branch.():name']];():generalPopup.refresh():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]",
             "openSearchForm": {
-                "openPopup": "timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:10",
+                "openPopup": "timer():[():generalPopup.refresh():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1]]:10",
                 "openform": "group=collectionsInfo:().find():[managers.():collection.inc():[mobileMainPage:().identifier]];manager=[().group.groupName]:().[().group.managers.find():[collection=mobileMainPage:().identifier].manager];loader.show;generalPopup:()=[title=Search+' Form';collection=().manager.managerName;popupName=customFormInputLoop;searchEngine=true;mobile=true;inputs=().manager.searchEngineInputs;docName=().manager.popupInfo.docName];openPopup()",
                 "_": "openform()"
             },

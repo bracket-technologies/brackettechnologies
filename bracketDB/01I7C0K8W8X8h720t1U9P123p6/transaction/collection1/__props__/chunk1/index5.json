@@ -1,38 +1,14 @@
 {
     "transaction575": {
         "systemAccountBalances.account": [
-            "Hk4WshztSc6RHvsEQVTWTqNJbcYhNNYnpCM264WWPdlk4CGh9VVPkBDh54zc-1721035206228"
+            "9ePl5qRkyMQCXxIll46xqJDd3Iq7Pw4pHVIVCBlsEUW8dKzQGxtKMWgq3bE9-1721908457883"
         ],
-        "creationDate": 1721035229487
+        "creationDate": 1721909801963
     },
     "transaction576": {
         "systemAccountBalances.account": [
-            "Py2kx4zjC5RxAAHdxLO873AUsHzFixynkLKTOL8gWIUgBRkNn5QhO1ANQdy0-1721035212084"
+            "VfgMxq3kJkmXT0e8xPGwdSSixiesOXKYkoyNSTejRINsxTzxMnDa0X3mV6dV-1721909801892"
         ],
-        "creationDate": 1721035229517
-    },
-    "transaction577": {
-        "systemAccountBalances.account": [
-            "SALR4kmyk2gpI3itMIdAsETJHx8W4CafqRQqHxUfVvN2nzNGzFSVzuuHU9Lg-1721035267354"
-        ],
-        "creationDate": 1721035291413
-    },
-    "transaction578": {
-        "systemAccountBalances.account": [
-            "dnCceeAhNCvbvsFudBoVpQAXhLFk5I2lF3sPcp6pWlyhRRX9Uafrw4dIAmEd-1721035291331"
-        ],
-        "creationDate": 1721035291434
-    },
-    "transaction579": {
-        "systemAccountBalances.account": [
-            "dnCceeAhNCvbvsFudBoVpQAXhLFk5I2lF3sPcp6pWlyhRRX9Uafrw4dIAmEd-1721035291331"
-        ],
-        "creationDate": 1721035308469
-    },
-    "transaction580": {
-        "systemAccountBalances.account": [
-            "Hk4WshztSc6RHvsEQVTWTqNJbcYhNNYnpCM264WWPdlk4CGh9VVPkBDh54zc-1721035206228"
-        ],
-        "creationDate": 1721035308501
+        "creationDate": 1721909801968
     }
 }

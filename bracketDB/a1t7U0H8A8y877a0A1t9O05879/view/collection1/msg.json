@@ -5,14 +5,14 @@
         "doc": "msg",
         "counter": 24,
         "creationDate": 1714328591041,
-        "active": true,
-        "actions": {},
-        "chunk": "chunk1",
-        "secured": false,
         "collection": "view",
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "chunk": "chunk1",
+        "actions": {},
         "comments": [],
-        "collapsed": []
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 674
     },
     "children": [
         {

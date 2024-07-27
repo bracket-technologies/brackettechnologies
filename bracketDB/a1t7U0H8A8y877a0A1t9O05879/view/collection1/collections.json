@@ -16,7 +16,7 @@
             ]
         },
         {
-            "view": "View?class=flex column;style:[display=[none?collections:().len()=0?flex];width='calc(100% - 1.2rem)';marginLeft=1.2rem;borderLeft=1px solid #ddd]?collections:()",
+            "view": "View?class=flex column;style:[display=[none?!collections:()?flex];width='calc(100% - 1.2rem)';marginLeft=1.2rem;borderLeft=1px solid #ddd]",
             "children": [
                 {
                     "view": "[View]:[data=collections:().sort():[ascending];mount]?style:[width=100%]",
@@ -65,7 +65,7 @@
                                             "view": "Text?class=dots;text=data();tooltip.text=data();style.fontSize=1.3rem"
                                         },
                                         {
-                                            "view": "Input?class=dots;input.value=data();preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width='calc(100% - 2.25rem)'];mouseenter:[next().style().display=flex];mouseleave:[next().style().display=none];blur:[blurEdit()];keyup:[escapeEdit();issueInDocName();editDocName();createDoc()]"
+                                            "view": "Input?class=dots;input.value=data();openDoc=data();preventDefault;input.style.padding=0;style:[fontSize=1.3rem;border=0;height=3rem;padding=0;display=none;width='calc(100% - 2.25rem)'];mouseenter:[next().style().display=flex];mouseleave:[next().style().display=none];blur:[blurEdit()];keyup:[escapeEdit();issueInDocName();editDocName();createDoc()]"
                                         },
                                         {
                                             "view": "Icon?openDoc=data();openCollection=2ndParent().data();name='bi-three-dots-vertical';style:[fontSize=1.8rem;width=2rem;height=3rem;position=absolute;right=0;display=none;backgroundColor=#e9e9e9;borderRadius=.25rem];hover.style.color=blue;click:[toggleActionPopup()]"
@@ -86,28 +86,30 @@
         "creationDate": 1710330786484,
         "collection": "view",
         "chunk": "chunk1",
+        "lastModified": 1722005109012,
+        "dev": false,
         "actions": {
             "clickCreateNewDoc": "parent().next().display();1stSibling().style().rotate():90;if():[!duplicateDoc:()]:[openDoc:().del()];openCollection:()=data();parent().next().insert():[view=parent().next();viewPath=:children:0;preventDefault;index=0]:[_.view.():[2ndChild().style().display=none;3rdChild().():[style().display=flex;txt()='';focus()]];hideActionPopup()]",
             "editDocName": {
-                "_": "openCollection:()=2ndParent().data();editDoc()?openDoc:();e().key=Enter||e().key=Tab;txt();!data:().editor.[2ndParent().data()].[txt()];!txt().inc():' '",
-                "editDoc": "newDocName:()=txt();data:().editor.[openCollection:()].[txt()]=data:().editor.[openCollection:()].[openDoc:()].clone();loader.show;[saveNewDocName();eraseEditedDoc()]()::[editHandler()]",
-                "saveNewDocName": "[saveData():[publicID=project:().publicID;collection=openCollection:();doc=txt();data=data:().editor.[openCollection:()].[txt()]]]():[collection=actions;doc=db]",
-                "editHandler": "loader.hide;note():[text=if():[!duplicateDoc:()]:'Document name changed successfully!':'Document duplicated successfully!'];if():[!duplicateDoc:()]:[data:().editor.[openCollection:()].[openDoc:()].del()];():[2ndParent().data()+'-list'].update()::[_.view.display();duplicateDoc:().del();closeTab();openNewTab()]",
-                "closeTab": "():dataViewerBar.children().find():[openDoc=openDoc:();openCollection=openCollection:()].lastChild().click()",
+                "_": "editDoc()?openDoc:();e().key=Enter||e().key=Tab;txt();!data:().editor.[2ndParent().data()].[txt()];!txt().inc():' '",
+                "editDoc": "newDocName:()=txt();data:().editor.[2ndParent().data()].[txt()]=data:().editor.[2ndParent().data()].[.openDoc].clone();loader.show;[saveNewDocName();eraseEditedDoc()]()::[editHandler()]",
+                "saveNewDocName": "[saveData():[publicID=project:().publicID;collection=2ndParent().data();doc=txt();data=data:().editor.[2ndParent().data()].[txt()]]]():[collection=actions;doc=db]",
+                "editHandler": "loader.hide;note():[text=if():[!duplicateDoc:()]:'Document name changed successfully!':'Document duplicated successfully!'];if():[!duplicateDoc:()]:[data:().editor.[2ndParent().data()].[().openDoc].del()];closeTab();():[2ndParent().data()+'-list'].refresh()::[_.view.display();duplicateDoc:().del();openNewTab()]",
+                "closeTab": "():dataViewerBar.children().find():[openDoc=().openDoc;openCollection=2ndParent().data()].lastChild().click()",
                 "openNewTab": "():[openCollection:()+'-list'].children().find():[data()=newDocName:()].click()",
-                "eraseEditedDoc": "[eraseData():[publicID=project:().publicID;collection=openCollection:();doc=openDoc:()]]():[collection=actions;doc=db]?!duplicateDoc:()"
+                "eraseEditedDoc": "[eraseData():[publicID=project:().publicID;collection=2ndParent().data();doc=().openDoc]]():[collection=actions;doc=db]?!duplicateDoc:()"
             },
             "createDoc": {
                 "_": "openCollection:()=2ndParent().data();createDoc()?!openDoc:()||duplicateData:();e().key=Enter||e().key=Tab;!data:().editor.[2ndParent().data()].[txt()];!txt().inc():' '",
                 "createDoc": "[openData:()=duplicateData:().clone()?duplicateData:()?openData:()=[view='View?id='+txt()]?openCollection:()=view?openData:()=[]];loader.show;[start();saveData():[publicID=project:().publicID;collection=openCollection:();[doc=().txt()?().txt()];data=openData:()]:[end():[_]]]():[collection=actions;doc=db]:[postCreateDocHandler()]",
-                "postCreateDocHandler": "loader.hide;data:().editor.[openCollection:()].[_.data.__props__.doc]=_.data;duplicateData:().del();note():[text='Document created successfully!'];():[2ndParent().data()+'-list'].update()::[_.view.display()]"
+                "postCreateDocHandler": "loader.hide;data:().editor.[openCollection:()].[_.data.__props__.doc]=_.data;duplicateData:().del();note():[text='Document created successfully!'];():[2ndParent().data()+'-list'].refresh()::[_.view.display()]"
             },
             "importDoc": {
                 "existenceNote": "note():[text=Document name exists!;danger]",
-                "saveDoc": "loader.show;[saveData():[publicID=project:().publicID;collection=().collection;data=_.data.data;doc=().openDoc]]():[collection=actions;doc=db]:[note():[text=Document imported successfully!];data:().editor.[().collection].[().openDoc]=_.data.data.clone();():[().collection+'-list'].update();loader.hide;el().value='']",
+                "saveDoc": "loader.show;[saveData():[publicID=project:().publicID;collection=().collection;data=_.data.data;doc=().openDoc]]():[collection=actions;doc=db]:[note():[text=Document imported successfully!];data:().editor.[().collection].[().openDoc]=_.data.data.clone();():[().collection+'-list'].refresh();loader.hide;el().value='']",
                 "_": "collection=data();read():[file=file();type=json]:[().openDoc=_.data.name.split():'.json'.0;if():[!data:().editor.[().collection].[().openDoc]]:[saveDoc()]:[existenceNote()]]"
             },
-            "toggleActionPopup": "if():[():actionPopup.style().opacity='1';actionPopupCaller:()=.id]:[hideActionPopup()]:[actionPopupCaller:()=.id;openActionPopup()];():actionPopup.():[caller=..id;position():[positioner=...id;placement=right];openDoc=..data();openCollection=..2ndParent().data()]",
+            "toggleActionPopup": "if():[():actionPopup.style().opacity='1';actionPopupCaller:()=.id]:[hideActionPopup()]:[actionPopupCaller:()=.id;():actionPopup.():[caller=..id;position():[positioner=...id;placement=right];openDoc=..data();openCollection=..2ndParent().data();openActionPopup();3rdChild().refresh()]]",
             "issueInDocName": "problemEditingCreateDoc():[view=2ndParent().data();collection=2ndParent().data()]?e().key=Enter||e().key=Tab;txt()=publics;data:().editor.[2ndParent().data()].keys().inc():txt()||!txt()||txt().inc():",
             "hideOptionsIcons": "children().pullIndex():0:2.():hide()",
             "hideOptionIcon": "lastChild().hide();backgroundColor()=inherit",
@@ -117,7 +119,7 @@
             "loadedHandler": "if():[new-file-created:();mapIndex=data:().editor.[parent().data()].keys().len()-1]:[new-file-created:().del();parent().style().display=flex;parent().prev().1stChild().style().transform='rotate(90deg)';click()]",
             "escapeEdit": "cancelEditCreateDoc():[view=2ndParent().data();collection=2ndParent().data()]?e().key=Escape",
             "openDoc": {
-                "_": "initOpens();displayViews();hideOtherData();[loader.show;insertTab();insertData();insertActions()]()::[loader.hide]?clicked()!=lastChild()!=2ndLastChild();[!openDocs:().inc():[parent().data()+'/'+data()]||!():dataViewerBar.children().find():[openDoc=..data()]]",
+                "_": "initOpens();displayViews();hideOtherData();[loader.show;insertTab();insertData();insertActions()]()::[loader.hide]?clicked()!=lastChild()!=2ndLastChild();!openDocs:().inc():[parent().data()+'/'+data()]",
                 "initOpens": "openDoc:()=data();openCollection:()=parent().data();openData:()=data:().editor.[openCollection:()].[openDoc:()].clone();openDocs:().replaceItem():[openCollection:()+'/'+openDoc:()]",
                 "displayViews": "():dataViewerBar.style().display=flex;():mainActionsContainer.style().height=actionsHeight:()+rem;():dataViewer.style().height='calc(100% - '+actionsHeight:()+'rem)';():mainActionsContainer.style().display=flex",
                 "hideOtherData": "class():dataViewer.():[style().display=none];():dataViewerBar.children().():[style().backgroundColor=inherit;hover.disable=false];class():actions.():[style().display=none]",
@@ -136,16 +138,16 @@
                 "removeCollection": "loader.show;[eraseData():[publicID=project:().publicID;collection=data()]]():[collection=actions;doc=db]:[updateDatabase()]",
                 "editCollectionName": {
                     "_": "e().preventDefault();().[editName()?data().type()=string;data()?createCollection()?txt()?note():[text='Enter a collection name!';type=danger]?!data()]",
-                    "editName": "loader.show;[saveData():[publicID=project:().publicID;collection=data();rename=txt()]]():[collection=actions;doc=db]:[loader.hide;data:().editor.[txt()]=data:().editor.[data()];data:().editor.[data()].del();data()=txt();3rdParent().update()]?txt();!data:().editor.[txt()]?handleCollectionNameNote()",
-                    "createCollection": "loader.show;[saveData():[publicID=project:().publicID;collection=txt()]]():[collection=actions;doc=db]:[loader.hide;data()=txt();collections:()+=txt();3rdParent().update()]"
+                    "editName": "loader.show;[saveData():[publicID=project:().publicID;collection=data();rename=txt()]]():[collection=actions;doc=db]:[loader.hide;data:().editor.[txt()]=data:().editor.[data()];data:().editor.[data()].del();data()=txt();3rdParent().refresh()]?txt();!data:().editor.[txt()]?handleCollectionNameNote()",
+                    "createCollection": "loader.show;[saveData():[publicID=project:().publicID;collection=txt()]]():[collection=actions;doc=db]:[loader.hide;data()=txt();collections:()+=txt();3rdParent().refresh()]"
                 },
                 "setCollectionNameEditable": "2ndSibling().():[editable();focus();style().cursor=text];2ndSibling().text=2ndSibling().txt()",
                 "handleCollectionNameNote": "note():[text=['Enter a collection name!'?!txt()?'Collection name already exists!'?data:().editor.[txt()]];type=danger]",
-                "updateDatabase": "data:().editor.[data()].del();collections:().pullItem():[data()];note():[text='Collection removed successfully!'];loader.hide;():collections.2ndChild().update()::[_.view.display()]"
+                "updateDatabase": "data:().editor.[data()].del();collections:().pullItem():[data()];note():[text='Collection removed successfully!'];loader.hide;():collections.2ndChild().refresh()::[_.view.display()]"
             },
             "toggleCollectionsFolder": {
                 "_": "[openFolder();lastChild().hide()?!next()||next().hidden()?closeFolder()]?clicked()!=lastChild()",
-                "openFolder": "getCollections()::[():collections.update()::[[setSidebarWidth()]():[path=openDataManager;doc=consoleSidebar];_.view.():[2ndChild().display();grandChild().rotate()=90;1stChild().lastChild().display()]]]",
+                "openFolder": "getCollections()::[():collections.2ndChild().refresh()::[[setSidebarWidth()]():[path=openDataManager;doc=consoleSidebar];():collections.():[2ndChild().display();grandChild().rotate()=90;1stChild().lastChild().display()]]]",
                 "closeFolder": "next().hide();1stChild().rotate()=0;lastChild().hide()",
                 "getCollections": "loader.show;[getData():[publicID=project:().publicID]:[loader.hide;collections:()=_.data]]():[collection=actions;doc=db]"
             },
@@ -155,7 +157,7 @@
             "openCollection": {
                 "_": "searchDocs()?clicked()!=nthLastChild():4;clicked()!=nthLastChild():3;clicked()!=nthLastChild():2;clicked()!=nthLastChild():1;clicked()!=input()",
                 "searchDocs": "hideOptionsIcons();1stChild().loader():[show;style:[pointerEvents=none]];next().children().():rem();searchDocsRequest()::[displayOptionsIcons()]?1stChild().style().transform='rotate(0deg)'?closeCollection()",
-                "searchDocsRequest": "[getData():[publicID=project:().publicID;collection=..data()]:[data:().editor.[data()]=_.data;1stChild().loader():hide;1stChild().rotate()=90;next().update()::[next().display()]]]():[collection=actions;doc=db]",
+                "searchDocsRequest": "[getData():[publicID=project:().publicID;collection=..data()]:[data:().editor.[data()]=_.data;1stChild().loader():hide;1stChild().rotate()=90;next().refresh()::[next().display()]]]():[collection=actions;doc=db]",
                 "closeCollection": "data:().editor.[data()].del();1stChild().rotate()=0;next().children().():rem();hideOptionsIcons();lastChild().display()"
             }
         },
@@ -367,11 +369,6 @@
             },
             {
                 "path": [
-                    "editDocName"
-                ]
-            },
-            {
-                "path": [
                     "openCollection"
                 ]
             },
@@ -382,12 +379,8 @@
             },
             {
                 "path": [
-                    "displayOpenedDoc"
-                ]
-            },
-            {
-                "path": [
-                    "openDoc"
+                    "children",
+                    0
                 ]
             },
             {
@@ -402,34 +395,32 @@
                     "children",
                     0,
                     "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
                     0
                 ]
             },
             {
                 "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0
+                    "displayOpenedDoc"
                 ]
             },
             {
                 "path": [
-                    "children",
-                    1
+                    "createNewCollection"
+                ]
+            },
+            {
+                "path": [
+                    "openDoc"
+                ]
+            },
+            {
+                "path": [
+                    "editDocName"
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 16009
+        "size": 15960
     }
 }

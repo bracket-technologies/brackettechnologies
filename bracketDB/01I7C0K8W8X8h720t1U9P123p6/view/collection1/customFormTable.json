@@ -5,13 +5,13 @@
             "view": "View?class=flex;style:[width=100%]?__.table;!__.table.table",
             "children": [
                 {
-                    "view": "View?class=flex;style:[width=100%]?doc().[__.table.docListName].len()>0||_.[__.table.docListName].len()>0",
+                    "view": "View?class=flex;style:[width=100%]?form().[__.table.docListName].len()>0||_.[__.table.docListName].len()>0",
                     "children": [
                         {
                             "view": "View?style:[width=100%;paddingTop=1.5rem]",
                             "children": [
                                 {
-                                    "view": "customGeneralTable?collection=[[__.table.collection]()];itemsList=selected:().[().collection];#.filter:():[id.in():[doc().[__.table.docListName]]];docListName=__.table.docListName;noCheckbox=true"
+                                    "view": "customGeneralTable?collection=[[__.table.collection]()];itemsList=selected:().[().collection];#.filter:():[id.in():[form().[__.table.docListName]]];docListName=__.table.docListName;noCheckbox=true"
                                 }
                             ]
                         }

@@ -1,0 +1,23 @@
+{
+    "publicID": "Ep1b57CL2DY1Xo06r4XA7ky2p27sU3Xv7EI47F4",
+    "pluginID": "r1c7d176U1B9m6C7i9F8T973T2",
+    "packageID": "819781E687S3U5e2L9w6v3u9H8",
+    "startDate": 1721047273884,
+    "status": "Confirmed",
+    "description": "Subscribed to plugin: Travel Accounting Platform, package: Free Tier.",
+    "expiryDate": 1721652073884,
+    "__props__": {
+        "id": "z147T2210014F7Q217j338H876",
+        "doc": "subscription5",
+        "counter": 5,
+        "creationDate": 1721047273886,
+        "collection": "subscription",
+        "chunk": "chunk1",
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 522
+    }
+}

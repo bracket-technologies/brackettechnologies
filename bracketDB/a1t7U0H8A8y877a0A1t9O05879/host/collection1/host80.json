@@ -1,13 +1,14 @@
 {
-    "publicID": "991cD7p528b0wu8Go7H73364Lu5oP1qw4My8ZS9",
+    "publicID": "Ka12i7Q22mp1bq05744j8ug6nf3um0BY81M1bF7",
     "active": true,
     "public": true,
-    "host": "branch.skylagroup.brackettechnologies.com",
+    "host": "dev.w1111.brackettechnologies.com",
+    "dev": true,
     "__props__": {
-        "id": "J1r7l2p0c857Z3K4m5p1r6W7I6",
+        "id": "f1I7i251h0s4h8m654A0Z3Z9U3",
         "doc": "host80",
         "counter": 80,
-        "creationDate": 1720873451676,
+        "creationDate": 1721048640393,
         "collection": "host",
         "chunk": "chunk1",
         "actions": {},
@@ -15,6 +16,6 @@
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 346
+        "size": 349
     }
 }

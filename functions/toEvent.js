@@ -1,7 +1,7 @@
 const { addEventListener } = require("./kernel")
 const { toArray } = require("./toArray")
 
-const toEvent = ({ _window, id, string, __, lookupActions }) => {
+const toEvent = ({ _window, id, string, __, lookupActions, stack, props }) => {
 
   var view = _window ? _window.views[id] : window.views[id]
 

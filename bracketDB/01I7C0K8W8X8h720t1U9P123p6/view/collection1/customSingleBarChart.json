@@ -1,5 +1,5 @@
 {
-    "view": "View:customSingleBarChart?style:[width=50%];beforeloading:[period:()='weeklyDsata'];doc=dashboard;calcTotal()",
+    "view": "View:customSingleBarChart?style:[width=50%];beforeloading:[period:()='weeklyDsata'];form=dashboard;calcTotal()",
     "children": [
         {
             "view": "[View]:[data=data:().collection.dashboard.singelBarChart]?class=flexbox;style:[border-radius=10px 10px 0 0;padding=1rem;justifyContent=space-between;borderLeft=1px solid #ddd;borderTop=1px solid #ddd;borderRight=1px solid #ddd;backgroundColor=#f5f5f5]",
@@ -143,7 +143,7 @@
             "heightCalc": "[_.number*100]/().max",
             "calcTotal": "data:().collection.dashboard.singelBarChart.[period:()].x-axis._():[totalTicket:()+=_.number]",
             "maxOfList": "max=0;_._():[if():[_>().max]:[().max=_]]",
-            "changePeriod": "if():[txt()=Week]:[period:()='weeklyData';totalTicket:()=0;calcTotal();():chartInfo.update()].elif():[txt()=Month]:[period:()='monthlyData';totalTicket:()=0;calcTotal();():chartInfo.update()].elif():[txt()=Year]:[period:()='yearlyData';totalTicket:()=0;calcTotal();():chartInfo.update()]",
+            "changePeriod": "if():[txt()=Week]:[period:()='weeklyData';totalTicket:()=0;calcTotal();():chartInfo.refresh()].elif():[txt()=Month]:[period:()='monthlyData';totalTicket:()=0;calcTotal();():chartInfo.refresh()].elif():[txt()=Year]:[period:()='yearlyData';totalTicket:()=0;calcTotal();():chartInfo.refresh()]",
             "getBalanceOfAcdc": "loader.show;getBalanceAccount()::[balances:()=_.data;loader.hide]"
         },
         "collapsed": [

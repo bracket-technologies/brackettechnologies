@@ -79,7 +79,8 @@
                                         "inputPath": "name",
                                         "inputLabel": "Name",
                                         "required": true,
-                                        "editable": true
+                                        "editable": true,
+                                        "capitalizeInput": true
                                     },
                                     {
                                         "inputPath": "isSubAccount",
@@ -115,6 +116,32 @@
                                             }
                                         ],
                                         "allowedCode": [
+                                            {
+                                                "condition": [
+                                                    {
+                                                        "condition": [
+                                                            "Any"
+                                                        ],
+                                                        "conditionReference": "type"
+                                                    }
+                                                ],
+                                                "allowedCode": [
+                                                    4
+                                                ]
+                                            },
+                                            {
+                                                "condition": [
+                                                    {
+                                                        "condition": [
+                                                            "opening"
+                                                        ],
+                                                        "conditionReference": "ledgerType"
+                                                    }
+                                                ],
+                                                "allowedCode": [
+                                                    119
+                                                ]
+                                            },
                                             {
                                                 "condition": [
                                                     {
@@ -292,9 +319,12 @@
                                                 "condition": [
                                                     {
                                                         "condition": [
-                                                            "Capitals"
+                                                            "Equity & Long Term Debts"
                                                         ],
                                                         "conditionReference": "ledgerAccountName"
+                                                    },
+                                                    {
+                                                        "notConditionReference": "ledgerType"
                                                     }
                                                 ],
                                                 "allowedCode": [
@@ -318,7 +348,7 @@
                                                 "condition": [
                                                     {
                                                         "condition": [
-                                                            "Income"
+                                                            "Incomes"
                                                         ],
                                                         "conditionReference": "ledgerAccountName"
                                                     }
@@ -350,25 +380,6 @@
                                                     },
                                                     {
                                                         "condition": [
-                                                            "Receivables and Payables"
-                                                        ],
-                                                        "conditionReference": "ledgerAccountName"
-                                                    }
-                                                ],
-                                                "allowedLedgers": [
-                                                    4
-                                                ]
-                                            },
-                                            {
-                                                "condition": [
-                                                    {
-                                                        "condition": [
-                                                            "Any"
-                                                        ],
-                                                        "conditionReference": "type"
-                                                    },
-                                                    {
-                                                        "condition": [
                                                             "Financial Accounts"
                                                         ],
                                                         "conditionReference": "ledgerAccountName"
@@ -386,12 +397,7 @@
                                         "inputLabel": "Ledger Account",
                                         "codeInput": "true",
                                         "fillCodeName": true,
-                                        "getterKeyValue": {
-                                            "ledgerAccount": "ledgerAccount.0"
-                                        },
-                                        "collection": "account",
                                         "droplistClickAction": "[saveAccountCurrency()]():[collection=sharedManagersInfo;doc=voucherSharedInfo]",
-                                        "hotCreatable": true,
                                         "required": true,
                                         "existingAccounts": true,
                                         "condition": [
@@ -403,6 +409,19 @@
                                             }
                                         ],
                                         "allowedCode": [
+                                            {
+                                                "condition": [
+                                                    {
+                                                        "condition": [
+                                                            "opening"
+                                                        ],
+                                                        "conditionReference": "ledgerType"
+                                                    }
+                                                ],
+                                                "allowedCode": [
+                                                    119
+                                                ]
+                                            },
                                             {
                                                 "condition": [
                                                     {
@@ -550,6 +569,9 @@
                                             {
                                                 "condition": [
                                                     {
+                                                        "notConditionReference": "ledgerType"
+                                                    },
+                                                    {
                                                         "condition": [
                                                             "Capitals"
                                                         ],
@@ -647,7 +669,7 @@
                                     },
                                     {
                                         "inputPath": "accountNumber",
-                                        "inputLabel": "Account Number",
+                                        "inputLabel": "Account #",
                                         "keydownAction": "if():[e().key='Enter']:[generateAccountNumber():[enter=true]]",
                                         "required": true,
                                         "condition": [
@@ -659,13 +681,14 @@
                                             }
                                         ],
                                         "generatorAction": "generateAccountNumber()",
-                                        "#idGeneratorAction": "loader.show;checkAccountNumberExistence():[code=doc().generalLedger;accountNumber=doc().accountNumber;if():[doc().ledgerAccountName='Receivables and Payables';[doc().type='Airline Supplier'||'doc().type=Agency Supplier']]:[type=doc().type]]:[loader.hide;if():[_.success]:[if():[_.accountNumber]:[parent().prev().txt()=_.accountNumber;doc().accountNumber=_.accountNumber];note():[text=_.message]]:[note():[text=_.message;danger]]]",
+                                        "#idGeneratorAction": "loader.show;checkAccountNumberExistence():[code=form().generalLedger;accountNumber=form().accountNumber;if():[form().ledgerAccountName='Receivables and Payables';[form().type='Airline Supplier'||'form().type=Agency Supplier']]:[type=form().type]]:[loader.hide;if():[_.success]:[if():[_.accountNumber]:[parent().prev().txt()=_.accountNumber;form().accountNumber=_.accountNumber];note():[text=_.message]]:[note():[text=_.message;danger]]]",
                                         "type": "number",
-                                        "blurAction": "if():[!doc().accountNumber]:[generateAccountNumber():[blur=true]]"
+                                        "blurAction": "if():[!form().accountNumber]:[generateAccountNumber():[blur=true]]",
+                                        "fixedInEdit": true
                                     },
                                     {
                                         "inputLabel": "Currency",
-                                        "droplistClickAction": "customUpdate():[section='0.0';input=4]",
+                                        "droplistClickAction": "().openingBalanceClone=form().openingBalance.clone();().openingBalanceClone._():[if():[!_.currency.in():[form().currency]]:[form().openingBalance.pullItem():[_]]];customUpdate():[section='0.0';input=4]",
                                         "readonly": true,
                                         "required": true,
                                         "duplicatedInputPath": "currency",
@@ -686,11 +709,12 @@
                                             }
                                         ],
                                         "duplicatableLimit": "userData:().currency.len()",
-                                        "items": "().itemsList=userData:().currency.sort():[path=counter;ascending].():code;if():[doc().currency]:[doc().currency._():[if():[_!=data()]:[().itemsList.pullItem():[_]]]];return():[().itemsList]",
+                                        "items": "().itemsList=userData:().currency.sort():[path=counter;ascending].():code;if():[form().currency]:[form().currency._():[if():[_!=data()]:[().itemsList.pullItem():[_]]]];return():[().itemsList]",
                                         "editable": {
                                             "addOnly": true
                                         },
-                                        "inputValue": "().gg=userData:().currency.sort():[path=counter;ascending].():code;if():[doc().currency]:[doc().currency._():[().gg.pullItem():[_]]];return():[().gg.0]"
+                                        "inputValue": "().gg=userData:().currency.sort():[path=counter;ascending].():code;if():[form().currency]:[form().currency._():[().gg.pullItem():[_]]];return():[().gg.0]",
+                                        "removeAction": "log():[form=form()]:['gggggggf'];().openingBalanceClone=form().openingBalance.clone();().openingBalanceClone._():[if():[!_.currency.in():[form().currency]]:[form().openingBalance.pullItem():[_]]]"
                                     }
                                 ]
                             },
@@ -1097,7 +1121,7 @@
                                         "inputPath": "yearlyRate",
                                         "subItemsList": [
                                             "%",
-                                            "doc().currency"
+                                            "form().currency"
                                         ],
                                         "unitPath": "yearlyRateUnit",
                                         "price": true,
@@ -1119,7 +1143,8 @@
                                         "inputLabel": "Start Date",
                                         "type": "date",
                                         "required": "true",
-                                        "editable": true
+                                        "editable": true,
+                                        "inputValue": "today().timestamp()"
                                     },
                                     {
                                         "condition": [
@@ -1133,8 +1158,8 @@
                                         "inputPath": "stopDate",
                                         "inputLabel": "Stop Date",
                                         "type": "date",
-                                        "required": true,
-                                        "editable": true
+                                        "editable": true,
+                                        "#required": true
                                     },
                                     {
                                         "condition": [
@@ -1199,8 +1224,7 @@
                                     {
                                         "inputPath": "currency",
                                         "inputLabel": "Currency",
-                                        "inputValue": "().gg=doc().currency.clone();doc().openingBalance.():currency._():[().gg.pullItem():[_]];return():[().gg.0]",
-                                        "items": "().itemsList=doc().currency.clone();doc().openingBalance.():currency._():[().itemsList.pullItem():[_]];().itemsList.push():[data()]:0;return():[().itemsList]",
+                                        "items": "().itemsList=form().currency.clone();form().openingBalance.():currency._():[().itemsList.pullItem():[_]];().itemsList.push():[data()]:0;return():[().itemsList]",
                                         "condition": [
                                             {
                                                 "condition": [
@@ -1209,11 +1233,12 @@
                                                 "conditionReference": "openingBalance"
                                             }
                                         ],
-                                        "droplistClickAction": "parent().data().openingBalanceAccount.del();customUpdate():[input=:2:4]"
+                                        "droplistClickAction": "parent().data().openingBalanceAccount.del();customUpdate():[input=:2:4]",
+                                        "inputValue": "().gg=form().currency.clone();form().openingBalance.():currency._():[().gg.pullItem():[_]];return():[().gg.0]"
                                     },
                                     {
                                         "inputPath": "openingBalanceAccount",
-                                        "inputLabel": "Opening Balance Account",
+                                        "inputLabel": "Opening Balance Account",
                                         "codeInput": true,
                                         "fillCodeName": true,
                                         "getterKeyValue": {
@@ -1236,7 +1261,9 @@
                                                 ],
                                                 "conditionReference": "openingBalance"
                                             }
-                                        ]
+                                        ],
+                                        "ledgerType": "opening",
+                                        "referenceCurrency": "data().currency"
                                     },
                                     {
                                         "condition": [
@@ -1285,7 +1312,7 @@
                         ],
                         "hideClone": true,
                         "path": "openingBalance",
-                        "maxLen": "doc().currency.filter().len()"
+                        "maxLen": "form().currency.filter().len()"
                     },
                     {
                         "condition": [
@@ -1331,7 +1358,6 @@
                                         "inputPath": "portalAccess",
                                         "readonly": "readonly",
                                         "inputLabel": "Give Customer/Supplier Portal Access",
-                                        "inputValue": "No",
                                         "items": [
                                             {
                                                 "text": "Yes",
@@ -1342,7 +1368,8 @@
                                                 "pathValue": "false"
                                             }
                                         ],
-                                        "switch": true
+                                        "switch": true,
+                                        "#inputValue": "No"
                                     }
                                 ]
                             }
@@ -1500,6 +1527,8 @@
         "creationDate": 1711031361965,
         "collection": "sharedManagersInfo",
         "chunk": "chunk1",
+        "lastModified": 1721914757596,
+        "dev": false,
         "actions": {},
         "comments": [
             {
@@ -1743,7 +1772,7 @@
                 ]
             },
             {
-                "note": "ledger account",
+                "note": "ledger account ",
                 "path": [
                     "createFormInputs",
                     "subInput",
@@ -2096,6 +2125,118 @@
                     7,
                     "subInput",
                     3
+                ]
+            },
+            {
+                "note": "B2B Customer",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    2
+                ]
+            },
+            {
+                "note": "B2C Customer",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    10
+                ]
+            },
+            {
+                "note": "Corporate Customer",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    4
+                ]
+            },
+            {
+                "note": "Agency Supplier-Airline Supplier",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    5
+                ]
+            },
+            {
+                "note": "Other Operational Account",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    6
+                ]
+            },
+            {
+                "note": "Employee",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    7
+                ]
+            },
+            {
+                "note": "Bank",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    8
                 ]
             }
         ],
@@ -3278,15 +3419,6 @@
             {
                 "path": [
                     "table",
-                    "body",
-                    "items",
-                    7,
-                    "customIcon"
-                ]
-            },
-            {
-                "path": [
-                    "table",
                     "header",
                     "items",
                     7,
@@ -3308,24 +3440,6 @@
                     "items",
                     4,
                     "cellStyle"
-                ]
-            },
-            {
-                "path": [
-                    "table",
-                    "body",
-                    "items",
-                    7
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    6,
-                    "condition"
                 ]
             },
             {
@@ -3443,35 +3557,6 @@
                     0,
                     "input",
                     3,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    17
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
                     "#allowedC",
                     1,
                     "allowedCode"
@@ -3579,7 +3664,7 @@
                     "input",
                     3,
                     "allowedCode",
-                    0,
+                    20,
                     "condition"
                 ]
             },
@@ -3595,7 +3680,7 @@
                     "input",
                     3,
                     "allowedCode",
-                    0
+                    20
                 ]
             },
             {
@@ -3610,271 +3695,8 @@
                     "input",
                     3,
                     "allowedCode",
-                    1,
+                    20,
                     "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    2,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    3,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    4,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    4
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    5,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    5
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    6,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    6
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    7,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    7
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    8,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    8
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    9,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    9
                 ]
             },
             {
@@ -3891,21 +3713,6 @@
                     "allowedCode",
                     10,
                     "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    10
                 ]
             },
             {
@@ -3936,38 +3743,8 @@
                     "input",
                     3,
                     "allowedCode",
-                    11
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
                     12,
                     "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    12
                 ]
             },
             {
@@ -3998,100 +3775,8 @@
                     "input",
                     3,
                     "allowedCode",
-                    13
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    14,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    14
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    15,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    15
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
                     16,
                     "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode",
-                    16
                 ]
             },
             {
@@ -4120,35 +3805,6 @@
                     "subInput",
                     0,
                     "input",
-                    3,
-                    "allowedCode",
-                    18
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3,
-                    "allowedCode"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
                     4,
                     "co"
                 ]
@@ -4164,22 +3820,8 @@
                     0,
                     "input",
                     4,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
                     "allowedCode",
-                    2,
+                    19,
                     "condition"
                 ]
             },
@@ -4355,22 +3997,6 @@
                     "input",
                     4,
                     "allowedCode",
-                    14,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
                     16,
                     "condition"
                 ]
@@ -4386,292 +4012,7 @@
                     0,
                     "input",
                     4,
-                    "allowedCode",
-                    18,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
                     "#allow"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    4
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    6
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    5
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    7
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    8
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    9
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    10
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    11
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    12
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    13
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    14
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    15
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    16
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    17
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode",
-                    18
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "getterKeyValue"
                 ]
             },
             {
@@ -4858,7 +4199,7 @@
                     "input",
                     4,
                     "allowedCode",
-                    0,
+                    2,
                     "condition"
                 ]
             },
@@ -4907,20 +4248,6 @@
                     1,
                     "allowedCode",
                     0
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    4,
-                    "allowedCode"
                 ]
             },
             {
@@ -5010,46 +4337,7 @@
                     "subInput",
                     0,
                     "input",
-                    4
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
                     5
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    6
                 ]
             },
             {
@@ -5552,18 +4840,6 @@
             },
             {
                 "path": [
-                    "table",
-                    "body",
-                    "items"
-                ]
-            },
-            {
-                "path": [
-                    "table"
-                ]
-            },
-            {
-                "path": [
                     "createFormInputs",
                     "subInput",
                     0,
@@ -5609,39 +4885,6 @@
                     "subInput",
                     0,
                     "sectionsInfo",
-                    6,
-                    "subInput",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    6
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
                     0,
                     "subInput",
                     0,
@@ -5659,15 +4902,6 @@
                     0,
                     "subInput",
                     1
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0
                 ]
             },
             {
@@ -5740,19 +4974,6 @@
                     "subInput",
                     0,
                     "input",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    5,
-                    "subInput",
-                    0,
-                    "input",
                     1,
                     "condition"
                 ]
@@ -5764,29 +4985,7 @@
                     0,
                     "sectionsInfo",
                     5,
-                    "subInput",
-                    0,
-                    "input",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    5,
                     "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    5
                 ]
             },
             {
@@ -5848,32 +5047,6 @@
                     0,
                     "input",
                     3
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    4,
-                    "subInput",
-                    0,
-                    "input",
-                    4
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    4,
-                    "subInput",
-                    0,
-                    "input",
-                    5
                 ]
             },
             {
@@ -5895,15 +5068,6 @@
                     "subInput",
                     0,
                     "sectionsInfo",
-                    4
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
                     1,
                     "subInput",
                     0,
@@ -5930,11 +5094,988 @@
                     "sectionsInfo",
                     1
                 ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    10
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    11
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    12
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    13
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    4,
+                    "condition",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    4,
+                    "subInput",
+                    0,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    5,
+                    "subInput",
+                    0,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    5,
+                    "subInput",
+                    0,
+                    "input",
+                    0,
+                    "items"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    5,
+                    "subInput",
+                    0,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    5,
+                    "subInput",
+                    0,
+                    "input",
+                    2,
+                    "allowedCode"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    5,
+                    "subInput",
+                    0,
+                    "input",
+                    2,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    0,
+                    "allowedCode"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    19
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    17
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    16
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    15
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    14,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    14
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    0,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    20
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    12
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    14,
+                    "notAllowedCode"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    16
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4,
+                    "allowedCode"
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "body",
+                    "items",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "body",
+                    "items",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "body",
+                    "items",
+                    6,
+                    "cellStyle"
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "body",
+                    "items",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "header",
+                    "items",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "header",
+                    "items",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "header",
+                    "items",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "header",
+                    "items",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "header",
+                    "items",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "header",
+                    "items",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "header",
+                    "items",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "header",
+                    "items",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "header",
+                    "items"
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "header"
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "body",
+                    "items",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "table"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    14
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    19
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    18
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3,
+                    "allowedCode",
+                    17
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    4,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    5,
+                    "subInput",
+                    0,
+                    "input",
+                    2,
+                    "getterKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    5,
+                    "subInput",
+                    0,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    6,
+                    "condition",
+                    0,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    6,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    6,
+                    "subInput",
+                    0,
+                    "input",
+                    0,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    6,
+                    "subInput",
+                    0,
+                    "input",
+                    0,
+                    "items"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    5,
+                    "subInput"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    0,
+                    "subInput",
+                    0,
+                    "input",
+                    1
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 52573
+        "size": 53928
     },
     "table": {
         "body": {

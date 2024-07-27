@@ -1,1 +1,16 @@
-{"creationDate":1714484585324,"collection":"view","chunkMaxSizeMB":20,"lastChunk":1,"docsLength":44,"counter":57,"reads":155644,"writes":4960,"deletes":0,"size":31457,"payloadIn":25048827,"payloadOut":62300881,"indexes":[],"lastIndex":0}
+{
+    "creationDate": 1714484585324,
+    "collection": "view",
+    "chunkMaxSizeMB": 20,
+    "lastChunk": 1,
+    "docsLength": 44,
+    "counter": 57,
+    "reads": 155652,
+    "writes": 4960,
+    "deletes": 0,
+    "size": 31457,
+    "payloadIn": 25048827,
+    "payloadOut": 62305514,
+    "indexes": [],
+    "lastIndex": 0
+}

@@ -1,20 +1,17 @@
 {
-    "counter1": {
-        "code": "1"
-    },
-    "counter2": {
-        "code": "TRN"
-    },
     "counter3": {
-        "code": "ACC"
+        "code": "CRN"
     },
     "counter4": {
-        "code": "VCH"
+        "code": "ACC"
     },
     "counter5": {
         "code": "119"
     },
     "counter6": {
+        "code": "TRN"
+    },
+    "counter7": {
         "code": "413",
         "type": "B2B Customer"
     }

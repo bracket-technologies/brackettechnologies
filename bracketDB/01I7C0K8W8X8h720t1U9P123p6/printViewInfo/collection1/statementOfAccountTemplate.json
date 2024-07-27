@@ -1334,13 +1334,13 @@
                             }
                         },
                         {
-                            "text": "doc().accountInfo.ledgerAccount.0",
+                            "text": "form().accountInfo.ledgerAccount.0",
                             "textStyle": {
                                 "fontSize": "1.3rem"
                             }
                         },
                         {
-                            "text": "doc().accountInfo.name+'('+doc().accountInfo.currency.0+')'",
+                            "text": "form().accountInfo.name+'('+form().accountInfo.currency.0+')'",
                             "textStyle": {
                                 "fontSize": "1.3rem"
                             }
@@ -1358,13 +1358,13 @@
                     },
                     "text": [
                         {
-                            "text": "FROM+' '+doc().fromDate.toDateFormat()",
+                            "text": "FROM+' '+form().fromDate.toDateFormat()",
                             "textStyle": {
                                 "fontSize": "1.5rem"
                             }
                         },
                         {
-                            "text": "TO+' '+doc().toDate.toDateFormat()",
+                            "text": "TO+' '+form().toDate.toDateFormat()",
                             "textStyle": {
                                 "fontSize": "1.5rem"
                             }
@@ -1628,7 +1628,7 @@
                                 }
                             },
                             "itemsList": "data()",
-                            "footerList": "doc().footerList"
+                            "footerList": "form().footerList"
                         }
                     }
                 }

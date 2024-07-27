@@ -1,5 +1,5 @@
 {
-    "view": "View:galleryManager?class=flex;style:[maxHeight='calc(100vh - 17rem)';width=100%;backgroundColor=#fff];if():[_.docName]:[doc=_.docName]:[doc=galleryStorage];loaded:[getImageOnLoaded()]",
+    "view": "View:galleryManager?class=flex;style:[maxHeight='calc(100vh - 17rem)';width=100%;backgroundColor=#fff];if():[_.docName]:[form=_.docName]:[form=galleryStorage];loaded:[getImageOnLoaded()]",
     "children": [
         {
             "view": "View?class=flex column;style:[width=100%;#height=50rem;alignItems=center]",
@@ -72,11 +72,11 @@
         "actions": {
             "getImageOnLoaded": "if():[!searchDataImage:()]:[getImage()]",
             "uploadFile": {
-                "openViewUpload": "generalPopup:()=[title='Upload Image';popupName=testCustomForm;imageData=image:();inputInfo=galleryManagerInfo:().galleryManager.createFormInputs;docName=imageInfo;docValues=image:().clone()];():generalPopup.update()::[():generalPopup.style():[visibility=visible;opacity=1]]",
+                "openViewUpload": "generalPopup:()=[title='Upload Image';popupName=testCustomForm;imageData=image:();inputInfo=galleryManagerInfo:().galleryManager.createFormInputs;docName=imageInfo;docValues=image:().clone()];():generalPopup.refresh()::[():generalPopup.style():[visibility=visible;opacity=1]]",
                 "_": "read():[data=file();type=file]:[image:()=_.data;openViewUpload();#NewImg:()=image:().clone()]"
             },
-            "openEditImage": "imageId:()=_.id;generalPopup:()=[title='Edit Image';popupName=customForm;inputInfo=galleryManagerInfo:().galleryManager.createFormInputs;imageData=_.clone();docName=image;docValues=_.clone();edit=true];():generalPopup.update()::[():generalPopup.style():[visibility=visible;opacity=1]]",
-            "getImage": "loader.show;getGallery():[imgCounter=if():[searchDataImage:()]:[searchDataImage:().len()]:[0]]:[if():[_.success]:[if():[_.data.len()<25]:[moreImage:()=false]:[moreImage:()=true];searchDataImage:().push():[_.data];():galleryContainer.1stChild().update()::[loader.hide]]:[loader.hide;moreImage:()=false]]",
+            "openEditImage": "imageId:()=_.id;generalPopup:()=[title='Edit Image';popupName=customForm;inputInfo=galleryManagerInfo:().galleryManager.createFormInputs;imageData=_.clone();docName=image;docValues=_.clone();edit=true];():generalPopup.refresh()::[():generalPopup.style():[visibility=visible;opacity=1]]",
+            "getImage": "loader.show;getGallery():[imgCounter=if():[searchDataImage:()]:[searchDataImage:().len()]:[0]]:[if():[_.success]:[if():[_.data.len()<25]:[moreImage:()=false]:[moreImage:()=true];searchDataImage:().push():[_.data];():galleryContainer.1stChild().refresh()::[loader.hide]]:[loader.hide;moreImage:()=false]]",
             "checkToSelectImage": {
                 "checkIfMaxSelectedExist": "if():[!selectedPhotos:()||selectedPhotos:().len()<[__.maxSelected]]:[select();selected=!selected;addToList()]:[note():[text='You cannot select more than '+[__.maxSelected]]]",
                 "addToList": "if():[!selectedPhotos:()]:[selectedPhotos:().push():[url=_.url;id=_.id]]:[selectedPhotos:().replaceItem():[url=_.url;id=_.id]]",

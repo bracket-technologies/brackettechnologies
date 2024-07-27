@@ -45,7 +45,7 @@
                                                             "view": "View?class=flex;style:[gap=.3rem;marginTop=3rem]?!generalPopup:().read",
                                                             "children": [
                                                                 {
-                                                                    "view": "Icon?name=Do_Not_Disturb_On;google.symbol;style:[fontSize=2.3rem;handleRemoveIconColor()];click:[handleRemDuplicatedInput()]"
+                                                                    "view": "Icon?name=Do_Not_Disturb_On;google.symbol;style:[fontSize=2.3rem;handleRemoveIconColor()];click:[handleRemDuplicatedInput();if():[_.removeAction]:[[_.removeAction]()]]"
                                                                 },
                                                                 {
                                                                     "view": "Icon?name=Add_Circle;google.symbol;style:[fontSize=2.3rem;color=if():[[_.duplicatableLimit]()<=nthParent():3.data().[_.duplicatedInputPath].len()]:[#b9b9b9ad]:[#5b5959ad];cursor=pointer];click:[addRow()]"
@@ -187,21 +187,23 @@
     "__props__": {
         "id": "u107H191d161T2V164F8s6A5v3",
         "doc": "customFormInputLoop",
-        "creationDate": 1711112148653,
-        "active": true,
-        "createdByUserID": null,
         "counter": 5,
+        "creationDate": 1711112148653,
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1721914634549,
+        "dev": false,
         "actions": {
             "handleInputFraction": "loaded:[().parentFraction=parent().style.gridTemplateColumns;().splittedArray=().parentFraction.split():' ';().splittedArray.[[parent().children().filter():[style.display!='none'].indexOf():[()]]]=_.fraction;parent().style().gridTemplateColumns=().splittedArray.join():' ']",
             "addRow": {
-                "handleDuplicatedInput": "if():[[_.duplicatableLimit]()>nthParent():3.data().[_.duplicatedInputPath].len()||!_.duplicatableLimit]:[nthParent():3.insert();prev().style():[color=#5b5959ad;cursor=pointer];nthParent():3.update()]",
+                "handleDuplicatedInput": "if():[[_.duplicatableLimit]()>nthParent():3.data().[_.duplicatedInputPath].len()||!_.duplicatableLimit]:[nthParent():3.insert();prev().style():[color=#5b5959ad;cursor=pointer];nthParent():3.refresh()]",
                 "_": "if():[_.duplicatedInputPath]:[handleDuplicatedInput()]:[nthParent():7.insert();if():[[().path().1]+1!=[__.constantRows]()]:[prev().style():[color=#5b5959ad;cursor=pointer]]]"
             },
             "getSearchResult": {
-                "notSuccess": "mainMobilePageInfo:()=false;#managersSearchResult:().[doc().identifier]=false;():customManagerTable.update():[loader.hide];openNewForm();doc().identifier='';():searchBoxTable.update():[loader.hide];note():[text=_.message;danger]",
-                "searchEngineSearch": "loader.show;doc().branch=userData:().currentBranch;customSearchEngine():[doc()]:[if():[_.success]:[successSearch()]:[notSuccess()]]",
-                "getIdentifier": "doc().keys()._():[if():[doc().[_].len()<1]:[doc().[_].del()]];doc().identifier=_.collection;searchEngineSearch()",
-                "closeGeneralPopup": "():generalPopup.style():[visibility=hidden;opacity=0];():generalPopup.update()",
+                "notSuccess": "mainMobilePageInfo:()=false;#managersSearchResult:().[form().identifier]=false;():customManagerTable.refresh():[loader.hide];openNewForm();form().identifier='';():searchBoxTable.refresh():[loader.hide];note():[text=_.message;danger]",
+                "searchEngineSearch": "loader.show;form().branch=userData:().currentBranch;customSearchEngine():[form()]:[if():[_.success]:[successSearch()]:[notSuccess()]]",
+                "getIdentifier": "form().keys()._():[if():[form().[_].len()<1]:[form().[_].del()]];form().identifier=_.collection;searchEngineSearch()",
+                "closeGeneralPopup": "():generalPopup.style():[visibility=hidden;opacity=0];():generalPopup.refresh()",
                 "_": "if():[true]:[getIdentifier()]:[note():[text='Please, fill at least one input!';type=danger]]"
             },
             "fillInSearchboxSelected": "selected:().currency.push():[id=userData:().currency;code=userData:().currencyCode;ref=userData:().currencyRef];selected:().branch.push():[id=userData:().branch;ref=userData:().branchRef]",
@@ -221,12 +223,12 @@
             "handleRemDuplicatedInput": {
                 "changeRemBtnColor": "nthParent():3.children().():[lastChild().1stChild().style():[color=#b9b9b9ad;cursor=not-allowed]]",
                 "_": "if():[generalPopup:().edit]:[if():[!_.editable.addOnly||[_.editable.addOnly;!data().in():[_.initialValue]]]:[handleRem()]]:[handleRem()]",
-                "handleRem": "if():[nthParent():3.data().[_.duplicatedInputPath].len()>1]:[if():[nthParent():3.data().[_.duplicatedInputPath].len()=2]:[changeRemBtnColor()];data().del();nthParent():3.update()]"
+                "handleRem": "if():[nthParent():3.data().[_.duplicatedInputPath].len()>1]:[if():[nthParent():3.data().[_.duplicatedInputPath].len()=2]:[changeRemBtnColor()];data().del();nthParent():3.refresh()]"
             },
-            "getImage": "timer():[loader.show]:0;getGallery():[imgCounter=if():[searchDataImage:()]:[searchDataImage:().len()]:[0]]:[if():[_.success]:[if():[_.data.len()<25]:[moreImage:()=false]:[moreImage:()=true];mainMobilePageInfo:()=_.data;():mobileMainPage.update();():mobileTopbar.update();loader.hide;closeGeneralPopup()]:[loader.hide;moreImage:()=false;closeGeneralPopup()]]",
+            "getImage": "timer():[loader.show]:0;getGallery():[imgCounter=if():[searchDataImage:()]:[searchDataImage:().len()]:[0]]:[if():[_.success]:[if():[_.data.len()<25]:[moreImage:()=false]:[moreImage:()=true];mainMobilePageInfo:()=_.data;():mobileMainPage.refresh();():mobileTopbar.refresh();loader.hide;closeGeneralPopup()]:[loader.hide;moreImage:()=false;closeGeneralPopup()]]",
             "handleRemoveIconColor": {
                 "checkIfLastIndex": "if():[nthParent():7.data().[__.path||__.duplicatedInputPath].len()=1]:[color=#b9b9b9ad;cursor=not-allowed]:[color=#5b5959ad;cursor=pointer]",
-                "handleConstantRows": "if():[[[().path().1]+1=[__.constantRows]()]||doc().[__.path].len()=1]:[color=#b9b9b9ad;cursor=not-allowed]:[color=#5b5959ad;cursor=pointer]",
+                "handleConstantRows": "if():[[[().path().1]+1=[__.constantRows]()]||form().[__.path].len()=1]:[color=#b9b9b9ad;cursor=not-allowed]:[color=#5b5959ad;cursor=pointer]",
                 "_": "if():[[__.constantRows]()]:[handleConstantRows()]:[checkIfLastIndex()]"
             },
             "displayPrevPath": {
@@ -242,11 +244,11 @@
                     "_": "().pathData=[];if():[__.path]:[____.sectionsInfo._():[if():[_.path=___.path]:[setInputValues()]]]",
                     "setInputValues": "if():[_.subInput]:[_.subInput._():[handleinputsValues()]]:[_.input._():[handleinputsValues()]]",
                     "handleinputsValues": "_.input._():[if():[_.inputLabel;_.inputValue;!_.executeEveryLoad;conditionTrue()]:[().pathData.[_.inputPath]=_.inputValue]]",
-                    "conditionTrue": "if():[_.condition||_.orCondition]:[customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone();path=parent().prev().path().[-2];index=parent().prev().path().[-1]+1]]:[true]"
+                    "conditionTrue": "if():[_.condition||_.orCondition]:[customCondition():[condition=_.condition;orCondition=_.orCondition;data=form().clone();path=parent().prev().path().[-2];index=parent().prev().path().[-1]+1]]:[true]"
                 }
             },
             "removeSubSection": {
-                "_": "if():[doc().[_.path].len()>1]:[displayOtherPath()::[2ndParent().1stChild().rem();handlePageNumber();handleArrowsColors()]]",
+                "_": "if():[form().[_.path].len()>1]:[displayOtherPath()::[2ndParent().1stChild().rem();handlePageNumber();handleArrowsColors()]]",
                 "displayOtherPath": "if():[parent().prev().path().[-1]>0]:[2ndParent().position=left;displayPrevPath()]:[2ndParent().position=right;displayNextPath()]",
                 "displayPrevPath": "selectedPath:().[___.index]=parent().prev().path().[-1]-1;2ndParent().insert():[preventDefault;path=2ndParent().path().clone().push():[_.path].push():[parent().prev().path().[-1]-1];view=parent().prev()]",
                 "displayNextPath": "selectedPath:().[___.index]=parent().prev().path().[-1]+1;2ndParent().insert():[preventDefault;path=2ndParent().path().clone().push():[_.path].push():[parent().prev().path().[-1]+1];view=parent().prev()]"
@@ -261,13 +263,13 @@
             "handlePageNumber": "parent().2ndChild().1stChild().txt()=2ndParent().1stChild().path().[-1]+1",
             "handleGrid": {
                 "_": "if():[__.grid.type()=array]:[handleGridCondition()]:[().grid=__.grid]",
-                "handleGridCondition": "__.grid._():[().conditionApplied=customCondition():[condition=_.condition;data=doc().clone();path=bookings;index=path().[-1]];if():[().conditionApplied=true]:[().grid=_.grid]]"
+                "handleGridCondition": "__.grid._():[().conditionApplied=customCondition():[condition=_.condition;data=form().clone();path=bookings;index=path().[-1]];if():[().conditionApplied=true]:[().grid=_.grid]]"
             },
             "saveInputIdInFormIds": "().sectionIndex=if():[___.path]:[___.index+'.'+path().[-1]]:[___.index];formIds:().find():[sectionCounter=().sectionIndex].inputs.replace():[index=parent().index()]:[index=parent().index();id=().id]",
             "conditionHandler": {
                 "_": "if():[path().len()>0]:[handleConditionInPath()]:[handleConditionInDoc()]",
-                "handleConditionInPath": "().display=customCondition():[orCondition=_.orCondition;condition=_.condition;data=doc();path=path().[-2];index=path().[-1]];if():[!().display]:[delFromDoc()]",
-                "handleConditionInDoc": "().display=customCondition():[orCondition=_.orCondition;condition=_.condition;data=doc()];if():[!().display]:[delFromDoc()]",
+                "handleConditionInPath": "().display=customCondition():[orCondition=_.orCondition;condition=_.condition;data=form();path=path().[-2];index=path().[-1]];if():[!().display]:[delFromDoc()]",
+                "handleConditionInDoc": "().display=customCondition():[orCondition=_.orCondition;condition=_.condition;data=form()];if():[!().display]:[if():[![()._.fixedInEdit;generalPopup:().edit]]:[delFromDoc()]]",
                 "delFromDoc": "parent().data().[()._.inputPath].del()"
             },
             "checkSelectedPath": "if():[__.path;_.type!=image]:[if():[selectedPath:().[____.index]||selectedPath:().[____.index]=0]:[if():[selectedPath:().[____.index]=path().[-1]]:[return():[true]]:[return():[false]]]:[return():[true]]]:[return():[true]]"
@@ -628,11 +630,6 @@
             },
             {
                 "path": [
-                    "conditionHandler"
-                ]
-            },
-            {
-                "path": [
                     "getSearchResult"
                 ]
             },
@@ -697,16 +694,6 @@
             {
                 "path": [
                     "inputsDataPath"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    0
                 ]
             },
             {
@@ -836,14 +823,20 @@
             },
             {
                 "path": [
+                    "addRow"
+                ]
+            },
+            {
+                "path": [
                     "children",
                     0,
                     "children",
-                    0
+                    1
                 ]
             }
         ],
-        "chunk": "chunk1",
-        "collection": "view"
+        "arrange": [],
+        "secured": false,
+        "size": 20031
     }
 }

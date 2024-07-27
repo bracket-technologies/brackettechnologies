@@ -1,37 +1,54 @@
 {
-    "name": "2222",
+    "name": "Test1",
     "isSubAccount": "No",
-    "generalLedger": "1",
+    "generalLedger": "413",
     "autoGenerateAccountNumber": "Yes",
     "currency": [
-        "USD"
+        "xof"
     ],
+    "type": "B2B Customer",
+    "createVATAccount": "No",
+    "openingBalance": [
+        {
+            "openingBalance": "Yes",
+            "currency": "xof",
+            "credit-debit": "Debit",
+            "amount": 1000,
+            "openingBalanceAccount": "119/1/0"
+        }
+    ],
+    "limit": 1000,
+    "notification": "No",
     "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
-    "createdBy": "5i7aFi1VZvdJzdVB5WTK0KOJGqJuerg3X2A8fjNqFxLXXU4NaOKpEH0iVnGU1700835548602",
+    "createdBy": "ecGBRq1sxd0cfpMp3lwIOykt4JGrvjKmCVcx01uFTezsGlsL0cqwifRrfXpW-1721739412660",
     "startsWith": [
-        "1"
+        "4",
+        "41",
+        "413"
     ],
-    "id": "Py2kx4zjC5RxAAHdxLO873AUsHzFixynkLKTOL8gWIUgBRkNn5QhO1ANQdy0-1721035212084",
-    "creationDate": 1721035212084,
-    "creationDay": 1720990800000,
+    "id": "VfgMxq3kJkmXT0e8xPGwdSSixiesOXKYkoyNSTejRINsxTzxMnDa0X3mV6dV-1721909801892",
+    "creationDate": 1721909801892,
+    "creationDay": 1721854800000,
     "ref": "ACC-00000002",
-    "accountNumber": "3",
+    "accountNumber": "1",
     "ledgerAccount": [
-        "1/3/0"
+        "413/1/1"
     ],
     "__props__": {
-        "id": "41v782w11043M5K2f1k2h154l7",
+        "id": "N1A7h2X1e920L9W8v0p1n9O8B9",
         "doc": "account768",
         "counter": 768,
-        "creationDate": 1721035212147,
+        "creationDate": 1721909801989,
         "collection": "account",
         "chunk": "chunk1",
+        "lastModified": 1721909802091,
+        "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 805
+        "size": 1074
     },
-    "lastBalance": "Z4OJCm9Zw2d7oNjaGuOC0hpgfsOSzE6D0Nt5HOE6IYc9ud9IOqI2n1ndLYgu-1721035229517"
+    "lastBalance": "1BAt4zTZU0XtbpT5gfC4EqH4xm9wmhC83pdZj2KcfWm3UDXIX2PhhPinildW-1721909801968"
 }

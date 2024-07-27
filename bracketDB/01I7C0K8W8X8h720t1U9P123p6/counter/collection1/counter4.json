@@ -1,27 +1,29 @@
 {
-    "collection": "voucher",
-    "id": "P9DEej2k0L35k8KEUN6nL368JshhEMFlIS70dFEzpz1MoLBYjBYBt9FQ70jM1721035229542",
-    "creationDate": 1721035229542,
-    "creationDay": 1720990800000,
-    "code": "VCH",
+    "collection": "account",
+    "id": "lRFoK5nvVYxOlFUf5O38BDqruafnj66Xj03EPVly4B9h9eBUvSUuDefVgSLj1721908457892",
+    "creationDate": 1721908457892,
+    "creationDay": 1721854800000,
+    "code": "ACC",
     "length": 8,
     "counter": 2,
     "max": 99999999,
-    "timestamp": 1721035229542,
+    "timestamp": 1721908457892,
     "reset": "yearly",
     "__props__": {
-        "id": "S157g2S1y0z3X5q2O2y9r5f4w3",
+        "id": "m1u7d2e1P9m0g8t4v5M718P9v3",
         "doc": "counter4",
         "counter": 4,
-        "creationDate": 1721035229543,
+        "creationDate": 1721908457893,
         "collection": "counter",
         "chunk": "chunk1",
+        "lastModified": 1721910167972,
+        "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 488
+        "size": 529
     },
     "end": 99999999
 }

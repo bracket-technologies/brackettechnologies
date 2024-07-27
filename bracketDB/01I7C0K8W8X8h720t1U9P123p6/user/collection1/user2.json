@@ -1,0 +1,30 @@
+{
+    "firstName": "Mohammad",
+    "lastName": "Baker",
+    "nationality": "Lebanese",
+    "contactNumber": "70707070",
+    "email": "mhmd@gmail.com",
+    "position": "Master User",
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "createdBy": "user1",
+    "id": "rxupQDGxU1ZL8BHeMAZlUwTgvimRQDWMfiOKH95Q29MKtGqyUD0UEBPDgcdP-1721653282039",
+    "creationDate": 1721653282039,
+    "creationDay": 1721595600000,
+    "ref": "USR-00000002",
+    "__props__": {
+        "id": "i1X7a211q6m5u3H2S8022078e8",
+        "doc": "user2",
+        "counter": 2,
+        "creationDate": 1721653282088,
+        "collection": "user",
+        "chunk": "chunk1",
+        "lastModified": 1721653282088,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 649
+    }
+}

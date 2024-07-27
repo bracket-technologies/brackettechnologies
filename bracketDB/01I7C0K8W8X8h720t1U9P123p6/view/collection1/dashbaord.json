@@ -42,12 +42,12 @@
         "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
         "actions": {
             "convertToTimestamp": {
-                "toYear": "doc().[reset]=[[doc().startDate]+[[doc().reset]*31557600000]]",
-                "toDay": "doc().[reset]=[[doc().startDate]+[[doc().reset]*86400000]]",
-                "toMonth": "doc().[reset]=[[doc().startDate]+[[doc().reset]*2629743000]]",
-                "toWeek": "doc().[reset]=[[doc().startDate]+[[doc().reset]*604800016.56]]",
-                "_": "if():[doc().expiryUnit='Hr']:[toHour()].elif():[doc().expiryUnit='Day']:[toDay()].elif():[doc().expiryUnit='Week']:[toWeek()].elif():[doc().expiryUnit='Month']:[toMonth()].elif():[doc().expiryUnit='Year']:[toYear()]",
-                "toHour": "doc().[reset]=[[doc().startDate]+[[doc().reset]*3600000]]"
+                "toYear": "form().[reset]=[[form().startDate]+[[form().reset]*31557600000]]",
+                "toDay": "form().[reset]=[[form().startDate]+[[form().reset]*86400000]]",
+                "toMonth": "form().[reset]=[[form().startDate]+[[form().reset]*2629743000]]",
+                "toWeek": "form().[reset]=[[form().startDate]+[[form().reset]*604800016.56]]",
+                "_": "if():[form().expiryUnit='Hr']:[toHour()].elif():[form().expiryUnit='Day']:[toDay()].elif():[form().expiryUnit='Week']:[toWeek()].elif():[form().expiryUnit='Month']:[toMonth()].elif():[form().expiryUnit='Year']:[toYear()]",
+                "toHour": "form().[reset]=[[form().startDate]+[[form().reset]*3600000]]"
             },
             "getBalanceOfAcc": "loader.show;getBalanceAccount()::[balances:()=_.data;loader.hide]"
         },

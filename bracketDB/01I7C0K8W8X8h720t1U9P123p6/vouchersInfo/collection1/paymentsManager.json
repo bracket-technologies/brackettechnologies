@@ -4,12 +4,12 @@
         "doc": "paymentsManager",
         "counter": 5,
         "creationDate": 1715000621549,
-        "active": true,
-        "actions": {},
-        "chunk": "chunk1",
-        "secured": false,
         "collection": "vouchersInfo",
-        "createdByUserID": null,
+        "chunk": "chunk1",
+        "lastModified": 1721731664762,
+        "dev": false,
+        "actions": {},
+        "comments": [],
         "collapsed": [
             {
                 "path": [
@@ -72,30 +72,13 @@
             },
             {
                 "path": [
-                    "table",
-                    "table",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "table",
-                    "table",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "table"
-                ]
-            },
-            {
-                "path": [
                     "tabl"
                 ]
             }
         ],
-        "comments": []
+        "arrange": [],
+        "secured": false,
+        "size": 4323
     },
     "title": "Payment Manager",
     "createFormInputs": "voucherSharedInfo",
@@ -128,16 +111,14 @@
                 "fraction": "1fr"
             },
             {
-                "path": "from",
                 "header": "Financial Account",
-                "innerPath": "financialLedgerAccount",
-                "fraction": "1fr"
+                "fraction": "1fr",
+                "formatCell": "__.financialLedgerAccounts._():[().accountsNames.push():[allLedgersAccounts:().find():[ledgerAccount.inc():[_]].name]];text=().accountsNames.join():['-']"
             },
             {
-                "path": "to",
                 "header": "Receivables and Payables Account",
-                "innerPath": "receivablesAndPayablesLedgerAccount",
-                "fraction": "1fr"
+                "fraction": "1fr",
+                "formatCell": "__.receivablesAndPayablesLedgerAccounts._():[().accountsNames.push():[allLedgersAccounts:().find():[ledgerAccount.inc():[_]].name]];text=().accountsNames.join():['-']"
             },
             {
                 "path": "transactions",

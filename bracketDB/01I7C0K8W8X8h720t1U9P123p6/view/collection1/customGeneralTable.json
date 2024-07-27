@@ -169,20 +169,23 @@
         "doc": "customGeneralTable",
         "counter": 6,
         "creationDate": 1715154850143,
-        "active": true,
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1721638770773,
+        "dev": false,
         "actions": {
             "markNotificationsAsRead": {
-                "updateSession": "getSessionAndMarkNotificationAsRead():[session=getCookie():session;notification=___.id]:[if():[_.success]:[dueNotifications:().pullItem():[____.id];1stChild().read=true;1stChild().color=#00a4e5;():notificationIcon.update();]:[note():[text='something went wrong!';wornig]]]",
+                "updateSession": "getSessionAndMarkNotificationAsRead():[session=getCookie():session;notification=___.id]:[if():[_.success]:[dueNotifications:().pullItem():[____.id];1stChild().read=true;1stChild().color=#00a4e5;():notificationIcon.refresh();]:[note():[text='something went wrong!';wornig]]]",
                 "_": "if():[!1stChild().read]:[updateSession()]"
             },
             "openBalanceSheet": {
                 "setPopup": "allSelected:().push():[ref=__.ref;id=__.id;generalLedger=__.generalLedger];generalPopup:()=[title='Balance Sheet';popupName=statementOfAccount;statementInfo=[account=_]];openPopup()",
-                "openPopup": "timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1];]:10",
+                "openPopup": "timer():[():generalPopup.refresh():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1];]:10",
                 "_": "loader.show;setPopup()"
             },
             "openDepreciationForm": {
                 "setPopup": "allSelected:().push():[ref=__.ref;id=__.id;generalLedger=__.generalLedger];generalPopup:()=[title='Depreciation Form';popupName=customForm;inputInfo=currentOpenManager:().depreciationFormInputs;docName=currentOpenManager:().depreciationInfo.docName;docValues=[currency=__.currency.clone();currentRate=__.currentValue.clone()]];openPopup()",
-                "openPopup": "timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1];]:10",
+                "openPopup": "timer():[():generalPopup.refresh():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1];]:10",
                 "_": "loader.show;setPopup()"
             },
             "hotButtonsList": {
@@ -196,23 +199,21 @@
             "refundVoucher": {
                 "changeToRefunded": "search():[collection=voucher;doc=____.id]:[if():[_.data]:[_.data.status='Canceled';_.data.refunded=true;saveData()]:[loader.hide;note():[text='Something went wrong!';danger]]]",
                 "openPaymentForm": "[mhmd:()=start();openCreateForm():[title='Payment Voucher Form';inputInfo=[collection=voucher;subInput=sharedManagersInfo:().voucherSharedInfo.createFormInputs.subInput];createable=true;read=true;docName=refundVoucherInfo;docValues=[transactions=___.transactions;type='Payment Voucher']]]()::[if():[_.success]:[loader.show;changeToRefunded()]:[loader.hide;note():[text='Something went wrong!';danger]]]",
-                "saveData": "save():[collection=voucher;data=_.data]:[______.status='Canceled';nthParent():3.update()::[loader.hide;note():[text='Voucher refunded successfully!']]]",
+                "saveData": "save():[collection=voucher;data=_.data]:[______.status='Canceled';nthParent():3.refresh()::[loader.hide;note():[text='Voucher refunded successfully!']]]",
                 "openReceiptForm": "openCreateForm():[title='Receipt Voucher Form';inputInfo=[collection=voucher;subInput=sharedManagersInfo:().voucherSharedInfo.createFormInputs.subInput];createable=true;read=true;docName=refundVoucherInfo;docValues=[transactions=___.transactions;type='Receipt Voucher']]",
                 "_": "if():[___.type='Receipt Voucher']:[loader.show;openPaymentForm()]:[loader.show;openReceiptForm()]"
             },
             "cancelVoucher": {
                 "saveData": "save():[collection=voucher;data=_.data]:[if():[_.data]:[successHandler()]:[failedHandler()]]",
-                "openConfirmWindow": "[mhmd:()=start();confirmWindow:()=[title='Confirm!';text='Are you sure you want to cancel this voucher?'];():confirmWindow.update()::[():confirmWindow.style():[visibility=visible;opacity=1]]]()::[if():[_.confirm]:[loader.show;if():[____.status='Pending']:[getVoucher()]:[cancelConfirmedVoucher()]]]",
+                "openConfirmWindow": "[mhmd:()=start();confirmWindow:()=[title='Confirm!';text='Are you sure you want to cancel this voucher?'];():confirmWindow.refresh()::[():confirmWindow.style():[visibility=visible;opacity=1]]]()::[if():[_.confirm]:[loader.show;if():[____.status='Pending']:[getVoucher()]:[cancelConfirmedVoucher()]]]",
                 "cancelConfirmedVoucher": "saveThroughSchema():[session=getCookie():session;data=____;collection=cancelConfirmedVoucher]:[if():[_.success]:[getVoucher():[id=_____.id]]:[failedHandler()]]",
                 "failedHandler": "loader.hide;note():[text='Something went wrong!';danger]",
                 "getVoucher": "search():[collection=voucher;doc=_.id||____.id]:[if():[_.data]:[_.data.status='Canceled';saveData()]:[failedHandler()]]",
-                "successHandler": "if():[().status='Pending']:[______.status='Canceled']:[________.status='Canceled'];nthParent():3.update()::[loader.hide;note():[text='Status updated successfully!']]",
+                "successHandler": "if():[().status='Pending']:[______.status='Canceled']:[________.status='Canceled'];nthParent():3.refresh()::[loader.hide;note():[text='Status updated successfully!']]",
                 "_": "().status=___.status;openConfirmWindow()"
             },
             "hotButtonsClickHandler": {
-                "#openFormEdit": "loader.show;group=collectionsInfo:().find():[managers.():collection.inc():[[___.collection]()]];manager=[().group.groupName]:().[().group.managers.find():[collection=[___.collection]()].manager];subGeneralPopup:()=[title=___.collection.capitalize()+' Form';popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName;docValues=__.clone();edit=true];timer():[():subGeneralPopup.update():[loader.hide];():subGeneralPopup.style():[visibility=visible;opacity=1]]:100",
-                "deleteItem": "confirmWindow:()=[title='Confirm!';text='Are you sure you want to delete this?';data=[id=__.id;collection=___.collection];action='deleteItemFromTable()'];():confirmWindow.update()::[():confirmWindow.style():[visibility=visible;opacity=1]]",
-                "#openFormReadOnly": "loader.show;group=collectionsInfo:().find():[managers.():collection.inc():[[___.collection]()]];manager=[().group.groupName]:().[().group.managers.find():[collection=[___.collection]()].manager];subGeneralPopup:()=[title=().manager.popupInfo.title.split():[' '].0.capitalize()+' Details';popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName;docValues=__.clone();read=true];():subGeneralPopup.update()::[loader.hide;():subGeneralPopup.style():[visibility=visible;opacity=1]]",
+                "deleteItem": "confirmWindow:()=[title='Confirm!';text='Are you sure you want to delete this?';data=[id=__.id;collection=___.collection];action='deleteItemFromTable()'];():confirmWindow.refresh()::[():confirmWindow.style():[visibility=visible;opacity=1]]",
                 "openFormEdit": "openCreateForm():[manager=currentOpenManager:();docValues=__.clone();edit=true]",
                 "_": "[click:droplist?if():[clicked().txt()='Edit']:[openFormEdit()].elif():[clicked().txt()='Visibility']:[openFormRead()].elif():[clicked().txt()='history']:[#openHistoryForm()].elif():[clicked().txt()='Delete']:[deleteItem()]]",
                 "openFormRead": "openCreateForm():[manager=currentOpenManager:();docValues=__.clone();read=true]"
@@ -225,14 +226,14 @@
             "openHistoryForm": {
                 "setPopup": "allSelected:().push():[ref=__.ref;id=__.id;generalLedger=__.generalLedger];#generalPopup:()=[title='History Form';popupName=statementOfAccount;statementInfo=[account=_]];#openPopup();getHistoryData()",
                 "getHistoryData": "search():[collection=history;doc=__.id]:[if():[_.data]:[]:[note():[text='No history found!';warning]]]",
-                "openPopup": "timer():[():generalPopup.update():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1];]:10",
+                "openPopup": "timer():[():generalPopup.refresh():[loader.hide];():generalPopup.style():[visibility=visible;opacity=1];]:10",
                 "_": ";#loader.show;setPopup()"
             },
             "styleCell": "style:[if():[!style().color]:[color=if():[_.path=ref]:[#0035ff]:[#535353]];fontSize=1.3rem;if():[!_.preventDefault]:[whiteSpace=nowrap]:[wordWrap=break-word];textOverflow=ellipsis;overflow=hidden;if():[_.clickAction]:[textDecoration=underline;cursor=pointer];if():[_.textStyle]:[[_.textStyle].flat()]];if():[_.clickAction]:[click():[[_.clickAction]()]]",
-            "openFilterDroplist": "droplistItems:()=[viewName=filterDroplist;identifier=parent().id];():customDroplist.style():[visibility=visible;opacity=1;transform=scale(1)];():customDroplist.update()::[():customDroplist.position():[positioner=parent().id;placement=bottom]]",
+            "openFilterDroplist": "droplistItems:()=[viewName=filterDroplist;identifier=parent().id];():customDroplist.style():[visibility=visible;opacity=1;transform=scale(1)];():customDroplist.refresh()::[():customDroplist.position():[positioner=parent().id;placement=bottom]]",
             "getDataOnScroll": {
                 "getSearchResult": {
-                    "successSearch": "if():[___.searchBoxPage]:[searchBoxResults:().push():[_.data];():searchBoxTable.1stChild().1stChild().2ndChild().1stChild().update()]:[managersSearchResult:().[currentOpenManager:().managerName].push():[_.data];():customManagerTable.1stChild().1stChild().2ndChild().1stChild().update()]",
+                    "successSearch": "if():[___.searchBoxPage]:[searchBoxResults:().push():[_.data];():searchBoxTable.1stChild().1stChild().2ndChild().1stChild().refresh()]:[managersSearchResult:().[currentOpenManager:().managerName].push():[_.data];():customManagerTable.1stChild().1stChild().2ndChild().1stChild().refresh()]",
                     "handleFailedResponse": "().noMoreData=true;",
                     "_": "().counter=managersSearchResult:().[currentOpenManager:().managerName].len();loader.show;guideSearchResult():[data=customManagerSearchEngine:();receivedDataCounter=().counter]:[loader.hide;if():[_.success]:[successSearch()]:[handleFailedResponse()]]"
                 },
@@ -282,26 +283,154 @@
                 "_": "if():[_.formatCell]:[[_.formatCell]()]:[if():[_.emptyCell]:[txt()='']:[textHandler()]]"
             },
             "confirmPendingInvoice": {
-                "saveData": "save():[collection=invoice;data=_.data.value()]:[nthParent():3._.status='Confirmed';nthParent():3.update()::[loader.hide;note():[text='Status updated successfully!']]]",
-                "openConfirmWindow": "[mhmd:()=start();confirmWindow:()=[title='Confirm!';text='Are you sure you want to confirm this Invoice?'];():confirmWindow.update()::[():confirmWindow.style():[visibility=visible;opacity=1]]]()::[if():[_.confirm]:[loader.show;saveUsingSchema()]]",
+                "saveData": "save():[collection=invoice;data=_.data.value()]:[nthParent():3._.status='Confirmed';nthParent():3.refresh()::[loader.hide;note():[text='Status updated successfully!']]]",
+                "openConfirmWindow": "[mhmd:()=start();confirmWindow:()=[title='Confirm!';text='Are you sure you want to confirm this Invoice?'];():confirmWindow.refresh()::[():confirmWindow.style():[visibility=visible;opacity=1]]]()::[if():[_.confirm]:[loader.show;saveUsingSchema()]]",
                 "_": "openConfirmWindow()",
                 "saveUsingSchema": "saveThroughSchema():[session=getCookie():session;data=__.itemData;collection=confirmInvoice]:[if():[_.success]:[updateInvoiceStatus()]:[loader.hide;note():[text='Something went wrong!';danger]]]",
                 "updateInvoiceStatus": "search():[collection=invoice;find=[id=___.itemData.id]]:[if():[_.data.value()]:[_.data.value().status='Confirmed';saveData()]]"
             },
             "confirmPendingVoucher": {
                 "updateVoucherStatus": "search():[collection=voucher;find=[id=___.itemData.id]]:[if():[_.data.value()]:[_.data.value().status='Confirmed';saveData()]]",
-                "saveData": "save():[collection=voucher;data=_.data.value()]:[nthParent():3._.status='Confirmed';nthParent():3.update()::[loader.hide;note():[text='Status updated successfully!']]]",
-                "openConfirmWindow": "[mhmd:()=start();confirmWindow:()=[title='Confirm!';text='Are you sure you want to confirm this voucher?'];():confirmWindow.update()::[():confirmWindow.style():[visibility=visible;opacity=1]]]()::[if():[_.confirm]:[loader.show;saveUsingSchema()]]",
+                "saveData": "save():[collection=voucher;data=_.data.value()]:[nthParent():3._.status='Confirmed';nthParent():3.refresh()::[loader.hide;note():[text='Status updated successfully!']]]",
+                "openConfirmWindow": "[mhmd:()=start();confirmWindow:()=[title='Confirm!';text='Are you sure you want to confirm this voucher?'];():confirmWindow.refresh()::[():confirmWindow.style():[visibility=visible;opacity=1]]]()::[if():[_.confirm]:[loader.show;saveUsingSchema()]]",
                 "_": "openConfirmWindow()",
                 "saveUsingSchema": "saveThroughSchema():[session=getCookie():session;data=__.itemData;collection=confirmVoucher]:[if():[_.success]:[updateVoucherStatus()]:[loader.hide;note():[text='Something went wrong!';danger]]]"
             },
-            "#openFormEdit": "loader.show;group=collectionsInfo:().find():[managers.():collection.inc():[[___.collection]()]];manager=[().group.groupName]:().[().group.managers.find():[collection=[___.collection]()].manager];subGeneralPopup:()=[title=___.collection.capitalize()+' Form';popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName;docValues=__.clone();edit=true];timer():[():subGeneralPopup.update():[loader.hide];():subGeneralPopup.style():[visibility=visible;opacity=1]]:100",
-            "#openFormReadOnly": "loader.show;grouviewView?class=flex;style:[height=2.25rem;width=2.25rem];hotButtonsList();hotButtonsClickHandler()childrenviewImage?src='https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/ILBFnaqvbsjv9AgmO2J4?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=h8BNgMj72GuebLu2d5K7XWW38ykjI2iGdGBNsGEo3wvinMAb%2BM5sBzEqbIPKnCRt%2FVVestwtzHpqZnZVO%2BhnOtjOEE50uks0cta67XLAyaBnL5kvUnnt2H0NfXj24yAvKQG9XHp1LRFfpY1paD0Hn356gFQeDwW99e1VINtzA40phtpFk%2F8RsxLRVHpz5mNeFWLvBFTRNnTesGOioQSJHafw8rLhY8cpy8bH7%2FF66fJT3lE90n23aFLuqKPpg1zVOHK956XBZ23tnYy6FsE16pQxLDQ%2FimN6B9nWX36Rer75Q83s6V4xlXucxawtrHHB%2B98HRk9ordnm0c1k6kl3mw%3D%3D';tooltip:[text=Setting];style:[height=2.25rem;width=2.25rem]...#footerexpand_morebottom_panel_closetop_panel_closeexpand_morep=collectionsInfo:().find():[managers.():collection.inc():[[___.collection]()]];manager=[().group.groupName]:().[().group.managers.find():[collection=[___.collection]()].manager];subGeneralPopup:()=[title=().manager.popupInfo.title.split():[' '].0.capitalize()+' Details';popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName;docValues=__.clone();read=true];():subGeneralPopup.update()::[loader.hide;():subGeneralPopup.style():[visibility=visible;opacity=1]]"
+            "#openFormEdit": "loader.show;group=collectionsInfo:().find():[managers.():collection.inc():[[___.collection]()]];manager=[().group.groupName]:().[().group.managers.find():[collection=[___.collection]()].manager];subGeneralPopup:()=[title=___.collection.capitalize()+' Form';popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName;docValues=__.clone();edit=true];timer():[():subGeneralPopup.refresh():[loader.hide];():subGeneralPopup.style():[visibility=visible;opacity=1]]:100",
+            "#openFormReadOnly": "loader.show;grouviewView?class=flex;style:[height=2.25rem;width=2.25rem];hotButtonsList();hotButtonsClickHandler()childrenviewImage?src='https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/ILBFnaqvbsjv9AgmO2J4?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=h8BNgMj72GuebLu2d5K7XWW38ykjI2iGdGBNsGEo3wvinMAb%2BM5sBzEqbIPKnCRt%2FVVestwtzHpqZnZVO%2BhnOtjOEE50uks0cta67XLAyaBnL5kvUnnt2H0NfXj24yAvKQG9XHp1LRFfpY1paD0Hn356gFQeDwW99e1VINtzA40phtpFk%2F8RsxLRVHpz5mNeFWLvBFTRNnTesGOioQSJHafw8rLhY8cpy8bH7%2FF66fJT3lE90n23aFLuqKPpg1zVOHK956XBZ23tnYy6FsE16pQxLDQ%2FimN6B9nWX36Rer75Q83s6V4xlXucxawtrHHB%2B98HRk9ordnm0c1k6kl3mw%3D%3D';tooltip:[text=Setting];style:[height=2.25rem;width=2.25rem]...#footerexpand_morebottom_panel_closetop_panel_closeexpand_morep=collectionsInfo:().find():[managers.():collection.inc():[[___.collection]()]];manager=[().group.groupName]:().[().group.managers.find():[collection=[___.collection]()].manager];subGeneralPopup:()=[title=().manager.popupInfo.title.split():[' '].0.capitalize()+' Details';popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName;docValues=__.clone();read=true];():subGeneralPopup.refresh()::[loader.hide;():subGeneralPopup.style():[visibility=visible;opacity=1]]"
         },
-        "chunk": "chunk1",
-        "secured": false,
-        "collection": "view",
-        "createdByUserID": null,
+        "comments": [
+            {
+                "note": "header",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "body",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "footer",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "row counter",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "custom input",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "hot btns",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "text",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "checkbox",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "0",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    2,
+                    "children"
+                ]
+            }
+        ],
         "collapsed": [
             {
                 "path": [
@@ -552,144 +681,10 @@
                 "path": [
                     "confirmPendingVoucher"
                 ]
-            },
-            {
-                "path": [
-                    "confirmPendingInvoice"
-                ]
             }
         ],
-        "comments": [
-            {
-                "note": "header",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "body",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "footer",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "note": "row counter",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "custom input",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "note": "hot btns",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    3
-                ]
-            },
-            {
-                "note": "text",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "checkbox",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "0",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    2,
-                    "children"
-                ]
-            }
-        ]
+        "arrange": [],
+        "secured": false,
+        "size": 26257
     }
 }

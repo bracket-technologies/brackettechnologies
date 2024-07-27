@@ -1,6 +1,5 @@
 const { decode } = require("./decode")
-const { toLine } = require("./kernel")
-const { toCode } = require("./toCode")
+const { toLine, actions } = require("./kernel")
 
 const searchParams = ({ _window, lookupActions, stack, props, req, res, id, e, __, string, object }) => {
 
@@ -16,7 +15,7 @@ const searchParams = ({ _window, lookupActions, stack, props, req, res, id, e, _
     var i = 1, stringList = string.split("field=")
     while (stringList[i]) {
 
-        stringList[i] = toCode({ _window, string: stringList[i] })
+        stringList[i] = actions["encode()"]({ _window, string: stringList[i] })
         var code = stringList[i].slice(0, 6)
         global.__refs__[code].type = "text"
         i++

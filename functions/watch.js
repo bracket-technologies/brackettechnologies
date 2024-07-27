@@ -1,9 +1,8 @@
-const { toApproval } = require("./kernel")
+const { toApproval, actions } = require("./kernel")
 const { clone } = require("./clone")
 const { toParam } = require("./kernel")
 const { toValue } = require("./kernel")
 const { isEqual } = require("./isEqual")
-const { toCode } = require("./toCode")
 const { generate } = require("./generate")
 
 const watch = ({ lookupActions, __, string, id }) => {
@@ -11,7 +10,7 @@ const watch = ({ lookupActions, __, string, id }) => {
     var view = window.views[id]
     if (!view) return
 
-    var watch = toCode({ _window, id, string: toCode({ _window, id, string, start: "'" }) })
+    var watch = actions["encode()"]({ _window, id, string: actions["encode()"]({ _window, id, string, start: "'" }) })
 
     var approved = toApproval({ id, lookupActions, stack, props, __, data: watch.split('?')[2] })
     if (!approved || !watch) return

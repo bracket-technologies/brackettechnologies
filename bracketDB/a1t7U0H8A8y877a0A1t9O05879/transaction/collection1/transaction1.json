@@ -1,7 +1,7 @@
 {
-    "invoiceID": "Y117Y2m008q7R363k4p6o7d9A7",
-    "billingAccountID": "n1C792G098y7S3b3i4I6z6s6I6",
-    "transactionDate": 1720873346808,
+    "invoiceID": "1197D2K1x0q4w836s390w9M945",
+    "billingAccountID": "31v782Z170j4v886H3F0F9S2m6",
+    "transactionDate": 1721048631002,
     "credit": 0,
     "debit": 0,
     "balance": 0,
@@ -9,10 +9,10 @@
     "totalCredits": 0,
     "type": "credit",
     "__props__": {
-        "id": "1107b2V0U8v723X3J4S6d8b149",
+        "id": "v1J752Y1T06408D6n3n1g0y0d9",
         "doc": "transaction1",
         "counter": 1,
-        "creationDate": 1720873346819,
+        "creationDate": 1721048631009,
         "collection": "transaction",
         "chunk": "chunk1",
         "actions": {},

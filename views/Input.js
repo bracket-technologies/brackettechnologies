@@ -90,6 +90,9 @@ const Input = (component) => {
     duplicatable, lang, unit, currency, google, key, minlength, children, container, generator, __templated__, type
   }
 
+  // password
+  if (password) type = "password"
+
   if (duplicatable) {
     component.removable = true
     removable = true
@@ -101,7 +104,7 @@ const Input = (component) => {
     var __dataPath__ = clone(component.__dataPath__)
     var path = component.path
     var __parent__ = component.__parent__
-    var doc = component.doc
+    var form = component.form
     var password = component.password && true
     var text = label.text
     id = id || generate()
@@ -116,7 +119,7 @@ const Input = (component) => {
     delete label.text
 
     return {
-      id, path, doc, __parent__, tooltip: component.tooltip, __dataPath__, __islabel__: true, preventDefault, __templated__, __childIndex__,
+      id, path, form, __parent__, tooltip: component.tooltip, __dataPath__, __islabel__: true, preventDefault, __templated__, __childIndex__,
       "view": `View?class=flex;style.transition=.1s;style.cursor=text;style.border=1px solid #ccc;style.borderRadius=.5rem;style.width=${component.style.width || "100%"};style.maxWidth=${component.style.maxWidth || "100%"};${jsonToBracket(container)}`,
       "children": [{
         "view": "View?style.flex=1;style.padding=.75rem 1rem .5rem 1rem;style.gap=.5rem",
@@ -135,7 +138,7 @@ const Input = (component) => {
             "event": "click?parent().prev().getInput().el().type=text;next().style().display=flex;style().display=none"
           }]
         }, {
-          "view": `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
+          "view": `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem;style.display=none`,
           "__controls__": [{
             "event": "click?parent().prev().getInput().el().type=password;prev().style().display=flex;style().display=none"
           }]
@@ -155,7 +158,7 @@ const Input = (component) => {
     var __dataPath__ = clone(component.__dataPath__)
     var path = component.path
     var __parent__ = component.__parent__
-    var doc = component.doc
+    var form = component.form
     var tooltip = component.tooltip
     var text = label.text
     id = id || generate()
@@ -172,7 +175,7 @@ const Input = (component) => {
     label.tooltip = tooltip
 
     return {
-      id, doc, __parent__, __dataPath__, path, __islabel__: true, preventDefault, __controls__: [], __templated__, __childIndex__,
+      id, form, __parent__, __dataPath__, path, __islabel__: true, preventDefault, __controls__: [], __templated__, __childIndex__,
       "view": `View?class=flex start column;style.gap=.5rem;style.width=${component.style.width || "100%"};style.maxWidth=${component.style.maxWidth || "100%"};${jsonToBracket(container)}`,
       "children": [
         {
@@ -279,9 +282,9 @@ const Input = (component) => {
           event: `keyup?():'${id}-duplicate'.click()?duplicatable;e().key=Enter`
         }]
       }, {
-        view: `Icon:${id}-clear?class=pointer;name=bi-x;style:[position=absolute;if():[language:()=ar]:[left=[[6.5?${type==="date"}?4]?parent().password?[2.5?${type==="date"}?0.5]]+'rem']:[right=[[6.5?${type==="date"}?4]?parent().password?[2.5?${type==="date"}?0.5]]+'rem'];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[parent().clearable;prev().txt()]:[prev().data().del();prev().txt()=;#prev().focus()].elif():[parent().removable;if():[parent().clearable]:[!prev().txt()]:true;doc():[path=path().slice():0:-1].len()>1]:[parent().rem()]]?parent().clearable||parent().removable||parent().duplicatable`,
+        view: `Icon:${id}-clear?class=pointer;name=bi-x;style:[position=absolute;if():[language:()=ar]:[left=[[6.5?${type==="date"}?4]?parent().password?[2.5?${type==="date"}?0.5]]+'rem']:[right=[[6.5?${type==="date"}?4]?parent().password?[2.5?${type==="date"}?0.5]]+'rem'];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[parent().clearable;prev().txt()]:[prev().data().del();prev().txt()=;#prev().focus()].elif():[parent().removable;if():[parent().clearable]:[!prev().txt()]:true;form():[path=path().slice():0:-1].len()>1]:[parent().rem()]]?parent().clearable||parent().removable||parent().duplicatable`,
       }, {
-        view: `Icon:${id}-duplicate?class=pointer duplicater;name=bi-plus;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:'5.5rem':'3rem']:[right=if():[parent().password]:'5.5rem':'3rem'];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[!parent().max||parent().max>2ndParent().class():duplicater.len()]:[doc():[path=path().slice():0:'-1'].push():[if():[data().type()=number]:0:''];2ndParent().update()::[class():duplicater.lastEl().2ndPrev().focus()]]]?parent().duplicatable`,
+        view: `Icon:${id}-duplicate?class=pointer duplicater;name=bi-plus;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:'5.5rem':'3rem']:[right=if():[parent().password]:'5.5rem':'3rem'];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[!parent().max||parent().max>2ndParent().class():duplicater.len()]:[form():[path=path().slice():0:'-1'].push():[if():[data().type()=number]:0:''];2ndParent().refresh()::[class():duplicater.lastEl().2ndPrev().focus()]]]?parent().duplicatable`,
       }, {
         view: `Text:${id}-generate?class=flexbox pointer;text=ID;style:[position=absolute;color=blue;if():[language:()=ar]:[left=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0]:[right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0];width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-input.txt()=().generated;():${id}-input.focus()]?parent().generator`,
       }, {
@@ -294,7 +297,7 @@ const Input = (component) => {
             event: "click?parent().prev().el().type=text;next().style().display=flex;style().display=none"
           }]
         }, {
-          view: `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute display-none;style.height=100%;style.width=4rem`,
+          view: `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem;style.display=none`,
           __controls__: [{
             event: "click?parent().prev().el().type=password;prev().style().display=flex;style().display=none"
           }]

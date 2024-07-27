@@ -1,35 +1,20 @@
 const fs = require("fs")
-const mime = {
-  html: "text/html",
-  txt: "text/plain",
-  css: "text/css",
-  gif: "image/gif",
-  jpg: "image/jpeg",
-  png: "image/png",
-  png: "image/png",
-  svg: "image/svg+xml",
-  json: "application/json",
-  woff: "application/font-woff",
-  woff2: "font/woff2",
-  js: "application/javascript",
-  ico: "image/x-icon"
-}
+const mime = require('mime-types')
 
 var getLocalFile = ({ req, res }) => {
   
-  var folder = req.url.split("/")[1]
-  var path = req.url.split("/")[2].split("?")[0]
+  var path = req.url.split("?")[0].slice(1)
   var timer = new Date().getTime()
   var docType = path.split(".").slice(-1)[0]
-  var type = mime[docType]
-  var file = fs.createReadStream(`${folder}/${path}`)
+  var contentType = mime.contentType(docType)
+  var file = fs.createReadStream(path)
   
   res.setHeader('Cache-Control', 'max-age=604800')
   res.setHeader("Expires", new Date(Date.now() + 604800000).toUTCString())
 
   file.on("open", () => {
     
-    res.setHeader("Content-Type", type)
+    res.setHeader("Content-Type", contentType)
     var stream = file.pipe(res)
     stream.on("finish", () => {
   

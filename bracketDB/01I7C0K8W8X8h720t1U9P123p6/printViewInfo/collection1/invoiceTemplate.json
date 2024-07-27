@@ -2436,7 +2436,7 @@
                         "width": "100%",
                         "justify-content": "center"
                     },
-                    "text": "doc().invoiceInfo.invoiceType",
+                    "text": "form().invoiceInfo.invoiceType",
                     "textStyle": {
                         "fontSize": "2.5rem",
                         "fontWeight": "Bold"

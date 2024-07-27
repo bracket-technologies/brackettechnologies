@@ -1,15 +1,15 @@
 {
-    "firstName": "Ali",
-    "lastName": "Al Khansa",
-    "accountID": "31G7d2T0P8F743F344c6H3Y3O3",
-    "email": "cto@skylagroup.com",
-    "username": "alialkhansa",
+    "firstName": "w",
+    "lastName": "w",
+    "accountID": "M1C702g190o408k6k3f0n7J7k9",
+    "email": "w",
+    "username": "ww111",
     "newUser": false,
     "__props__": {
-        "id": "y1z7T2h0C8A7d393a4e6U3V615",
+        "id": "T127h2l1D0o4N8l6m3N0j7y9L5",
         "doc": "user87",
         "counter": 87,
-        "creationDate": 1720873346365,
+        "creationDate": 1721048630795,
         "collection": "user",
         "chunk": "chunk1",
         "actions": {},
@@ -17,6 +17,6 @@
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 366
+        "size": 333
     }
 }

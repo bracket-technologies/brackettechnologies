@@ -27,9 +27,8 @@ const app = (req, res) => {
     .on('end', () => {
 
       req.ip = ip
-      req.body = JSON.parse(Buffer.concat(req.body).toString() || "{}")
       res.serverID = serverID
-
+      req.body = JSON.parse(Buffer.concat(req.body).toString() || "{}")
       router({ req, res })
     })
 }
@@ -49,7 +48,6 @@ if (port) {
 } else {
 
   // get hosts
-  getData({ search: { db: bracketDB, collection: "host", find: { port: { gte: 80 } } } }).then(({ data }) => {
-    Object.values(data).map(host => host.port.map(port => start(port)))
-  })
+  var {data: hosts} = getData({ search: { db: bracketDB, collection: "host", find: { port: { gte: 80 } } } })
+  Object.values(hosts).map(host => host.port.map(port => start(port)))
 }

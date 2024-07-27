@@ -8,8 +8,8 @@
         "active": true,
         "actions": {
             "buyCoins": {
-                "_": "loader.show;[start();chargeAccount():[doc()]:[end():[_]]]():[collection=actions;doc=main]:[loader.hide;postBuy()]?conditions()?missingDataHandler()",
-                "conditions": "doc().find():[packageName;priceUSD;qty;coins]",
+                "_": "loader.show;[start();chargeAccount():[form()]:[end():[_]]]():[collection=actions;doc=main]:[loader.hide;postBuy()]?conditions()?missingDataHandler()",
+                "conditions": "form().find():[packageName;priceUSD;qty;coins]",
                 "missingDataHandler": "note():[text='Choose a package correctly!';danger]",
                 "postBuy": "note():[text=_.message;[danger=true?!_.success]];[[closeForm()]():[doc=tap;view=():coinPackagesForm.lastChild()]?_.success]"
             },
@@ -189,13 +189,13 @@
                                             "view": "Text?text=_.label;style:[fontSize=1.5rem]"
                                         },
                                         {
-                                            "view": "Text?text=[doc().[_.path]||0].price()+' '+tag():[text=_.unit;style:[fontSize=1.3rem]];style:[fontSize=1.5rem;color=blue;width=12.5rem;textAlign=right]?_.unit"
+                                            "view": "Text?text=[form().[_.path]||0].price()+' '+tag():[text=_.unit;style:[fontSize=1.3rem]];style:[fontSize=1.5rem;color=blue;width=12.5rem;textAlign=right]?_.unit"
                                         },
                                         {
-                                            "view": "Text?text=doc().[_.path];style:[fontSize=1.5rem;color=blue;width=12.5rem;textAlign=right]?!_.unit;!_.preUnit"
+                                            "view": "Text?text=form().[_.path];style:[fontSize=1.5rem;color=blue;width=12.5rem;textAlign=right]?!_.unit;!_.preUnit"
                                         },
                                         {
-                                            "view": "Text?text=_.preUnit+doc().[_.path];style:[fontSize=1.5rem;width=12.5rem;textAlign=right]?_.preUnit"
+                                            "view": "Text?text=_.preUnit+form().[_.path];style:[fontSize=1.5rem;width=12.5rem;textAlign=right]?_.preUnit"
                                         }
                                     ]
                                 }

@@ -1,22 +1,52 @@
 {
-    "firstTrigger": 1721037658753,
-    "serverTriggers": 11,
-    "date": 1720990800000,
-    "projectID": "s1e7K2u088l7J3A3z4J6M4m3x0",
+    "firstTrigger": 1721117621906,
+    "serverTriggers": 899,
+    "date": 1721077200000,
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
     "activityPerHour": [
         {
-            "time": 1721037600000,
-            "firstTrigger": 1721037658753,
-            "serverTriggers": 11,
-            "lastTrigger": 1721037780972
+            "time": 1721116800000,
+            "firstTrigger": 1721117621906,
+            "serverTriggers": 102,
+            "lastTrigger": 1721120305665
+        },
+        {
+            "time": 1721120400000,
+            "firstTrigger": 1721120607097,
+            "serverTriggers": 147,
+            "lastTrigger": 1721123442562
+        },
+        {
+            "time": 1721124000000,
+            "firstTrigger": 1721124608546,
+            "serverTriggers": 327,
+            "lastTrigger": 1721127598320
+        },
+        {
+            "time": 1721127600000,
+            "firstTrigger": 1721127606678,
+            "serverTriggers": 259,
+            "lastTrigger": 1721131185189
+        },
+        {
+            "time": 1721131200000,
+            "firstTrigger": 1721131203542,
+            "serverTriggers": 57,
+            "lastTrigger": 1721133922646
+        },
+        {
+            "time": 1721134800000,
+            "firstTrigger": 1721135587340,
+            "serverTriggers": 7,
+            "lastTrigger": 1721135599388
         }
     ],
-    "lastTrigger": 1721037780972,
+    "lastTrigger": 1721135599388,
     "__props__": {
-        "id": "d1F7s2f1P0w3y7t6v5k877f6w3",
+        "id": "K1N7S2y1v1C1a726l2t1H9f7i8",
         "doc": "projectActivity10",
         "counter": 10,
-        "creationDate": 1721037658763,
+        "creationDate": 1721117621978,
         "collection": "projectActivity",
         "chunk": "chunk1",
         "actions": {},
@@ -24,6 +54,6 @@
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 495
+        "size": 999
     }
 }

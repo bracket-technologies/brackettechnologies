@@ -3,6 +3,7 @@ const setPosition = ({ position = {}, id, e }) => {
   var views = window.views
   var align = position.align || "center"
   var element = views[position.id || id].__element__
+  if (!element) return
   var mousePos = position.positioner === "mouse"
   var fin = element.getElementsByClassName("fin")[0]
   var positioner = position.positioner || id

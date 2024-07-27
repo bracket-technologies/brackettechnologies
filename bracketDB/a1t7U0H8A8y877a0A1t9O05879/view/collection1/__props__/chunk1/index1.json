@@ -44,14 +44,8 @@
     "form": {
         "__props__.id": "U1u7M156k53537o7b8O030M4o3"
     },
-    "galleryView": {
-        "__props__.id": "q137J1P0H3I3k0C7v8e6J4u9O7"
-    },
     "help": {
         "__props__.id": "m1G7E1P3n8w0J4l1x6b1d0W1G9"
-    },
-    "image-window": {
-        "__props__.id": "W1Y7o160Z3L3R0n7d8W6P5j0h3"
     },
     "login": {
         "__props__.id": "u1r7s1W0I3R3V0X7z876f5j0K9"
@@ -74,7 +68,7 @@
     "root": {
         "__props__.id": "i1I7F1L0f3a3U0G798f6s5k4B3"
     },
-    "router": {
+    "view": {
         "__props__.id": "J1o7L1N0c3I390e7d8n6R5N4e5"
     },
     "SearchEngine": {
@@ -95,7 +89,7 @@
     "topbar": {
         "__props__.id": "h1k7G1d367h7U9r6n0y1P9b7y8"
     },
-    "tree": {
-        "__props__.id": "w1U741I5H0z8T8O9D327H5W2z6"
+    "gallery": {
+        "__props__.id": "21O7N2H12908d8j185y9j2j0V9"
     }
 }

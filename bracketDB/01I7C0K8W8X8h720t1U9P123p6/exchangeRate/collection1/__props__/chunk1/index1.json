@@ -1,20 +1,17 @@
 {
-    "exchangeRate39": {
-        "id": "GUa9kgSgXquRLLXx1qVcVGUzzjVjosJ4lbJn6jRHCk0laAvQ4L1DMfykU0KY-1720082427555"
-    },
-    "exchangeRate38": {
-        "id": "j1vrW10tft0zY0wTam6m5JUO6GYMU62oAdxjlBkL0ZmGCRNoeWlb76atSdPT-1719926123551"
-    },
-    "exchangeRate37": {
-        "id": "T7ea5bD0bQCKvhoidfsDPJfgOMsfiqG663UdW1jjDrN3FsXZvhQeXBKnPg8r-1719926100281"
-    },
-    "exchangeRate36": {
-        "id": "Lr0hpvKR1Qx6Fz0A53qJsEkdG1vCLzXprvAMJrFuXTxYvcKhWxgFK33FQUEl-1719919307620"
-    },
-    "exchangeRate35": {
-        "id": "uJwKfSdjRQa2Ut46KmTQYp7jJfLM9StqsntYHNhlFJqgcH19jdeDln2MoOp7-1719916249064"
-    },
     "USDexchangeRate": {
         "id": "USDexchangeRate"
+    },
+    "exchangeRate42": {
+        "id": "ra2hq0FOiDDJW8f11k3wkx3K1e64Zg1BvBZUvBnbobccQikyjZt7z909Ubra-1721898603674"
+    },
+    "exchangeRate43": {
+        "id": "BJmsrOMlQDLriTBjfDQPZeD9eYZEMR40fGAZMIQgYWh2d69uKJhoiDxEzpbf-1721899433403"
+    },
+    "exchangeRate44": {
+        "id": "rPtfIkfbJp1kjT8T8ZWgea0tGV0Dfaoaa0n0vkeclhhnPsjgZmaCOaZ8DB4Q-1721907807618"
+    },
+    "exchangeRate45": {
+        "id": "xjvj8KPlLfytoYk1I4nZUbYOFML13kR6EtFTteQybkLSefKrYR38Q5KIpEGo-1721908426663"
     }
 }

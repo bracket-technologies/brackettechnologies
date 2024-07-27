@@ -32,7 +32,7 @@
                 "style": "width=9rem;height=3rem;border=1px solid #ccc;borderRadius=.4rem;cursor=pointer;opacity=.8",
                 "textStyle": "fontSize=1.4rem;color=#666",
                 "text": "Discard",
-                "btnAction": "():galleryContainer.update();checkIfOpenPrevForm()"
+                "btnAction": "():galleryContainer.refresh();checkIfOpenPrevForm()"
             },
             {
                 "hoverStyle": "backgroundColor=#2ccb73",

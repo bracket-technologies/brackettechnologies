@@ -34,9 +34,11 @@
     "__props__": {
         "id": "i1u7Q1f120l3C1T3u6D5N2V0R6",
         "doc": "governmentDroplistItems",
+        "counter": 27,
         "creationDate": 1711031365206,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1721301953877,
         "actions": {
             "fillLeftZeros": "().x=_.text+'t';while():[().x.len()<[_.digits+1]]:[().x='0'+().x];return():[().x.replaceItem():'t':'']",
             "hoverStyle": "mouseenter:[parent().children().():[style().backgroundColor=white];selectedIndex:()=().counter;style():[backgroundColor=#f4f4f4]];mouseleave:[style():[backgroundColor=white]]",
@@ -54,10 +56,11 @@
                 "saveInData": "if():[():[droplistItems:().identifier].2ndChild().1stChild().txt()]:[():[droplistItems:().identifier].data().[():[droplistItems:().identifier]._.inputPath]=fillLeftZeros():[text=1stChild().1stChild().txt();digits=3]+fillLeftZeros():[text=():[droplistItems:().identifier].2ndChild().1stChild().txt();digits=10]]:[():[droplistItems:().identifier].data().[():[droplistItems:().identifier]._.inputPath]=fillLeftZeros():[text=1stChild().1stChild().txt();digits=3]]",
                 "_": "selectedIndex:()=().counter;():[droplistItems:().identifier].1stChild().1stChild().txt()=fillLeftZeros():[text=1stChild().1stChild().txt();digits=3];saveInData()"
             },
-            "getBalance": "searchLastBalance():[ledgerAccount=_]:[if():[_.data.value()]:[_.data.ledger=__;selectedAccountsBalance:().push():[_.data];():[droplistItems:().identifier].parent().next().update()]]",
+            "getBalance": "searchLastBalance():[ledgerAccount=_]:[if():[_.data.value()]:[_.data.ledger=__;selectedAccountsBalance:().push():[_.data];():[droplistItems:().identifier].parent().next().refresh()]]",
             "#selectDefaultValue": "selectedIndex:()=0;if():[():[droplistItems:().identifier].1stChild().1stChild().txt()='']:[1stChild().mouseenter()]:[children().find():[1stChild().1stChild().txt()=():[droplistItems:().identifier].1stChild().1stChild().txt()].mouseenter()]",
             "handleAccountName": "if():[governmentAccountsItems:().[dropListNumber:()].currency]:[text=governmentAccountsItems:().[dropListNumber:()].name+if():[governmentAccountsItems:().[dropListNumber:()].currency]:['('+governmentAccountsItems:().[dropListNumber:()].currency+')']]:[text=governmentAccountsItems:().[dropListNumber:()].name]"
         },
+        "comments": [],
         "collapsed": [
             {
                 "path": []
@@ -97,12 +100,8 @@
                 ]
             }
         ],
-        "comments": [],
-        "dirPath": [],
-        "version": 0,
-        "counter": 27,
-        "secure": false,
-        "chunk": "chunk1",
-        "collection": "view"
+        "arrange": [],
+        "secured": false,
+        "size": 5339
     }
 }

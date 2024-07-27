@@ -8,7 +8,7 @@
         "active": true,
         "actions": {
             "getManagersList": "managersSearch()::[accountManagers:()=_.data?_.success=true?note():[text=_.message]];",
-            "openManagerSect": "log():[_.id];search():[collection=accountManagers;find:[id=_.id]]:[activeManagerSect:()=_.data.value();():test.update()]"
+            "openManagerSect": "log():[_.id];search():[collection=accountManagers;find:[id=_.id]]:[activeManagerSect:()=_.data.value();():test.refresh()]"
         },
         "comments": [
             {

@@ -16,10 +16,6 @@
     "name": "Playground Platform",
     "accountID": "N1c7i1G4e4C800o5J6l377C5Z7",
     "db": "a2c7i1G4e4C800o5J6l377C5Z7",
-    "domains": [
-        "playground.brackettechnologies.com",
-        "playground.localhost"
-    ],
     "subdomain": "playground",
     "active": true,
     "publicID": "r4cy61G4e4C800o5J6l377C5Z7",

@@ -1,5 +1,5 @@
 {
-    "view": "View?id=SearchEngine;class=flex align-center;style:[borderTop=1px solid #ddd;borderBottom=1px solid #ddd;width=100%;padding=2rem;backgroundColor=#f6f6f6];doc",
+    "view": "View?id=SearchEngine;class=flex align-center;style:[borderTop=1px solid #ddd;borderBottom=1px solid #ddd;width=100%;padding=2rem;backgroundColor=#f6f6f6];form",
     "__props__": {
         "id": "q1u7k1N4L4p0S0p0n9x9N942O3",
         "doc": "SearchEngine",
@@ -8,7 +8,7 @@
         "collection": "view",
         "chunk": "chunk1",
         "actions": {
-            "searchData": "searchBySchema():[schema=_.schema;data=doc()]:[data:().[__.table.data.publicID]=_.data;parent().next().update()?_.success?note():[text=_.message;danger=true]]"
+            "searchData": "searchBySchema():[schema=_.schema;data=form()]:[data:().[__.table.data.publicID]=_.data;parent().next().refresh()?_.success?note():[text=_.message;danger=true]]"
         },
         "comments": [],
         "collapsed": [],

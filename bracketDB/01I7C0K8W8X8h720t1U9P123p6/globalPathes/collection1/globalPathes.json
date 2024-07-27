@@ -102,9 +102,9 @@
                 },
                 {
                     "code": "ACC",
-                    "manager": "capitalsManager",
+                    "manager": "equityAndLongTermDebtsManager",
                     "collection": "account",
-                    "id": "capitalsManager"
+                    "id": "equityAndLongTermDebtsManager"
                 },
                 {
                     "code": "ACC",
@@ -173,147 +173,13 @@
     "__props__": {
         "id": "o1X7P1C1Y0E30133g6R065u5m6",
         "doc": "globalPathes",
+        "counter": 1,
         "creationDate": 1711031360556,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
-        "collapsed": [
-            {
-                "path": [
-                    "managers",
-                    0,
-                    "managers",
-                    5
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    0,
-                    "managers",
-                    6
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    0,
-                    "managers",
-                    7
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    5,
-                    "managers",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    5,
-                    "managers",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    5,
-                    "managers",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    5,
-                    "managers",
-                    4
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    5,
-                    "managers",
-                    5
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    2,
-                    "managers",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    2,
-                    "managers",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    2,
-                    "managers",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    2,
-                    "managers",
-                    4
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    9,
-                    "managers",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    5,
-                    "managers",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "managers",
-                    9
-                ]
-            }
-        ],
+        "collection": "globalPathes",
+        "chunk": "chunk1",
+        "lastModified": 1721823636994,
+        "dev": false,
+        "actions": {},
         "comments": [
             {
                 "note": "galleryManagerInfo",
@@ -393,10 +259,189 @@
                 ]
             }
         ],
-        "dirPath": [],
-        "actions": {},
-        "counter": 1,
-        "chunk": "chunk1",
-        "collection": "globalPathes"
+        "collapsed": [
+            {
+                "path": [
+                    "managers",
+                    0,
+                    "managers",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    0,
+                    "managers",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    0,
+                    "managers",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    2,
+                    "managers",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    2,
+                    "managers",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    2,
+                    "managers",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    2,
+                    "managers",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    9,
+                    "managers",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    1,
+                    "managers"
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    0,
+                    "managers",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    0,
+                    "managers",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    4,
+                    "managers",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    4,
+                    "managers",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    4,
+                    "managers",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    5,
+                    "managers",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    5,
+                    "managers",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    5,
+                    "managers",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "managers",
+                    5,
+                    "managers",
+                    5
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 3861
     }
 }

@@ -1,5 +1,5 @@
 {
-    "view": "View:customPrintView2?class=column;style:[width=100%;height=100%;gap=1.5rem;padding=2rem];if():[_.data.data]:[customPrintView:()=_.data.data];doc=customPrintView",
+    "view": "View:customPrintView2?class=column;style:[width=100%;height=100%;gap=1.5rem;padding=2rem];if():[_.data.data]:[customPrintView:()=_.data.data];form=customPrintView",
     "children": [
         {
             "view": "View?data=_.data;class=flex column;style:[padding=1rem]",

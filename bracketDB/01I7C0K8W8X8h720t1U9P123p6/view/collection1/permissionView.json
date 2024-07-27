@@ -39,7 +39,7 @@
                     ]
                 },
                 {
-                    "view": "View?class=flexbox;style:[width=9rem;height=3rem;border=1px solid #ccc;borderRadius=.4rem;cursor=pointer;opacity=.8];click:[[_.doc]:().permission=[_.defaultPermission.[_.userType]];selectedPermission:()=:;2ndParent().update()];hover.style.opacity=1",
+                    "view": "View?class=flexbox;style:[width=9rem;height=3rem;border=1px solid #ccc;borderRadius=.4rem;cursor=pointer;opacity=.8];click:[[_.doc]:().permission=[_.defaultPermission.[_.userType]];selectedPermission:()=:;2ndParent().refresh()];hover.style.opacity=1",
                     "children": [
                         {
                             "view": "Text?text=Reset;style:[fontSize=1.4rem;color=#666]"
@@ -78,7 +78,7 @@
             },
             "#openUserForm": {
                 "setGeneralPopup": "generalPopup:()=[title=currentOpenManager:().popupInfo.title;popupName=customForm;inputInfo=currentOpenManager:().createFormInputs;docName=currentOpenManager:().popupInfo.docName];if():[currentOpenManager:().permission]:[generalPopup:().permission=currentOpenManager:().permission;generalPopup:().defaultPermission=currentOpenManager:().defaultPermission];openPopup()",
-                "openPopup": "():generalPopup.update()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1]]",
+                "openPopup": "():generalPopup.refresh()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1]]",
                 "[object Object]": "loader.show;creat:().pullItem():[createFormStack:().at():[-1]];setGeneralPopup()",
                 "_": "loader.show;createFormStack:().pullItem():[createFormStack:().at():[-1]];setGeneralPopup()"
             }

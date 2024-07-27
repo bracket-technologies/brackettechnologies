@@ -7,15 +7,18 @@
         "creationDate": 1713779601978,
         "collection": "view",
         "chunk": "chunk1",
+        "lastModified": 1722005741815,
+        "dev": false,
         "actions": {
             "topbarBtns": ":[text=Features & Facilities;page=main;mount=[true?manifest:().path.1=tap?false]]:[text=Pricing;page=pricing]:[text=Online Training;page=training]:[text=Blog;page=blog]:[text=Contact Us;page=contactus]",
             "headerMouseenterHandler": "():underline.():[width()=..width();position():[distance=-2;align=left]]",
-            "headerMouseleaveHandler": "[headerMouseenterHandler()]():[():[doc().find():[mount].id]]?doc().find():[mount]?():underline.width()=0",
-            "headerClickHandler": "doc().find():[mount].mount=false;data().mount=true",
+            "headerMouseleaveHandler": "[headerMouseenterHandler()]():[():[form().find():[mount].id]]?form().find():[mount]?():underline.width()=0",
+            "headerClickHandler": "form().find():[mount].mount=false;data().mount=true",
             "accountDroplistHandlers": {
                 "_": "droplist:[preventDefault;items=:'Account Settings':Sign out];droplistHandler()",
                 "droplistHandler": "[click:droplist?user:().del();eraseCookie():__session__;root():tap?clicked().txt()=Sign out]"
-            }
+            },
+            "logo": "'/storage/eU1YM75W2Nq1Xo8JS3a24tw3d48yg5Mw0GI4Ff7/files/bucket1/Bv1HS7lS2oO27w0Td0vn5C332K2F29321tf7uA2.png'?manifest:().page=tap?'/storage/eU1YM75W2Nq1Xo8JS3a24tw3d48yg5Mw0GI4Ff7/files/bucket1/xw15d77t2CV2f90Jh03q53l61e59t1Cl5DM1S58.png'"
         },
         "comments": [
             {
@@ -126,12 +129,6 @@
             {
                 "path": [
                     "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
                     2
                 ]
             },
@@ -149,14 +146,17 @@
         ],
         "arrange": [],
         "secured": false,
-        "size": 3964
+        "size": 4340
     },
     "children": [
         {
-            "view": "View?id=logo;class=pointer flexbox;style:[paddingLeft=1rem];[click?root():tap]",
+            "view": "View?id=logo;class=pointer flexbox;style:[paddingLeft=1rem;gap=1rem];[click?root():tap]",
             "children": [
                 {
-                    "view": "Text?text=Travel Accounting Platform;style:[fontSize=1.75rem]"
+                    "view": "Image?src=logo();style:[height=3rem;width=3rem]"
+                },
+                {
+                    "view": "Text?text=[Travel Accounting Platform?manifest:().page=tap?Bracket Platform];style:[fontSize=1.75rem]"
                 }
             ]
         },

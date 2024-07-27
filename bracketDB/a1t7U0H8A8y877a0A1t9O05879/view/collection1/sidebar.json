@@ -81,7 +81,7 @@
                 "_": "unselectSidebarItems();selectSidebarItem();displayManager()",
                 "selectSidebarItem": "selectedSideBarItem=true;#containerStyle;style():[backgroundColor=#f5f5f5;borderColor=#fb3b1e];#iconstyle;1stChild().1stChild().1stChild().style().color=#fb3b1e;#textStyle;1stChild().2ndChild().1stChild().style().color=#fb3b1e",
                 "unselectSidebarItems": "2ndParent().children()._():[_.1stChild().selectedSideBarItem=false;_.1stChild().style():[backgroundColor=#fff;borderColor=#fff];#iconColor;_.1stChild().1stChild().1stChild().1stChild().color()=#453f3f;#textColor;_.1stChild().1stChild().2ndChild().1stChild().color()=#453f3f]",
-                "displayManager": "currentOpenManager:()=_.manager;():managerBody.update()"
+                "displayManager": "currentOpenManager:()=_.manager;():managerBody.refresh()"
             },
             "expandSidebar": {
                 "collapseSidebar": "parent().style().width=4.5rem;1stChild().1stChild().1stChild().style().transform=rotate(180deg);opened=false;parent().1stChild().children().():[if():[1stChild().1stChild().2ndChild()]:[1stChild().1stChild().2ndChild().style():[opacity=0;width=0];1stChild().1stChild().lastChild().style():[opacity=0;width=0]]]",

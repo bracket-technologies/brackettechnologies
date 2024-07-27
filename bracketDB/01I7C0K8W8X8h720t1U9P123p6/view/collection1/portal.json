@@ -2,7 +2,7 @@
     "view": "View:portal?class=column;title=Travel Accounting Platform;createFormStack:()=:;style:[height=100vh]",
     "children": [
         {
-            "view": "View?class=column;style:[height=100%]?!mobile()",
+            "view": "View?class=column;style:[height=100%]",
             "children": [
                 {
                     "view": "topbar"
@@ -96,9 +96,12 @@
     "__props__": {
         "id": "r1G7N1i1E0N3Q1M346g5I2l039",
         "doc": "portal",
+        "counter": 34,
         "creationDate": 1711031365209,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1721650318081,
+        "dev": false,
         "actions": {
             "fillInSearchboxSelected": {
                 "fillInSelected": "selected:().defaults.currency.push():[id=userData:().currency;code=userData:().currencyCode;ref=userData:().currencyRef];selected:().defaults.branch.push():[id=userData:().branch;ref=userData:().branchRef];selected:().currency.push():[id=userData:().currency;code=userData:().currencyCode;ref=userData:().currencyRef];selected:().branch.push():[id=userData:().branch;ref=userData:().branchRef]",
@@ -107,187 +110,13 @@
                 "_": "fillInAllSelected();fillInSelected()"
             },
             "mobileAction": {
-                "updatePage": "():mobileMainPage.update();():mobileTopbar.update()",
+                "updatePage": "():mobileMainPage.refresh();():mobileTopbar.refresh()",
                 "titleStack": "if():[!mobileMainPage:().identifier]:[title:()=mobileStack:().mainTitle.[[mobileStack:().mainTitle.len()]-1];mobileStack:().mainTitle.pull():[[mobileStack:().mainTitle.len()]-1]];mobileMainPage:()='';updatePage()",
                 "mainPage": "mobileMainPage:()='';mainMobilePageInfo:()=data:().collection.mobileMainPage.mainItems;updatePage()",
                 "prevPage": "mainMobilePageInfo:()=mobileStack:().pageInfo.[[mobileStack:().pageInfo.len()]-1];mobileStack:().pageInfo.pull():[[mobileStack:().pageInfo.len()]-1];titleStack()",
                 "_": "if():[_.actionName=mainPage]:[mainPage()]:[prevPage()]"
             }
         },
-        "collapsed": [
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "4",
-                    "children",
-                    "2"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "4",
-                    "children",
-                    "1"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "4",
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "5"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "6"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "1",
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "1",
-                    "children",
-                    "1"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "2"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "3"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "1"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "4"
-                ]
-            },
-            {
-                "path": [
-                    "functions"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    4,
-                    "children"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    5
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    6
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    7
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            }
-        ],
         "comments": [
             {
                 "note": "sidebar",
@@ -719,11 +548,182 @@
                 ]
             }
         ],
-        "dirPath": [],
-        "version": 0,
-        "counter": 34,
-        "secure": false,
-        "chunk": "chunk1",
-        "collection": "view"
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4",
+                    "children",
+                    "2"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4",
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4",
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "5"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "6"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "1",
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "1",
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "2"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "3"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4"
+                ]
+            },
+            {
+                "path": [
+                    "functions"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    4,
+                    "children"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 6496
     }
 }

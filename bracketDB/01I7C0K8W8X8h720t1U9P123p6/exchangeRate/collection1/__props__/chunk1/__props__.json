@@ -1,13 +1,12 @@
 {
     "docs": [
-        "exchangeRate39",
-        "exchangeRate38",
-        "exchangeRate37",
-        "exchangeRate36",
-        "exchangeRate35",
+        "exchangeRate45",
+        "exchangeRate44",
+        "exchangeRate43",
+        "exchangeRate42",
         "USDexchangeRate"
     ],
     "chunk": "chunk1",
-    "docsLength": 6,
-    "size": 2867
+    "docsLength": 5,
+    "size": 1668
 }

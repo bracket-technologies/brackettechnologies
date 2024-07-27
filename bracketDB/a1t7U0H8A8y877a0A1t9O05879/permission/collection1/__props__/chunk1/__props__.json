@@ -1,6 +1,5 @@
 {
     "docs": [
-        "permission83",
         "permission82",
         "permission2",
         "permission3",
@@ -9,6 +8,6 @@
         "permission6"
     ],
     "indexes": [],
-    "docsLength": 7,
-    "size": 570
+    "docsLength": 6,
+    "size": -55
 }

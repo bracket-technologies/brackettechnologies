@@ -12,10 +12,10 @@
             "confirmHandler": {
                 "_": "getStarted();[start();[_.confirmBtn.action]()]()::[confirmed()]?!conditionsNotApplied()?note():[text='Enter all required info!';danger]",
                 "getStarted": "():msg.grandChild().txt()=_.confirmBtn.msg;():msg.display();():myloader.loader():show",
-                "confirmed": "():msg.hide();():myloader.loader():hide;[closeForm()]():[view=():form.2ndChild()];[note():[text=_.message;[danger=true?!_.success]];[doc().del()?_.success]?_]",
-                "conditionsNotApplied": "_.requiredData._find():[!doc().[_]]"
+                "confirmed": "():msg.hide();():myloader.loader():hide;[closeForm()]():[view=():form.2ndChild()];[note():[text=_.message;[danger=true?!_.success]];[form().del()?_.success]?_]",
+                "conditionsNotApplied": "_.requiredData._find():[!form().[_]]"
             },
-            "openForm": "loader.show;():form.update():[data=_]:[loader.hide;_.view.():[display();input().focus();timer():[_.view.1stChild().transform()='translateY(0)']:50]]",
+            "openForm": "loader.show;():form.refresh():[data=_]:[loader.hide;_.view.():[display();input().focus();timer():[_.view.1stChild().transform()='translateY(0)']:50]]",
             "getSchema": {
                 "_": "[[getSchema():[schema=_.schema;collection=[_.collection||formSchema]]:[schema:().[__.schema]=_.schema]]():[collection=actions;doc=db]:[data=schema:().[_.schema]]?!schema:().[_.schema];_.schema?data=schema:().[_.schema]?_.schema]()::[beforeLoadingActions()]",
                 "beforeLoadingActions": "[schema:().[__.schema].beforeLoadingActions]()?schema:().[__.schema].beforeLoadingActions"
@@ -169,22 +169,6 @@
             {
                 "path": [
                     "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
                     0,
                     "children",
                     1,
@@ -194,6 +178,17 @@
             },
             {
                 "path": [
+                    "getSchema"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
                     "children",
                     0,
                     "children",
@@ -205,20 +200,15 @@
                     "children",
                     0
                 ]
-            },
-            {
-                "path": [
-                    "confirmHandler"
-                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 4188
+        "size": 4133
     },
     "children": [
         {
-            "view": "View?class=flex column test;style:[padding=4rem;transition=.5s;backgroundColor=#fff;width=100rem;height=100%;overflowY=auto;backgroundColor=#fff;gap=2rem;transform=translateY(-100%);[_.styles]().flat()];doc=_.doc;[doc()=[[_.data]()?_.data?[]]?_.reset]",
+            "view": "View?class=flex column test;style:[padding=4rem;transition=.5s;backgroundColor=#fff;width=100rem;height=100%;overflowY=auto;backgroundColor=#fff;gap=2rem;transform=translateY(-100%);[_.styles]().flat()];form=_.form;[form()=[[_.data]()?_.data?[]]?_.reset]",
             "children": [
                 {
                     "view": "Text?text=_.title;style:[fontSize=1.75rem;padding=2rem 0;textAlign=left]"

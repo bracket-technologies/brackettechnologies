@@ -5,7 +5,10 @@
         "doc": "codeDroplist",
         "counter": 9,
         "creationDate": 1716889324344,
-        "active": true,
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1721809586361,
+        "dev": false,
         "actions": {
             "hoverStyle": "mouseenter:[parent().children().():[style().backgroundColor=white];selectedIndex:()=().counter;style():[backgroundColor=#f4f4f4]];mouseleave:[style():[backgroundColor=white]]",
             "saveSelected": {
@@ -14,7 +17,7 @@
                     "_": "():[_.codeInput].2ndParent().selectedItem=_.selectedItem;if():[_.fillCodeName]:[saveCorrespondingCodeData()]:[saveIfNextInputValid()];if():[_.showBalance]:[showBalance()];if():[_.changeAction]:[[[_.changeAction]()]():[view=():[_.codeInput]]]",
                     "saveCorrespondingCodeData": "():[_.codeInput].data().[_.inputPath]=_.selectedItem.dataCode;():[_.codeInput].txt()=_.selectedItem.inputCode;():[_.valueInput].txt()=_.selectedItem.name",
                     "saveIfNextInputValid": "if():[():[_.valueInput].txt()!='']:[():[_.codeInput].data().[_.inputPath]=_.selectedItem.dataCode+[_.separator]+():[_.valueInput].txt()];():[_.codeInput].txt()=_.selectedItem.inputCode",
-                    "showBalance": "getAccountBalance():[identifier=():[___.identifier].parent().next().id;ledger=():[_.codeInput].data().[_.inputPath];currency=():[_.codeInput].doc().currency;exchangeRate=():[_.codeInput].doc().exchangeRates]"
+                    "showBalance": "getAccountBalance():[identifier=():[___.identifier].parent().next().id;ledger=():[_.codeInput].data().[_.inputPath];currency=():[_.codeInput].form().currency;exchangeRate=():[_.codeInput].form().exchangeRates]"
                 },
                 "saveSelectedItem": "():[_.codeInput].2ndParent().selectedItem=_.selectedItem;[saveCodeInData();fillInputCodeInInput();checkToCloseDroplist();if():[_.changeAction]:[[_.changeAction]()]]():[view=():[_.codeInput];path=:codeInputEventsHandler]"
             }
@@ -29,9 +32,8 @@
             }
         ],
         "arrange": [],
-        "chunk": "chunk1",
         "secured": false,
-        "collection": "view"
+        "size": 3023
     },
     "children": [
         {

@@ -44,10 +44,10 @@
                 },
                 {
                     "path": "city",
-                    "#data:().collection.countries.countries.[doc().country]": "#data:().collection.countries.countries.[doc().country]",
-                    "data:().collection.countries.countries.[doc().country]": "data:().collection.countries.countries.[doc().country]",
                     "type": "string",
-                    "key": "city"
+                    "key": "city",
+                    "data:().collectio.countries.countries.[form().country]": "data:().collection.countries.countries.[form().country]",
+                    "#data:().colle.countries.countries.[form().country]": "#data:().collection.countries.countries.[form().country]"
                 },
                 {
                     "path": "address",
@@ -105,10 +105,10 @@
                 },
                 {
                     "path": "city",
-                    "#data:().collection.countries.countries.[doc().country]": "#data:().collection.countries.countries.[doc().country]",
-                    "data:().collection.countries.countries.[doc().country]": "data:().collection.countries.countries.[doc().country]",
                     "type": "string",
-                    "key": "city"
+                    "key": "city",
+                    "#data:()..countries.countries.[form().country]": "#data:().collection.countries.countries.[form().country]",
+                    "data:().col.countries.countries.[form().country]": "data:().collection.countries.countries.[form().country]"
                 },
                 {
                     "path": "address",
@@ -163,37 +163,431 @@
         "doc": "user",
         "counter": 24,
         "creationDate": 1713950518314,
-        "active": true,
-        "actions": {},
-        "chunk": "chunk1",
-        "secured": false,
         "collection": "schemas",
-        "createdByUserID": "91l7f111C0i3r1J3V6L0C2c5n1",
-        "collapsed": [
+        "chunk": "chunk1",
+        "lastModified": 1721650814338,
+        "dev": false,
+        "actions": {},
+        "comments": [
             {
+                "note": "firstName",
                 "path": [
-                    "create"
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "note": "lastName",
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "note": "birthDate",
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "note": "nationality",
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "note": "contactNumber",
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "note": "email",
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "note": "country",
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "note": "city",
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "note": "address",
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "note": "firstName",
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "note": "lastName",
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "note": "birthDate",
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "note": "nationality",
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "note": "contactNumber",
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "note": "email",
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "note": "country",
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "note": "city",
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "note": "address",
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "note": "position",
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    9
+                ]
+            },
+            {
+                "note": "description",
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    10
+                ]
+            },
+            {
+                "note": "note",
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    11
+                ]
+            },
+            {
+                "note": "branch",
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    12
+                ]
+            },
+            {
+                "note": "createdBy",
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    13
+                ]
+            },
+            {
+                "note": "profilePicture",
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    14
                 ]
             }
         ],
-        "comments": []
-    },
-    "dddd": [
-        {
-            "listOfDocs": true,
-            "docsKeyValue": [
-                {
-                    "collection": "hello",
-                    "input": [
-                        {
-                            "key": "mohamad",
-                            "path": "invoicesInfo",
-                            "type": "array"
-                        }
-                    ]
-                }
-            ],
-            "#listPath": "from"
-        }
-    ]
+        "collapsed": [
+            {
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signUp",
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "signUp"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    10
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    11
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    12
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    13
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "user",
+                    "keyValue",
+                    14
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 4902
+    }
 }

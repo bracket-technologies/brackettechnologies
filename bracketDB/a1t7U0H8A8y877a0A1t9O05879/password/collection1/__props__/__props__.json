@@ -3,14 +3,14 @@
     "collection": "password",
     "chunkMaxSizeMB": 20,
     "lastChunk": 1,
-    "docsLength": 7,
-    "counter": 88,
-    "reads": 1176,
-    "writes": 107,
+    "docsLength": 6,
+    "counter": 87,
+    "reads": 1244,
+    "writes": 112,
     "deletes": 0,
-    "size": 2258,
-    "payloadIn": 37499,
-    "payloadOut": 377203,
+    "size": 2066,
+    "payloadIn": 39215,
+    "payloadOut": 399717,
     "dirTree": [],
     "indexes": [
         {
@@ -25,8 +25,8 @@
                 "password"
             ],
             "doc": "index2",
-            "lastRead": 1721037618663,
-            "expiryDate": 1723629618663
+            "lastRead": 1721898336146,
+            "expiryDate": 1724490336146
         }
     ],
     "lastIndex": 2

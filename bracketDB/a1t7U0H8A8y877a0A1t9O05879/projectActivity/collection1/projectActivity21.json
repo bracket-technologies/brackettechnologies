@@ -1,0 +1,73 @@
+{
+    "firstTrigger": 1721372477289,
+    "serverTriggers": 1213,
+    "date": 1721336400000,
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "activityPerHour": [
+        {
+            "time": 1721372400000,
+            "firstTrigger": 1721372477289,
+            "serverTriggers": 185,
+            "lastTrigger": 1721375918132
+        },
+        {
+            "time": 1721376000000,
+            "firstTrigger": 1721376015976,
+            "serverTriggers": 283,
+            "lastTrigger": 1721379554868
+        },
+        {
+            "time": 1721379600000,
+            "firstTrigger": 1721379655701,
+            "serverTriggers": 174,
+            "lastTrigger": 1721382912984
+        },
+        {
+            "time": 1721383200000,
+            "firstTrigger": 1721383307083,
+            "serverTriggers": 103,
+            "lastTrigger": 1721386509758
+        },
+        {
+            "time": 1721386800000,
+            "firstTrigger": 1721387277088,
+            "serverTriggers": 73,
+            "lastTrigger": 1721389363709
+        },
+        {
+            "time": 1721390400000,
+            "firstTrigger": 1721390693173,
+            "serverTriggers": 204,
+            "lastTrigger": 1721393610585
+        },
+        {
+            "time": 1721394000000,
+            "firstTrigger": 1721394095455,
+            "serverTriggers": 186,
+            "lastTrigger": 1721396776362
+        },
+        {
+            "time": 1721397600000,
+            "firstTrigger": 1721400478352,
+            "serverTriggers": 5,
+            "lastTrigger": 1721400479229
+        }
+    ],
+    "lastTrigger": 1721400479229,
+    "__props__": {
+        "id": "r1K7C251i3V7e2B4H7O742A9g3",
+        "doc": "projectActivity21",
+        "counter": 21,
+        "creationDate": 1721372477293,
+        "collection": "projectActivity",
+        "chunk": "chunk1",
+        "lastModified": 1721400479236,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1243
+    }
+}

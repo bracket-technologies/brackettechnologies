@@ -74,7 +74,7 @@
             "closeConfirmWindow": "():confirmWindow.style():[visibility=hidden;opacity=0];confirmWindow:().del()",
             "closeGeneralPopup": "():subGeneralPopup.style():[visibility=hidden;opacity=0]",
             "deleteItemFromTable": {
-                "updateTable": "managersSearchResult:().[currentOpenManager:().managerName].pull():[id=__.data.id];():customManagerTable.update()::[closeConfirmWindow();note():[text='Deleted successfully!'];loader.hide]",
+                "updateTable": "managersSearchResult:().[currentOpenManager:().managerName].pull():[id=__.data.id];():customManagerTable.refresh()::[closeConfirmWindow();note():[text='Deleted successfully!'];loader.hide]",
                 "_": "loader.show;erase():[collection=_.data.collection;doc=_.data.id]:[updateTable()]"
             }
         },

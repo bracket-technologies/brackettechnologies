@@ -30,7 +30,7 @@
         "active": true,
         "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
         "actions": {
-            "sortByBalance": "balanceTable:().sort():[path=_.inputPath;doc().endingBalance];():DataTable.update()",
+            "sortByBalance": "balanceTable:().sort():[path=_.inputPath;form().endingBalance];():DataTable.refresh()",
             "intializeTable": "collection=currentOpenManager:().showBalance.0.collection;itemsList=balanceTable:();tableHeaderAndBody=currentOpenManager:().showBalance;currency=_.statementInfo.account.currency.symbole",
             "intializeSearchEngine": "title='Balance';searchEngineHeight=fit-content;searchEngineInputs=currentOpenManager:().statementFilter;iconFalse=true;account=_.statementInfo.account.id;identifier=balance;getDataOnLoad=true"
         },

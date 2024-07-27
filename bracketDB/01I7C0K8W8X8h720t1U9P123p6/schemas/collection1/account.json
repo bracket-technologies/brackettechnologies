@@ -347,7 +347,7 @@
                     ],
                     "type": "number",
                     "key": "stopDate",
-                    "required": true
+                    "#required": true
                 },
                 {
                     "path": "type",
@@ -901,7 +901,7 @@
                     ],
                     "type": "number",
                     "key": "stopDate",
-                    "required": true
+                    "#required": true
                 },
                 {
                     "path": "notificationForDepreciation",
@@ -959,28 +959,655 @@
         "creationDate": 1713950600780,
         "collection": "schemas",
         "chunk": "chunk1",
+        "lastModified": 1721727637242,
+        "dev": false,
         "actions": {},
-        "comments": [],
+        "comments": [
+            {
+                "note": "name",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "note": "isSubAccount",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "note": "generalLedger",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "note": "headAccount",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "note": "generalLedger",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "note": "autoGenerateAccountNumber",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "note": "accountNumber",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "note": "currency",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "note": "createDepreciationAccount",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "note": "depreciationAccount",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    9
+                ]
+            },
+            {
+                "note": "autoDepreciation",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    10
+                ]
+            },
+            {
+                "note": "yearlyRate",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    11
+                ]
+            },
+            {
+                "note": "yearlyRateUnit",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    12
+                ]
+            },
+            {
+                "note": "startDate",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    13
+                ]
+            },
+            {
+                "note": "notificationForDepreciation",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    14
+                ]
+            },
+            {
+                "note": "stopDate",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    15
+                ]
+            },
+            {
+                "note": "type",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    16
+                ]
+            },
+            {
+                "note": "createVATAccount",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    17
+                ]
+            },
+            {
+                "note": "vatAccount",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    18
+                ]
+            },
+            {
+                "note": "financialNumber",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    19
+                ]
+            },
+            {
+                "note": "accountType",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    20
+                ]
+            },
+            {
+                "note": "openingBalance",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    21
+                ]
+            },
+            {
+                "note": "preferredPaymentTerms",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    22
+                ]
+            },
+            {
+                "note": "preferredCommission",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    23
+                ]
+            },
+            {
+                "note": "preferredExpenseAccount",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    24
+                ]
+            },
+            {
+                "note": "autoSendEmails",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    25
+                ]
+            },
+            {
+                "note": "portalAccess",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    26
+                ]
+            },
+            {
+                "note": "amount",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    27
+                ]
+            },
+            {
+                "note": "email",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    28
+                ]
+            },
+            {
+                "note": "address",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    29
+                ]
+            },
+            {
+                "note": "limit",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    30
+                ]
+            },
+            {
+                "note": "notification",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    31
+                ]
+            },
+            {
+                "note": "notifyAmount",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    32
+                ]
+            },
+            {
+                "note": "repeat",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    33
+                ]
+            },
+            {
+                "note": "maturatyPeriod",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    34
+                ]
+            },
+            {
+                "note": "maturatyPeriodUnit",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    35
+                ]
+            },
+            {
+                "note": "resetDuration",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    36
+                ]
+            },
+            {
+                "note": "contactNumber",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    37
+                ]
+            },
+            {
+                "note": "branch",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    38
+                ]
+            },
+            {
+                "note": "createdBy",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    39
+                ]
+            },
+            {
+                "note": "description",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    40
+                ]
+            },
+            {
+                "note": "note",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    41
+                ]
+            },
+            {
+                "note": "logo",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    42
+                ]
+            },
+            {
+                "note": "officialDocuments",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    43
+                ]
+            },
+            {
+                "note": "passport",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    44
+                ]
+            },
+            {
+                "note": "startsWith",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    45
+                ]
+            },
+            {
+                "note": "bankName",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    46
+                ]
+            },
+            {
+                "note": "bankAccountNumber",
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    47
+                ]
+            },
+            {
+                "note": "transaction",
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep"
+                ]
+            },
+            {
+                "note": "name",
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "note": "generalLedger",
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "note": "currency",
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "note": "blockAccount",
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "note": "autoDepreciation",
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "note": "branch",
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "note": "yearlyRate",
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "note": "yearlyRateUnit",
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "note": "startDate",
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "note": "stopDate",
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    9
+                ]
+            },
+            {
+                "note": "notificationForDepreciation",
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    10
+                ]
+            },
+            {
+                "note": "description",
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    11
+                ]
+            },
+            {
+                "note": "startsWith",
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    12
+                ]
+            },
+            {
+                "note": "name",
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "note": "generalLedger",
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "note": "currency",
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "note": "accountNumber",
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "note": "blockAccount",
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "note": "branch",
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "note": "financialNumber",
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "note": "description",
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "note": "startsWith",
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    8
+                ]
+            }
+        ],
         "collapsed": [
             {
                 "path": [
                     "create",
                     "account",
-                    "helpersKeyValue"
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
                     "beforeSaveStep"
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "assetDepreciation",
-                    "#nextStep"
                 ]
             },
             {
@@ -1033,40 +1660,8 @@
                     "update",
                     "account",
                     "keyValue",
-                    18
-                ]
-            },
-            {
-                "path": [
-                    "update",
-                    "account",
-                    "keyValue",
-                    4
-                ]
-            },
-            {
-                "path": [
-                    "update",
-                    "account",
-                    "keyValue",
                     5,
                     "condition"
-                ]
-            },
-            {
-                "path": [
-                    "update",
-                    "account",
-                    "keyValue",
-                    5
-                ]
-            },
-            {
-                "path": [
-                    "update",
-                    "account",
-                    "keyValue",
-                    6
                 ]
             },
             {
@@ -1210,14 +1805,6 @@
                     "update",
                     "account",
                     "keyValue",
-                    18
-                ]
-            },
-            {
-                "path": [
-                    "update",
-                    "account",
-                    "keyValue",
                     16
                 ]
             },
@@ -1239,43 +1826,667 @@
             },
             {
                 "path": [
-                    "update",
+                    "create",
                     "account",
                     "keyValue",
-                    2
+                    0
                 ]
             },
             {
                 "path": [
-                    "update",
+                    "create",
                     "account",
-                    "keyValue"
+                    "keyValue",
+                    1
                 ]
             },
             {
                 "path": [
                     "create",
-                    "assetDepreciation",
-                    "keyValue"
+                    "account",
+                    "keyValue",
+                    2,
+                    "condition"
                 ]
             },
             {
                 "path": [
                     "create",
-                    "vatAccount",
-                    "keyValue"
+                    "account",
+                    "keyValue",
+                    3,
+                    "condition"
                 ]
             },
             {
                 "path": [
                     "create",
-                    "assetDepreciation"
+                    "account",
+                    "keyValue",
+                    3
                 ]
             },
             {
                 "path": [
                     "create",
-                    "vatAccount"
+                    "account",
+                    "keyValue",
+                    4,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    6,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    8,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    9,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    10,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    10
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    11,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    11
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    12,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    12
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    13,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    13
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    14,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    14
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    15,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    15
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    16,
+                    "orCondition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    16
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    17,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    17
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    18,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    18
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    19,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    19
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    20,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    20
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    21
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    22,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    22
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    23,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    23
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    24,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    24
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    25,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    25
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    26,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    26
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    27
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    28
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    29
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    30,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    30
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    31
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    32,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    32
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    33,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    33
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    34,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    34
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    35,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    35
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    36,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    36
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    37
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    38
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    39
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    40
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    41
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    42,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    42
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    43,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    43
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    44,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    44
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    45
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    46,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    46
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    47,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    47
                 ]
             },
             {
@@ -1289,13 +2500,357 @@
                 "path": [
                     "create",
                     "account",
+                    "helpersKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "#nextStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    6,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    7,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    8,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    9,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    10,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    10
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    11
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue",
+                    12
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation",
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "assetDepreciation"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
+                    "keyValue",
+                    18
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "vatAccount",
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "vatAccount"
+                ]
+            },
+            {
+                "path": [
+                    "create"
+                ]
+            },
+            {
+                "path": [
+                    "update",
+                    "account",
                     "keyValue"
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 16742
+        "size": 27033
     },
     "update": {
         "account": {
@@ -1518,7 +3073,8 @@
                     "required": true
                 }
             ],
-            "update": true
+            "update": true,
+            "generateLedger": true
         }
     }
 }

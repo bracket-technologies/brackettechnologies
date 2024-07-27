@@ -1,5 +1,5 @@
 {
-    "view": "View?doc=LoginData;id=LoginPage;class=flexbox;style=[backgroundColor=#f8f8f8;height=100vh;width=100vw]",
+    "view": "View?form=LoginData;id=LoginPage;class=flexbox;style=[backgroundColor=#f8f8f8;height=100vh;width=100vw]",
     "__props__": {
         "id": "E167E1a6m4O555N6O1W0S3L718",
         "doc": "LoginPage",
@@ -10,8 +10,8 @@
             "display2ndIcon": "next().style():[display=flex]",
             "display1stIcon": "prev().style():[display=flex]",
             "searchLoginInfo": {
-                "_": "log():[test];search():[collection=usernameInfo;find:[username=doc().username]]:[checkPassword()?_.data.value()?note():[text=Incorrect Username or Password;danger]]",
-                "checkPassword": "search():[collection=password;find:[password=doc().password]]:[note():Logged In?_.data.value()?note():[text=Incorrect Username or Password;danger]]"
+                "_": "log():[test];search():[collection=usernameInfo;find:[username=form().username]]:[checkPassword()?_.data.value()?note():[text=Incorrect Username or Password;danger]]",
+                "checkPassword": "search():[collection=password;find:[password=form().password]]:[note():Logged In?_.data.value()?note():[text=Incorrect Username or Password;danger]]"
             }
         },
         "comments": [],

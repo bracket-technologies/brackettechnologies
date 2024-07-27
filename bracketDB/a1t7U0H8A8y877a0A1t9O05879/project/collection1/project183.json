@@ -1,15 +1,15 @@
 {
-    "name": "test",
+    "name": "w",
     "active": true,
     "main": true,
-    "accountID": "M1u7M2F120c3g7O6v0q571o3s3",
-    "publicID": "8N15v7k02mY1jw0qG3sj7Dz69p05O5ID1B76bZ6",
-    "subdomain": "test1",
+    "accountID": "M1C702g190o408k6k3f0n7J7k9",
+    "publicID": "Ka12i7Q22mp1bq05744j8ug6nf3um0BY81M1bF7",
+    "subdomain": "w1111",
     "__props__": {
-        "id": "s1b752i1K0w387x620w5M1X7f1",
+        "id": "M1R7u2Q100a4M8B6R3g0q892F4",
         "doc": "project183",
         "counter": 183,
-        "creationDate": 1721037605171,
+        "creationDate": 1721048630824,
         "collection": "project",
         "chunk": "chunk1",
         "actions": {},
@@ -17,9 +17,9 @@
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 376
+        "size": 373
     },
-    "db": "Yi1B67sY2E91w50rZ3Ua7nW62W05z5wJ14M7Sx1",
-    "devDB": "mN1Rg77M2F71IL0VI3xo7HY6S708p5mA1jL7291",
-    "storage": "C514Y7jk25L1QD06Q3ol7wv6lv0C35su1FT7Sh1"
+    "db": "YX1cT7bq2301o60a54ID8IJ6QP3TA0kX84t2Af5",
+    "devDB": "Ha1L97qe2hI1aB0gO4mF8yV6Hs3Vz0Lr8452Q85",
+    "storage": "ae1lx7FI29i1t70134Gt8A467o3Q20CB83k2Fx5"
 }

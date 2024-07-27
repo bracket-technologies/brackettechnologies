@@ -1,36 +1,29 @@
 {
-    "code": "413",
+    "collection": "transaction",
+    "id": "dV4cUuISewXJj49oxUyWXGvzVKWPu9U2kouRx5dFrRU39BxCkvmJrOUidAo51721908457969",
+    "creationDate": 1721908457969,
+    "creationDay": 1721854800000,
+    "code": "TRN",
     "length": 8,
-    "counter": 5,
-    "counterList": [
-        0,
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6"
-    ],
-    "start": 0,
+    "counter": 2,
     "max": 99999999,
+    "timestamp": 1721908457969,
     "reset": "yearly",
-    "creationDate": 1721035291347,
-    "id": "HvbRbiJKiyg6hm4B7J44EEfcRZldT6dMozDeqN0iovjW7Fgx1zF8k8qHCTbz1721035291347",
-    "timestamp": 1721035291347,
-    "creationDay": 1720990800000,
-    "type": "B2B Customer",
     "__props__": {
-        "id": "x1R7A2c1q0I395v2O9z1K3d4m8",
+        "id": "Z1y752u1u9t0I8h4R5z7z9Z7i0",
         "doc": "counter6",
         "counter": 6,
-        "creationDate": 1721035291348,
+        "creationDate": 1721908457970,
         "collection": "counter",
         "chunk": "chunk1",
+        "lastModified": 1721910167997,
+        "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 524
-    }
+        "size": 533
+    },
+    "end": 99999999
 }

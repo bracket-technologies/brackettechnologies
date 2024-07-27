@@ -1,4 +1,4 @@
-const { getData } = require('./kernel');
+const { getData, actions } = require('./kernel');
 
 require('dotenv').config()
 
@@ -64,5 +64,5 @@ module.exports = async ({ _window, lookupActions, stack, props, address, id, e, 
     }
 
     // await params
-    require("./kernel").toAwait({ _window, lookupActions, stack, props, id, e, address, req, res, _: data, __ })
+    actions["wait()"]({ _window, lookupActions, stack, props, id, e, address, req, res, _: data, __ })
 }

@@ -59,9 +59,9 @@
                             "required": true
                         },
                         {
-                            "path": "PNR",
+                            "path": "trip",
                             "type": "string",
-                            "key": "PNR",
+                            "key": "trip",
                             "condition": [
                                 {
                                     "condition": [
@@ -138,45 +138,6 @@
                             ]
                         },
                         {
-                            "path": "roomType",
-                            "type": "string",
-                            "key": "roomType",
-                            "condition": [
-                                {
-                                    "condition": [
-                                        "Hotel"
-                                    ],
-                                    "conditionReference": "type"
-                                }
-                            ]
-                        },
-                        {
-                            "path": "roomName",
-                            "type": "string",
-                            "key": "roomName",
-                            "condition": [
-                                {
-                                    "condition": [
-                                        "Hotel"
-                                    ],
-                                    "conditionReference": "type"
-                                }
-                            ]
-                        },
-                        {
-                            "path": "extraBed",
-                            "type": "string",
-                            "key": "extraBed",
-                            "condition": [
-                                {
-                                    "condition": [
-                                        "Hotel"
-                                    ],
-                                    "conditionReference": "type"
-                                }
-                            ]
-                        },
-                        {
                             "listPath": "flightDetails",
                             "input": [
                                 {
@@ -205,13 +166,28 @@
                             ]
                         },
                         {
-                            "path": "fareBasis",
-                            "type": "string",
-                            "key": "fareBasis",
+                            "listPath": "hotelDetails",
+                            "input": [
+                                {
+                                    "path": "extraBed",
+                                    "type": "string",
+                                    "key": "extraBed"
+                                },
+                                {
+                                    "path": "roomName",
+                                    "type": "string",
+                                    "key": "roomName"
+                                },
+                                {
+                                    "path": "roomType",
+                                    "type": "string",
+                                    "key": "roomType"
+                                }
+                            ],
                             "condition": [
                                 {
                                     "condition": [
-                                        "Ticket"
+                                        "Hotel"
                                     ],
                                     "conditionReference": "type"
                                 }
@@ -488,6 +464,11 @@
                             "key": "costCommission"
                         },
                         {
+                            "path": "costServiceCharge",
+                            "type": "number",
+                            "key": "costServiceCharge"
+                        },
+                        {
                             "path": "costCommissionOn",
                             "type": "string",
                             "key": "costCommissionOn"
@@ -501,16 +482,6 @@
                             "path": "costCommissionMagnitude",
                             "type": "number",
                             "key": "costCommissionMagnitude"
-                        },
-                        {
-                            "path": "costIATAInsurance",
-                            "type": "number",
-                            "key": "costIATAInsurance"
-                        },
-                        {
-                            "path": "costServiceCharge",
-                            "type": "number",
-                            "key": "costServiceCharge"
                         },
                         {
                             "path": "costTotalPrice",
@@ -550,12 +521,15 @@
                         {
                             "path": "sellingCommissionOn",
                             "type": "string",
-                            "key": "sellingCommissionOn"
-                        },
-                        {
-                            "path": "sellingIATAInsurance",
-                            "type": "number",
-                            "key": "sellingIATAInsurance"
+                            "key": "sellingCommissionOn",
+                            "condition": [
+                                {
+                                    "condition": [
+                                        "Ticket"
+                                    ],
+                                    "conditionReference": "type"
+                                }
+                            ]
                         },
                         {
                             "path": "sellingServiceCharge",
@@ -660,15 +634,703 @@
     "__props__": {
         "id": "g1w7I101H0739143L6V2D4c6B0",
         "doc": "invoice",
+        "counter": 11,
         "creationDate": 1711031362460,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "schemas",
+        "chunk": "chunk1",
+        "lastModified": 1721738299723,
+        "dev": false,
+        "actions": {
+            "handleReceivablesKey": {
+                "_": "handleAmountCalculation();return():[().receivables]",
+                "handleAmountCalculation": "().receivablesAmount=0;mainReceivedData:().bookings._():[().receivablesAmount+=_.sellingTotalPrice];().receivables.totalAmount=().receivablesAmount;().receivables.remainingAmount=().receivablesAmount"
+            },
+            "handlePayablesKey": {
+                "_": "handleAmountCalculation();return():[().payables]",
+                "handleAmountCalculation": "mainReceivedData:().bookings._():[if():[().payables.find():[supplier=_.supplierAccount]]:[updateExistingItem()]:[pushNewItem()]]",
+                "pushNewItem": "().payables.push():[supplier=_.supplierAccount;totalAmount=_.costTotalPrice;remainingAmount=_.costTotalPrice]",
+                "updateExistingItem": "().payables.find():[supplier=_.supplierAccount]._():[_.totalAmount+=__.costTotalPrice;_.remainingAmount=__.costTotalPrice]"
+            },
+            "handleSuppliersKey": "().suppliers=:;mainReceivedData:().bookings._():[().suppliers.push():[_.supplierAccount]];().suppliers.removeDuplicates();return():[().suppliers]"
+        },
+        "comments": [
+            {
+                "note": "invoiceDate",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    0
+                ]
+            },
+            {
+                "note": "type",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    1
+                ]
+            },
+            {
+                "note": "status",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    2
+                ]
+            },
+            {
+                "note": "currency",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    3
+                ]
+            },
+            {
+                "note": "customerAccount",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "note": "bookings",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5
+                ]
+            },
+            {
+                "note": "supplierPaymentTermsDueDate",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    6
+                ]
+            },
+            {
+                "note": "supplierPaymentTerms",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    7
+                ]
+            },
+            {
+                "note": "customerPaymentTermsDueDate",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    8
+                ]
+            },
+            {
+                "note": "customerPaymentTerms",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    9
+                ]
+            },
+            {
+                "note": "salesmanCommission",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    10
+                ]
+            },
+            {
+                "note": "salesmanAccount",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    11
+                ]
+            },
+            {
+                "note": "salesmanCommissionAmount",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    12
+                ]
+            },
+            {
+                "note": "receivables",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    13
+                ]
+            },
+            {
+                "note": "payables",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    14
+                ]
+            },
+            {
+                "note": "suppliers",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    15
+                ]
+            },
+            {
+                "note": "exchangeRates",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    16
+                ]
+            },
+            {
+                "note": "supplierAccount@th",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "note": "costCurrency@th",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "note": "issueDate@th",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "note": "type@th",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "note": "trip@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "note": "passengerFullName@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "note": "eTicket@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    6
+                ]
+            },
+            {
+                "note": "country@",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    7
+                ]
+            },
+            {
+                "note": "city@",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    8
+                ]
+            },
+            {
+                "note": "hotelName@",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    9
+                ]
+            },
+            {
+                "note": "costCommissionOn@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    41
+                ]
+            },
+            {
+                "note": "grossFare@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    12
+                ]
+            },
+            {
+                "note": "tax1@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    13
+                ]
+            },
+            {
+                "note": "tax2@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    14
+                ]
+            },
+            {
+                "note": "tax3@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    15
+                ]
+            },
+            {
+                "note": "tax4@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    16
+                ]
+            },
+            {
+                "note": "tax5@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    17
+                ]
+            },
+            {
+                "note": "tax6@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    18
+                ]
+            },
+            {
+                "note": "tax7@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    19
+                ]
+            },
+            {
+                "note": "tax8@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    20
+                ]
+            },
+            {
+                "note": "totalTaxes@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    21
+                ]
+            },
+            {
+                "note": "costCutFare@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    22
+                ]
+            },
+            {
+                "note": "sellingNetPrice@",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    23
+                ]
+            },
+            {
+                "note": "costSubTotal@",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    24
+                ]
+            },
+            {
+                "note": "supplierVAT@",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    25
+                ]
+            },
+            {
+                "note": "costNetPrice@",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    26
+                ]
+            },
+            {
+                "note": "sellingSubTotal@",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    27
+                ]
+            },
+            {
+                "note": "customerVAT@",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    28
+                ]
+            },
+            {
+                "note": "costCommission@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    29
+                ]
+            },
+            {
+                "note": "costCommissionOn@",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    41
+                ]
+            },
+            {
+                "note": "costCommissionUnit@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    32
+                ]
+            },
+            {
+                "note": "costCommissionMagnitude@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    33
+                ]
+            },
+            {
+                "note": "costIATAInsurance",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    34
+                ]
+            },
+            {
+                "note": "costTotalPrice@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    35
+                ]
+            },
+            {
+                "note": "sellingCommission@",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    35
+                ]
+            },
+            {
+                "note": "sellingCommissionUnit@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    36
+                ]
+            },
+            {
+                "note": "sellingCommissionOn@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    37
+                ]
+            },
+            {
+                "note": "sellingIATAInsurance",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    38
+                ]
+            },
+            {
+                "note": "sellingServiceCharge@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    39
+                ]
+            },
+            {
+                "note": "sellingTotalPrice@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    40
+                ]
+            },
+            {
+                "note": "hotelDetails@",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    11
+                ]
+            },
+            {
+                "note": "flightDetails@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    10
+                ]
+            },
+            {
+                "note": "costServiceCharge@t",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    30
+                ]
+            },
+            {
+                "note": "costServiceCharge",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    31
+                ]
+            },
+            {
+                "note": "sellingTotalPrice",
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    42
+                ]
+            }
+        ],
         "collapsed": [
             {
                 "path": [
                     "create",
                     "invoice",
                     "helpersKeyValue",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "helpersKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "nextStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
                     0
                 ]
             },
@@ -694,6 +1356,22 @@
                     "invoice",
                     "keyValue",
                     3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    6
                 ]
             },
             {
@@ -733,7 +1411,25 @@
                     "create",
                     "invoice",
                     "keyValue",
+                    11,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
                     11
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    12,
+                    "condition"
                 ]
             },
             {
@@ -773,7 +1469,7 @@
                     "create",
                     "invoice",
                     "keyValue",
-                    6
+                    16
                 ]
             },
             {
@@ -781,6 +1477,413 @@
                     "create",
                     "invoice",
                     "keyValue",
+                    5,
+                    "input",
+                    5,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    7,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    8,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    9,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    13,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    14,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    15,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    16,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    17,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    18,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    19,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    20,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    21,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    22,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    23,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    25,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    27,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    28,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    36,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    6,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    11,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    11,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    11,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    11,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    11,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    10,
+                    "input"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    45
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    26,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    40,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    4,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    10,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    29,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    24,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
                     4
                 ]
             },
@@ -790,14 +1893,7 @@
                     "invoice",
                     "keyValue",
                     5,
-                    "input"
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "invoice",
-                    "keyValue",
+                    "input",
                     5
                 ]
             },
@@ -806,14 +1902,9 @@
                     "create",
                     "invoice",
                     "keyValue",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "invoice",
-                    "nextStep"
+                    5,
+                    "input",
+                    6
                 ]
             },
             {
@@ -821,6 +1912,109 @@
                     "create",
                     "invoice",
                     "keyValue",
+                    5,
+                    "input",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    10
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    12,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    11
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    12
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    13
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    14
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    15
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
                     16
                 ]
             },
@@ -828,34 +2022,255 @@
                 "path": [
                     "create",
                     "invoice",
-                    "keyValue"
+                    "keyValue",
+                    5,
+                    "input",
+                    17
                 ]
             },
             {
                 "path": [
                     "create",
                     "invoice",
-                    "helpersKeyValue"
+                    "keyValue",
+                    5,
+                    "input",
+                    18
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    19
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    20
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    21
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    22
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    23
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    24
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    25
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    26
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    27
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    28
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    29
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    30
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    33
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    32
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    31
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    34
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    35
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    36
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    37
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    38
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    39
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    40
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "invoice",
+                    "keyValue",
+                    5,
+                    "input",
+                    42
                 ]
             }
         ],
-        "comments": [],
-        "dirPath": [],
-        "actions": {
-            "handleReceivablesKey": {
-                "_": "handleAmountCalculation();return():[().receivables]",
-                "handleAmountCalculation": "().receivablesAmount=0;mainReceivedData:().bookings._():[().receivablesAmount+=_.sellingTotalPrice];().receivables.totalAmount=().receivablesAmount;().receivables.remainingAmount=().receivablesAmount"
-            },
-            "handlePayablesKey": {
-                "_": "handleAmountCalculation();return():[().payables]",
-                "handleAmountCalculation": "mainReceivedData:().bookings._():[if():[().payables.find():[supplier=_.supplierAccount]]:[updateExistingItem()]:[pushNewItem()]]",
-                "pushNewItem": "().payables.push():[supplier=_.supplierAccount;totalAmount=_.costTotalPrice;remainingAmount=_.costTotalPrice]",
-                "updateExistingItem": "().payables.find():[supplier=_.supplierAccount]._():[_.totalAmount+=__.costTotalPrice;_.remainingAmount=__.costTotalPrice]"
-            },
-            "handleSuppliersKey": "().suppliers=:;mainReceivedData:().bookings._():[().suppliers.push():[_.supplierAccount]];().suppliers.removeDuplicates();return():[().suppliers]"
-        },
-        "counter": 11,
-        "chunk": "chunk1",
-        "collection": "schemas"
+        "arrange": [],
+        "secured": false,
+        "size": 18235
     }
 }

@@ -1,16 +1,16 @@
 {
-    "publicID": "991cD7p528b0wu8Go7H73364Lu5oP1qw4My8ZS9",
-    "pluginID": "r1c7d176U1B9m6C7i9F8T973T2",
-    "packageID": "819781E687S3U5e2L9w6v3u9H8",
-    "startDate": 1720873451753,
+    "publicID": "nS1OH7gL2Xt1up0YD4rJ1D79pK3hc6ba0p66mZ3",
+    "pluginID": "Q1p78107R4j1n2Z9a2E1K1r912",
+    "packageID": "O1B7Z1b7B4o2u0Q833o9R5o2e9",
+    "startDate": 1721041953893,
     "status": "Confirmed",
-    "description": "Subscribed to plugin: Travel Accounting Platform, package: Free Tier.",
-    "expiryDate": 1721478251753,
+    "description": "Subscribed to plugin: Console | Developer Editor, package: Starter.",
+    "expiryDate": 1721646753893,
     "__props__": {
-        "id": "w1m7S2w0O8d773D4D5u1V7F5x5",
+        "id": "B1E702Y120O421R915s3z8i995",
         "doc": "subscription2",
         "counter": 2,
-        "creationDate": 1720873451755,
+        "creationDate": 1721041953895,
         "collection": "subscription",
         "chunk": "chunk1",
         "actions": {},
@@ -18,6 +18,6 @@
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 522
+        "size": 520
     }
 }

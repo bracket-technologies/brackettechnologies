@@ -30,7 +30,7 @@
             "minimizeContainer": "():sideBarCon.style():[width=4rem];1stChild().1stChild().1stChild().rotate()=0;deactivateDropDown();actChevron()",
             "getSchema": "getSchemaData()::[schemaInfo:()=_.data.sections?_.success?note():[text=_.message]];",
             "openSchema": {
-                "_": "log():[_.id]:[():test];activeManager:()=[_.id]:();():test.update()"
+                "_": "log():[_.id]:[():test];activeManager:()=[_.id]:();():test.refresh()"
             }
         },
         "comments": [],

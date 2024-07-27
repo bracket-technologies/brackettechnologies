@@ -41,7 +41,7 @@
                 "_": "mouseleave:[().mouseIn=false;closeDroplistOnMouseleave()];():root.click:[closeDroplistOnClick()];mouseenter:[().mouseIn=true]"
             },
             "addOnScroll": "scroll:[if():[el().scrollHeight-[el().clientHeight+el().scrollTop]<100;dropListNumber:()<_.viewInfo.items.len()]:[():codeDroplist.insert():[():codeDroplist.children().[-1]]]]",
-            "saveSelected": "if():[():[__.identifier].1stChild().type=Input]:[():[__.identifier].1stChild().txt()=_;if():[():[__.identifier].___.path]:[():[__.identifier].__.[():[__.identifier]._.inputPath]=_]:[():[__.identifier].doc().[():[__.identifier]._.inputPath]=_]];if():[():[__.identifier]._.droplistClickAction]:[[():[__.identifier]._.droplistClickAction]()]"
+            "saveSelected": "if():[():[__.identifier].1stChild().type=Input]:[():[__.identifier].1stChild().txt()=_;if():[():[__.identifier].___.path]:[():[__.identifier].__.[():[__.identifier]._.inputPath]=_]:[():[__.identifier].form().[():[__.identifier]._.inputPath]=_]];if():[():[__.identifier]._.droplistClickAction]:[[():[__.identifier]._.droplistClickAction]()]"
         },
         "collapsed": [
             "_map:path:path()",

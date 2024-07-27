@@ -2,14 +2,14 @@
     "creationDate": 1712658264771,
     "collection": 1,
     "lastChunk": 1,
-    "docsLength": 5,
-    "counter": 580,
-    "reads": 19853,
-    "writes": 1311,
+    "docsLength": 1,
+    "counter": 576,
+    "reads": 22563,
+    "writes": 1611,
     "deletes": 0,
-    "size": 10465,
-    "payloadIn": 1845924,
-    "payloadOut": 27908016,
+    "size": 10941,
+    "payloadIn": 2304368,
+    "payloadOut": 32056102,
     "dirTree": [],
     "maxSize": 1000,
     "indexes": [
@@ -18,8 +18,8 @@
                 "id"
             ],
             "doc": "index1",
-            "lastRead": 1721037766357,
-            "expiryDate": 1723629766357
+            "lastRead": 1721912597491,
+            "expiryDate": 1724504597491
         },
         {
             "find": [
@@ -27,8 +27,8 @@
                 "ledgerAccount"
             ],
             "doc": "index2",
-            "lastRead": 1720771319943,
-            "expiryDate": 1723363319943
+            "lastRead": 1721727084287,
+            "expiryDate": 1724319084287
         },
         {
             "find": [
@@ -45,8 +45,8 @@
                 "creationDay"
             ],
             "doc": "index4",
-            "lastRead": 1720772839704,
-            "expiryDate": 1723364839704
+            "lastRead": 1721724917014,
+            "expiryDate": 1724316917014
         },
         {
             "find": [
@@ -54,17 +54,58 @@
                 "creationDate"
             ],
             "doc": "index5",
-            "lastRead": 1720771319953,
-            "expiryDate": 1723363319953
+            "lastRead": 1721727084291,
+            "expiryDate": 1724319084291
         },
         {
             "find": [
                 "account"
             ],
             "doc": "index6",
-            "lastRead": 1721034228909,
-            "expiryDate": 1723626228909
+            "lastRead": 1721910843288,
+            "expiryDate": 1724502843288
+        },
+        {
+            "find": [
+                "ledgerAccount"
+            ],
+            "doc": "index7",
+            "lastRead": 1721379555041,
+            "expiryDate": 1723971555041
+        },
+        {
+            "find": [
+                "account",
+                "creationDay"
+            ],
+            "doc": "index8",
+            "lastRead": 1721731071880,
+            "expiryDate": 1724323071880
+        },
+        {
+            "find": [
+                "creationDay"
+            ],
+            "doc": "index9",
+            "lastRead": 1721731101251,
+            "expiryDate": 1724323101251
+        },
+        {
+            "find": [
+                "invoiceRef"
+            ],
+            "doc": "index10",
+            "lastRead": 1721820284883,
+            "expiryDate": 1724412284883
+        },
+        {
+            "find": [
+                "voucherRef"
+            ],
+            "doc": "index11",
+            "lastRead": 1721815740301,
+            "expiryDate": 1724407740301
         }
     ],
-    "lastIndex": 6
+    "lastIndex": 11
 }

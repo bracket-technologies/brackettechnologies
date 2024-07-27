@@ -7,6 +7,8 @@
         "creationDate": 1713000401899,
         "collection": "view",
         "chunk": "chunk1",
+        "lastModified": 1721752238846,
+        "dev": false,
         "actions": {
             "pngs": {
                 "_": ":[label=Modern, Simple, & Professional;png=modern()]:[label=Mobile Friendly;png=mobileFriendly()]:[label=Government Compatible;png=government()]:[label=Follow-up Automation;png=automation()]:[label=Batch Invoicing;png=batch()]:[label=Seamless Customization;png=customization()]",
@@ -20,7 +22,7 @@
             "droplistHandler": "1stChild().txt()=clicked().txt();().[data()=clicked().txt()?clicked().txt()!=Yes;clicked().txt()!=No?data()=[true?clicked().txt()=Yes?false]];[_.action]()",
             "openForm": "[openForm():[schema=signupForm]]():[doc=form]",
             "subscriptionFormInputs": ":[label=Organization Name;path=organization]:[label=Phone Number;path=phoneNumber]:[label=Email Address;path=email]:[label=Password;path=password]",
-            "toggleCheck": "1stChild().():[doc().[_]=true;display()?hidden()?doc().[_]=false;hide()]"
+            "toggleCheck": "1stChild().():[form().[_]=true;display()?hidden()?form().[_]=false;hide()]"
         },
         "comments": [
             {
@@ -209,58 +211,6 @@
                     "children",
                     0,
                     "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
                     1,
                     "children",
                     0,
@@ -293,26 +243,21 @@
                     "children",
                     0,
                     "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "pngs"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
                     2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0
                 ]
             },
             {
@@ -332,13 +277,70 @@
             {
                 "path": [
                     "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "pngs"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
                     1
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 6761
+        "size": 6812
     },
     "children": [
         {
@@ -348,7 +350,7 @@
             "view": "View?id=mainBody",
             "children": [
                 {
-                    "view": "View?style:[width=100%;display=grid;gridTemplateColumns=1fr 1fr;padding=5rem 10% 0 10%]",
+                    "view": "View?style:[width=100%;display=flex;gridTemplateColumns=1fr 1fr;padding=5rem 10% 0 10%]",
                     "children": [
                         {
                             "view": "View?class=flex column;style:[width=100%;gap=2rem]",
@@ -357,7 +359,7 @@
                                     "view": "Text?text=Online Accounting Software Built For The +tag():[text=Travel Industry;style:[backgroundColor=blue;opacity=.6;color=#fff;padding=0 4rem]];style:[fontSize=6rem;textAlign=left]"
                                 },
                                 {
-                                    "view": "Text?text=Super powerful, yet super simple!;style:[color=#888;fontSize=3rem;textAlign=left;fontStyle=italic]"
+                                    "view": "Text?id=slogan;text=Super powerful, yet super simple!;style:[color=#888;fontSize=3rem;textAlign=left;fontStyle=italic]"
                                 },
                                 {
                                     "view": "View?style:[display=grid;gridTemplateColumns=1fr 1fr 1fr;marginTop=4rem]",
@@ -386,7 +388,7 @@
                             "view": "View?class=flexbox;style:[width=100%;gap=1.5rem;justifySelf=center;padding=0 10rem]",
                             "children": [
                                 {
-                                    "view": "View?class=flex column;style:[padding=4rem;borderRadius=1rem;border=1px solid #ddd;width=50rem;gap=2rem];doc=signupForm",
+                                    "view": "View?class=flex column;style:[padding=4rem;borderRadius=1rem;border=1px solid #ddd;width=50rem;gap=2rem];form=signupForm",
                                     "children": [
                                         {
                                             "view": "Text?text=Getting a powerful accounting system is a profitable +tag():[text=investment;style:[backgroundColor=yellow]]+'!';style:[fontSize=1.75rem;padding=2rem 0;textAlign=left]"

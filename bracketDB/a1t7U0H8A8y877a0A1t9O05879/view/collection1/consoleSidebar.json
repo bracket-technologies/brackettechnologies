@@ -34,7 +34,10 @@
         "doc": "consoleSidebar",
         "counter": 49,
         "creationDate": 1715509609840,
-        "active": true,
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1722001584442,
+        "dev": false,
         "actions": {
             "cancelEditCreateDoc": "txt()=openDoc:();style().display=none;prev().style().display=flex;if():[!openDoc:()||!data:().editor.[_.collection].[openDoc:()]]:[if():[!data:().editor.[_.collection]||data:().editor.[_.collection].keys().len()=0]:[closeFolder():[id=_.view]];parent().rem()]",
             "problemEditingCreateDoc": "note():[text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.[_.collection].keys().inc():txt()]:'File name should be unique!'.elif():[txt().inc():' ']:'File name cannot contain spaces!';danger]",
@@ -42,23 +45,40 @@
             "createNewCollection": "new-collection:()=true;():collections.insert():[view=new-collection]:[_.view.input().focus();new-collection:()=false]",
             "openDataManager": {
                 "_": "if():[!open]:[().open=true;closeAllMangers();openCurrentManager();closeGallery();setSidebarWidth();displayDataViewer()]:[closeDataManager()]",
-                "closeAllMangers": "():galleryView.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];parent().children().():[style().borderRight=2px solid #ffffff00;1stChild().style().color=#888]",
+                "closeAllMangers": "():gallery.style().display=none;parent().children()._():[if():[_.id!=().id]:[_.open=false]];parent().children().():[style().borderRight=2px solid #ffffff00;1stChild().style().color=#888]",
                 "openCurrentManager": "openedSidebarManager:()=().id;style():[borderRight=2px solid #FF0000];1stChild().style().color=#FF0000",
                 "closeGallery": "2ndParent().children().slice():1:[-1].():[style().width=0px]",
                 "displayDataViewer": "():mainDataViewer.style().display=flex;class():dataViewer.find():[openDoc=openDoc:();openCollection=openCollection:()].style().display=flex;class():actions.find():[openDoc=openDoc:();openCollection=openCollection:()].style().display=flex;if():[():dataViewerBar.children().len()>0]:[():dataViewerBar.style().display=flex]",
                 "closeDataManager": "().open=false;():collections.style().width=0px;():dataViewer.style().width='calc(100vw - 4.5rem)';():mainActionsContainer.style().width='calc(100vw - 4.5rem)'",
                 "setSidebarWidth": "if():[():sidebarWidthController.width>5]:[():collections.style().width=():sidebarWidthController.width+():sidebarWidthController.diff+rem;():dataViewer.style().width='calc(100vw - '+[():sidebarWidthController.width+():sidebarWidthController.diff+4.5]+'rem)';():mainActionsContainer.style().width=():dataViewer.style().width]:[():collections.style().width=19rem;():dataViewer.style().width='calc(100vw - 23.5rem)';():mainActionsContainer.style().width='calc(100vw - 23.5rem)']"
             },
-            "openGallery": "parent().children()._():[if():[_.id!=().id]:[_.open=false]];open=().open.opp();parent().children().():[style().borderRight=2px solid #ffffff00;1stChild().style().color=#888];if():open:[style().borderRight=2px solid #FF0000;style().color=#FF0000;openedSidebarManager:()=().id];parent().parent().children().slice():1:-1.():[style().width=0px];():galleryView.style().display=if():open:grid:none;():dataViewer.children().():[style().display=none];():galleryView.style():[display=grid;borderRight=2px solid #FF0000];1stChild().style().color=#FF0000;open=true;():mainDataViewer.style().display=none;():dataViewerBar.style().display=none;[getData():[publicID=project:().publicID;collection=storage;limit=250]:[gallery-images:()=_.data.values().sort():[path=creation-date];():galleryView.update()]]():[collection=actions;doc=db]",
+            "openGallery": {
+                "_": "toggleOpen();uncheckAll();checkGallery();hideCode();getFilesDisplayGallery()",
+                "hideCode": "():dataViewer.children().():[style().display=none];1stChild().style().color=#FF0000;():mainDataViewer.style().display=none;():dataViewerBar.style().display=none",
+                "toggleOpen": "parent().children()._():[if():[_.id!=.id]:[_.open=false]];open=.open.opp()",
+                "uncheckAll": "parent().children().():[style().borderRight=2px solid #ffffff00;1stChild().style().color=#888];2ndParent().children().slice():1:[-1].():[style().width=0px]",
+                "checkGallery": "style().borderRight=2px solid #FF0000;style().color=#FF0000;openedSidebarManager:()=().id",
+                "getFilesDisplayGallery": "[loader.show;getData():[storage;collection=files;publicID=project:().publicID]:[files:()=_.data.values().sort():[path=__props__.creationDate];():gallery.():[refresh()::[_.view.style().display=grid]];loader.hide]]():[collection=actions;doc=db]"
+            },
             "widthVerticalBarMousedown": "mousedown=true;document().style().cursor=ew-resize;():[sidebar-open-manager:()].style().transition=null;():dataViewer.style().transition=null;():mainActionsContainer.style().transition=null;width=():[sidebar-open-manager:()].style().width.split():rem.0.num();screenX=mousePosX:()",
-            "createCollection": "if():[collections:().inc():[txt()]]:[note():[text='Collection name already exists!';danger]]:[data:().editor.[txt()]=[];note():[text='Collection created successfully!'];():collections.update()]",
+            "createCollection": "if():[collections:().inc():[txt()]]:[note():[text='Collection name already exists!';danger]]:[data:().editor.[txt()]=[];note():[text='Collection created successfully!'];():collections.refresh()]",
             "mousemoveVerticalBar": "diff=[[mousePosX:()]-[().screenX]].divide():10;():[sidebar-open-manager:()].style().width=[().width+().diff]+rem;():dataViewer.style().width='calc(100vw - '+[().width+().diff+4.5]+'rem)';():mainActionsContainer.style().width='calc(100vw - '+[().width+().diff+4.5]+'rem)'?mousedown"
         },
         "comments": [],
-        "collapsed": [],
-        "chunk": "chunk1",
+        "collapsed": [
+            {
+                "path": [
+                    "openDataManager"
+                ]
+            },
+            {
+                "path": [
+                    "openGallery"
+                ]
+            }
+        ],
+        "arrange": [],
         "secured": false,
-        "collection": "view",
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2"
+        "size": 6113
     }
 }

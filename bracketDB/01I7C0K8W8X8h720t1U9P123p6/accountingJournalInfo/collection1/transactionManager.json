@@ -34,11 +34,6 @@
                 ]
             },
             "codeInput": true,
-            "allowedCode": {
-                "allowedCode": [
-                    "1"
-                ]
-            },
             "generalLedgers": true,
             "separator": "/",
             "placeholder": "--/-"
@@ -81,6 +76,15 @@
             "inputPath": "toDate",
             "inputLabel": "To Date",
             "type": "date"
+        },
+        {
+            "inputPath": "Reference",
+            "inputLabel": "Reference",
+            "items": [
+                "Invoice",
+                "Voucher"
+            ],
+            "#droplistClickAction": ""
         }
     ],
     "createFormInputs": {
@@ -153,14 +157,11 @@
         "creationDate": 1711031361018,
         "collection": "accountingJournalInfo",
         "chunk": "chunk1",
+        "lastModified": 1721814213398,
+        "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [
-            {
-                "path": [
-                    "popupInfo"
-                ]
-            },
             {
                 "path": [
                     "createFormInputs",
@@ -283,12 +284,6 @@
             {
                 "path": [
                     "searchEngineInputs",
-                    6
-                ]
-            },
-            {
-                "path": [
-                    "searchEngineInputs",
                     4,
                     "select"
                 ]
@@ -296,7 +291,7 @@
             {
                 "path": [
                     "searchEngineInputs",
-                    6
+                    5
                 ]
             },
             {
@@ -309,12 +304,6 @@
                 "path": [
                     "searchEngineInputs",
                     4
-                ]
-            },
-            {
-                "path": [
-                    "searchEngineInputs",
-                    3
                 ]
             },
             {
@@ -392,15 +381,29 @@
             },
             {
                 "path": [
+                    "table",
+                    "body"
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "header"
+                ]
+            },
+            {
+                "path": []
+            },
+            {
+                "path": [
                     "searchEngineInputs",
-                    0
+                    3
                 ]
             },
             {
                 "path": [
                     "searchEngineInputs",
-                    1,
-                    "unselect"
+                    0
                 ]
             },
             {
@@ -412,25 +415,43 @@
             },
             {
                 "path": [
-                    "searchEngineInputs"
+                    "searchEngineInputs",
+                    1,
+                    "unselect"
+                ]
+            },
+            {
+                "path": [
+                    "popupInfo"
                 ]
             },
             {
                 "path": [
                     "table",
-                    "body"
+                    "table"
                 ]
             },
             {
                 "path": [
-                    "table",
-                    "header"
+                    "table"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    2
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 5189
+        "size": 5363
     },
     "table": {
         "body": {
@@ -447,7 +468,7 @@
             },
             {
                 "header": "Account Name",
-                "fraction": "2fr",
+                "fraction": "1.5fr",
                 "path": "accountName",
                 "#formatCell": "txt()=__.ledgerAccount.0.split():'/'.1"
             },

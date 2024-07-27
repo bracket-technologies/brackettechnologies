@@ -99,7 +99,7 @@
     "title": "Income Manager",
     "managerName": "incomeManager",
     "creationDate": 1709896626295,
-    "ledgerAccountName": "Income",
+    "ledgerAccountName": "Incomes",
     "popupInfo": {
         "docName": "incomeInfo",
         "title": "Income Account Form"
@@ -108,9 +108,14 @@
     "__props__": {
         "id": "91Z7N1m16063N1J3B6C1x0z7z6",
         "doc": "incomeManager",
+        "counter": 5,
         "creationDate": 1711031361076,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "generalLedgerInfo",
+        "chunk": "chunk1",
+        "lastModified": 1721818871080,
+        "dev": false,
+        "actions": {},
+        "comments": [],
         "collapsed": [
             {
                 "path": [
@@ -197,12 +202,9 @@
                 ]
             }
         ],
-        "comments": [],
-        "dirPath": [],
-        "actions": {},
-        "counter": 5,
-        "chunk": "chunk1",
-        "collection": "generalLedgerInfo"
+        "arrange": [],
+        "secured": false,
+        "size": 4842
     },
     "table": {
         "body": {
@@ -268,7 +270,7 @@
                     {
                         "imageUrl": "https://storage.googleapis.com/bracket-technologies.appspot.com/storage-acc/MMwVEfvl24OIA0TNWH9L?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=inEzvk3W8EntXUGnBWRlS9XZssV4KU0iJ8K2RFcNf4cm4%2FhWKJH1Sx6ZmcIWocM8s2BQMJzb1huVynOcifzmY9RXNKqHawSOCsMNQo%2FzSH%2F8kdLAFBfPlCwhLX6dsLmRjJy7A4e0gP6qKzk65I%2FxOYGkNGxy2URLOA69IJnCSD4ug23t%2BjYbSqFvupsMuNPkecDWaLk5kEEG7VZHbIp1G%2FIUwuD6v%2BwvydGSD4PnNrnlC5oYBYTLsW8Rosn9syHc6TAC1IjSioTICX3PeTl9FCQBmR8mTTG8WJH3wRAICdKUONA1Vlf5EAHP4PeOAQjWzmlig1MEHETmOIpG%2BOwZ0g%3D%3D",
                         "tooltip": "transactions",
-                        "action": "().customManagerSearchEngineClone=customManagerSearchEngine:().clone();openSearchBox():[redeclareSearchEngineDoc=().customManagerSearchEngineClone;hideButtons=true;collection=transaction;tableHeaderAndBody=accountingJournalInfo:().transactionManager.table;searchEngineDefaultValues=[ledgerAccount=[___.ledgerAccount]._find():[_.split():'/'.2.num()=0]];autoSearch=true;uploadFalse=true;downloadFalse=true;printFalse=true]"
+                        "action": "().customManagerSearchEngineClone=customManagerSearchEngine:().clone();openSearchBox():[title=___.name;addFalse=true;hideSearchEngine=true;redeclareSearchEngineDoc=().customManagerSearchEngineClone;hideButtons=true;collection=transaction;tableHeaderAndBody=accountingJournalInfo:().transactionManager.table;searchEngineDefaultValues=[ledgerAccount=[___.ledgerAccount]._find():[_.split():'/'.2.num()=0]];autoSearch=true;uploadFalse=true;downloadFalse=true;printFalse=true]"
                     }
                 ],
                 "justifyContent": "end",

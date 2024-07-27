@@ -1,25 +1,13 @@
 {
     "account767": {
         "startsWith": [
-            "1"
-        ],
-        "accountNumber": "2"
-    },
-    "account768": {
-        "startsWith": [
-            "1"
-        ],
-        "accountNumber": "3"
-    },
-    "account769": {
-        "startsWith": [
             "1",
             "11",
             "119"
         ],
         "accountNumber": "1"
     },
-    "account770": {
+    "account768": {
         "startsWith": [
             "4",
             "41",

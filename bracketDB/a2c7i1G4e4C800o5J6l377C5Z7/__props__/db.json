@@ -2,10 +2,10 @@
     "creationDate": 1712876590553,
     "collectionsLength": 39,
     "docsLength": 763,
-    "reads": 3506157113,
+    "reads": 3506157121,
     "writes": 14984,
     "deletes": 774,
     "size": 2278504,
     "payloadIn": 122513022,
-    "payloadOut": 32123292298032
+    "payloadOut": 32123292302665
 }

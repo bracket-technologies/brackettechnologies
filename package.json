@@ -4,7 +4,7 @@
   "description": "Bracket Technologies",
   "scripts": {
     "servers": "node index.js",
-    "browserify": "browserify -u ./functions/documenter.js ./functions/index.js > ./resources/engine.js",
+    "browserify": "browserify -u ./functions/documenter.js ./functions/index.js > ./storage/resources/engine.js",
     "start": "npm run browserify && npm run servers"
   },
   "engines": {
@@ -19,9 +19,12 @@
     "easyqrcodejs": "^4.6.0",
     "fs-extra": "^11.2.0",
     "ip": "^2.0.1",
+    "mime-types": "^2.1.35",
     "node-device-detector": "^2.0.12",
+    "nodemailer": "^6.9.14",
     "qrcode": "^1.5.3",
     "qrcode-terminal": "^0.12.0",
+    "smtp-server": "^3.13.4",
     "vcards-js": "^2.10.0",
     "xlsx": "^0.18.5"
   },

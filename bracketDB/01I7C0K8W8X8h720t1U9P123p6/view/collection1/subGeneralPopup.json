@@ -28,7 +28,7 @@
             "exitFullscreen": "3rdParent().style():[top=setTop();bottom=setBottom();right=setRight();left=setLeft();borderRadius=.4rem];prev().style().display=flex;style().display=none",
             "closeSubGeneralPopup": "():subGeneralPopup.2ndChild().style():[transform=translateY(-45rem)];timer():[():subGeneralPopup.style():[visibility=hidden;opacity=0];searchBoxResults:().del();unpaidInvoiceInfo:()=[]]:400",
             "updateExchangeRate": {
-                "_": "doc().exchangeRates.0._():[log():[_]:['tahabbbb'];_.exchangeRate=_.createdCurrencyRate/_.systemCurrencyRate];doc().():[[doc().exchangeRates.0].flat()];doc().exchangeRates.del();addForm()",
+                "_": "form().exchangeRates.0._():[log():[_]:['tahabbbb'];_.exchangeRate=_.createdCurrencyRate/_.systemCurrencyRate];form().():[[form().exchangeRates.0].flat()];form().exchangeRates.del();addForm()",
                 "addForm": "addFormSchema():[__]"
             }
         },

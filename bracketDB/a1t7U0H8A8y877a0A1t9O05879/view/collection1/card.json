@@ -8,21 +8,21 @@
         "collection": "view",
         "chunk": "chunk1",
         "actions": {
-            "defaultSelectedPackage": "doc().qty=1;[[setChosenPackage()]():[path=[chooseCoinPackage?__.coinPackage?chooseSubscriptionPackage?__.subscriptionPackage]]?_.selected]",
+            "defaultSelectedPackage": "form().qty=1;[[setChosenPackage()]():[path=[chooseCoinPackage?__.coinPackage?chooseSubscriptionPackage?__.subscriptionPackage]]?_.selected]",
             "chooseCoinPackage": {
-                "_": "parent().siblings().():[1stChild().style().transform=scale(1)];doc().qty=1;setChosenPackage();setSelected();beat();updatePackages()?doc().packageID!=_.id()?addQty()",
+                "_": "parent().siblings().():[1stChild().style().transform=scale(1)];form().qty=1;setChosenPackage();setSelected();beat();updatePackages()?form().packageID!=_.id()?addQty()",
                 "setSelected": "packages:().():[selected=false];packages:().find():[__props__.id=_.id()].selected=true",
-                "updatePackages": "3rdParent().next().update()::[class():'subscription-details'.0.update()]",
-                "setChosenPackage": "doc().packageID=_.id();doc().packageName=_.name;doc().priceUSD=_.priceUSD*doc().qty;doc().coins=_.coins*doc().qty",
-                "addQty": "doc().qty+=1;setChosenPackage();beat();class():'subscription-details'.0.update()?doc().qty<[_.max||9]?note():[text=You have reached maximum limit!;danger]",
+                "updatePackages": "3rdParent().next().refresh()::[class():'subscription-details'.0.refresh()]",
+                "setChosenPackage": "form().packageID=_.id();form().packageName=_.name;form().priceUSD=_.priceUSD*form().qty;form().coins=_.coins*form().qty",
+                "addQty": "form().qty+=1;setChosenPackage();beat();class():'subscription-details'.0.refresh()?form().qty<[_.max||9]?note():[text=You have reached maximum limit!;danger]",
                 "beat": "clearTimer():[().myTimer];style().transform=scale(1.06);myTimer=timer():[style().transform=scale(1.04)]:200"
             },
             "coinTotals": ":[label=Package Name;path=packageName]:[label=Quantity;path=qty;preUnit='x']:[label=Payment Amount;path=priceUSD;unit=USD]:[label=Coins Purchased;path=coins;unit=COIN]",
             "subscriptionDetails": ":[label=Package Name;path=packageName;text=true]:[label=Quantity;path=qty;preUnit='x']:[label=Start Date;path=startDate;date=true]:[label=End Date;path=endDate;date=true]:[label=Coins;path=priceCoins;unit=COINS]",
             "chooseSubscriptionPackage": {
-                "_": "parent().siblings().():[1stChild().style().transform=scale(1)];doc().qty=1;setChosenPackage();[setSelected();beat();updatePackages()]():[path=:chooseCoinPackage]?doc().packageID!=_.id()?addQty()",
-                "setChosenPackage": "doc().packageID=_.id();doc().packageName=_.name;doc().priceCoins=_.priceCoins*doc().qty;doc().startDate=timestamp();subscriptions:()._():[doc().startDate=_.expiryDate?_.expiryDate>doc().startDate];doc().endDate=doc().startDate+[_.duration*doc().qty]",
-                "addQty": "doc().qty+=1;setChosenPackage();[beat()]():[path=:chooseCoinPackage];class():'subscription-details'.0.update()?doc().qty<[_.max||9]?note():[text=You have reached maximum limit!;danger]"
+                "_": "parent().siblings().():[1stChild().style().transform=scale(1)];form().qty=1;setChosenPackage();[setSelected();beat();updatePackages()]():[path=:chooseCoinPackage]?form().packageID!=_.id()?addQty()",
+                "setChosenPackage": "form().packageID=_.id();form().packageName=_.name;form().priceCoins=_.priceCoins*form().qty;form().startDate=timestamp();subscriptions:()._():[form().startDate=_.expiryDate?_.expiryDate>form().startDate];form().endDate=form().startDate+[_.duration*form().qty]",
+                "addQty": "form().qty+=1;setChosenPackage();[beat()]():[path=:chooseCoinPackage];class():'subscription-details'.0.refresh()?form().qty<[_.max||9]?note():[text=You have reached maximum limit!;danger]"
             },
             "timeUnit": "_/31536000000+' Year'+['s'?_/31536000000!=1?'']?_%31536000000=0?_/2592000000+' Month'+['s'?_/2592000000!=1?'']?_%2592000000=0?_/86400000+' Day'+['s'?_/86400000!=1?'']?_%86400000=0"
         },
@@ -183,7 +183,7 @@
     },
     "children": [
         {
-            "view": "View?class=flex column pointer;style:[alignItems=center;borderRadius=1rem;border=1px solid #ddd;gap=2rem;transition=.2s;overflow=hidden;width=100%;[transform=scale(1.04)?_.selected]];defaultSelectedPackage();[click?chooseCoinPackage();log():[doc()]]?__.coinPackage",
+            "view": "View?class=flex column pointer;style:[alignItems=center;borderRadius=1rem;border=1px solid #ddd;gap=2rem;transition=.2s;overflow=hidden;width=100%;[transform=scale(1.04)?_.selected]];defaultSelectedPackage();[click?chooseCoinPackage();log():[form()]]?__.coinPackage",
             "__props__": {
                 "id": "M1L791R6B5E507i5w9R8s9f0p2",
                 "doc": "packageCard",
@@ -191,13 +191,13 @@
                 "creationDate": 1716557598902,
                 "active": true,
                 "actions": {
-                    "defaultSelectedPackage": "doc().qty=1;[[setChosenPackage()]():[path=choosePackage]?_.selected]",
+                    "defaultSelectedPackage": "form().qty=1;[[setChosenPackage()]():[path=choosePackage]?_.selected]",
                     "choosePackage": {
-                        "_": "siblings().():[style().transform=scale(1)];doc().qty=1;setChosenPackage();setSelected();updatePackages();beat()?doc().packageName!=_.name?addQty()",
+                        "_": "siblings().():[style().transform=scale(1)];form().qty=1;setChosenPackage();setSelected();updatePackages();beat()?form().packageName!=_.name?addQty()",
                         "setSelected": "packages:().():[selected=false];packages:().find():[name=_.name].selected=true",
-                        "updatePackages": "parent().next().update()::[_.view.parent().2ndNext().1stChild().update()]",
-                        "setChosenPackage": "doc().packageName=_.name;doc().priceUSD=_.priceUSD*doc().qty;doc().coins=_.coins*doc().qty",
-                        "addQty": "doc().qty+=1;setChosenPackage();beat();2ndParent().2ndNext().1stChild().update()",
+                        "updatePackages": "parent().next().refresh()::[_.view.parent().2ndNext().1stChild().refresh()]",
+                        "setChosenPackage": "form().packageName=_.name;form().priceUSD=_.priceUSD*form().qty;form().coins=_.coins*form().qty",
+                        "addQty": "form().qty+=1;setChosenPackage();beat();2ndParent().2ndNext().1stChild().refresh()",
                         "beat": "clearTimer():[().myTimer];style().transform=scale(1.06);myTimer=timer():[style().transform=scale(1.04)]:200"
                     }
                 },
@@ -240,13 +240,13 @@
                 "creationDate": 1716557598902,
                 "active": true,
                 "actions": {
-                    "defaultSelectedPackage": "doc().qty=1;[[setChosenPackage()]():[path=choosePackage]?_.selected]",
+                    "defaultSelectedPackage": "form().qty=1;[[setChosenPackage()]():[path=choosePackage]?_.selected]",
                     "choosePackage": {
-                        "_": "siblings().():[style().transform=scale(1)];doc().qty=1;setChosenPackage();setSelected();updatePackages();beat()?doc().packageName!=_.name?addQty()",
+                        "_": "siblings().():[style().transform=scale(1)];form().qty=1;setChosenPackage();setSelected();updatePackages();beat()?form().packageName!=_.name?addQty()",
                         "setSelected": "packages:().():[selected=false];packages:().find():[name=_.name].selected=true",
-                        "updatePackages": "parent().next().update()::[_.view.parent().2ndNext().1stChild().update()]",
-                        "setChosenPackage": "doc().packageName=_.name;doc().priceUSD=_.priceUSD*doc().qty;doc().coins=_.coins*doc().qty",
-                        "addQty": "doc().qty+=1;setChosenPackage();beat();2ndParent().2ndNext().1stChild().update()",
+                        "updatePackages": "parent().next().refresh()::[_.view.parent().2ndNext().1stChild().refresh()]",
+                        "setChosenPackage": "form().packageName=_.name;form().priceUSD=_.priceUSD*form().qty;form().coins=_.coins*form().qty",
+                        "addQty": "form().qty+=1;setChosenPackage();beat();2ndParent().2ndNext().1stChild().refresh()",
                         "beat": "clearTimer():[().myTimer];style().transform=scale(1.06);myTimer=timer():[style().transform=scale(1.04)]:200"
                     }
                 },
@@ -285,13 +285,13 @@
                                     "view": "Text?text=_.label;style:[fontSize=1.5rem]"
                                 },
                                 {
-                                    "view": "Text?text=[doc().[_.path]||0].price()+' '+tag():[text=_.unit;style:[fontSize=1.3rem]];style:[fontSize=1.5rem;color=blue;width=12.5rem;textAlign=right]?_.unit"
+                                    "view": "Text?text=[form().[_.path]||0].price()+' '+tag():[text=_.unit;style:[fontSize=1.3rem]];style:[fontSize=1.5rem;color=blue;width=12.5rem;textAlign=right]?_.unit"
                                 },
                                 {
-                                    "view": "Text?text=doc().[_.path];style:[fontSize=1.5rem;color=blue;width=12.5rem;textAlign=right]?!_.unit;!_.preUnit"
+                                    "view": "Text?text=form().[_.path];style:[fontSize=1.5rem;color=blue;width=12.5rem;textAlign=right]?!_.unit;!_.preUnit"
                                 },
                                 {
-                                    "view": "Text?text=_.preUnit+doc().[_.path];style:[fontSize=1.5rem;width=12.5rem;textAlign=right]?_.preUnit"
+                                    "view": "Text?text=_.preUnit+form().[_.path];style:[fontSize=1.5rem;width=12.5rem;textAlign=right]?_.preUnit"
                                 }
                             ]
                         }
@@ -312,16 +312,16 @@
                                     "view": "Text?text=_.label;style:[fontSize=1.5rem]"
                                 },
                                 {
-                                    "view": "Text?text=doc().[_.path];style:[fontSize=1.5rem;width=12.5rem;textAlign=right]?_.text"
+                                    "view": "Text?text=form().[_.path];style:[fontSize=1.5rem;width=12.5rem;textAlign=right]?_.text"
                                 },
                                 {
-                                    "view": "Text?text=[doc().[_.path]||0].price()+' '+tag():[text=_.unit;style:[fontSize=1.3rem]];style:[fontSize=1.5rem;color=blue;width=12.5rem;textAlign=right]?_.unit"
+                                    "view": "Text?text=[form().[_.path]||0].price()+' '+tag():[text=_.unit;style:[fontSize=1.3rem]];style:[fontSize=1.5rem;color=blue;width=12.5rem;textAlign=right]?_.unit"
                                 },
                                 {
-                                    "view": "Text?text=_.preUnit+doc().[_.path];style:[fontSize=1.5rem;width=12.5rem;textAlign=right]?_.preUnit"
+                                    "view": "Text?text=_.preUnit+form().[_.path];style:[fontSize=1.5rem;width=12.5rem;textAlign=right]?_.preUnit"
                                 },
                                 {
-                                    "view": "Text?text=doc().[_.path].toDateFormat():format4.slice():4:[-8];style:[fontSize=1.5rem;width=12.5rem;textAlign=right]?_.date"
+                                    "view": "Text?text=form().[_.path].toDateFormat():format4.slice():4:[-8];style:[fontSize=1.5rem;width=12.5rem;textAlign=right]?_.date"
                                 }
                             ]
                         }

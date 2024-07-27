@@ -1,6 +1,6 @@
 const { clone } = require("./clone")
 const { jsonToBracket } = require("./jsonToBracket")
-const { update, toLine, kernel, toValue } = require("./kernel")
+const { toLine, kernel, toValue, actions } = require("./kernel")
 
 const droplist = ({ id, e, __, stack, props, lookupActions, address, object }) => {
   
@@ -18,17 +18,17 @@ const droplist = ({ id, e, __, stack, props, lookupActions, address, object }) =
   // items
   var items = clone(view.droplist.items) || []
   var __dataPath__ = view.droplist.path !== undefined ? (Array.isArray(view.droplist.path) ? view.droplist.path : view.droplist.path.split(".")) : view.__dataPath__
-  var doc = view.droplist.doc || view.doc
+  var form = view.droplist.form || view.form
 
   // init droplist
-  var droplistView = { ...global.__queries__.view.droplist, children: [], __dataPath__, doc, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["router", "document", "root", "droplist"], __lookupActions__: [...view.__lookupActions__] }
+  var droplistView = { ...global.__queries__.view.droplist, children: [], __dataPath__, form, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["view", "document", "root", "droplist"], __lookupActions__: [...view.__lookupActions__] }
 
   // input id
   var inputID = toValue({ id, data: "input().id||().id", object })
   var text = views[inputID].__element__.value || views[inputID].__element__.innerText
 
   // items
-  if (typeof items === "string") items = toValue({ id, data: items, lookupActions, __: view.__, object })
+  if (typeof items === "string") items = toValue({ id, data: items, lookupActions, __: view.__, props, stack, object })
 
   // filterable
   if (!view.droplist.preventDefault) {
@@ -59,7 +59,7 @@ const droplist = ({ id, e, __, stack, props, lookupActions, address, object }) =
         if (typeof item.text === "string") item.text = { text: item.text }
         
         return ({
-          view: `View?style:[minHeight=3rem;padding=0 1rem;gap=1rem];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item || {})};${jsonToBracket(item || {})};class=flex align-items pointer ${item.class || ""}`,
+          view: `View?style:[minHeight=3rem;padding=0 1rem;gap=1rem];hover.style.backgroundColor=#eee;${jsonToBracket(view.droplist.item || {})};${jsonToBracket(item || {})};class=flex align-items pointer ${item.class || ""}`,
           children: [{
             view: `View?style:[height=inherit;width=fit-content];${jsonToBracket(item.icon.container || {})};class=flexbox ${(item.icon.container || {}).class || ""}`,
             children: [{
@@ -73,7 +73,7 @@ const droplist = ({ id, e, __, stack, props, lookupActions, address, object }) =
       } else {
         
         return ({
-          view: `Text?style:[minHeight=3rem;padding=0 1rem;fontSize=1.3rem;width=100%];mouseenter:[parent().children().():[style().backgroundColor=${view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style && view.droplist.item.style.backgroundColor||null}];style().backgroundColor=${(view.droplist.item && view.droplist.item.hover && view.droplist.item.hover.style.backgroundColor)||"#eee"}];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item)};class=flex align-center pointer ${item.class || ""};click:[():[__droplistPositioner__:()].():[txt()=..txt();data()=..txt()]?!():${id}.droplist.preventDefault]`,
+          view: `Text?style:[minHeight=3rem;padding=0 1rem;fontSize=1.3rem;width=100%];hover.style.backgroundColor=#eee;${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item)};${jsonToBracket(view.droplist.item)};class=flex align-center pointer ${item.class || ""};click:[():[__droplistPositioner__:()].():[txt()=..txt();data()=..txt()]?!():${id}.droplist.preventDefault]`,
         })
       }
     }))
@@ -82,7 +82,7 @@ const droplist = ({ id, e, __, stack, props, lookupActions, address, object }) =
   
   droplistView.positioner = id
   
-  update({ stack, lookupActions, __, address, id, data: { id: "droplist", view: droplistView } })
+  actions["refresh()"]({ stack, lookupActions, __, address, id, data: { id: "droplist", view: droplistView } })
   droplistView = views.droplist
   
   // searchable
@@ -137,7 +137,7 @@ const droplist = ({ id, e, __, stack, props, lookupActions, address, object }) =
             }
           }
 
-          kernel({ id, data: { path: droplistView.__dataPath__, key: true, value: items[_index], data: global[droplistView.doc] }, __ })
+          kernel({ id, data: { path: droplistView.__dataPath__, key: true, value: items[_index], data: global[droplistView.form] }, __ })
           global.__keyupIndex__ = _index
         }
       }

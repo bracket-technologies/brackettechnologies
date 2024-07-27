@@ -4,12 +4,12 @@
         "doc": "journalsManager",
         "counter": 2,
         "creationDate": 1715000218593,
-        "active": true,
-        "actions": {},
-        "chunk": "chunk1",
-        "secured": false,
         "collection": "vouchersInfo",
-        "createdByUserID": null,
+        "chunk": "chunk1",
+        "lastModified": 1721731639830,
+        "dev": false,
+        "actions": {},
+        "comments": [],
         "collapsed": [
             {
                 "path": [
@@ -26,34 +26,6 @@
                 "path": [
                     "table",
                     "header"
-                ]
-            },
-            {
-                "path": [
-                    "table",
-                    "table",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "table",
-                    "table",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "table",
-                    "table",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "table",
-                    "table",
-                    3
                 ]
             },
             {
@@ -101,11 +73,22 @@
             },
             {
                 "path": [
-                    "table"
+                    "table",
+                    "table",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "table",
+                    "table",
+                    1
                 ]
             }
         ],
-        "comments": []
+        "arrange": [],
+        "secured": false,
+        "size": 3433
     },
     "createFormInputs": "voucherSharedInfo",
     "popupInfo": {
@@ -138,16 +121,14 @@
                 "fraction": "1fr"
             },
             {
-                "path": "from",
                 "header": "From Account",
-                "innerPath": "fromAccount",
-                "fraction": "1fr"
+                "fraction": "1fr",
+                "formatCell": "__.fromAccounts._():[().accountsNames.push():[allLedgersAccounts:().find():[ledgerAccount.inc():[_]].name]];;text=().accountsNames.join():['-']"
             },
             {
-                "path": "to",
                 "header": "To Account",
-                "innerPath": "toAccount",
-                "fraction": "1fr"
+                "fraction": "1fr",
+                "formatCell": "__.toAccounts._():[().accountsNames.push():[allLedgersAccounts:().find():[ledgerAccount.inc():[_]].name]];text=().accountsNames.join():['-']"
             },
             {
                 "path": "transactions",

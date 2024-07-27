@@ -9,7 +9,7 @@
         "chunk": "chunk1",
         "actions": {
             "droplistHandler": "input().txt()=clicked().txt();[data()=clicked().txt()?_.inputType!=yesNo?data()=[true?clicked().txt()=Yes?false]];[_.action]()",
-            "toggleCheck": "1stChild().():[doc().[_]=true;display()?hidden()?doc().[_]=false;hide()]"
+            "toggleCheck": "1stChild().():[form().[_]=true;display()?hidden()?form().[_]=false;hide()]"
         },
         "comments": [
             {

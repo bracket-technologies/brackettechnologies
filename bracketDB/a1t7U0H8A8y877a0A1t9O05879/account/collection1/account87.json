@@ -1,11 +1,11 @@
 {
-    "email": "cto@skylagroup.com",
-    "availableCreateNewProjects": 0,
+    "email": "w",
+    "availableCreateNewProjects": 1,
     "__props__": {
-        "id": "31G7d2T0P8F743F344c6H3Y3O3",
+        "id": "M1C702g190o408k6k3f0n7J7k9",
         "doc": "account87",
         "counter": 87,
-        "creationDate": 1720873346333,
+        "creationDate": 1721048630779,
         "collection": "account",
         "chunk": "chunk1",
         "actions": {},
@@ -13,6 +13,6 @@
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 280
+        "size": 263
     }
 }

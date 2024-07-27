@@ -103,7 +103,7 @@
         {
             "clearable": true,
             "inputPath": "city",
-            "sheetName": "doc().country",
+            "sheetName": "form().country",
             "requiredInput": "country",
             "inputLabel": "City",
             "openSheet": "true",
@@ -125,12 +125,12 @@
                         "sheetName": "Countries",
                         "inputLabel": "Country",
                         "sheetHeader": "country",
-                        "droplistClickAction": "if():[doc().city;!sheetData:().[doc().country].list.():cities.inc():[doc().city]]:[doc().city.del()];customUpdate():[input=3]",
+                        "droplistClickAction": "if():[form().city;!sheetData:().[form().country].list.():cities.inc():[form().city]]:[form().city.del()];customUpdate():[input=3]",
                         "required": "required"
                     },
                     {
                         "inputPath": "city",
-                        "sheetName": "doc().country",
+                        "sheetName": "form().country",
                         "requiredInput": "country",
                         "inputLabel": "City",
                         "sheetHeader": "cities",
@@ -256,12 +256,12 @@
                         "sheetName": "Countries",
                         "inputLabel": "Country",
                         "sheetHeader": "country",
-                        "droplistClickAction": "if():[doc().city;!sheetData:().[doc().country].list.():cities.inc():[doc().city]]:[doc().city.del()];customUpdate():[input=3]",
+                        "droplistClickAction": "if():[form().city;!sheetData:().[form().country].list.():cities.inc():[form().city]]:[form().city.del()];customUpdate():[input=3]",
                         "required": "required"
                     },
                     {
                         "inputPath": "city",
-                        "sheetName": "doc().country",
+                        "sheetName": "form().country",
                         "requiredInput": "country",
                         "inputLabel": "City",
                         "sheetHeader": "cities",

@@ -1,0 +1,11 @@
+{
+    "docs": [
+        "main",
+        "root",
+        "document",
+        "view"
+    ],
+    "chunk": "chunk1",
+    "docsLength": 4,
+    "size": 1460
+}

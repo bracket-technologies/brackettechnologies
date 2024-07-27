@@ -1,0 +1,33 @@
+{
+    "code": "413",
+    "length": 8,
+    "counter": 0,
+    "counterList": [
+        0,
+        "1"
+    ],
+    "start": 0,
+    "max": 99999999,
+    "reset": "yearly",
+    "creationDate": 1721909801911,
+    "id": "zYWkRsNKyMZjyVQjYLIo8KyBOe3W3BLeo9MOAQsHEode26YPSIfiv0G6H9PU1721909801911",
+    "timestamp": 1721909801911,
+    "creationDay": 1721854800000,
+    "type": "B2B Customer",
+    "__props__": {
+        "id": "P1j7y2T1p9v0i918s0h129t1d2",
+        "doc": "counter7",
+        "counter": 7,
+        "creationDate": 1721909801912,
+        "collection": "counter",
+        "chunk": "chunk1",
+        "lastModified": 1721910167985,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 545
+    }
+}

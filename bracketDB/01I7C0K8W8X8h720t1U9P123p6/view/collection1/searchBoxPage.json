@@ -1,8 +1,8 @@
 {
-    "view": "View:searchBoxPage?class=column;style:[height=100%];_.searchBoxPage=true;if():[_.tableDocName]:[doc=_.tableDocName];if():[!selected:()]:[selected:()=[]];clearResultIfDiffCollection();loaded:[deleteSelectedCollection()]",
+    "view": "View:searchBoxPage?class=column;style:[height=100%];_.searchBoxPage=true;if():[_.tableDocName]:[form=_.tableDocName];if():[!selected:()]:[selected:()=[]];clearResultIfDiffCollection();loaded:[deleteSelectedCollection()]",
     "children": [
         {
-            "view": "customSearchEngine?collection=_.collection;title=_.collection.capitalize();searchEngineInputs=searchBoxCustomInputs:();searchEngineDefaultValues=_.searchEngineDefaultValues;autoSearch=_.autoSearch;if():[_.addFalse||_.uploadFalse||_.downloadFalse||_.printFalse]:[addFalse=_.addFalse;uploadFalse=_.uploadFalse;downloadFalse=_.downloadFalse;printFalse=_.printFalse]:[iconFalse=true]?!_.noSearchEngine"
+            "view": "customSearchEngine?hideSearchEngine=_.hideSearchEngine;collection=_.collection;title=_.title||_.collection.capitalize();searchEngineInputs=searchBoxCustomInputs:();searchEngineDefaultValues=_.searchEngineDefaultValues;autoSearch=_.autoSearch;if():[_.addFalse||_.uploadFalse||_.downloadFalse||_.printFalse]:[addFalse=_.addFalse;uploadFalse=_.uploadFalse;downloadFalse=_.downloadFalse;printFalse=_.printFalse]:[iconFalse=true]?!_.noSearchEngine"
         },
         {
             "view": "View:searchBoxTable?class=flex;style:[width=100%;height=100%]",
@@ -37,16 +37,19 @@
     "__props__": {
         "id": "f1v7Z1a1o0Y3b1T3J6C5f2r1d5",
         "doc": "searchBoxPage",
+        "counter": 46,
         "creationDate": 1711031365215,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1721818746358,
+        "dev": false,
         "actions": {
             "#searchData": {
                 "noteMsg": "note():[text='Choose a collection and a field';type=danger]",
-                "requestData": "searchBox():[doc()]:[if():[_.success]:[searchResults:()=_.data.values();loader.hide;():tableOfResult.update()]:[searchResults:()=false;loader.hide;():tableOfResult.update();note():[text=No result found;type=danger]]]",
-                "_": "if():[!doc().collection||!doc().field]:[noteMsg()]:[loader.show;requestData()]"
+                "requestData": "searchBox():[form()]:[if():[_.success]:[searchResults:()=_.data.values();loader.hide;():tableOfResult.refresh()]:[searchResults:()=false;loader.hide;():tableOfResult.refresh();note():[text=No result found;type=danger]]]",
+                "_": "if():[!form().collection||!form().field]:[noteMsg()]:[loader.show;requestData()]"
             },
-            "clearResultIfDiffCollection": "if():[currentSearchCollection:()!=_.collection]:[currentSearchCollection:()=_.collection;doc().field.del();searchResults:()=false]",
+            "clearResultIfDiffCollection": "if():[currentSearchCollection:()!=_.collection]:[currentSearchCollection:()=_.collection;form().field.del();searchResults:()=false]",
             "hideAndShowSearchEngine": {
                 "close": "next().style().height=0;1stChild().style().transform=rotate(0);next().style():[borderBottom=0];().closed=true",
                 "[object Object]": "if():[closed]:[open()]:[close()]",
@@ -67,9 +70,532 @@
                 "pushSelectedInDoc": "[_.docName]:().[_.listName]=selected:().[_.collection].():id"
             },
             "saveUnpaidedInvoiceInData": {
-                "_": "[_.docName]:().[_.path].[_.index].invoicesInfo.del();doc().unpaidInvoice._():[if():[_.payment!=0]:[().total+=_.payment;[__.docName]:().[__.path].[__.index].invoicesInfo.push():[_]]];[_.docName]:().[_.path].[_.index].amount=().total;():[_.identifierToUpdate].update();closeSubGeneralPopup()"
+                "_": "[_.docName]:().[_.path].[_.index].invoicesInfo.del();form().unpaidInvoice._():[if():[_.payment!=0]:[().total+=_.payment;[__.docName]:().[__.path].[__.index].invoicesInfo.push():[_]]];[_.docName]:().[_.path].[_.index].amount=().total;():[_.identifierToUpdate].refresh();closeSubGeneralPopup()"
             }
         },
+        "comments": [
+            {
+                "note": "search engine",
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "SearchBar",
+                "path": [
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "note": "table",
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "table body",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "Select collection",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "collection name",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    2,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "expand btn",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    2,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "select field",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "field name",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    3,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "expand btn",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    3,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "Table Header",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "btns container",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "fullscreen btn",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "exit full screen btn",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "close btn",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "table Header",
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "Select field",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "3"
+                ]
+            },
+            {
+                "note": "name",
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "city",
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "1"
+                ]
+            },
+            {
+                "note": "address",
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "2"
+                ]
+            },
+            {
+                "note": "country",
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "3"
+                ]
+            },
+            {
+                "note": "facilities",
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "4"
+                ]
+            },
+            {
+                "note": "starsRating",
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "5"
+                ]
+            },
+            {
+                "note": "Select btn",
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    "6"
+                ]
+            },
+            {
+                "note": "table content",
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "btns",
+                "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "elements of the table",
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "search btn",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "Collections",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "Fields",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "Table content",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "Search input",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "Search box",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "Headers",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "headers",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    "0",
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "content",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    "0",
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "Done Btn",
+                "path": [
+                    "children",
+                    "2"
+                ]
+            },
+            {
+                "note": "checkbox on the right falsed",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "falsed",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    "0"
+                ]
+            },
+            {
+                "note": "checkbox",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    "0"
+                ]
+            },
+            {
+                "note": "text",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "checkbox",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    "0"
+                ]
+            },
+            {
+                "note": "header text",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "select all checkbox",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "custom table",
+                "path": [
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "done",
+                "path": [
+                    "children",
+                    4
+                ]
+            }
+        ],
         "collapsed": [
             {
                 "path": [
@@ -862,534 +1388,8 @@
                 ]
             }
         ],
-        "comments": [
-            {
-                "note": "search engine",
-                "path": [
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "SearchBar",
-                "path": [
-                    "children",
-                    "1"
-                ]
-            },
-            {
-                "note": "table",
-                "path": [
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "table body",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "Select collection",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "note": "collection name",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    2,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "expand btn",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    2,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "select field",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    3
-                ]
-            },
-            {
-                "note": "field name",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    3,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "expand btn",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    3,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "Table Header",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "btns container",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "fullscreen btn",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "exit full screen btn",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "close btn",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "note": "table Header",
-                "path": [
-                    "children",
-                    2,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "Select field",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "3"
-                ]
-            },
-            {
-                "note": "name",
-                "path": [
-                    "children",
-                    2,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "city",
-                "path": [
-                    "children",
-                    2,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "1"
-                ]
-            },
-            {
-                "note": "address",
-                "path": [
-                    "children",
-                    2,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "2"
-                ]
-            },
-            {
-                "note": "country",
-                "path": [
-                    "children",
-                    2,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "3"
-                ]
-            },
-            {
-                "note": "facilities",
-                "path": [
-                    "children",
-                    2,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "4"
-                ]
-            },
-            {
-                "note": "starsRating",
-                "path": [
-                    "children",
-                    2,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "5"
-                ]
-            },
-            {
-                "note": "Select btn",
-                "path": [
-                    "children",
-                    2,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    "6"
-                ]
-            },
-            {
-                "note": "table content",
-                "path": [
-                    "children",
-                    2,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "btns",
-                "path": [
-                    "children",
-                    2
-                ]
-            },
-            {
-                "note": "elements of the table",
-                "path": [
-                    "children",
-                    2,
-                    "children",
-                    1,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "search btn",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "Collections",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "note": "Fields",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    3
-                ]
-            },
-            {
-                "note": "Table content",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "Search input",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "Search box",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "Headers",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "headers",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    "0",
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "content",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    "0",
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "Done Btn",
-                "path": [
-                    "children",
-                    "2"
-                ]
-            },
-            {
-                "note": "checkbox on the right falsed",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "note": "falsed",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    "0"
-                ]
-            },
-            {
-                "note": "checkbox",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    1,
-                    "children",
-                    "0"
-                ]
-            },
-            {
-                "note": "text",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    1,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "checkbox",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    "0"
-                ]
-            },
-            {
-                "note": "header text",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "select all checkbox",
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "custom table",
-                "path": [
-                    "children",
-                    3
-                ]
-            },
-            {
-                "note": "done",
-                "path": [
-                    "children",
-                    4
-                ]
-            }
-        ],
-        "dirPath": [],
-        "version": 0,
-        "counter": 46,
-        "secure": false,
-        "chunk": "chunk1",
-        "collection": "view"
+        "arrange": [],
+        "secured": false,
+        "size": 12640
     }
 }

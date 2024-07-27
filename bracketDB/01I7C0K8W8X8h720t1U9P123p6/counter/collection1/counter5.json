@@ -1,30 +1,33 @@
 {
     "code": "119",
     "length": 8,
-    "counter": 0,
+    "counter": 1,
     "counterList": [
         0,
+        "1",
         "1"
     ],
     "start": 0,
     "max": 99999999,
     "reset": "yearly",
-    "creationDate": 1721035267368,
-    "id": "dr9ayH0lWjdptvduQBHaLD5j0puqDAsTQHZssvuBy5eri0nhnYrf21SkWy4B1721035267368",
-    "timestamp": 1721035267368,
-    "creationDay": 1720990800000,
+    "creationDate": 1721908457921,
+    "id": "e6UrfV43KgiagLJwZwcnSFtLOZ2qhf5ma7U2EBwdaFIvHTmXAIkcElK155Z41721908457921",
+    "timestamp": 1721908457921,
+    "creationDay": 1721854800000,
     "__props__": {
-        "id": "N1l7c27190l3z5R2b6I7d37699",
+        "id": "f1W732R1c9t0O8E4a5w7Q922M2",
         "doc": "counter5",
         "counter": 5,
-        "creationDate": 1721035267369,
+        "creationDate": 1721908457922,
         "collection": "counter",
         "chunk": "chunk1",
+        "lastModified": 1721910151370,
+        "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 482
+        "size": 527
     }
 }

@@ -5,14 +5,15 @@
         "doc": "main",
         "counter": 1,
         "creationDate": 1713000401899,
-        "active": true,
-        "actions": {},
+        "collection": "view",
         "chunk": "chunk1",
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "lastModified": 1721742674215,
+        "dev": false,
+        "actions": {},
         "comments": [],
         "collapsed": [],
-        "comments||:": "Kce03",
-        "collapsed||:": "XQvZc",
-        "collection": "view"
+        "arrange": [],
+        "secured": false,
+        "size": 284
     }
 }

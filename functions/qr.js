@@ -1,3 +1,5 @@
+const { actions } = require("./kernel")
+
 const qr = async ({ _window, id, req, res, data, __, e, stack, props, lookupActions, address }) => {
 
     if (res && !res.headersSent) return qrServer({ _window, id, req, res, data, __, e, stack, props, lookupActions, address })
@@ -13,7 +15,7 @@ const qr = async ({ _window, id, req, res, data, __, e, stack, props, lookupActi
 
     console.log("QR", data)
 
-    require("./kernel").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, props, req, res, __, _: data })
+    actions["wait()"]({ _window, lookupActions, id, e, asyncer: true, address, stack, props, req, res, __, _: data })
 }
 
 const qrServer = async ({ _window, id, req, res, data, __, e, stack, props, lookupActions, address }) => {
@@ -24,7 +26,7 @@ const qrServer = async ({ _window, id, req, res, data, __, e, stack, props, look
     var qrcode = await require('qrcode').toDataURL(text)
     var data = { message: "QR generated successfully!", data: qrcode, success: true }
 
-    require("./kernel").toAwait({ _window, lookupActions, id, e, asyncer: true, address, stack, props, req, res, __, _: data })
+    actions["wait()"]({ _window, lookupActions, id, e, asyncer: true, address, stack, props, req, res, __, _: data })
 }
 
 const wifiQrText = ({ data }) => {

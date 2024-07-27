@@ -1,38 +1,23 @@
 {
     "account767": {
         "startsWith": [
-            "1"
-        ],
-        "currency": [
-            "USD"
-        ]
-    },
-    "account768": {
-        "startsWith": [
-            "1"
-        ],
-        "currency": [
-            "USD"
-        ]
-    },
-    "account769": {
-        "startsWith": [
             "1",
             "11",
             "119"
         ],
         "currency": [
-            "USD"
+            "USD",
+            "xof"
         ]
     },
-    "account770": {
+    "account768": {
         "startsWith": [
             "4",
             "41",
             "413"
         ],
         "currency": [
-            "USD"
+            "xof"
         ]
     }
 }

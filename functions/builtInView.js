@@ -1,6 +1,5 @@
 const { toApproval } = require("./kernel")
 const { toParam } = require("./kernel")
-const { toCode } = require("./toCode")
 const builtInViews = require("../views/views")
 
 module.exports = {

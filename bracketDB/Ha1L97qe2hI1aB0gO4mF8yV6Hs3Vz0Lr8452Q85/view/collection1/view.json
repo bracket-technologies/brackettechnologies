@@ -1,0 +1,24 @@
+{
+    "view": "Action?id=view",
+    "children": [
+        {
+            "view": "manifest:().action"
+        }
+    ],
+    "__props__": {
+        "id": "c16742B1i3a1l3P0y3u5v3E3E1",
+        "doc": "view",
+        "counter": 1,
+        "creationDate": 1721313035331,
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1721313035331,
+        "dev": true,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": true,
+        "size": 321
+    }
+}

@@ -1,5 +1,5 @@
 {
-    "view": "View?id=customForm;class=column;style:[width=100%;height=100%;gap=1.5rem;paddingTop=.5rem];doc=_.docName;if():[_.path]:[path=_.path;data()=[[]?!data()]];if():[_.docValues]:[[_.docName]:()=_.docValues.clone()];log():[_]:'gggg5';if():[_.inputInfo.docDefaultValues]:[handleDocDefaultValues()];if():[createFormStack:().[-1].selectedSection]:[selectedSection:()=createFormStack:().[-1].selectedSection]:[if():[!_.stopFormIds]:[selectedSection:()=[]]];allInputs:()=:;if():[!_.stopFormIds]:[formIds:()=:]",
+    "view": "View?id=customForm;class=column;style:[width=100%;height=100%;gap=1.5rem;paddingTop=.5rem];form=_.docName;if():[_.path]:[path=_.path;data()=[[]?!data()]];if():[_.docValues]:[[_.docName]:()=_.docValues.clone()];if():[_.inputInfo.docDefaultValues]:[handleDocDefaultValues()];if():[createFormStack:().[-1].selectedSection]:[selectedSection:()=createFormStack:().[-1].selectedSection]:[if():[!_.stopFormIds]:[selectedSection:()=[]]];allInputs:()=:;if():[!_.stopFormIds]:[formIds:()=:]",
     "children": [
         {
             "view": "customFormSectionLoop"
@@ -11,7 +11,7 @@
                     "view": "View?class=flexbox;style:[width=if():[mobile()]:[100%]:[9rem];height=if():[mobile()]:[4rem]:[3rem];border=1px solid #ccc;borderRadius=.4rem;cursor=pointer;opacity=.8];click:[if():[_.discardAction]:[[_.discardAction]()]:[checkIfOpenPrevForm()]];hover.style.opacity=1",
                     "children": [
                         {
-                            "view": "Input?readonly;value='Discard';keydown:[if():[e().code='Enter'||'NumpadEnter']:[parent().click()]]"
+                            "view": "Input?readonly;value='Discard';keydown:[if():[e().code=['Enter'||'NumpadEnter']]:[parent().click()]]"
                         }
                     ]
                 },
@@ -19,7 +19,7 @@
                     "view": "View?class=flexbox;style:[width=if():[mobile()]:[100%]:[9rem];height=if():[mobile()]:[4rem]:[3rem];backgroundColor=#33d17a;borderRadius=.4rem;cursor=pointer;opacity=1];click:[if():[_.saveAction]:[[_.saveAction]()]:[addFormSchema()]];hover.style.backgroundColor=#2ccb73",
                     "children": [
                         {
-                            "view": "Input?readonly;value=if():[_.edit]:[Save]:[Create];style:[color=white];keydown:[if():[e().code='Enter'||'NumpadEnter']:[parent().click()]]"
+                            "view": "Input?readonly;value=if():[_.edit]:[Save]:[Create];style:[color=white];keydown:[if():[e().code=['Enter'||'NumpadEnter']]:[parent().click()]]"
                         }
                     ]
                 }
@@ -42,13 +42,16 @@
     "__props__": {
         "id": "01E7g1A1Y0z3o1P3h6B5U2z1g8",
         "doc": "customForm",
+        "counter": 52,
         "creationDate": 1711031365218,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1721909518519,
+        "dev": false,
         "actions": {
             "confirmDeleteImage": {
-                "deleteImage": "loader.show;eraseImg():[doc().id]:[if():[_.success]:[note():[text=_.message];searchDataImage:().pullItem():[___.imageData];closeConfirmWindow();closeGeneralPopup();loader.hide;():galleryContainer.update()]:[loader.hide;note():[text=_.msg||_.message;danger]]]",
-                "_": "[mhmd:()=start();confirmWindow:()=[title='Do you confirm?';text='Continue deleting image?'];():confirmWindow.update();():confirmWindow.style():[visibility=visible;opacity=1]]()::[deleteImage()]"
+                "deleteImage": "loader.show;eraseImg():[form().id]:[if():[_.success]:[note():[text=_.message];searchDataImage:().pullItem():[___.imageData];closeConfirmWindow();closeGeneralPopup();loader.hide;():galleryContainer.refresh()]:[loader.hide;note():[text=_.msg||_.message;danger]]]",
+                "_": "[mhmd:()=start();confirmWindow:()=[title='Do you confirm?';text='Continue deleting image?'];():confirmWindow.refresh();():confirmWindow.style():[visibility=visible;opacity=1]]()::[deleteImage()]"
             },
             "checkBtnCondition": "if():[_.condition]:[return():[[_.condition]()]]:[return():[true]]",
             "signupNextPage": "if():[_.btnType=next]:[signupPageIndex:()+=1]:[signupPageIndex:()-=1];[signUp()]():[collection=view;doc=login]",
@@ -58,37 +61,201 @@
                 "_": "fillInAllSelected();fillInSelected()"
             },
             "handlePathDefaultValues": "__.defaultValues.keys()._():[if():[!data().[_]]:[data().[_]=[___.defaultValues.[_]]()]]",
-            "editImage": "loader.show;searchDataImage:().replaceItem():[__.imageData]:[doc()];():galleryContainer.update();updateImage():[doc()]:[if():[_.success]:[loader.hide;note():[text=_.message];closeGeneralPopup();():GalleryManager.update()]:[loader.hide;note():[text=_.message]]]",
-            "saveImage": "loader.show;uploadImage():[data=doc();branch=userData:().currentBranch]:[if():[_.success]:[note():[text='File uploaded successfully!'];searchDataImage:().push():[_.data];():GalleryManager.update()::[closeGeneralPopup();loader.hide]]:[note():[text='Try again!';danger];loader.hide]]",
+            "editImage": "loader.show;searchDataImage:().replaceItem():[__.imageData]:[form()];():galleryContainer.refresh();updateImage():[form()]:[if():[_.success]:[loader.hide;note():[text=_.message];closeGeneralPopup();():GalleryManager.refresh()]:[loader.hide;note():[text=_.message]]]",
+            "saveImage": "loader.show;uploadImage():[data=form();branch=userData:().currentBranch]:[if():[_.success]:[note():[text='File uploaded successfully!'];searchDataImage:().push():[_.data];():GalleryManager.refresh()::[closeGeneralPopup();loader.hide]]:[note():[text='Try again!';danger];loader.hide]]",
             "saveSheet": {
-                "handleResult": "if():[_.success]:[loader.hide;doc().del();note():[text=_.message]]:[loader.hide;note():[text=_.message;type=danger]]",
-                "checkHeaders": "doc().headers._():[if():[_.key='']:[return():[false]]];return():[true]",
-                "saveFinal": "loader.show;().session=getCookie():session;doc().branch=userData:().currentBranch;if():[doc().id]:[updateSheet():[session=().session;data=doc();collection=_.inputInfo.collection]:[handleResult()]]:[saveThroughSchema():[session=().session;data=doc();collection=_.inputInfo.collection]:[handleResult()]]",
+                "handleResult": "if():[_.success]:[loader.hide;note():[text=_.message];updateDroplistItems();form().del();checkIfOpenPrevForm()]:[loader.hide;note():[text=_.message;type=danger]]",
+                "checkHeaders": "form().headers._():[if():[_.key='']:[return():[false]]];return():[true]",
+                "saveFinal": "loader.show;().session=getCookie():session;form().branch=userData:().currentBranch;if():[form().id]:[updateSheet():[session=().session;data=form();collection=_.inputInfo.collection]:[handleResult()]]:[saveThroughSchema():[session=().session;data=form();collection=_.inputInfo.collection]:[handleResult()]]",
                 "_": "if():[checkHeaders()]:[saveFinal()]:[note():[text='please enter all headers!';warning]]",
-                "_.": ""
+                "_.": "",
+                "updateDroplistItems": "sheetData:().[form().name]=form()"
             },
-            "saveExhangeRateInPrevForm": "[generalPopup:().docName]:().exchangeRates._():[doc().exchangeRates.find():[code=_.code]._():[__.exchangeRate=_.exchangeRate/_.systemCurrencyRate;__.systemCurrencyRate=_.systemCurrencyRate;__.createdCurrencyRate=_.createdCurrencyRate];().mhmd.push():[_]];closeSubGeneralPopup()",
+            "saveExhangeRateInPrevForm": "[generalPopup:().docName]:().exchangeRates._():[form().exchangeRates.find():[code=_.code]._():[__.exchangeRate=_.exchangeRate/_.systemCurrencyRate;__.systemCurrencyRate=_.systemCurrencyRate;__.createdCurrencyRate=_.createdCurrencyRate];().mhmd.push():[_]];closeSubGeneralPopup()",
             "addFormSchema": {
                 "_": "loader.show;initializeDoc();saveForm()",
-                "initializeDoc": "if():[_.id]:[doc().account=_.id];().session=getCookie():session;doc().branch=userData:().currentBranch",
-                "saveForm": "saveThroughSchema():[session=().session;data=doc();collection=_.inputInfo.collection;manager=[_.inputInfo.manager]();if():[generalPopup:().edit]:[edit=true]]:[if():[_.success]:[handleSuccessSave()]:[handleFailSave()]]",
-                "handleSuccessSave": "if():[__.inputInfo.collection=exchangeRate]:[updateExchangeRateInUserData()].elif():[__.inputInfo.collection=currency]:[updateCurrencyInUserData()];loader.hide;doc().del();checkIfOpenPrevForm();note():[text=_.message];pushAccountInDroplist();end():[id=mhmd:();success=true];",
+                "initializeDoc": "if():[_.id]:[form().account=_.id];().session=getCookie():session;form().branch=userData:().currentBranch",
+                "saveForm": "saveThroughSchema():[session=().session;data=form();collection=_.inputInfo.collection;manager=[_.inputInfo.manager]();if():[generalPopup:().edit]:[edit=true]]:[if():[_.success]:[handleSuccessSave()]:[handleFailSave()]]",
+                "handleSuccessSave": "if():[__.inputInfo.collection=exchangeRate]:[updateExchangeRateInUserData()].elif():[__.inputInfo.collection=currency]:[updateCurrencyInUserData()];loader.hide;form().del();pushAccountInDroplist();end():[id=mhmd:();success=true];;checkIfOpenPrevForm();note():[text=_.message]",
                 "handleFailSave": "loader.hide;note():[text=_.message;type=danger];end():[id=mhmd:();success=false]",
                 "pushAccountInDroplist": {
                     "sortAccounts": "allLedgersAccounts:().sort():[path=helper;ascending]",
-                    "_": "_.data._():[if():[_.collection='account']:[_.data.helper=setDefaultleftZero():[text=_.data.startsWith.[-1];digits=5];allLedgersAccounts:().push():[_.data];]];sortAccounts()"
+                    "_": "_.data._():[if():[_.collection='account';generalPopup:().edit]:[editAccountInAllLedgerAccounts()].elif():[_.collection='account']:[addAccountInAllLedgerAccounts()]];sortAccounts()",
+                    "editAccountInAllLedgerAccounts": "allLedgersAccounts:().find():[id=_.data.id].():[[_.data].flat()]",
+                    "addAccountInAllLedgerAccounts": "_.data.helper=setDefaultleftZero():[text=_.data.startsWith.[-1];digits=5];allLedgersAccounts:().push():[_.data]"
                 },
-                "updateExchangeRateInUserData": "userData:().currency.find():[code=_.data.data.code].exchangeRate=_.data.data.exchangeRate;managersSearchResult:().currency.find():[code=_.data.data.code].exchangeRate=_.data.data.exchangeRate;():customManagerTable.update();closeSubGeneralPopup()",
+                "updateExchangeRateInUserData": "userData:().currency.find():[code=_.data.data.code].exchangeRate=_.data.data.exchangeRate;managersSearchResult:().currency.find():[code=_.data.data.code].exchangeRate=_.data.data.exchangeRate;():customManagerTable.refresh();closeSubGeneralPopup()",
                 "updateCurrencyInUserData": "userData:().currency.push():[_.data.data]"
             },
-            "saveTaxesInPrevForm": "[generalPopup:().docName]:().bookings.[__.dataPath].():[tax1=data().tax1;tax2=data().tax2;tax3=data().tax3;tax4=data().tax4;tax5=data().tax5;tax6=data().tax6;tax7=data().tax7;tax8=data().tax8];closeSubGeneralPopup();__.viewToUpdate._():[():[_].children()._():[_.update()]]",
-            "handleDocDefaultValues": "_.inputInfo.docDefaultValues.keys()._():[if():[!data().[_]]:[doc().[_]=[__.inputInfo.docDefaultValues.[_]]()]]",
+            "saveTaxesInPrevForm": "[generalPopup:().docName]:().bookings.[__.dataPath].():[tax1=data().tax1;tax2=data().tax2;tax3=data().tax3;tax4=data().tax4;tax5=data().tax5;tax6=data().tax6;tax7=data().tax7;tax8=data().tax8];closeSubGeneralPopup();__.viewToUpdate._():[():[_].children()._():[_.refresh()]]",
+            "handleDocDefaultValues": "_.inputInfo.docDefaultValues.keys()._():[if():[!data().[_]]:[form().[_]=[__.inputInfo.docDefaultValues.[_]]()]]",
             "#calcAmount": {
-                "calcTotal": "if():[doc().[_.path]]:[doc().[_.path]._():[doc().total=doc().total+[[_.netPrice]+[_.tax]+[_.commission]]]]",
-                "calcAmount": "if():[doc().[_.path]]:[doc().[_.path]._():[_.amount=[[_.netPrice]+[_.tax]+[_.commission]]*[_.quantity]]]",
+                "calcTotal": "if():[form().[_.path]]:[form().[_.path]._():[form().total=form().total+[[_.netPrice]+[_.tax]+[_.commission]]]]",
+                "calcAmount": "if():[form().[_.path]]:[form().[_.path]._():[_.amount=[[_.netPrice]+[_.tax]+[_.commission]]*[_.quantity]]]",
                 "_": "calcAmount();#calcTotal()"
             }
         },
+        "comments": [
+            {
+                "note": "customFormSectionloop",
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": {
+                    "12": "view"
+                }
+            },
+            {
+                "path": {
+                    "12": "view"
+                }
+            },
+            {
+                "path": {
+                    "12": "view"
+                }
+            },
+            {
+                "path": {
+                    "12": "view"
+                }
+            },
+            {
+                "path": {
+                    "12": "#view"
+                }
+            },
+            {
+                "path": {
+                    "12": "#view"
+                }
+            },
+            {
+                "path": {
+                    "12": "view"
+                }
+            },
+            {
+                "path": {
+                    "12": "view"
+                }
+            },
+            {
+                "note": "create and discard",
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "table",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "custom buttons",
+                "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "custom section",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "type=image",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "title",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "title for multiSection",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "section body",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "custom title + custon form input loop",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "btns",
+                "path": [
+                    "children",
+                    2
+                ]
+            }
+        ],
         "collapsed": [
             {
                 "path": [
@@ -289,13 +456,19 @@
             },
             {
                 "path": [
-                    "saveSheet"
+                    "addFormSchema",
+                    "#checkToUpdateBalanceInAllLedgersA"
                 ]
             },
             {
                 "path": [
-                    "addFormSchema",
-                    "#checkToUpdateBalanceInAllLedgersA"
+                    "#pushAccou"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0
                 ]
             },
             {
@@ -306,26 +479,18 @@
             },
             {
                 "path": [
-                    "#pushAccou"
-                ]
-            },
-            {
-                "path": [
                     "#calcAmount"
                 ]
             },
             {
                 "path": [
-                    "children",
-                    0
+                    "addFormSchema"
                 ]
             },
             {
                 "path": [
                     "children",
-                    1,
-                    "children",
-                    0
+                    1
                 ]
             },
             {
@@ -335,172 +500,8 @@
                 ]
             }
         ],
-        "comments": [
-            {
-                "note": "customFormSectionloop",
-                "path": [
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": {
-                    "12": "view"
-                }
-            },
-            {
-                "path": {
-                    "12": "view"
-                }
-            },
-            {
-                "path": {
-                    "12": "view"
-                }
-            },
-            {
-                "path": {
-                    "12": "view"
-                }
-            },
-            {
-                "path": {
-                    "12": "#view"
-                }
-            },
-            {
-                "path": {
-                    "12": "#view"
-                }
-            },
-            {
-                "path": {
-                    "12": "view"
-                }
-            },
-            {
-                "path": {
-                    "12": "view"
-                }
-            },
-            {
-                "note": "create and discard",
-                "path": [
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "table",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    1,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "note": "custom buttons",
-                "path": [
-                    "children",
-                    2
-                ]
-            },
-            {
-                "note": "custom section",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "note": "type=image",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    3
-                ]
-            },
-            {
-                "note": "title",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "title for multiSection",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "section body",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "custom title + custon form input loop",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "btns",
-                "path": [
-                    "children",
-                    2
-                ]
-            }
-        ],
-        "dirPath": [],
-        "version": 0,
-        "counter": 52,
-        "secure": false,
-        "chunk": "chunk1",
-        "collection": "view"
+        "arrange": [],
+        "secured": false,
+        "size": 10024
     }
 }

@@ -106,9 +106,12 @@
     "__props__": {
         "id": "M177Y1z1g0Z3S1X3D6F5N2b189",
         "doc": "topbar",
+        "counter": 55,
         "creationDate": 1711031365219,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1721825417906,
+        "dev": false,
         "actions": {
             "mhmd": {
                 "mergeList": "_.data.values()._():[().newList.push():[_.data]];().newList._():[_.number=_.number.toString().replaceItem():'.'];sortList()",
@@ -117,17 +120,17 @@
                 "setSheet": "().sheetData=[id=gen():40;name='hello from sheet';data=().finalList];save():[collection=sheet;data=().sheetData]:[loader.hide]",
                 "_": "loader.show;().newList=:;getSheets()"
             },
-            "toggleViewName": "if():[_.viewName;currentViewName:()!=_.viewName]:[currentViewName:()=_.viewName;():mainbody.update()]",
+            "toggleViewName": "if():[_.viewName;currentViewName:()!=_.viewName]:[currentViewName:()=_.viewName;():mainbody.refresh()]",
             "openNotificationBar": {
-                "setPopupInfo": "createFormStack:().push():['searchbox'];searchBoxCustomInputs:()=settingsInfo:().notificationManager.searchEngineInputs;;generalPopup:()=[title='Notification';popupName=searchBoxPage;collection=notification];():generalPopup.update()::[():generalPopup.style():[visibility=visible;opacity=1]];loader.hide",
+                "setPopupInfo": "createFormStack:().push():['searchbox'];searchBoxCustomInputs:()=settingsInfo:().notificationManager.searchEngineInputs;;generalPopup:()=[title='Notification';popupName=searchBoxPage;collection=notification];():generalPopup.refresh()::[():generalPopup.style():[visibility=visible;opacity=1]];loader.hide",
                 "getNotification": "searchNotification():[session=getCookie():session]:[if():[_.success]:[searchBoxResults:()=_.data.values();setPopupInfo()]:[loader.hide;note():[text='No notification!';type=warning]]]",
                 "_": "loader.show;getNotification()"
             },
             "#openNotificationBar": {
-                "openNotificationDroplist": "droplistItems:()=[viewName=notificationBar;width=30rem;identifier=().id];():customDroplist.update()::[():customDroplist.style():[opacity=1;height=30rem];():customDroplist.position():[positioner=().id;placement=bottom];():notificationsCards.loader():show]",
+                "openNotificationDroplist": "droplistItems:()=[viewName=notificationBar;width=30rem;identifier=().id];():customDroplist.refresh()::[():customDroplist.style():[opacity=1;height=30rem];():customDroplist.position():[positioner=().id;placement=bottom];():notificationsCards.loader():show]",
                 "updateSession": "search():[collection=session;find:[session=getCookie():session]]:[_.data.value().]",
                 "getNotification": "searchNotification():[data=dueNotifications:()]:[if():[_.success]:[notifications:()=_.data.values();setDroplistItems();#updateSession()]:[note():[text='No notification!']]]",
-                "setDroplistItems": "timer():[():notificationsCards.loader():hide;droplistItems:().notification=notifications:();():notificationBar.update()]:1000",
+                "setDroplistItems": "timer():[():notificationsCards.loader():hide;droplistItems:().notification=notifications:();():notificationBar.refresh()]:1000",
                 "_": "openNotificationDroplist();getNotification()"
             },
             "ringBell": "timer():[style().transform=rotate(30deg)]:200;timer():[style().transform=rotate(-30deg)]:400;timer():[style().transform=rotate(30deg)]:600;timer():[style().transform=rotate(-30deg)]:800;timer():[style().transform=rotate(0deg)]:1000",
@@ -138,7 +141,7 @@
                 "#selectSideBarItem": "2ndParent().style():[backgroundColor=#ddd;borderColor=#fb3b1e];1stChild().style().color=#fb3b1e",
                 "_": "unselectSideBarItems();unselectListItems();selectSideBarItem()"
             },
-            "ringring": "().timer._():[clearTimer():[_]];timer=_list;deg=30;range():0:1001:200._():[if():[_<=800]:[().timer.push():[timer():[style().transform='rotate('+().deg+'deg)';().deg*=[-1]]:[_]]]:[timer():[style().transform=rotate(0)]:[_]]]",
+            "ringring": "().timer._():[clearTimer():[_]];timer=:;deg=30;range():0:1001:200._():[if():[_<=800]:[().timer.push():[timer():[style().transform='rotate('+().deg+'deg)';().deg*=[-1]]:[_]]]:[timer():[style().transform=rotate(0)]:[_]]]",
             "expandListItems": {
                 "openSubList": "2ndParent().1stChild().style().backgroundColor=rgb(229, 229, 229);2ndParent().next().style().height=[_.subList.len()*4.5]+rem;style().transform=rotate(180deg);currentOpenList:()=2ndParent().next().id",
                 "closeSubList": "2ndParent().1stChild().style().backgroundColor=transparent;2ndParent().next().style().height=0;style().transform=rotate(0);currentOpenList:()=none",
@@ -147,8 +150,8 @@
                 "_": "if():[currentOpenList:()=none]:[openSubList()].elif():[currentOpenList:()=2ndParent().next().id]:[closeSubList()].elif():[currentOpenList:()!=2ndParent().next().id||currentOpenList:()!=none]:[closePrevOpenedSubList();openSubList()]"
             },
             "sidebarNavigationController": {
-                "changeCurrentOpenManager": "currentManager:()=[_.managerInfo]:().clone();currentOpenManager:()=currentManager:().value();selectSideBarItem();if():[currentViewName:()!=customManager]:[toggleViewName()]:[():customManager.update()]",
-                "toggleViewAction": "if():[_.viewName;currentViewName:()!=_.viewName]:[currentViewName:()=_.viewName;():mainbody.update()]",
+                "changeCurrentOpenManager": "currentManager:()=[_.managerInfo]:().clone();currentOpenManager:()=currentManager:().value();selectSideBarItem();if():[currentViewName:()!=customManager]:[toggleViewName()]:[():customManager.refresh()]",
+                "toggleViewAction": "if():[_.viewName;currentViewName:()!=_.viewName]:[currentViewName:()=_.viewName;():mainbody.refresh()]",
                 "_": "if():[_.managerInfo]:[changeCurrentOpenManager()]:[selectSideBarItem();toggleViewAction()];if():[_.action]:[[_.action]()]"
             },
             "unselectListItems": "data:().collection.sideBar.sidebarItems._():[():[_.identifier].children().():[1stChild().style():[backgroundColor=transparent;borderColor=#00000000];1stChild().1stChild().style().color=#453f3f;height=4.5rem]];accountingManager:()=''",
@@ -158,7 +161,7 @@
             "switchBranch": {
                 "getCurrency": "search():[collection=currency;find:[branch=userData:().branch.find():[name=droplist-txt:()].id]]:[if():[_.data.value()]:[changeBranchInUserData();changeCurrencyInUserData();1stChild().txt()=droplist-txt:()]:[loader.hide;note():[text='No curency found!';danger]]]",
                 "changeCurrencyInUserData": "userData:().currency=_.data.values();userData:().defaultCurrency=[id=_.data.values().find():[counter=1].id;value=_.data.values().find():[counter=1].code];delControllersGlobalVars()",
-                "delControllersGlobalVars": "currentViewName:().del();currentManager:().del();currentOpenManager:().del();managersSearchResult:().del();():main.update()::[loader.hide]",
+                "delControllersGlobalVars": "currentViewName:().del();currentManager:().del();currentOpenManager:().del();managersSearchResult:().del();():main.refresh()::[loader.hide]",
                 "changeBranchInUserData": "userData:().currentBranch=userData:().branch.find():[name=droplist-txt:()].id",
                 "_": "if():[userData:().branch.find():[name=droplist-txt:()].id!=userData:().currentBranch]:[loader.show;getCurrency()]"
             },
@@ -174,8 +177,127 @@
                 "removeTransactionsDocs": "eraseCollectionDocs():[collection=transaction]:[removeLastBalanceKey()]",
                 "removeLastBalanceKey": "search():[collection=account]:[_.data.values()._():[_.lastBalance.del()];save():[collection=account;data=_.data.values()]]"
             },
-            "clearCollections": "eraseCollectionDocs():[collection=analysis];eraseCollectionDocs():[collection=account];eraseCollectionDocs():[collection=transaction];eraseCollectionDocs():[collection=counter];eraseCollectionDocs():[collection=voucher];eraseCollectionDocs():[collection=invoice]"
+            "clearCollections": "eraseCollectionDocs():[collection=analysis];eraseCollectionDocs():[collection=transaction];eraseCollectionDocs():[collection=account];eraseCollectionDocs():[collection=counter];eraseCollectionDocs():[collection=voucher];eraseCollectionDocs():[collection=invoice]"
         },
+        "comments": [
+            {
+                "note": "image",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "Left TopBar view",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": " falsed",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "search icon ",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "bell",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "line",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "money false",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    4
+                ]
+            },
+            {
+                "note": "line",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    5
+                ]
+            },
+            {
+                "note": "branches",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    6
+                ]
+            },
+            {
+                "note": "line",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    7
+                ]
+            },
+            {
+                "note": "profile",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    8
+                ]
+            }
+        ],
         "collapsed": [
             {
                 "path": [
@@ -296,130 +418,8 @@
                 ]
             }
         ],
-        "comments": [
-            {
-                "note": "image",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "Left TopBar view",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": " falsed",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "search icon ",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "bell",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "note": "line",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    3
-                ]
-            },
-            {
-                "note": "money false",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    4
-                ]
-            },
-            {
-                "note": "line",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    5
-                ]
-            },
-            {
-                "note": "branches",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    6
-                ]
-            },
-            {
-                "note": "line",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    7
-                ]
-            },
-            {
-                "note": "profile",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    8
-                ]
-            }
-        ],
-        "dirPath": [],
-        "version": 0,
-        "counter": 55,
-        "secure": false,
-        "chunk": "chunk1",
-        "collection": "view"
+        "arrange": [],
+        "secured": false,
+        "size": 14114
     }
 }

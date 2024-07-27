@@ -51,7 +51,7 @@
                                     "view": "View?class=flex;style:[;overflow=hidden;overflowX=auto;padding=1.5rem 1rem]",
                                     "children": [
                                         {
-                                            "view": "View?class=flex;style:[gap=1rem;width=fit-content]?doc().[_.path].len()>0",
+                                            "view": "View?class=flex;style:[gap=1rem;width=fit-content]?form().[_.path].len()>0",
                                             "children": [
                                                 {
                                                     "view": "[View]:[path=_.path]?class=flexbox",
@@ -96,20 +96,20 @@
                 "cleanFormIds": "formIds:()._():[if():[_.sectionCounter.startsWith():[().index]]:[().repeatedSections.push():[_]]];if():[().repeatedSections]:[().repeatedSections._():[formIds:().pullItem():[_]]]"
             },
             "handleDisplaySection": {
-                "sectionConditionHandler": "().displaySection=customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone();path=path().[-2];index=path().[-1]];if():[!().displaySection]:[delSectionFromDoc()]",
-                "delSectionFromDoc": "if():[_.path]:[doc().[_.path].del()]:[_.input._():[doc().[_.inputPath].del()]]",
+                "sectionConditionHandler": "().displaySection=customCondition():[condition=_.condition;orCondition=_.orCondition;data=form().clone();path=path().[-2];index=path().[-1]];if():[!().displaySection]:[delSectionFromDoc()]",
+                "delSectionFromDoc": "if():[_.path]:[form().[_.path].del()]:[_.input._():[form().[_.inputPath].del()]]",
                 "_": "().displaySection=true;if():[_.condition||_.orCondition]:[sectionConditionHandler()]"
             },
             "handleInputValueInDocForAllSections": {
-                "handeItemsCondition": "_.items._():[().tahaa=customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone();path=___.path;index=0];if():[().tahaa]:[().items=_.items]]",
+                "handeItemsCondition": "_.items._():[().tahaa=customCondition():[condition=_.condition;orCondition=_.orCondition;data=form().clone();path=___.path;index=0];if():[().tahaa]:[().items=_.items]]",
                 "setItems": "if():[_.items.0.condition||_.items.0.orCondition]:[handeItemsCondition()]:[().items=_.items]",
                 "_": "_.sectionsInfo._():[if():[_.condition]:[checkSectionCondition()]:[checkIfSubInput()]]",
-                "handleFirstItemAsValue": "setItems();if():[___.path]:[if():[!doc().[___.path].0.[_.inputPath]]:[doc().[___.path].0.[_.inputPath]=().items.0]]:[if():[!doc().[_.inputPath]]:[doc().[_.inputPath]=().items.0]]",
-                "handleAllowedLedgersCondition": "_.allowedCode._():[().tahaq=customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone();path=___.path;index=0];if():[().tahaq]:[().allowedLedger=_.allowedCode.0.toString()]]",
-                "checkSectionCondition": "().taha=customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone()];if():[().taha]:[checkIfSubInput()]",
+                "handleFirstItemAsValue": "setItems();if():[___.path]:[if():[!form().[___.path].0.[_.inputPath]]:[form().[___.path].0.[_.inputPath]=().items.0]]:[if():[!form().[_.inputPath]]:[form().[_.inputPath]=().items.0]]",
+                "handleAllowedLedgersCondition": "_.allowedCode._():[().tahaq=customCondition():[condition=_.condition;orCondition=_.orCondition;data=form().clone();path=___.path;index=0];if():[().tahaq]:[().allowedLedger=_.allowedCode.0.toString()]]",
+                "checkSectionCondition": "().taha=customCondition():[condition=_.condition;orCondition=_.orCondition;data=form().clone()];if():[().taha]:[checkIfSubInput()]",
                 "checkIfSubInput": "if():[_.subInput]:[_.subInput._():[_.input._():[handleInputValueInDoc()]]]:[_.input._():[handleInputValueInDoc()]]",
-                "handleInputValueInDoc": "if():[_.condition||_.orCondition]:[().tahae=customCondition():[condition=_.condition;orCondition=_.orCondition;data=doc().clone();path=___.path;index=0]]:[().tahae=true];if():[_.inputLabel;[_.inputValue||_.inputValue=0];!_.executeEveryLoad;().tahae]:[if():[___.path]:[if():[!doc().[___.path].0.[_.inputPath]]:[doc().[___.path].0.[_.inputPath]=[_.inputValue]()]]:[if():[!doc().[_.inputPath]]:[doc().[_.inputPath]=[_.inputValue]()]]].elif():[_.inputLabel;_.inputValue;_.executeEveryLoad;().tahae]:[if():[___.path]:[doc().[___.path].0.[_.inputPath]=[_.inputValue]()]:[doc().[_.inputPath]=[_.inputValue]()]].elif():[_.fillFirstItemAsValue;().tahae]:[handleFirstItemAsValue()];#.elif():[_.allowedCode;().tahae]:[handleAllowedLedgers()]",
-                "#handleAllowedLedgers": "setAllowedLedger();if():[___.path]:[if():[!doc().[___.path].0.[_.inputPath]]:[doc().[___.path].0.[_.inputPath]=().allowedLedger]]:[if():[!doc().[_.inputPath]||true]:[doc().[_.inputPath]=().allowedLedger]]",
+                "handleInputValueInDoc": "if():[_.condition||_.orCondition]:[().tahae=customCondition():[condition=_.condition;orCondition=_.orCondition;data=form().clone();path=___.path;index=0]]:[().tahae=true];if():[_.inputLabel;[_.inputValue||_.inputValue=0];!_.executeEveryLoad;().tahae]:[if():[___.path]:[if():[!form().[___.path].0.[_.inputPath]]:[form().[___.path].0.[_.inputPath]=[_.inputValue]()]]:[if():[!form().[_.inputPath]]:[form().[_.inputPath]=[_.inputValue]()]]].elif():[_.inputLabel;_.inputValue;_.executeEveryLoad;().tahae]:[if():[___.path]:[form().[___.path].0.[_.inputPath]=[_.inputValue]()]:[form().[_.inputPath]=[_.inputValue]()]].elif():[_.fillFirstItemAsValue;().tahae]:[handleFirstItemAsValue()];#.elif():[_.allowedCode;().tahae]:[handleAllowedLedgers()]",
+                "#handleAllowedLedgers": "setAllowedLedger();if():[___.path]:[if():[!form().[___.path].0.[_.inputPath]]:[form().[___.path].0.[_.inputPath]=().allowedLedger]]:[if():[!form().[_.inputPath]||true]:[form().[_.inputPath]=().allowedLedger]]",
                 "#setAllowedLedger": "if():[_.allowedCode.0.condition||_.allowedCode.0.orCondition]:[handleAllowedLedgersCondition()]:[().allowedLedger=_.allowedCode]"
             }
         },

@@ -1,0 +1,21 @@
+{
+    "__props__": {
+        "id": "x1L7d2i1m6Q5s0x4i0C3L4l0t9",
+        "doc": "username1",
+        "counter": 1,
+        "creationDate": 1721650403409,
+        "collection": "username",
+        "chunk": "chunk1",
+        "lastModified": 1721651014164,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 311
+    },
+    "id": "username1",
+    "user": "user1",
+    "username": "taha"
+}

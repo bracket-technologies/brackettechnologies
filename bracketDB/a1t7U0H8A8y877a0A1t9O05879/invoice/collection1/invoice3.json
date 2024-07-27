@@ -1,16 +1,16 @@
 {
-    "billingAccountID": "n1C792G098y7S3b3i4I6z6s6I6",
-    "subscriptionID": "w1m7S2w0O8d773D4D5u1V7F5x5",
+    "billingAccountID": "31v782Z170j4v886H3F0F9S2m6",
+    "subscriptionID": "8157H2I1j0S4a8F6N4n0x4L2F5",
     "status": "Confirmed",
     "type": "credit",
     "priceCoins": 0,
-    "unit": "Coins",
+    "unit": "COIN",
     "paymentStatus": "Paid",
     "__props__": {
-        "id": "o1b7h2Z0H8V7P3v495u1h8q1U8",
+        "id": "O1k7A2B1e014j8Z6U490t4Y7Y2",
         "doc": "invoice3",
         "counter": 3,
-        "creationDate": 1720873451818,
+        "creationDate": 1721048640472,
         "collection": "invoice",
         "chunk": "chunk1",
         "actions": {},
@@ -18,6 +18,6 @@
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 402
+        "size": 401
     }
 }

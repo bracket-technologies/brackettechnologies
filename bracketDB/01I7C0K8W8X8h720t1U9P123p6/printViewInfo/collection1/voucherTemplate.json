@@ -666,7 +666,7 @@
                         "width": "100%",
                         "justify-content": "center"
                     },
-                    "text": "doc().voucherInfo.type",
+                    "text": "form().voucherInfo.type",
                     "textStyle": {
                         "fontSize": "2.5rem",
                         "fontWeight": "Bold"
@@ -852,7 +852,7 @@
                                                 "paddingLeft": "3rem"
                                             }
                                         },
-                                        "itemsList": "doc().voucherInfo"
+                                        "itemsList": "form().voucherInfo"
                                     },
                                     "viewName": "customGeneralTable"
                                 }

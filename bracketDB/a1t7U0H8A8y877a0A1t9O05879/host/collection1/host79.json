@@ -1,17 +1,18 @@
 {
-    "publicID": "991cD7p528b0wu8Go7H73364Lu5oP1qw4My8ZS9",
+    "publicID": "Ka12i7Q22mp1bq05744j8ug6nf3um0BY81M1bF7",
     "port": [
         85
     ],
-    "localhost": "branch.skylagroup.localhost",
+    "localhost": "dev.w1111.localhost",
     "active": true,
-    "subdomain": "branch.skylagroup",
+    "subdomain": "dev.w1111",
     "private": true,
+    "dev": true,
     "__props__": {
-        "id": "A1b7X2Y0x8Y7E3S4b5t1A6Z2X5",
+        "id": "k1x7Z2v1H0W4g8a6e4h0x3J790",
         "doc": "host79",
         "counter": 79,
-        "creationDate": 1720873451625,
+        "creationDate": 1721048640370,
         "collection": "host",
         "chunk": "chunk1",
         "actions": {},
@@ -19,6 +20,6 @@
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 382
+        "size": 377
     }
 }

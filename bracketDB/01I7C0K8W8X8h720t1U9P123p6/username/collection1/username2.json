@@ -1,0 +1,23 @@
+{
+    "user": "rxupQDGxU1ZL8BHeMAZlUwTgvimRQDWMfiOKH95Q29MKtGqyUD0UEBPDgcdP-1721653282039",
+    "username": "x",
+    "id": "eNibTEwOe9tJzhrFAUr26YAXPvV854hWX0KUJMQaMX8vS9efFApVE6L6N2gB-1721653282066",
+    "creationDate": 1721653282066,
+    "creationDay": 1721595600000,
+    "__props__": {
+        "id": "21Y7D2b1X6Y553p2I8Q2z0f9w7",
+        "doc": "username2",
+        "counter": 2,
+        "creationDate": 1721653282097,
+        "collection": "username",
+        "chunk": "chunk1",
+        "lastModified": 1721653282097,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 499
+    }
+}

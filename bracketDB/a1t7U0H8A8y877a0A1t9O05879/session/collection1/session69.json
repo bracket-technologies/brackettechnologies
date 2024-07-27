@@ -1,0 +1,33 @@
+{
+    "accountID": "1197B078m8x8q4e9T5X949d858",
+    "accountName": "bracketAccount",
+    "publicID": "e4t6R0N8X8Yrtyc030q8S8W7O3",
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "projectDoc": "brackettechnologies",
+    "subdomain": "brackettechnologies",
+    "host": "192.168.0.100:81",
+    "db": "a1t7U0H8A8y877a0A1t9O05879",
+    "devDB": "",
+    "dev": false,
+    "expiryDate": 1721810237753,
+    "encryptionKey": "B3TP4",
+    "userID": "91l7f111C0i3r1J3V6L0C2c5n1",
+    "username": "Taha Assaf",
+    "__props__": {
+        "id": "G1d7c2L1o7y2D3X8R3G747J5A3",
+        "doc": "session69",
+        "counter": 69,
+        "creationDate": 1721723837753,
+        "collection": "session",
+        "chunk": "chunk1",
+        "lastModified": 1721723843763,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 692
+    },
+    "plugins": []
+}

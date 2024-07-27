@@ -98,7 +98,7 @@
             "blurInput": "parent().focused=false;style():[width=0rem;padding=0rem];parent().style().gap=0rem;parent().style():[borderRadius=50rem]",
             "activateSearchInput": "if():[!focused]:[2ndChild().style():[width=0rem;backgroundColor=transparent;padding=0rem];style():[gap=0rem;borderRadius=50rem]]:[style().borderRadius=50rem]",
             "saveImages": "[_.docName]:().[_.path]=selectedPhotos:();selectedPhotos:()=:;checkIfOpenPrevForm()",
-            "getImages": "loader.show;getGallery()::[if():[_.data.value()]:[loader.hide;photos:()=_.data.values();():photosPopup.children().():[update()];#():PhotoSelectionPage.update()]:[loader.hide;note():[text='No images to show!';danger]]]"
+            "getImages": "loader.show;getGallery()::[if():[_.data.value()]:[loader.hide;photos:()=_.data.values();():photosPopup.children().():[refresh()];#():PhotoSelectionPage.refresh()]:[loader.hide;note():[text='No images to show!';danger]]]"
         },
         "collapsed": [
             {

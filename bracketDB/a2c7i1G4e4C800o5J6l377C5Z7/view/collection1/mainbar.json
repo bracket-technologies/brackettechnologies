@@ -14,13 +14,13 @@
             "disNew": "display()",
             "listOfItems": ":[ID=menColl]:[ID=womenColl]:[ID=kidsColl]",
             "menTEST2": ":[text=Category1;img='https://i.pinimg.com/474x/e0/94/5f/e0945f2199a1d5b000d6a9c370246b3d.jpg';]:[text=Category2;img='https://m.media-amazon.com/images/I/21nmjj9fhHL._AC_SY580_.jpg']:[text=Category 3;img='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTBdJCuZfL3cy--65NcM_-1PHrhxPPGuH67toWf0XWEgQ&s']",
-            "action": "records=menTEST2();():secondpart.update()",
+            "action": "records=menTEST2();():secondpart.refresh()",
             "listTest": ":[Label=Test1;ID=1]:[Label=Test2;ID=2]:[Label=Test3;ID=3]",
             "hideMegaMenu": "timer():[():megaMenu.style():[opacity=0;pointerEvents=none]?!():megaMenu.1stChild().children().find():[mouseentered];!():navbarscroll.children().find():[mouseentered]]:500",
             "accessList": {},
             "act1": "#():accessList.nthChild():2.style():[background=gray]",
             "listOfCategoryIndex": ":[in",
-            "showMegaMenu": "doc().category=_.clone();[getCategoriesByHeadCategory():[doc().category]]():[doc=megaMenu]:[():megaMenu.update()::[():megaMenu.():[position():[placement=bottom;distance=1;preventDefault;bottom=0;left=0;right=0];style():[opacity=1;pointerEvents=auto];():accessList.nthChild():[mainCategoryBar:().headCategories.findIndex():[id=__.id]+1].style():[background=#eee]]]]?mouseentry;"
+            "showMegaMenu": "form().category=_.clone();[getCategoriesByHeadCategory():[form().category]]():[doc=megaMenu]:[():megaMenu.refresh()::[():megaMenu.():[position():[placement=bottom;distance=1;preventDefault;bottom=0;left=0;right=0];style():[opacity=1;pointerEvents=auto];():accessList.nthChild():[mainCategoryBar:().headCategories.findIndex():[id=__.id]+1].style():[background=#eee]]]]?mouseentry;"
         },
         "comments": [
             {

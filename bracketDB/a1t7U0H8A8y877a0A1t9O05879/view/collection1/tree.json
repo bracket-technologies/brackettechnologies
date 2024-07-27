@@ -7,12 +7,14 @@
         "creationDate": 1715088937526,
         "collection": "view",
         "chunk": "chunk1",
+        "lastModified": 1722005136472,
+        "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 1536
+        "size": 1577
     },
     "children": [
         {

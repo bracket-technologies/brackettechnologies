@@ -46,16 +46,16 @@
                         "sheetName": "Countries",
                         "inputLabel": "Country",
                         "sheetHeader": "country",
-                        "droplistClickAction": "if():[doc().city;!sheetData:().[doc().country].list.():cities.inc():[doc().city]]:[doc().city.del()];customUpdate():[input=2]",
+                        "droplistClickAction": "if():[form().city;!sheetData:().[form().country].list.():cities.inc():[form().city]]:[form().city.del()];customUpdate():[input=2]",
                         "hideHotCreate": true
                     },
                     {
                         "inputPath": "city",
-                        "#data:().collection.countries.countries.[doc().country]": "#data:().collection.countries.countries.[doc().country]",
-                        "sheetName": "doc().country",
+                        "#data:().collection.countries.countries.[form().country]": "#data:().collection.countries.countries.[form().country]",
+                        "sheetName": "form().country",
                         "requiredInput": "country",
                         "inputLabel": "City",
-                        "data:().collection.countries.countries.[doc().country]": "data:().collection.countries.countries.[doc().country]",
+                        "data:().collection.countries.countries.[form().country]": "data:().collection.countries.countries.[form().country]",
                         "sheetHeader": "cities",
                         "openSheet": true,
                         "hideHotCreate": true

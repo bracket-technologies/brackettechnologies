@@ -1,5 +1,5 @@
 {
-    "view": "View?id=document;favicon=[url=faviconURL();type=png]",
+    "view": "View?id=document;favicon=[url=favicon();type=png]",
     "children": [
         {
             "view": "View?id=body;style:[width=100%];initPublicData()",
@@ -11,29 +11,26 @@
         }
     ],
     "__props__": {
-        "db": "views",
-        "collection": "view",
         "id": "a1E7W1a0f3O3m0l7M8e6Y4M9T5",
         "doc": "document",
+        "counter": 12,
         "creationDate": 1710330786495,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "view",
+        "chunk": "chunk1",
         "actions": {
-            "faviconURL": "'https://firebasestorage.googleapis.com/v0/b/bracket-technologies.appspot.com/o/storage-engagement%2Foutput-onlinepngtools%20(1).png?alt=media&token=8e574d65-0021-40ed-be04-df86005f7676'",
             "initPublicData": "publicData:()=[public=[btnBackgroundColor=#fb3e1e]]",
             "openConfirmationPopup": "():confirmationPopup.style():[opacity=1;pointerEvents=auto]",
-            "closeConfirmationPopup": "():confirmationPopup.style():[opacity=0;pointerEvents=none]"
+            "closeConfirmationPopup": "():confirmationPopup.style():[opacity=0;pointerEvents=none]",
+            "favicon": "'https://firebasestorage.googleapis.com/v0/b/bracket-technologies.appspot.com/o/storage-engagement%2Foutput-onlinepngtools%20(1).png?alt=media&token=8e574d65-0021-40ed-be04-df86005f7676'"
         },
+        "comments": [],
         "collapsed": [
             {
                 "path": []
             }
         ],
-        "comments": [],
-        "dirPath": [],
-        "version": 0,
-        "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
-        "counter": 12,
-        "chunk": "chunk1"
+        "arrange": [],
+        "secured": false,
+        "size": 830
     }
 }

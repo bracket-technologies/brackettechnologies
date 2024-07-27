@@ -55,9 +55,10 @@
     "__props__": {
         "id": "B1y7U1g1z0v3X103s6R5F2U0r5",
         "doc": "generalPopup",
+        "counter": 26,
         "creationDate": 1711031365205,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "view",
+        "chunk": "chunk1",
         "actions": {
             "exportView": "():customPrintView.style():[visibility=visible;opacity=1]",
             "addCustomInput": "_.inputInfo.subInput.push():[title=hello;grid=1fr 1fr 1fr 1fr 1fr]:[_.inputInfo.subInput.len()-1];",
@@ -72,12 +73,12 @@
             "#printAction": {
                 "_": "if():[_.inputInfo.collection='voucher']:[printVoucher()].elif():[_.inputInfo.collection='invoice']:[printInvoice()]",
                 "printInvoice": {
-                    "callPrintView": "generalPopup:()=[title=Print;popupName=customPrintView2;data=().printViewData];():generalPopup.update()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1];#():customPrintView2.html2pdf():[name='Voucher']]",
+                    "callPrintView": "generalPopup:()=[title=Print;popupName=customPrintView2;data=().printViewData];():generalPopup.refresh()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1];#():customPrintView2.html2pdf():[name='Voucher']]",
                     "_": "setPrintViewData();callPrintView()",
                     "setPrintViewData": "().printViewData.data.branch=userData:().branch.find():[id=userData:().currentBranch];().printViewData.schema=printView:().invoiceTemplate.mainInfo;().printViewData.data.invoiceInfo=[_.docName]:()"
                 },
                 "printVoucher": {
-                    "callPrintView": "generalPopup:()=[title=Print;popupName=customPrintView2;data=().printViewData];():generalPopup.update()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1];#():customPrintView2.html2pdf():[name='Voucher']]",
+                    "callPrintView": "generalPopup:()=[title=Print;popupName=customPrintView2;data=().printViewData];():generalPopup.refresh()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1];#():customPrintView2.html2pdf():[name='Voucher']]",
                     "_": "setPrintViewData();callPrintView()",
                     "setPrintViewData": "().printViewData.data.branch=userData:().branch.find():[id=userData:().currentBranch];().printViewData.schema=printView:().voucherTemplate.mainInfo;().printViewData.data.voucherInfo=[_.docName]:()"
                 }
@@ -99,9 +100,10 @@
                         "#setFooterList": "footerItemsList:()=:;().credit=managersSearchResult:().transactionManager.():credit.sum();().debit=managersSearchResult:().transactionManager.():debit.sum();().balance=().debit-().credit;if():[().balance<0]:[().balance='('+().balance+')'];footerItemsList:().push():[balance=().balance;debit=().debit;credit=().credit;description='*REQUESTED PERIOD TOTALS*']"
                     }
                 },
-                "callPrintView": "generalPopup:()=[title=Print;popupName=customPrintView2;data=().printViewData];():generalPopup.update()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1];#():customPrintView2.html2pdf():[name='Voucher']]"
+                "callPrintView": "generalPopup:()=[title=Print;popupName=customPrintView2;data=().printViewData];():generalPopup.refresh()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1];#():customPrintView2.html2pdf():[name='Voucher']]"
             }
         },
+        "comments": [],
         "collapsed": [
             {
                 "path": [
@@ -164,12 +166,8 @@
                 ]
             }
         ],
-        "comments": [],
-        "folderPath": [],
-        "version": 0,
-        "counter": 26,
-        "secure": false,
-        "chunk": "chunk1",
-        "collection": "view"
+        "arrange": [],
+        "secured": false,
+        "size": 7221
     }
 }

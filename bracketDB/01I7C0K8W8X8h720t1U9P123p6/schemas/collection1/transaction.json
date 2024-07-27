@@ -145,7 +145,6 @@
             "generateReference": true,
             "keyValue": [
                 {
-                    "generateReference": true,
                     "listOfDocs": true,
                     "listPath": "openingBalance",
                     "collection": "transaction",
@@ -295,88 +294,10 @@
                             ]
                         }
                     ],
+                    "#generateReference": true,
                     "condition": [
                         {
                             "conditionReference": "openingBalance"
-                        }
-                    ]
-                },
-                {
-                    "collection": "transaction",
-                    "customCondition": "().setDoc=false;mainReceivedData:().openingBalance._():[if():[_.openingBalance='Yes']:[().setDoc=true]];if():[().setDoc]:[return():[true]]:[return():[false]]",
-                    "#staticDoc": true,
-                    "#beforeSaveStep": {
-                        "keyValue": [
-                            {
-                                "path": "ledgerAccount",
-                                "findKey": "helperKey",
-                                "findValue": "getLedgerAccountForMainAccountTransaction",
-                                "key": "ledgerAccount"
-                            },
-                            {
-                                "path": "id",
-                                "findKey": "helperKey",
-                                "findValue": "getLedgerAccountForMainAccountTransaction",
-                                "key": "account"
-                            }
-                        ]
-                    },
-                    "input": [
-                        {
-                            "key": "generalLedger",
-                            "path": "generalLedger",
-                            "required": true,
-                            "type": "string"
-                        },
-                        {
-                            "path": "credit-debit",
-                            "type": "string",
-                            "key": "credit-debit",
-                            "required": "true"
-                        },
-                        {
-                            "key": "exchangeRates",
-                            "staticValue": "mainReceivedData:().exchangeRates"
-                        },
-                        {
-                            "path": "currency",
-                            "type": "string",
-                            "key": "currency",
-                            "required": "true"
-                        },
-                        {
-                            "staticValue": "Opening",
-                            "key": "description"
-                        },
-                        {
-                            "path": "amount",
-                            "condition": [
-                                {
-                                    "condition": "Capitals",
-                                    "conditionReference": "ledgerAccountName",
-                                    "operator": "!="
-                                }
-                            ],
-                            "type": "number",
-                            "key": "amount",
-                            "required": true
-                        },
-                        {
-                            "condition": [
-                                {
-                                    "condition": [
-                                        "Capitals"
-                                    ],
-                                    "conditionReference": "ledgerAccountName"
-                                }
-                            ],
-                            "staticValue": 0,
-                            "key": "amount"
-                        },
-                        {
-                            "path": "headAccount",
-                            "type": "string",
-                            "key": "headAccount"
                         }
                     ]
                 }
@@ -431,7 +352,7 @@
                     "collection": "account"
                 }
             ],
-            "#helpersKeyValue": [
+            "helpersKeyValue": [
                 {
                     "staticValue": "getLastBalanceIdForMainAccountDoc",
                     "key": "helperKey"
@@ -1499,150 +1420,6 @@
             {
                 "path": [
                     "create",
-                    "account",
-                    "keyValue",
-                    1,
-                    "input",
-                    6,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    1,
-                    "input",
-                    6,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    1,
-                    "input",
-                    6
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    1,
-                    "input",
-                    5
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    1,
-                    "input",
-                    4
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    1,
-                    "input",
-                    7
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    0,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    1,
-                    "input",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    1,
-                    "input",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    1,
-                    "input",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    1,
-                    "input",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    1,
-                    "#beforeSaveStep"
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    0,
-                    "docsKeyValue",
-                    1,
-                    "input",
-                    4
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    0,
-                    "docsKeyValue",
-                    1,
-                    "input",
-                    5
-                ]
-            },
-            {
-                "path": [
-                    "create",
                     "invoice",
                     "keyValue",
                     0,
@@ -2220,46 +1997,6 @@
                 "path": [
                     "create",
                     "account",
-                    "keyValue",
-                    0,
-                    "docsKeyValue",
-                    0,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "nextStep",
-                    0,
-                    "condition",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "nextStep",
-                    0,
-                    "condition",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "nextStep",
-                    0,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
                     "nextStep",
                     1,
                     "condition",
@@ -2351,12 +2088,6 @@
             {
                 "path": [
                     "create",
-                    "expenseVoucher"
-                ]
-            },
-            {
-                "path": [
-                    "create",
                     "account",
                     "beforeSaveStep",
                     "keyValue",
@@ -2377,78 +2108,6 @@
                     "create",
                     "account",
                     "beforeSaveStep"
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    0,
-                    "docsKeyValue",
-                    1,
-                    "input",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    0,
-                    "docsKeyValue",
-                    1,
-                    "input",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    0,
-                    "docsKeyValue",
-                    1,
-                    "input",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    0,
-                    "docsKeyValue",
-                    1,
-                    "input",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    0,
-                    "docsKeyValue",
-                    0,
-                    "input",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    0,
-                    "docsKeyValue",
-                    0,
-                    "input",
-                    2
                 ]
             },
             {
@@ -2539,6 +2198,63 @@
                 "path": [
                     "create",
                     "account",
+                    "helpersKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "expenseVoucher"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep",
+                    0,
+                    "condition",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep",
+                    0,
+                    "condition",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep",
+                    0,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "nextStep",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
                     "nextStep",
                     0
                 ]
@@ -2563,6 +2279,126 @@
                     "create",
                     "account",
                     "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "condition",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "condition",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "input",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
                     1,
                     "input"
                 ]
@@ -2572,7 +2408,34 @@
                     "create",
                     "account",
                     "keyValue",
-                    1
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "beforeSaveStep",
+                    "keyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    1,
+                    "beforeSaveStep"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue",
+                    0,
+                    "input",
+                    2
                 ]
             },
             {
@@ -2595,7 +2458,8 @@
                     0,
                     "docsKeyValue",
                     0,
-                    "input"
+                    "input",
+                    1
                 ]
             },
             {
@@ -2605,29 +2469,7 @@
                     "keyValue",
                     0,
                     "docsKeyValue",
-                    1,
-                    "beforeSaveStep"
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
                     0,
-                    "docsKeyValue",
-                    1,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    0,
-                    "docsKeyValue",
-                    1,
                     "input"
                 ]
             },
@@ -2641,10 +2483,28 @@
                     1,
                     "helpersKeyValue"
                 ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "docsKeyValue"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    0,
+                    "condition"
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 26332
+        "size": 24865
     }
 }

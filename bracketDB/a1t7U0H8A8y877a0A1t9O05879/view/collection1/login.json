@@ -2,7 +2,7 @@
     "view": "View?id=login;class=flexbox;style:[position=relative;overflow=hidden;minHeight=100vh];name=Login To Bracket;title=Login To Bracket;meta:[title=Login To Bracket;description=Login To Bracket Builder]",
     "children": [
         {
-            "view": "View?class=column;doc;style:[backgroundColor=#fff;borderRadius=1rem;width=30%;border=1px solid #ddd;padding=8rem 4rem;display=flex;paddingBottom=3rem;zIndex=1;position=fixed;gap=3rem]",
+            "view": "View?class=column;form;style:[backgroundColor=#fff;borderRadius=1rem;width=30%;border=1px solid #ddd;padding=8rem 4rem;display=flex;paddingBottom=3rem;zIndex=1;position=fixed;gap=3rem]",
             "children": [
                 {
                     "view": "View?class=flexbox",
@@ -85,10 +85,10 @@
         "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
         "actions": {
             "loginPasswordHandler": {
-                "_": "loader.show;checkPassword():[password=doc().password;user=user:()]:[resHandler()]?doc().password",
+                "_": "loader.show;checkPassword():[password=form().password;user=user:()]:[resHandler()]?form().password",
                 "resHandler": "loader.hide;note():[text=Password is incorrect!;type=danger]?!_.verified?user:().verified=true;root():projects"
             },
-            "loginEmailHandler": "loader.show;checkEmail():[email=doc().email]:[loader.hide;[note():[text=_.message;type=danger]?!_.user.email?user:()=_.user;():login.update()::[():password.input().focus()]]]?doc().email",
+            "loginEmailHandler": "loader.show;checkEmail():[email=form().email]:[loader.hide;[note():[text=_.message;type=danger]?!_.user.email?user:()=_.user;():login.refresh()::[():password.input().focus()]]]?form().email",
             "changeEmailHandler": "():email.txt()='';():password.txt()='';user:().del();():'get-started'.display();():loginText.display();():Next.display();():help.display();():welcome.hide();():email.focus()",
             "helpBtns": ":[text=Help;path=/help]:[text=Privacy;path=/privacy]:[text=Terms;path=/terms]"
         },

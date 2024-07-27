@@ -1,0 +1,30 @@
+{
+    "__props__": {
+        "id": "Q1g7z2T1n68510x3Y8p8n4j1a6",
+        "doc": "user1",
+        "counter": 1,
+        "creationDate": 1721650388416,
+        "collection": "user",
+        "chunk": "chunk1",
+        "lastModified": 1721650815785,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 552
+    },
+    "id": "user1",
+    "firstName": "Taha",
+    "lastName": "Assaf",
+    "birthDate": 50000000,
+    "nationality": "Lebanees",
+    "contactNumber": "81929682",
+    "email": "taha.assaf@gmail.com",
+    "country": "Lebanon",
+    "city": "Beirut",
+    "address": "jinah",
+    "position": "User",
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE"
+}

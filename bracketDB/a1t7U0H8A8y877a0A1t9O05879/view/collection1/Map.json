@@ -22,13 +22,16 @@
                     ]
                 },
                 {
-                    "view": "View?class=flexbox actionlister;mainMapContainer=true;style:[opacity=0;marginRight=.5rem;transition=.1s;marginLeft=auto;gap=.5rem];[click?actionListDisplayer()]",
+                    "view": "View?class=flexbox actionlister;mainMapContainer=true;style:[opacity=0;marginRight=.5rem;transition=.1s;marginLeft=auto;gap=1rem];[click?actionListDisplayer()]",
                     "children": [
                         {
                             "view": "Icon?class=flexbox pointer +openDoc:()+openCollection:()+'-unsecured';tooltip.text=unsecured;name=bi-shield-x;style:[color=#888;width=2rem;fontSize=2rem;transition=.2s;display=[none?data:().editor.[openCollection:()].[openDoc:()].__props__.secured?flex]];hover.style.color=red;[click?shield()]"
                         },
                         {
                             "view": "Icon?class=flexbox pointer +openDoc:()+openCollection:()+'-secured';tooltip.text=secured;name=bi-shield-check;style:[color=#888;width=2rem;fontSize=2rem;transition=.2s;display=[none?!data:().editor.[openCollection:()].[openDoc:()].__props__.secured?flex]];hover.style.color=blue;[click?shield()]"
+                        },
+                        {
+                            "view": "Icon?class=flexbox pointer;tooltip.text=info;name=bi-info-circle;style:[color=#888;width=1.8rem;fontSize=2rem;transition=.2s];hover.style.color=#000;data=[collection=openCollection:();doc=openDoc:()];infoDroplist()"
                         },
                         {
                             "view": "Icon?class=flexbox pointer actionlister;name=bi-three-dots-vertical;style:[color=#888;width=2rem;fontSize=2rem;transition=.2s];hover.style.color=blue"
@@ -50,7 +53,7 @@
                             "view": "View?style:[minWidth=.5rem;display=flex]?data().type()!=map;data().type()!=array"
                         },
                         {
-                            "view": "View?colorize:[colors=blue];class=flex align-center;text=path().lastEl()+'';preventDefault;editable;style:[alignItems=center;width=fit-content;minWidth=fit-content;height=3rem;borderRadius=.5rem;backgroundColor=#00000000;border=if():txt():'1px solid #00000000':'1px solid #ddd';fontSize=1.4rem;padding=.5rem;color=blue;display=flex];mouseenter:[style().border=1px solid #ddd];mouseleave:[style().border=1px solid #00000000?txt()];keyup:[updateKeyName();modifyUndo();keyInputDroplistHandler()];focus:[prev_value=doc().clone()];blur:[[style().border=1px solid #00000000?txt()];el().innerHTML=txt().colorize():[colors=blue];pushToUndo()]?3rdParent().data().type()!=array;path().[-1]!='_'"
+                            "view": "View?[loaded;blur?txt()=txt().colorize():[colors=blue]];class=flex align-center;text=path().lastEl()+'';preventDefault;editable;style:[alignItems=center;width=fit-content;minWidth=fit-content;height=3rem;borderRadius=.5rem;backgroundColor=#00000000;border=if():txt():'1px solid #00000000':'1px solid #ddd';fontSize=1.4rem;padding=.5rem;color=blue;display=flex];mouseenter:[style().border=1px solid #ddd];mouseleave:[style().border=1px solid #00000000?txt()];keyup:[updateKeyName();modifyUndo();keyInputDroplistHandler()];focus:[prev_value=form().clone()];blur:[[style().border=1px solid #00000000?txt()];el().innerHTML=txt().colorize():[colors=blue];pushToUndo()]?3rdParent().data().type()!=array;path().[-1]!='_'"
                         },
                         {
                             "view": "Input?readonly;class=pointer;value=[path().[-1]?path().[-1]!='_'?→];class=flexbox;style:[color=#666;fontSize=[1.1rem?().path().[-1]!='_'?1.4rem];marginRight=.5rem;minWidth=2rem;height=1.5rem;borderRadius=.5rem;[border=1px solid #ddd?().path().[-1]!='_']];[click?next().click()?path().[-1]!='_']?3rdParent().data().type()=array||path().[-1]='_'"
@@ -65,7 +68,7 @@
                                     "view": "View?class=flex align-center;style.display=inline-flex",
                                     "children": [
                                         {
-                                            "view": "View?class=flex;text=data();colorize;editable;style:[alignItems=center;overflowY=hidden;width=auto;height=3rem;color=#a35521;fontSize=1.4rem;padding=.5rem;border=if():txt():'1px solid #00000000':'1px solid #ddd';borderRadius=.5rem];mouseenter:[style().border=1px solid #ddd];mouseleave:[style().border=1px solid #00000000?txt()];click:[3rdParent().lastChild().style().display=none];focus:[prev_value=doc().clone()];blur:[pushToUndo()];keyup:[valueHandler();shortcutsHandler()]"
+                                            "view": "View?class=flex;text=data();[loaded;blur?txt()=txt().colorize()];editable;style:[alignItems=center;overflowY=hidden;width=auto;height=3rem;color=#a35521;fontSize=1.4rem;padding=.5rem;border=if():txt():'1px solid #00000000':'1px solid #ddd';borderRadius=.5rem];mouseenter:[style().border=1px solid #ddd];mouseleave:[style().border=1px solid #00000000?txt()];click:[3rdParent().lastChild().style().display=none];focus:[prev_value=form().clone()];blur:[pushToUndo()];keyup:[valueHandler();shortcutsHandler()]"
                                         }
                                     ]
                                 }
@@ -78,14 +81,14 @@
                                     "view": "View?class=flex align-center;style.display=inline-flex",
                                     "children": [
                                         {
-                                            "view": "Input?input.type=number;style:[height=3rem;color=olive;borderRadius=.5rem;border=1px solid #00000000;width=fit-content];hover.style.border=1px solid #ddd;click:[3rdParent().lastChild().style().display=none];focus:[prev_value=doc().clone()];blur:[pushToUndo()];keyup:[highlightTab();shortcutsHandler()]"
+                                            "view": "Input?input.type=number;style:[height=3rem;color=olive;borderRadius=.5rem;border=1px solid #00000000;width=fit-content];hover.style.border=1px solid #ddd;click:[3rdParent().lastChild().style().display=none];focus:[prev_value=form().clone()];blur:[pushToUndo()];keyup:[highlightTab();shortcutsHandler()]"
                                         }
                                     ]
                                 }
                             ]
                         },
                         {
-                            "view": "Input?class=pointer;readonly;style:[height=3rem;border='1px solid #ffffff00';color=purple;width=fit-content;borderRadius=.5rem;border=1px solid #00000000];hover.style.border=1px solid #ddd;droplist:[items=:'true':'false';preventDefault];click:[parent().lastChild().style().display=none;prev_value=doc().clone()];[click:droplist?if():[clicked().txt()='true']:[data()=true;txt()='true']:[data()=false;txt()='false'];pushToUndo()]?data().type()=boolean"
+                            "view": "Input?class=pointer;readonly;style:[height=3rem;border='1px solid #ffffff00';color=purple;width=fit-content;borderRadius=.5rem;border=1px solid #00000000];hover.style.border=1px solid #ddd;droplist:[items=:'true':'false';preventDefault];click:[parent().lastChild().style().display=none;prev_value=form().clone()];[click:droplist?if():[clicked().txt()='true']:[data()=true;txt()='true']:[data()=false;txt()='false'];pushToUndo()]?data().type()=boolean"
                         },
                         {
                             "view": "Input?input.type=datetime-local;style:[height=3rem;minWidth=25rem;borderRadius=.5rem;border=1px solid #00000000];hover.style.border=1px solid #ddd;mouseenter:[style().border=1px solid #ddd];mouseleave:[style().border=if():[txt()]:'1px solid #00000000':'1px solid #ddd'];entry:[highlightTab()];change:[data()=date():[txt()].timestamp()];loaded:[txt()=date():data().toDateInputFormat():[format='yyyy-MM-ddThh:mm']]?data().type()=timestamp"
@@ -103,7 +106,7 @@
                                     "view": "Text?text='#';style:[color=green;fontSize=1.2rem;display=if():[data().type()=map||data().type()=array;!openData:().__props__.comments.find():[path=path()]]:none:flex];click:[next().focus()]"
                                 },
                                 {
-                                    "view": "Text?class=comment;colorize:[colors=green];text=openData:().__props__.comments.find():[path=path()].note||'';editable;preventDefault;style:[alignItems=center;width=fit-content;height=2.5rem;borderRadius=.5rem;backgroundColor=#00000000;fontSize=1.2rem;padding=.5rem;color=green;border=1px solid #00000000];hover.style.border=1px solid #ddd;focus:[focused=true];blur:[focused=false;showCommentSlashes():[view=2ndParent();display=none]];entry:[showCommentSlashes():[view=2ndParent();display=if():[txt()]:flex:none];highlightTab();editComment()]"
+                                    "view": "Text?class=comment;[loaded;blur?txt()=txt().colorize():[colors=green]];text=openData:().__props__.comments.find():[path=path()].note||'';editable;preventDefault;style:[alignItems=center;width=fit-content;height=2.5rem;borderRadius=.5rem;backgroundColor=#00000000;fontSize=1.2rem;padding=.5rem;color=green;border=1px solid #00000000];hover.style.border=1px solid #ddd;focus:[focused=true];blur:[focused=false;showCommentSlashes():[view=2ndParent();display=none]];entry:[showCommentSlashes():[view=2ndParent();display=if():[txt()]:flex:none];highlightTab();editComment()]"
                                 }
                             ]
                         },
@@ -129,24 +132,25 @@
         }
     ],
     "__props__": {
-        "db": "views",
-        "collection": "view",
         "id": "i1n7y1l0i33380J7a8D6G4A4o7",
         "doc": "Map",
+        "counter": 2,
         "creationDate": 1710330786447,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1721989249735,
+        "dev": false,
         "actions": {
             "updateListIndexes": "_.nextSiblings()._():[if():[_.parent().data().type()=array]:[_.1stChild().2ndChild().txt()=_.path().lastEl().num()-1]]",
-            "pushToUndo": "undoEdit:().[openDoc:()+'/'+openCollection:()]||=:;if():[prev_value!=doc()]:[undoEdit:().[openDoc:()+'/'+openCollection:()].push():[openDoc=openDoc:();openCollection=openCollection:();value=doc().clone();prev_value=.prev_value]]",
+            "pushToUndo": "undoEdit:().[openDoc:()+'/'+openCollection:()]||=:;if():[prev_value!=form()]:[undoEdit:().[openDoc:()+'/'+openCollection:()].push():[openDoc=openDoc:();openCollection=openCollection:();value=form().clone();prev_value=.prev_value]]",
             "viewIndexHandler": "viewIndex:()+=1;viewIndex=viewIndex:()",
-            "chooseValueTypeDroplist": "().chosenType=[():droplist.children().[__keyupIndex__:()].txt()||clicked().txt()];data()=if():[().chosenType=children]:[:[view='']].elif():[().chosenType=text]:''.elif():[().chosenType=timestamp]:[today().getTime().num()].elif():[().chosenType=number]:0.elif():[().chosenType=boolean]:[true].elif():[().chosenType=list]:[:''].elif():[().chosenType=map]:[''=''?doc().__props__?'_'=''?!data()?'_'=data()];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];__droplistPositioner__:().del();#nthParent():4.update();insertView():[view=3rdParent();index=2ndParent().index();key=path().[-1];focusIndex=[5?().chosenType=children?1?().chosenType=number||=text||=boolean||=timestamp?[2?doc().__props__?3]?().chosenType=map?3]]:[2ndParent().rem():[preventDefault=true]]?__droplistPositioner__:();():droplist.mouseentered;[e().key=Enter||():droplist.contains():clicked()];[():droplist.children().[__keyupIndex__:()].txt()!=data().type()||clicked().txt()!=data().type()]",
+            "chooseValueTypeDroplist": "().chosenType=[():droplist.children().[__keyupIndex__:()].txt()||clicked().txt()];data()=if():[().chosenType=children]:[:[view='']].elif():[().chosenType=text]:''.elif():[().chosenType=timestamp]:[today().getTime().num()].elif():[().chosenType=number]:0.elif():[().chosenType=boolean]:[true].elif():[().chosenType=list]:[:''].elif():[().chosenType=map]:[''=''?form().__props__?'_'=''?!data()?'_'=data()];():droplist.style():[opacity=0;transform=scale(0.5);pointerEvents=none];__droplistPositioner__:().del();#nthParent():4.refresh();insertView():[view=3rdParent();index=2ndParent().index();key=path().[-1];focusIndex=[5?().chosenType=children?1?().chosenType=number||=text||=boolean||=timestamp?[2?form().__props__?3]?().chosenType=map?3]]:[2ndParent().rem():[preventDefault=true]]?__droplistPositioner__:();():droplist.mouseentered;[e().key=Enter||():droplist.contains():clicked()];[():droplist.children().[__keyupIndex__:()].txt()!=data().type()||clicked().txt()!=data().type()]",
             "openKeyInputDroplist": "__keyupIndex__:()=0;next().click();timer():[():droplist.mouseentered=true;():droplist.children().0.mouseenter()]:200?!__droplistPositioner__:();e().key=Enter;!e().ctrlKey",
-            "convertTextToChildrenOnEnterInKeyNameInput": "if():[data().type()=string]:[data()=:];if():[path().lastEl()=children]:[data()=:[view='']];2ndParent().update()::[_.view.inputs().1.focus()]?e().key=Enter;e().ctrlKey;path().lastEl()=children",
+            "convertTextToChildrenOnEnterInKeyNameInput": "if():[data().type()=string]:[data()=:];if():[path().lastEl()=children]:[data()=:[view='']];2ndParent().refresh()::[_.view.inputs().1.focus()]?e().key=Enter;e().ctrlKey;path().lastEl()=children",
             "openCloseMap": "highlightTab();updateOpenClose();if():[next().style().display=flex]:[open=false]:[open=true];#Map;next().style().display=if():[open]:flex:none;#caret;1stChild().style().transform=if():[open]:'rotate(90deg)':'rotate(0deg)';#...;3rdLastChild().style().display=if():[open]:none:flex;#updateIndexColumn()?data().type()=array||=map;!2ndChild().contains():[clicked()];!3rdChild().contains():[clicked()];!lastChild().contains():[clicked()];!2ndLastChild().contains():[clicked()];!3rdLastChild().contains():[clicked()]",
             "deleteView": {
                 "_": "removeView()",
-                "removeView": "[_.wrapperParentIndex+=3?path().lastEl()=view;doc():[path=path().slice():0:[-2]].len()=1];removeParent()?nthParent():[_.wrapperParentIndex+1].children().len()=1||path().lastEl()=view?removeSelf()",
+                "removeView": "[_.wrapperParentIndex+=3?path().lastEl()=view;form():[path=path().slice():0:[-2]].len()=1];removeParent()?nthParent():[_.wrapperParentIndex+1].children().len()=1||path().lastEl()=view?removeSelf()",
                 "removeSelf": {
                     "_": "focusNext();updateNextSiblings();decrementCommentsAndClosed();nthParent():[_.wrapperParentIndex].rem()",
                     "decrementCommentsAndClosed": "[decrementCommentAndClosed():[path=nthParent():[_.wrapperParentIndex].path()]]():[view=actionlist]?nthParent():[_.wrapperParentIndex+1].data().type()=array",
@@ -162,14 +166,14 @@
             },
             "insertHandler": "[incrementCommentAndClosed():[path=_.view.children().[_.index-1].path()]]():[doc=actionlist];addData();updateNextSiblingsIndexesForPush();insertView()",
             "getNextPrevParentSibling": "if():[_.parent().children().len()=1]:[deleteParentId:()=_.3rdParent().id]:[deleteParentId:().del();nextSibling:()=_.nextSibling().id;if():[!nextSibling:()]:[nextSibling:()=_.prevSibling().id]]",
-            "actionlistHandler": "():actionlist.prev_value=doc().clone();clearTimer():[actionlistTimer:()];if():[actionlistCaller:()!=.id||():actionlist.style().opacity='0']:[actionlistCaller:()=.id;():actionlist.update():[doc=[().actionlist.doc||().doc];path=[().actionlist.path||().path()]]:[():actionlist.position():[positioner=().id;placement=left;distance=10;align=center];():actionlist.style():[transform='scale(1)';opacity=1;pointerEvents=auto]]]:[():actionlist.style():[opacity=0;transform='scale(0.5)';pointerEvents=none]]",
+            "actionlistHandler": "():actionlist.prev_value=form().clone();clearTimer():[actionlistTimer:()];if():[actionlistCaller:()!=.id||():actionlist.style().opacity='0']:[actionlistCaller:()=.id;():actionlist.refresh():[form=[().actionlist.form||().form];path=[().actionlist.path||().path()]]:[():actionlist.position():[positioner=().id;placement=left;distance=10;align=center];():actionlist.style():[transform='scale(1)';opacity=1;pointerEvents=auto]]]:[():actionlist.style():[opacity=0;transform='scale(0.5)';pointerEvents=none]]",
             "showCommentSlashes": "if():[data().type()=map||data().type()=array;!openData:().__props__.comments.find():[path=path()];![_.view||()].2ndLastChild().2ndChild().focused]:[[_.view||()].2ndLastChild().1stChild().style().display=_.display]",
             "addData": "if():[_.view.data().type()=map]:[_.view.data().[_.key]=_.value].elif():[_.view.data().type()=array]:[_.view.data().push():[_.value]:[_.index]]",
             "insertView": "_.view.insert():[preventDefault;view=_.view;viewPath=:children:1;path=if():[_.view.data().type()=array]:[_.view.path().clone().push():[_.index]]:[_.view.path().clone().push():[_.key]];index=_.index]:[[_.view.inputs().[__.focusIndex||0]||_.view.input()].focus()]",
-            "actionListDisplayer": "clearTimer():[actionlistTimer:()];if():[actionlistCaller:()!=.id||():actionlist.style().opacity='0']:[actionlistCaller:()=.id;():actionlist.update():[doc=().doc;path=[().actionlist.path||path()]]:[():actionlist.position():[positioner=().id;placement=left;align=center];():actionlist.style():[transform='scale(1)';opacity=1;pointerEvents=auto]]]:[():actionlist.():[style():[opacity=0;transform='scale(0.5)';pointerEvents=none]]]?clicked()=lastChild()",
+            "actionListDisplayer": "clearTimer():[actionlistTimer:()];if():[actionlistCaller:()!=.id||():actionlist.style().opacity='0']:[actionlistCaller:()=.id;():actionlist.refresh():[form=().form;path=[().actionlist.path||path()]]:[():actionlist.position():[positioner=().id;placement=left;align=center];():actionlist.style():[transform='scale(1)';opacity=1;pointerEvents=auto]]]:[():actionlist.():[style():[opacity=0;transform='scale(0.5)';pointerEvents=none]]]?clicked()=lastChild()",
             "removeCommentClosed": "[openData:().__props__.comments||:].pull():[path.slice():0:[_.path().len()]=_.path()];[openData:().__props__.collapsed||:].pull():[path.slice():0:[_.path().len()]=_.path()]",
             "insertViewSibling": "insertHandler():[index=nthParent():7.path().[-1]+1;view=nthParent():8;value=[[view='']?path().[-1]=view?''];key='';focusIndex=3];#modifyUndo():[insert=true]",
-            "updateIndexColumn": "():dataViewer.children().find():[openDoc=openDoc:();openCollection=openCollection:()].1stChild().1stChild().update()",
+            "updateIndexColumn": "():dataViewer.children().find():[openDoc=openDoc:();openCollection=openCollection:()].1stChild().1stChild().refresh()",
             "updateOpenClose": "openData:().__props__.collapsed||=:;if():[!openData:().__props__.collapsed.inc():[path=path()]]:[openData:().__props__.collapsed.push():[path=path()]]:[openData:().__props__.collapsed.pull():[path=path()]]",
             "highlightTab": "():dataViewerBar.children().find():[openCollection=openCollection:();openDoc=openDoc:()].2ndChild().style().border=1px solid #888?!e().key=Control;![e().ctrlKey;e().key=s];![e().ctrlKey;e().key=c];![e().ctrlKey;e().key='`']",
             "updateKeyName": {
@@ -194,215 +198,14 @@
                 "_": "mouseenter:[lastChild().style().opacity=1;showCommentSlashes():[display=flex]];mouseleave:[lastChild().style().opacity=0;showCommentSlashes():[display=none]];click:[openCloseMapMain()]",
                 "openCloseMapMain": "highlightTab();updateOpenClose();if():[next().style().display=flex]:[open=false]:[open=true];#Maps;nextSiblings().():[style().display=if():[().open]:flex:none];#caret;1stChild().style().transform=if():[open]:'rotate(90deg)':'rotate(0deg)';#...;3rdLastChild().style().display=if():[open]:none:flex;#updateIndexColumn()?data().type()=array||data().type()=map;!lastChild().contains():[clicked()];!2ndLastChild().contains():[clicked()];!3rdLastChild().contains():[clicked()]"
             },
-            "shield": "[class():[openDoc:()+openCollection:()+'-secured'].():[prev().display();hide()];[openData:().__props__.secured=false?openData:().__props__]?():dataViewer.class():[openDoc:()+openCollection:()+'-unsecured'].doc().__props__.secured?class():[openDoc:()+openCollection:()+'-unsecured'].():[next().display();hide()];[openData:().__props__.secured=true?openData:().__props__]];[saveDocHandler()]():[doc=console]",
+            "shield": "[class():[openDoc:()+openCollection:()+'-secured'].():[prev().display();hide()];[openData:().__props__.secured=false?openData:().__props__]?():dataViewer.class():[openDoc:()+openCollection:()+'-unsecured'].form().__props__.secured?class():[openDoc:()+openCollection:()+'-unsecured'].():[next().display();hide()];[openData:().__props__.secured=true?openData:().__props__]];[saveDocHandler()]():[doc=console]",
             "lineEvents": "[mouseenter?lastChild().display();showCommentSlashes():[display=flex]];[mouseleave?lastChild().hide();showCommentSlashes():[display=none]];[mousedown?openCloseMap()]",
-            "shortcutsHandler": "if():[e().key=Enter;!e().ctrlKey]:[insertSibling():[key=children;value=:[view=''];focusIndex=5?doc().__props__.collection=view;!nthParent():5.data().children]].elif():[e().key=Enter;e().ctrlKey]:[insertViewSibling()].elif():[e().ctrlKey;e().key=Delete;!e().shiftKey]:[deleteView():[wrapperParentIndex=4]].elif():[e().ctrlKey;e().key=Delete;e().shiftKey]:[deleteParentView()]"
-        },
-        "collapsed": [
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    13
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    10
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    "0"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    9
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    8
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    4
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    12
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    11
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "updateKeyName"
-                ]
-            },
-            {
-                "path": [
-                    "mainMapControllers"
-                ]
-            },
-            {
-                "path": [
-                    "deleteView"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    5
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    6
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1
-                ]
+            "shortcutsHandler": "if():[e().key=Enter;!e().ctrlKey]:[insertSibling():[key=children;value=:[view=''];focusIndex=5?form().__props__.collection=view;!nthParent():5.data().children]].elif():[e().key=Enter;e().ctrlKey]:[insertViewSibling()].elif():[e().ctrlKey;e().key=Delete;!e().shiftKey]:[deleteView():[wrapperParentIndex=4]].elif():[e().ctrlKey;e().key=Delete;e().shiftKey]:[deleteParentView()]",
+            "infoDroplist": {
+                "_": "droplist=[preventDefault;items=droplistItems();style.backgroundColor=#000000dd;item:[text.style:[color=#fff;fontSize=1.2rem];hover.style.backgroundColor=#000]]",
+                "droplistItems": "data:().editor.[_.collection].[_.doc].__props__.entries()._():[_.0+' : '+_.1?_.0=id||=doc||=counter||=collection||=chunk||=secured?_.0+' : '+_.1.toDateFormat()?_.0=creationDate||=lastModified?''].filter()"
             }
-        ],
+        },
         "comments": [
             {
                 "note": "dddd",
@@ -644,10 +447,217 @@
                 ]
             }
         ],
-        "dirPath": [],
-        "version": 0,
-        "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
-        "counter": 2,
-        "chunk": "chunk1"
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    13
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    10
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    "0"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    9
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    8
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "updateKeyName"
+                ]
+            },
+            {
+                "path": [
+                    "mainMapControllers"
+                ]
+            },
+            {
+                "path": [
+                    "deleteView"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    7
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    12
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    11
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 24978
     }
 }

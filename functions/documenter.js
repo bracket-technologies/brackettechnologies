@@ -1,5 +1,5 @@
 const cssStyleKeyNames = require("./cssStyleKeyNames")
-const { hideSecured, toAwait, respond } = require("./kernel")
+const { hideSecured, respond, actions } = require("./kernel")
 const fs = require("fs")
 
 const documenter = ({ _window, res, stack, props, address, __ }) => {
@@ -35,14 +35,14 @@ const documenter = ({ _window, res, stack, props, address, __ }) => {
     // hide secured
     hideSecured({ __, global })
 
-    toAwait({ _window, stack, props, address, __ })
+    actions["wait()"]({ _window, stack, props, address, __ })
     
-    respond({ res, stack, props, global, __, response: (
+    return respond({ res, stack, props, global, __, response: (
         `<!DOCTYPE html>
         <html lang="${language}" dir="${direction}" class="html">
             <head>
                 <!-- css -->
-                <link rel="stylesheet" href="/resources/index.css?sid=${res.serverID}">
+                <link rel="stylesheet" href="/storage/resources/index.css?sid=${res.serverID}">
                 <style>
                     ${views.document.stylesheet ? `${Object.entries(views.document.stylesheet).map(([key, value]) => typeof value === "object" && !Array.isArray(value)
             ? `${key}{
@@ -90,7 +90,7 @@ const documenter = ({ _window, res, stack, props, address, __ }) => {
                 ${views.body.__html__ || ""}
   
                 <!-- engine -->
-                <script src="/resources/engine.js?sid=${res.serverID}"></script>
+                <script src="/storage/resources/engine.js?sid=${res.serverID}"></script>
   
                 <!-- google icons -->
                 <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Symbols+Outlined"/>
@@ -107,7 +107,7 @@ const documenter = ({ _window, res, stack, props, address, __ }) => {
             </body>
         </html>`
     )})
-    //${fs.readFileSync("resources/index.css").toString()}
+    //${fs.readFileSync("storage/resources/index.css").toString()}
 }
 
 module.exports = documenter

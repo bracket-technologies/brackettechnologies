@@ -114,7 +114,7 @@
     },
     "confirmBtn": {
         "text": "Buy Now",
-        "action": "[chargeAccount():[doc()]:[note():[text=_.message;type=danger]?!_.success?end():[_]]]():[collection=actions;doc=main]",
+        "action": "[chargeAccount():[form()]:[note():[text=_.message;type=danger]?!_.success?end():[_]]]():[collection=actions;doc=main]",
         "msg": "We are charging your account. Please wait until we finish!",
         "missingDataHandler": "Choose package correctly!"
     },

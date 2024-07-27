@@ -1,0 +1,79 @@
+{
+    "firstTrigger": 1721285333973,
+    "serverTriggers": 722,
+    "date": 1721250000000,
+    "projectID": "M1R7u2Q100a4M8B6R3g0q892F4",
+    "activityPerHour": [
+        {
+            "time": 1721282400000,
+            "firstTrigger": 1721285333973,
+            "serverTriggers": 18,
+            "lastTrigger": 1721285991924
+        },
+        {
+            "time": 1721286000000,
+            "firstTrigger": 1721286082372,
+            "serverTriggers": 119,
+            "lastTrigger": 1721289441284
+        },
+        {
+            "time": 1721289600000,
+            "firstTrigger": 1721289606957,
+            "serverTriggers": 204,
+            "lastTrigger": 1721293173242
+        },
+        {
+            "time": 1721293200000,
+            "firstTrigger": 1721293667831,
+            "serverTriggers": 151,
+            "lastTrigger": 1721296093650
+        },
+        {
+            "time": 1721296800000,
+            "firstTrigger": 1721297005137,
+            "serverTriggers": 67,
+            "lastTrigger": 1721297525705
+        },
+        {
+            "time": 1721300400000,
+            "firstTrigger": 1721301506442,
+            "serverTriggers": 26,
+            "lastTrigger": 1721303868811
+        },
+        {
+            "time": 1721304000000,
+            "firstTrigger": 1721305040333,
+            "serverTriggers": 45,
+            "lastTrigger": 1721306689503
+        },
+        {
+            "time": 1721307600000,
+            "firstTrigger": 1721307832512,
+            "serverTriggers": 35,
+            "lastTrigger": 1721309426472
+        },
+        {
+            "time": 1721311200000,
+            "firstTrigger": 1721311649662,
+            "serverTriggers": 57,
+            "lastTrigger": 1721312780673
+        }
+    ],
+    "lastTrigger": 1721312780673,
+    "__props__": {
+        "id": "H1b7q2M1J2u8W5h3e3S3U9R7V9",
+        "doc": "projectActivity16",
+        "counter": 16,
+        "creationDate": 1721285333979,
+        "collection": "projectActivity",
+        "chunk": "chunk1",
+        "lastModified": 1721312780679,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1340
+    }
+}

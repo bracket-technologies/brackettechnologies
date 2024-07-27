@@ -7,8 +7,8 @@
         "collection": "schema",
         "chunk": "chunk1",
         "actions": {
-            "branchHandler": "2ndParent().next().display()?data()=true?2ndParent().next().():[hide();input().txt()=];doc().headProjectPublicID.del()",
-            "subscribeToTapHandler": "doc().pluginID=plugin:().id();doc().packageID=package:().id()?doc().subscribeToPlugin?doc().pluginID.del();doc().packageID.del()"
+            "branchHandler": "2ndParent().next().display()?data()=true?2ndParent().next().():[hide();input().txt()=];form().headProjectPublicID.del()",
+            "subscribeToTapHandler": "form().pluginID=plugin:().id();form().packageID=package:().id()?form().subscribeToPlugin?form().pluginID.del();form().packageID.del()"
         },
         "comments": [
             {
@@ -83,7 +83,7 @@
     },
     "confirmBtn": {
         "text": "Create Project",
-        "action": "[addProject():[doc()]:[[root():projects?_.success];end():[_]]]():[collection=actions;doc=main]",
+        "action": "[addProject():[form()]:[[root():projects?_.success];end():[_]]]():[collection=actions;doc=main]",
         "msg": "We are building your project. Please wait until we finish!"
     },
     "title": "Think big, start small, then scale or fail fast! Scale now and start your new project.",
@@ -124,7 +124,7 @@
                     "path": "headProjectPublicID",
                     "items": "projects:().filter():main.():name",
                     "display": "none",
-                    "action": "doc().headProjectPublicID=projects:().filter():main.find():[name=data()].publicID",
+                    "action": "form().headProjectPublicID=projects:().filter():main.find():[name=data()].publicID",
                     "inputType": "stdItems",
                     "required": true
                 }

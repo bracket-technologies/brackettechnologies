@@ -1,11 +1,8 @@
 {
-    "currency12": {
-        "counter": 2
-    },
-    "currency11": {
-        "counter": 1
-    },
-    "XfRKzdOKS7OoUBwL8yP2": {
+    "currency1": {
         "counter": 0
+    },
+    "currency2": {
+        "counter": 1
     }
 }

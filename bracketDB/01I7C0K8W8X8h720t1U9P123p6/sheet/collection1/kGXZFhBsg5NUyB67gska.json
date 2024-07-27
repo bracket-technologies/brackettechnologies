@@ -56,6 +56,20 @@
             "symbol": "Rial",
             "decimalDigits": "2",
             "name": "Iraqi Dinar"
+        },
+        {
+            "name": "abidjan",
+            "country": "abj",
+            "code": "xof",
+            "symbol": "xof",
+            "decimalDigits": "2"
+        },
+        {
+            "name": "",
+            "country": "",
+            "code": "",
+            "symbol": "",
+            "decimalDigits": ""
         }
     ],
     "name": "Currencies",
@@ -65,9 +79,14 @@
     "__props__": {
         "id": "i1m7T101O0O3k1i3z642L2V2n1",
         "doc": "kGXZFhBsg5NUyB67gska",
+        "counter": 8,
         "creationDate": 1711031362221,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "sheet",
+        "chunk": "chunk1",
+        "lastModified": 1721902381978,
+        "dev": false,
+        "actions": {},
+        "comments": [],
         "collapsed": [
             {
                 "path": [
@@ -116,12 +135,9 @@
                 ]
             }
         ],
-        "comments": [],
-        "dirPath": [],
-        "actions": {},
-        "counter": 8,
-        "chunk": "chunk1",
-        "collection": "sheet"
+        "arrange": [],
+        "secured": false,
+        "size": 1582
     },
     "type": "Editable",
     "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",

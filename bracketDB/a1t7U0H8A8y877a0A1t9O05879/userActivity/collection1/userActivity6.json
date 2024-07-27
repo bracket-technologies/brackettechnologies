@@ -1,6 +1,6 @@
 {
     "firstTrigger": 1721028567208,
-    "serverTriggers": 110,
+    "serverTriggers": 204,
     "date": 1720990800000,
     "userID": "91l7f111C0i3r1J3V6L0C2c5n1",
     "activityPerHour": [
@@ -25,11 +25,29 @@
         {
             "time": 1721037600000,
             "firstTrigger": 1721037792038,
-            "serverTriggers": 1,
-            "lastTrigger": 1721037792038
+            "serverTriggers": 2,
+            "lastTrigger": 1721041031174
+        },
+        {
+            "time": 1721041200000,
+            "firstTrigger": 1721041819237,
+            "serverTriggers": 36,
+            "lastTrigger": 1721043879070
+        },
+        {
+            "time": 1721044800000,
+            "firstTrigger": 1721046049940,
+            "serverTriggers": 19,
+            "lastTrigger": 1721047718427
+        },
+        {
+            "time": 1721048400000,
+            "firstTrigger": 1721048667517,
+            "serverTriggers": 38,
+            "lastTrigger": 1721051303220
         }
     ],
-    "lastTrigger": 1721037792038,
+    "lastTrigger": 1721051303220,
     "__props__": {
         "id": "l1N7Q2S1M0o2a8z526k7T2j3I3",
         "doc": "userActivity6",
@@ -42,6 +60,6 @@
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 784
+        "size": 1084
     }
 }

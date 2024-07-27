@@ -1,5 +1,5 @@
 {
-    "view": "View:inputTableComponent?class=column;doc=sheet;allDataInfo:()=:[]style:[width=100%;gap=1rem];beforeload:[retrieve()]",
+    "view": "View:inputTableComponent?class=column;form=sheet;allDataInfo:()=:[]style:[width=100%;gap=1rem];beforeload:[retrieve()]",
     "children": [
         {
             "view": "View?style:[width=100%]",
@@ -11,10 +11,10 @@
                     "view": "View?style:[display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr 1fr;gap=.5rem;width=100%;padding=1rem]",
                     "children": [
                         {
-                            "view": "customInput?required;inputPath='sheetName';inputLabel='Name';if():[currentSheetInfo:().updateStatus=true]:[doc().sheetName=currentSheetInfo:().title;newDataInfo:().name=currentSheetInfo:().title;placeholder=currentSheetInfo:().title]:[doc().sheetName.del()];if():[currentSheetInfo:().title]:[readonly=readonly]:[editable];change:[newDataInfo:().name=1stChild().2ndChild().1stChild().1stChild().txt()]"
+                            "view": "customInput?required;inputPath='sheetName';inputLabel='Name';if():[currentSheetInfo:().updateStatus=true]:[form().sheetName=currentSheetInfo:().title;newDataInfo:().name=currentSheetInfo:().title;placeholder=currentSheetInfo:().title]:[form().sheetName.del()];if():[currentSheetInfo:().title]:[readonly=readonly]:[editable];change:[newDataInfo:().name=1stChild().2ndChild().1stChild().1stChild().txt()]"
                         },
                         {
-                            "view": "customInput?required;inputPath='sheetType';inputLabel='Type';items=[if():[!currentSheetInfo:().changeable]:[:Readonly:Editable]];readonly=readonly;if():[currentSheetInfo:().permission]:[doc().sheetType=currentSheetInfo:().permission;newDataInfo:().permission=currentSheetInfo:().permission;inputValue=currentSheetInfo:().permission]:[doc().sheetType=Editable];droplistClickAction='[newDataInfo:().permission=1stChild().2ndChild().1stChild().1stChild().txt()]()'"
+                            "view": "customInput?required;inputPath='sheetType';inputLabel='Type';items=[if():[!currentSheetInfo:().changeable]:[:Readonly:Editable]];readonly=readonly;if():[currentSheetInfo:().permission]:[form().sheetType=currentSheetInfo:().permission;newDataInfo:().permission=currentSheetInfo:().permission;inputValue=currentSheetInfo:().permission]:[form().sheetType=Editable];droplistClickAction='[newDataInfo:().permission=1stChild().2ndChild().1stChild().1stChild().txt()]()'"
                         }
                     ]
                 }
@@ -158,7 +158,7 @@
             },
             "openFilter": {
                 "titleToCamelCase": "().titleCellName=[_.header+'0'];().pathCellName=():[().titleCellName].1stChild().1stChild().txt();().camelCase=().pathCellName.charAt():[0].toLowerCase();().key=().pathCellName.toLowerCase().capitalize().replaceAll():' ':''.replaceItem():[().camelCase.capitalize()]:[().camelCase];fillData()",
-                "openPopup": "subGeneralPopup:()=[title=Filter;popupName=inputMiniPopup;topSize=20vh;bottomSize=20vh;leftSize=45vh;rightSize=45vh;miniPopupType='filter';currentTitle=parent().1stChild().text();cellHeader=_.header];():subGeneralPopup.update();():subGeneralPopup.style():[visibility=visible;opacity=1]",
+                "openPopup": "subGeneralPopup:()=[title=Filter;popupName=inputMiniPopup;topSize=20vh;bottomSize=20vh;leftSize=45vh;rightSize=45vh;miniPopupType='filter';currentTitle=parent().1stChild().text();cellHeader=_.header];():subGeneralPopup.refresh();():subGeneralPopup.style():[visibility=visible;opacity=1]",
                 "[object Object]": "titleToCamelCase()",
                 "fillData": "filterValue:()=:;().cellCounter=0;range():[currentSheetInfo:().list.len()].():[if():[allDataInfo:().[().cellCounter].0.[().key]]:[filterValue:().push():[_map:[[[cellText]=[allDataInfo:().[().cellCounter].0.[().key]]];[[cellId]=[_.header+[().cellCounter+1]]];[[rowId]=['row'+[().cellCounter+1]]]]]];().cellCounter+=1];openPopup()",
                 "_": "titleToCamelCase()"

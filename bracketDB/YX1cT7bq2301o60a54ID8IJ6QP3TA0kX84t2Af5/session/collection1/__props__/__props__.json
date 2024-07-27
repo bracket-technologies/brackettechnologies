@@ -1,0 +1,33 @@
+{
+    "creationDate": 1721311652823,
+    "collection": 1,
+    "maxSize": 1000,
+    "lastChunk": 1,
+    "docsLength": 1,
+    "counter": 2,
+    "reads": 15,
+    "writes": 5,
+    "deletes": 0,
+    "size": 505,
+    "payloadIn": 1922,
+    "payloadOut": 4818,
+    "indexes": [
+        {
+            "find": [
+                "session"
+            ],
+            "doc": "index1",
+            "lastRead": 1721312507942,
+            "expiryDate": 1723904507942
+        },
+        {
+            "find": [
+                "user"
+            ],
+            "doc": "index2",
+            "lastRead": 1721311675115,
+            "expiryDate": 1723903675115
+        }
+    ],
+    "lastIndex": 2
+}

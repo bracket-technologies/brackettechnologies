@@ -116,7 +116,7 @@
         "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
         "actions": {
             "unselectListItems": "data:().collection.sideBar.sidebarItems._():[():[_.identifier].children().():[1stChild().style():[backgroundColor=transparent;borderColor=#00000000];1stChild().1stChild().style().color=#453f3f;height=4.5rem]];accountingManager:()=''",
-            "toggleViewName": "if():[_.viewName;currentViewName:()!=_.viewName]:[currentViewName:()=_.viewName;():mainbody.update()]",
+            "toggleViewName": "if():[_.viewName;currentViewName:()!=_.viewName]:[currentViewName:()=_.viewName;():mainbody.refresh()]",
             "handleSideBarClick": {
                 "selectSideBarItem": {
                     "unselectSideBarItems": "2ndParent().children()._():[_.1stChild().selectedSideBarItem=false;#containerBackgroundColor;_.1stChild().style():[backgroundColor=transparent;borderColor=#00000000];#iconColor;_.1stChild().1stChild().1stChild().1stChild().style().color=#453f3f;#textColor;_.1stChild().1stChild().2ndChild().1stChild().style().color=#453f3f;#expandIconStyle;_.1stChild().1stChild().lastChild().1stChild().style():[rotate=0deg;color=rgb(69, 63, 63)];#closeSubSideBar;if():[_.2ndChild().openedSubSidebar;_._!=__]:[_.2ndChild().openedSubSidebar=false;_.2ndChild().style().height=0]]",
@@ -134,8 +134,8 @@
                 },
                 "_": "if():[!__.subSidebar]:[if():[_.subSidebar]:[selectSideBarItem()]:[if():[!().selectedSideBarItem]:[selectSideBarItem();sidebarNavigationController()]]]:[if():[!().selectedSubSideBarItem]:[selectSubSidebarItem();sidebarNavigationController()]]",
                 "sidebarNavigationController": {
-                    "changeCurrentOpenManager": "currentManager:()=[_.managerInfo]:().clone();currentOpenManager:()=currentManager:().[currentManager:().navBar.navBar.0.id];if():[!currentOpenManager:()]:[currentOpenManager:()=currentManager:().value()];if():[currentViewName:()!=customManager]:[toggleViewName()]:[():customManager.update()]",
-                    "toggleViewAction": "if():[_.viewName;currentViewName:()!=_.viewName]:[currentViewName:()=_.viewName;():mainbody.update()]",
+                    "changeCurrentOpenManager": "currentManager:()=[_.managerInfo]:().clone();currentOpenManager:()=currentManager:().[currentManager:().navBar.navBar.0.id];if():[!currentOpenManager:()]:[currentOpenManager:()=currentManager:().value()];if():[currentViewName:()!=customManager]:[toggleViewName()]:[():customManager.refresh()]",
+                    "toggleViewAction": "if():[_.viewName;currentViewName:()!=_.viewName]:[currentViewName:()=_.viewName;():mainbody.refresh()]",
                     "_": "managersSearchResult:().del();if():[_.managerInfo]:[changeCurrentOpenManager();if():[_.icon]:[selectSideBarItem()]:[selectSubSidebarItem()]]:[selectSideBarItem();toggleViewAction()];if():[_.action]:[[_.action]()]"
                 }
             },
