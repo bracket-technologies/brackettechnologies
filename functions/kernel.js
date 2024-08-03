@@ -38,7 +38,7 @@ const passport = require("./passport")
 const myViews = ["View", "Input", "Text", "Image", "Icon", "Action", "Audio", "Video", "Link"]
 
 // database
-const { spawn, exec } = require("child_process")
+const { spawn } = require("child_process")
 const fs = require("fs")
 const util = require('util')
 
@@ -96,10 +96,12 @@ const actions = {
     }, "clicker()": ({ global }) => {
 
         return global.__clicker__
-    }, "focused()": ({ global }) => {
+    }, "focused()": ({ global, key, value }) => {
 
+
+        if (key && value !== undefined) global.__focused__ = value
         return global.__focused__
-    }, "click()": ({ _window, global, views, o, id, pathJoined }) => {
+    }, "click()": ({ _window, global, views, o, id, pathJoined, e }) => {
 
         if (!o.__view__) return
 
@@ -110,11 +112,15 @@ const actions = {
         if (!o.__rendered__) return
 
         global.__clicker__ = views[id]
-        global.__clicked__ = o
+        global.__clicked__/* = global.__droplistPositioner__*/ = o
 
-        o.__element__.click()
+        o.__events__.map(event => event.event === "click" && event.eventListener(e))
+        // related events
+        global.__events__[o.id] && Object.values(global.__events__[o.id]).map(event => event.event === "click" && event.eventListener(e))
+        //o.__element__.click()
+        return o
 
-    }, "focus()": ({ _window, o, pathJoined, id }) => {
+    }, "focus()": ({ _window, o, global, views, pathJoined, id, e }) => {
 
         if (!o.__view__) return
 
@@ -122,10 +128,12 @@ const actions = {
             event: `loaded?${pathJoined}`
         })
 
-        focus({ id: o.id || id })
+        global.__clicker__ = views[id]
+        global.__focused__/* = global.__droplistPositioner__*/ = o
+        focus({ id: o.id || id, e })
         return true
 
-    }, "blur()": ({ _window, view, o, pathJoined }) => {
+    }, "blur()": ({ _window, view, views, global, o, pathJoined }) => {
 
         if (!o.__view__) return
 
@@ -382,7 +390,7 @@ const actions = {
             return input
         }
 
-        inputs = o.__element__.getElementsByTagName("INPUT")
+        inputs = o.__name__ === "Input" ? [o.__element__] : o.__element__.getElementsByTagName("INPUT")
         textareas = o.__element__.getElementsByTagName("TEXTAREA")
         editables = getDeepChildren({ _window, lookupActions, stack, props, id: o.id || id }).filter(view => view.editable)
         if (o.editable) editables.push(o)
@@ -418,9 +426,11 @@ const actions = {
         var logs = args.slice(1).map(arg => toValue({ req, res, _window, lookupActions, stack, props: { isValue: true }, id, e, __: underScored ? [o, ...__] : __, data: arg, object }))
         if (args.slice(1).length === 0 && pathJoined !== "log()") logs = [o]
 
-        console.log("LOG:" + (o.id || id), decode({ _window, string: pathJoined }), ...logs)
-        stack.logs && stack.logs.push(stack.logs.length + " LOG:" + (o.id || id) + " " + logs.join(" "))
+        logs.unshift("LOG:" + (o.id || id), decode({ _window, string: pathJoined }))
+        console.log(...logs)
+        stack.logs && stack.logs.push(stack.logs.length, ...logs)
 
+        if (_window) saveToLogs({ _window, logs })
         return o
     }, "parent()": ({ _window, o }) => {
 
@@ -1277,9 +1287,11 @@ const actions = {
         if (Array.isArray(o)) return o.map(o => o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]))
         else return o.toString().replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d])
 
-    }, "date()": ({ _window, stack, props, lookupActions, id, e, __, args, object }) => {
+    }, "date()": ({ _window, stack, props, lookupActions, id, e, __, args, object, o }) => {
 
-        var data = toValue({ _window, id, data: args[1], __, e, lookupActions, stack, props: { isValue: true }, object })
+        if (args[1]) var data = toValue({ _window, id, data: args[1], __, e, lookupActions, stack, props: { isValue: true }, object })
+        else data = o
+
         if (isNumber(data) && typeof data === "string") data = parseInt(data)
         return new Date(data)
 
@@ -1606,256 +1618,112 @@ const actions = {
     }, "monthStart()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
-
-        var _min = _date.getTimezoneOffset() % 60
-        var _hrs = (_date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
-        return new Date(_date.setMonth(_date.getMonth(), 1)).setHours(_hrs, _min, 0, 0)
+        return new Date(date.setMonth(date.getMonth(), 1)).setHours(0, 0, 0, 0)
 
     }, "monthEnd()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
-
-        var _min = date.getTimezoneOffset() % 60
-        var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
-        return new Date(date.setMonth(date.getMonth(), getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+        return new Date(date.setMonth(date.getMonth(), getDaysInMonth(date))).setHours(23, 59, 59, 999)
 
     }, "nextMonthStart()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
-
-        var _min = date.getTimezoneOffset() % 60
-        var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
         var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
         var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(0, 0, 0, 0)
 
     }, "nextMonthEnd()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
-
-        var _min = date.getTimezoneOffset() % 60
-        var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
         var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
         var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
-        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23, 59, 59, 999)
 
     }, "2ndNextMonthStart()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
-
-        var _min = date.getTimezoneOffset() % 60
-        var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
         var month = o.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
         var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
         month = month + 1 > 11 ? 1 : month + 1
         year = month === 1 ? year + 1 : year
-        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(0, 0, 0, 0)
 
     }, "2ndNextMonthEnd()": ({ o }) => {
 
         var date
         if (typeof o.getMonth === 'function') date = o
         else date = new Date()
-
-        var _min = date.getTimezoneOffset() % 60
-        var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
         var month = date.getMonth() + 1 > 11 ? 1 : date.getMonth() + 1
         var year = (month === 1 ? date.getYear() + 1 : date.getYear()) + 1900
         month = month + 1 > 11 ? 1 : month + 1
         year = month === 1 ? year + 1 : year
-        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23, 59, 59, 999)
 
     }, "prevMonthStart()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
-
-        var _min = date.getTimezoneOffset() % 60
-        var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
         var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
         var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(0, 0, 0, 0)
 
     }, "prevMonthEnd()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
-
-        var _min = date.getTimezoneOffset() % 60
-        var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
         var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
         var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
-        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23, 59, 59, 999)
 
     }, "2ndPrevMonthStart()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
-
-        var _min = date.getTimezoneOffset() % 60
-        var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
         var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
         var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
         month = month - 1 < 0 ? 11 : month - 1
         year = month === 11 ? year - 1 : year
-        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(_hrs, _min, 0, 0)
+        return new Date(new Date(date.setYear(year)).setMonth(month, 1)).setHours(0, 0, 0, 0)
 
     }, "2ndPrevMonthEnd()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
-
-        var _min = date.getTimezoneOffset() % 60
-        var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
         var month = date.getMonth() - 1 < 0 ? 11 : date.getMonth() - 1
         var year = (month === 11 ? date.getYear() - 1 : date.getYear()) + 1900
         month = month - 1 < 0 ? 11 : month - 1
         year = month === 11 ? year - 1 : year
-        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+        return new Date(new Date(date.setYear(year)).setMonth(month, getDaysInMonth(date))).setHours(23, 59, 59, 999)
 
     }, "yearStart()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
-
-        var _min = date.getTimezoneOffset() % 60
-        var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
-        return new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
+        return new Date(date.setMonth(0, 1)).setHours(0, 0, 0, 0)
 
     }, "yearEnd()": ({ o }) => {
 
         var date
         if (typeof o.getMonth === 'function') date = o
         else date = new Date()
-
-        var _min = date.getTimezoneOffset() % 60
-        var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
-        return new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+        return new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23, 59, 59, 999)
 
     }, "nextYearStart()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
-
-        var _min = date.getTimezoneOffset() % 60
-        var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
-        return new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
+        return new Date(date.setMonth(0, 1)).setHours(0, 0, 0, 0)
 
     }, "nextYearEnd()": ({ o }) => {
 
         var date
         if (typeof o.getMonth === 'function') date = o
         else date = new Date()
-
-        var _min = date.getTimezoneOffset() % 60
-        var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
-        return new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+        return new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23, 59, 59, 999)
 
     }, "prevYearStart()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
-
-        var _min = date.getTimezoneOffset() % 60
-        var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
-        return new Date(date.setMonth(0, 1)).setHours(_hrs, _min, 0, 0)
+        return new Date(date.setMonth(0, 1)).setHours(0, 0, 0, 0)
 
     }, "prevYearEnd()": ({ o }) => {
 
         var date = o instanceof Date ? o : new Date()
-
-        var _min = date.getTimezoneOffset() % 60
-        var _hrs = (date.getTimezoneOffset() / 60) - _min
-
-        if (_hrs < 0) {
-            _hrs = _hrs * -1
-            _min = _min * -1
-        }
-
-        return new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23 + _hrs, 59 + _min, 59, 999)
+        return new Date(date.setMonth(0, getDaysInMonth(date))).setHours(23, 59, 59, 999)
 
     }, "removeDuplicates()": ({ _window, o, stack, props, lookupActions, id, e, __, args, object }) => { // without condition and by condition. ex: removeDuplicates():number (it will remove items that has the same number value)
 
@@ -2367,7 +2235,8 @@ const actions = {
     }, "round()": ({ _window, req, res, o, stack, props, object, lookupActions, id, e, __, args }) => {
 
         if (isNumber(o)) {
-            var nth = toValue({ req, res, _window, lookupActions, stack, props: { isValue: true }, object, id, e, __, data: args[1] }) || 2
+            var nth = toValue({ req, res, _window, lookupActions, stack, props: { isValue: true }, object, id, e, __, data: args[1] })
+            if (!nth && nth !== 0) nth = 2
             return parseFloat(o || 0).toFixed(nth)
         }
 
@@ -2571,6 +2440,179 @@ const actions = {
 
         route({ _window, lookupActions, stack, props, address, id, req, res, data: data.data, __ })
 
+    }, "print()": () => {
+
+    }, "files()": ({ o }) => {
+
+        return o.__files__
+
+    }, "file()": ({ o }) => {
+
+        return o.__file__
+
+    }, "read()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
+
+        // wait address
+        var { address, data, action } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id, action: "read()", object, lookupActions, __, id, dataInterpretAction: "conditional" })
+
+        if (!data && o.__name__ === "Input") data = {type: "file", files: [...o.__element__.files]}
+        else if (!data) return
+        if (!data.type) data.type = "file"
+
+        fileReader({ req, res, _window, lookupActions, stack, props, address, id, e, __, data })
+
+    }, "confirmEmail()": ({ _window, o, stack, props, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id, action: "confirmEmail()", object, lookupActions, __ })
+
+    }, "sendEmail()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id || id, type: "Mail", action: "sendEmail()", object, lookupActions, __ })
+        return callServer({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "sendEmail()", server: "mail" } })
+
+    }, "passport()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = actions["addresser()"]({ _window, stack, props, args, req, res, status: "Start", dataInterpretAction: "toParam", asynchronous: true, id: o.id, type: "Auth", action: "passport()", object, lookupActions, __, id })
+        passport({ _window, lookupActions, stack, props, address, id, e, __, req, res, data })
+
+    }, "upload()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id || id, type: "Storage", unhold: true, action: "save()", object, lookupActions, __ })
+        data.storage = true
+        return callServer({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "save()", server: "storage" } })
+
+    }, "db()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, unhold: true, id: o.id || id, type: "Data", unhold: true, action: "database()", object, lookupActions, __ })
+        return callServer({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: (data === undefined ? __[0] : data), action: data.action, server: "datastore" } })
+
+    }, "search()": ({ _window, global, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, unhold: true, id: o.id || id, type: "Data", action: "search()", object, lookupActions, __ })
+        return callServer({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "search()", server: "datastore" } })
+
+    }, "erase()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, unhold: true, id: o.id || id, type: "Data", action: "erase()", object, lookupActions, __ })
+        return callServer({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "erase()", server: "datastore" } })
+
+    }, "save()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
+
+        var { address, data } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, unhold: true, id: o.id || id, type: "Data", action: "save()", object, lookupActions, __ })
+        return callServer({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "save()", server: "datastore" } })
+
+    }, "start()": ({ global, stack, props }) => {
+
+        var address = stack.addresses.find(address => address.id === stack.interpretingAddressID)
+        address.starter = true
+        var startID = generate()
+        global.__startAddresses__[startID] = { id: startID, address }
+
+        stack.logs.push(`${stack.logs.length} Starter STACK ${stack.id} ${stack.event.toUpperCase()} ${stack.string}`)
+
+        return startID
+
+    }, "end()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, o, object, pathJoined }) => {
+
+        var { data } = toLine({ req, res, _window, lookupActions, stack, props: { isValue: true }, id, e, __, data: { string: args[1] }, action: "toValue", object })
+        endAddress({ req, res, _window, lookupActions, stack, props, object, id, e, __, data, endID: typeof o === "string" && o })
+        return true
+
+    }, "send()": ({ _window, req, res, global, stack, props, lookupActions, id, e, __, args, object, breakRequest, pathJoined }) => {
+
+        breakRequest.break = true
+
+        var response
+
+        if (isParam({ _window, string: args[1] })) {
+
+            response = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: args[1] })
+            
+            //console.log(decode({_window, string:args[1]}));
+            response.success = response.success !== undefined ? response.success : true
+            response.message = response.message || response.msg || "Action executed successfully!"
+            delete response.msg
+
+        } else {
+
+            var data = toValue({ req, res, _window, lookupActions, id, e, __, data: args[1], stack, props: { isValue: true }, object })
+            response = { success: true, message: "Action executed successfully!" }
+            if (typeof data === "object" && !Array.isArray(data)) response = { ...response, ...data }
+            else response.data = data
+        }
+
+        respond({ res, stack, props, global, response, __ })
+        return response
+
+    }, "sent()": ({ res }) => {
+
+        if (!res || res.headersSent) return true
+        else return false
+
+    }, "position()": ({ _window, views, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
+
+        var position = toValue({ req, res, _window, lookupActions, stack, props: {isValue: true}, id, e, __, data: args[1], object })
+
+        if (!position.id) position.id = o.id
+        if (!position.positioner) position.positioner = id
+
+        require("./setPosition").setPosition({ position, id, e })
+        return views[position.id]
+
+    }, "csvToJson()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, object }) => {
+
+        var file = toValue({ req, res, _window, lookupActions, stack, props: { isValue: true }, object, id, e, __, data: args[1] })
+        require("./csvToJson").csvToJson({ id, lookupActions, stack, props, object, e, file, onload: args[2] || "", __ })
+
+    }, "copyToClipBoard()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
+
+        var text
+        if (args[1]) text = toValue({ req, res, _window, lookupActions, stack, props: { isValue: true }, object, id, e, __, data: args[1] })
+        else text = o
+
+        if (navigator.clipboard) answer = navigator.clipboard.writeText(text)
+        else {
+            var textArea = document.createElement("textarea")
+            textArea.value = text
+            document.body.appendChild(textArea)
+            textArea.focus()
+            textArea.select()
+            textArea.setSelectionRange(0, 99999)
+            if (navigator.clipboard) navigator.clipboard.writeText(text)
+            else document.execCommand("copy")
+            document.body.removeChild(textArea)
+        }
+
+    }, "addClass()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
+
+        if (!o.__view__) return o
+        var _class = toValue({ req, res, _window, lookupActions, stack, props: { isValue: true }, object, id, e, __: [o, ...__], data: args[1] })
+        if (o.__element__) return o.__element__.classList.add(_class)
+
+    }, "remClass()": ({ _window, req, res, o, stack, props, object, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__) return o
+        var _class = toValue({ req, res, _window, lookupActions, stack, props: { isValue: true }, object, id, e, __: [o, ...__], data: args[1] })
+        if (o.__element__) return o.__element__.classList.remove(_class)
+
+    }, "toggleClass()": ({ _window, req, res, o, stack, props, object, lookupActions, id, e, __, args }) => {
+
+        if (!o.__view__) return o
+        var _class = toValue({ req, res, _window, lookupActions, stack, props: { isValue: true }, object, id, e, __: [o, ...__], data: args[1] })
+        if (o.__element__) return o.__element__.classList.toggle(_class)
+
+    }, "encodeURI()": ({ o }) => {
+
+        return encodeURI(o)
+
+    }, "preventDefault()": ({ e }) => {
+
+        e.preventDefault()
+
+    }, "decodeURI()": ({ o }) => {
+
+        return decodeURI(o)
+
     }, "root()": ({ _window, req, res, o, stack, props, lookupActions, id, __, args, object }) => {
 
         var { address, data } = actions["addresser()"]({ _window, stack, props: { isValue: true }, args, interpreting: true, status: "Start", type: "action", blockable: false, renderer: true, id, action: "root()", object, lookupActions, __ })
@@ -2594,7 +2636,7 @@ const actions = {
 
             var parent = views[data.__parent__ || view.__parent__]
             var __index__ = data.__index__ !== undefined ? data.__index__ : (view.__loop__ ? view.__index__ : undefined)
-            var __childIndex__ = data.__childIndex__ !== undefined ? data.__childIndex__ : view.__childIndex__//(view.__loop__ ? view.__index__ : view.__childIndex__)
+            var __childIndex__ = data.__childIndex__ !== undefined ? data.__childIndex__ : view.__childIndex__
             var __viewPath__ = [...(data.__viewPath__ || view.__viewPath__)]
             var __customViewPath__ = [...(data.__customViewPath__ || view.__customViewPath__)]
             var __lookupActions__ = [...(data.__lookupActions__ || view.__lookupActions__)]
@@ -2623,7 +2665,7 @@ const actions = {
             }
 
             // data
-            if ("data" in data) {
+            if (data.data !== undefined) {
 
                 if ("mount" in data) {
 
@@ -2634,7 +2676,7 @@ const actions = {
 
                 if (!("__" in data)) my__ = [data.data, ...my__]
 
-            } else if ("form" in data) {
+            } else if (data.form !== undefined) {
 
 
                 reducedView.form = data.form
@@ -2643,7 +2685,7 @@ const actions = {
             }
 
             // path
-            if ("path" in data) reducedView.__dataPath__ = (Array.isArray(data.path) ? data.path : typeof data.path === "number" ? [data.path] : data.path.split(".")) || []
+            if (data.path !== undefined) reducedView.__dataPath__ = (Array.isArray(data.path) ? data.path : typeof data.path === "number" ? [data.path] : data.path.split(".")) || []
 
             // remove views
             if (!data.insert && parent.__rendered__) parent.__childrenRef__.filter(({ index, childIndex }) => (data.__childIndex__ === undefined && view.__loop__) ? (index === view.__index__) : (childIndex === __childIndex__))
@@ -2665,21 +2707,21 @@ const actions = {
 
             // address for rendering view
             address = actions["addresser()"]({ _window, id, stack, props, nextAddress: address, status: "Start", type: "function", function: "toView", interpreting: true, __: my__, lookupActions: __lookupActions__, data: { view: reducedView, parent: parent.id } }).address
-
+            
             // render
             var myView = actions["view()"]({ _window, lookupActions: __lookupActions__, stack, props, req, res, address, __: my__, data: { view: reducedView, parent: parent.id } })
-
+            
             // seq: END:toView => END:refresh() => START:postUpdate => END:postUpdate => START:waits => END:waits => START:spliceBlockedAddresses
 
             // address
             actions["wait()"]({ _window, lookupActions, stack, props, address, id, req, res, __ })
-
+            
             return myView
 
         } else { // post update
 
             var { childIndex, elements, root, timer, parent, loop, inserted, unappend, ...data } = data
-
+            
             // tohtml parent
             delete parent.__html__
             actions["html()"]({ _window, lookupActions, stack, props, __, id: parent.id })
@@ -2775,181 +2817,126 @@ const actions = {
     }, "insert()": ({ _window, o = {}, stack, props, lookupActions, id, __, args, object, unappend }) => {
 
         // wait address
-        var { address, data = {} } = actions["addresser()"]({ _window, stack, props, args, interpreting: true, status: "Start", type: "action", renderer: true, id, action: "insert()", lookupActions, __, object })
-        if (!args[1] && unappend) data.view = o
-        insert({ id, lookupActions, stack, props, object, address, __, insert: { ...data, parent: o.id, unappend } })
-
-    }, "confirmEmail()": ({ _window, o, stack, props, lookupActions, id, e, __, args, object }) => {
-
-        var { address, data } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id, action: "confirmEmail()", object, lookupActions, __ })
-
-    }, "sendEmail()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
-
-        var { address, data } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id || id, type: "Mail", action: "sendEmail()", object, lookupActions, __ })
-        return callServer({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "sendEmail()", server: "mail" } })
-
-    }, "print()": () => {
-
-    }, "files()": ({ o }) => {
-
-        return o.__files__
-
-    }, "file()": ({ o }) => {
-
-        return o.__file__
-
-    }, "read()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
-
-        // wait address
-        var { address, data, action } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id, action: "read()", object, lookupActions, __, id, dataInterpretAction: "conditional" })
-
-        if (!data && o.__name__ === "Input") data = {type: "file", files: [...o.__element__.files]}
-        else if (!data) return
-        if (!data.type) data.type = "file"
-
-        fileReader({ req, res, _window, lookupActions, stack, props, address, id, e, __, data })
-
-    }, "passport()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
-
-        var { address, data } = actions["addresser()"]({ _window, stack, props, args, req, res, status: "Start", dataInterpretAction: "toParam", asynchronous: true, id: o.id, type: "Auth", action: "passport()", object, lookupActions, __, id })
-        passport({ _window, lookupActions, stack, props, address, id, e, __, req, res, data })
-
-    }, "upload()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
-
-        var { address, data } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id || id, type: "Storage", action: "save()", object, lookupActions, __ })
-        data.storage = true
-        return callServer({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "save()", server: "storage" } })
-
-    }, "db()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
-
-        var { address, data } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id || id, type: "Data", action: "database()", object, lookupActions, __ })
-        return callServer({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: (data === undefined ? __[0] : data), action: data.action, server: "datastore" } })
-
-    }, "search()": ({ _window, global, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
-
-        var { address, data } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id || id, type: "Data", action: "search()", object, lookupActions, __ })
-        return callServer({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "search()", server: "datastore" } })
-
-    }, "erase()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
-
-        var { address, data } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id || id, type: "Data", action: "erase()", object, lookupActions, __ })
-        return callServer({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "erase()", server: "datastore" } })
-
-    }, "save()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
-
-        var { address, data } = actions["addresser()"]({ _window, stack, props, args, status: "Start", asynchronous: true, id: o.id || id, type: "Data", action: "save()", object, lookupActions, __ })
-        return callServer({ _window, lookupActions, stack, props, address, id, e, __, req, res, data: { data: data === undefined ? __[0] : data, action: "save()", server: "datastore" } })
-
-    }, "start()": ({ global, stack, props }) => {
-
-        var address = stack.addresses.find(address => address.id === stack.interpretingAddressID)
-        address.starter = true
-        var startID = generate()
-        global.__startAddresses__[startID] = { id: startID, address }
-
-        stack.logs.push(`${stack.logs.length} Starter STACK ${stack.id} ${stack.event.toUpperCase()} ${stack.string}`)
-
-        return startID
-
-    }, "end()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, o, object }) => {
-
-        var { data } = toLine({ req, res, _window, lookupActions, stack, props: { isValue: true }, id, e, __, data: { string: args[1] }, action: "toValue", object })
-        endAddress({ req, res, _window, lookupActions, stack, props, object, id, e, __, data, endID: typeof o === "string" && o })
-
-    }, "send()": ({ _window, req, res, global, stack, props, lookupActions, id, e, __, args, object, breakRequest, pathJoined }) => {
-
-        breakRequest.break = true
-
-        var response
-
-        if (isParam({ _window, string: args[1] })) {
-
-            response = toValue({ req, res, _window, lookupActions, stack, props: {isValue:true}, object, id, e, __, data: args[1] })
-            
-            //console.log(decode({_window, string:args[1]}));
-            response.success = response.success !== undefined ? response.success : true
-            response.message = response.message || response.msg || "Action executed successfully!"
-            delete response.msg
-
-        } else {
-
-            var data = toValue({ req, res, _window, lookupActions, id, e, __, data: args[1], stack, props: { isValue: true }, object })
-            response = { success: true, message: "Action executed successfully!" }
-            if (typeof data === "object" && !Array.isArray(data)) response = { ...response, ...data }
-            else response.data = data
+        var { address, data: insert = {} } = actions["addresser()"]({ _window, stack, props, args, interpreting: true, status: "Start", type: "action", renderer: true, id, action: "insert()", lookupActions, __, object })
+        if (!args[1] && unappend) insert.view = o
+        
+        var { index, view, path, data, form, viewPath = [], preventDefault, mount, unappend = false } = insert
+        
+        var views = window.views
+        var global = window.global
+        var parent = o
+        var passData = {}, myID
+        var __childIndex__
+    
+        if (insert.__view__) {
+    
+            view = insert
+    
+        } else if (!view) {
+    
+            var childrenRef = parent.__childrenRef__.find(({ id: viewID }) => viewID === id || getDeepChildrenId({ id: viewID }).includes(id))
+    
+            if (childrenRef) view = insert = views[childrenRef.id]
+            else view = insert = views[parent.__childrenRef__[0].id]
         }
+    
+        // clone
+        if (typeof view === "object" && view.__view__) {
+    
+            // id
+            myID = view.id
+    
+            // childIndex
+            __childIndex__ = view.__childIndex__
+    
+            // index
+            if (unappend) index = parent.__childrenRef__.length
+            else index = index !== undefined ? index : (view.__index__ + 1)
+                
+            // path
+            path = [...(path || view.__dataPath__)]
+            form = form || view.form
+    
+            // get data
+            passData.data = (insert.__view__) ? (typeof insert.__[insert.__underscoreLoopIndex__ || 0] === "object" ? {} : "") // insert():[...]
+                : (insert.view && !("data" in insert)) ? (typeof insert.view.__[insert.__underscoreLoopIndex__ || 0] === "object" ? {} : "") // insert():[view=...]
+                    : (insert.view && ("data" in insert) ? data : undefined); // insert():[view=...;data=...]
+    
+            if (!preventDefault) {
+    
+                // increment data index
+                if (isNumber(path[path.length - 1])) path[path.length - 1] += 1
+    
+                // increment next views dataPath index
+                var itemIndex = view.__dataPath__.length - 1
+                if (index < parent.__childrenRef__.length)
+                    parent.__childrenRef__.slice(index).map(viewRef => updateDataPath({ id: viewRef.id, myIndex: view.__dataPath__[itemIndex], index: itemIndex, increment: true }))
+    
+                // mount data
+                passData.data !== undefined && path.reduce((o, k, i) => {
+    
+                    if (itemIndex === 0) o.splice(path[itemIndex], 0, passData.data)
+                    else if (i === itemIndex - 1) o[k].splice(path[itemIndex], 0, passData.data)
+                    else if (i >= itemIndex) return
+                    else return o[k]
+    
+                }, global[form])
+    
+            }
+    
+            // inserted view params
+            passData = {
+                __: ((view.__loop__ && view.__mount__) || preventDefault) ? [passData.data, ...view.__.slice((view.__underscoreLoopIndex__ || 0) + 1)] : view.__,
+                __viewPath__: [...view.__viewPath__, ...viewPath],
+                __customViewPath__: [...view.__customViewPath__],
+                __lookupActions__: [...view.__lookupActions__],
+                passData: {
+                    __loop__: view.__loop__,
+                    __mount__: view.__mount__,
+                }
+            }
+    
+            // get raw view
+            view = clone(([...view.__viewPath__, ...viewPath]).reduce((o, k) => o[k], global.__queries__.view))
+    
+        } else { // new View
+    
+            if (typeof view !== "string") {
 
-        respond({ res, stack, props, global, response, __ })
-        return response
+                var genView = []
+                global.__queries__.view[genView] = clone(view)
+    
+                passData = {
+                    __viewPath__: [genView, ...viewPath],
+                    __customViewPath__: [...parent.__customViewPath__, genView],
+                    __lookupActions__: [{ doc: genView, collection: "view" }, ...parent.__lookupActions__]
+                }
 
-    }, "sent()": ({ res }) => {
-
-        if (!res || res.headersSent) return true
-        else return false
-
-    }, "position()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
-
-        var position = toValue({ req, res, _window, lookupActions, stack, props: {isValue: true}, id, e, __, data: args[1], object })
-
-        if (!position.id) position.id = o.id
-        if (!position.positioner) position.positioner = id
-
-        require("./setPosition").setPosition({ position, id, e })
-        return views[position.id]
-
-    }, "csvToJson()": ({ _window, req, res, stack, props, lookupActions, id, e, __, args, object }) => {
-
-        var file = toValue({ req, res, _window, lookupActions, stack, props: { isValue: true }, object, id, e, __, data: args[1] })
-        require("./csvToJson").csvToJson({ id, lookupActions, stack, props, object, e, file, onload: args[2] || "", __ })
-
-    }, "copyToClipBoard()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
-
-        var text
-        if (args[1]) text = toValue({ req, res, _window, lookupActions, stack, props: { isValue: true }, object, id, e, __, data: args[1] })
-        else text = o
-
-        if (navigator.clipboard) answer = navigator.clipboard.writeText(text)
-        else {
-            var textArea = document.createElement("textarea")
-            textArea.value = text
-            document.body.appendChild(textArea)
-            textArea.focus()
-            textArea.select()
-            textArea.setSelectionRange(0, 99999)
-            if (navigator.clipboard) navigator.clipboard.writeText(text)
-            else document.execCommand("copy")
-            document.body.removeChild(textArea)
+            } else {
+    
+                if (global.__queries__.view[view]) view = clone((viewPath).reduce((o, k) => o[k], global.__queries__.view[view]))
+                else view = { view }
+    
+                passData = {
+                    __viewPath__: [...viewPath],
+                    __customViewPath__: [...parent.__customViewPath__],
+                    __lookupActions__: [{ doc: genView, collection: "view" }, ...parent.__lookupActions__]
+                }
+            }
         }
-
-    }, "addClass()": ({ _window, req, res, o, stack, props, lookupActions, id, e, __, args, object }) => {
-
-        if (!o.__view__) return o
-        var _class = toValue({ req, res, _window, lookupActions, stack, props: { isValue: true }, object, id, e, __: [o, ...__], data: args[1] })
-        if (o.__element__) return o.__element__.classList.add(_class)
-
-    }, "remClass()": ({ _window, req, res, o, stack, props, object, lookupActions, id, e, __, args }) => {
-
-        if (!o.__view__) return o
-        var _class = toValue({ req, res, _window, lookupActions, stack, props: { isValue: true }, object, id, e, __: [o, ...__], data: args[1] })
-        if (o.__element__) return o.__element__.classList.remove(_class)
-
-    }, "toggleClass()": ({ _window, req, res, o, stack, props, object, lookupActions, id, e, __, args }) => {
-
-        if (!o.__view__) return o
-        var _class = toValue({ req, res, _window, lookupActions, stack, props: { isValue: true }, object, id, e, __: [o, ...__], data: args[1] })
-        if (o.__element__) return o.__element__.classList.toggle(_class)
-
-    }, "encodeURI()": ({ o }) => {
-
-        return encodeURI(o)
-
-    }, "preventDefault()": ({ e }) => {
-
-        e.preventDefault()
-
-    }, "decodeURI()": ({ o }) => {
-
-        return decodeURI(o)
+    
+        if (typeof view !== "object") return console.log("Missing View!")
+    
+        // index
+        if (index === undefined) index = parent.__element__.children.length
+    
+        // remove loop
+        if (view.view.charAt(0) === "[") {
+            view.view = actions["encode()"]({ id, string: actions["encode()"]({ id, string: view.view, start: "'" }) })
+            view.view = global.__refs__[view.view.slice(0, 6)].data + "?" + decode({ string: view.view.split("?").slice(1).join("?") })
+        }
+    
+        return actions["refresh()"]({ lookupActions, stack, props, object, address, id, __, data: { view: { ...clone(view), __inserted__: true }, id: myID || id, path, data, form, __childIndex__, __index__: index, insert: true, mount, __parent__: parent.id, action: unappend ? "VIEW" : "INSERT", unappend, ...passData } })
 
     }, "html()": ({ _window, id, stack, props, __, o = {} }) => {
 
@@ -3118,13 +3105,13 @@ const actions = {
 
     }, "view()": ({ _window, lookupActions, stack, props = {}, address, req, res, __, id, o, object, args = [], data = {} }) => {
 
-        if (args[1]) return actions["insert()"]({ _window, stack, props, lookupActions, id, __, args, object, unappend: true })
+        if (args[1]) return actions["insert()"]({ _window, o, stack, props, lookupActions, id, __, args, object, unappend: true })
         else if (o) return actions["insert()"]({ _window, o, stack, props, lookupActions, id, __, args, object, unappend: true })
 
         var views = _window ? _window.views : window.views
         var global = _window ? _window.global : window.global
         var view = data.view || views[id]
-
+        
         // interpret view
         if (!view.__interpreted__) {
 
@@ -3264,7 +3251,8 @@ const actions = {
                 address.interpreting = false
                 address.status = "Wait"
                 address.data = { view }
-                return searchDoc({ _window, lookupActions, stack, props, address, id, __, req, res, object: [view], data: { data: { collection: "view", doc: view.__name__ } } })
+                address.params.id = id
+                return searchDoc({ _window, lookupActions, stack, props, address, id, __, req, res, object: [view], data: { data: { collection: "view", doc: view.__name__ }, searchDoc: true } })
             }
 
             // continue to custom view
@@ -3521,7 +3509,7 @@ const actions = {
     
         actions["wait()"]({ _window, stack, props })
 
-    }, "addresser()": ({ _window, addressID = generate(), index = 0, stack, hold = false, props = {}, args = [], req, res, e, type = "action", status = "Wait", file, data, waits, hasWaits, params, function: func, newLookupActions, nextAddressID, nextStack = {}, nextAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, lookupActions, logger, switchNextAddressIDWith }) => {
+    }, "addresser()": ({ _window, addressID = generate(), index = 0, stack, unhold = false, hold = false, props = {}, args = [], req, res, e, type = "action", status = "Wait", file, data, waits, hasWaits, params, function: func, newLookupActions, nextAddressID, nextStack = {}, nextAddress = {}, blocked, blockable = true, dataInterpretAction, asynchronous = false, interpreting = false, renderer = false, action, __, id, object, lookupActions, logger, switchNextAddressIDWith }) => {
         
         var global = _window ? _window.global : window.global
         if (switchNextAddressIDWith) {
@@ -3578,7 +3566,7 @@ const actions = {
         }
 
         // set all head addresses asynchronous
-        if ((asynchronous && !_window) || hold) {
+        if ((asynchronous && (!unhold || !_window)) || hold) {
 
             var nextAddressID = !address.nextStackID && address.nextAddressID
             while (nextAddressID) {
@@ -4206,7 +4194,7 @@ const reducer = ({ _window, lookupActions = [], stack = { addresses: [], returns
     // init
     var path0 = path[0] ? path[0].toString().split(":")[0] : "", args
     if (path[0] !== undefined) args = path[0].toString().split(":")
-
+        
     // toParam
     if (isParam({ _window, string: pathJoined })) return toParam({ req, res, _window, lookupActions, stack, props, id, e, data: pathJoined, __, object })
 
@@ -4442,9 +4430,9 @@ const reducer = ({ _window, lookupActions = [], stack = { addresses: [], returns
         path.shift()
         return kernel({ _window, lookupActions, stack, props, id, __, e, req, res, object, data: { data, path, value, key, pathJoined } })
     }
-
+    
     // lookup object
-    if (props.isValue || path.length > 1 || executableRegex.test(pathJoined)) {
+    if (props.isValue || path.length > 1 || executableRegex.test(pathJoined) && object.length > 0) {
 
         var index = 0, answer
 
@@ -4754,117 +4742,6 @@ const toLine = ({ _window, lookupActions, stack, props = {}, address = {}, id, e
     return terminator({ data: { success, message, data, action, conditionsNotApplied, executionDuration: (new Date()).getTime() - startTime }, order: 5 })
 }
 
-const insert = ({ lookupActions, stack, props = {}, object, __, address, id, insert }) => {
-
-    var { index, view, path, data, form, viewPath = [], parent, preventDefault, mount, unappend = false } = insert
-    //console.log(clone(insert));
-    var views = window.views
-    var global = window.global
-    var parent = views[parent]
-    var passData = {}, myID
-    var __childIndex__
-
-    if (insert.__view__) {
-
-        view = insert
-
-    } else if (!view) {
-
-        var childrenRef = parent.__childrenRef__.find(({ id: viewID }) => viewID === id || getDeepChildrenId({ id: viewID }).includes(id))
-
-        if (childrenRef) view = insert = views[childrenRef.id]
-        else view = insert = views[parent.__childrenRef__[0].id]
-    }
-
-    // clone
-    if (typeof view === "object" && view.__view__) {
-
-        // id
-        myID = view.id
-
-        // childIndex
-        __childIndex__ = view.__childIndex__
-
-        // index
-        if (unappend) index = parent.__childrenRef__.length
-        else index = index !== undefined ? index : (view.__index__ + 1)
-            
-        // path
-        path = [...(path || view.__dataPath__)]
-        form = form || view.form
-
-        // get data
-        passData.data = (insert.__view__) ? (typeof insert.__[insert.__underscoreLoopIndex__ || 0] === "object" ? {} : "") // insert():[...]
-            : (insert.view && !("data" in insert)) ? (typeof insert.view.__[insert.__underscoreLoopIndex__ || 0] === "object" ? {} : "") // insert():[view=...]
-                : (insert.view && ("data" in insert) ? data : undefined); // insert():[view=...;data=...]
-
-        if (!preventDefault) {
-
-            // increment data index
-            if (isNumber(path[path.length - 1])) path[path.length - 1] += 1
-
-            // increment next views dataPath index
-            var itemIndex = view.__dataPath__.length - 1
-            if (index < parent.__childrenRef__.length)
-                parent.__childrenRef__.slice(index).map(viewRef => updateDataPath({ id: viewRef.id, myIndex: view.__dataPath__[itemIndex], index: itemIndex, increment: true }))
-
-            // mount data
-            passData.data !== undefined && path.reduce((o, k, i) => {
-
-                if (itemIndex === 0) o.splice(path[itemIndex], 0, passData.data)
-                else if (i === itemIndex - 1) o[k].splice(path[itemIndex], 0, passData.data)
-                else if (i >= itemIndex) return
-                else return o[k]
-
-            }, global[form])
-
-        }
-
-        // inserted view params
-        passData = {
-            __: ((view.__loop__ && view.__mount__) || preventDefault) ? [passData.data, ...view.__.slice((view.__underscoreLoopIndex__ || 0) + 1)] : view.__,
-            __viewPath__: [...view.__viewPath__, ...viewPath],
-            __customViewPath__: [...view.__customViewPath__],
-            __lookupActions__: [...view.__lookupActions__],
-            passData: {
-                __loop__: view.__loop__,
-                __mount__: view.__mount__,
-            }
-        }
-
-        // get raw view
-        view = clone(([...view.__viewPath__, ...viewPath]).reduce((o, k) => o[k], global.__queries__.view))
-
-    } else { // new View
-
-        var genView = generate()
-        if (typeof view !== "string") global.__queries__.view[genView] = clone(view)
-        else {
-            genView = view
-            view = clone((viewPath).reduce((o, k) => o[k], global.__queries__.view[view]))
-        }
-
-        passData = {
-            __viewPath__: [genView, ...viewPath],
-            __customViewPath__: [...parent.__customViewPath__, genView],
-            __lookupActions__: [{ doc: genView, collection: "view" }, ...parent.__lookupActions__]
-        }
-    }
-
-    if (typeof view !== "object") return console.log("Missing View!")
-
-    // index
-    if (index === undefined) index = parent.__element__.children.length
-
-    // remove loop
-    if (view.view.charAt(0) === "[") {
-        view.view = actions["encode()"]({ id, string: actions["encode()"]({ id, string: view.view, start: "'" }) })
-        view.view = global.__refs__[view.view.slice(0, 6)].data + "?" + decode({ string: view.view.split("?").slice(1).join("?") })
-    }
-
-    return actions["refresh()"]({ lookupActions, stack, props, object, address, id, __, data: { view: { ...clone(view), __inserted__: true }, id: myID || id, path, data, form, __childIndex__, __index__: index, insert: true, mount, __parent__: parent.id, action: unappend ? "VIEW" : "INSERT", unappend, ...passData } })
-}
-
 const addEventListener = ({ event, id, string, __, stack, props, lookupActions, address, eventID: mainEventID, executable }) => {
 
     var views = window.views
@@ -4910,6 +4787,7 @@ const addEventListener = ({ event, id, string, __, stack, props, lookupActions, 
             //
             if (id !== eventID) {
 
+                // push to global
                 global.__events__[eventID] = global.__events__[eventID] || {}
                 global.__events__[eventID][genID] = eventAddress
 
@@ -4954,9 +4832,9 @@ const isAction = ({ _window, lookupActions, stack, props, address, id, __, e, re
         if (!collection || !doc || (doc.__props__.secured && !stack.server && !(name in (lookupAction.path || []).reduce((o, k, i) => o[k] ? o[k] : {}, doc.__props__.actions)))) {
             
             checkInViewsInDatastore = true
-            var mydata = { data: { ...lookupAction, path: [...(lookupAction.path || []), name] }, action, lookupServerActions: true }
+            var mydata = { data: { ...lookupAction, path: [...(lookupAction.path || []), name] }, action, lookupServerActions: true, searchDoc: true }
             
-            return searchDoc({ _window, lookupActions, stack, props, address, id, __, e, req, res, data: mydata, object })
+            return searchDoc({ _window, lookupActions, stack, props, address, id, __, e, req, res, data: mydata, object, waits: ["loader.hide", action] })
         }
 
         var actions = doc.__props__.actions
@@ -5250,7 +5128,7 @@ const endAddress = ({ _window, stack, props, data, req, res, id, e, __, lookupAc
 
     var global = _window ? _window.global : window.global
 
-    var starter = false, nextAddressID = stack.interpretingAddressID, currentStackID = stack.id
+    var nextAddressID = stack.interpretingAddressID, currentStackID = stack.id
     var address = stack.addresses.find(address => address.id === nextAddressID)
 
     var endStarterAddress = ({ address, stack, props }) => {
@@ -5258,23 +5136,25 @@ const endAddress = ({ _window, stack, props, data, req, res, id, e, __, lookupAc
         address.starter = false
 
         // get start nextAddress to push data to its underscores
-        var starternextAddress = stack.addresses.find(nextAddress => nextAddress.id === address.nextAddressID)
-        if (starternextAddress) {
+        var starterNextAddress = stack.addresses.find(nextAddress => nextAddress.id === address.nextAddressID)
+        if (starterNextAddress) {
 
             // push response to underscore
-            starternextAddress.params.__ = [data, ...starternextAddress.params.__]
-            starternextAddress.hasWaits = false
-            starternextAddress.ended = true
+            starterNextAddress.params.__ = [data, ...starterNextAddress.params.__]
+            starterNextAddress.hasWaits = false
+            starterNextAddress.ended = true
 
             // start again from the current interpreting address and set blocked until reaching nextAddress
             var stack = global.__stacks__[currentStackID], blockedAddress = true
             nextAddressID = stack.interpretingAddressID
 
-            while (blockedAddress && nextAddressID && nextAddressID !== starternextAddress.id) {
+            while (blockedAddress && nextAddressID && nextAddressID !== starterNextAddress.id) {
 
                 blockedAddress = stack.addresses.find(address => address.id === nextAddressID)
                 if (blockedAddress) {
+
                     blockedAddress.blocked = true
+                    blockedAddress.status = "End"
                     nextAddressID = blockedAddress.nextAddressID
 
                     stack.blocked = true
@@ -5287,8 +5167,14 @@ const endAddress = ({ _window, stack, props, data, req, res, id, e, __, lookupAc
             address.hold = false
 
             stack = global.__stacks__[currentStackID]
+            stack.blocked = true
 
-            actions["wait()"]({ req, res, _window, lookupActions, stack, props, addressID: stack.interpretingAddressID, id, e, __ })
+            // block current address
+            var address = stack.addresses.find(address => address.id === stack.interpretingAddressID)
+            address.blocked = true
+            address.status = "End"
+
+           // actions["wait()"]({ req, res, _window, lookupActions, stack, props, address, id, e, __ })
 
             if (endID) {
 
@@ -5311,17 +5197,16 @@ const endAddress = ({ _window, stack, props, data, req, res, id, e, __, lookupAc
 
     } else {
 
-        while (!starter && nextAddressID && stack) {
+        while (nextAddressID && stack) {
 
             // start from self address (by interpretingAddressID) to reach the start head address
             var address = stack.addresses.find(address => address.id === nextAddressID)
-
-            if (!address) return nextAddressID = false
+            if (!address) break
 
             if (address.starter) {
 
-                starter = true
                 endStarterAddress({ address, stack, props })
+                break;
             }
 
             // move to head address
@@ -5748,8 +5633,8 @@ const removeView = ({ _window, global, views, id, stack, props, self = true, mai
     view.__element__ && view.__events__.map(event => view.__element__.removeEventListener(event.event, event.eventListener))
 
     // remove related events
-    Object.entries(view.__relEvents__).map(([eventID, addresses]) => {
-        Object.entries(addresses).map(([genID, address]) => {
+    Object.entries(view.__relEvents__).map(([eventID, events]) => {
+        Object.entries(events).map(([genID, address]) => {
             views[eventID] && views[eventID].__rendered__ && views[eventID].__element__.removeEventListener(address.event, address.eventListener)
             delete global.__events__[eventID][genID]
         })
@@ -5841,7 +5726,7 @@ const eventExecuter = ({ _window, event, eventID, id, lookupActions, e, string, 
     if (eventID === "droplist" && id !== "droplist" && (!global.__droplistPositioner__ || !views[global.__droplistPositioner__] || !views[global.__droplistPositioner__].__element__.contains(views[id].__element__))) return
 
     // init stack
-    var stack = openStack({ _window, event, id, eventID, string, e })
+    var {stack} = openStack({ _window, event, id, eventID, string, e })
 
     // address line
     var address = actions["addresser()"]({ _window, stack, props, id, status: "Start", type: "line", event, interpreting: true, lookupActions, __, nextStack, nextAddress, object }).address
@@ -6198,7 +6083,7 @@ const defaultAppEvents = () => {
     document.addEventListener('mousedown', e => {
 
         // droplist
-        global.__clicked__ = views[e.target.id]
+        //global.__clicked__ = views[e.target.id]
         if (global.__clicked__ && views.droplist.__element__.contains(global.__clicked__.__element__)) global["droplist-txt"] = global.__clicked__.__element__.innerHTML
     })
 
@@ -6206,7 +6091,7 @@ const defaultAppEvents = () => {
     document.addEventListener('mouseup', e => {
 
         // droplist
-        global.__clicked__ = views[e.target.id]
+        //global.__clicked__ = views[e.target.id]
         if (global.__clicked__ && views.droplist.__element__.contains(global.__clicked__.__element__)) global["droplist-txt"] = global.__clicked__.__element__.innerHTML
     })
 
@@ -6402,11 +6287,9 @@ const getNumberAfterString = (str, variable) => {
     }
 }
 
-const searchDoc = ({ _window, lookupActions, stack, props, address, id, __, req, res, data, object }) => {
+const searchDoc = ({ _window, lookupActions, stack, props, address, id, __, req, res, data, object, waits }) => {
 
-    var waits = [`loader.hide;__queries__:().${data.data.collection}.${data.data.doc}=_.data||false`]
-    if (data.lookupServerActions) waits.push(data.action)
-    var { address } = actions["addresser()"]({ _window, id, stack, props, __, lookupActions, nextAddress: address, stack, props, type: "data", action: "search()", status: "Start", asynchronous: true, waits, object })
+    var { address } = actions["addresser()"]({ _window, id, stack, props, __, lookupActions, nextAddress: address, stack, props, type: "data", action: "search()", status: "Start", waits, asynchronous: true, unhold: _window ? true : false, object })
 
     return callServer({ _window, lookupActions, stack, props, address, id, __, req, res, data: { ...data, action: "search()" } })
 }
@@ -6426,7 +6309,7 @@ const callServer = async ({ _window, lookupActions, stack, props, address, id, r
 
     // mail
     else if (data.server === "mail") var data = await mail({ _window, req, res, action: data.action, stack, props, data: data.data || {}, __ })
-
+    
     // awaits
     return actions["wait()"]({ _window, lookupActions, stack, props, id, address, e, req, res, _: data, __ })
 }
@@ -6458,13 +6341,19 @@ const route = async ({ lookupActions, stack, props, address, id, req, __, res, e
     }
 
     // fetch
-    var data = await fetch("/", options).then(response => response.json())
+    var response = await fetch("/", options).then(response => response.json())
 
     // update session
-    if (data.__props__.session) setCookie({ name: "__session__", value: data.__props__.session })
+    if (response.__props__.session) setCookie({ name: "__session__", value: response.__props__.session })
+
+    // check data for queries
+    if (data.searchDoc) clientSideQueriesHandler({ global: window.global, data: response })
+
+    // search doc
+    if (data.searchDoc && !response.data) window.global.__queries__[data.data.collection][data.data.doc] = false
 
     // await
-    actions["wait()"]({ lookupActions, address, stack, props, id, e, req, res, _: data, __ })
+    actions["wait()"]({ lookupActions, address, stack, props, id, e, req, res, _: response, __ })
 }
 
 const loader = ({ _window, show }) => {
@@ -7012,6 +6901,7 @@ const getData = ({ _window = {}, req, res, search, action = "search()" }) => {
                             if (typeof find[searchField] !== "object" || Array.isArray(find[searchField])) find[searchField] = { equal: find[searchField] }
 
                             Object.entries(find[searchField]).map(([operator, value]) => {
+                                if (!push) return
                                 push = findData({ data: chunk.indexing[doc][searchField], operator: toOperator(operator), value })
                             })
                         })
@@ -7134,6 +7024,9 @@ const postData = ({ _window = {}, req, res, save, action = "save()" }) => {
 
         fs.renameSync(path, `bracketDB/${db}/${save.rename}`)
 
+        // edit liveDB collection name
+        if (db !== liveDB && save.dev) fs.renameSync(`bracketDB/${liveDB}/${save.collection}`, `bracketDB/${liveDB}/${save.rename}`)
+
         // props
         dbProps.writes += 1
         collectionProps.writes += 1
@@ -7142,6 +7035,28 @@ const postData = ({ _window = {}, req, res, save, action = "save()" }) => {
         // props
         fs.writeFileSync(`bracketDB/${liveDB}/${collection}/collection1/__props__/__props__.json`, JSON.stringify(collectionProps, null, 4))
         fs.writeFileSync(`bracketDB/${liveDB}/__props__/db.json`, JSON.stringify(dbProps, null, 4))
+
+        // change docs collection name
+        var docs = fs.readdirSync(`bracketDB/${db}/${collection}/collection1`)
+        docs.map(doc => {
+            if (doc === "__props__") return
+            var data = JSON.parse(fs.readFileSync(`bracketDB/${db}/${collection}/collection1/${doc}`))
+            data.__props__.collection = save.rename
+            fs.writeFileSync(`bracketDB/${db}/${collection}/collection1/${doc}`, JSON.stringify(data))
+        })
+
+        // update liveDB
+        if (save.dev) {
+            
+            // change docs collection name
+            var docs = fs.readdirSync(`bracketDB/${liveDB}/${collection}/collection1`)
+            docs.map(doc => {
+                if (doc === "__props__") return
+                var data = JSON.parse(fs.readFileSync(`bracketDB/${liveDB}/${collection}/collection1/${doc}`))
+                data.__props__.collection = save.rename
+                fs.writeFileSync(`bracketDB/${liveDB}/${collection}/collection1/${doc}`, JSON.stringify(data))
+            })
+        }
 
         return { success: true, message: "Collection name changed successfully!" }
     }
@@ -7203,7 +7118,7 @@ const postData = ({ _window = {}, req, res, save, action = "save()" }) => {
             doc: docs[i] || existingProps.doc || (collection + collectionProps.counter),
             counter: existingProps.counter || collectionProps.counter,
             creationDate: existingProps.creationDate || (new Date()).getTime(),
-            collection: existingProps.collection || collection,
+            collection,
             chunk: existingProps.chunk || chunkName,
             lastModified: (new Date()).getTime(),
             dev: save.dev || false,
@@ -7882,6 +7797,17 @@ const queries = ({ global, data, search, collection }) => {
     }
 }
 
+const clientSideQueriesHandler = ({ global, data }) => {
+    Object.entries(data).map(([key, data]) => {
+        if (typeof data === "object" && !Array.isArray(data)) {
+            if (data.__props__ && data.__props__.collection && data.__props__.doc) {
+                global.__queries__[data.__props__.collection] = global.__queries__[data.__props__.collection] || {}
+                global.__queries__[data.__props__.collection][data.__props__.doc] = data
+            } else clientSideQueriesHandler({ global, data })
+        }
+    })
+}
+
 const createDB = ({ data }) => {
 
     data.db = generate({ universal: true })
@@ -8471,7 +8397,7 @@ const recordActivity = ({ _window, session }) => {
     //await Promise.all(promises)
 }
 
-const mail = async ({ _window, req, res, action, data, stack, props, __ }) => new Promise((resolve) => {
+const mail = async ({ _window, req, res, action, data, stack, props, __ }) => {
 
     if (action === "sendEmail()") {
         let transporter = require("nodemailer").createTransport({
@@ -8495,7 +8421,7 @@ const mail = async ({ _window, req, res, action, data, stack, props, __ }) => ne
         };
         
         // Send the email
-        transporter.sendMail(mailOptions, (error, info) => {
+        var info = await transporter.sendMail(mailOptions)/*, (error, info) => {
             if (error) {
                 console.log('Error:', error);
                 resolve(error)
@@ -8503,12 +8429,19 @@ const mail = async ({ _window, req, res, action, data, stack, props, __ }) => ne
                 console.log('Email sent:', info.response);
                 resolve(info)
             }
-        })
+        })*/
+        console.log('Email sent:', info.response);
+       return info
     }
-})
+}
+
+const saveToLogs = ({ _window, logs }) => {
+    logs.shift()
+    database({ _window, action: "save()", data: { collection: "logs", data: { logs } } })
+}
 
 module.exports = {
-    actions, kernel, toValue, toParam, reducer, toApproval, toAction, toLine, insert, addEventListener,
+    actions, kernel, toValue, toParam, reducer, toApproval, toAction, toLine, addEventListener,
     getDeepChildren, getDeepChildrenId, calcSubs, calcDivision, calcModulo, emptySpaces, isNumber, printAddress, endAddress, resetAddress,
     closePublicViews, updateDataPath, remove, initView, getViewParams, removeView, defaultEventHandler,
     toNumber, defaultAppEvents, clearActions, hideSecured, route, respond, eventExecuter, starter,

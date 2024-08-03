@@ -1,0 +1,74 @@
+{
+    "currency": "USD",
+    "account": "38VhBjLBNWcg14fZOOEegKXuU3qJR24xIghnb51pyvBhkybi28yNuVca6ga3-1722502185946",
+    "ledgerAccount": "119/1/0",
+    "credit": 10000,
+    "debit": 0,
+    "exchangeRates": [
+        {
+            "code": "USD",
+            "counter": 0,
+            "exchangeRate": 1
+        },
+        {
+            "code": "XOF",
+            "counter": 1,
+            "exchangeRate": 630
+        },
+        {
+            "code": "LBP",
+            "counter": 2,
+            "exchangeRate": 89000
+        },
+        {
+            "code": "eur",
+            "counter": 4,
+            "exchangeRate": 100000
+        }
+    ],
+    "accountBalances": [
+        {
+            "ledgerAccount": "119/1/0",
+            "accountBalances": [
+                {
+                    "account": "38VhBjLBNWcg14fZOOEegKXuU3qJR24xIghnb51pyvBhkybi28yNuVca6ga3-1722502185946",
+                    "credit": 11000,
+                    "debit": 0,
+                    "balance": -11000
+                }
+            ]
+        }
+    ],
+    "systemAccountBalances": [
+        {
+            "account": "38VhBjLBNWcg14fZOOEegKXuU3qJR24xIghnb51pyvBhkybi28yNuVca6ga3-1722502185946",
+            "credit": 11000,
+            "debit": 0,
+            "balance": -11000
+        }
+    ],
+    "generalLedger": "119",
+    "id": "SRStWJfSYcidYxi3psvttNbvgI318FMjtTncuUOss0I2vSeJjgNlgvPLD5PJ-1722503712993",
+    "creationDate": 1722503712993,
+    "creationDay": 1722459600000,
+    "description": "Opening",
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "sysCredit": 10000,
+    "sysDebit": 0,
+    "__props__": {
+        "id": "Y1d7a2n2X5S0c3M7F103l0V6e4",
+        "doc": "transaction577",
+        "counter": 577,
+        "creationDate": 1722503713064,
+        "collection": "transaction",
+        "chunk": "chunk1",
+        "lastModified": 1722503713064,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1275
+    }
+}

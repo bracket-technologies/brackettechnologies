@@ -25,50 +25,5 @@
     },
     "host8": {
         "__props__.counter": 8
-    },
-    "host77": {
-        "__props__.counter": 77,
-        "port": [
-            84
-        ]
-    },
-    "host78": {
-        "__props__.counter": 78
-    },
-    "host79": {
-        "__props__.counter": 79,
-        "port": [
-            85
-        ]
-    },
-    "host80": {
-        "__props__.counter": 80
-    },
-    "host81": {
-        "__props__.counter": 81,
-        "port": [
-            86
-        ]
-    },
-    "host82": {
-        "__props__.counter": 82
-    },
-    "host83": {
-        "__props__.counter": 83,
-        "port": [
-            87
-        ]
-    },
-    "host84": {
-        "__props__.counter": 84
-    },
-    "host85": {
-        "__props__.counter": 85,
-        "port": [
-            88
-        ]
-    },
-    "host86": {
-        "__props__.counter": 86
     }
 }

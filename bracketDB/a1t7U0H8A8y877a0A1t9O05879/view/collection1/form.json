@@ -7,6 +7,8 @@
         "creationDate": 1716557780043,
         "collection": "view",
         "chunk": "chunk1",
+        "lastModified": 1722442266572,
+        "dev": false,
         "actions": {
             "closeForm": "prev().transform()='translateY(-100%)';timer():[():form.hide()]:500",
             "confirmHandler": {
@@ -106,17 +108,6 @@
                     "children",
                     1
                 ]
-            },
-            {
-                "note": "cards",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    2
-                ]
             }
         ],
         "collapsed": [
@@ -140,6 +131,11 @@
             },
             {
                 "path": [
+                    "confirmHandler"
+                ]
+            },
+            {
+                "path": [
                     "children",
                     0,
                     "children",
@@ -163,48 +159,21 @@
                     "children",
                     1,
                     "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "getSchema"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
                     0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 4133
+        "size": 4004
     },
     "children": [
         {
@@ -217,10 +186,13 @@
                     "view": "[View]:[data=_.sections]?class=flex column;style:[width=100%]",
                     "children": [
                         {
-                            "view": "View?style=[[_.styles]()]?_.gridInputs",
+                            "view": "View?style=[[_.styles]()]",
                             "children": [
                                 {
-                                    "view": "[customInput]:[data=_.inputs]"
+                                    "view": "[customInput]:[data=_.inputs?_.gridInputs]"
+                                },
+                                {
+                                    "view": "[card]:[data=[_.cards]()?_.gridCards]"
                                 }
                             ]
                         },
@@ -228,12 +200,7 @@
                             "view": "View?style:[minHeight=1px;backgroundColor=#ddd;width=100%]?_.divider"
                         },
                         {
-                            "view": "View?style:[[_.styles]().flat()]?_.gridCards",
-                            "children": [
-                                {
-                                    "view": "[card]:[data=[_.cards]()]"
-                                }
-                            ]
+                            "view": "Table??_.table"
                         }
                     ]
                 },
@@ -249,7 +216,7 @@
                             ]
                         },
                         {
-                            "view": "View?class=flexbox pointer;style:[padding=1rem;width=15rem;backgroundColor=publicData:().public.btnBackgroundColor;borderRadius=.5rem;opacity=.8;transition=.2s;marginTop=auto;marginLeft=auto];hover.style.opacity=1;[click?confirmHandler()]",
+                            "view": "View?class=flexbox pointer;style:[padding=1rem;width=15rem;backgroundColor=publicData:().public.btnBackgroundColor;borderRadius=.5rem;opacity=.8;transition=.2s;marginTop=auto;marginLeft=auto];hover.style.opacity=1;[click?confirmHandler()]?_.confirmBtn",
                             "children": [
                                 {
                                     "view": "Text?text=[_.confirmBtn.text||Create];style:[fontSize=1.5rem;color=#fff]"

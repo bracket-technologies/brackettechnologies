@@ -12,8 +12,7 @@ const colorize = ({ _window, string, start = "[", index = 0, colors = _colors, s
   if (index === 8) index = 1
   if (typeof string !== "string") return string
 
-  string = string.replaceAll("<", "&#60;")
-  string = string.replaceAll(">", "&#62;")
+  string = string.replaceAll("<", "&#60;").replaceAll(">", "&#62;")
 
   // comment
   if (string.charAt(0) === "#" || string.includes("?#") || string.includes(";#") || string.includes("[#")) {

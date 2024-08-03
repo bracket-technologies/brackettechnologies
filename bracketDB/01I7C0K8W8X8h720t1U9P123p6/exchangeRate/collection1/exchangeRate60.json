@@ -1,0 +1,25 @@
+{
+    "exchangeRate": 1,
+    "code": "CAD",
+    "createdCurrencyRate": 1,
+    "id": "ish24EL4QOCHtn28Ltm8kiugwXZfKXHCBc4hfwWRus1sy2h9YtRLG0vA5WY5-1722242002136",
+    "creationDate": 1722242002136,
+    "creationDay": 1722200400000,
+    "currency": "LMOxce55Vjz3ULpPFBThDMvxAXYrWEgkOPWa7gNUBMgVOeQ0SjrTNa2eyOUN-1722242002112",
+    "__props__": {
+        "id": "F1d7v2r2R2T4D2v0G022a1x4g8",
+        "doc": "exchangeRate60",
+        "counter": 60,
+        "creationDate": 1722242002148,
+        "collection": "exchangeRate",
+        "chunk": "chunk1",
+        "lastModified": 1722242002148,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 552
+    }
+}

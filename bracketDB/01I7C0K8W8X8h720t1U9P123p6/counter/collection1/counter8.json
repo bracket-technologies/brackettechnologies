@@ -1,0 +1,32 @@
+{
+    "code": "119",
+    "length": 8,
+    "counter": 0,
+    "counterList": [
+        0,
+        "1"
+    ],
+    "start": 0,
+    "max": 99999999,
+    "reset": "yearly",
+    "creationDate": 1722502185979,
+    "id": "pbLViRrHXfEx6obATx7YPAVzBudC0AEswTfGcPypXLaM5pZx2z2Y4wwfGtBv1722502185979",
+    "timestamp": 1722502185979,
+    "creationDay": 1722459600000,
+    "__props__": {
+        "id": "41o7t2x2H5G0O2O1q8b5e9Y8X1",
+        "doc": "counter8",
+        "counter": 8,
+        "creationDate": 1722502185981,
+        "collection": "counter",
+        "chunk": "chunk1",
+        "lastModified": 1722502186017,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 523
+    }
+}

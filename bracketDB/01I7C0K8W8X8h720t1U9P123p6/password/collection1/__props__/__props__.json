@@ -3,14 +3,14 @@
     "collection": 1,
     "maxSize": 1000,
     "lastChunk": 1,
-    "docsLength": 4,
-    "counter": 4,
-    "reads": 74,
-    "writes": 7,
+    "docsLength": 5,
+    "counter": 5,
+    "reads": 87,
+    "writes": 8,
     "deletes": 0,
-    "size": 1884,
-    "payloadIn": 2631,
-    "payloadOut": 30868,
+    "size": 2414,
+    "payloadIn": 3161,
+    "payloadOut": 36598,
     "indexes": [
         {
             "find": [
@@ -18,8 +18,8 @@
                 "password"
             ],
             "doc": "index1",
-            "lastRead": 1721898567065,
-            "expiryDate": 1724490567065
+            "lastRead": 1722598757506,
+            "expiryDate": 1725190757506
         }
     ],
     "lastIndex": 1

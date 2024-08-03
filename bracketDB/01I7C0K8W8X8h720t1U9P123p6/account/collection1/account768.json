@@ -1,54 +1,43 @@
 {
-    "name": "Test1",
+    "name": "Opening1",
     "isSubAccount": "No",
-    "generalLedger": "413",
+    "generalLedger": "119",
     "autoGenerateAccountNumber": "Yes",
     "currency": [
-        "xof"
+        "USD",
+        "LBP"
     ],
-    "type": "B2B Customer",
-    "createVATAccount": "No",
-    "openingBalance": [
-        {
-            "openingBalance": "Yes",
-            "currency": "xof",
-            "credit-debit": "Debit",
-            "amount": 1000,
-            "openingBalanceAccount": "119/1/0"
-        }
-    ],
-    "limit": 1000,
-    "notification": "No",
     "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
-    "createdBy": "ecGBRq1sxd0cfpMp3lwIOykt4JGrvjKmCVcx01uFTezsGlsL0cqwifRrfXpW-1721739412660",
+    "createdBy": "4nFZccstfAc5FKZhSxoQoFmo4e8JaBuQYnGP5qwRpwTEsOFXapL13mOhfgo0-1722500623524",
     "startsWith": [
-        "4",
-        "41",
-        "413"
+        "1",
+        "11",
+        "119"
     ],
-    "id": "VfgMxq3kJkmXT0e8xPGwdSSixiesOXKYkoyNSTejRINsxTzxMnDa0X3mV6dV-1721909801892",
-    "creationDate": 1721909801892,
-    "creationDay": 1721854800000,
+    "id": "38VhBjLBNWcg14fZOOEegKXuU3qJR24xIghnb51pyvBhkybi28yNuVca6ga3-1722502185946",
+    "creationDate": 1722502185947,
+    "creationDay": 1722459600000,
     "ref": "ACC-00000002",
     "accountNumber": "1",
     "ledgerAccount": [
-        "413/1/1"
+        "119/1/0",
+        "119/1/2"
     ],
     "__props__": {
-        "id": "N1A7h2X1e920L9W8v0p1n9O8B9",
+        "id": "k1C7u2X2X5b062M1Z8i6U044D8",
         "doc": "account768",
         "counter": 768,
-        "creationDate": 1721909801989,
+        "creationDate": 1722502186048,
         "collection": "account",
         "chunk": "chunk1",
-        "lastModified": 1721909802091,
+        "lastModified": 1722503713094,
         "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 1074
+        "size": 882
     },
-    "lastBalance": "1BAt4zTZU0XtbpT5gfC4EqH4xm9wmhC83pdZj2KcfWm3UDXIX2PhhPinildW-1721909801968"
+    "lastBalance": "SRStWJfSYcidYxi3psvttNbvgI318FMjtTncuUOss0I2vSeJjgNlgvPLD5PJ-1722503712993"
 }

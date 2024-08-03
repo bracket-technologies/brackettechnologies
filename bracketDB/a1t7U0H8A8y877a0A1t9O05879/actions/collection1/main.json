@@ -6,7 +6,7 @@
         "creationDate": 1714592888052,
         "collection": "actions",
         "chunk": "chunk1",
-        "lastModified": 1721314156027,
+        "lastModified": 1722611664645,
         "dev": false,
         "actions": {
             "getUserAccount": {
@@ -121,26 +121,6 @@
                 "resHandler": "end():[success=true;projects=projects:()]?stack().renderer||_.end?send():[success=true;projects=projects:()]",
                 "checkPermissions": "[end():[success=false]?stack().renderer||_.end?send():[success=false]]?!manifest:().session.userID"
             },
-            "getPlugin": {
-                "_": "start();getPlugin()::[getPackage()::[getAccessability()::[getSubscriptions()::[resHandler()]]]]",
-                "resHandler": "response:()=[plugin=plugin:();package=package:();packages=packages:();accessability=accessability:();subscriptions=subscriptions:()];[end():[;[response:()].flat()]?stack().renderer||_.end?send():[;[response:()].flat()]]",
-                "getAccessability": {
-                    "_": "search():[collection=accessability;findOne.'__props__.id'=package:().accessabilityID]:[checkAccessability()]?_.packageID",
-                    "checkAccessability": "accessability:()=_.data;#[?_.data?send():[success=false;msg='This package does not have any accessabilities!']]"
-                },
-                "getPackage": {
-                    "_": "search():[collection=package;find:[['__props__.id'=_.packageID?_.packageID];pluginID=plugin:().id()]]:[checkPackage()?__.packageID?checkPackages()]",
-                    "checkPackage": "send():[success=false;msg=Package does not exist!]?!_.data.value()?package:()=_.data.value()",
-                    "checkPackages": "send():[success=false;msg=This plugin does not have any package or package does not belong to the plugin!]?!_.data.value()?packages:()=_.data.values()"
-                },
-                "getPlugin": {
-                    "_": "search():[collection=plugin;findOne=['__props__.id'=_.pluginID]]:[checkPlugin()]",
-                    "checkPlugin": "send():[msg=Plugin has been expired!;success=false]?_.data;_.data.expiryDate<timestamp()?plugin:()=_.data?_.data?send():[msg=Plugin does not exist!;success=false]"
-                },
-                "getSubscriptions": {
-                    "_": "search():[collection=subscription;find:[[startDate.gte=_.subscriptionStartDate?_.subscriptionStartDate];[expiryDate.lte=_.subscriptionExpiryDate?_.subscriptionExpiryDate]]]:[subscriptions=_.data.values()]?_.subscriptionStartDate;_.subscriptionExpiryDate"
-                }
-            },
             "getPlugins": {
                 "_": "start();getPlugins()::[getPackages()::[resHandler()]]",
                 "resHandler": "end():[plugins=plugins:()]?stack().renderer||__.end?send():[plugins=plugins:()]",
@@ -203,17 +183,12 @@
                 "_": "start();search():[collection=package;find:[active=true;[pluginID=_.pluginID?_.pluginID];['__props__.id'=_.packageID?_.packageID]]]:[packagesHandler()]",
                 "packagesHandler": "packages:()=_.data.values();[end():[packages=_.data.values()]?stack().renderer?send():[packages=_.data.values()]]?_.data.value()?send():[success=false;msg=No package found!]"
             },
-            "getSubscription": {
-                "_": "start();getSubscription()::[resHandler()]",
-                "getSubscription": "search():[collection=subscription;findOne:[[accountID=_.accountID?_.accountID];[publicID=_.publicID?_.publicID];['__props__.id'=_.subscriptionID?_.subscriptionID];[pluginID=_.pluginID?_.pluginID];[expiryDate.gt=_.expiryDate?_.expiryDate];[startDate.lte=_.startDate?_.startDate]]]:[subscription:()=_.data?_.data]",
-                "resHandler": "[end():[subscription=subscription:()]?stack().renderer||_.end?send():[subscription=subscription:()]]?subscription:()?send():[success=false;msg=No subscription exists!]"
-            },
             "subscribe": {
                 "_": "checkData();createSubscription()::[resHandler()]",
                 "createSubscription": {
                     "_": "subscribeToConsole()::[[createSubscription()]():[path=:]]",
                     "subscribeToConsole": {
-                        "_": "createHost()?_.pluginID=Q1p78107R4j1n2Z9a2E1K1r912",
+                        "_": "[getSubscription():[[_].flat();end=true]]()::[createHost()?_.pluginID=Q1p78107R4j1n2Z9a2E1K1r912;!subscription:()]",
                         "createHost": "[createHost():[[_].flat();dev=true]]():[path=:]"
                     }
                 },
@@ -281,6 +256,34 @@
             },
             "getHost": {
                 "_": "search():[collection=host;findOne:[publicID=_.publicID;port.gte=80;dev=true]]:[_.data.ip=localIP()+_.data.port.0;send():[host=_.data]]"
+            },
+            "getPlugin": {
+                "_": "start();getPlugin()::[getPackage()::[getAccessability()::[getSubscriptions()::[resHandler()]]]]",
+                "resHandler": "response:()=[plugin=plugin:();package=package:();packages=packages:();accessability=accessability:();subscriptions=subscriptions:()];[end():[;[response:()].flat()]?stack().renderer||_.end?send():[;[response:()].flat()]]",
+                "getAccessability": {
+                    "_": "search():[collection=accessability;findOne.'__props__.id'=package:().accessabilityID]:[checkAccessability()]?_.packageID",
+                    "checkAccessability": "accessability:()=_.data;#[?_.data?send():[success=false;msg='This package does not have any accessabilities!']]"
+                },
+                "getPackage": {
+                    "_": "search():[collection=package;find:[['__props__.id'=_.packageID?_.packageID];pluginID=plugin:().id()]]:[checkPackage()?__.packageID?checkPackages()]",
+                    "checkPackage": "send():[success=false;msg=Package does not exist!]?!_.data.value()?package:()=_.data.value()",
+                    "checkPackages": "send():[success=false;msg=This plugin does not have any package or package does not belong to the plugin!]?!_.data.value()?packages:()=_.data.values()"
+                },
+                "getPlugin": {
+                    "_": "search():[collection=plugin;findOne=['__props__.id'=_.pluginID]]:[checkPlugin()]",
+                    "checkPlugin": "send():[msg=Plugin has been expired!;success=false]?_.data;_.data.expiryDate<timestamp()?plugin:()=_.data?_.data?send():[msg=Plugin does not exist!;success=false]"
+                },
+                "getSubscriptions": {
+                    "_": "search():[collection=subscription;find:[[startDate.gte=_.subscriptionStartDate?_.subscriptionStartDate];[expiryDate.lte=_.subscriptionExpiryDate?_.subscriptionExpiryDate]]]:[subscriptions=_.data.values()]?_.subscriptionStartDate;_.subscriptionExpiryDate"
+                }
+            },
+            "getSubscription": {
+                "_": "start();getSubscription()::[resHandler()]",
+                "getSubscription": "search():[collection=subscription;findOne:[[accountID=_.accountID?_.accountID];[publicID=_.publicID?_.publicID];['__props__.id'=_.subscriptionID?_.subscriptionID];[pluginID=_.pluginID?_.pluginID];[expiryDate.gt=_.expiryDate?_.expiryDate];[startDate.lte=_.startDate?_.startDate]]]:[subscription:()=_.data?_.data]",
+                "resHandler": "[end():[subscription=subscription:()]?stack().renderer||_.end?send():[subscription=subscription:()]]?subscription:()?send():[success=false;msg=No subscription exists!]"
+            },
+            "getUser": {
+                "_": "search():[collection=user;findOne:[['__props__.id'=_.userID?_.userID];[email=_.email?_.email]]]:[user:()=_.data?_.data]?_.email||_.userID?send():[success=false;msg=Missing data!]"
             }
         },
         "comments": [
@@ -299,7 +302,7 @@
             {
                 "note": "signup to bracket platform",
                 "path": [
-                    "signup"
+                    "getPlugin"
                 ]
             },
             {
@@ -329,33 +332,18 @@
             },
             {
                 "path": [
-                    "getPackage"
-                ]
-            },
-            {
-                "path": [
-                    "getPlugin"
-                ]
-            },
-            {
-                "path": [
                     "createInvoice",
                     "createVoucher"
                 ]
             },
             {
                 "path": [
-                    "getUserAccount"
+                    "getPlugisn"
                 ]
             },
             {
                 "path": [
-                    "getSubscription"
-                ]
-            },
-            {
-                "path": [
-                    "getProjects"
+                    "getPlugisn"
                 ]
             },
             {
@@ -366,7 +354,7 @@
             },
             {
                 "path": [
-                    "getPlugins"
+                    "getPlugisn"
                 ]
             },
             {
@@ -404,13 +392,13 @@
             },
             {
                 "path": [
-                    "signup",
+                    "getPlugisn",
                     "createAccount"
                 ]
             },
             {
                 "path": [
-                    "getProject"
+                    "getPlugisn"
                 ]
             },
             {
@@ -420,12 +408,7 @@
             },
             {
                 "path": [
-                    "getBillingAccountBySession"
-                ]
-            },
-            {
-                "path": [
-                    "searchBySchema"
+                    "getPlugisn"
                 ]
             },
             {
@@ -445,23 +428,13 @@
             },
             {
                 "path": [
-                    "signup",
+                    "getPlugisn",
                     "createBillingAccount"
                 ]
             },
             {
                 "path": [
-                    "signup"
-                ]
-            },
-            {
-                "path": [
-                    "createSubscription"
-                ]
-            },
-            {
-                "path": [
-                    "getBillingAccount"
+                    "getPlugisn"
                 ]
             },
             {
@@ -492,17 +465,105 @@
             },
             {
                 "path": [
+                    "getPlugisn"
+                ]
+            },
+            {
+                "path": [
+                    "getPlugin",
+                    "getAccessability"
+                ]
+            },
+            {
+                "path": [
+                    "getPlugin",
+                    "getPackage"
+                ]
+            },
+            {
+                "path": [
+                    "getPlugin",
+                    "getSubscriptions"
+                ]
+            },
+            {
+                "path": [
+                    "getProjects"
+                ]
+            },
+            {
+                "path": [
+                    "searchBySchema"
+                ]
+            },
+            {
+                "path": [
+                    "signup"
+                ]
+            },
+            {
+                "path": [
+                    "getPlugins"
+                ]
+            },
+            {
+                "path": [
                     "getHost"
+                ]
+            },
+            {
+                "path": [
+                    "getPackage"
+                ]
+            },
+            {
+                "path": [
+                    "getUser"
+                ]
+            },
+            {
+                "path": [
+                    "getBillingAccount"
+                ]
+            },
+            {
+                "path": [
+                    "getUserAccount"
+                ]
+            },
+            {
+                "path": [
+                    "getBillingAccountBySession"
+                ]
+            },
+            {
+                "path": [
+                    "getProject"
+                ]
+            },
+            {
+                "path": [
+                    "getSubscription"
+                ]
+            },
+            {
+                "path": [
+                    "createSubscription"
                 ]
             },
             {
                 "path": [
                     "subscribe"
                 ]
+            },
+            {
+                "path": [
+                    "getPlugin"
+                ]
             }
         ],
         "arrange": [],
         "secured": true,
-        "size": 28786
+        "size": 29367
     }
 }

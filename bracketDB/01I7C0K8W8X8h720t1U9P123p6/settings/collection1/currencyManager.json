@@ -143,7 +143,10 @@
                 ]
             }
         ],
-        "collection": "currency"
+        "collection": "currency",
+        "docDefaultValues": {
+            "exchangeRate": 1
+        }
     },
     "title": "Currency Manager",
     "managerName": "currency",
@@ -157,9 +160,59 @@
     "__props__": {
         "id": "a1C7r1H1H0E3V1n3f6d143t7V3",
         "doc": "currencyManager",
+        "counter": 2,
         "creationDate": 1711031361373,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "settings",
+        "chunk": "chunk1",
+        "lastModified": 1722240812809,
+        "dev": false,
+        "actions": {},
+        "comments": [
+            {
+                "note": "general information",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0
+                ]
+            },
+            {
+                "note": "Reference Date",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    8
+                ]
+            },
+            {
+                "note": "Duration",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    9
+                ]
+            },
+            {
+                "note": "government rate",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1
+                ]
+            },
+            {
+                "note": "exchange rate",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2
+                ]
+            }
+        ],
         "collapsed": [
             {
                 "path": [
@@ -207,16 +260,6 @@
                     0,
                     "input",
                     8
-                ]
-            },
-            {
-                "path": [
-                    "popupInfo"
-                ]
-            },
-            {
-                "path": [
-                    "searchEngineInputs"
                 ]
             },
             {
@@ -308,23 +351,7 @@
                     "subInput",
                     0,
                     "input",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "input",
                     2
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0
                 ]
             },
             {
@@ -391,72 +418,59 @@
             },
             {
                 "path": [
+                    "table"
+                ]
+            },
+            {
+                "path": [
+                    "popupInfo"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input"
+                ]
+            },
+            {
+                "path": [
                     "createFormInputs",
                     "subInput"
                 ]
             },
             {
                 "path": [
-                    "createFormInputs"
-                ]
-            },
-            {
-                "path": [
-                    "table"
+                    "createFormInputs",
+                    "docDefaultValues"
                 ]
             }
         ],
-        "comments": [
-            {
-                "note": "general information",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0
-                ]
-            },
-            {
-                "note": "Reference Date",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "input",
-                    8
-                ]
-            },
-            {
-                "note": "Duration",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "input",
-                    9
-                ]
-            },
-            {
-                "note": "government rate",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    1
-                ]
-            },
-            {
-                "note": "exchange rate",
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    2
-                ]
-            }
-        ],
-        "dirPath": [],
-        "actions": {},
-        "counter": 2,
-        "chunk": "chunk1",
-        "collection": "settings"
+        "arrange": [],
+        "secured": false,
+        "size": 6088
     },
     "table": {
         "body": {

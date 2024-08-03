@@ -11,6 +11,6 @@
         "arrange": [],
         "chunk": "chunk1",
         "secured": false,
-        "collection": "schema"
+        "collection": "formSchema"
     }
 }

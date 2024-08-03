@@ -4,8 +4,12 @@
         "doc": "exchangeRateInfo",
         "counter": 8,
         "creationDate": 1712236087880,
-        "active": true,
-        "createdByUserID": null,
+        "collection": "settings",
+        "chunk": "chunk1",
+        "lastModified": 1722433595236,
+        "dev": false,
+        "actions": {},
+        "comments": [],
         "collapsed": [
             {
                 "path": [
@@ -26,9 +30,20 @@
                 ]
             },
             {
+                "path": []
+            },
+            {
+                "path": [
+                    "popupInfo"
+                ]
+            },
+            {
                 "path": [
                     "createFormInputs",
-                    "subInput"
+                    "subInput",
+                    0,
+                    "input",
+                    0
                 ]
             },
             {
@@ -38,12 +53,15 @@
                 ]
             },
             {
-                "path": []
+                "path": [
+                    "createFormInputs",
+                    "buttons"
+                ]
             }
         ],
-        "comments": [],
-        "chunk": "chunk1",
-        "collection": "settings"
+        "arrange": [],
+        "secured": false,
+        "size": 2088
     },
     "createFormInputs": {
         "collection": "exchangeRate",

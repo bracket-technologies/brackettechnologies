@@ -3,14 +3,14 @@
     "collection": "account",
     "chunkMaxSizeMB": 20,
     "lastChunk": 1,
-    "docsLength": 2,
-    "counter": 87,
-    "reads": 17661,
+    "docsLength": 1,
+    "counter": 86,
+    "reads": 17787,
     "writes": 368,
     "deletes": 0,
-    "size": 586,
+    "size": 323,
     "payloadIn": 106113,
-    "payloadOut": 4299601,
+    "payloadOut": 4339226,
     "dirTree": [],
     "indexes": [
         {
@@ -18,8 +18,8 @@
                 "__props__.id"
             ],
             "doc": "index1",
-            "lastRead": 1722005175261,
-            "expiryDate": 1724597175261
+            "lastRead": 1722679127376,
+            "expiryDate": 1725271127376
         },
         {
             "find": [

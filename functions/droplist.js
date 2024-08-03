@@ -9,7 +9,8 @@ const droplist = ({ id, e, __, stack, props, lookupActions, address, object }) =
   var view = views[id]
 
   if (!view.droplist) return
-  if (view.droplist.searchable !== false) view.droplist.searchable = {}
+  if (typeof view.droplist.searchable === "string" || view.droplist.searchable === true || view.droplist.searchable === undefined) view.droplist.searchable = {}
+  if (typeof view.droplist.filterable === "string" || view.droplist.filterable === true) view.droplist.filterable = {}
 
   // closedroplist
   var mouseleaveEvent = new Event("mouseleave")
@@ -29,20 +30,19 @@ const droplist = ({ id, e, __, stack, props, lookupActions, address, object }) =
 
   // items
   if (typeof items === "string") items = toValue({ id, data: items, lookupActions, __: view.__, props, stack, object })
-
+    
   // filterable
-  if (!view.droplist.preventDefault) {
-
-    if ((view.droplist.searchable || {}).filter && text) {
+  if (view.droplist.filterable && text) {
       
-      items = items.filter(item => view.droplist.searchable.any 
-        ? item.toString().toLowerCase().includes(text.toString().toLowerCase())
-        : item.toString().toLowerCase().slice(0, text.toString().length) === text.toString().toLowerCase()
-      )
-
-      global.__keyupIndex__ = 0
-    }
+    items = items.filter(item => view.droplist.filterable.any 
+      ? item.toString().toLowerCase().includes(text.toString().toLowerCase())
+      : item.toString().toLowerCase().slice(0, text.toString().length) === text.toString().toLowerCase()
+    )
+    
+    global.__keyupIndex__ = 0
   }
+
+  if (!text) global.__keyupIndex__ = 0
   
   // children
   if (items && items.length > 0) {
@@ -81,67 +81,68 @@ const droplist = ({ id, e, __, stack, props, lookupActions, address, object }) =
   } else droplistView.children = []
   
   droplistView.positioner = id
-  
+
   actions["refresh()"]({ stack, lookupActions, __, address, id, data: { id: "droplist", view: droplistView } })
+  var string = "().droplist.style.keys()._():[():droplist.style().[_]=().droplist.style.[_]];():droplist.position():[positioner=().id;[().droplist].flat()];():droplist.style():[opacity=1;transform='scale(1)';pointerEvents=auto]"
+  actions["line()"]({ stack, lookupActions, __, address, id, object, data: { string } })
+  
   droplistView = views.droplist
   
   // searchable
   var mouseEnterItem = () => {
 
     var _index, onlyOne
-    //if (view.droplist && view.droplist.searchable) {
 
-      if (text) {
-        
-        _index = (items || []).findIndex(item => view.droplist.searchable.any 
-          ? item.toString().toLowerCase().includes(text.toString().toLowerCase())
-          : item.toString().toLowerCase().slice(0, text.toString().length) === text.toString().toLowerCase()
-        )
+    if (text) {
+      
+      _index = (items || []).findIndex(item => view.droplist.searchable.any 
+        ? item.toString().toLowerCase().includes(text.toString().toLowerCase())
+        : item.toString().toLowerCase().slice(0, text.toString().length) === text.toString().toLowerCase()
+      )
 
-        // fills input value
-        onlyOne = (items || []).filter(item => view.droplist.searchable.any 
-          ? item.toString().toLowerCase().includes(text.toString().toLowerCase())
-          : item.toString().toLowerCase().slice(0, text.toString().length) === text.toString().toLowerCase()
-        ).length === 1
+      // fills input value
+      onlyOne = (items || []).filter(item => view.droplist.searchable.any 
+        ? item.toString().toLowerCase().includes(text.toString().toLowerCase())
+        : item.toString().toLowerCase().slice(0, text.toString().length) === text.toString().toLowerCase()
+      ).length === 1
+      
+      if (_index !== -1) {
         
-        if (_index !== -1) {
+        if (onlyOne && view.droplist.autoFill) {
           
-          if (onlyOne) {
+          if (e.inputType !== "deleteContentBackward" && e.inputType !== "deleteContentForward" && e.inputType !== "deleteWordBackward" && e.inputType !== "deleteWordForward") {
+
+            if (inputID) {
+
+              views[inputID].__element__.value = views[inputID].prevValue = items[_index]
+              views[inputID].contenteditable = false
+
+            } else {
+
+              view.__element__.innerHTML = view.prevValue = items[_index]
+              view.contenteditable = false
+            }
             
-            if (e.inputType !== "deleteContentBackward" && e.inputType !== "deleteContentForward" && e.inputType !== "deleteWordBackward" && e.inputType !== "deleteWordForward") {
+            
+          } else if (view.contenteditable === false || views[inputID].contenteditable === false) {
+            
+            if (inputID) {
 
-              if (inputID) {
+              views[inputID].__element__.value = items[_index].slice(0, -1)
+              views[inputID].contenteditable = true
 
-                views[inputID].__element__.value = views[inputID].prevValue = items[_index]
-                views[inputID].contenteditable = false
+            } else {
 
-              } else {
-
-                view.__element__.innerHTML = view.prevValue = items[_index]
-                view.contenteditable = false
-              }
-              
-              
-            } else if (view.contenteditable === false || views[inputID].contenteditable === false) {
-              
-              if (inputID) {
-
-                views[inputID].__element__.value = items[_index].slice(0, -1)
-                views[inputID].contenteditable = true
-
-              } else {
-
-                view.__element__.innerHTML = items[_index].slice(0, -1)
-                view.contenteditable = true
-              }
+              view.__element__.innerHTML = items[_index].slice(0, -1)
+              view.contenteditable = true
             }
           }
-
-          kernel({ id, data: { path: droplistView.__dataPath__, key: true, value: items[_index], data: global[droplistView.form] }, __ })
-          global.__keyupIndex__ = _index
         }
+
+        if (view.droplist.autoFill) kernel({ id, data: { path: droplistView.__dataPath__, key: true, value: items[_index], data: global[droplistView.form] }, __ })
+        global.__keyupIndex__ = _index
       }
-    //}
+    }
 
     global.__keyupIndex__ = global.__keyupIndex__ || 0
     droplistView.__element__.children.length > 0 && droplistView.__element__.children[global.__keyupIndex__].dispatchEvent(new Event("mouseenter"))

@@ -4,8 +4,10 @@
         "doc": "subscribeToConsoleForm",
         "counter": 7,
         "creationDate": 1716987049135,
-        "collection": "schema",
+        "collection": "formSchema",
         "chunk": "chunk1",
+        "lastModified": 1722424160130,
+        "dev": false,
         "actions": {},
         "comments": [
             {
@@ -81,7 +83,7 @@
         ],
         "arrange": [],
         "secured": false,
-        "size": 1975
+        "size": 2018
     },
     "confirmBtn": {
         "text": "Subscribe Now",
@@ -112,7 +114,6 @@
         }
     ],
     "styles": "width=100rem",
-    "doc": "subscribeToConsole",
     "reset": true,
     "requiredData": [
         "publicID",
@@ -123,5 +124,6 @@
         "endDate"
     ],
     "data": "[publicID=__.project.publicID;pluginID=plugin:().id();packageID=packages:().find():[freeTier=true].id()]",
-    "beforeLoadingActions": "[getPlugin():[pluginID='Q1p78107R4j1n2Z9a2E1K1r912';subscriptionExpiryDate=timestamp()]:[plugin:()=_.plugin;packages:()=_.packages.sort():[path=priceCoins;ascending];subscriptions:()=_.subscriptions]]():[collection=actions;doc=main]"
+    "beforeLoadingActions": "[getPlugin():[pluginID='Q1p78107R4j1n2Z9a2E1K1r912';subscriptionExpiryDate=timestamp()]:[plugin:()=_.plugin;packages:()=_.packages.sort():[path=priceCoins;ascending];subscriptions:()=_.subscriptions]]():[collection=actions;doc=main]",
+    "form": "subscribeToConsole"
 }

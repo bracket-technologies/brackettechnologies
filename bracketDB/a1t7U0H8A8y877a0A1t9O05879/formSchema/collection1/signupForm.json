@@ -4,8 +4,10 @@
         "doc": "signupForm",
         "counter": 1,
         "creationDate": 1716531810914,
-        "collection": "schema",
+        "collection": "formSchema",
         "chunk": "chunk1",
+        "lastModified": 1722614065097,
+        "dev": false,
         "actions": {
             "getDataOnLoaded": {
                 "_": "loader.show;[getCountriesAndCities();getPlugin()]()::[loader.hide]",
@@ -82,7 +84,7 @@
         ],
         "arrange": [],
         "secured": false,
-        "size": 3349
+        "size": 3400
     },
     "confirmBtn": {
         "text": "Get Started!",
@@ -209,8 +211,8 @@
         }
     ],
     "styles": "width=100rem",
-    "doc": "signupForm",
     "beforeLoadingActions": "[getDataOnLoaded()]():[doc=signupForm;collection=formSchema]",
     "reset": true,
-    "data": "[language=English;currency=USD;country=Lebanon;subscribeToPlugin=true;pluginID=plugin:().id();packageID=package:().id()]"
+    "data": "[language=English;currency=USD;country=Lebanon;subscribeToPlugin=true;pluginID=plugin:().id();packageID=package:().id()]",
+    "form": "signupForm"
 }

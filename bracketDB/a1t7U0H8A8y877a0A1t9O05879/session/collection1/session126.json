@@ -1,0 +1,32 @@
+{
+    "accountID": "N1c7i1G4e4C800o5J6l377C5Z7",
+    "accountName": "account3",
+    "publicID": "r4cy61G4e4C800o5J6l377C5Z7",
+    "projectID": "K1h7d1Z464w881m8v5M0u896O5",
+    "projectDoc": "project1",
+    "subdomain": "playground",
+    "host": "192.168.0.100:83",
+    "db": "a2c7i1G4e4C800o5J6l377C5Z7",
+    "devDB": "",
+    "dev": false,
+    "expiryDate": 1722765181999,
+    "encryptionKey": "PccI4",
+    "userID": "",
+    "username": "",
+    "__props__": {
+        "id": "Q1P7s2S20667X8T7u8I2p0O050",
+        "doc": "session126",
+        "counter": 126,
+        "creationDate": 1722678782000,
+        "collection": "session",
+        "chunk": "chunk1",
+        "lastModified": 1722678782000,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 619
+    }
+}

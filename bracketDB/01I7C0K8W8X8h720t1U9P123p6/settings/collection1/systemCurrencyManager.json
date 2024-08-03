@@ -1,0 +1,97 @@
+{
+    "__props__": {
+        "id": "o1O772S2G2B3k9e2t0v250o0L4",
+        "doc": "systemCurrencyManager",
+        "counter": 10,
+        "creationDate": 1722239202004,
+        "collection": "settings",
+        "chunk": "chunk1",
+        "lastModified": 1722239593869,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [
+            {
+                "path": [
+                    "popupInfo"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 1846
+    },
+    "createFormInputs": {
+        "subInput": [
+            {
+                "input": [
+                    {
+                        "inputPath": "country",
+                        "sheetName": "Currencies",
+                        "readonly": "readonly",
+                        "hideInEditForm": "true",
+                        "inputLabel": "Country",
+                        "sheetHeader": "country",
+                        "droplistClickAction": "customUpdate():[section=:1:2:0]",
+                        "required": true
+                    },
+                    {
+                        "inputPath": "name",
+                        "readonly": "readonly",
+                        "hideInEditForm": "true",
+                        "inputLabel": "Name",
+                        "inputValue": "if():[form().country]:[sheetData:().Currencies.data.find():[country=form().country].name]:['']",
+                        "executeEveryLoad": true,
+                        "required": true
+                    },
+                    {
+                        "inputPath": "code",
+                        "readonly": "readonly",
+                        "hideInEditForm": "true",
+                        "inputLabel": "Code",
+                        "inputValue": "if():[form().country]:[sheetData:().Currencies.data.find():[country=form().country].code]:['']",
+                        "executeEveryLoad": true,
+                        "required": "true"
+                    },
+                    {
+                        "inputPath": "symbole",
+                        "readonly": "readonly",
+                        "hideInEditForm": "true",
+                        "inputLabel": "Symbole",
+                        "inputValue": "if():[form().country]:[sheetData:().Currencies.data.find():[country=form().country].symbol]:['']",
+                        "executeEveryLoad": true,
+                        "required": true
+                    },
+                    {
+                        "inputPath": "decimals",
+                        "inputLabel": "Decimal digits",
+                        "inputValue": "if():[form().country]:[sheetData:().Currencies.data.find():[country=form().country].decimalDigits]:['']",
+                        "executeEveryLoad": true
+                    }
+                ],
+                "grid": "1fr 1fr 1fr 1fr 1fr 1fr",
+                "title": "General Information"
+            }
+        ],
+        "collection": "currency",
+        "docDefaultValues": {
+            "governmentRate": 1,
+            "systemCurrencyRateForGovernment": 1,
+            "createdCurrencyRate": 1,
+            "systemCurrencyRate": 1
+        }
+    },
+    "identifier": "systemCurrency",
+    "managerName": "currency",
+    "popupInfo": {
+        "docName": "currencyInfo",
+        "title": "Currency Form"
+    }
+}

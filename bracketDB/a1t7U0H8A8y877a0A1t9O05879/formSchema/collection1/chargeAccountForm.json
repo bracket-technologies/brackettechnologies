@@ -4,8 +4,10 @@
         "doc": "chargeAccountForm",
         "counter": 6,
         "creationDate": 1716558273312,
-        "collection": "schema",
+        "collection": "formSchema",
         "chunk": "chunk1",
+        "lastModified": 1722424140229,
+        "dev": false,
         "actions": {},
         "comments": [
             {
@@ -110,7 +112,7 @@
         ],
         "arrange": [],
         "secured": false,
-        "size": 1967
+        "size": 2010
     },
     "confirmBtn": {
         "text": "Buy Now",
@@ -150,8 +152,8 @@
         }
     ],
     "styles": "width=150rem",
-    "doc": "newProject",
     "reset": true,
     "beforeLoadingActions": "[getBillingAccountBySession()::[billingAccountID:()=_.billingAccount];getPlugin():[pluginID='V1p7r1A7q4A2U04469R7O4m7w9';subscriptionExpiryDate=timestamp()]:[plugin:()=_.plugin;packages:()=_.packages.sort():[path=priceUSD;ascending]]]():[collection=actions;doc=main]",
-    "data": "[billingAccountID=billingAccountID:().id();pluginID=plugin:().id()]"
+    "data": "[billingAccountID=billingAccountID:().id();pluginID=plugin:().id()]",
+    "form": "newProject"
 }

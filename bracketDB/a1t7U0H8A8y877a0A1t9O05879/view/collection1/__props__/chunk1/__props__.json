@@ -1,5 +1,6 @@
 {
     "docs": [
+        "Table",
         "gallery",
         "actionlist",
         "Authorize",
@@ -29,12 +30,11 @@
         "SearchEngine",
         "sidebar",
         "subscriptionForm",
-        "Table",
         "tap",
         "topbar",
         "tree"
     ],
     "indexes": [],
     "docsLength": 28,
-    "size": -15113
+    "size": -14710
 }

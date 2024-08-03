@@ -46,7 +46,7 @@
         "creationDate": 1711031365218,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1721909518519,
+        "lastModified": 1722243123334,
         "dev": false,
         "actions": {
             "confirmDeleteImage": {
@@ -84,7 +84,7 @@
                     "editAccountInAllLedgerAccounts": "allLedgersAccounts:().find():[id=_.data.id].():[[_.data].flat()]",
                     "addAccountInAllLedgerAccounts": "_.data.helper=setDefaultleftZero():[text=_.data.startsWith.[-1];digits=5];allLedgersAccounts:().push():[_.data]"
                 },
-                "updateExchangeRateInUserData": "userData:().currency.find():[code=_.data.data.code].exchangeRate=_.data.data.exchangeRate;managersSearchResult:().currency.find():[code=_.data.data.code].exchangeRate=_.data.data.exchangeRate;():customManagerTable.refresh();closeSubGeneralPopup()",
+                "updateExchangeRateInUserData": "userData:().currency.find():[code=_.data.data.code].():[exchangeRate=_.data.data.exchangeRate;createdCurrencyRate=_.stack.1.data.createdCurrencyRate;systemCurrencyRate=_.stack.1.data.systemCurrencyRate];managersSearchResult:().currency.find():[code=_.data.data.code].():[exchangeRate=_.data.data.exchangeRate;createdCurrencyRate=_.stack.1.data.createdCurrencyRate;systemCurrencyRate=_.stack.1.data.systemCurrencyRate];():customManagerTable.refresh();closeSubGeneralPopup()",
                 "updateCurrencyInUserData": "userData:().currency.push():[_.data.data]"
             },
             "saveTaxesInPrevForm": "[generalPopup:().docName]:().bookings.[__.dataPath].():[tax1=data().tax1;tax2=data().tax2;tax3=data().tax3;tax4=data().tax4;tax5=data().tax5;tax6=data().tax6;tax7=data().tax7;tax8=data().tax8];closeSubGeneralPopup();__.viewToUpdate._():[():[_].children()._():[_.refresh()]]",
@@ -484,11 +484,6 @@
             },
             {
                 "path": [
-                    "addFormSchema"
-                ]
-            },
-            {
-                "path": [
                     "children",
                     1
                 ]
@@ -498,10 +493,15 @@
                     "children",
                     2
                 ]
+            },
+            {
+                "path": [
+                    "saveSheet"
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 10024
+        "size": 10246
     }
 }

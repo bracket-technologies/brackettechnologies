@@ -60,16 +60,16 @@
         {
             "name": "abidjan",
             "country": "abj",
-            "code": "xof",
-            "symbol": "xof",
+            "code": "XOF",
+            "symbol": "XOF",
             "decimalDigits": "2"
         },
         {
-            "name": "",
-            "country": "",
-            "code": "",
-            "symbol": "",
-            "decimalDigits": ""
+            "name": "lira",
+            "country": "syria",
+            "code": "eur",
+            "symbol": "syr",
+            "decimalDigits": "2"
         }
     ],
     "name": "Currencies",
@@ -83,7 +83,7 @@
         "creationDate": 1711031362221,
         "collection": "sheet",
         "chunk": "chunk1",
-        "lastModified": 1721902381978,
+        "lastModified": 1722501016208,
         "dev": false,
         "actions": {},
         "comments": [],
@@ -137,7 +137,7 @@
         ],
         "arrange": [],
         "secured": false,
-        "size": 1582
+        "size": 1598
     },
     "type": "Editable",
     "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",

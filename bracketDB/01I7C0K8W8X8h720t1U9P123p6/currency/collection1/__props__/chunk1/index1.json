@@ -4,5 +4,11 @@
     },
     "currency2": {
         "counter": 1
+    },
+    "currency3": {
+        "counter": 2
+    },
+    "currency4": {
+        "counter": 4
     }
 }

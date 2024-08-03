@@ -27,7 +27,9 @@ const openStack = ({ _window, id: viewID, string = "", ...data }) => {
   var global = _window ? _window.global : window.global
   global.__stacks__[stack.id] = stack
 
-  return stack
+  if (data.server !== "action") var address = require("./kernel").actions["addresser()"]({ _window, id: viewID, stack, props: {}, __: [], object: [{}], data: { string: "send():[success=true;message=Done!]" } }).address
+    
+  return {stack, address}
 }
 
 const clearStack = ({ stack }) => {

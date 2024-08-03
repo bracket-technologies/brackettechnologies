@@ -6,7 +6,7 @@
         "creationDate": 1717509735612,
         "collection": "actions",
         "chunk": "chunk1",
-        "lastModified": 1721999952777,
+        "lastModified": 1722588846792,
         "dev": false,
         "actions": {
             "getData": {
@@ -30,12 +30,56 @@
                 "_": "[getProject():[[_].flat();end=true]]():[collection=actions;doc=main]:[eraseDoc()]?_.collection;_.publicID?send():[success=false;msg=Missing data!]",
                 "eraseDoc": "erase():[db=[project:().storage?_.storage?project:().db];devDB=project:().devDB;[_].flat()]:[send():[data=_.data;msg=Data erased successfully!]]"
             },
-            "getSchema": "start();search():[collection=_.collection;doc=_.schema]:[send():[success=_.success;message=_.message;schema=_.data]?!stack().server=render?end():[success=_.success;message=_.message;schema=_.data]]"
+            "getSchema": "start();search():[collection=_.collection;doc=_.schema]:[send():[success=_.success;message=_.message;schema=_.data]?!stack().server=render?end():[success=_.success;message=_.message;schema=_.data]]",
+            "getProjectActivity": {
+                "_": "[getProject():[[_].flat();end=true]]():[collection=actions;doc=main]:[getProjectActivity()]?_.publicID?send():[success=false;msg=Missing data!]",
+                "getProjectActivity": "search():[collection=projectActivity;find:[projectID=project:().id();date.gte=_.monthStart;date.lte=_.monthEnd]]:[send():[success=_.success;message=_.message;projectActivity=_.data]]"
+            },
+            "getUserActivity": {
+                "_": "[[getUser():[email=_.email]]():[doc=main]?_.email]()::[getUserActivity()]?_.email?send():[success=false;msg=Missing data!]",
+                "getUserActivity": "search():[collection=userActivity;find:[userID=user:().id();date.gte=_.monthStart;date.lte=_.monthEnd]]:[send():[success=_.success;message=_.message;userActivity=_.data]]"
+            }
         },
         "comments": [],
-        "collapsed": [],
+        "collapsed": [
+            {
+                "path": [
+                    "getProject"
+                ]
+            },
+            {
+                "path": [
+                    "eraseData"
+                ]
+            },
+            {
+                "path": [
+                    "getData"
+                ]
+            },
+            {
+                "path": [
+                    "publish"
+                ]
+            },
+            {
+                "path": [
+                    "saveData"
+                ]
+            },
+            {
+                "path": [
+                    "getUserActivity"
+                ]
+            },
+            {
+                "path": [
+                    "getProjectActivity"
+                ]
+            }
+        ],
         "arrange": [],
         "secured": true,
-        "size": 2094
+        "size": 2984
     }
 }

@@ -3,14 +3,14 @@
     "collection": "permission",
     "chunkMaxSizeMB": 20,
     "lastChunk": 1,
-    "docsLength": 7,
-    "counter": 82,
-    "reads": 48347,
+    "docsLength": 6,
+    "counter": 81,
+    "reads": 56654,
     "writes": 231,
     "deletes": 0,
-    "size": 1640,
+    "size": 1095,
     "payloadIn": 298163,
-    "payloadOut": 36771561,
+    "payloadOut": 43291821,
     "dirTree": [],
     "indexes": [
         {
@@ -24,8 +24,8 @@
                 "userID"
             ],
             "doc": "index2",
-            "lastRead": 1722005946598,
-            "expiryDate": 1724597946598
+            "lastRead": 1722679129176,
+            "expiryDate": 1725271129176
         }
     ],
     "lastIndex": 2

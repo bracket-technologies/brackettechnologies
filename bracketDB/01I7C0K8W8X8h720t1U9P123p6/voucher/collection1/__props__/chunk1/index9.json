@@ -1,1 +1,17 @@
-{}
+{
+    "voucher1": {
+        "type": "Journal Voucher",
+        "fromAccounts": [
+            "1/1/0"
+        ]
+    },
+    "voucher2": {
+        "type": "Receipt Voucher"
+    },
+    "voucher3": {
+        "type": "Journal Voucher",
+        "fromAccounts": [
+            "1/2/0"
+        ]
+    }
+}

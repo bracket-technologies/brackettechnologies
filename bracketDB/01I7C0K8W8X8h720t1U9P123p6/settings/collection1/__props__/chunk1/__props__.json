@@ -1,5 +1,6 @@
 {
     "docs": [
+        "systemCurrencyManager",
         "userManager",
         "scheduleManager",
         "paymentTermsManager",
@@ -10,6 +11,6 @@
         "branchManager"
     ],
     "chunk": "chunk1",
-    "docsLength": 8,
-    "size": 34441
+    "docsLength": 9,
+    "size": 119
 }

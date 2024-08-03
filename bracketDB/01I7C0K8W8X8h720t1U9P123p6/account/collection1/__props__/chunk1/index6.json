@@ -1,18 +1,68 @@
 {
     "account767": {
-        "name": "Opening",
+        "name": "Test1",
+        "startsWith": [
+            "1"
+        ]
+    },
+    "account768": {
+        "name": "Opening1",
         "startsWith": [
             "1",
             "11",
             "119"
         ]
     },
-    "account768": {
-        "name": "Test1",
+    "account769": {
+        "name": "Table",
+        "startsWith": [
+            "2"
+        ]
+    },
+    "account770": {
+        "name": "Cash1",
+        "startsWith": [
+            "5",
+            "53"
+        ]
+    },
+    "account771": {
+        "name": "Purchases",
+        "startsWith": [
+            "6",
+            "60",
+            "601"
+        ]
+    },
+    "account772": {
+        "name": "InVoices",
+        "startsWith": [
+            "7",
+            "70",
+            "701"
+        ]
+    },
+    "account773": {
+        "name": "Customer1",
         "startsWith": [
             "4",
             "41",
             "413"
+        ]
+    },
+    "account774": {
+        "name": "Test3",
+        "startsWith": [
+            "1"
+        ]
+    },
+    "account775": {
+        "name": "Tttt",
+        "startsWith": [
+            "4",
+            "40",
+            "401",
+            "4011"
         ]
     }
 }

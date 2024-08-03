@@ -7,7 +7,7 @@
         "creationDate": 1711031365213,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1721901096800,
+        "lastModified": 1722336225824,
         "dev": false,
         "actions": {
             "callOpenCreateForm": "if():[createFormStack:().len()>0]:[openCreateForm():[manager=getManagerFromCollection(l):[collection=_.collection];read=_.read]]:[openCreateForm():[manager=currentOpenManager:()]]",
@@ -99,7 +99,7 @@
                 "setSubGeneralPopupParams": "setDocDefaultValues();subGeneralPopup:()=[docValues=().docValues;borderRadius=0 0 .4rem .4rem;stopFormIds=true;title='Currency Rate';docName=settingsInfo:().exchangeRateInfo.popupInfo.docName;popupName=customForm;inputInfo=settingsInfo:().exchangeRateInfo.createFormInputs.clone();saveAction=settingsInfo:().exchangeRateInfo.saveAction;discardAction=settingsInfo:().exchangeRateInfo.discardAction]",
                 "openSubGeneralPopup": "():subGeneralPopup.refresh()::[():subGeneralPopup.style():[visibility=visible;opacity=1];():subGeneralPopup.2ndChild().style():[transform=translateY(0)]]",
                 "setDocDefaultValues": "exchangeRate:()=[exchangeRates=:[___]]",
-                "setDocValues": "___._():[().docValues.exchangeRates=:[systemCurrencyRate=_.systemCurrencyRate;name=_.name;counter=_.counter;code=_.code;createdCurrencyRate=_.createdCurrencyRate;exchangeRate=_.exchangeRate]]"
+                "setDocValues": "___._():[().docValues.exchangeRates=:[log():['tahaassaf']:[under=_;under2=__;under3=___];id=_.id;systemCurrencyRate=_.systemCurrencyRate;name=_.name;counter=_.counter;code=_.code;createdCurrencyRate=_.createdCurrencyRate;exchangeRate=_.exchangeRate]]"
             },
             "printAction": {
                 "_": "[setPrintViewData()]()::[callPrintView()]",
@@ -131,7 +131,7 @@
                 "roundDecimalPart": "if():[().splitedDotList.1%10>=5;().splitedDotList.1>100]:[if():[().splitedDotList.1.toString().slice():0:2.num()<99]:[().decimalPart=().decimalPart.toString().slice():0:2+1]:[().decimalPart='00';().splitedDotList.0+=1]]:[().decimalPart=().decimalPart.toString().slice():0:2]"
             },
             "customUpdate": {
-                "_": "if():[_.type()=array]:[handleListUpdates()].elif():[_.section;_.input]:[updateInputInSpecificSection()].elif():[_.section||_.section=0]:[updateSpecificSection()].elif():[_.input]:[updateInputInSameSection()]:[updateForm()]",
+                "_": "log():['taha232132']:[_];if():[_.type()=array]:[handleListUpdates()].elif():[_.section;_.input]:[updateInputInSpecificSection()].elif():[_.section||_.section=0]:[updateSpecificSection()].elif():[_.input]:[updateInputInSameSection()]:[updateForm()]",
                 "handleListUpdates": "_._():[customUpdate():[_]]",
                 "updateInputInSpecificSection": "getSectionByIndex():[_.section]._():[__.input._():[():[__.inputs.[_].id].refresh()]]",
                 "getSectionByIndex": "return():[formIds:().find():[sectionCounter=_.toString()]]",
@@ -218,11 +218,6 @@
             },
             {
                 "path": [
-                    "customUpdate"
-                ]
-            },
-            {
-                "path": [
                     "customCondition"
                 ]
             },
@@ -233,28 +228,28 @@
             },
             {
                 "path": [
-                    "openexchangeRateView"
-                ]
-            },
-            {
-                "path": [
                     "openSearchBox"
-                ]
-            },
-            {
-                "path": [
-                    "checkSession"
                 ]
             },
             {
                 "path": [
                     "openCreateForm"
                 ]
+            },
+            {
+                "path": [
+                    "checkIfOpenPrevForm"
+                ]
+            },
+            {
+                "path": [
+                    "checkSession"
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 22471
+        "size": 22528
     },
     "children": [
         {

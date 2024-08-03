@@ -1,0 +1,45 @@
+{
+    "name": "InVoices",
+    "isSubAccount": "No",
+    "generalLedger": "701",
+    "autoGenerateAccountNumber": "Yes",
+    "currency": [
+        "USD"
+    ],
+    "openingBalance": [
+        {
+            "openingBalance": "No"
+        }
+    ],
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "createdBy": "4nFZccstfAc5FKZhSxoQoFmo4e8JaBuQYnGP5qwRpwTEsOFXapL13mOhfgo0-1722500623524",
+    "startsWith": [
+        "7",
+        "70",
+        "701"
+    ],
+    "id": "s9siYuRgbd0DD8P4TLenckrL3brNZ9qYdQ2nPc3EtGrJIgoj58dhOlxvK2ML-1722503766915",
+    "creationDate": 1722503766915,
+    "creationDay": 1722459600000,
+    "ref": "ACC-00000006",
+    "accountNumber": "1",
+    "ledgerAccount": [
+        "701/1/0"
+    ],
+    "__props__": {
+        "id": "G1a7b2Z2U5e0D3P7y6Z7l0d0I6",
+        "doc": "account772",
+        "counter": 772,
+        "creationDate": 1722503767006,
+        "collection": "account",
+        "chunk": "chunk1",
+        "lastModified": 1722503767006,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 818
+    }
+}

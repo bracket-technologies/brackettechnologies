@@ -1,0 +1,52 @@
+{
+    "name": "Cash1",
+    "isSubAccount": "No",
+    "generalLedger": "53",
+    "autoGenerateAccountNumber": "Yes",
+    "currency": [
+        "USD",
+        "XOF"
+    ],
+    "type": "Cash",
+    "openingBalance": [
+        {
+            "openingBalance": "Yes",
+            "currency": "USD",
+            "credit-debit": "Debit",
+            "amount": 10000,
+            "openingBalanceAccount": "119/1/0"
+        }
+    ],
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "createdBy": "4nFZccstfAc5FKZhSxoQoFmo4e8JaBuQYnGP5qwRpwTEsOFXapL13mOhfgo0-1722500623524",
+    "startsWith": [
+        "5",
+        "53"
+    ],
+    "id": "seHgjyGzMyG4nAX9Q6grFiNIHZ8ESH0deZgnFZfcb5hwRYuUoi5ZmbgF1DEQ-1722503712924",
+    "creationDate": 1722503712924,
+    "creationDay": 1722459600000,
+    "ref": "ACC-00000004",
+    "accountNumber": "1",
+    "ledgerAccount": [
+        "53/1/0",
+        "53/1/1"
+    ],
+    "__props__": {
+        "id": "z1j762i2u5q0r337s1S3U0I2y4",
+        "doc": "account770",
+        "counter": 770,
+        "creationDate": 1722503713024,
+        "collection": "account",
+        "chunk": "chunk1",
+        "lastModified": 1722503889762,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1017
+    },
+    "lastBalance": "iySW9ygZ5xnmbtD6aQagkgcK0yujLOOnkOfsRNgnTnmXS9UID6dG53MQB5cp-1722503889626"
+}

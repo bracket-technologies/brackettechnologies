@@ -3,40 +3,6 @@
         "exchangeRate": {
             "keyValue": [
                 {
-                    "path": "code",
-                    "type": "string",
-                    "key": "code",
-                    "required": true
-                },
-                {
-                    "path": "country",
-                    "type": "string",
-                    "key": "country",
-                    "required": true
-                },
-                {
-                    "path": "governmentRate",
-                    "type": "number",
-                    "key": "governmentRate"
-                },
-                {
-                    "path": "symbole",
-                    "type": "string",
-                    "key": "symbole",
-                    "required": true
-                },
-                {
-                    "path": "decimals",
-                    "type": "number",
-                    "key": "decimals"
-                },
-                {
-                    "path": "name",
-                    "type": "string",
-                    "key": "name",
-                    "required": true
-                },
-                {
                     "path": "id",
                     "type": "string",
                     "key": "id",
@@ -46,12 +12,6 @@
                     "path": "createdCurrencyRate",
                     "type": "number",
                     "key": "createdCurrencyRate",
-                    "required": true
-                },
-                {
-                    "path": "systemCurrencyRateForGovernment",
-                    "type": "number",
-                    "key": "systemCurrencyRateForGovernment",
                     "required": true
                 },
                 {
@@ -172,7 +132,7 @@
         "creationDate": 1713950650650,
         "collection": "schemas",
         "chunk": "chunk1",
-        "lastModified": 1721826661164,
+        "lastModified": 1722241510951,
         "dev": false,
         "actions": {},
         "comments": [
@@ -254,65 +214,11 @@
                     "create",
                     "exchangeRate",
                     "keyValue",
-                    7
-                ]
-            },
-            {
-                "note": "id",
-                "path": [
-                    "create",
-                    "exchangeRate",
-                    "keyValue",
-                    6
-                ]
-            },
-            {
-                "note": "name",
-                "path": [
-                    "create",
-                    "exchangeRate",
-                    "keyValue",
-                    5
-                ]
-            },
-            {
-                "note": "decimal",
-                "path": [
-                    "create",
-                    "exchangeRate",
-                    "keyValue",
-                    4
-                ]
-            },
-            {
-                "note": "symbole",
-                "path": [
-                    "create",
-                    "exchangeRate",
-                    "keyValue",
-                    3
-                ]
-            },
-            {
-                "note": "governmentRate",
-                "path": [
-                    "create",
-                    "exchangeRate",
-                    "keyValue",
-                    2
-                ]
-            },
-            {
-                "note": "country",
-                "path": [
-                    "create",
-                    "exchangeRate",
-                    "keyValue",
                     1
                 ]
             },
             {
-                "note": "code",
+                "note": "id",
                 "path": [
                     "create",
                     "exchangeRate",
@@ -330,21 +236,12 @@
                 ]
             },
             {
-                "note": "systemCurrencyRateForGovernment",
-                "path": [
-                    "create",
-                    "exchangeRate",
-                    "keyValue",
-                    8
-                ]
-            },
-            {
                 "note": "systemCurrencyRate",
                 "path": [
                     "create",
                     "exchangeRate",
                     "keyValue",
-                    9
+                    2
                 ]
             }
         ],
@@ -467,37 +364,6 @@
             {
                 "path": [
                     "create",
-                    "exchangeRate",
-                    "keyValue",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "exchangeRate",
-                    "keyValue",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "exchangeRate",
-                    "keyValue",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "exchangeRate",
-                    "helpersKeyValue"
-                ]
-            },
-            {
-                "path": [
-                    "create",
                     "currency",
                     "keyValue",
                     6
@@ -538,12 +404,6 @@
             {
                 "path": [
                     "create",
-                    "exchangeRate"
-                ]
-            },
-            {
-                "path": [
-                    "create",
                     "currency",
                     "keyValue"
                 ]
@@ -554,10 +414,23 @@
                     "currency",
                     "nextStep"
                 ]
+            },
+            {
+                "path": [
+                    "create",
+                    "currency"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "exchangeRate",
+                    "helpersKeyValue"
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 4855
+        "size": 3738
     }
 }

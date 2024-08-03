@@ -1,0 +1,81 @@
+{
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "voucherDate": 1722503794033,
+    "exchangeRates": [
+        {
+            "code": "USD",
+            "name": "United States Dollar (USD)",
+            "exchangeRate": 1,
+            "systemCurrencyRate": 1,
+            "counter": 0,
+            "createdCurrencyRate": 1
+        },
+        {
+            "code": "XOF",
+            "name": "abidjan",
+            "exchangeRate": 630,
+            "systemCurrencyRate": 1,
+            "counter": 1,
+            "createdCurrencyRate": 630
+        },
+        {
+            "code": "LBP",
+            "name": "Lebanese Pound (LBP)",
+            "exchangeRate": 89000,
+            "systemCurrencyRate": 1,
+            "counter": 2,
+            "createdCurrencyRate": 89000
+        },
+        {
+            "code": "eur",
+            "name": "lira",
+            "exchangeRate": 100000,
+            "systemCurrencyRate": 1,
+            "counter": 4,
+            "createdCurrencyRate": 100000
+        }
+    ],
+    "status": "Confirmed",
+    "type": "Journal Voucher",
+    "currency": "USD",
+    "from": [
+        {
+            "fromAccount": "1/1/0",
+            "amount": 100,
+            "transaction": "Y7vTYGlvaROFVFNkhPDYWpKpRWYCl79PXTPny99WEU9d8gA488I1BtPDBliN-1722503889612"
+        }
+    ],
+    "to": [
+        {
+            "toAccount": "53/1/0",
+            "amount": 100,
+            "transaction": "iySW9ygZ5xnmbtD6aQagkgcK0yujLOOnkOfsRNgnTnmXS9UID6dG53MQB5cp-1722503889626"
+        }
+    ],
+    "fromAccounts": [
+        "1/1/0"
+    ],
+    "toAccounts": [
+        "53/1/0"
+    ],
+    "id": "2YqYmSBVp1j6UZFzNfKirt8P6ORqqeDTkXDPtAdC1R70aUONjzbHWJ5eFVHV-1722503889630",
+    "creationDate": 1722503889630,
+    "creationDay": 1722459600000,
+    "ref": "VCH-00000001",
+    "__props__": {
+        "id": "X1W7Z2Q2o5K0J3u84879t7s6u9",
+        "doc": "voucher1",
+        "counter": 1,
+        "creationDate": 1722503889769,
+        "collection": "voucher",
+        "chunk": "chunk1",
+        "lastModified": 1722503889769,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1403
+    }
+}

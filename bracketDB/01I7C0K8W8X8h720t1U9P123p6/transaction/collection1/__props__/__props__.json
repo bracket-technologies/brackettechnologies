@@ -2,14 +2,14 @@
     "creationDate": 1712658264771,
     "collection": 1,
     "lastChunk": 1,
-    "docsLength": 1,
-    "counter": 576,
-    "reads": 22563,
-    "writes": 1611,
+    "docsLength": 7,
+    "counter": 582,
+    "reads": 23404,
+    "writes": 1717,
     "deletes": 0,
-    "size": 10941,
-    "payloadIn": 2304368,
-    "payloadOut": 32056102,
+    "size": 21365,
+    "payloadIn": 2462337,
+    "payloadOut": 33283335,
     "dirTree": [],
     "maxSize": 1000,
     "indexes": [
@@ -18,8 +18,8 @@
                 "id"
             ],
             "doc": "index1",
-            "lastRead": 1721912597491,
-            "expiryDate": 1724504597491
+            "lastRead": 1722598829788,
+            "expiryDate": 1725190829788
         },
         {
             "find": [
@@ -27,8 +27,8 @@
                 "ledgerAccount"
             ],
             "doc": "index2",
-            "lastRead": 1721727084287,
-            "expiryDate": 1724319084287
+            "lastRead": 1722246657244,
+            "expiryDate": 1724838657244
         },
         {
             "find": [
@@ -54,16 +54,16 @@
                 "creationDate"
             ],
             "doc": "index5",
-            "lastRead": 1721727084291,
-            "expiryDate": 1724319084291
+            "lastRead": 1722256458145,
+            "expiryDate": 1724848458145
         },
         {
             "find": [
                 "account"
             ],
             "doc": "index6",
-            "lastRead": 1721910843288,
-            "expiryDate": 1724502843288
+            "lastRead": 1722553293039,
+            "expiryDate": 1725145293039
         },
         {
             "find": [
@@ -79,8 +79,8 @@
                 "creationDay"
             ],
             "doc": "index8",
-            "lastRead": 1721731071880,
-            "expiryDate": 1724323071880
+            "lastRead": 1722259882894,
+            "expiryDate": 1724851882894
         },
         {
             "find": [
@@ -95,8 +95,8 @@
                 "invoiceRef"
             ],
             "doc": "index10",
-            "lastRead": 1721820284883,
-            "expiryDate": 1724412284883
+            "lastRead": 1722331746055,
+            "expiryDate": 1724923746055
         },
         {
             "find": [

@@ -7,19 +7,19 @@
         "creationDate": 1716889324344,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1721809586361,
+        "lastModified": 1722502931035,
         "dev": false,
         "actions": {
             "hoverStyle": "mouseenter:[parent().children().():[style().backgroundColor=white];selectedIndex:()=().counter;style():[backgroundColor=#f4f4f4]];mouseleave:[style():[backgroundColor=white]]",
             "saveSelected": {
                 "_": "saveSelectedItem():[[__.inputData].flat();codeInput=():[__.identifier].1stChild().1stChild().id;valueInput=():[__.identifier].2ndChild().1stChild().id;selectedItem=__.items.[().counter]]",
-                "#saveSelectedItem": {
+                "saveSelectedItemm": {
                     "_": "():[_.codeInput].2ndParent().selectedItem=_.selectedItem;if():[_.fillCodeName]:[saveCorrespondingCodeData()]:[saveIfNextInputValid()];if():[_.showBalance]:[showBalance()];if():[_.changeAction]:[[[_.changeAction]()]():[view=():[_.codeInput]]]",
                     "saveCorrespondingCodeData": "():[_.codeInput].data().[_.inputPath]=_.selectedItem.dataCode;():[_.codeInput].txt()=_.selectedItem.inputCode;():[_.valueInput].txt()=_.selectedItem.name",
                     "saveIfNextInputValid": "if():[():[_.valueInput].txt()!='']:[():[_.codeInput].data().[_.inputPath]=_.selectedItem.dataCode+[_.separator]+():[_.valueInput].txt()];():[_.codeInput].txt()=_.selectedItem.inputCode",
                     "showBalance": "getAccountBalance():[identifier=():[___.identifier].parent().next().id;ledger=():[_.codeInput].data().[_.inputPath];currency=():[_.codeInput].form().currency;exchangeRate=():[_.codeInput].form().exchangeRates]"
                 },
-                "saveSelectedItem": "():[_.codeInput].2ndParent().selectedItem=_.selectedItem;[saveCodeInData();fillInputCodeInInput();checkToCloseDroplist();if():[_.changeAction]:[[_.changeAction]()]]():[view=():[_.codeInput];path=:codeInputEventsHandler]"
+                "saveSelectedItem": "():[_.codeInput].2ndParent().selectedItem=_.selectedItem;log():['here0'];;[saveCodeInData();fillInputCodeInInput();checkToCloseDroplist();if():[_.changeAction]:[[_.changeAction]()]]():[view=():[_.codeInput];path=:codeInputEventsHandler]"
             }
         },
         "comments": [],
@@ -27,13 +27,13 @@
             {
                 "path": [
                     "saveSelected",
-                    "#saveSelectedItem"
+                    "saveSelectedItemm"
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 3023
+        "size": 3042
     },
     "children": [
         {

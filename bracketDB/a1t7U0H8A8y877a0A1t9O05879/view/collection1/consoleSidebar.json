@@ -36,11 +36,9 @@
         "creationDate": 1715509609840,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1722001584442,
+        "lastModified": 1722421965444,
         "dev": false,
         "actions": {
-            "cancelEditCreateDoc": "txt()=openDoc:();style().display=none;prev().style().display=flex;if():[!openDoc:()||!data:().editor.[_.collection].[openDoc:()]]:[if():[!data:().editor.[_.collection]||data:().editor.[_.collection].keys().len()=0]:[closeFolder():[id=_.view]];parent().rem()]",
-            "problemEditingCreateDoc": "note():[text=if():[!txt()]:[File name could not be empty!].elif():[data:().editor.[_.collection].keys().inc():txt()]:'File name should be unique!'.elif():[txt().inc():' ']:'File name cannot contain spaces!';danger]",
             "mousedownVerticalBar": "mousedown=false;document().style().cursor=default;():[sidebar-open-manager:()].style().transition=.2s;():dataViewer.style().transition=.2s;():mainActionsContainer.style().transition=.2s",
             "createNewCollection": "new-collection:()=true;():collections.insert():[view=new-collection]:[_.view.input().focus();new-collection:()=false]",
             "openDataManager": {
@@ -79,6 +77,6 @@
         ],
         "arrange": [],
         "secured": false,
-        "size": 6113
+        "size": 5586
     }
 }

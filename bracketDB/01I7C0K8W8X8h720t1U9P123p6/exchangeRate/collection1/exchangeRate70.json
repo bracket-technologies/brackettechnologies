@@ -1,0 +1,25 @@
+{
+    "exchangeRate": 630,
+    "code": "xof",
+    "createdCurrencyRate": 630,
+    "id": "0ilzlRCLlaJwaUtKZsL1MyjYEmdOFSMyPM8zpLMp7304Lk4u6TJdDhVj2f7R-1722257067936",
+    "creationDate": 1722257067936,
+    "creationDay": 1722200400000,
+    "currency": "VNrSf6DtynztiMennoXPyz6zWCbwpETcKEO7fCGn1j0QxJU2sK7bFMGAJiuN-1722257067904",
+    "__props__": {
+        "id": "41N7V2x2L2u527p0C667A9q5g4",
+        "doc": "exchangeRate70",
+        "counter": 70,
+        "creationDate": 1722257067954,
+        "collection": "exchangeRate",
+        "chunk": "chunk1",
+        "lastModified": 1722257067954,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 556
+    }
+}

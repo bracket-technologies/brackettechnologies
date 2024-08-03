@@ -34,7 +34,7 @@ module.exports = ({ req, res }) => {
   if (!success) return respond({ res, __, response: { success, message, error } }) // not auth
 
   // open stack
-  var stack = openStack({ _window, id, event: req.method.toLowerCase(), server: global.manifest.server, action: global.manifest.action })
+  var {stack, address} = openStack({ _window, id, event: req.method.toLowerCase(), server: global.manifest.server, action: global.manifest.action })
 
   // get view view
   var { data } = database({ _window, req, res, stack, props: {}, action: "search()", preventDefault: true, data: { collection: "view", doc: "view" } })
@@ -49,7 +49,7 @@ module.exports = ({ req, res }) => {
   logger({ _window, data: { key: "view", start: true } })
 
   // address toView
-  var address = actions["addresser()"]({ _window, id, status: "Start", type: "function", function: "toView", stack, props: {}, __, data: { view }, logger: { key: "view", end: true } }).address
+  var address = actions["addresser()"]({ _window, id, status: "Start", type: "function", function: "toView", stack, nextAddress: address, props: {}, __, data: { view }, logger: { key: "view", end: true } }).address
 
   // render view
   actions["view()"]({ _window, req, res, stack, props: { rendering: true }, __, address, lookupActions: view.__lookupActions__, data: { view } })

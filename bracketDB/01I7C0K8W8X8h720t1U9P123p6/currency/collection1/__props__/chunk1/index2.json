@@ -3,6 +3,12 @@
         "code": "USD"
     },
     "currency2": {
-        "code": "xof"
+        "code": "XOF"
+    },
+    "currency3": {
+        "code": "LBP"
+    },
+    "currency4": {
+        "code": "eur"
     }
 }

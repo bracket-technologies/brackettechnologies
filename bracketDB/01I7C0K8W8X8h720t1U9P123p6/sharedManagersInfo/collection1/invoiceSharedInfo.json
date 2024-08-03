@@ -159,7 +159,7 @@
         "creationDate": 1711031361959,
         "collection": "sharedManagersInfo",
         "chunk": "chunk1",
-        "lastModified": 1721811074123,
+        "lastModified": 1722343634111,
         "dev": false,
         "actions": {
             "calcTotalTaxis": "parent().data().totalTaxes=if():[parent().data().tax1]:[parent().data().tax1+parent().data().tax2+parent().data().tax3+parent().data().tax4+parent().data().tax5+parent().data().tax6+parent().data().tax7+parent().data().tax8]:[0];if():[_.self]:[txt()=parent().data().totalTaxes]:[customUpdate():[:[section='0.'+path().[-2]+'.0';input=:3]:[section='0.'+path().[-2]+'.1';input=:1]]]",
@@ -3241,19 +3241,6 @@
                     "subInput",
                     0,
                     "input",
-                    9
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
-                    0,
-                    "input",
                     10
                 ]
             },
@@ -4252,19 +4239,6 @@
                     "sectionsInfo",
                     1,
                     "subInput",
-                    0,
-                    "input",
-                    14
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    1,
-                    "subInput",
                     3,
                     "input",
                     1
@@ -4310,11 +4284,25 @@
                     13,
                     "subItemsList"
                 ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    1,
+                    "subInput",
+                    0,
+                    "input",
+                    9,
+                    "condition"
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 51689
+        "size": 51677
     },
     "createFormInputs": {
         "docDefaultValues": {
@@ -4572,7 +4560,9 @@
                                         "sheetName": "Countries",
                                         "inputLabel": "Country",
                                         "sheetHeader": "country",
-                                        "required": "required"
+                                        "required": "required",
+                                        "filterable": true,
+                                        "#searchable": true
                                     },
                                     {
                                         "condition": [

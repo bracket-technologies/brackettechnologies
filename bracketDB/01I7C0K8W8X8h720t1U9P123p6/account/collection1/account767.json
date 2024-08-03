@@ -1,48 +1,41 @@
 {
-    "name": "Opening",
+    "name": "Test1",
     "isSubAccount": "No",
-    "generalLedger": "119",
-    "autoGenerateAccountNumber": "Yes",
+    "generalLedger": "1",
+    "autoGenerateAccountNumber": "No",
+    "accountNumber": "1",
     "currency": [
         "USD",
-        "xof"
-    ],
-    "openingBalance": [
-        {
-            "openingBalance": "No"
-        }
+        "LBP"
     ],
     "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
-    "createdBy": "ecGBRq1sxd0cfpMp3lwIOykt4JGrvjKmCVcx01uFTezsGlsL0cqwifRrfXpW-1721739412660",
+    "createdBy": "4nFZccstfAc5FKZhSxoQoFmo4e8JaBuQYnGP5qwRpwTEsOFXapL13mOhfgo0-1722500623524",
     "startsWith": [
-        "1",
-        "11",
-        "119"
+        "1"
     ],
-    "id": "9ePl5qRkyMQCXxIll46xqJDd3Iq7Pw4pHVIVCBlsEUW8dKzQGxtKMWgq3bE9-1721908457883",
-    "creationDate": 1721908457883,
-    "creationDay": 1721854800000,
+    "id": "ZtKWaiSmRPdi8gunccRGf4HN4riKp3sBZLqmMmOfjV00BsHmheVIJ1WKF0Q6-1722501787175",
+    "creationDate": 1722501787175,
+    "creationDay": 1722459600000,
     "ref": "ACC-00000001",
-    "accountNumber": "1",
     "ledgerAccount": [
-        "119/1/0",
-        "119/1/1"
+        "1/1/0",
+        "1/1/2"
     ],
     "__props__": {
-        "id": "218762i1T970f8Z4c598L0s0P1",
+        "id": "B1C7y222o5q0L1G7v8w7M2J8p6",
         "doc": "account767",
         "counter": 767,
-        "creationDate": 1721908458001,
+        "creationDate": 1722501787286,
         "collection": "account",
         "chunk": "chunk1",
-        "lastModified": 1721910168040,
+        "lastModified": 1722553056425,
         "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 924
+        "size": 861
     },
-    "lastBalance": "uxUsWzA39Xjf0Whbcf8gcqfes6RRlDkO6Wa5um1tO71t2sj5FYqWVLaIrG9a-1721909801963"
+    "lastBalance": "Znl82kL3DYhQ9Pos1AS9IfRa0pBHZpZyEkDKmiPM1S2NlPdmMyONymDwV51s-1722553056301"
 }

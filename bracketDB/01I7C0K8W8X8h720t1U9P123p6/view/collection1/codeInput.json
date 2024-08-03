@@ -7,7 +7,7 @@
         "creationDate": 1715328138923,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1721909989608,
+        "lastModified": 1722502861206,
         "dev": false,
         "actions": {
             "setItemsList": {
@@ -22,7 +22,7 @@
                     "specifyAppliedCondition": "_.allowedCode._():[().conditionApplied=customCondition():[data=form().clone();condition=_.condition];if():[().conditionApplied]:[setAllowedAndNotAllowedCode()]]",
                     "setAllowedAndNotAllowedCode": "if():[_.allowedCode]:[().allowedCode=_.allowedCode];if():[_.notAllowedCode]:[().notAllowedCode=_.notAllowedCode]"
                 },
-                "setItemsListFromExistingAccounts": "allLedgersAccounts:()._():[if():[[[__.referenceCurrency]()].in():[_.currency]||!__.referenceCurrency]:[().itemsList.push():[dataCode=if():[__.referenceCurrency]:[_.ledgerAccount.[_.currency.indexOf():[[__.referenceCurrency]()]]]:[_.ledgerAccount.0];name=_.name;inputCode=_.helper;code=_.generalLedger]]]",
+                "setItemsListFromExistingAccounts": "allLedgersAccounts:()._():[if():[[[__.referenceCurrency]()].in():[_.currency]||!__.referenceCurrency]:[().itemsList.push():[currency=_.currency;dataCode=if():[__.referenceCurrency]:[_.ledgerAccount.[_.currency.indexOf():[[__.referenceCurrency]()]]]:[_.ledgerAccount.0];name=_.name;inputCode=_.helper;code=_.generalLedger]]]",
                 "setItemsList": "_.data._():[().itemsList.push():[code=_.[__.code];inputCode=_.[__.inputCode]||_.[__.code];dataCode=_.[__.dataCode]||_.[__.code];name=_.[__.name]]]",
                 "setDefaultleftZero": "while():[[_.digits]-[_.text.toString().len()]>0]:[_.text=_.text*10];return():[_.text]",
                 "setSheetItems": "setItemsList():[data=sheetData:().[_.sheetName].data;code=_.headerAsCode;name=_.headerAsText]"
@@ -32,7 +32,7 @@
                 "fillInputCodeInInput": "txt()=2ndParent().selectedItem.inputCode",
                 "setDroplistItems": "if():[().txt()]:[().items=filterDroplistItems():[searchByCode=true;text=_.code]]:[().items=2ndParent().allowedItemsList]",
                 "saveCodeInData": {
-                    "_": "2ndParent().selectedItem=findCorrespondingItem():[code=txt()];if():[_.fillCodeName]:[saveCorrespondingCodeData()]:[saveIfNextInputValid()];if():[_.showBalance]:[showBalance()]",
+                    "_": "log():['hereee1'];2ndParent().selectedItem=findCorrespondingItem():[code=txt()];if():[_.fillCodeName]:[saveCorrespondingCodeData()]:[saveIfNextInputValid()];if():[_.showBalance]:[showBalance()]",
                     "saveCorrespondingCodeData": "if():[2ndParent().selectedItem]:[data().[_.inputPath]=2ndParent().selectedItem.dataCode;parent().next().1stChild().txt()=2ndParent().selectedItem.name];#:[data().[_.inputPath].del();txt()='';parent().next().1stChild().txt()='']",
                     "saveIfNextInputValid": "if():[parent().next().1stChild().txt()]:[data().[_.inputPath]=2ndParent().selectedItem.dataCode+[_.separator]+parent().next().1stChild().txt()]:[data().[_.inputPath].del()]"
                 },
@@ -201,18 +201,8 @@
             },
             {
                 "path": [
-                    "valueInputEventsHandler"
-                ]
-            },
-            {
-                "path": [
                     "codeInputEventsHandler",
                     "inputValueHandler"
-                ]
-            },
-            {
-                "path": [
-                    "setItemsList"
                 ]
             },
             {
@@ -222,19 +212,30 @@
             },
             {
                 "path": [
-                    "codeInputEventsHandler",
-                    "checkIfTextInAllowedLedgers"
+                    "setItemsList",
+                    "handleAllowedCodeCondition"
                 ]
             },
             {
                 "path": [
-                    "codeInputEventsHandler"
+                    "valueInputEventsHandler"
+                ]
+            },
+            {
+                "path": [
+                    "setItemsList"
+                ]
+            },
+            {
+                "path": [
+                    "codeInputEventsHandler",
+                    "checkIfTextInAllowedLedgers"
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 14210
+        "size": 14249
     },
     "children": [
         {
@@ -244,7 +245,7 @@
             "view": "View?class=flex;style:[width=100%;gap=.2rem;zIndex=2]",
             "children": [
                 {
-                    "view": "View?class=flex;style:[inputStyle()];loaded:[setItemsList()];click:[log():['fffff']:[under=_;itemsList=().allowedItemsList]]",
+                    "view": "View?class=flex;style:[inputStyle()];loaded:[setItemsList()];click:[log():['fffff']:[().allowedItemsList]]",
                     "children": [
                         {
                             "view": "View?class=flexbox;style:[width=5.6rem;height=100%;backgroundColor=#f3f3f3;position=relative]",

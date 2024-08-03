@@ -1,0 +1,45 @@
+{
+    "name": "Purchases",
+    "isSubAccount": "No",
+    "generalLedger": "601",
+    "autoGenerateAccountNumber": "Yes",
+    "currency": [
+        "USD"
+    ],
+    "openingBalance": [
+        {
+            "openingBalance": "No"
+        }
+    ],
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "createdBy": "4nFZccstfAc5FKZhSxoQoFmo4e8JaBuQYnGP5qwRpwTEsOFXapL13mOhfgo0-1722500623524",
+    "startsWith": [
+        "6",
+        "60",
+        "601"
+    ],
+    "id": "CitbV54EykVp7MN7u04MPZZHX9ysAvxLZ8wJFTDefbr8Bcb9rUuGYeFoQ518-1722503751394",
+    "creationDate": 1722503751394,
+    "creationDay": 1722459600000,
+    "ref": "ACC-00000005",
+    "accountNumber": "1",
+    "ledgerAccount": [
+        "601/1/0"
+    ],
+    "__props__": {
+        "id": "f1C7q2F2R580U347i5W1D4I8T1",
+        "doc": "account771",
+        "counter": 771,
+        "creationDate": 1722503751481,
+        "collection": "account",
+        "chunk": "chunk1",
+        "lastModified": 1722503751481,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 819
+    }
+}

@@ -10,25 +10,5 @@
     },
     "host6": {},
     "host7": {},
-    "host8": {},
-    "host77": {
-        "localhost": "w1111.localhost"
-    },
-    "host78": {},
-    "host79": {
-        "localhost": "dev.w1111.localhost"
-    },
-    "host80": {},
-    "host81": {
-        "localhost": "dev.brackettechnologies.localhost"
-    },
-    "host82": {},
-    "host83": {
-        "localhost": "dev.acc.localhost"
-    },
-    "host84": {},
-    "host85": {
-        "localhost": "dev.brackettechnologies.localhost"
-    },
-    "host86": {}
+    "host8": {}
 }

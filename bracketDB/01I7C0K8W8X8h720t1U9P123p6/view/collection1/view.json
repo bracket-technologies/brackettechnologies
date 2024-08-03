@@ -12,7 +12,7 @@
         "creationDate": 1711031365214,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1721907789924,
+        "lastModified": 1722433942541,
         "dev": false,
         "actions": {
             "getDataOnLoad": {
@@ -227,11 +227,11 @@
             },
             "saveThroughSchema": {
                 "setDocsBySchema": "checkRequirement():[collection=_.collection;data=_.data;newDoc=gen():5+[today().timestamp()+''];edit=_.edit]",
-                "getUser": "getUserBySession():[_.session]:[if():[user:()]:[_.data.createdBy=user:().id;checkDocExistence()]:[handleFailedResponse():[res=[action=getUser;msg='User not found!']]]]",
+                "getUser": "getUserBySession():[_.session]:[if():[user:()]:[_.data.createdBy=user:().id;getGovernmentExchangeRate();checkDocExistence()]:[handleFailedResponse():[res=[action=getUser;msg='User not found!']]]]",
                 "checkDocExistence": "if():[collection=user]:[checkExistence():[collection=_.collection;data=_.data]:[if():[continue:()]:[setDocsBySchema();continue:().del()]]]:[setDocsBySchema()]",
-                "setHistory": "[saveStack:()._():[[if():[_.data.createdBy]:[customHistory():[id=_.data.id;collection=_.collection;user=_.data.createdBy]]]()::[saveSatck()]]]()::[send():[success=true;msg=_.collection:().capitalize()+' Created Successfuly!']]",
                 "_": "if():[_.data;_.collection]:[if():[!mainReceivedData:()]:[mainReceivedData:()=_.data];if():[!mainData:()]:[mainData:()=_];formManagerName:()=_.manager||_.collection;if():[_.session]:[getUser()]:[setDocsBySchema()]]:[handleFailedResponse():[res=[under=_;actionName='saveThroughSchema';msg='Missing data!']]]",
-                "#saveSatck": "save():[collection=_.collection;data=_.data]:[if():[!_.success]:[handleFailedResponse():[res=[action=saveSatck;msg='Try Again!']]]]"
+                "getGovernmentExchangeRate": "[searchCurrency():[useInServer=true]]()::[currencyData:()._():[exchangeRatesInfo:().push():[code=_.code;counter=_.counter;exchangeRate=_.exchangeRate]]]",
+                "#setHistory": "[saveStack:()._():[[if():[_.data.createdBy]:[customHistory():[id=_.data.id;collection=_.collection;user=_.data.createdBy]]]()::[saveSatck()]]]()::[send():[success=true;msg=_.collection:().capitalize()+' Created Successfuly!']]"
             },
             "getSessionAndMarkNotificationAsRead": {
                 "updateSession": "save():[collection=session;data=_.data.value()]:[if():[_.success]:[send():[success=true]]:[]]",
@@ -242,10 +242,10 @@
             },
             "initializeDocAndCheckForRecursion": {
                 "checkIfIncludeNextStep": "if():[_.schema.nextStep]:[if():[_.schema.nextStep.type()=array]:[handelNextStepCondition()]:[if():[_.schema.nextStep.condition]:[handelNextStepCustomCondition()]:[formManagerName:()=_.schema.nextStep.manager;().nextStep=_.schema.nextStep.collection;doNextStep()]]]:[if():[!_.dontCheckForRecursion]:[checkBeforeSaveStep();if():[_.schema.customCondition]:[[[_.schema.customCondition]()]()::[loopOverStackAndSaveData()]]:[loopOverStackAndSaveData()]]]",
-                "checkBeforeSaveStep": "saveStack:()._():[if():[_.beforeSaveStep]:[if():[_.condition]:[handleFailedResponse():[res=[under=_];actionName='initializeDocAndCheckForRecursion']];_.beforeSaveStep.keyValue._():[if():[_.staticValue]:[__.data.[_.key]=[_.staticValue]()]:[__.data.[_.key]=saveStack:().find():[.[_.findKey]=[_.findValue]].data.reduce():[path=_.path]]];#send():[success=false;data=_.data;saveStack=saveStack:()];_.beforeSaveStep.del()]]",
+                "checkBeforeSaveStep": "saveStack:()._():[if():[_.beforeSaveStep]:[if():[_.condition]:[handleFailedResponse():[res=[under=_];actionName='initializeDocAndCheckForRecursion']];_.beforeSaveStep.keyValue._():[if():[_.staticValue]:[__.data.[_.key]=[_.staticValue]()]:[__.data.[_.key]=saveStack:().find():[.[_.findKey]=[_.findValue]].data.reduce():[path=_.path]]];_.beforeSaveStep.del()]]",
                 "doNextStep": "().nextStepCollection=().nextStep;().nextStep.del();checkRequirement():[data=__.receivedData||_.receivedData;collection=().nextStepCollection;newDoc=gen():5+[today().timestamp()+'']]",
                 "handleHelpersKeyValue": "if():[_.schema.helpersKeyValue]:[_.schema.helpersKeyValue._():[if():[_.staticValue]:[dataToPushInStack:().[_.key]=[_.staticValue]()]:[dataTypeHandler():[value=__.receivedData.[_.path];[_].flat();data=__.receivedData;newDoc=dataToPushInStack]]]]",
-                "saveStackAndCheckForRecursion": "if():[!_.schema.ignoreMainDoc]:[dataToPushInStack:().():[data=_.data;collection=_.collection];if():[_.schema.beforeSaveStep]:[dataToPushInStack:().beforeSaveStep=_.schema.beforeSaveStep];if():[_.schema.update]:[dataToPushInStack:().update=true].elif():[_.schema.customUpdate]:[dataToPushInStack:().customUpdate=_.schema.customUpdate].elif():[_.schema.customSave]:[dataToPushInStack:().customSave=_.schema.customSave];saveStack:().push():[dataToPushInStack:()]];if():[_.schema.staticAction]:[[_.schema.staticAction]()];checkIfIncludeNextStep()",
+                "saveStackAndCheckForRecursion": "if():[!_.schema.ignoreMainDoc]:[dataToPushInStack:().():[data=_.data;collection=_.collection];if():[_.schema.beforeSaveAction]:[dataToPushInStack:().beforeSaveAction=_.schema.beforeSaveAction];if():[_.schema.beforeSaveStep]:[dataToPushInStack:().beforeSaveStep=_.schema.beforeSaveStep];if():[_.schema.update]:[dataToPushInStack:().update=true].elif():[_.schema.customUpdate]:[dataToPushInStack:().customUpdate=_.schema.customUpdate].elif():[_.schema.customSave]:[dataToPushInStack:().customSave=_.schema.customSave];saveStack:().push():[dataToPushInStack:()]];if():[_.schema.staticAction]:[[_.schema.staticAction]()];checkIfIncludeNextStep()",
                 "_": "[dataToPushInStack:()=[];initializeDoc()]()::[saveStackAndCheckForRecursion()]",
                 "generateReference": "generatReferenceNumber():[collection=_.collection;branch=_.receivedData.branch]:[_.data.ref=ref:();if():[_.schema.generateCounter]:[_.data.counter=count:()]]",
                 "initializeDoc": "[handleHelpersKeyValue()]()::[if():[!_.schema.update;!_.schema.customUpdate]:[_.data.id=gen():60+'-'+[today().timestamp()+''];_.receivedData.[_.collection+'Id']=_.data.id;_.data.creationDate=now().timestamp();_.data.creationDay=todayStart().timestamp()];if():[_.schema.generateReference]:[generateReference()];if():[_.schema.generateLedger]:[generateLedger()]]",
@@ -306,11 +306,11 @@
                     "checkImage": ";#toBeOverride;if():[_.value.len()>=1]:[().unrequiredDataHandler='';_.value._():[if():[__.required]:[if():[!_.id||!_.url]:[handleFailedResponse():[res=[msg='Image not found!']]]:[().currentVariable.push():[_]]]:[if():[_.id;_.url]:[().currentVariable.push():[_]]]]]:[if():[_.required]:[().requiredDataHandler='';handleFailedResponse():[res=[msg='Image was expected!']]]:[().unrequiredDataHandler='']]",
                     "cleanArray": "().filteredArray=_.array.filter().clone();if():[().filteredArray.len()>0]:[().currentVariable=().filteredArray]:[().currentVariable=false]"
                 },
-                "assigningData": "[().currentVariable.del();if():[_.staticValue]:[handleStaticValue()]:[checkDataType():[value=_.value;type=_.type;path=_.path;refVar=gen():5;required=_.required]]]()::[if():[().currentVariable||().currentVariable=0]:[if():[_.newDoc]:[[_.newDoc]:().[_.key]=().currentVariable;if():[_.keyToPushInReceivedData]:[_.data.[_.keyToPushInReceivedData]=().currentVariable]]:[___.indexAsDoc.[_.key]=().currentVariable]]:[if():[_.required]:[handleFailedResponse():[res=[data=_;msg='Data type error!']]]]]",
+                "assigningData": "[().currentVariable.del();if():[_.staticValue]:[handleStaticValue()]:[checkDataType():[value=_.value;type=_.type;path=_.path;refVar=gen():5;required=_.required]]]()::[if():[().currentVariable||().currentVariable=0]:[if():[_.newDoc]:[[_.newDoc]:().[_.key]=().currentVariable;if():[_.keyToPushInReceivedData]:[_.data.[_.keyToPushInReceivedData]=().currentVariable]]:[___.indexAsDoc.[_.key]=().currentVariable]]:[if():[_.required]:[handleFailedResponse():[res=[data=_;mainData=mainReceivedData:();stack=saveStack:();msg='Data type error!']]]]]",
                 "saveListPathData": {
                     "_": "[if():[!_.ignoreInitialize]:[initializeListPathData()]]()::[saveListPathInSaveStack()]",
                     "generateReference": "generatReferenceNumber():[collection=_.collection;branch=_.indexAsDoc.branch]:[_.indexAsDoc.ref=ref:()]",
-                    "saveListPathInSaveStack": "saveStack:().push():[helpersKeyValue=_.helpersKeyValue;update=_.update;customUpdate=_.customUpdate;data=_.indexAsDoc;collection=_.collection;customSave=_.customSave;beforeSaveStep=_.beforeSaveStep;]",
+                    "saveListPathInSaveStack": "saveStack:().push():[update=_.update;customUpdate=_.customUpdate;data=_.indexAsDoc;collection=_.collection;customSave=_.customSave;beforeSaveStep=_.beforeSaveStep;];if():[_.helpersKeyValue]:[_.helpersKeyValue._():[saveStack:().[-1].helpersKeyValue.[_.key]=[_.staticValue]()]]",
                     "initializeListPathData": "_.indexAsDoc.branch=mainReceivedData:().branch;[_.indexAsDoc.id=gen():60+'-'+[today().timestamp()+''];_.indexAsDoc.creationDate=today().timestamp();_.indexAsDoc.creationDay=todayStart().timestamp();if():[_.generateReference]:[generateReference()]]"
                 },
                 "handleStaticValue": "if():[_.type]:[[checkDataType():[value=[_.staticValue]();type=_.type;path=_.path;refVar=gen():5]]]:[().currentVariable=[_.staticValue]()]",
@@ -367,13 +367,13 @@
                 "combineData": {
                     "_": "accountsAndBalances:()._():[accountsLastBalances:()._():[if():[_.id=__.lastBalance]:[__.lastBalanceData=_]]];setNewBalance():[transactionReceivedData:()]",
                     "setNewBalance": "if():[_.openingBalance='Yes']:[setIfOpeningBalance()]:[setIfNotOpeningBalance()];addVoucherAndInvoiceRefs();setAccountBalances()",
-                    "setIfOpeningBalance": "newBalance:()=[currency=_.currency;account=_.account;ledgerAccount=_.ledgerAccount;credit=_.credit;debit=_.debit;exchangeRates=_.exchangeRates;systemAccountBalances=:[account=_.account;credit=_.credit||0;debit=_.debit||0;balance=_.debit||0-_.credit||0]]",
-                    "setIfNotOpeningBalance": "newBalance:()=[currency=_.currency;account=_.account;ledgerAccount=_.ledgerAccount;credit=_.credit;debit=_.debit;exchangeRates=_.exchangeRates];if():[accountsAndBalances:().find():[account=newBalance:().account]]:[newBalance:().accountBalances=accountsAndBalances:().find():[account=newBalance:().account].lastBalanceData.accountBalances]",
+                    "setIfOpeningBalance": "newBalance:()=[currency=_.currency;account=_.account;ledgerAccount=_.ledgerAccount;credit=_.credit;debit=_.debit;exchangeRates=exchangeRatesInfo:();systemAccountBalances=:[account=_.account;credit=_.credit||0;debit=_.debit||0;balance=_.debit||0-_.credit||0]]",
+                    "setIfNotOpeningBalance": "newBalance:()=[currency=_.currency;account=_.account;ledgerAccount=_.ledgerAccount;credit=_.credit;debit=_.debit;exchangeRates=exchangeRatesInfo:()];if():[accountsAndBalances:().find():[account=newBalance:().account]]:[newBalance:().accountBalances=accountsAndBalances:().find():[account=newBalance:().account].lastBalanceData.accountBalances]",
                     "addVoucherAndInvoiceRefs": "newBalance:().():[voucher=_.voucher;voucherRef=_.voucherRef;invoiceID=_.invoiceID;invoiceRef=_.invoiceRef]",
                     "setAccountBalances": "accountsAndBalances:()._():[().instance.del();().instance=_.lastBalanceData.accountBalances.find():[ledgerAccount=__.ledgerAccount].accountBalances.find():[account=_.account];if():[!().instance]:[().instance=[credit=0;debit=0;balance=0;account=_.account]];().accountBalance=[account=_.account;credit=[().instance.credit]+[__.credit];debit=().instance.debit+__.debit];().accountBalance.balance=().accountBalance.debit-().accountBalance.credit;pushInAccountBalances();().accountBalance.del()];setSystemAccountBalance()",
                     "pushInAccountBalances": "if():[newBalance:().accountBalances.find():[ledgerAccount=__.ledgerAccount]]:[newBalance:().accountBalances.find():[ledgerAccount=__.ledgerAccount].accountBalances.replace():[account=().accountBalance.account]:[().accountBalance]]:[newBalance:().accountBalances.push():[ledgerAccount=__.ledgerAccount;accountBalances=:];pushInAccountBalances()]",
                     "setSystemAccountBalance": "[calculateAmountsInSystemCurrency()]()::[accountsAndBalances:()._():[().instance=_.lastBalanceData.systemAccountBalances.find():[account=_.account];().accountBalance=[account=_.account;credit=[().instance.credit]+[__.sysCredit];debit=().instance.debit+__.sysDebit];().accountBalance.balance=().accountBalance.debit-().accountBalance.credit;newBalance:().systemAccountBalances.push():[().accountBalance]]]",
-                    "calculateAmountsInSystemCurrency": "().exchangeRate=_.exchangeRates.find():[counter=_.ledgerAccount.split():'/'.2.num()].exchangeRate;if():[().exchangeRate]:[_.sysCredit=[[_.credit]/[().exchangeRate]];_.sysDebit=_.debit/().exchangeRate]:[handleFailedResponse():[res=[exchangeRate=_.exchangeRates;counter=_.ledgerAccount.split():'/'.2.num();msg='Could not find the exchange rate to handle the calculation!']]]"
+                    "calculateAmountsInSystemCurrency": "().exchangeRate=exchangeRatesInfo:().find():[counter=_.ledgerAccount.split():'/'.2.num()].exchangeRate;if():[().exchangeRate]:[_.sysCredit=[[_.credit]/[().exchangeRate]];_.sysDebit=_.debit/().exchangeRate]:[handleFailedResponse():[res=[exchangeRate=exchangeRatesInfo:();counter=_.ledgerAccount.split():'/'.2.num();msg='Could not find the exchange rate to handle the calculation!']]]"
                 },
                 "initializeDoc": "newBalance:().():[currency=_.currency;generalLedger=_.generalLedger;id=_.id;creationDate=_.creationDate;creationDay=_.creationDay;ref=_.ref;description=_.description;branch=_.branch;sysCredit=_.sysCredit;sysDebit=_.sysDebit]",
                 "saveBalance": {
@@ -393,27 +393,28 @@
                         "_": "search():[collection=account;find=[id=_.id]]:[if():[_.data.value()]:[handleSuccessSearch()]:[handleFailedResponse():[res=[msg='Account not found!']]]]",
                         "handleSuccessSearch": "pushInRepairStack();pushInAccountsAndBalances();if():[_.data.value().headAccount]:[getAccounts():[id=_.data.value().headAccount]]",
                         "pushInRepairStack": "if():[!repairStack:().find():[data.id=_.data.value().id]]:[repairStack:().push():[update=true;collection=account;pushLocation='saveTransaction.getAccounts';data=_.data.value().clone()]]",
-                        "pushInAccountsAndBalances": "accountsAndBalances:().push():[account=_.data.value().id;if():[_.data.value().lastBalance]:[lastBalance=_.data.value().lastBalance]:[lastBalanceData=lastBalanceData()];headAccount=_.data.value().headAccount||false;limit=_.data.value().limit;accountName=_.data.value().name]",
+                        "pushInAccountsAndBalances": "accountsAndBalances:().push():[account=_.data.value().id;if():[_.data.value().lastBalance]:[lastBalance=_.data.value().lastBalance]:[lastBalanceData=lastBalanceData()];headAccount=_.data.value().headAccount||false;limit=_.data.value().limit;creditLimitCurrency=_.data.value().creditLimitCurrency;accountName=_.data.value().name]",
                         "lastBalanceData": "return():[[account=_.data.value().id;description='Opening';credit=0;debit=0;systemAccountBalances=:[account=_.data.value().id;credit=0;debit=0;balance=0]]]"
                     }
                 },
                 "delGBVar": "accountsAndBalances:().del();accountsLastBalances:().del();transactionReceivedData:().del();newBalance:().del()",
                 "checkCreditLimit": {
-                    "_": "if():[accountsAndBalances:().0.limit||accountsAndBalances:().0.limit=0]:[handleCreditLimit()]",
-                    "handleCreditLimit": "if():[newBalance:().systemAccountBalances.0.balance<=0;[newBalance:().systemAccountBalances.0.balance*[-1]]>accountsAndBalances:().0.limit]:[handleFailedResponse():[res=[msg='You have exceed the credit limit of account '+newBalance:().ledgerAccount]]]"
+                    "_": "if():[accountsAndBalances:().0.limit||accountsAndBalances:().0.limit=0]:[calculateLimitInSystemCurrency();handleCreditLimit()]",
+                    "handleCreditLimit": "if():[newBalance:().systemAccountBalances.0.balance<=0;[newBalance:().systemAccountBalances.0.balance*[-1]]>().limit]:[handleFailedResponse():[res=[msg='You have exceed the credit limit of account '+newBalance:().ledgerAccount]]]",
+                    "calculateLimitInSystemCurrency": "().limit=accountsAndBalances:().0.limit/exchangeRatesInfo:().find():[code=accountsAndBalances:().0.creditLimitCurrency].exchangeRate"
                 }
             },
             "loopOverStackAndSaveData": {
                 "updateData": "().newDataToUpdate=[[_.data.value()].flat();[__.data].flat()];save():[collection=__.collection;data=().newDataToUpdate]:[if():[!_.data]:[msg='Something went wrong during update in '+[__.collection]]]",
                 "saveData": "if():[_.collection]:[repairStack:().push():[delete=true;collection=_.collection;pushLocation='loopOverStackAndSaveData.saveData';data=_.data.clone()];save():[collection=_.collection;data=_.data]:[if():[!_.data]:[handleFailedResponse():[res=[msg='Something went wrong during saving data!']]]]]:[handleFailedResponse():[res=[msg='Collection not exist!']]]",
                 "getDataToUpdate": "if():[_.data.id]:[search():[collection=_.collection;find=[id=_.data.id]]:[if():[_.data.value()]:[pushInRepairStack();updateData()]:[handleFailedResponse():[res=[taha=taha:();failedLocation='loopOverStackAndSaveData.getDataToUpdate';msg='Something went wrong during update in '+[__.collection]]]]]]:[handleFailedResponse():[res=[under=_;msg='Id not found to update!']]]",
-                "_": "#send():[success=false;saveStack=saveStack:();mainData=mainReceivedData:();taha=taha:()];[loopOverStack()]()::[send():[success=fasle;ggg=vvv:();data=saveStack:().0;stack=saveStack:();msg=mainData:().collection.capitalize()+' added successfully!']]",
+                "_": "#send():[success=false;saveStack=saveStack:();mainData=mainReceivedData:();taha=taha:()];[loopOverStack()]()::[send():[success=fasle;bb=bb:();data=saveStack:().0;stack=saveStack:();msg=mainData:().collection.capitalize()+' added successfully!']]",
                 "pushInRepairStack": "if():[!repairStack:().find():[data.id=_.data.value().id]]:[repairStack:().push():[update=true;collection=__.collection;pushLocation='loopOverStackAndSaveData.getDataToUpdate';data=_.data.value().clone()]];",
-                "loopOverStack": "saveStack:()._()::[if():[_.update]:[getDataToUpdate()].elif():[_.customUpdate]:[[__.customUpdate]():[data=_.data]].elif():[_.customSave]:[[__.customSave]():[data=_.data]].elif():[_.collection='transaction']:[if():[_.update]:[updateTransaction():[data=_.data;collection=_.collection]]:[saveTransaction():[data=_.data;collection=_.collection]]]:[saveData()]]"
+                "loopOverStack": "saveStack:()._()::[if():[_.beforeSaveAction]:[[_.beforeSaveAction]()];if():[_.update]:[getDataToUpdate()].elif():[_.customUpdate]:[[__.customUpdate]():[data=_.data]].elif():[_.customSave]:[[__.customSave]():[data=_.data]].elif():[_.collection='transaction']:[if():[_.update]:[updateTransaction():[data=_.data;collection=_.collection]]:[saveTransaction():[data=_.data;collection=_.collection]]]:[saveData()]]"
             },
             "updateTransaction": {
-                "_": "resetData():[data=_];().newCredit=().editedData.credit;().newDebit=().editedData.debit;[[getTransaction()]()::[getAllNextTransactions()]]()::[[editBalances():[transactions=().allTransactions;newData=().editedData;currentTransaction=().transactionData.id]]()::[updateTransactions()]]",
-                "getTransaction": "search():[collection=transaction;find=[voucher=_.voucher;ledgerAccount=_.ledgerAccount]]:[if():[_.data.value()]:[().transactionData=_.data.value();().oldCredit=_.data.value().credit;().oldDebit=_.data.value().debit]:[handleFailedResponse():[res=[msg='Transaction not found!']]]]",
+                "_": "#send():[success=false;under=_;mainRecivedData=mainReceivedData:()];resetData():[data=_];().newCredit=().editedData.credit;().newDebit=().editedData.debit;[[getTransaction()]()::[getAllNextTransactions()]]()::[[editBalances():[transactions=().allTransactions;newData=().editedData;currentTransaction=().transactionData.id]]()::[updateTransactions()]]",
+                "getTransaction": "search():[collection=transaction;find=[id=_.transaction;#voucher=_.voucher;#ledgerAccount=_.ledgerAccount]]:[if():[_.data.value()]:[bb:().push():[_.data.value()];().transactionData=_.data.value();().oldCredit=_.data.value().credit;().oldDebit=_.data.value().debit]:[handleFailedResponse():[res=[msg='Transaction not found!']]]]",
                 "resetData": {
                     "_": "reInitializeData()",
                     "reInitializeData": "().editedData=[[_.data].flat();if():[_.data.'credit-debit'.toLowerCase()=credit]:[credit=_.data.amount;debit=0]:[debit=_.data.amount;credit=0]];().editedData.amount.del();().editedData.'credit-debit'.del()"
@@ -759,31 +760,6 @@
             },
             {
                 "path": [
-                    "saveTransaction",
-                    "organizeData",
-                    "getAccounts"
-                ]
-            },
-            {
-                "path": [
-                    "saveTransaction",
-                    "organizeData"
-                ]
-            },
-            {
-                "path": [
-                    "saveTransaction",
-                    "resetData"
-                ]
-            },
-            {
-                "path": [
-                    "saveTransaction",
-                    "saveBalance"
-                ]
-            },
-            {
-                "path": [
                     "searchAccount"
                 ]
             },
@@ -854,11 +830,6 @@
             },
             {
                 "path": [
-                    "getDataOnLoad"
-                ]
-            },
-            {
-                "path": [
                     "getIdByLedger"
                 ]
             },
@@ -921,16 +892,6 @@
             },
             {
                 "path": [
-                    "updateTransaction"
-                ]
-            },
-            {
-                "path": [
-                    "saveThroughSchema"
-                ]
-            },
-            {
-                "path": [
                     "getUserBySession"
                 ]
             },
@@ -953,24 +914,24 @@
             },
             {
                 "path": [
-                    "checkRequirement"
+                    "updateTransaction",
+                    "editBalances"
                 ]
             },
             {
                 "path": [
-                    "saveTransaction",
-                    "getBalances"
+                    "generatReferenceNumber"
+                ]
+            },
+            {
+                "path": [
+                    "checkRequirement"
                 ]
             },
             {
                 "path": [
                     "dataTypeHandler",
                     "saveListPathData"
-                ]
-            },
-            {
-                "path": [
-                    "saveTransaction"
                 ]
             },
             {
@@ -990,6 +951,22 @@
             },
             {
                 "path": [
+                    "updateTransaction"
+                ]
+            },
+            {
+                "path": [
+                    "searchTransaction",
+                    "setResultKeys"
+                ]
+            },
+            {
+                "path": [
+                    "getDataOnLoad"
+                ]
+            },
+            {
+                "path": [
                     "searchCurrency"
                 ]
             },
@@ -997,10 +974,56 @@
                 "path": [
                     "login"
                 ]
+            },
+            {
+                "path": [
+                    "searchTransaction"
+                ]
+            },
+            {
+                "path": [
+                    "saveThroughSchema"
+                ]
+            },
+            {
+                "path": [
+                    "saveTransaction",
+                    "checkCreditLimit"
+                ]
+            },
+            {
+                "path": [
+                    "saveTransaction",
+                    "combineData"
+                ]
+            },
+            {
+                "path": [
+                    "saveTransaction",
+                    "getBalances"
+                ]
+            },
+            {
+                "path": [
+                    "saveTransaction",
+                    "organizeData"
+                ]
+            },
+            {
+                "path": [
+                    "saveTransaction",
+                    "resetData"
+                ]
+            },
+            {
+                "path": [
+                    "saveTransaction",
+                    "saveBalance"
+                ]
             }
         ],
         "arrange": [],
         "secured": true,
-        "size": 83053
+        "size": 83867
     }
 }

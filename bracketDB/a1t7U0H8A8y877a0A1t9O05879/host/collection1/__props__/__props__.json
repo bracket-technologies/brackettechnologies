@@ -3,14 +3,14 @@
     "collection": "host",
     "chunkMaxSizeMB": 20,
     "lastChunk": 1,
-    "docsLength": 16,
-    "counter": 86,
-    "reads": 90741,
-    "writes": 151,
+    "docsLength": 6,
+    "counter": 76,
+    "reads": 109266,
+    "writes": 153,
     "deletes": 0,
-    "size": 6033,
-    "payloadIn": 53857,
-    "payloadOut": 33895053,
+    "size": 2235,
+    "payloadIn": 54677,
+    "payloadOut": 41307486,
     "indexes": [
         {
             "find": [
@@ -23,8 +23,8 @@
                 "port"
             ],
             "doc": "index2",
-            "lastRead": 1722003151728,
-            "expiryDate": 1724595151728
+            "lastRead": 1722679129168,
+            "expiryDate": 1725271129168
         },
         {
             "find": [
@@ -41,16 +41,16 @@
                 "publicID"
             ],
             "doc": "index4",
-            "lastRead": 1722005946649,
-            "expiryDate": 1724597946649
+            "lastRead": 1722678855332,
+            "expiryDate": 1725270855332
         },
         {
             "find": [
                 "localhost"
             ],
             "doc": "index5",
-            "lastRead": 1722005946590,
-            "expiryDate": 1724597946590
+            "lastRead": 1722338804868,
+            "expiryDate": 1724930804868
         },
         {
             "find": [

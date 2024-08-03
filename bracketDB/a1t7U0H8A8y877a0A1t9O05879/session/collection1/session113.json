@@ -1,0 +1,32 @@
+{
+    "accountID": "1197B078m8x8q4e9T5X949d858",
+    "accountName": "bracketAccount",
+    "publicID": "1rgwB078m8x8qhgrT5X949d858",
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "projectDoc": "acc",
+    "subdomain": "acc",
+    "host": "192.168.0.100:82",
+    "db": "01I7C0K8W8X8h720t1U9P123p6",
+    "devDB": "",
+    "dev": false,
+    "expiryDate": 1722550299186,
+    "encryptionKey": "IYYH4",
+    "userID": "",
+    "username": "",
+    "__props__": {
+        "id": "s1v7W2U2w4K633u8U939o1o817",
+        "doc": "session113",
+        "counter": 113,
+        "creationDate": 1722463899187,
+        "collection": "session",
+        "chunk": "chunk1",
+        "lastModified": 1722463899187,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 613
+    }
+}

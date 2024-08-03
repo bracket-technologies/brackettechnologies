@@ -5,28 +5,28 @@
     "lastChunk": 1,
     "docsLength": 4,
     "counter": 4,
-    "reads": 711,
-    "writes": 260,
+    "reads": 1628,
+    "writes": 597,
     "deletes": 0,
     "size": 1855,
-    "payloadIn": 110917,
-    "payloadOut": 305709,
+    "payloadIn": 256730,
+    "payloadOut": 697593,
     "indexes": [
         {
             "find": [
                 "user"
             ],
             "doc": "index1",
-            "lastRead": 1721898567072,
-            "expiryDate": 1724490567072
+            "lastRead": 1722598757514,
+            "expiryDate": 1725190757514
         },
         {
             "find": [
                 "session"
             ],
             "doc": "index2",
-            "lastRead": 1721914760312,
-            "expiryDate": 1724506760312
+            "lastRead": 1722597947667,
+            "expiryDate": 1725189947667
         }
     ],
     "lastIndex": 2

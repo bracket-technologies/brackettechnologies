@@ -17,7 +17,7 @@
                                     "view": "[View]:[if():[!_.subInput]:[if():[!data().[_.path].0;_.path]:[..data().[_.path]=:[]];path=_.path]]?if():[!___.stopFormIds;__.path]:[if():[!___.stopFormIds]:[saveSectionIdInFormIds():[index=__.index;pathIndex=path().[-1];input=true]]];class=flex column;style:[width=100%;gap=1rem]",
                                     "children": [
                                         {
-                                            "view": "View?class=flex column;style:[width=100%;height=fit-content;overflow=hidden;gap=1rem];if():[__.defaultValues]:[handlePathDefaultValues()]",
+                                            "view": "View?class=flex column;style:[width=100%;height=fit-content;overflow=hidden;gap=1rem];if():[__.defaultValues]:[handlePathDefaultValues()];if():[__.mapPath]:[path=__.mapPath;log():[__.mapPath]:['ttttt1']:[path()]];",
                                             "children": [
                                                 {
                                                     "view": "View?style:[width=100%;height=fit-content;padding=1rem 1rem 0 1rem]",
@@ -83,9 +83,12 @@
     "__props__": {
         "id": "x1f7V1b1u0K32133T6D5P2I1K9",
         "doc": "customFormSectionLoop",
+        "counter": 54,
         "creationDate": 1711031365219,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1722419350050,
+        "dev": false,
         "actions": {
             "setSectionIndex": {
                 "_": "if():[______.index]:[if():[____.path]:[_.index=______.index+'.'+path().1]:[_.index=______.index];_.index=_.index+'.'+index()]:[_.index=index().toString()]"
@@ -113,6 +116,70 @@
                 "#setAllowedLedger": "if():[_.allowedCode.0.condition||_.allowedCode.0.orCondition]:[handleAllowedLedgersCondition()]:[().allowedLedger=_.allowedCode]"
             }
         },
+        "comments": [
+            {
+                "note": "if you need to look at all templates;please change the template Name and the collection in order to change the structure and the table;(rows of the table are already filled so you can also fill your data);i put the data of all templates in parameter",
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "image",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            false,
+            {
+                "note": "customSectionView",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "take path and edit on it if not pathsIds",
+                "path": [
+                    "#saveSectionIdInForm",
+                    "addSectionIdInPath"
+                ]
+            },
+            {
+                "note": "table",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "to be reBuild",
+                "path": [
+                    "handleInputValueInDocForAllSections"
+                ]
+            }
+        ],
         "collapsed": [
             {
                 "path": [
@@ -224,75 +291,8 @@
                 ]
             }
         ],
-        "comments": [
-            {
-                "note": "if you need to look at all templates;please change the template Name and the collection in order to change the structure and the table;(rows of the table are already filled so you can also fill your data);i put the data of all templates in parameter",
-                "path": [
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "image",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    3
-                ]
-            },
-            false,
-            {
-                "note": "customSectionView",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "note": "take path and edit on it if not pathsIds",
-                "path": [
-                    "#saveSectionIdInForm",
-                    "addSectionIdInPath"
-                ]
-            },
-            {
-                "note": "table",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "to be reBuild",
-                "path": [
-                    "handleInputValueInDocForAllSections"
-                ]
-            }
-        ],
-        "folderPath": [],
-        "version": 0,
-        "counter": 54,
-        "secure": false,
-        "chunk": "chunk1",
-        "collection": "view"
+        "arrange": [],
+        "secured": false,
+        "size": 7564
     }
 }

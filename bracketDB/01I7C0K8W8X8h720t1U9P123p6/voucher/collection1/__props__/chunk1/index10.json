@@ -1,1 +1,14 @@
-{}
+{
+    "voucher1": {
+        "type": "Journal Voucher",
+        "status": "Confirmed"
+    },
+    "voucher2": {
+        "type": "Receipt Voucher",
+        "status": "Pending"
+    },
+    "voucher3": {
+        "type": "Journal Voucher",
+        "status": "Confirmed"
+    }
+}

@@ -1,18 +1,68 @@
 {
     "account767": {
-        "name.lowercase()": "opening",
+        "name.lowercase()": "test1",
+        "startsWith": [
+            "1"
+        ]
+    },
+    "account768": {
+        "name.lowercase()": "opening1",
         "startsWith": [
             "1",
             "11",
             "119"
         ]
     },
-    "account768": {
-        "name.lowercase()": "test1",
+    "account769": {
+        "name.lowercase()": "table",
+        "startsWith": [
+            "2"
+        ]
+    },
+    "account770": {
+        "name.lowercase()": "cash1",
+        "startsWith": [
+            "5",
+            "53"
+        ]
+    },
+    "account771": {
+        "name.lowercase()": "purchases",
+        "startsWith": [
+            "6",
+            "60",
+            "601"
+        ]
+    },
+    "account772": {
+        "name.lowercase()": "invoices",
+        "startsWith": [
+            "7",
+            "70",
+            "701"
+        ]
+    },
+    "account773": {
+        "name.lowercase()": "customer1",
         "startsWith": [
             "4",
             "41",
             "413"
+        ]
+    },
+    "account774": {
+        "name.lowercase()": "test3",
+        "startsWith": [
+            "1"
+        ]
+    },
+    "account775": {
+        "name.lowercase()": "tttt",
+        "startsWith": [
+            "4",
+            "40",
+            "401",
+            "4011"
         ]
     }
 }

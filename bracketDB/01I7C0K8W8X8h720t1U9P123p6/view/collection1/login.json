@@ -52,7 +52,7 @@
         "creationDate": 1711031365208,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1721650369912,
+        "lastModified": 1722599191520,
         "dev": false,
         "actions": {
             "configs": "publicData:().loginPage",
@@ -61,7 +61,7 @@
             "loginInputsData": ":[path=username;label=configs().usernamePlaceholder]:[path=password;label=configs().passwordPlaceholder;password=true]",
             "logintt": {
                 "wrongUserNote": "note():[text='Wrong username or password!';type=danger]",
-                "emailAndPasswordExist": "login():[form()]:[if():[_.success]:[loader.show;getAllData()::[setCookie():[name=session;value=_.session];log():['zzzxxx']:[_.data];userData:()=_.data;root():portal;loader.hide]]:[loader.hide;wrongUserNote()]]",
+                "emailAndPasswordExist": "login():[form()]:[if():[_.success]:[loader.show;getAllData()::[setCookie():[name=session;value=_.session];userData:()=_.data;root():portal;loader.hide]]:[loader.hide;wrongUserNote()]]",
                 "emailAndPasswordDoesNotExist": "note():[text=if():[!form().username]:[configs().noEmailAlert]:[configs().noPasswordAlert];danger]",
                 "_": "loader.show;if():[form().username;form().password]:[emailAndPasswordExist()]:[loader.hide;emailAndPasswordDoesNotExist()]"
             },
@@ -159,17 +159,12 @@
             },
             {
                 "path": [
-                    "logintt"
-                ]
-            },
-            {
-                "path": [
                     "signUp"
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 4966
+        "size": 4925
     }
 }

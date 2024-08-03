@@ -1,0 +1,67 @@
+{
+    "firstTrigger": 1722414367916,
+    "serverTriggers": 655,
+    "date": 1722373200000,
+    "userID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "activityPerHour": [
+        {
+            "time": 1722412800000,
+            "firstTrigger": 1722414367916,
+            "serverTriggers": 1,
+            "lastTrigger": 1722414367916
+        },
+        {
+            "time": 1722416400000,
+            "firstTrigger": 1722416991702,
+            "serverTriggers": 100,
+            "lastTrigger": 1722418451958
+        },
+        {
+            "time": 1722420000000,
+            "firstTrigger": 1722420720651,
+            "serverTriggers": 172,
+            "lastTrigger": 1722423591004
+        },
+        {
+            "time": 1722423600000,
+            "firstTrigger": 1722423631704,
+            "serverTriggers": 42,
+            "lastTrigger": 1722425467822
+        },
+        {
+            "time": 1722427200000,
+            "firstTrigger": 1722428381058,
+            "serverTriggers": 28,
+            "lastTrigger": 1722428392619
+        },
+        {
+            "time": 1722438000000,
+            "firstTrigger": 1722440129916,
+            "serverTriggers": 17,
+            "lastTrigger": 1722441590904
+        },
+        {
+            "time": 1722441600000,
+            "firstTrigger": 1722441645098,
+            "serverTriggers": 295,
+            "lastTrigger": 1722444614496
+        }
+    ],
+    "lastTrigger": 1722444614496,
+    "__props__": {
+        "id": "W1E7f2h27461m4w3S6J789U2W0",
+        "doc": "userActivity33",
+        "counter": 33,
+        "creationDate": 1722414367920,
+        "collection": "userActivity",
+        "chunk": "chunk1",
+        "lastModified": 1722444614503,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1130
+    }
+}

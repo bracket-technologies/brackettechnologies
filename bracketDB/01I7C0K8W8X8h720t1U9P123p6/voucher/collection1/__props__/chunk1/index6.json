@@ -1,1 +1,17 @@
-{}
+{
+    "voucher1": {
+        "type": "Journal Voucher",
+        "creationDate": 1722503889630,
+        "creationDay": 1722459600000
+    },
+    "voucher2": {
+        "type": "Receipt Voucher",
+        "creationDate": 1722504130909,
+        "creationDay": 1722459600000
+    },
+    "voucher3": {
+        "type": "Journal Voucher",
+        "creationDate": 1722553056305,
+        "creationDay": 1722546000000
+    }
+}

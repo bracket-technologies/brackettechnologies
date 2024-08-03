@@ -1,0 +1,51 @@
+{
+    "name": "Tttt",
+    "isSubAccount": "No",
+    "generalLedger": "4011",
+    "autoGenerateAccountNumber": "Yes",
+    "currency": [
+        "USD"
+    ],
+    "type": "Airline Supplier",
+    "createVATAccount": "No",
+    "openingBalance": [
+        {
+            "openingBalance": "No"
+        }
+    ],
+    "limit": 100000,
+    "creditLimitCurrency": "USD",
+    "notification": "No",
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "createdBy": "4nFZccstfAc5FKZhSxoQoFmo4e8JaBuQYnGP5qwRpwTEsOFXapL13mOhfgo0-1722500623524",
+    "startsWith": [
+        "4",
+        "40",
+        "401",
+        "4011"
+    ],
+    "id": "iBv5UMBqlqFIJTIQQsfEc6Jd64eh5ZQFmkyxzKyboLJglOdNnwahcFowDP0a-1722553817868",
+    "creationDate": 1722553817868,
+    "creationDay": 1722546000000,
+    "ref": "ACC-00000009",
+    "accountNumber": "1",
+    "ledgerAccount": [
+        "4011/1/0"
+    ],
+    "__props__": {
+        "id": "C1D7h2y2Z5m5J3U841N7F9S7M4",
+        "doc": "account775",
+        "counter": 775,
+        "creationDate": 1722553817974,
+        "collection": "account",
+        "chunk": "chunk1",
+        "lastModified": 1722554174867,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 936
+    }
+}

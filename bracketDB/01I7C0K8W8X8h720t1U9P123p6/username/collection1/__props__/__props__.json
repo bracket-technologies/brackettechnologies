@@ -2,14 +2,14 @@
     "creationDate": 1712567718140,
     "collection": 1,
     "lastChunk": 1,
-    "docsLength": 4,
-    "counter": 4,
-    "reads": 867,
-    "writes": 11,
+    "docsLength": 5,
+    "counter": 5,
+    "reads": 880,
+    "writes": 12,
     "deletes": 0,
-    "size": 1868,
-    "payloadIn": 6591,
-    "payloadOut": 509812,
+    "size": 2397,
+    "payloadIn": 7120,
+    "payloadOut": 514936,
     "dirTree": [],
     "maxSize": 1000,
     "indexes": [
@@ -18,8 +18,8 @@
                 "username"
             ],
             "doc": "index1",
-            "lastRead": 1721898567061,
-            "expiryDate": 1724490567061
+            "lastRead": 1722598757503,
+            "expiryDate": 1725190757503
         }
     ],
     "lastIndex": 1

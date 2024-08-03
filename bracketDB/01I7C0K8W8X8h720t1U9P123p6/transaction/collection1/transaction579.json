@@ -1,0 +1,74 @@
+{
+    "currency": "USD",
+    "account": "ZtKWaiSmRPdi8gunccRGf4HN4riKp3sBZLqmMmOfjV00BsHmheVIJ1WKF0Q6-1722501787175",
+    "ledgerAccount": "1/1/0",
+    "credit": 100,
+    "debit": 0,
+    "exchangeRates": [
+        {
+            "code": "USD",
+            "counter": 0,
+            "exchangeRate": 1
+        },
+        {
+            "code": "XOF",
+            "counter": 1,
+            "exchangeRate": 630
+        },
+        {
+            "code": "LBP",
+            "counter": 2,
+            "exchangeRate": 89000
+        },
+        {
+            "code": "eur",
+            "counter": 4,
+            "exchangeRate": 100000
+        }
+    ],
+    "voucher": "2YqYmSBVp1j6UZFzNfKirt8P6ORqqeDTkXDPtAdC1R70aUONjzbHWJ5eFVHV-1722503889630",
+    "voucherRef": "VCH-00000001",
+    "accountBalances": [
+        {
+            "ledgerAccount": "1/1/0",
+            "accountBalances": [
+                {
+                    "account": "ZtKWaiSmRPdi8gunccRGf4HN4riKp3sBZLqmMmOfjV00BsHmheVIJ1WKF0Q6-1722501787175",
+                    "credit": 100,
+                    "debit": 0,
+                    "balance": -100
+                }
+            ]
+        }
+    ],
+    "systemAccountBalances": [
+        {
+            "account": "ZtKWaiSmRPdi8gunccRGf4HN4riKp3sBZLqmMmOfjV00BsHmheVIJ1WKF0Q6-1722501787175",
+            "credit": 100,
+            "debit": 0,
+            "balance": -100
+        }
+    ],
+    "id": "Y7vTYGlvaROFVFNkhPDYWpKpRWYCl79PXTPny99WEU9d8gA488I1BtPDBliN-1722503889612",
+    "creationDate": 1722503889613,
+    "creationDay": 1722459600000,
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "sysCredit": 100,
+    "sysDebit": 0,
+    "__props__": {
+        "id": "V107k2J2G5Z0M3F8n819j6Y880",
+        "doc": "transaction579",
+        "counter": 579,
+        "creationDate": 1722503889680,
+        "collection": "transaction",
+        "chunk": "chunk1",
+        "lastModified": 1722503889680,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1328
+    }
+}

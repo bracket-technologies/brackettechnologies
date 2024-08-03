@@ -54,7 +54,7 @@
         "creationDate": 1711031365220,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1721811082246,
+        "lastModified": 1722433600457,
         "dev": false,
         "actions": {
             "toTimeFormat": {
@@ -86,23 +86,16 @@
                 "_": "if():[_.unitPath]:[path=_.unitPath];if():[_.unitValue]:[handleInputValue()];readonly;if():[_.subItemsList]:[handleSubItemsList()];",
                 "handleInputValue": "if():[_.executeUnitEveryLoad]:[txt()=[_.unitValue]()]:[if():[!data()]:[txt()=[_.unitValue]();data()=[_.unitValue]()]]",
                 "handleSubItemsList": {
-                    "handleInputValue": "if():[!().droplistItems.inc():[data()];!_.uniteValue]:[txt()=().droplistItems.0;data()=().droplistItems.0]",
+                    "handleInputValue": "log():['taha1'];if():[!().droplistItems.inc():[data()];!_.uniteValue]:[log():['taha2'];txt()=().droplistItems.0;data()=().droplistItems.0]",
                     "handleDroplistClick": "txt()=droplist-txt:();data()=droplist-txt:();if():[_.subItemsDroplistClickAction]:[[_.subItemsDroplistClickAction]()]",
                     "_": "handleDropListItems();handleInputValue();droplistHandler():[items=().droplistItems];[click:droplist?handleDroplistClick()]",
-                    "handleDropListItems": "().droplistItems=:;_.subItemsList._():[().droplistItems.push():[[_]()]]"
+                    "handleDropListItems": "().droplistItems=[[_.subItemsList]()];#_.subItemsList._():[().droplistItems.push():[[_]()]]"
                 }
             },
             "#autoFillSubItems": {
                 "getSheetData": "if():[![[_.subSheetName]()].inc():['coded']]:[timer():[dropListFromSheet():[name=[_.subSheetName]()]:[if():[_.success]:[sheetData:().[[__.subSheetName]()]=_.data;__.subItemsList=sheetData:().[[__.subSheetName]()].list.():[[__.subSheetHeader]];#droplistHandler();parent().refresh()]:[sheetData:().[[__.subSheetName]()]=false]]]:0]",
                 "[object Object]": "if():[!she:().list.[[_.subShe]()]]:[getSheetData()]:[_.subItemsList=sheetData:().list.[[_.subSheetName]()].():[[_.subSheetHeader]];timer():[parent().refresh()]:100]",
                 "_": "if():[!sheetData:().list.[[_.subSheetName]()]]:[getSheetData()]:[_.subItemsList=sheetData:().list.[[_.subSheetName]()].():[[_.subSheetHeader]];timer():[parent().refresh()]:100]"
-            },
-            "calcExchangeRate": {
-                "showNoteAndDel": "if():[_____.path]:[____.exchangeRate.del()]:[form().exchangeRate.del()];note():[text='Rate must be greater than 0!';danger]",
-                "handleExchangeRateInDoc": "if():[[form().[_.firstRatePath]+0]>0;[form().[_.secondeRatePath]+0]>0]:[calcRate()]:[showNoteAndDel()]",
-                "calcRate": "if():[_____.path]:[____.exchangeRate=[____.[_.firstRatePath]/____.[_.secondeRatePath]]]:[form().exchangeRate=[form().[_.firstRatePath]/form().[_.secondeRatePath]]]",
-                "handleExchangeRateInPath": "if():[[____.[_.firstRatePath]+0]>0;[____.[_.secondeRatePath]+0]>0]:[calcRate()]:[showNoteAndDel()]",
-                "_": "if():[_____.path]:[handleExchangeRateInPath()]:[handleExchangeRateInDoc()];#if():[[form().createdCurrencyRate+0]>0;[form().systemCurrencyRate+0]>0]:[calcRate()]:[showNoteAndDel()]"
             },
             "priceFormatHandler": {
                 "removeChar": "if():[[e().keyCode>=48;e().keyCode<=57]||[e().keyCode>=96;e().keyCode<=105]||[e().keyCode=110||e().keyCode=8]||[e().keyCode>=37;e().keyCode<=40]||[e().keyCode>=16;e().keyCode<=20]||[e().keyCode>=112;e().keyCode<=123]||[e().keyCode=190]]:[]:[if():[e().keyCode=9]:[blur()]:[preventDefault()]]",
@@ -114,6 +107,16 @@
                 "handleDropListItemsAndInputValue": "().droplistItems=:;_.subItemsList._():[().droplistItems.push():[[_]()]]",
                 "handleDroplistClick": "txt()=droplist-txt:();data()=droplist-txt:();if():[_.subItemsDroplistClickAction]:[[_.subItemsDroplistClickAction]()]",
                 "_": "handleDropListItemsAndInputValue();handleInputValue();droplistHandler():[items=().droplistItems];[click:droplist?handleDroplistClick()]"
+            },
+            "#calcExchangeRate": {
+                "showNoteAndDel": "if():[_____.path]:[____.exchangeRate.del()]:[form().exchangeRate.del()];note():[text='Rate must be greater than 0!';danger]",
+                "handleExchangeRateInDoc": "if():[[form().[_.firstRatePath]+0]>0;[form().[_.secondeRatePath]+0]>0]:[calcRate()]:[showNoteAndDel()]",
+                "calcRate": "if():[_____.path]:[____.exchangeRate=[____.[_.firstRatePath]/____.[_.secondeRatePath]]]:[form().exchangeRate=[form().[_.firstRatePath]/form().[_.secondeRatePath]]]",
+                "handleExchangeRateInPath": "if():[[____.[_.firstRatePath]+0]>0;[____.[_.secondeRatePath]+0]>0]:[calcRate()]:[showNoteAndDel()]",
+                "_": "if():[_____.path]:[handleExchangeRateInPath()]:[handleExchangeRateInDoc()];#if():[[form().createdCurrencyRate+0]>0;[form().systemCurrencyRate+0]>0]:[calcRate()]:[showNoteAndDel()]"
+            },
+            "calcExchangeRate": {
+                "_": "parent().data().exchangeRate=parent().data().createdCurrencyRate/parent().data().systemCurrencyRate"
             }
         },
         "comments": [
@@ -219,11 +222,6 @@
             },
             {
                 "path": [
-                    "calcExchangeRate"
-                ]
-            },
-            {
-                "path": [
                     "priceFormatHandler",
                     "#toPriceForm"
                 ]
@@ -235,17 +233,17 @@
             },
             {
                 "path": [
-                    "priceFormatHandler"
+                    "toTimeFormat"
                 ]
             },
             {
                 "path": [
-                    "toTimeFormat"
+                    "priceFormatHandler"
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 9288
+        "size": 9450
     }
 }

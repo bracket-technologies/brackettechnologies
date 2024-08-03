@@ -68,7 +68,7 @@
                                     "view": "View?class=flex align-center;style.display=inline-flex",
                                     "children": [
                                         {
-                                            "view": "View?class=flex;text=data();[loaded;blur?txt()=txt().colorize()];editable;style:[alignItems=center;overflowY=hidden;width=auto;height=3rem;color=#a35521;fontSize=1.4rem;padding=.5rem;border=if():txt():'1px solid #00000000':'1px solid #ddd';borderRadius=.5rem];mouseenter:[style().border=1px solid #ddd];mouseleave:[style().border=1px solid #00000000?txt()];click:[3rdParent().lastChild().style().display=none];focus:[prev_value=form().clone()];blur:[pushToUndo()];keyup:[valueHandler();shortcutsHandler()]"
+                                            "view": "View?class=flex;text=data();txt()=txt().colorize();[blur?txt()=txt().colorize()];editable;style:[alignItems=center;overflowY=hidden;width=auto;height=3rem;color=#a35521;fontSize=1.4rem;padding=.5rem;border=if():txt():'1px solid #00000000':'1px solid #ddd';borderRadius=.5rem];mouseenter:[style().border=1px solid #ddd];mouseleave:[style().border=1px solid #00000000?txt()];click:[3rdParent().lastChild().style().display=none];focus:[prev_value=form().clone()];blur:[pushToUndo()];keyup:[valueHandler();shortcutsHandler()]"
                                         }
                                     ]
                                 }
@@ -138,7 +138,7 @@
         "creationDate": 1710330786447,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1721989249735,
+        "lastModified": 1722508567832,
         "dev": false,
         "actions": {
             "updateListIndexes": "_.nextSiblings()._():[if():[_.parent().data().type()=array]:[_.1stChild().2ndChild().txt()=_.path().lastEl().num()-1]]",
@@ -600,16 +600,6 @@
                     "children",
                     0,
                     "children",
-                    5
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
                     2
                 ]
             },
@@ -636,12 +626,6 @@
             {
                 "path": [
                     "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
                     0,
                     "children",
                     2
@@ -654,10 +638,20 @@
                     "children",
                     3
                 ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    5
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 24978
+        "size": 24970
     }
 }

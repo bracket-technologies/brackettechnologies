@@ -2,12 +2,53 @@
     "account767": {
         "currency": [
             "USD",
-            "xof"
+            "LBP"
         ]
     },
     "account768": {
         "currency": [
-            "xof"
+            "USD",
+            "LBP"
+        ]
+    },
+    "account769": {
+        "currency": [
+            "USD",
+            "LBP",
+            "XOF"
+        ]
+    },
+    "account770": {
+        "currency": [
+            "USD",
+            "XOF"
+        ]
+    },
+    "account771": {
+        "currency": [
+            "USD"
+        ]
+    },
+    "account772": {
+        "currency": [
+            "USD"
+        ]
+    },
+    "account773": {
+        "currency": [
+            "USD",
+            "XOF"
+        ]
+    },
+    "account774": {
+        "currency": [
+            "USD",
+            "XOF"
+        ]
+    },
+    "account775": {
+        "currency": [
+            "USD"
         ]
     }
 }

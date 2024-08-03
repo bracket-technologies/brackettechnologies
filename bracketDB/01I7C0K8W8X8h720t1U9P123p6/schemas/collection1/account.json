@@ -607,6 +607,20 @@
                     "required": true
                 },
                 {
+                    "path": "creditLimitCurrency",
+                    "condition": [
+                        {
+                            "condition": [
+                                "Receivables and Payables"
+                            ],
+                            "conditionReference": "ledgerAccountName"
+                        }
+                    ],
+                    "type": "string",
+                    "key": "creditLimitCurrency",
+                    "required": true
+                },
+                {
                     "path": "notification",
                     "type": "string",
                     "key": "notification"
@@ -959,7 +973,7 @@
         "creationDate": 1713950600780,
         "collection": "schemas",
         "chunk": "chunk1",
-        "lastModified": 1721727637242,
+        "lastModified": 1722421694493,
         "dev": false,
         "actions": {},
         "comments": [
@@ -1248,7 +1262,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    31
+                    48
                 ]
             },
             {
@@ -1257,7 +1271,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    32
+                    33
                 ]
             },
             {
@@ -1266,7 +1280,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    33
+                    34
                 ]
             },
             {
@@ -1275,7 +1289,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    34
+                    35
                 ]
             },
             {
@@ -1284,7 +1298,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    35
+                    36
                 ]
             },
             {
@@ -1293,7 +1307,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    36
+                    37
                 ]
             },
             {
@@ -1302,7 +1316,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    37
+                    38
                 ]
             },
             {
@@ -1311,7 +1325,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    38
+                    39
                 ]
             },
             {
@@ -1320,7 +1334,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    39
+                    40
                 ]
             },
             {
@@ -1329,7 +1343,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    40
+                    41
                 ]
             },
             {
@@ -1338,7 +1352,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    41
+                    42
                 ]
             },
             {
@@ -1347,7 +1361,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    42
+                    43
                 ]
             },
             {
@@ -1356,7 +1370,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    43
+                    44
                 ]
             },
             {
@@ -1365,7 +1379,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    44
+                    45
                 ]
             },
             {
@@ -1374,7 +1388,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    45
+                    46
                 ]
             },
             {
@@ -1383,7 +1397,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    46
+                    47
                 ]
             },
             {
@@ -1392,7 +1406,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    47
+                    48
                 ]
             },
             {
@@ -2260,7 +2274,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    30
+                    48
                 ]
             },
             {
@@ -2268,15 +2282,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    31
-                ]
-            },
-            {
-                "path": [
-                    "create",
-                    "account",
-                    "keyValue",
-                    32,
+                    37,
                     "condition"
                 ]
             },
@@ -2401,7 +2407,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    42,
+                    45,
                     "condition"
                 ]
             },
@@ -2460,7 +2466,7 @@
                     "create",
                     "account",
                     "keyValue",
-                    46,
+                    48,
                     "condition"
                 ]
             },
@@ -2826,18 +2832,7 @@
             {
                 "path": [
                     "create",
-                    "account"
-                ]
-            },
-            {
-                "path": [
-                    "create",
                     "vatAccount"
-                ]
-            },
-            {
-                "path": [
-                    "create"
                 ]
             },
             {
@@ -2846,11 +2841,24 @@
                     "account",
                     "keyValue"
                 ]
+            },
+            {
+                "path": [
+                    "update"
+                ]
+            },
+            {
+                "path": [
+                    "create",
+                    "account",
+                    "keyValue",
+                    30
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 27033
+        "size": 27192
     },
     "update": {
         "account": {

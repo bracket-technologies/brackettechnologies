@@ -3,15 +3,42 @@
         "code": "CRN"
     },
     "counter4": {
-        "code": "ACC"
+        "code": "USR"
     },
     "counter5": {
-        "code": "119"
+        "code": "1"
     },
     "counter6": {
-        "code": "TRN"
+        "code": "ACC"
     },
     "counter7": {
+        "code": "TRN"
+    },
+    "counter8": {
+        "code": "119"
+    },
+    "counter9": {
+        "code": "2"
+    },
+    "counter10": {
+        "code": "53"
+    },
+    "counter11": {
+        "code": "601"
+    },
+    "counter12": {
+        "code": "701"
+    },
+    "counter13": {
+        "code": "VCH"
+    },
+    "counter14": {
         "code": "413"
+    },
+    "counter15": {
+        "code": "4011"
+    },
+    "counter16": {
+        "code": "INV"
     }
 }

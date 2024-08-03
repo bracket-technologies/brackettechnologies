@@ -1,0 +1,53 @@
+{
+    "name": "Table",
+    "isSubAccount": "No",
+    "generalLedger": "2",
+    "autoGenerateAccountNumber": "Yes",
+    "currency": [
+        "USD",
+        "LBP",
+        "XOF"
+    ],
+    "createDepreciationAccount": "No",
+    "openingBalance": [
+        {
+            "openingBalance": "Yes",
+            "currency": "USD",
+            "credit-debit": "Debit",
+            "amount": 1000,
+            "openingBalanceAccount": "119/1/0"
+        }
+    ],
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "createdBy": "4nFZccstfAc5FKZhSxoQoFmo4e8JaBuQYnGP5qwRpwTEsOFXapL13mOhfgo0-1722500623524",
+    "startsWith": [
+        "2"
+    ],
+    "id": "4MsQ7bNZZcPYgteLnmQJiTLeS0BPycktW8y9AV3pu1Kn2t4EAJIT7ncvATwi-1722503515085",
+    "creationDate": 1722503515085,
+    "creationDay": 1722459600000,
+    "ref": "ACC-00000003",
+    "accountNumber": "1",
+    "ledgerAccount": [
+        "2/1/0",
+        "2/1/2",
+        "2/1/1"
+    ],
+    "__props__": {
+        "id": "i10742T2p5c0M3P5S1W5i2Z1k6",
+        "doc": "account769",
+        "counter": 769,
+        "creationDate": 1722503515216,
+        "collection": "account",
+        "chunk": "chunk1",
+        "lastModified": 1722503515330,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1041
+    },
+    "lastBalance": "z8V7otPE6NumrbhRFtvctqiAs5prFd5EbGXN8tQZxpVKeLrHRhIsE2M5WZ1t-1722503515192"
+}

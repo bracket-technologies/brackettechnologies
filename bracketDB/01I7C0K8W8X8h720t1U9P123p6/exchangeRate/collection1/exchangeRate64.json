@@ -1,0 +1,24 @@
+{
+    "exchangeRate": 86000,
+    "code": "LBP",
+    "id": "kJjyFCrCz3W5Bk93AKMCi3mckjAUdmBKvPAqxO3lNeJAyuBUTCXrxWtC3bx4-1722243108878",
+    "creationDate": 1722243108878,
+    "creationDay": 1722200400000,
+    "currency": "cxtfm5a91fyPi80WM5wMQFSaSm8XPLeuu8yAHRcmQ7Z80K7QkAjZ62AINSZI-1722241706874",
+    "__props__": {
+        "id": "z1Z7O222f2v4j341v0i8g9t072",
+        "doc": "exchangeRate64",
+        "counter": 64,
+        "creationDate": 1722243108902,
+        "collection": "exchangeRate",
+        "chunk": "chunk1",
+        "lastModified": 1722243108902,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 532
+    }
+}

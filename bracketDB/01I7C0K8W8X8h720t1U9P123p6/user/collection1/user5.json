@@ -1,0 +1,31 @@
+{
+    "firstName": "hassan",
+    "lastName": "Skyla",
+    "birthDate": 1722470400000,
+    "nationality": "Lebanese",
+    "contactNumber": "70708080",
+    "email": "hassan@gmail.com",
+    "position": "User",
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "createdBy": "ecGBRq1sxd0cfpMp3lwIOykt4JGrvjKmCVcx01uFTezsGlsL0cqwifRrfXpW-1721739412660",
+    "id": "4nFZccstfAc5FKZhSxoQoFmo4e8JaBuQYnGP5qwRpwTEsOFXapL13mOhfgo0-1722500623524",
+    "creationDate": 1722500623524,
+    "creationDay": 1722459600000,
+    "ref": "USR-00000001",
+    "__props__": {
+        "id": "K1t7K2a2m5e0o0G6n2D3L5d9t6",
+        "doc": "user5",
+        "counter": 5,
+        "creationDate": 1722500623596,
+        "collection": "user",
+        "chunk": "chunk1",
+        "lastModified": 1722500623596,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 737
+    }
+}

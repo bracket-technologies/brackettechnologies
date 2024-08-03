@@ -4,8 +4,10 @@
         "doc": "addProjectForm",
         "counter": 5,
         "creationDate": 1716552088242,
-        "collection": "schema",
+        "collection": "formSchema",
         "chunk": "chunk1",
+        "lastModified": 1722614111734,
+        "dev": false,
         "actions": {
             "branchHandler": "2ndParent().next().display()?data()=true?2ndParent().next().():[hide();input().txt()=];form().headProjectPublicID.del()",
             "subscribeToTapHandler": "form().pluginID=plugin:().id();form().packageID=package:().id()?form().subscribeToPlugin?form().pluginID.del();form().packageID.del()"
@@ -75,11 +77,16 @@
                     "sections",
                     3
                 ]
+            },
+            {
+                "path": [
+                    "confirmBtn"
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 2511
+        "size": 2593
     },
     "confirmBtn": {
         "text": "Create Project",
@@ -152,7 +159,7 @@
         }
     ],
     "styles": "width=100rem",
-    "doc": "newProject",
     "reset": true,
-    "beforeLoadingActions": "[getPlugin()]():[collection=schema;doc=signupForm;path=:getDataOnLoaded]"
+    "beforeLoadingActions": "[getPlugin()]():[collection=formSchema;doc=signupForm;path=:getDataOnLoaded]",
+    "form": "newProject"
 }

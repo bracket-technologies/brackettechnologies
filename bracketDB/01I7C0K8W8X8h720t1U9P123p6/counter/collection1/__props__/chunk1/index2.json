@@ -3,11 +3,26 @@
         "collection": "currency"
     },
     "counter4": {
-        "collection": "account"
+        "collection": "user"
     },
     "counter5": {},
     "counter6": {
+        "collection": "account"
+    },
+    "counter7": {
         "collection": "transaction"
     },
-    "counter7": {}
+    "counter8": {},
+    "counter9": {},
+    "counter10": {},
+    "counter11": {},
+    "counter12": {},
+    "counter13": {
+        "collection": "voucher"
+    },
+    "counter14": {},
+    "counter15": {},
+    "counter16": {
+        "collection": "invoice"
+    }
 }

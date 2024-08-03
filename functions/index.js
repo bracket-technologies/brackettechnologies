@@ -10,6 +10,7 @@ var views = window.views
 var global = window.global
 
 views.document.__element__ = document
+views.document.__rendered__ = true
 
 // in some casese path changes when rendering
 history.replaceState(null, global.manifest.title, global.manifest.path.join("/"))
@@ -32,7 +33,7 @@ views.document.__idList__.map(id => views[id] && views[id].__loadedEvents__.map(
 // related events
 relatedEvents.map(relatedEvents => {
     Object.entries(relatedEvents).map(([eventID, addresses]) => {
-        Object.values(addresses).map(address => views[eventID] && views[eventID].__element__.addEventListener(address.event, address.eventListener))
+        Object.values(addresses).map(address => views[eventID] && views[eventID].__rendered__ && views[eventID].__element__.addEventListener(address.event, address.eventListener))
     })
 })
 

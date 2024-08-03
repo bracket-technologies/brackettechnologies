@@ -1,5 +1,5 @@
 {
-    "view": "View:customInput?class=flex column;if():[_.inputValue]:[inputValueHandler()];if():[_.sheetName;_.items]:[_.items.del()];style:[width=100%;overflow=hidden;align-self=end;if():[generalPopup:().read]:[pointerEvents=none];if():[!_.editable;generalPopup:().edit]:[pointerEvents=none]];;loaded:[if():[generalPopup:().edit;_.editable]:[handleInitailValue()]];?!_.emptyInput",
+    "view": "View:customInput?class=flex column;if():[_.inputValue]:[inputValueHandler()];click:[log():[path()]];if():[_.sheetName;_.items]:[_.items.del()];style:[width=100%;overflow=hidden;align-self=end;if():[generalPopup:().read]:[pointerEvents=none];if():[!_.editable;generalPopup:().edit]:[pointerEvents=none]];;loaded:[if():[generalPopup:().edit;_.editable]:[handleInitailValue()]];?!_.emptyInput",
     "children": [
         {
             "view": "View?class=flex column?!_.searchable;!_.unitPath;!_.governmentCode;!_.govInput;!_.generalLedger;!_.priceInput;!_.unitValue;!_.codeInput;!_.switch",
@@ -34,7 +34,7 @@
                                             ]
                                         },
                                         {
-                                            "view": "Icon?name=expand_more;google.symbol;style:[fontSize=2rem;color=#666];click:[parent().prev().click()]?_.items||_.sheetName;!generalPopup:().read"
+                                            "view": "Icon?name=expand_more;google.symbol;style:[fontSize=2rem;color=#666];click:[parent().prev().focus()]?_.items||_.sheetName;!generalPopup:().read"
                                         }
                                     ]
                                 }
@@ -75,7 +75,7 @@
         "creationDate": 1711031365199,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1721902410585,
+        "lastModified": 1722419390400,
         "dev": false,
         "actions": {
             "openPermissionPopup": {
@@ -133,7 +133,7 @@
                     },
                     "_": "loaded:[convertTimeStampToDateFormat();convertToTimeStamp()];entry:[toTimeFormat()];keydown:[removeChar()];blur:[convertToTimeStamp()]"
                 },
-                "switchInput": {
+                "#switchInput": {
                     "deleteUnderscoreKeys": "underscoreKeys=_.keys();().underscoreKeys._():[__.[_].del()];().switchParams.0.keys()._():[__.[_]=().switchParams.0.[_]];().switchParams.pullItem():[().switchParams.0];().switchParams.push():[().currentInputParams];_.switchable=().switchParams",
                     "delFromDoc": "if():[___.path]:[__.[_.inputPath].del()]:[form().[_.inputPath].del()]",
                     "_": "delFromDoc();().switchParams=_.switchable.clone();_.switchable.del();().currentInputParams=_.clone();deleteUnderscoreKeys();updateInputWrapper()"
@@ -141,11 +141,11 @@
             },
             "droplistHandler": {
                 "getItemsFromData": "loader.show;getDataForDroplist():[collection=_.items.collection;fields=_.items.fields]:[loader.hide;if():[_.success]:[droplist.items=_.data.():[__.items.returnKey]]]",
-                "handleDroplistClickIfMap": "saveInDoc():[_.items.find():[text=clicked().txt()].pathValue];txt()=clicked().txt();[_.droplistClickAction]()",
+                "handleDroplistClickIfMap": "data()=_.items.find():[text=clicked().txt()].pathValue;#saveInDoc():[_.items.find():[text=clicked().txt()].pathValue];txt()=clicked().txt();[_.droplistClickAction]()",
                 "handeItemsCondition": "_.items._():[().isConditionTrue=true;_.condition._():[if():[!form().[_.conditionReference].in():[_.condition]]:[().isConditionTrue=false]];if():[().isConditionTrue]:[if():[_.items.type()=array]:[().droplist.items=_.items]:[getItemsFromData()]]]",
                 "handleDroplistItems": "if():[_.items.collection]:[getItemsFromData()].elif():[_.items.0.text]:[droplist.items=_.items.():text].elif():[_.items.0.condition]:[handeItemsCondition()]:[().droplist.items=[_.items]()]",
-                "_": "handleDroplistItems();droplist:[preventDefault;style:[maxHeight=20rem]];if():[_.items.0.text]:[[click:droplist?handleDroplistClickIfMap()]]:[[click:droplist?;log():['bbbbn'];handleDroplistClick()]]",
-                "handleDroplistClick": "if():[__.unitPath]:[saveInDoc():[inputPath=__.unitPath;value=clicked().txt()]]:[data()=clicked().txt()];txt()=clicked().txt();[_.droplistClickAction]()"
+                "_": "handleDroplistItems();droplist:[filterable=_.filterable;searchable=_.searchable;preventDefault;style:[maxHeight=20rem]];if():[_.items.0.text]:[[click:droplist?handleDroplistClickIfMap()]]:[[click:droplist?handleDroplistClick()]]",
+                "handleDroplistClick": "data()=clicked().txt();txt()=clicked().txt();[_.droplistClickAction]()"
             },
             "showAndHideClearIcon": {
                 "_": "mouseenter:[2ndChild().1stChild().style():[opacity=1]];mouseleave:[2ndChild().1stChild().style():[opacity=0]];"
@@ -556,19 +556,7 @@
             },
             {
                 "path": [
-                    "customInputHandler",
-                    "handelDurationFormat"
-                ]
-            },
-            {
-                "path": [
                     "sw"
-                ]
-            },
-            {
-                "path": [
-                    "customInputHandler",
-                    "switchInput"
                 ]
             },
             {
@@ -642,11 +630,6 @@
             },
             {
                 "path": [
-                    "droplistHandler"
-                ]
-            },
-            {
-                "path": [
                     "searchEngineUpdateWrapper"
                 ]
             },
@@ -671,35 +654,35 @@
             },
             {
                 "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    1
+                    "customInputHandler",
+                    "#switchInput"
                 ]
             },
             {
                 "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    2
+                    "customInputHandler",
+                    "autoFillItems"
+                ]
+            },
+            {
+                "path": [
+                    "customInputHandler",
+                    "handelDurationFormat"
+                ]
+            },
+            {
+                "path": [
+                    "customInputHandler"
+                ]
+            },
+            {
+                "path": [
+                    "droplistHandler"
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 16681
+        "size": 16640
     }
 }

@@ -1,6 +1,10 @@
 {
-    "docs": [],
+    "docs": [
+        "voucher3",
+        "voucher2",
+        "voucher1"
+    ],
     "chunk": "chunk1",
-    "docsLength": 0,
-    "size": 0
+    "docsLength": 3,
+    "size": 4304
 }
