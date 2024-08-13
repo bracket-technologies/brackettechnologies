@@ -4,21 +4,24 @@
         "doc": "package1",
         "counter": 1,
         "creationDate": 1716735296398,
-        "active": true,
+        "collection": "package",
+        "chunk": "chunk1",
+        "lastModified": 1723121751446,
+        "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
-        "chunk": "chunk1",
         "secured": false,
-        "collection": "package"
+        "size": 454
     },
     "name": "Free Tier",
     "description": "Free tier",
     "duration": 604800000,
-    "freeTier": true,
     "accessabilityID": "I14741U6b1B9B7U6S0q6L408x4",
     "savings": 0,
     "pluginID": "r1c7d176U1B9m6C7i9F8T973T2",
-    "priceCoins": 0
+    "coins": 0,
+    "max": 1,
+    "free": true
 }

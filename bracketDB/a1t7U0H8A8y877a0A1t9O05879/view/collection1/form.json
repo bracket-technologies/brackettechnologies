@@ -7,7 +7,7 @@
         "creationDate": 1716557780043,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1722442266572,
+        "lastModified": 1723121026418,
         "dev": false,
         "actions": {
             "closeForm": "prev().transform()='translateY(-100%)';timer():[():form.hide()]:500",
@@ -39,7 +39,7 @@
                     "children",
                     0,
                     "children",
-                    1
+                    2
                 ]
             },
             {
@@ -64,20 +64,9 @@
                     "children",
                     0,
                     "children",
-                    2,
+                    3,
                     "children",
                     0
-                ]
-            },
-            {
-                "note": "confirm",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    2,
-                    "children",
-                    1
                 ]
             },
             {
@@ -93,7 +82,29 @@
                     "children",
                     0,
                     "children",
+                    3,
+                    "children",
+                    -1
+                ]
+            },
+            {
+                "note": "body",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "cards & inputs",
+                "path": [
+                    "children",
+                    0,
+                    "children",
                     1,
+                    "children",
+                    0,
                     "children",
                     0
                 ]
@@ -106,6 +117,51 @@
                     "children",
                     1,
                     "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "table",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "inputs",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "cards",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
                     1
                 ]
             }
@@ -116,15 +172,7 @@
                     "children",
                     0,
                     "children",
-                    2,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
+                    3,
                     "children",
                     0
                 ]
@@ -139,9 +187,37 @@
                     "children",
                     0,
                     "children",
-                    2,
+                    3,
                     "children",
                     1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    2
                 ]
             },
             {
@@ -159,7 +235,9 @@
                     "children",
                     1,
                     "children",
-                    0
+                    0,
+                    "children",
+                    1
                 ]
             },
             {
@@ -173,34 +251,39 @@
         ],
         "arrange": [],
         "secured": false,
-        "size": 4004
+        "size": 4552
     },
     "children": [
         {
-            "view": "View?class=flex column test;style:[padding=4rem;transition=.5s;backgroundColor=#fff;width=100rem;height=100%;overflowY=auto;backgroundColor=#fff;gap=2rem;transform=translateY(-100%);[_.styles]().flat()];form=_.form;[form()=[[_.data]()?_.data?[]]?_.reset]",
+            "view": "View?class=flex column;style:[padding=4rem;transition=.5s;backgroundColor=#fff;width=100rem;height=100%;overflowY=auto;backgroundColor=#fff;transform=translateY(-100%);[_.styles]().flat()];form=_.form;[form()=[[_.data]()?_.data?[]]?_.reset]",
             "children": [
                 {
                     "view": "Text?text=_.title;style:[fontSize=1.75rem;padding=2rem 0;textAlign=left]"
                 },
                 {
-                    "view": "[View]:[data=_.sections]?class=flex column;style:[width=100%]",
+                    "view": "View?class=flex column;style:[width=100%;height=fit-content;gap=2rem]",
                     "children": [
                         {
-                            "view": "View?style=[[_.styles]()]",
+                            "view": "[View]:[data=_.sections]?class=flex column;style:[width=100%]",
                             "children": [
                                 {
-                                    "view": "[customInput]:[data=_.inputs?_.gridInputs]"
+                                    "view": "View?style=[[_.styles]()]",
+                                    "children": [
+                                        {
+                                            "view": "[customInput]:[data=_.inputs?_.gridInputs;_.inputs]"
+                                        },
+                                        {
+                                            "view": "[card]:[data=[_.cards]()?_.gridCards]"
+                                        }
+                                    ]
                                 },
                                 {
-                                    "view": "[card]:[data=[_.cards]()?_.gridCards]"
+                                    "view": "View?style:[minHeight=1px;backgroundColor=#ddd;width=100%]?_.divider"
+                                },
+                                {
+                                    "view": "Table??_.table"
                                 }
                             ]
-                        },
-                        {
-                            "view": "View?style:[minHeight=1px;backgroundColor=#ddd;width=100%]?_.divider"
-                        },
-                        {
-                            "view": "Table??_.table"
                         }
                     ]
                 },

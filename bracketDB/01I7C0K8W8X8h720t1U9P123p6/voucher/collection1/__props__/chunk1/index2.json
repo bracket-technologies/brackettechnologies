@@ -5,10 +5,10 @@
     },
     "voucher2": {
         "ref": "VCH-00000002",
-        "type": "Receipt Voucher"
+        "type": "Journal Voucher"
     },
     "voucher3": {
-        "ref": "VCH-00000003",
+        "ref": "VCH-00000004",
         "type": "Journal Voucher"
     }
 }

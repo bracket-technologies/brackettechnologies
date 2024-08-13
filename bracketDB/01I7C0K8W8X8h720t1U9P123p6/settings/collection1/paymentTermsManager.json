@@ -115,7 +115,7 @@
         "collection": "paymentTerms"
     },
     "id": "paymentTermsManager",
-    "popupInfo": {
+    "form": {
         "docName": "paymentPolicyInfo",
         "title": "Payment Policy Form"
     },
@@ -129,7 +129,7 @@
         "collapsed": [
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {

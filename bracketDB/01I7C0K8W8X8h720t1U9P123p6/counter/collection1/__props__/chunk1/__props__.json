@@ -1,11 +1,5 @@
 {
     "docs": [
-        "counter16",
-        "counter15",
-        "counter14",
-        "counter13",
-        "counter12",
-        "counter11",
         "counter10",
         "counter9",
         "counter8",
@@ -16,6 +10,6 @@
         "counter3"
     ],
     "chunk": "chunk1",
-    "docsLength": 49,
-    "size": 24621
+    "docsLength": 43,
+    "size": 21440
 }

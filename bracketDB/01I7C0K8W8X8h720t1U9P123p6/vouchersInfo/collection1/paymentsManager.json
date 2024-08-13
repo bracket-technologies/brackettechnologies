@@ -13,7 +13,7 @@
         "collapsed": [
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {
@@ -82,7 +82,7 @@
     },
     "title": "Payment Manager",
     "createFormInputs": "voucherSharedInfo",
-    "popupInfo": {
+    "form": {
         "docName": "voucherInfo",
         "title": "Payment Voucher Form"
     },

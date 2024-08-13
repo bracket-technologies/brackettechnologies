@@ -1,0 +1,25 @@
+{
+    "exchangeRate": 1,
+    "code": "USD",
+    "createdCurrencyRate": 1,
+    "id": "lyexlibjT5YGxSeX9FsP4MxmyOn00Jc4mOAbto4vxnRZiMGJ8gNW23soUC30-1722845935390",
+    "creationDate": 1722845935390,
+    "creationDay": 1722805200000,
+    "currency": "KBVQbZBw7lr10LKWt1iT4jYGJxQfa8A7Szrg1UWx4fOhKm38Gybp9wc3JZzO-1722845935348",
+    "__props__": {
+        "id": "J18792T2b8p495a9U3n5j4f0u3",
+        "doc": "exchangeRate78",
+        "counter": 78,
+        "creationDate": 1722845935403,
+        "collection": "exchangeRate",
+        "chunk": "chunk1",
+        "lastModified": 1722845935403,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 552
+    }
+}

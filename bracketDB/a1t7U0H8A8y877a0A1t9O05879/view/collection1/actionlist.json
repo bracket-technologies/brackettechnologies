@@ -2,10 +2,10 @@
     "view": "View?id=actionlist;class=box-shadow flex column;actionlistStyles();[click:body?hideActionListOnBodyClick()];[mouseleave?hideActionList()];[mouseenter?unhideActionList()]",
     "children": [
         {
-            "view": "Icon?styles():[fontSize='1.7rem';tooltip=new;name=bi-plus];createDroplistItems();[click:droplist?insertHandler():[key='';value='']]?data().type()=map||=array"
+            "view": "Icon?styles():[fontSize='1.7rem';tooltip=new;name=bi-plus];createDroplistItems();[click:droplist?insertHandler():[key='';value='']]?data().type()=map||=list"
         },
         {
-            "view": "Icon?styles():[tooltip=child;name=bi-diagram-3];createDroplistItems();[click:droplist?insertHandler():[key=children;value=:[view='']]]?data().type()=map||=array;[!data().keys().inc():chlidren]"
+            "view": "Icon?styles():[tooltip=child;name=bi-diagram-3];createDroplistItems();[click:droplist?insertHandler():[key=children;value=:[view='']]]?data().type()=map||=list;[!data().keys().inc():chlidren]"
         },
         {
             "view": "Icon?styles():[tooltip=copy;name=bi-files];mininote:[note=copied!;timer=2000];[click?copyData()]"
@@ -14,10 +14,10 @@
             "view": "Icon?styles():[tooltip=paste;name=bi-clipboard];createDroplistItems();[click:droplist?insertHandler():[key=copiedFileName:();value=copiedData:().clone()]]?copiedData:()"
         },
         {
-            "view": "Icon?styles():[tooltip=export;name=bi-upload];[click?exportData()]?data().type()=map||data().type()=array"
+            "view": "Icon?styles():[tooltip=export;name=bi-upload];[click?exportData()]?data().type()=map||data().type()=list"
         },
         {
-            "view": "View?class=pointer flexbox;tooltip.text=import;style:[overflow=hidden;position=relative;height=3.5rem;width=3.5rem;borderRadius=.25rem;backgroundColor=inherit];hover.style:[backgroundColor=#f6f6f6];createDroplistItems();[click:droplist?2ndChild().():[droplistIndexClicked=clicked().txt().num();click()]]?data().type()=map||data().type()=array",
+            "view": "View?class=pointer flexbox;tooltip.text=import;style:[overflow=hidden;position=relative;height=3.5rem;width=3.5rem;borderRadius=.25rem;backgroundColor=inherit];hover.style:[backgroundColor=#f6f6f6];createDroplistItems();[click:droplist?2ndChild().():[droplistIndexClicked=clicked().txt().num();click()]]?data().type()=map||data().type()=list",
             "children": [
                 {
                     "view": "Icon?styles():[tooltip=import;name=bi-download];style.pointerEvents=none"
@@ -41,10 +41,10 @@
         "lastModified": 1721983688663,
         "dev": false,
         "actions": {
-            "updateNextSiblingsIndexesForPush": "if():[data().type()=array]:[():[actionlistCaller:()].parent().next().1stChild().children().slice():[_.index?_.index.type()=number?clicked().txt().num()]._():[theIndex:()=_.path().lastIndex();theNewValue:()=_.path().lastEl().num()+1;_.1stChild().2ndChild().txt()=theNewValue:();updateCommentAndClose();_.deepChildren()._():[_.path().[theIndex:()]=theNewValue:()]]]",
-            "updateNextSiblingsIndexesForErase": "if():[():[actionlistCaller:()].3rdParent().data().type()=array]:[():[actionlistCaller:()].2ndParent().nextSiblings()._():[theIndex:()=_.path().len()-1;theNewValue:()=_.path().[-1].num()-1;_.1stChild().2ndChild().txt()=theNewValue:()]]",
-            "addData": "if():[data().type()=map]:[if():[data().[_.key]]:[_.key+='(1)'];data().[_.key]=_.value].elif():[data().type()=array]:[data().push():[_.value]:[_.index?_.index.type()=number?clicked().txt().num()]]",
-            "insertView": "if():[():[actionlistCaller:()].mainMapContainer]:[().container=():[actionlistCaller:()].2ndParent();().theView=():[actionlistCaller:()].2ndParent()]:[().container=():[actionlistCaller:()].parent().next().1stChild();().theView=():[actionlistCaller:()].3rdParent()];().container.insert():[log():'here1';view=().theView;log():'here2';preventDefault;viewPath=:children:1;path=if():[data().type()=array]:[path().clone().push():[_.index?_.index.type()=number?clicked().txt().num()]]:[path().clone().push():[_.key]];if():[():[actionlistCaller:()].mainMapContainer]:[index=[_.index?_.index.type()=number?clicked().txt().num()]+1]:[index=[_.index?_.index.type()=number?clicked().txt().num()]];log():[.]:[path()]]:[_.view.input().focus()]",
+            "updateNextSiblingsIndexesForPush": "if():[data().type()=list]:[():[actionlistCaller:()].parent().next().1stChild().children().slice():[_.index?_.index.type()=number?clicked().txt().num()]._():[theIndex:()=_.path().lastIndex();theNewValue:()=_.path().lastEl().num()+1;_.1stChild().2ndChild().txt()=theNewValue:();updateCommentAndClose();_.deepChildren()._():[_.path().[theIndex:()]=theNewValue:()]]]",
+            "updateNextSiblingsIndexesForErase": "if():[():[actionlistCaller:()].3rdParent().data().type()=list]:[():[actionlistCaller:()].2ndParent().nextSiblings()._():[theIndex:()=_.path().len()-1;theNewValue:()=_.path().[-1].num()-1;_.1stChild().2ndChild().txt()=theNewValue:()]]",
+            "addData": "if():[data().type()=map]:[if():[data().[_.key]]:[_.key+='(1)'];data().[_.key]=_.value].elif():[data().type()=list]:[data().push():[_.value]:[_.index?_.index.type()=number?clicked().txt().num()]]",
+            "insertView": "if():[():[actionlistCaller:()].mainMapContainer]:[().container=():[actionlistCaller:()].2ndParent();().theView=():[actionlistCaller:()].2ndParent()]:[().container=():[actionlistCaller:()].parent().next().1stChild();().theView=():[actionlistCaller:()].3rdParent()];().container.insert():[log():'here1';view=().theView;log():'here2';preventDefault;viewPath=:children:1;path=if():[data().type()=list]:[path().clone().push():[_.index?_.index.type()=number?clicked().txt().num()]]:[path().clone().push():[_.key]];if():[():[actionlistCaller:()].mainMapContainer]:[index=[_.index?_.index.type()=number?clicked().txt().num()]+1]:[index=[_.index?_.index.type()=number?clicked().txt().num()]];log():[.]:[path()]]:[_.view.input().focus()]",
             "importData": "insertHandler():[key=_.data.name.split():'.json'.0;value=_.data.data.clone();index=().droplistIndexClicked]",
             "hideActionListOnBodyClick": "mouseleave()?!contains():[clicked()];!clicked().classList().inc():'actionlister'",
             "pushToUndo": "undoEdit:().[openDoc:()+'/'+openCollection:()]||=:;if():[():actionlist.prev_value!=():actionlist.form()]:[undoEdit:().[openDoc:()+'/'+openCollection:()].push():[openDoc=openDoc:();openCollection=openCollection:();value=():actionlist.form().clone();prev_value=():actionlist.prev_value]]",

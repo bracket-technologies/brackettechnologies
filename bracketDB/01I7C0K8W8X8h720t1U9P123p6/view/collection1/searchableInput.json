@@ -11,13 +11,13 @@
                     "view": "View?class=flex;style:[inputStyle();if():[_.hotCreateable]:[width=calc(100% - 3rem)]];if():[_.clearable||_.allInputClearable]:[mouseenter:[3rdChild().style().opacity=1];mouseleave:[3rdChild().style().opacity=0]]",
                     "children": [
                         {
-                            "view": "View?class=flexbox;style:[width=if():[_.collection.type()=array]:[6rem]:[5rem];height=100%;backgroundColor=#f3f3f3;position=relative]",
+                            "view": "View?class=flexbox;style:[width=if():[_.collection.type()=list]:[6rem]:[5rem];height=100%;backgroundColor=#f3f3f3;position=relative]",
                             "children": [
                                 {
-                                    "view": "Text?class=flexbox;collectionHandler();#checkToHideHotCreate:()=().collection;#if():[_.collection.type()=array]:[style.cursor=pointer;[click:droplist?parent().next().1stChild().clear();form().[_.inputPath].del();collectionListDroplistClickHandler()]];text=().code;style:[fontSize=1.2rem;height=100%;fontSize=1.4rem;width=100%];tooltip:[text=().collection.capitalize()]"
+                                    "view": "Text?class=flexbox;collectionHandler();#checkToHideHotCreate:()=().collection;#if():[_.collection.type()=list]:[style.cursor=pointer;[click:droplist?parent().next().1stChild().clear();form().[_.inputPath].del();collectionListDroplistClickHandler()]];text=().code;style:[fontSize=1.2rem;height=100%;fontSize=1.4rem;width=100%];tooltip:[text=().collection.capitalize()]"
                                 },
                                 {
-                                    "view": "Icon?name=expand_more;google.symbol;style:[fontSize=2rem;color=#666;cursor=pointer];click:[prev().click()]?_.collection.type()=array"
+                                    "view": "Icon?name=expand_more;google.symbol;style:[fontSize=2rem;color=#666;cursor=pointer];click:[prev().click()]?_.collection.type()=list"
                                 }
                             ]
                         },
@@ -79,7 +79,7 @@
                 "taha": "droplist:[preventDefault;items=().manager.():code];if():[!form().[_.collectionTypePath]]:[code=().manager.0.code;().collection=().manager.0.collection;fillInDoc()]:[collection=().manager.find():[collection=form().[_.collectionTypePath]].collection;code=().manager.find():[collection=form().[_.collectionTypePath]].code]",
                 "fillInDoc": "if():[___.path]:[__.[_.collectionTypePath]=[().collection]]:[form().[_.collectionTypePath]=[().collection]]",
                 "createCollectionList": "_.collection._():[().manager.push():[code=collectionsInfo:().find():[managers.():collection.inc():[_.toLowerCase()]].managers.find():[collection=[_]().toLowerCase()].code;collection=_.toLowerCase()]];taha()",
-                "_": "if():[_.collection.type()=array;false]:[#createCollectionList()]:[saveCollection()]"
+                "_": "if():[_.collection.type()=list;false]:[#createCollectionList()]:[saveCollection()]"
             },
             "FillTextFromData": "if():[data().[_.inputPath]]:[txt()=data().[_.inputPath].split():'-'.1.num()]",
             "#checkRefInDoc": {

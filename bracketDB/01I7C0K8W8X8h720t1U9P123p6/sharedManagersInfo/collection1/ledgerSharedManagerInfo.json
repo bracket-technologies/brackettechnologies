@@ -30,7 +30,7 @@
                                         "fillFirstItemAsValue": true,
                                         "readonly": "readonly",
                                         "inputLabel": "Type",
-                                        "droplistClickAction": "[handleInputValueInDocForAllSections():[________]]():[view=():[getSectionPathBySectionIndex():[section=___.index].[-1]].parent()];customUpdate():[section=0]",
+                                        "droplistClickAction": "form().generalLedger.del();dorm().ledgerAccount.del();[handleInputValueInDocForAllSections():[________]]():[view=():[getSectionPathBySectionIndex():[section=___.index].[-1]].parent()];customUpdate():[section=0]",
                                         "items": [
                                             {
                                                 "condition": [
@@ -1529,7 +1529,7 @@
         "creationDate": 1711031361965,
         "collection": "sharedManagersInfo",
         "chunk": "chunk1",
-        "lastModified": 1722502563573,
+        "lastModified": 1723030879747,
         "dev": false,
         "actions": {},
         "comments": [
@@ -4865,19 +4865,6 @@
                     "subInput",
                     0,
                     "input",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0,
-                    "subInput",
-                    0,
-                    "input",
                     7,
                     "editable"
                 ]
@@ -5881,26 +5868,6 @@
                     "subInput",
                     0,
                     "sectionsInfo",
-                    0,
-                    "subInput",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "sectionsInfo",
                     2,
                     "subInput",
                     0,
@@ -6071,11 +6038,20 @@
                     "sectionsInfo",
                     4
                 ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "sectionsInfo",
+                    5
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 54001
+        "size": 53899
     },
     "table": {
         "body": {

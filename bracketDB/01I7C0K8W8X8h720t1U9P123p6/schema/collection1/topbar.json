@@ -1,0 +1,247 @@
+{
+    "__props__": {
+        "id": "g1Q792s3g2r007T2l6j765R0q1",
+        "doc": "topbar",
+        "counter": 2,
+        "creationDate": 1723207267501,
+        "collection": "schema",
+        "chunk": "chunk1",
+        "lastModified": 1723213143663,
+        "dev": false,
+        "actions": {},
+        "comments": [
+            {
+                "note": "logo",
+                "path": [
+                    "sections",
+                    0
+                ]
+            },
+            {
+                "note": "search",
+                "path": [
+                    "sections",
+                    1
+                ]
+            },
+            {
+                "note": "search",
+                "path": [
+                    "sections",
+                    1,
+                    "views",
+                    0
+                ]
+            },
+            {
+                "note": "user",
+                "path": [
+                    "sections",
+                    4
+                ]
+            },
+            {
+                "note": "user",
+                "path": [
+                    "sections",
+                    4
+                ]
+            },
+            {
+                "note": "icon user",
+                "path": [
+                    "sections",
+                    4,
+                    "views",
+                    1
+                ]
+            },
+            {
+                "note": "username",
+                "path": [
+                    "sections",
+                    4,
+                    "views",
+                    2
+                ]
+            },
+            {
+                "note": "bell",
+                "path": [
+                    "sections",
+                    2,
+                    "views",
+                    0
+                ]
+            },
+            {
+                "note": "notifications",
+                "path": [
+                    "sections",
+                    2,
+                    "views",
+                    1
+                ]
+            },
+            {
+                "note": "bell",
+                "path": [
+                    "sections",
+                    2
+                ]
+            },
+            {
+                "note": "divider",
+                "path": [
+                    "sections",
+                    3
+                ]
+            }
+        ],
+        "collapsed": [
+            {
+                "path": [
+                    "sections",
+                    2,
+                    "views",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    4,
+                    "views",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    2,
+                    "views",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    2
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 2952
+    },
+    "sections": [
+        {
+            "styles": "display=flex;alignItems=center",
+            "views": [
+                {
+                    "type": "image",
+                    "src": "/storage/eU1YM75W2Nq1Xo8JS3a24tw3d48yg5Mw0GI4Ff7/files/bucket1/Bv1HS7lS2oO27w0Td0vn5C332K2F29321tf7uA2.png",
+                    "styles": "height=3.5rem;cursor=pointer",
+                    "actions": "[click?root():main]"
+                }
+            ]
+        },
+        {
+            "styles": "gap=2rem;display=flex;marginLeft=auto",
+            "views": [
+                {
+                    "styles": "color=#453f3f;fontSize=2.2rem;cursor=pointer",
+                    "type": "icon",
+                    "icon": "search",
+                    "google": true,
+                    "container": {
+                        "styles": "display=flex;justifyContent=center;alignItems=center"
+                    },
+                    "actions": "[click?clearCollections()]"
+                }
+            ]
+        },
+        {
+            "styles": "position=relative;display=flex",
+            "views": [
+                {
+                    "styles": "color=#453f3f;fontSize=2rem;cursor=pointer;transition=.2s",
+                    "type": "icon",
+                    "icon": "notifications",
+                    "google": true,
+                    "actions": "[mouseenter?style().color=#fb3b1e;ringring()];[mouseleave?stopRinging()]",
+                    "container": {
+                        "styles": "display=flex;justifyContent=center;alignItems=center"
+                    }
+                },
+                {
+                    "container": {
+                        "styles": "display=flex;alignItems=center;justifyContent=center;position=absolute;borderRadius=1rem;minWidth=1.1rem;height=1.2rem;backgroundColor=red;left=13px;top=-2px;padding=.2rem;cursor=pointer",
+                        "conditions": "dueNotifications:().len()>0"
+                    },
+                    "text": "3",
+                    "styles": "fontSize=1rem;color=#fff;cursor=pointer",
+                    "type": "text",
+                    "id": "notificationIcon"
+                }
+            ]
+        },
+        {
+            "views": [
+                {
+                    "type": "divider",
+                    "styles": "backgroundColor=#b2beb5;width=1px;height=2.5rem"
+                }
+            ]
+        },
+        {
+            "styles": "display=flex;gap=1rem;marginRight=1rem;cursor=pointer",
+            "views": [
+                {
+                    "styles": "fontSize=2.2rem;color=#453f3f",
+                    "type": "icon",
+                    "icon": "person",
+                    "google": true,
+                    "container": {
+                        "styles": "display=flex;justifyContent=center;alignItems=center"
+                    }
+                },
+                {
+                    "text": "userData:().firstName.capitalize()+' '+userData:().lastName.capitalize()?userData:()?Profile Name",
+                    "styles": "fontSize=1.3rem;color=#453f3f",
+                    "type": "text",
+                    "container": {
+                        "styles": "display=flex;justifyContent=center;alignItems=center"
+                    },
+                    "id": "profileName"
+                }
+            ],
+            "actions": "profileDroplist()"
+        }
+    ],
+    "styles": "display=flex;backgroundColor=#f5f5f5;height=100%;width=100%;alignItems=center;padding=0 1rem;gap=2rem"
+}

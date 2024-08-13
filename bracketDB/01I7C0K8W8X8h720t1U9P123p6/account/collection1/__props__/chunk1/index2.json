@@ -1,43 +1,5 @@
 {
     "account767": {
-        "startsWith": [
-            "1"
-        ]
-    },
-    "account768": {
-        "startsWith": [
-            "1",
-            "11",
-            "119"
-        ]
-    },
-    "account769": {
-        "startsWith": [
-            "2"
-        ]
-    },
-    "account770": {
-        "type": "Cash",
-        "startsWith": [
-            "5",
-            "53"
-        ]
-    },
-    "account771": {
-        "startsWith": [
-            "6",
-            "60",
-            "601"
-        ]
-    },
-    "account772": {
-        "startsWith": [
-            "7",
-            "70",
-            "701"
-        ]
-    },
-    "account773": {
         "type": "B2B Customer",
         "startsWith": [
             "4",
@@ -45,18 +7,28 @@
             "413"
         ]
     },
-    "account774": {
+    "account768": {
+        "type": "Cash",
         "startsWith": [
-            "1"
+            "5",
+            "53"
         ]
     },
-    "account775": {
-        "type": "Airline Supplier",
+    "account769": {
         "startsWith": [
-            "4",
-            "40",
-            "401",
-            "4011"
+            "6",
+            "67"
+        ]
+    },
+    "account770": {
+        "startsWith": [
+            "7",
+            "77"
+        ]
+    },
+    "account771": {
+        "startsWith": [
+            "1"
         ]
     }
 }

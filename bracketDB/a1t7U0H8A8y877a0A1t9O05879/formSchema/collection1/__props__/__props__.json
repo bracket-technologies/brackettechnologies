@@ -3,14 +3,14 @@
     "collection": "formSchema",
     "chunkMaxSizeMB": 20,
     "lastChunk": 1,
-    "docsLength": 5,
-    "counter": 7,
-    "reads": 5893,
-    "writes": 406,
+    "docsLength": 6,
+    "counter": 8,
+    "reads": 6436,
+    "writes": 576,
     "deletes": 0,
-    "size": 7608,
-    "payloadIn": 835715,
-    "payloadOut": 9518872,
+    "size": 9007,
+    "payloadIn": 1157937,
+    "payloadOut": 10587313,
     "indexes": [
         {
             "find": [

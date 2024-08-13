@@ -7,7 +7,7 @@
         "creationDate": 1711031365213,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1722336225824,
+        "lastModified": 1723217514043,
         "dev": false,
         "actions": {
             "callOpenCreateForm": "if():[createFormStack:().len()>0]:[openCreateForm():[manager=getManagerFromCollection(l):[collection=_.collection];read=_.read]]:[openCreateForm():[manager=currentOpenManager:()]]",
@@ -18,7 +18,7 @@
                 "openStackForms": "():generalPopup.2ndChild().style():[transform=if():[!_.back]:[translateX(-100vw)]:[translateX(100vw)]];timer():[():generalPopup.2ndChild().style():[transition=none;transform=if():[!_.back]:[translateX(100vw)]:[translateX(-100vw)]]]:200;timer():[():generalPopup.2ndChild().refresh()::[loader.hide;():generalPopup.2ndChild().style():[transition=.2s;transform=translateX(0)]]]:300;#timer():[():generalPopup.2ndChild().style():[transition=.2s;transform=translateX(0)]]:300",
                 "setInputInfo": "if():[_.inputInfo]:[().inputInfo=_.inputInfo.clone()]:[if():[_.manager.createFormInputs.type()=map]:[().inputInfo=_.manager.createFormInputs.clone()]:[().inputInfo=sharedManagersInfo:().[_.manager.createFormInputs].createFormInputs.clone()]];if():[_.docDefaultValues]:[().inputInfo.docDefaultValues+=_.docDefaultValues];createFormStack:().[-1].docDefaultValues=[().inputInfo.docDefaultValues]()",
                 "_": "if():[createFormStack:().len()=0]:[selectedPath:()=[]];if():[!_.back]:[createFormStack:().[-1].():[selectedSection=selectedSection:();selectedPath=selectedPath:()];createFormStack:().push():[collection=_.manager.identifier;id=_.manager.id]]:[selectedPath:()=createFormStack:().[-1].selectedPath];#loader.show;setGeneralPopup()",
-                "setGeneralPopup": "setInputInfo();generalPopup:()=[read=_.read;back=_.back;getterKeyValue=_.getterKeyValue;title=_.title||_.manager.popupInfo.title.clone();popupName=[_.manager.popupInfo.view||customForm];inputInfo=().inputInfo;docName=_.docName||_.manager.popupInfo.docName;saveAction=_.manager.saveAction];if():[_.manager.permission]:[generalPopup:().permission=_.manager.permission;generalPopup:().defaultPermission=_.manager.defaultPermission];if():[_.docValues]:[generalPopup:().():[read=_.read;edit=_.edit;createable=_.createable;docValues=_.docValues]];openPopup()"
+                "setGeneralPopup": "setInputInfo();generalPopup:()=[read=_.read;back=_.back;getterKeyValue=_.getterKeyValue;title=_.title||_.manager.form.title.clone();popupName=[_.manager.form.view||customForm];inputInfo=().inputInfo;docName=_.docName||_.manager.form.docName;saveAction=_.manager.saveAction];if():[_.manager.permission]:[generalPopup:().permission=_.manager.permission;generalPopup:().defaultPermission=_.manager.defaultPermission];if():[_.docValues]:[generalPopup:().():[read=_.read;edit=_.edit;createable=_.createable;docValues=_.docValues]];openPopup()"
             },
             "toCamelCase": "().sectionId=[_].replaceAll():['_']:[' '].replaceAll():['-']:[' '];().camelCase=().sectionId.charAt():[0].toLowerCase();().key=().sectionId.toLowerCase().capitalize().replaceAll():' ':''.replaceItem():[().camelCase.capitalize()]:[().camelCase];return():[().key]",
             "getAllData": {
@@ -51,7 +51,7 @@
                 "fillSearchEngineInputs": "().group=collectionsInfo:().find():[managers.():collection.inc():[_.collection]];().manager=[().group.groupName]:().[().group.managers.find():[_.collection].manager];setSearchBoxCustomInputs()",
                 "pushPathData": "generalPopup:().():[path=_.path;index=_.index]",
                 "pushListNameData": "generalPopup:().():[listName=_.listName;maxSelected=_.maxSelected]",
-                "setSearchBoxCustomInputs": "if():[().manager.searchEngineInputs.type()=array]:[searchBoxCustomInputs:()=().manager.searchEngineInputs.clone()]:[searchBoxCustomInputs:()=sharedManagersInfo:().[().manager.searchEngineInputs].searchEngineInputs.clone()];if():[_.allowedLedgers]:[searchBoxCustomInputs:().0.allowedLedgers=_.allowedLedgers]:[searchBoxCustomInputs:().0.allowedLedgers.del()]",
+                "setSearchBoxCustomInputs": "if():[().manager.searchEngineInputs.type()=list]:[searchBoxCustomInputs:()=().manager.searchEngineInputs.clone()]:[searchBoxCustomInputs:()=sharedManagersInfo:().[().manager.searchEngineInputs].searchEngineInputs.clone()];if():[_.allowedLedgers]:[searchBoxCustomInputs:().0.allowedLedgers=_.allowedLedgers]:[searchBoxCustomInputs:().0.allowedLedgers.del()]",
                 "fillGeneralPopupCommonParams": "generalPopup:().():[title='Search Box';popupName=searchBoxPage;[_].flat()]",
                 "pushVarNameData": "generalPopup:().():[varName=[_.varName]();maxSelected=1]",
                 "_": "if():[!_.back]:[createFormStack:().push():[searchbox=true;[_].flat()]];generalPopup:()=[];if():[_.path]:[pushPathData()];if():[_.varName]:[pushVarNameData()]:[pushListNameData()];fillGeneralPopupCommonParams();if():[_.searchEngineInputs]:[searchBoxCustomInputs:()=_.searchEngineInputs]:[fillSearchEngineInputs()];():generalPopup.refresh()::[():generalPopup.style():[visibility=visible;opacity=1]]"
@@ -96,10 +96,10 @@
             },
             "openexchangeRateView": {
                 "_": "setDocValues();setSubGeneralPopupParams();openSubGeneralPopup()",
-                "setSubGeneralPopupParams": "setDocDefaultValues();subGeneralPopup:()=[docValues=().docValues;borderRadius=0 0 .4rem .4rem;stopFormIds=true;title='Currency Rate';docName=settingsInfo:().exchangeRateInfo.popupInfo.docName;popupName=customForm;inputInfo=settingsInfo:().exchangeRateInfo.createFormInputs.clone();saveAction=settingsInfo:().exchangeRateInfo.saveAction;discardAction=settingsInfo:().exchangeRateInfo.discardAction]",
+                "setSubGeneralPopupParams": "setDocDefaultValues();subGeneralPopup:()=[docValues=().docValues;borderRadius=0 0 .4rem .4rem;stopFormIds=true;title='Currency Rate';docName=settingsInfo:().exchangeRateInfo.form.docName;popupName=customForm;inputInfo=settingsInfo:().exchangeRateInfo.createFormInputs.clone();saveAction=settingsInfo:().exchangeRateInfo.saveAction;discardAction=settingsInfo:().exchangeRateInfo.discardAction]",
                 "openSubGeneralPopup": "():subGeneralPopup.refresh()::[():subGeneralPopup.style():[visibility=visible;opacity=1];():subGeneralPopup.2ndChild().style():[transform=translateY(0)]]",
                 "setDocDefaultValues": "exchangeRate:()=[exchangeRates=:[___]]",
-                "setDocValues": "___._():[().docValues.exchangeRates=:[log():['tahaassaf']:[under=_;under2=__;under3=___];id=_.id;systemCurrencyRate=_.systemCurrencyRate;name=_.name;counter=_.counter;code=_.code;createdCurrencyRate=_.createdCurrencyRate;exchangeRate=_.exchangeRate]]"
+                "setDocValues": "___._():[().docValues.exchangeRates=:[id=_.id;systemCurrencyRate=_.systemCurrencyRate;name=_.name;counter=_.counter;code=_.code;createdCurrencyRate=_.createdCurrencyRate;exchangeRate=_.exchangeRate]]"
             },
             "printAction": {
                 "_": "[setPrintViewData()]()::[callPrintView()]",
@@ -131,7 +131,7 @@
                 "roundDecimalPart": "if():[().splitedDotList.1%10>=5;().splitedDotList.1>100]:[if():[().splitedDotList.1.toString().slice():0:2.num()<99]:[().decimalPart=().decimalPart.toString().slice():0:2+1]:[().decimalPart='00';().splitedDotList.0+=1]]:[().decimalPart=().decimalPart.toString().slice():0:2]"
             },
             "customUpdate": {
-                "_": "log():['taha232132']:[_];if():[_.type()=array]:[handleListUpdates()].elif():[_.section;_.input]:[updateInputInSpecificSection()].elif():[_.section||_.section=0]:[updateSpecificSection()].elif():[_.input]:[updateInputInSameSection()]:[updateForm()]",
+                "_": "if():[_.type()=list]:[handleListUpdates()].elif():[_.section;_.input]:[updateInputInSpecificSection()].elif():[_.section||_.section=0]:[updateSpecificSection()].elif():[_.input]:[updateInputInSameSection()]:[updateForm()]",
                 "handleListUpdates": "_._():[customUpdate():[_]]",
                 "updateInputInSpecificSection": "getSectionByIndex():[_.section]._():[__.input._():[():[__.inputs.[_].id].refresh()]]",
                 "getSectionByIndex": "return():[formIds:().find():[sectionCounter=_.toString()]]",
@@ -213,11 +213,6 @@
             },
             {
                 "path": [
-                    "getAllData"
-                ]
-            },
-            {
-                "path": [
                     "customCondition"
                 ]
             },
@@ -245,11 +240,26 @@
                 "path": [
                     "checkSession"
                 ]
+            },
+            {
+                "path": [
+                    "getAllData"
+                ]
+            },
+            {
+                "path": [
+                    "openexchangeRateView"
+                ]
+            },
+            {
+                "path": [
+                    "customUpdate"
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 22528
+        "size": 22512
     },
     "children": [
         {

@@ -18,6 +18,6 @@
     "description": "Monthly subscription",
     "duration": 2592000000,
     "savings": 0,
-    "priceCoins": 10,
+    "coins": 10,
     "selected": true
 }

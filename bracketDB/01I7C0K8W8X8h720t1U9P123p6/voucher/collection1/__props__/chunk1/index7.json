@@ -2,19 +2,19 @@
     "voucher1": {
         "type": "Journal Voucher",
         "status": "Confirmed",
-        "creationDate": 1722503889630,
-        "creationDay": 1722459600000
+        "creationDate": 1723031433276,
+        "creationDay": 1722978000000
     },
     "voucher2": {
-        "type": "Receipt Voucher",
-        "status": "Pending",
-        "creationDate": 1722504130909,
-        "creationDay": 1722459600000
+        "type": "Journal Voucher",
+        "status": "Confirmed",
+        "creationDate": 1723031475770,
+        "creationDay": 1722978000000
     },
     "voucher3": {
         "type": "Journal Voucher",
         "status": "Confirmed",
-        "creationDate": 1722553056305,
-        "creationDay": 1722546000000
+        "creationDate": 1723034765892,
+        "creationDay": 1722978000000
     }
 }

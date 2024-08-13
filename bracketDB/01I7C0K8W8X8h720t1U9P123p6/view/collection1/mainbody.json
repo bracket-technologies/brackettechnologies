@@ -1,5 +1,5 @@
 {
-    "view": "View:mainbody?class=column;style:[width=100%;#overflow=hidden;padding=0 2rem;height=100%]",
+    "view": "View:mainbody?class=column;style:[width=100%;padding=0 2rem;height=100%]",
     "children": [
         {
             "view": "currentViewName:()??currentViewName:()"
@@ -8,11 +8,13 @@
     "__props__": {
         "id": "G1G7A1w160r3y1m326S5S2X0A9",
         "doc": "mainbody",
+        "counter": 35,
         "creationDate": 1711031365209,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1723398044615,
+        "dev": false,
         "actions": {},
-        "collapsed": [],
         "comments": [
             {
                 "note": "",
@@ -28,11 +30,9 @@
                 ]
             }
         ],
-        "dirPath": [],
-        "version": 0,
-        "counter": 35,
-        "secure": false,
-        "chunk": "chunk1",
-        "collection": "view"
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 467
     }
 }

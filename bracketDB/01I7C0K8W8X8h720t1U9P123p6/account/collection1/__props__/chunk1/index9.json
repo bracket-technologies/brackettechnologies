@@ -1,7 +1,9 @@
 {
     "account767": {
         "startsWith": [
-            "1"
+            "4",
+            "41",
+            "413"
         ],
         "accountNumber": "1",
         "currency": [
@@ -11,9 +13,8 @@
     },
     "account768": {
         "startsWith": [
-            "1",
-            "11",
-            "119"
+            "5",
+            "53"
         ],
         "accountNumber": "1",
         "currency": [
@@ -23,76 +24,18 @@
     },
     "account769": {
         "startsWith": [
-            "2"
+            "6",
+            "67"
         ],
         "accountNumber": "1",
         "currency": [
-            "USD",
-            "LBP",
-            "XOF"
+            "USD"
         ]
     },
     "account770": {
         "startsWith": [
-            "5",
-            "53"
-        ],
-        "accountNumber": "1",
-        "currency": [
-            "USD",
-            "XOF"
-        ]
-    },
-    "account771": {
-        "startsWith": [
-            "6",
-            "60",
-            "601"
-        ],
-        "accountNumber": "1",
-        "currency": [
-            "USD"
-        ]
-    },
-    "account772": {
-        "startsWith": [
             "7",
-            "70",
-            "701"
-        ],
-        "accountNumber": "1",
-        "currency": [
-            "USD"
-        ]
-    },
-    "account773": {
-        "startsWith": [
-            "4",
-            "41",
-            "413"
-        ],
-        "accountNumber": "1",
-        "currency": [
-            "USD",
-            "XOF"
-        ]
-    },
-    "account774": {
-        "startsWith": [
-            "1"
-        ],
-        "accountNumber": "2",
-        "currency": [
-            "USD",
-            "XOF"
-        ]
-    },
-    "account775": {
-        "startsWith": [
-            "4",
-            "40",
-            "401",
-            "4011"
+            "77"
         ],
         "accountNumber": "1",
         "currency": [

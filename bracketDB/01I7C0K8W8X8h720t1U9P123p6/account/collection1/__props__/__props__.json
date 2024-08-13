@@ -2,14 +2,14 @@
     "creationDate": 1712567715741,
     "collection": 1,
     "lastChunk": 1,
-    "docsLength": 13,
-    "counter": 775,
-    "reads": 117354,
-    "writes": 3276,
+    "docsLength": 9,
+    "counter": 771,
+    "reads": 120467,
+    "writes": 3327,
     "deletes": 0,
-    "size": 107,
-    "payloadIn": 2855762,
-    "payloadOut": 96914876,
+    "size": -3845,
+    "payloadIn": 2902480,
+    "payloadOut": 99761043,
     "dirTree": [],
     "maxSize": 1000,
     "indexes": [
@@ -18,8 +18,8 @@
                 "startsWith"
             ],
             "doc": "index1",
-            "lastRead": 1722598829782,
-            "expiryDate": 1725190829782
+            "lastRead": 1723450783765,
+            "expiryDate": 1726042783765
         },
         {
             "find": [
@@ -35,8 +35,8 @@
                 "ledgerAccount"
             ],
             "doc": "index3",
-            "lastRead": 1722554011175,
-            "expiryDate": 1725146011175
+            "lastRead": 1723034786114,
+            "expiryDate": 1725626786114
         },
         {
             "find": [
@@ -44,8 +44,8 @@
                 "currency"
             ],
             "doc": "index4",
-            "lastRead": 1722503942847,
-            "expiryDate": 1725095942847
+            "lastRead": 1723112105278,
+            "expiryDate": 1725704105278
         },
         {
             "find": [
@@ -58,15 +58,6 @@
         },
         {
             "find": [
-                "name",
-                "startsWith"
-            ],
-            "doc": "index6",
-            "lastRead": 1720770269984,
-            "expiryDate": 1723362269984
-        },
-        {
-            "find": [
                 "name.lowercase()",
                 "startsWith"
             ],
@@ -76,39 +67,19 @@
         },
         {
             "find": [
-                "name.lowercase()",
-                "startsWith",
-                "currency"
-            ],
-            "doc": "index8",
-            "lastRead": 1720771349314,
-            "expiryDate": 1723363349314
-        },
-        {
-            "find": [
-                "startsWith",
-                "accountNumber",
-                "currency"
-            ],
-            "doc": "index9",
-            "lastRead": 1720772817757,
-            "expiryDate": 1723364817757
-        },
-        {
-            "find": [
                 "id"
             ],
             "doc": "index10",
-            "lastRead": 1722554174858,
-            "expiryDate": 1725146174858
+            "lastRead": 1723034766043,
+            "expiryDate": 1725626766043
         },
         {
             "find": [
                 "headAccount"
             ],
             "doc": "index11",
-            "lastRead": 1722553293033,
-            "expiryDate": 1725145293033
+            "lastRead": 1723450783782,
+            "expiryDate": 1726042783782
         },
         {
             "find": [
@@ -133,8 +104,8 @@
                 "currency"
             ],
             "doc": "index14",
-            "lastRead": 1722257413792,
-            "expiryDate": 1724849413792
+            "lastRead": 1723112072518,
+            "expiryDate": 1725704072518
         }
     ],
     "lastIndex": 14

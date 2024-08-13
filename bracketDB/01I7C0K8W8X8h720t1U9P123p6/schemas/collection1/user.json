@@ -4,13 +4,13 @@
             "keyValue": [
                 {
                     "path": "firstName",
-                    "type": "string",
+                    "type": "text",
                     "required": "true",
                     "key": "firstName"
                 },
                 {
                     "path": "lastName",
-                    "type": "string",
+                    "type": "text",
                     "required": "true",
                     "key": "lastName"
                 },
@@ -21,37 +21,37 @@
                 },
                 {
                     "path": "nationality",
-                    "type": "string",
+                    "type": "text",
                     "required": "true",
                     "key": "nationality"
                 },
                 {
                     "path": "contactNumber",
-                    "type": "array",
+                    "type": "list",
                     "required": "true",
                     "key": "contactNumber"
                 },
                 {
                     "path": "email",
-                    "type": "array",
+                    "type": "list",
                     "required": "true",
                     "key": "email"
                 },
                 {
                     "path": "country",
-                    "type": "string",
+                    "type": "text",
                     "key": "country"
                 },
                 {
                     "path": "city",
-                    "type": "string",
+                    "type": "text",
                     "key": "city",
                     "data:().collectio.countries.countries.[form().country]": "data:().collection.countries.countries.[form().country]",
                     "#data:().colle.countries.countries.[form().country]": "#data:().collection.countries.countries.[form().country]"
                 },
                 {
                     "path": "address",
-                    "type": "string",
+                    "type": "text",
                     "key": "address"
                 }
             ],
@@ -65,13 +65,13 @@
             "keyValue": [
                 {
                     "path": "firstName",
-                    "type": "string",
+                    "type": "text",
                     "required": "true",
                     "key": "firstName"
                 },
                 {
                     "path": "lastName",
-                    "type": "string",
+                    "type": "text",
                     "required": "true",
                     "key": "lastName"
                 },
@@ -82,64 +82,64 @@
                 },
                 {
                     "path": "nationality",
-                    "type": "string",
+                    "type": "text",
                     "required": "true",
                     "key": "nationality"
                 },
                 {
                     "path": "contactNumber",
-                    "type": "string",
+                    "type": "text",
                     "required": "true",
                     "key": "contactNumber"
                 },
                 {
                     "path": "email",
-                    "type": "string",
+                    "type": "text",
                     "required": "true",
                     "key": "email"
                 },
                 {
                     "path": "country",
-                    "type": "string",
+                    "type": "text",
                     "key": "country"
                 },
                 {
                     "path": "city",
-                    "type": "string",
+                    "type": "text",
                     "key": "city",
                     "#data:()..countries.countries.[form().country]": "#data:().collection.countries.countries.[form().country]",
                     "data:().col.countries.countries.[form().country]": "data:().collection.countries.countries.[form().country]"
                 },
                 {
                     "path": "address",
-                    "type": "string",
+                    "type": "text",
                     "key": "address"
                 },
                 {
                     "path": "position",
-                    "type": "string",
+                    "type": "text",
                     "key": "position",
                     "required": true
                 },
                 {
                     "path": "description",
-                    "type": "string",
+                    "type": "text",
                     "key": "description"
                 },
                 {
                     "path": "note",
-                    "type": "string",
+                    "type": "text",
                     "key": "note"
                 },
                 {
                     "path": "branch",
-                    "type": "string",
+                    "type": "text",
                     "required": "true",
                     "key": "branch"
                 },
                 {
                     "path": "createdBy",
-                    "type": "string",
+                    "type": "text",
                     "required": "true",
                     "key": "createdBy"
                 },

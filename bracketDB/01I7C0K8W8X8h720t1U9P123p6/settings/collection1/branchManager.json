@@ -366,7 +366,7 @@
         "collection": "branch"
     },
     "id": "branchManager",
-    "popupInfo": {
+    "form": {
         "docName": "branchInfo",
         "title": "Branch Form"
     },
@@ -485,7 +485,7 @@
             },
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {

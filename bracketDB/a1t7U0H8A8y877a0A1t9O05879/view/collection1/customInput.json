@@ -7,6 +7,8 @@
         "creationDate": 1716370928082,
         "collection": "view",
         "chunk": "chunk1",
+        "lastModified": 1723119550214,
+        "dev": false,
         "actions": {
             "droplistHandler": "input().txt()=clicked().txt();[data()=clicked().txt()?_.inputType!=yesNo?data()=[true?clicked().txt()=Yes?false]];[_.action]()",
             "toggleCheck": "1stChild().():[form().[_]=true;display()?hidden()?form().[_]=false;hide()]"
@@ -58,12 +60,6 @@
             {
                 "path": [
                     "children",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "children",
                     4
                 ]
             },
@@ -86,11 +82,17 @@
                     "children",
                     3
                 ]
+            },
+            {
+                "path": [
+                    "children",
+                    2
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 4271
+        "size": 4370
     },
     "children": [
         {
@@ -150,10 +152,10 @@
                     "view": "Text?class=pointer;text=_.label;[required?_.required];style:[textAlign=left;fontSize=1.4rem;width=fit-content;color=#666];[click?next().click()]"
                 },
                 {
-                    "view": "View?class=flexbox pointer;style:[border=1px solid #ccc;position=relative;height=4rem;borderRadius=.25rem;backgroundColor=#fff];path=_.path;droplist:[preventDefault;items=_.items;align=left];[click:droplist?droplistHandler()]",
+                    "view": "View?class=flexbox pointer;style:[border=1px solid #ccc;position=relative;height=4rem;borderRadius=.25rem;backgroundColor=#fff];path=_.path;droplist:[preventDefault;items=[_.items]();align=left];[click:droplist?droplistHandler()]",
                     "children": [
                         {
-                            "view": "Input?style:[flex=1;height=100%;fontSize=1.4rem;color=#666];[readonly?!_.editable];[clearable?_.clearable!=false]"
+                            "view": "Input?style:[flex=1;height=100%;fontSize=1.4rem;color=#666];[readonly?!_.editable];[clearable?_.clearable!=false];[text=[_.defaultValue]()?_.defaultValue!=undefined]"
                         },
                         {
                             "view": "Icon?name=keyboard_arrow_up;google.symbol;style:[color=#888;fontSize=2.25rem;height=2rem;width=2rem;marginRight=.5rem;transform=rotate(180deg)]"

@@ -5,25 +5,19 @@
             "view": "View?style:[height=100%;width=100%;backgroundColor=black;opacity=0.5]"
         },
         {
-            "view": "View?data=generalPopup:();class=flex column;style:[if():[_.back]:[transform=translateX(-100vw)].elif():[createFormStack:().len()>1]:[transform=translateX(100vw)];transition=.2s;position=absolute;overflow=hidden;top=setTop();bottom=setBottom();right=setRight();left=setLeft();backgroundColor=#fff;padding=1rem;gap=.2rem;border-radius=_.borderRadius||.4rem]",
+            "view": "View?data=generalPopup:();class=flex column;style:[transform=['translateX(-100vw)'?_.back?'translateX(100vw)'?createFormStack:().len()>1];transition=.2s;position=absolute;overflow=hidden;top=0;bottom=0;right=setRight();left=setLeft();backgroundColor=#fff;padding=1rem;gap=.2rem;borderRadius=_.borderRadius||.4rem]",
             "children": [
                 {
                     "view": "View?class=flexbox;style:[width=100%;height=4.5rem;justifyContent=space-between;backgroundColor=#f3f3f3;borderRadius=.4rem .4rem 0rem 0rem;padding=0rem 1rem]",
                     "children": [
                         {
-                            "view": "Text?text=_.title+if():[generalPopup:().read]:[' (Readonly)']:[''];style:[fontSize=1.6rem;fontWeight=bolder];#loaded:[timer():[next().focus()]:100]"
-                        },
-                        {
-                            "view": "Input:hello?attribute=[tabindex=1];readonly;style:[height=0;width=0]?false"
+                            "view": "Text?text=_.title+if():[generalPopup:().read]:[' (Readonly)']:[''];style:[fontSize=1.5rem;fontWeight=bolder];#loaded:[timer():[next().focus()]:100]"
                         },
                         {
                             "view": "View?class=flex;style:[gap=1.3rem]",
                             "children": [
                                 {
                                     "view": "Icon?name=print;google.symbol;style:[fontSize=2.5rem;cursor=pointer];click:[printAction()]"
-                                },
-                                {
-                                    "#view": "Icon?name=save_as;google.symbol;style:[fontSize=2.1rem;cursor=pointer;paddingTop=.2rem];click:[saveSheet()]?_.saveAs"
                                 },
                                 {
                                     "view": "Icon?name=Upload;google.symbol;style:[fontSize=2.5rem;cursor=pointer];click:[exportView()]?_.uploadIcon"
@@ -59,6 +53,8 @@
         "creationDate": 1711031365205,
         "collection": "view",
         "chunk": "chunk1",
+        "lastModified": 1723450779980,
+        "dev": false,
         "actions": {
             "exportView": "():customPrintView.style():[visibility=visible;opacity=1]",
             "addCustomInput": "_.inputInfo.subInput.push():[title=hello;grid=1fr 1fr 1fr 1fr 1fr]:[_.inputInfo.subInput.len()-1];",
@@ -103,7 +99,33 @@
                 "callPrintView": "generalPopup:()=[title=Print;popupName=customPrintView2;data=().printViewData];():generalPopup.refresh()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1];#():customPrintView2.html2pdf():[name='Voucher']]"
             }
         },
-        "comments": [],
+        "comments": [
+            {
+                "note": "header",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "form",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "background",
+                "path": [
+                    "children",
+                    0
+                ]
+            }
+        ],
         "collapsed": [
             {
                 "path": [
@@ -137,14 +159,6 @@
             },
             {
                 "path": [
-                    "children",
-                    1,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
                     "#printAction"
                 ]
             },
@@ -164,10 +178,26 @@
                 "path": [
                     "printAction"
                 ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 7221
+        "size": 7192
     }
 }

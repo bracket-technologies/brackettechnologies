@@ -1,29 +1,32 @@
 {
-    "collection": "transaction",
-    "id": "5WakUYmPZf6O2zzRJQ9ndpfDFzr9pUusWt7UfTQFNc1fHceq0j5Ziz8ZNOdo1722501787255",
-    "creationDate": 1722501787255,
-    "creationDay": 1722459600000,
-    "code": "TRN",
+    "code": "67",
     "length": 8,
-    "counter": 9,
+    "counter": 0,
+    "counterList": [
+        0,
+        "1"
+    ],
+    "start": 0,
     "max": 99999999,
-    "timestamp": 1722501787255,
     "reset": "yearly",
+    "creationDate": 1723031394363,
+    "id": "XYIn254CEUg2EYtlByPDQ5hluDqzKPobXsVM5ruNET7jcLXNv4RnTOyMrP0J1723031394363",
+    "timestamp": 1723031394363,
+    "creationDay": 1722978000000,
     "__props__": {
-        "id": "e1S7n2N2V5i0i1R7o8P7A2V5B6",
+        "id": "E1D7T213n0r3I1S3n9c4F3M6a4",
         "doc": "counter7",
         "counter": 7,
-        "creationDate": 1722501787256,
+        "creationDate": 1723031394364,
         "collection": "counter",
         "chunk": "chunk1",
-        "lastModified": 1722554011269,
+        "lastModified": 1723031394391,
         "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 533
-    },
-    "end": 99999999
+        "size": 522
+    }
 }

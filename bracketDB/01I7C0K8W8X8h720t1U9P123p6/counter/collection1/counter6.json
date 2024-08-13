@@ -1,29 +1,33 @@
 {
-    "collection": "account",
-    "id": "qcxdy9c3WU9UMZgQgpgmXOn2VxqLrJVZPettT7WqXGojk4VxUiC3kc188RS51722501787184",
-    "creationDate": 1722501787184,
-    "creationDay": 1722459600000,
-    "code": "ACC",
+    "code": "53",
     "length": 8,
-    "counter": 9,
+    "counter": 0,
+    "counterList": [
+        0,
+        "1"
+    ],
+    "start": 0,
     "max": 99999999,
-    "timestamp": 1722501787185,
     "reset": "yearly",
+    "creationDate": 1723031379602,
+    "id": "SPFJFeDW5J5hjLRNsDIbIzhsQVKYZAwFgheO2hBsHpbe4OF4liBeWdyw7IAv1723031379602",
+    "timestamp": 1723031379602,
+    "creationDay": 1722978000000,
+    "type": "Cash",
     "__props__": {
-        "id": "01R7f2Q2L52021b7d8R7b1w8G6",
+        "id": "c1d732H3Z0E3o1I3m7b9E630D3",
         "doc": "counter6",
         "counter": 6,
-        "creationDate": 1722501787186,
+        "creationDate": 1723031379603,
         "collection": "counter",
         "chunk": "chunk1",
-        "lastModified": 1722553817885,
+        "lastModified": 1723031379638,
         "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 529
-    },
-    "end": 99999999
+        "size": 536
+    }
 }

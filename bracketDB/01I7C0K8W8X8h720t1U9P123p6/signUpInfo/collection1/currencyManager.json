@@ -70,7 +70,7 @@
         ]
     },
     "id": "currencyManager",
-    "popupInfo": {
+    "form": {
         "docName": "signUp",
         "title": "Currency Form",
         "path": "currencyInfo"
@@ -133,7 +133,7 @@
             },
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {

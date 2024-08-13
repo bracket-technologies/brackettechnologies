@@ -11,7 +11,7 @@
                             "input": [
                                 {
                                     "path": "fromAccount",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "ledgerAccount",
                                     "required": true
                                 },
@@ -23,7 +23,7 @@
                                 },
                                 {
                                     "path": "description",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "description"
                                 },
                                 {
@@ -80,7 +80,7 @@
                             "input": [
                                 {
                                     "path": "toAccount",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "ledgerAccount",
                                     "required": true
                                 },
@@ -92,7 +92,7 @@
                                 },
                                 {
                                     "path": "description",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "description"
                                 },
                                 {
@@ -157,7 +157,7 @@
                             "input": [
                                 {
                                     "path": "receivablesAndPayablesLedgerAccount",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "ledgerAccount",
                                     "required": true
                                 },
@@ -169,7 +169,7 @@
                                 },
                                 {
                                     "path": "description",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "description"
                                 },
                                 {
@@ -211,12 +211,12 @@
                                 {
                                     "key": "invoicesInfo",
                                     "path": "invoicesInfo",
-                                    "type": "array"
+                                    "type": "list"
                                 },
                                 {
                                     "key": "ledgerAccount",
                                     "path": "receivablesAndPayablesLedgerAccount",
-                                    "type": "string",
+                                    "type": "text",
                                     "required": true
                                 },
                                 {
@@ -258,7 +258,7 @@
                             "input": [
                                 {
                                     "path": "financialLedgerAccount",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "ledgerAccount",
                                     "required": true
                                 },
@@ -270,7 +270,7 @@
                                 },
                                 {
                                     "path": "description",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "description"
                                 },
                                 {
@@ -327,7 +327,7 @@
                             "input": [
                                 {
                                     "path": "financialLedgerAccount",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "ledgerAccount",
                                     "required": true
                                 },
@@ -339,7 +339,7 @@
                                 },
                                 {
                                     "path": "description",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "description"
                                 },
                                 {
@@ -394,7 +394,7 @@
                             "input": [
                                 {
                                     "path": "receivablesAndPayablesLedgerAccount",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "ledgerAccount",
                                     "required": true
                                 },
@@ -406,7 +406,7 @@
                                 },
                                 {
                                     "path": "description",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "description"
                                 },
                                 {
@@ -448,12 +448,12 @@
                                 {
                                     "key": "invoicesInfo",
                                     "path": "invoicesInfo",
-                                    "type": "array"
+                                    "type": "list"
                                 },
                                 {
                                     "key": "ledgerAccount",
                                     "path": "receivablesAndPayablesLedgerAccount",
-                                    "type": "string",
+                                    "type": "text",
                                     "required": true
                                 },
                                 {

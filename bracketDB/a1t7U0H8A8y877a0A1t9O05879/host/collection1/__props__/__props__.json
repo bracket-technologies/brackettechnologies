@@ -5,12 +5,12 @@
     "lastChunk": 1,
     "docsLength": 6,
     "counter": 76,
-    "reads": 109266,
-    "writes": 153,
+    "reads": 128045,
+    "writes": 169,
     "deletes": 0,
-    "size": 2235,
-    "payloadIn": 54677,
-    "payloadOut": 41307486,
+    "size": 2587,
+    "payloadIn": 61932,
+    "payloadOut": 48819819,
     "indexes": [
         {
             "find": [
@@ -23,17 +23,8 @@
                 "port"
             ],
             "doc": "index2",
-            "lastRead": 1722679129168,
-            "expiryDate": 1725271129168
-        },
-        {
-            "find": [
-                "__props__.counter",
-                "port"
-            ],
-            "doc": "index3",
-            "lastRead": 1720684304792,
-            "expiryDate": 1723276304792
+            "lastRead": 1723494683082,
+            "expiryDate": 1726086683082
         },
         {
             "find": [
@@ -41,16 +32,16 @@
                 "publicID"
             ],
             "doc": "index4",
-            "lastRead": 1722678855332,
-            "expiryDate": 1725270855332
+            "lastRead": 1723493262341,
+            "expiryDate": 1726085262341
         },
         {
             "find": [
                 "localhost"
             ],
             "doc": "index5",
-            "lastRead": 1722338804868,
-            "expiryDate": 1724930804868
+            "lastRead": 1723114617187,
+            "expiryDate": 1725706617187
         },
         {
             "find": [
@@ -68,9 +59,26 @@
                 "dev"
             ],
             "doc": "index7",
-            "lastRead": 1721651961953,
-            "expiryDate": 1724243961953
+            "lastRead": 1722936384042,
+            "expiryDate": 1725528384042
+        },
+        {
+            "find": [
+                "publicID"
+            ],
+            "doc": "index8",
+            "lastRead": 1723493265555,
+            "expiryDate": 1726085265555
+        },
+        {
+            "find": [
+                "dev",
+                "publicID"
+            ],
+            "doc": "index9",
+            "lastRead": 1723029435866,
+            "expiryDate": 1725621435866
         }
     ],
-    "lastIndex": 7
+    "lastIndex": 9
 }

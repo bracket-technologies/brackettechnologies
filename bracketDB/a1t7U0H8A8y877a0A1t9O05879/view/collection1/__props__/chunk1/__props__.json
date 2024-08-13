@@ -26,7 +26,7 @@
         "msg",
         "projects",
         "root",
-        "view",
+        "server",
         "SearchEngine",
         "sidebar",
         "subscriptionForm",
@@ -36,5 +36,5 @@
     ],
     "indexes": [],
     "docsLength": 28,
-    "size": -14710
+    "size": -12514
 }

@@ -70,6 +70,13 @@
             "code": "eur",
             "symbol": "syr",
             "decimalDigits": "2"
+        },
+        {
+            "name": "sdgfdwfef",
+            "country": "df",
+            "code": "dfd",
+            "symbol": "df",
+            "decimalDigits": "2"
         }
     ],
     "name": "Currencies",
@@ -83,7 +90,7 @@
         "creationDate": 1711031362221,
         "collection": "sheet",
         "chunk": "chunk1",
-        "lastModified": 1722501016208,
+        "lastModified": 1722889097904,
         "dev": false,
         "actions": {},
         "comments": [],
@@ -137,7 +144,7 @@
         ],
         "arrange": [],
         "secured": false,
-        "size": 1598
+        "size": 1681
     },
     "type": "Editable",
     "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",

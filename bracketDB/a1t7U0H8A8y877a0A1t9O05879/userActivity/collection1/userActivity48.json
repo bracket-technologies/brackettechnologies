@@ -1,0 +1,55 @@
+{
+    "firstTrigger": 1722937444883,
+    "serverTriggers": 216,
+    "date": 1722891600000,
+    "userID": "91l7f111C0i3r1J3V6L0C2c5n1",
+    "activityPerHour": [
+        {
+            "time": 1722934800000,
+            "firstTrigger": 1722937444883,
+            "serverTriggers": 57,
+            "lastTrigger": 1722938173347
+        },
+        {
+            "time": 1722938400000,
+            "firstTrigger": 1722938700302,
+            "serverTriggers": 101,
+            "lastTrigger": 1722941254572
+        },
+        {
+            "time": 1722942000000,
+            "firstTrigger": 1722942345763,
+            "serverTriggers": 6,
+            "lastTrigger": 1722942355089
+        },
+        {
+            "time": 1722945600000,
+            "firstTrigger": 1722945600483,
+            "serverTriggers": 39,
+            "lastTrigger": 1722947981526
+        },
+        {
+            "time": 1722949200000,
+            "firstTrigger": 1722950750787,
+            "serverTriggers": 13,
+            "lastTrigger": 1722952704190
+        }
+    ],
+    "lastTrigger": 1722952704190,
+    "__props__": {
+        "id": "b157Z2o2D9U3N7Z4w4U4c8p8j7",
+        "doc": "userActivity48",
+        "counter": 48,
+        "creationDate": 1722937444887,
+        "collection": "userActivity",
+        "chunk": "chunk1",
+        "lastModified": 1722952704196,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 928
+    }
+}

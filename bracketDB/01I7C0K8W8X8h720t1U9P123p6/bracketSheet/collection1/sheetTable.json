@@ -136,7 +136,7 @@
     },
     "id": "sheetTable",
     "searchAction": "getSearchResult()",
-    "popupInfo": {
+    "form": {
         "docName": "sheet",
         "title": "Sheet Form"
     },
@@ -321,7 +321,7 @@
             },
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {

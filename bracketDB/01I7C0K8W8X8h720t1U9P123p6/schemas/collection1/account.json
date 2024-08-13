@@ -9,13 +9,13 @@
                 },
                 {
                     "path": "vatAccount",
-                    "type": "string",
+                    "type": "text",
                     "key": "generalLedger",
                     "required": "true"
                 },
                 {
                     "path": "currency",
-                    "type": "array",
+                    "type": "list",
                     "key": "currency",
                     "required": "true"
                 },
@@ -31,22 +31,22 @@
                 },
                 {
                     "path": "branch",
-                    "type": "string",
+                    "type": "text",
                     "key": "branch",
                     "required": "true"
                 },
                 {
                     "path": "financialNumber",
-                    "type": "string",
+                    "type": "text",
                     "key": "financialNumber"
                 },
                 {
                     "path": "description",
-                    "type": "string",
+                    "type": "text",
                     "key": "description"
                 },
                 {
-                    "staticValue": "().startsWith=:;().currentNumber='';range():[_.data.vatAccount.len()-1]._():[().currentNumber+=__.data.vatAccount.[_];().startsWith.push():[().currentNumber]];return():[().startsWith]",
+                    "staticValue": "().startsWith=:;().currentNumber='';range():[_.data.vatAccount.len()]._():[().currentNumber+=__.data.vatAccount.[_];().startsWith.push():[().currentNumber]];return():[().startsWith]",
                     "key": "startsWith"
                 }
             ],
@@ -118,13 +118,13 @@
             "keyValue": [
                 {
                     "path": "name",
-                    "type": "string",
+                    "type": "text",
                     "key": "name",
                     "required": true
                 },
                 {
                     "path": "isSubAccount",
-                    "type": "string",
+                    "type": "text",
                     "key": "isSubAccount",
                     "required": "true"
                 },
@@ -168,14 +168,14 @@
                             "conditionReference": "isSubAccount"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "generalLedger",
                     "required": "true"
                 },
                 {
                     "key": "autoGenerateAccountNumber",
                     "path": "autoGenerateAccountNumber",
-                    "type": "string",
+                    "type": "text",
                     "required": true
                 },
                 {
@@ -194,7 +194,7 @@
                 },
                 {
                     "path": "currency",
-                    "type": "array",
+                    "type": "list",
                     "key": "currency",
                     "required": "true"
                 },
@@ -208,7 +208,7 @@
                             "conditionReference": "ledgerAccountName"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "createDepreciationAccount",
                     "required": true
                 },
@@ -228,7 +228,7 @@
                             "conditionReference": "createDepreciationAccount"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "depreciationAccount"
                 },
                 {
@@ -247,7 +247,7 @@
                             "conditionReference": "ledgerAccountName"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "autoDepreciation"
                 },
                 {
@@ -286,7 +286,7 @@
                             "conditionReference": "autoDepreciation"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "yearlyRateUnit",
                     "required": true
                 },
@@ -326,7 +326,7 @@
                             "conditionReference": "autoDepreciation"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "notificationForDepreciation"
                 },
                 {
@@ -365,7 +365,7 @@
                             "conditionReference": "ledgerAccountName"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "type",
                     "required": "true"
                 },
@@ -390,7 +390,7 @@
                             "conditionReference": "type"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "createVATAccount",
                     "required": true
                 },
@@ -421,7 +421,7 @@
                             "conditionReference": "type"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "vatAccount"
                 },
                 {
@@ -445,7 +445,7 @@
                             "conditionReference": "type"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "financialNumber"
                 },
                 {
@@ -464,14 +464,14 @@
                             "conditionReference": "type"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "accountType",
                     "required": "true"
                 },
                 {
                     "key": "openingBalance",
                     "path": "openingBalance",
-                    "type": "array"
+                    "type": "list"
                 },
                 {
                     "path": "preferredPaymentTerms",
@@ -490,7 +490,7 @@
                             "conditionReference": "ledgerAccountName"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "preferredPaymentTerms"
                 },
                 {
@@ -530,7 +530,7 @@
                             "conditionReference": "ledgerAccountName"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "preferredExpenseAccount"
                 },
                 {
@@ -584,12 +584,12 @@
                 },
                 {
                     "path": "email",
-                    "type": "string",
+                    "type": "text",
                     "key": "email"
                 },
                 {
                     "path": "address",
-                    "type": "string",
+                    "type": "text",
                     "key": "address"
                 },
                 {
@@ -616,13 +616,13 @@
                             "conditionReference": "ledgerAccountName"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "creditLimitCurrency",
                     "required": true
                 },
                 {
                     "path": "notification",
-                    "type": "string",
+                    "type": "text",
                     "key": "notification"
                 },
                 {
@@ -649,7 +649,7 @@
                             "conditionReference": "notification"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "repeat",
                     "required": "true"
                 },
@@ -663,7 +663,7 @@
                             "conditionReference": "notification"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "maturatyPeriod",
                     "required": "true"
                 },
@@ -677,7 +677,7 @@
                             "conditionReference": "notification"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "maturatyPeriodUnit",
                     "required": "true"
                 },
@@ -691,35 +691,35 @@
                             "conditionReference": "notification"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "resetDuration",
                     "required": "true"
                 },
                 {
                     "path": "contactNumber",
-                    "type": "array",
+                    "type": "list",
                     "key": "contactNumber"
                 },
                 {
                     "path": "branch",
-                    "type": "string",
+                    "type": "text",
                     "key": "branch",
                     "required": "true"
                 },
                 {
                     "path": "createdBy",
-                    "type": "string",
+                    "type": "text",
                     "key": "createdBy",
                     "required": "true"
                 },
                 {
                     "path": "description",
-                    "type": "string",
+                    "type": "text",
                     "key": "description"
                 },
                 {
                     "path": "note",
-                    "type": "string",
+                    "type": "text",
                     "key": "note"
                 },
                 {
@@ -782,7 +782,7 @@
                     "key": "passport"
                 },
                 {
-                    "staticValue": "().startsWith=:;().currentNumber='';range():[mainReceivedData:().generalLedger.len()-1]._():[().currentNumber+=mainReceivedData:().generalLedger.[_];().startsWith.push():[().currentNumber]];return():[().startsWith]",
+                    "staticValue": "().startsWith=:;().currentNumber='';range():[mainReceivedData:().generalLedger.len()]._():[().currentNumber+=mainReceivedData:().generalLedger.[_];().startsWith.push():[().currentNumber]];return():[().startsWith]",
                     "key": "startsWith"
                 },
                 {
@@ -801,7 +801,7 @@
                             "conditionReference": "ledgerAccountName"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "bankName",
                     "required": true
                 },
@@ -821,7 +821,7 @@
                             "conditionReference": "ledgerAccountName"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "bankAccountNumber",
                     "required": true
                 }
@@ -836,13 +836,13 @@
                 },
                 {
                     "path": "depreciationAccount",
-                    "type": "string",
+                    "type": "text",
                     "key": "generalLedger",
                     "required": "true"
                 },
                 {
                     "path": "currency",
-                    "type": "array",
+                    "type": "list",
                     "key": "currency",
                     "required": "true"
                 },
@@ -852,12 +852,12 @@
                 },
                 {
                     "path": "autoDepreciation",
-                    "type": "string",
+                    "type": "text",
                     "key": "autoDepreciation"
                 },
                 {
                     "path": "branch",
-                    "type": "string",
+                    "type": "text",
                     "key": "branch",
                     "required": "true"
                 },
@@ -932,11 +932,11 @@
                 },
                 {
                     "path": "description",
-                    "type": "string",
+                    "type": "text",
                     "key": "description"
                 },
                 {
-                    "staticValue": "().startsWith=:;().currentNumber='';range():[_.data.depreciationAccount.len()-1]._():[().currentNumber+=[__.data.depreciationAccount].[_];().startsWith.push():[().currentNumber]];return():[().startsWith]",
+                    "staticValue": "().startsWith=:;().currentNumber='';range():[_.data.depreciationAccount.len()]._():[().currentNumber+=[__.data.depreciationAccount].[_];().startsWith.push():[().currentNumber]];return():[().startsWith]",
                     "key": "startsWith"
                 }
             ],
@@ -2865,30 +2865,30 @@
             "keyValue": [
                 {
                     "path": "id",
-                    "type": "string",
+                    "type": "text",
                     "key": "id",
                     "required": true
                 },
                 {
                     "path": "name",
-                    "type": "string",
+                    "type": "text",
                     "key": "name",
                     "required": true
                 },
                 {
                     "path": "currency",
-                    "type": "array",
+                    "type": "list",
                     "key": "currency",
                     "required": "true"
                 },
                 {
                     "path": "email",
-                    "type": "string",
+                    "type": "text",
                     "key": "email"
                 },
                 {
                     "path": "address",
-                    "type": "string",
+                    "type": "text",
                     "key": "address"
                 },
                 {
@@ -2907,7 +2907,7 @@
                 },
                 {
                     "path": "notification",
-                    "type": "string",
+                    "type": "text",
                     "key": "notification"
                 },
                 {
@@ -2934,7 +2934,7 @@
                             "conditionReference": "notification"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "repeat",
                     "required": "true"
                 },
@@ -2948,7 +2948,7 @@
                             "conditionReference": "notification"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "maturatyPeriod",
                     "required": "true"
                 },
@@ -2962,23 +2962,23 @@
                             "conditionReference": "notification"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "maturatyPeriodUnit",
                     "required": "true"
                 },
                 {
                     "path": "contactNumber",
-                    "type": "array",
+                    "type": "list",
                     "key": "contactNumber"
                 },
                 {
                     "path": "description",
-                    "type": "string",
+                    "type": "text",
                     "key": "description"
                 },
                 {
                     "path": "note",
-                    "type": "string",
+                    "type": "text",
                     "key": "note"
                 },
                 {
@@ -3056,7 +3056,7 @@
                             "conditionReference": "ledgerAccountName"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "bankName",
                     "required": true
                 },
@@ -3076,7 +3076,7 @@
                             "conditionReference": "ledgerAccountName"
                         }
                     ],
-                    "type": "string",
+                    "type": "text",
                     "key": "bankAccountNumber",
                     "required": true
                 }

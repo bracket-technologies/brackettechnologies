@@ -22,7 +22,7 @@ const droplist = ({ id, e, __, stack, props, lookupActions, address, object }) =
   var form = view.droplist.form || view.form
 
   // init droplist
-  var droplistView = { ...global.__queries__.view.droplist, children: [], __dataPath__, form, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["view", "document", "root", "droplist"], __lookupActions__: [...view.__lookupActions__] }
+  var droplistView = { ...global.__queries__.view.droplist, children: [], __dataPath__, form, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["server", "document", "root", "droplist"], __lookupActions__: [...view.__lookupActions__] }
 
   // input id
   var inputID = toValue({ id, data: "input().id||().id", object })
@@ -73,7 +73,7 @@ const droplist = ({ id, e, __, stack, props, lookupActions, address, object }) =
       } else {
         
         return ({
-          view: `Text?style:[minHeight=3rem;padding=0 1rem;fontSize=1.3rem;width=100%];hover.style.backgroundColor=#eee;${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item)};${jsonToBracket(view.droplist.item)};class=flex align-center pointer ${item.class || ""};click:[():[__droplistPositioner__:()].():[txt()=..txt();data()=..txt()]?!():${id}.droplist.preventDefault]`,
+          view: `Text?style:[minHeight=3rem;padding=0 1rem;fontSize=1.3rem;width=100%];[mouseenter?siblings().():[style().backgroundColor=#00000000];style().backgroundColor=#eee];${jsonToBracket(view.droplist.item && view.droplist.item.text || {})};${jsonToBracket(view.droplist.text || {})};${jsonToBracket(item)};${jsonToBracket(view.droplist.item)};class=flex align-center pointer ${item.class || ""};click:[():[__droplistPositioner__:()].():[txt()=..txt();data()=..txt()]?!():${id}.droplist.preventDefault]`,
         })
       }
     }))

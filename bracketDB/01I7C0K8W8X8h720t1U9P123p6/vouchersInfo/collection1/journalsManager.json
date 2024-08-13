@@ -13,7 +13,7 @@
         "collapsed": [
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {
@@ -91,7 +91,7 @@
         "size": 3433
     },
     "createFormInputs": "voucherSharedInfo",
-    "popupInfo": {
+    "form": {
         "docName": "voucherInfo",
         "title": "Journal Voucher Form"
     },

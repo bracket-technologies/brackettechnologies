@@ -1,8 +1,8 @@
 {
     "id": "TXNEuaAQwrlaSMyTRchO1721651967169",
-    "session": "SxYXTjWZeAS40cNTlJ2h1722552451518",
+    "session": "Zs5q2r1fPC8TZxEbtWNb1723106968467",
     "user": "user1",
-    "expiryDate": 1722638851517,
+    "expiryDate": 1723193368467,
     "__props__": {
         "id": "P1k752Y1J6Q5v1h9K647J1m780",
         "doc": "session1",
@@ -10,7 +10,7 @@
         "creationDate": 1721651967170,
         "collection": "session",
         "chunk": "chunk1",
-        "lastModified": 1722552451521,
+        "lastModified": 1723106968472,
         "dev": false,
         "actions": {},
         "comments": [],

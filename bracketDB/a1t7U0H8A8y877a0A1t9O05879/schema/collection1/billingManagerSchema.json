@@ -6,6 +6,8 @@
         "creationDate": 1720887109130,
         "collection": "schema",
         "chunk": "chunk1",
+        "lastModified": 1723121693187,
+        "dev": false,
         "actions": {},
         "comments": [
             {
@@ -23,7 +25,7 @@
                 ]
             },
             {
-                "note": "purchases",
+                "note": "invoices",
                 "path": [
                     "billing",
                     2
@@ -31,6 +33,13 @@
             },
             {
                 "note": "subscriptions",
+                "path": [
+                    "billing",
+                    4
+                ]
+            },
+            {
+                "note": "vouchers",
                 "path": [
                     "billing",
                     3
@@ -41,63 +50,9 @@
             {
                 "path": [
                     "billing",
-                    2,
-                    "manager",
-                    "search"
-                ]
-            },
-            {
-                "path": [
-                    "billing",
-                    3,
-                    "manager",
-                    "search"
-                ]
-            },
-            {
-                "path": [
-                    "billing",
-                    2,
-                    "manager",
-                    "title"
-                ]
-            },
-            {
-                "path": [
-                    "billing",
-                    3,
-                    "manager",
-                    "title"
-                ]
-            },
-            {
-                "path": [
-                    "billing",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "billing",
-                    0,
-                    "manager",
-                    "search"
-                ]
-            },
-            {
-                "path": [
-                    "billing",
                     0,
                     "manager",
                     "title"
-                ]
-            },
-            {
-                "path": [
-                    "billing",
-                    1,
-                    "manager",
-                    "search"
                 ]
             },
             {
@@ -112,31 +67,84 @@
             {
                 "path": [
                     "billing",
-                    0,
-                    "manager",
-                    "table"
-                ]
-            },
-            {
-                "path": [
-                    "billing",
-                    1,
-                    "manager",
-                    "table"
-                ]
-            },
-            {
-                "path": [
-                    "billing",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "billing",
                     1,
                     "manager",
                     "title"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    1,
+                    "manager",
+                    "table"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    2,
+                    "manager",
+                    "search",
+                    "searchInputs"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    0,
+                    "manager",
+                    "search"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    3,
+                    "manager",
+                    "search"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    3,
+                    "manager",
+                    "table",
+                    "data"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    4,
+                    "manager",
+                    "search",
+                    "searchInputs"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    4,
+                    "manager",
+                    "search"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    2,
+                    "manager",
+                    "search"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    3,
+                    "manager",
+                    "table"
                 ]
             },
             {
@@ -148,13 +156,55 @@
             {
                 "path": [
                     "billing",
+                    2,
+                    "manager",
+                    "table"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    2,
+                    "manager",
+                    "title"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
                     2
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    4,
+                    "manager",
+                    "title"
+                ]
+            },
+            {
+                "path": [
+                    "billing",
+                    4
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 4427
+        "size": 8304
     },
     "billing": [
         {
@@ -164,7 +214,7 @@
             "manager": {
                 "table": {
                     "headers": {
-                        "styles": "gridTemplateColumns=3rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr",
+                        "styles": "gridTemplateColumns=3rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 3rem",
                         "headers": [
                             {
                                 "header": "Name",
@@ -184,25 +234,22 @@
                             },
                             {
                                 "header": "Credit Limit",
-                                "path": "creditLimit.price()"
+                                "text": "__.creditLimit.price()+' Coins'"
                             },
                             {
                                 "header": "Debits",
-                                "text": "data:().lastTransactions.find():[billingAccountID=__.id()].totalDebits",
+                                "text": "[data:().lastTransactions.find():[billingAccountID=__.id()].totalDebits||0].price()+' Coins'",
                                 "styles": "color=blue"
                             },
                             {
                                 "header": "Credits",
-                                "text": "data:().lastTransactions.find():[billingAccountID=__.id()].totalCredits",
+                                "text": "[data:().lastTransactions.find():[billingAccountID=__.id()].totalCredits||0].price()+' Coins'",
                                 "style": "color=blue"
                             },
                             {
                                 "header": "Balance",
-                                "text": "data:().lastTransactions.find():[billingAccountID=__.id()].balance",
+                                "text": "[data:().lastTransactions.find():[billingAccountID=__.id()].balance||0].price()+' Coins'",
                                 "styles": "color=[blue?data:().lastTransactions.find():[billingAccountID=__.id()].balance>=0?red]"
-                            },
-                            {
-                                "header": ""
                             }
                         ]
                     },
@@ -215,7 +262,7 @@
                     "searchInputs": [
                         {
                             "label": "Billing Account#",
-                            "path": "billingAccount"
+                            "path": "__props__.counter"
                         },
                         {
                             "label": "Currency",
@@ -270,11 +317,11 @@
                     "searchInputs": [
                         {
                             "label": "Payment Method#",
-                            "path": "paymentMethod"
+                            "path": "__props__.counter"
                         },
                         {
                             "label": "Payment Card Name",
-                            "path": "paymentCard"
+                            "path": "name"
                         }
                     ]
                 },
@@ -311,18 +358,18 @@
             }
         },
         {
-            "text": "Purchaces",
-            "tooltip": "purchaces",
-            "icon": "monetization_on",
+            "text": "Invoices",
+            "tooltip": "invoices",
+            "icon": "shopping_bag",
             "manager": {
                 "title": {
-                    "title": "Purchace Manager",
+                    "title": "Invoice Manager",
                     "btns": [
                         {
                             "name": "new_releases",
-                            "text": "generate coins",
-                            "form": "genCoinsForm",
-                            "conditions": "user:().username=Obeid"
+                            "text": "gen coins",
+                            "form": "miningForm",
+                            "conditions": "user:().email=x"
                         },
                         {
                             "name": "shopping_bag",
@@ -339,14 +386,31 @@
                 "search": {
                     "searchInputs": [
                         {
-                            "label": "Coin Invoice#",
-                            "path": "coinInvoice"
+                            "label": "Invoice#",
+                            "path": "__props__.counter"
+                        },
+                        {
+                            "label": "Type",
+                            "path": "type",
+                            "inputType": "stdItems",
+                            "items": [
+                                "Purchase",
+                                "Sales"
+                            ]
+                        },
+                        {
+                            "label": "Plugin Name",
+                            "path": "plugin"
+                        },
+                        {
+                            "label": "Package Name",
+                            "path": "package"
                         },
                         {
                             "label": "From Date",
                             "path": "fromDate",
                             "type": "date",
-                            "defaultValue": "[todayStart().timestamp()]().toDateInputFormat()"
+                            "#defaultValue": "[todayStart().timestamp()]().toDateInputFormat()"
                         },
                         {
                             "label": "To Date",
@@ -354,6 +418,142 @@
                             "type": "date"
                         }
                     ]
+                },
+                "table": {
+                    "headers": {
+                        "styles": "gridTemplateColumns=3rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 3rem",
+                        "headers": [
+                            {
+                                "header": "Creation Date",
+                                "text": "__.__props__.creationDate.toDateFormat():format4"
+                            },
+                            {
+                                "header": "Invoice#",
+                                "text": "__.__props__.counter"
+                            },
+                            {
+                                "header": "Type",
+                                "text": "__.type"
+                            },
+                            {
+                                "header": "Billing Account",
+                                "text": "data:().billingAccounts.find():[id()=__.billingAccountID].name"
+                            },
+                            {
+                                "header": "Plugin",
+                                "text": "data:().plugins.find():[id()=__.pluginID].name"
+                            },
+                            {
+                                "header": "Package",
+                                "text": "data:().packages.find():[id()=__.packageID].name"
+                            },
+                            {
+                                "header": "Description",
+                                "text": "__.description"
+                            },
+                            {
+                                "header": "Coins",
+                                "text": "__.coins.price()+' Coins'"
+                            },
+                            {
+                                "header": "Payment Status",
+                                "text": "__.paymentStatus"
+                            }
+                        ]
+                    },
+                    "data": {
+                        "action": "[getAllInvoices():[billingAccountID=billingAccount:().id()]:[data:().invoices=_.invoices;data:().billingAccounts=_.billingAccounts;data:().plugins=_.plugins;data:().packages=_.packages]]():[collection=actions;doc=main]",
+                        "publicID": "invoices"
+                    }
+                }
+            }
+        },
+        {
+            "text": "Vouchers",
+            "tooltip": "vouchers",
+            "icon": "monetization_on",
+            "manager": {
+                "title": {
+                    "title": "Voucher Manager",
+                    "btns": []
+                },
+                "search": {
+                    "searchInputs": [
+                        {
+                            "label": "Voucher#",
+                            "path": "__props__.counter"
+                        },
+                        {
+                            "label": "Invoice#",
+                            "path": "invoiceNumber"
+                        },
+                        {
+                            "label": "Type",
+                            "path": "type",
+                            "items": [
+                                "Payment",
+                                "Receipt"
+                            ],
+                            "inputType": "stdItems"
+                        },
+                        {
+                            "label": "Billing Account Name",
+                            "path": "billingAccount"
+                        },
+                        {
+                            "label": "From Date",
+                            "path": "fromDate",
+                            "type": "date"
+                        },
+                        {
+                            "label": "To Date",
+                            "path": "toDate",
+                            "type": "date"
+                        }
+                    ]
+                },
+                "table": {
+                    "headers": {
+                        "styles": "gridTemplateColumns=3rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 3rem",
+                        "headers": [
+                            {
+                                "header": "Creation Date",
+                                "text": "__.__props__.creationDate.toDateFormat():format4"
+                            },
+                            {
+                                "header": "Voucher#",
+                                "text": "__.__props__.counter"
+                            },
+                            {
+                                "header": "Type",
+                                "text": "__.type"
+                            },
+                            {
+                                "header": "Invoice#",
+                                "text": "data:().invoices.find():[id()=__.invoiceID].__props__.counter||'-'"
+                            },
+                            {
+                                "header": "Billing Account",
+                                "text": "data:().billingAccounts.find():[id()=__.billingAccountID].name"
+                            },
+                            {
+                                "header": "Description",
+                                "text": "__.description"
+                            },
+                            {
+                                "header": "Amount",
+                                "text": "__.amount.price()+' USD'"
+                            },
+                            {
+                                "header": "Coins",
+                                "text": "__.coins.price()+' Coins'"
+                            }
+                        ]
+                    },
+                    "data": {
+                        "action": "[getAllVouchers():[accountID=billingAccount:().accountID]:[data:().vouchers=_.vouchers;data:().billingAccounts=_.billingAccounts;data:().invoices=_.invoices]]():[collection=actions;doc=main]",
+                        "publicID": "vouchers"
+                    }
                 }
             }
         },
@@ -363,12 +563,12 @@
             "icon": "subscriptions",
             "manager": {
                 "title": {
-                    "title": "Subscription Invoice Manager",
+                    "title": "Subscription Manager",
                     "btns": [
                         {
                             "name": "add_business",
                             "text": "subscribe",
-                            "form": "subscriptionForm"
+                            "form": "renewSubscriptionForm"
                         }
                     ]
                 },
@@ -376,13 +576,25 @@
                     "searchInputs": [
                         {
                             "label": "Subscription#",
-                            "path": "subscription"
+                            "path": "__props__.counter"
+                        },
+                        {
+                            "label": "Project Name",
+                            "path": "project"
+                        },
+                        {
+                            "label": "Plugin Name",
+                            "path": "plugin"
+                        },
+                        {
+                            "label": "Package Name",
+                            "path": "package"
                         },
                         {
                             "label": "From Date",
                             "path": "fromDate",
                             "type": "date",
-                            "defaultValue": "[todayStart().timestamp()]().toDateInputFormat()"
+                            "#defaultValue": "[todayStart().timestamp()]().toDateInputFormat()"
                         },
                         {
                             "label": "To Date",
@@ -390,6 +602,49 @@
                             "type": "date"
                         }
                     ]
+                },
+                "table": {
+                    "headers": {
+                        "styles": "gridTemplateColumns=3rem 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 3rem",
+                        "headers": [
+                            {
+                                "header": "Creation Date",
+                                "text": "__.__props__.creationDate.toDateFormat():format4"
+                            },
+                            {
+                                "header": "Subscription#",
+                                "text": "__.__props__.counter"
+                            },
+                            {
+                                "header": "Project",
+                                "text": "data:().projects.find():[publicID=__.publicID].name"
+                            },
+                            {
+                                "header": "Plugin",
+                                "text": "data:().plugins.find():[id()=__.pluginID].name"
+                            },
+                            {
+                                "header": "Package",
+                                "text": "data:().packages.find():[id()=__.packageID].name"
+                            },
+                            {
+                                "header": "Free",
+                                "text": "Yes?__.free?No"
+                            },
+                            {
+                                "header": "Start Date",
+                                "text": "__.startDate.toDateFormat()"
+                            },
+                            {
+                                "header": "Expiry Date",
+                                "text": "__.expiryDate.toDateFormat()"
+                            }
+                        ]
+                    },
+                    "data": {
+                        "action": "[getAllSubscriptions():[accountID=billingAccount:().accountID]:[data:().subscriptions=_.subscriptions;data:().projects=_.projects;data:().plugins=_.plugins;data:().packages=_.packages]]():[collection=actions;doc=main]",
+                        "publicID": "subscriptions"
+                    }
                 }
             }
         }

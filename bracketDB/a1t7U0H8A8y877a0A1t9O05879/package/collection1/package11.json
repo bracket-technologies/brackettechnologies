@@ -17,5 +17,5 @@
     "description": "Annual subscription",
     "duration": 31536000000,
     "savings": 0,
-    "priceCoins": 100
+    "coins": 100
 }

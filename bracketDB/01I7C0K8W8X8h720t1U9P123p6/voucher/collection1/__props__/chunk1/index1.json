@@ -3,7 +3,7 @@
         "type": "Journal Voucher"
     },
     "voucher2": {
-        "type": "Receipt Voucher"
+        "type": "Journal Voucher"
     },
     "voucher3": {
         "type": "Journal Voucher"

@@ -10,7 +10,7 @@
                 },
                 {
                     "path": "userId",
-                    "type": "string",
+                    "type": "text",
                     "key": "user",
                     "required": "true"
                 }
@@ -26,7 +26,7 @@
                 },
                 {
                     "path": "userId",
-                    "type": "string",
+                    "type": "text",
                     "key": "user",
                     "required": "true"
                 }

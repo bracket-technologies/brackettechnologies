@@ -1,71 +1,5 @@
 {
     "account767": {
-        "name.lowercase()": "test1",
-        "startsWith": [
-            "1"
-        ],
-        "currency": [
-            "USD",
-            "LBP"
-        ]
-    },
-    "account768": {
-        "name.lowercase()": "opening1",
-        "startsWith": [
-            "1",
-            "11",
-            "119"
-        ],
-        "currency": [
-            "USD",
-            "LBP"
-        ]
-    },
-    "account769": {
-        "name.lowercase()": "table",
-        "startsWith": [
-            "2"
-        ],
-        "currency": [
-            "USD",
-            "LBP",
-            "XOF"
-        ]
-    },
-    "account770": {
-        "name.lowercase()": "cash1",
-        "startsWith": [
-            "5",
-            "53"
-        ],
-        "currency": [
-            "USD",
-            "XOF"
-        ]
-    },
-    "account771": {
-        "name.lowercase()": "purchases",
-        "startsWith": [
-            "6",
-            "60",
-            "601"
-        ],
-        "currency": [
-            "USD"
-        ]
-    },
-    "account772": {
-        "name.lowercase()": "invoices",
-        "startsWith": [
-            "7",
-            "70",
-            "701"
-        ],
-        "currency": [
-            "USD"
-        ]
-    },
-    "account773": {
         "name.lowercase()": "customer1",
         "startsWith": [
             "4",
@@ -74,26 +8,35 @@
         ],
         "currency": [
             "USD",
-            "XOF"
+            "LBP"
         ]
     },
-    "account774": {
-        "name.lowercase()": "test3",
+    "account768": {
+        "name.lowercase()": "cash1",
         "startsWith": [
-            "1"
+            "5",
+            "53"
         ],
         "currency": [
             "USD",
-            "XOF"
+            "LBP"
         ]
     },
-    "account775": {
-        "name.lowercase()": "tttt",
+    "account769": {
+        "name.lowercase()": "financial charges",
         "startsWith": [
-            "4",
-            "40",
-            "401",
-            "4011"
+            "6",
+            "67"
+        ],
+        "currency": [
+            "USD"
+        ]
+    },
+    "account770": {
+        "name.lowercase()": "financial charges",
+        "startsWith": [
+            "7",
+            "77"
         ],
         "currency": [
             "USD"

@@ -495,7 +495,7 @@
             ]
         }
     },
-    "popupInfo": {
+    "form": {
         "docName": "userInfo",
         "title": "User Form"
     },
@@ -779,7 +779,7 @@
             },
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {

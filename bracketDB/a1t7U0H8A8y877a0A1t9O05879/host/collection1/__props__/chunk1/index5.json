@@ -7,8 +7,5 @@
     },
     "host3": {
         "localhost": "playground.localhost"
-    },
-    "host6": {},
-    "host7": {},
-    "host8": {}
+    }
 }

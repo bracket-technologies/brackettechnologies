@@ -1,0 +1,31 @@
+{
+    "publicID": "iB1Rl7vL2lQ3Ut1Uz00t3J525G9uV6cX0qp4VN0",
+    "projectID": "N1f7c2G3R1Y023p2c9R6d0f416",
+    "projectDoc": "project184",
+    "subdomain": "skylagroup",
+    "host": "192.168.0.100:84",
+    "db": "sX12P7RR2x93rB1n60jN3Kq2Kb9qu6X20UN4Tx6",
+    "storage": "uH1KD7Z22XU3r01Pb0dk3t72Zs9OG6Wh02Y48r6",
+    "devDB": "a71nM7Zy27C3mw1oR0hn3VB2T89hg6tE0514Bo6",
+    "dev": false,
+    "expiryDate": 1723200153656,
+    "encryptionKey": "hc2Te",
+    "userID": "",
+    "username": "",
+    "__props__": {
+        "id": "41J7f2W331r1v3u7q5u3f6A5e8",
+        "doc": "session184",
+        "counter": 184,
+        "creationDate": 1723113753658,
+        "collection": "session",
+        "chunk": "chunk1",
+        "lastModified": 1723113753658,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 672
+    }
+}

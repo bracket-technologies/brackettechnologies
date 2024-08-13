@@ -1,54 +1,29 @@
 {
     "account767": {
         "ledgerAccount": [
-            "1/1/0",
-            "1/1/2"
+            "413/1/0",
+            "413/1/1"
         ]
     },
     "account768": {
-        "ledgerAccount": [
-            "119/1/0",
-            "119/1/2"
-        ]
-    },
-    "account769": {
-        "ledgerAccount": [
-            "2/1/0",
-            "2/1/2",
-            "2/1/1"
-        ]
-    },
-    "account770": {
         "ledgerAccount": [
             "53/1/0",
             "53/1/1"
         ]
     },
+    "account769": {
+        "ledgerAccount": [
+            "67/1/0"
+        ]
+    },
+    "account770": {
+        "ledgerAccount": [
+            "77/1/0"
+        ]
+    },
     "account771": {
         "ledgerAccount": [
-            "601/1/0"
-        ]
-    },
-    "account772": {
-        "ledgerAccount": [
-            "701/1/0"
-        ]
-    },
-    "account773": {
-        "ledgerAccount": [
-            "413/1/0",
-            "413/1/1"
-        ]
-    },
-    "account774": {
-        "ledgerAccount": [
-            "1/2/0",
-            "1/2/1"
-        ]
-    },
-    "account775": {
-        "ledgerAccount": [
-            "4011/1/0"
+            "1/1/0"
         ]
     }
 }

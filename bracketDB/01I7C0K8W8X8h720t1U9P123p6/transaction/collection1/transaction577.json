@@ -1,8 +1,8 @@
 {
-    "currency": "USD",
-    "account": "38VhBjLBNWcg14fZOOEegKXuU3qJR24xIghnb51pyvBhkybi28yNuVca6ga3-1722502185946",
-    "ledgerAccount": "119/1/0",
-    "credit": 10000,
+    "currency": "LBP",
+    "account": "gvf2ognnnjhWlHNlvlxLSS1kDlzCL0lBi9uhzeLGluxyqS4K7VDEEj4ZAIlt-1723031349043",
+    "ledgerAccount": "413/1/1",
+    "credit": 890000,
     "debit": 0,
     "exchangeRates": [
         {
@@ -11,64 +11,66 @@
             "exchangeRate": 1
         },
         {
-            "code": "XOF",
-            "counter": 1,
-            "exchangeRate": 630
-        },
-        {
             "code": "LBP",
-            "counter": 2,
+            "counter": 1,
             "exchangeRate": 89000
-        },
-        {
-            "code": "eur",
-            "counter": 4,
-            "exchangeRate": 100000
         }
     ],
     "accountBalances": [
         {
-            "ledgerAccount": "119/1/0",
+            "ledgerAccount": "413/1/0",
             "accountBalances": [
                 {
-                    "account": "38VhBjLBNWcg14fZOOEegKXuU3qJR24xIghnb51pyvBhkybi28yNuVca6ga3-1722502185946",
-                    "credit": 11000,
+                    "account": "gvf2ognnnjhWlHNlvlxLSS1kDlzCL0lBi9uhzeLGluxyqS4K7VDEEj4ZAIlt-1723031349043",
+                    "credit": 10,
                     "debit": 0,
-                    "balance": -11000
+                    "balance": -10
+                }
+            ]
+        },
+        {
+            "ledgerAccount": "413/1/1",
+            "accountBalances": [
+                {
+                    "account": "gvf2ognnnjhWlHNlvlxLSS1kDlzCL0lBi9uhzeLGluxyqS4K7VDEEj4ZAIlt-1723031349043",
+                    "credit": 890000,
+                    "debit": 0,
+                    "balance": -890000
                 }
             ]
         }
     ],
+    "voucher": "4WHgvJtBFrnT27nefQImGlzxtXDT7WvuNwJ34XiQZOZ3MCNx7XHaNbjDBqfp-1723031475770",
+    "voucherRef": "VCH-00000002",
     "systemAccountBalances": [
         {
-            "account": "38VhBjLBNWcg14fZOOEegKXuU3qJR24xIghnb51pyvBhkybi28yNuVca6ga3-1722502185946",
-            "credit": 11000,
+            "account": "gvf2ognnnjhWlHNlvlxLSS1kDlzCL0lBi9uhzeLGluxyqS4K7VDEEj4ZAIlt-1723031349043",
+            "credit": 20,
             "debit": 0,
-            "balance": -11000
+            "balance": -20
         }
     ],
-    "generalLedger": "119",
-    "id": "SRStWJfSYcidYxi3psvttNbvgI318FMjtTncuUOss0I2vSeJjgNlgvPLD5PJ-1722503712993",
-    "creationDate": 1722503712993,
-    "creationDay": 1722459600000,
-    "description": "Opening",
+    "id": "YgeGcr4hTIVMabWahJOpo9Tu2PTYBTj3ySwueSPK0dWKa0ed4vk6F6k09S5i-1723031475716",
+    "creationDate": 1723031475716,
+    "creationDay": 1722978000000,
+    "ref": "TRN-00000007",
     "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
-    "sysCredit": 10000,
+    "sysCredit": 10,
     "sysDebit": 0,
     "__props__": {
-        "id": "Y1d7a2n2X5S0c3M7F103l0V6e4",
+        "id": "O1o7W2E3j0c3h1t4p7I5q8n033",
         "doc": "transaction577",
         "counter": 577,
-        "creationDate": 1722503713064,
+        "creationDate": 1723031475803,
         "collection": "transaction",
         "chunk": "chunk1",
-        "lastModified": 1722503713064,
+        "lastModified": 1723031475803,
         "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 1275
+        "size": 1437
     }
 }

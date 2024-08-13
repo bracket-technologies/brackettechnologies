@@ -6,7 +6,7 @@
         "creationDate": 1716558273312,
         "collection": "formSchema",
         "chunk": "chunk1",
-        "lastModified": 1722424140229,
+        "lastModified": 1723110117840,
         "dev": false,
         "actions": {},
         "comments": [
@@ -72,12 +72,12 @@
             },
             {
                 "path": [
-                    "confirmBtn"
+                    "requiredData"
                 ]
             },
             {
                 "path": [
-                    "requiredData"
+                    "confirmBtn"
                 ]
             },
             {
@@ -112,7 +112,7 @@
         ],
         "arrange": [],
         "secured": false,
-        "size": 2010
+        "size": 2018
     },
     "confirmBtn": {
         "text": "Buy Now",
@@ -131,13 +131,13 @@
     ],
     "sections": [
         {
-            "styles": "width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr;gapX=3rem",
+            "styles": "width=100%;display=grid;gridTemplateColumns=1fr 1fr;gapX=3rem",
             "coinPackage": true,
             "gridCards": true,
             "cards": "packages:()"
         },
         {
-            "styles": "width=100%;display=grid;gridTemplateColumns=1fr 1fr 1fr 1fr;gapX=3rem",
+            "styles": "width=100%;display=grid;gridTemplateColumns=1fr 1fr;gapX=3rem",
             "cards": "packages:()",
             "gridCards": true,
             "selected": true
@@ -151,9 +151,9 @@
             "styles": "width=100%;display=flex;justifyContent=flex-end"
         }
     ],
-    "styles": "width=150rem",
+    "styles": "width=100rem",
     "reset": true,
-    "beforeLoadingActions": "[getBillingAccountBySession()::[billingAccountID:()=_.billingAccount];getPlugin():[pluginID='V1p7r1A7q4A2U04469R7O4m7w9';subscriptionExpiryDate=timestamp()]:[plugin:()=_.plugin;packages:()=_.packages.sort():[path=priceUSD;ascending]]]():[collection=actions;doc=main]",
+    "beforeLoadingActions": "[getBillingAccountBySession()::[billingAccountID:()=_.billingAccount];getPlugin():[pluginID='V1p7r1A7q4A2U04469R7O4m7w9';subscriptionExpiryDate=timestamp()]:[plugin:()=_.plugin;packages:()=_.packages.filter():[!trading].sort():[path=priceUSD;ascending]]]():[collection=actions;doc=main]",
     "data": "[billingAccountID=billingAccountID:().id();pluginID=plugin:().id()]",
     "form": "newProject"
 }

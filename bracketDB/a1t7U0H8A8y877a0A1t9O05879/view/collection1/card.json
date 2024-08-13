@@ -7,6 +7,8 @@
         "creationDate": 1716560749247,
         "collection": "view",
         "chunk": "chunk1",
+        "lastModified": 1723125642125,
+        "dev": false,
         "actions": {
             "defaultSelectedPackage": "form().qty=1;[[setChosenPackage()]():[path=[chooseCoinPackage?__.coinPackage?chooseSubscriptionPackage?__.subscriptionPackage]]?_.selected]",
             "chooseCoinPackage": {
@@ -18,10 +20,10 @@
                 "beat": "clearTimer():[().myTimer];style().transform=scale(1.06);myTimer=timer():[style().transform=scale(1.04)]:200"
             },
             "coinTotals": ":[label=Package Name;path=packageName]:[label=Quantity;path=qty;preUnit='x']:[label=Payment Amount;path=priceUSD;unit=USD]:[label=Coins Purchased;path=coins;unit=COIN]",
-            "subscriptionDetails": ":[label=Package Name;path=packageName;text=true]:[label=Quantity;path=qty;preUnit='x']:[label=Start Date;path=startDate;date=true]:[label=End Date;path=endDate;date=true]:[label=Coins;path=priceCoins;unit=COINS]",
+            "subscriptionDetails": ":[label=Package Name;path=packageName;text=true]:[label=Quantity;path=qty;preUnit='x']:[label=Start Date;path=startDate;date=true]:[label=End Date;path=endDate;date=true]:[label=Coins;path=coins;unit=COINS]",
             "chooseSubscriptionPackage": {
                 "_": "parent().siblings().():[1stChild().style().transform=scale(1)];form().qty=1;setChosenPackage();[setSelected();beat();updatePackages()]():[path=:chooseCoinPackage]?form().packageID!=_.id()?addQty()",
-                "setChosenPackage": "form().packageID=_.id();form().packageName=_.name;form().priceCoins=_.priceCoins*form().qty;form().startDate=timestamp();subscriptions:()._():[form().startDate=_.expiryDate?_.expiryDate>form().startDate];form().endDate=form().startDate+[_.duration*form().qty]",
+                "setChosenPackage": "form().packageID=_.id();form().packageName=_.name;form().coins=_.coins*form().qty;form().startDate=timestamp();subscriptions:()._():[form().startDate=_.expiryDate?_.expiryDate>form().startDate];form().endDate=form().startDate+[_.duration*form().qty]",
                 "addQty": "form().qty+=1;setChosenPackage();[beat()]():[path=:chooseCoinPackage];class():'subscription-details'.0.refresh()?form().qty<[_.max||9]?note():[text=You have reached maximum limit!;danger]"
             },
             "timeUnit": "_/31536000000+' Year'+['s'?_/31536000000!=1?'']?_%31536000000=0?_/2592000000+' Month'+['s'?_/2592000000!=1?'']?_%2592000000=0?_/86400000+' Day'+['s'?_/86400000!=1?'']?_%86400000=0"
@@ -144,24 +146,7 @@
             },
             {
                 "path": [
-                    "children",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    4
-                ]
-            },
-            {
-                "path": [
                     "chooseCoinPackage"
-                ]
-            },
-            {
-                "path": [
-                    "chooseSubscriptionPackage"
                 ]
             },
             {
@@ -175,11 +160,22 @@
                     "children",
                     0
                 ]
+            },
+            {
+                "path": [
+                    "children",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "chooseSubscriptionPackage"
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 9162
+        "size": 9231
     },
     "children": [
         {
@@ -265,7 +261,7 @@
                     "view": "Text?text=_.description;style:[fontSize=1.5rem;width=100%;textAlign=center]"
                 },
                 {
-                    "view": "Text?text=[_.priceCoins.price()+' COINS'?_.priceCoins!=0?Free]+' for '+timeUnit():[_.duration];style:[fontSize=1.5rem;textAlign=center;paddingTop=1rem;borderTop=1px solid #ddd;marginTop=-1rem]"
+                    "view": "Text?text=[_.coins.price()+' COINS'?_.coins!=0?Free]+' for '+timeUnit():[_.duration];style:[fontSize=1.5rem;textAlign=center;paddingTop=1rem;borderTop=1px solid #ddd;marginTop=-1rem]"
                 }
             ]
         },
@@ -300,7 +296,7 @@
             ]
         },
         {
-            "view": "View?class=flex subscription-details;style:[justifyContent=flex-end;width=100%]?__.subscriptionDetails",
+            "view": "View?class=flex subscription-details;style:[justifyContent=flex-end;width=100%]?__.subscriptionDetails;form().pluginID",
             "children": [
                 {
                     "view": "View?class=flex column;style:[gap=1.5rem;padding=0 4rem;padding=2rem;borderRadius=1rem;border=1px solid #ddd]",

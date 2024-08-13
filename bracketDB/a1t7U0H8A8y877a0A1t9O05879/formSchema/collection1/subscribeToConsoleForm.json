@@ -6,7 +6,7 @@
         "creationDate": 1716987049135,
         "collection": "formSchema",
         "chunk": "chunk1",
-        "lastModified": 1722424160130,
+        "lastModified": 1723116672444,
         "dev": false,
         "actions": {},
         "comments": [
@@ -66,11 +66,6 @@
             },
             {
                 "path": [
-                    "requiredData"
-                ]
-            },
-            {
-                "path": [
                     "sections",
                     0
                 ]
@@ -79,15 +74,25 @@
                 "path": [
                     "sections"
                 ]
+            },
+            {
+                "path": [
+                    "confirmBtn"
+                ]
+            },
+            {
+                "path": [
+                    "requiredData"
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 2018
+        "size": 1980
     },
     "confirmBtn": {
         "text": "Subscribe Now",
-        "action": "[subscribe():[form()]:[[checkSubscription():[_]]():[collection=view;doc=projects;path=:openConsole]:[end():[_]]?_.success;_.subscription?note():[text=_.message;type=danger]]]():[collection=actions;doc=main]",
+        "action": "[subscribe():[form()]:[[checkSubscription():[_]]():[collection=view;doc=projects;path=:openConsole]:[end():[_]]]]():[collection=actions;doc=main]",
         "msg": "We are getting you started. Please wait until we finish!"
     },
     "title": "Get full access to your database, write Bracket code, and much more...! Start now and get 1 week full access for free!",
@@ -124,6 +129,6 @@
         "endDate"
     ],
     "data": "[publicID=__.project.publicID;pluginID=plugin:().id();packageID=packages:().find():[freeTier=true].id()]",
-    "beforeLoadingActions": "[getPlugin():[pluginID='Q1p78107R4j1n2Z9a2E1K1r912';subscriptionExpiryDate=timestamp()]:[plugin:()=_.plugin;packages:()=_.packages.sort():[path=priceCoins;ascending];subscriptions:()=_.subscriptions]]():[collection=actions;doc=main]",
+    "beforeLoadingActions": "[getPlugin():[pluginID='Q1p78107R4j1n2Z9a2E1K1r912';subscriptionExpiryDate=timestamp()]:[plugin:()=_.plugin;packages:()=_.packages.sort():[path=coins;ascending];subscriptions:()=_.subscriptions]]():[collection=actions;doc=main]",
     "form": "subscribeToConsole"
 }

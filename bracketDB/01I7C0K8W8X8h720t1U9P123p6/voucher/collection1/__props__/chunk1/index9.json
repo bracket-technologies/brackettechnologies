@@ -2,16 +2,19 @@
     "voucher1": {
         "type": "Journal Voucher",
         "fromAccounts": [
-            "1/1/0"
+            "413/1/0"
         ]
     },
     "voucher2": {
-        "type": "Receipt Voucher"
+        "type": "Journal Voucher",
+        "fromAccounts": [
+            "413/1/0"
+        ]
     },
     "voucher3": {
         "type": "Journal Voucher",
         "fromAccounts": [
-            "1/2/0"
+            "413/1/0"
         ]
     }
 }

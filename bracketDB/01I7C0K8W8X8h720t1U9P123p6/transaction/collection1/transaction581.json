@@ -1,9 +1,9 @@
 {
     "currency": "USD",
-    "account": "ewXOe0dD5nvE5U1cgo4YcFHlrJ4kmQYeu7TpwsfmmYcmT1RaHHwnQVimWSCS-1722552298112",
-    "ledgerAccount": "1/2/0",
-    "credit": 10,
-    "debit": 0,
+    "account": "XcBpdBecNdZ6zdopRY26PxBPX88zlBwPJoIQSdbDiqT3JKEFziQUSsVMdRzB-1723031405693",
+    "ledgerAccount": "77/1/0",
+    "credit": 0,
+    "debit": 1,
     "exchangeRates": [
         {
             "code": "USD",
@@ -11,64 +11,55 @@
             "exchangeRate": 1
         },
         {
-            "code": "XOF",
-            "counter": 1,
-            "exchangeRate": 630
-        },
-        {
             "code": "LBP",
-            "counter": 2,
+            "counter": 1,
             "exchangeRate": 89000
-        },
-        {
-            "code": "eur",
-            "counter": 4,
-            "exchangeRate": 100000
         }
     ],
-    "voucher": "uKFoYXSMjQA6i95YH5G3sYlJJbAQ3iGffbTOv2sWPeEoTVHB7GK7yK2w7XyQ-1722553056305",
-    "voucherRef": "VCH-00000003",
+    "voucher": "ttFWjf6rXkq8GtVJS5Uvh2QARaXmhWXcqUCveSs0PdRcXtjSbAowi63R4US7-1723034765892",
+    "voucherRef": "VCH-00000004",
     "accountBalances": [
         {
-            "ledgerAccount": "1/2/0",
+            "ledgerAccount": "77/1/0",
             "accountBalances": [
                 {
-                    "account": "ewXOe0dD5nvE5U1cgo4YcFHlrJ4kmQYeu7TpwsfmmYcmT1RaHHwnQVimWSCS-1722552298112",
-                    "credit": 10,
-                    "debit": 0,
-                    "balance": -10
+                    "account": "XcBpdBecNdZ6zdopRY26PxBPX88zlBwPJoIQSdbDiqT3JKEFziQUSsVMdRzB-1723031405693",
+                    "credit": 0,
+                    "debit": 1,
+                    "balance": 1
                 }
             ]
         }
     ],
     "systemAccountBalances": [
         {
-            "account": "ewXOe0dD5nvE5U1cgo4YcFHlrJ4kmQYeu7TpwsfmmYcmT1RaHHwnQVimWSCS-1722552298112",
-            "credit": 10,
-            "debit": 0,
-            "balance": -10
+            "account": "XcBpdBecNdZ6zdopRY26PxBPX88zlBwPJoIQSdbDiqT3JKEFziQUSsVMdRzB-1723031405693",
+            "credit": 0,
+            "debit": 1,
+            "balance": 1
         }
     ],
-    "id": "DcTyI6JDCiX2gNxwVcUdpzrpVRLf23xuQk6r1uFT7nXNC3x2n7cdVtxRa1Po-1722553056283",
-    "creationDate": 1722553056283,
-    "creationDay": 1722546000000,
+    "id": "qQ75X2PCPGWJr5W8TYaX1bwxi24w6DkROuOPi5yu40HjYpWScUbObGCzglVU-1723034765871",
+    "creationDate": 1723034765871,
+    "creationDay": 1722978000000,
+    "ref": "TRN-00000014",
     "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
-    "sysCredit": 10,
-    "sysDebit": 0,
+    "sysCredit": 0,
+    "sysDebit": 1,
     "__props__": {
-        "id": "q1y7c2s2C5A5K3k0G5S6q333I6",
+        "id": "a1I7R283u0r3X437h6W6m032E1",
         "doc": "transaction581",
         "counter": 581,
-        "creationDate": 1722553056336,
+        "creationDate": 1723034766021,
         "collection": "transaction",
         "chunk": "chunk1",
-        "lastModified": 1722553056336,
+        "lastModified": 1723034766021,
         "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 1322
+        "size": 1242
     }
 }

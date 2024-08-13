@@ -1,6 +1,5 @@
 {
     "docs": [
-        "transaction582",
         "transaction581",
         "transaction580",
         "transaction579",
@@ -10,6 +9,6 @@
         "transaction575"
     ],
     "chunk": "chunk1",
-    "docsLength": 8,
-    "size": 10387
+    "docsLength": 7,
+    "size": 9114
 }

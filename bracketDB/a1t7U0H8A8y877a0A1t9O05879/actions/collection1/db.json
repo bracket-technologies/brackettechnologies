@@ -6,7 +6,7 @@
         "creationDate": 1717509735612,
         "collection": "actions",
         "chunk": "chunk1",
-        "lastModified": 1722588846792,
+        "lastModified": 1722936310369,
         "dev": false,
         "actions": {
             "getData": {
@@ -23,14 +23,14 @@
             },
             "publish": {
                 "_": "[getProject()?_.publicID]()::[publishData()]?_.publicID?send():[success=false;msg=Missing data!]",
-                "publishData": "save():[db=project:().db;devDB=project:().devDB;publish=true]:[send():[msg=Project published successfully!]]"
+                "publishData": "save():[db=project:().db;devDB=project:().devDB;publish=true;[_].flat()]:[send():[msg=Data published successfully!]]"
             },
             "checkSubscibedToConsole": "[getSubscription():[publicID=_.publicID;pluginID='Q1p78107R4j1n2Z9a2E1K1r912';expiryDate=timestamp()]]():[doc=main]",
             "eraseData": {
                 "_": "[getProject():[[_].flat();end=true]]():[collection=actions;doc=main]:[eraseDoc()]?_.collection;_.publicID?send():[success=false;msg=Missing data!]",
                 "eraseDoc": "erase():[db=[project:().storage?_.storage?project:().db];devDB=project:().devDB;[_].flat()]:[send():[data=_.data;msg=Data erased successfully!]]"
             },
-            "getSchema": "start();search():[collection=_.collection;doc=_.schema]:[send():[success=_.success;message=_.message;schema=_.data]?!stack().server=render?end():[success=_.success;message=_.message;schema=_.data]]",
+            "getSchema": "start();search():[collection=_.collection;doc=_.schema]:[send():[success=_.success;message=_.message;schema=_.data]?!stack().server=renderer?end():[success=_.success;message=_.message;schema=_.data]]",
             "getProjectActivity": {
                 "_": "[getProject():[[_].flat();end=true]]():[collection=actions;doc=main]:[getProjectActivity()]?_.publicID?send():[success=false;msg=Missing data!]",
                 "getProjectActivity": "search():[collection=projectActivity;find:[projectID=project:().id();date.gte=_.monthStart;date.lte=_.monthEnd]]:[send():[success=_.success;message=_.message;projectActivity=_.data]]"
@@ -59,11 +59,6 @@
             },
             {
                 "path": [
-                    "publish"
-                ]
-            },
-            {
-                "path": [
                     "saveData"
                 ]
             },
@@ -76,10 +71,15 @@
                 "path": [
                     "getProjectActivity"
                 ]
+            },
+            {
+                "path": [
+                    "publish"
+                ]
             }
         ],
         "arrange": [],
         "secured": true,
-        "size": 2984
+        "size": 2992
     }
 }

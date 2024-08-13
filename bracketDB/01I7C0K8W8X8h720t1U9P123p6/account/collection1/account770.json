@@ -1,52 +1,45 @@
 {
-    "name": "Cash1",
+    "name": "Financial Charges",
     "isSubAccount": "No",
-    "generalLedger": "53",
+    "generalLedger": "77",
     "autoGenerateAccountNumber": "Yes",
     "currency": [
-        "USD",
-        "XOF"
+        "USD"
     ],
-    "type": "Cash",
     "openingBalance": [
         {
-            "openingBalance": "Yes",
-            "currency": "USD",
-            "credit-debit": "Debit",
-            "amount": 10000,
-            "openingBalanceAccount": "119/1/0"
+            "openingBalance": "No"
         }
     ],
     "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
-    "createdBy": "4nFZccstfAc5FKZhSxoQoFmo4e8JaBuQYnGP5qwRpwTEsOFXapL13mOhfgo0-1722500623524",
+    "createdBy": "43A3x3efs54cmTgn5skmVwhulqP7cTRBIngI0yhiFLuMrVr9dfWifwuC9jkT-1722888638046",
     "startsWith": [
-        "5",
-        "53"
+        "7",
+        "77"
     ],
-    "id": "seHgjyGzMyG4nAX9Q6grFiNIHZ8ESH0deZgnFZfcb5hwRYuUoi5ZmbgF1DEQ-1722503712924",
-    "creationDate": 1722503712924,
-    "creationDay": 1722459600000,
+    "id": "XcBpdBecNdZ6zdopRY26PxBPX88zlBwPJoIQSdbDiqT3JKEFziQUSsVMdRzB-1723031405693",
+    "creationDate": 1723031405693,
+    "creationDay": 1722978000000,
     "ref": "ACC-00000004",
     "accountNumber": "1",
     "ledgerAccount": [
-        "53/1/0",
-        "53/1/1"
+        "77/1/0"
     ],
     "__props__": {
-        "id": "z1j762i2u5q0r337s1S3U0I2y4",
+        "id": "C1X7f2q320x3k164P0i5V7R782",
         "doc": "account770",
         "counter": 770,
-        "creationDate": 1722503713024,
+        "creationDate": 1723031405772,
         "collection": "account",
         "chunk": "chunk1",
-        "lastModified": 1722503889762,
+        "lastModified": 1723034766051,
         "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 1017
+        "size": 910
     },
-    "lastBalance": "iySW9ygZ5xnmbtD6aQagkgcK0yujLOOnkOfsRNgnTnmXS9UID6dG53MQB5cp-1722503889626"
+    "lastBalance": "qQ75X2PCPGWJr5W8TYaX1bwxi24w6DkROuOPi5yu40HjYpWScUbObGCzglVU-1723034765871"
 }

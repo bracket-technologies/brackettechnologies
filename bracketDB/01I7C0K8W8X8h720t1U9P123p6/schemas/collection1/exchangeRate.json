@@ -84,7 +84,7 @@
                 },
                 {
                     "path": "code",
-                    "type": "string",
+                    "type": "text",
                     "key": "code",
                     "required": true
                 },
@@ -122,7 +122,7 @@
                 },
                 {
                     "path": "code",
-                    "type": "string",
+                    "type": "text",
                     "key": "code",
                     "required": true
                 }

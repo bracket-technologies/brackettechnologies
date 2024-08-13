@@ -13,7 +13,7 @@
         "collapsed": [
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {
@@ -90,7 +90,7 @@
     },
     "identifier": "systemCurrency",
     "managerName": "currency",
-    "popupInfo": {
+    "form": {
         "docName": "currencyInfo",
         "title": "Currency Form"
     }

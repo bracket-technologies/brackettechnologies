@@ -1,81 +1,49 @@
 {
     "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
-    "voucherDate": 1722503971533,
-    "status": "Pending",
-    "type": "Receipt Voucher",
+    "voucherDate": 1723031455631,
+    "status": "Confirmed",
+    "type": "Journal Voucher",
     "currency": "USD",
-    "exchangeRates": [
-        {
-            "code": "USD",
-            "name": "United States Dollar (USD)",
-            "exchangeRate": 1,
-            "systemCurrencyRate": 1,
-            "counter": 0,
-            "createdCurrencyRate": 1
-        },
-        {
-            "code": "XOF",
-            "name": "abidjan",
-            "exchangeRate": 630,
-            "systemCurrencyRate": 1,
-            "counter": 1,
-            "createdCurrencyRate": 630
-        },
-        {
-            "code": "LBP",
-            "name": "Lebanese Pound (LBP)",
-            "exchangeRate": 89000,
-            "systemCurrencyRate": 1,
-            "counter": 2,
-            "createdCurrencyRate": 89000
-        },
-        {
-            "code": "eur",
-            "name": "lira",
-            "exchangeRate": 100000,
-            "systemCurrencyRate": 1,
-            "counter": 4,
-            "createdCurrencyRate": 100000
-        }
-    ],
     "from": [
         {
-            "receivablesAndPayablesLedgerAccount": "413/1/0",
-            "receivablesAndPayablesAccount": "wKpbSCh1ywa2hWoVUi3zUhR1KfhRknidlxRmzNhZyB6uC6zH88TpjC7cpw2D-1722504038798",
-            "amount": 100
+            "fromAccount": "413/1/0",
+            "amount": 890000,
+            "currency": "LBP",
+            "transaction": "YgeGcr4hTIVMabWahJOpo9Tu2PTYBTj3ySwueSPK0dWKa0ed4vk6F6k09S5i-1723031475716"
         }
     ],
     "to": [
         {
-            "financialLedgerAccount": "53/1/0",
-            "financialAccount": "seHgjyGzMyG4nAX9Q6grFiNIHZ8ESH0deZgnFZfcb5hwRYuUoi5ZmbgF1DEQ-1722503712924",
-            "amount": 100
+            "toAccount": "53/1/0",
+            "amount": 10,
+            "currency": "USD",
+            "transaction": "m37mTFIl1d1AJFjXneee9V5k1FKyc7yZlpZtmu4QvWt2XO3BTvni7xx9zonc-1723031475746"
         }
     ],
-    "receivablesAndPayablesLedgerAccounts": [
+    "fromAccounts": [
         "413/1/0"
     ],
-    "financialLedgerAccounts": [
+    "toAccounts": [
         "53/1/0"
     ],
-    "id": "P0sqTUhHKuLb3bR774LZfwRx306s7tUfU8L3gvoF6glyDkvskGTTmIjXd5EC-1722504130909",
-    "creationDate": 1722504130909,
-    "creationDay": 1722459600000,
+    "id": "4WHgvJtBFrnT27nefQImGlzxtXDT7WvuNwJ34XiQZOZ3MCNx7XHaNbjDBqfp-1723031475770",
+    "creationDate": 1723031475770,
+    "creationDay": 1722978000000,
     "ref": "VCH-00000002",
     "__props__": {
-        "id": "I1n7j2L2D5u0D4W1L360O9P2C6",
+        "id": "r1s7Z2d3b0P3q1N4Z7O5p859V0",
         "doc": "voucher2",
         "counter": 2,
-        "creationDate": 1722504130926,
+        "creationDate": 1723031475890,
         "collection": "voucher",
         "chunk": "chunk1",
-        "lastModified": 1722504130926,
+        "lastModified": 1723031475890,
         "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 1502
+        "size": 942
     }
 }

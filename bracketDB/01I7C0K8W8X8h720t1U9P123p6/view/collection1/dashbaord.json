@@ -8,7 +8,7 @@
                     "view": "View?class=flex;style:[width=100%;gap=.4rem;padding=1rem 1rem 0 1rem]",
                     "children": [
                         {
-                            "view": "[View]:[data=range():1]?style:[width=50%]",
+                            "view": "[View]:[data=range():2]?style:[width=50%]",
                             "children": [
                                 {
                                     "view": "rowBar"

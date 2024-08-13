@@ -1,0 +1,107 @@
+{
+    "view": "View?style:[[_.styles]()?_.styles];[[_.actions]()?_.actions]",
+    "__props__": {
+        "id": "k1w7C2j3E2Q0g7m4U0I2X0Z9a6",
+        "doc": "Section",
+        "counter": 16,
+        "creationDate": 1723207402096,
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1723289141136,
+        "dev": false,
+        "actions": {},
+        "comments": [
+            {
+                "note": "text",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "input",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "image",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "icon",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "section",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    5
+                ]
+            },
+            {
+                "note": "divider",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    4
+                ]
+            }
+        ],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1732
+    },
+    "children": [
+        {
+            "view": "[View]:[data=_.views]?style:[[_.container.styles]()?_.container.styles]?[[_.conditions]()?_.conditions?true]",
+            "children": [
+                {
+                    "view": "Text?[id=_.id?_.id];text=[_.text]();style:[[_.styles]()?_.styles];[hover.style=[_.hoverStyles]()?_.hoverStyles];[[_.actions]()?_.actions]?_.type=text"
+                },
+                {
+                    "view": "Input?[id=_.id?_.id];[label:[text=_.label.text;[style:[[_.label.styles]()]?_.label.styles]]?_.label];style:[[_.styles]()?_.styles];path=_.path;[password?_.inputType=password];type=[_.inputType||text];[[_.actions]()?_.actions]?_.type=input"
+                },
+                {
+                    "view": "Image?[id=_.id?_.id];style:[[_.styles]()?_.styles];src=_.src;[[_.actions]()?_.actions]?_.type=image"
+                },
+                {
+                    "view": "Icon?[id=_.id?_.id];style:[[_.styles]()?_.styles];name=_.icon;[[_.actions]()?_.actions];[google.symbol?_.google]?_.type=icon"
+                },
+                {
+                    "view": "View?[id=_.id?_.id];style:[[_.styles]()?_.styles]?_.type=divider"
+                },
+                {
+                    "view": "View?[id=_.id?_.id];style:[[_.styles]()?_.styles]?_.type=section",
+                    "children": [
+                        {
+                            "view": "[Section]:[data=_.sections]"
+                        }
+                    ]
+                },
+                {
+                    "view": "_.component?[id=_.id?_.id];style:[[_.styles]()?_.styles]?_.type=component"
+                }
+            ]
+        }
+    ]
+}

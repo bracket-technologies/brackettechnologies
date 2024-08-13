@@ -179,10 +179,7 @@ const Input = (component) => {
       "view": `View?class=flex start column;style.gap=.5rem;style.width=${component.style.width || "100%"};style.maxWidth=${component.style.maxWidth || "100%"};${jsonToBracket(container)}`,
       "children": [
         {
-          "view": `Text?id=${id}_label;text='${text || "Label"}';${required ? "required=true;" : ""}style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)}`,
-          "__controls__": [{
-            "event": "click?parent().input().focus()"
-          }]
+          "view": `Text?id=${id}_label;text='${text || "Label"}';${required ? "required=true;" : ""}style.fontSize=1.6rem;style.width=fit-content;style.cursor=pointer;${jsonToBracket(label)};[click?parent().input().focus()]`,
         },
         Input({ ...component, component: true, __labeled__: id, __parent__: id, style: { backgroundColor: "inherit", transition: ".1s", width: "100%", fontSize: "1.5rem", height: "4rem", border: "1px solid #ccc", ...style } }),
         {
@@ -200,11 +197,11 @@ const Input = (component) => {
   if (model === 'featured' || password || clearable || removable || duplicatable || copyable || generator) {
 
     delete component.type
+    delete component.__interpreted__
 
     return {
       ...component,
-      view: "View",
-      class: `flex align-items-center unselectable ${component.class || ""}`,
+      view: `View?class=flex align-items-center unselectable ${component.class || ""}`,
       // remove from comp
       __controls__: [{
         event: `mouseenter?if():[clearable||removable||duplicatable]:[():[${id}+'-clear'].style().opacity=1];if():copyable:[():[${id}+'-copy'].style().opacity=1];if():duplicatable:[():[${id}+'-duplicate'].style().opacity=1]];if():generator:[():[${id}+'-generate'].style().opacity=1]?!mobile()`
@@ -225,18 +222,9 @@ const Input = (component) => {
         border: input.type === "file" ? "1px dashed #ccc" : "0",
         ...style,
       },
-      children: [{ // message
-        view: `Text?id=${id}-msg;msg=parent().msg;text=parent().msg?parent().msg`,
-        style: {
-          whiteSpace: 'nowrap',
-          textOverflow: 'ellipsis',
-          overflow: 'hidden',
-          fontSize: '1.3rem',
-          maxWidth: '95%',
-        }
-      }, {
-        view: `Input`,
-        id: `${id}-input`,
+      children: [{
+        view: `Input?id=${id}-input`,
+        // id: `${id}-input`,
         class: `${component.class.includes("ar") ? "ar " : ""}${component.class || ""}${readonly?" pointer":""}`,
         input,
         currency,
@@ -284,23 +272,13 @@ const Input = (component) => {
       }, {
         view: `Icon:${id}-clear?class=pointer;name=bi-x;style:[position=absolute;if():[language:()=ar]:[left=[[6.5?${type==="date"}?4]?parent().password?[2.5?${type==="date"}?0.5]]+'rem']:[right=[[6.5?${type==="date"}?4]?parent().password?[2.5?${type==="date"}?0.5]]+'rem'];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[parent().clearable;prev().txt()]:[prev().data().del();prev().txt()=;#prev().focus()].elif():[parent().removable;if():[parent().clearable]:[!prev().txt()]:true;form():[path=path().slice():0:-1].len()>1]:[parent().rem()]]?parent().clearable||parent().removable||parent().duplicatable`,
       }, {
-        view: `Icon:${id}-duplicate?class=pointer duplicater;name=bi-plus;style:[position=absolute;if():[language:()=ar]:[left=if():[parent().password]:'5.5rem':'3rem']:[right=if():[parent().password]:'5.5rem':'3rem'];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=2.5rem;backgroundColor=inherit;borderRadius=.5rem;color=#888];click:[if():[!parent().max||parent().max>2ndParent().class():duplicater.len()]:[form():[path=path().slice():0:'-1'].push():[if():[data().type()=number]:0:''];2ndParent().refresh()::[class():duplicater.lastEl().2ndPrev().focus()]]]?parent().duplicatable`,
-      }, {
-        view: `Text:${id}-generate?class=flexbox pointer;text=ID;style:[position=absolute;color=blue;if():[language:()=ar]:[left=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0]:[right=if():[parent().clearable;parent().copyable]:[5.5rem].elif():[parent().clearable]:[2.5rem].elif():[parent().copyable]:[3rem]:0];width=3rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;backgroundColor=inherit;borderRadius=.5rem];click:[generated=gen():[parent().generator.length||20];data()=().generated;():${id}-input.txt()=().generated;():${id}-input.focus()]?parent().generator`,
-      }, {
         view: `Icon:${id}-copy?class=pointer;name=bi-files;style:[backgroundColor=#fff;position=absolute;if():[language:()=ar]:[left=if():[parent().clearable]:[2.5rem]:0]:[right=if():[parent().clearable]:[2.5rem]:0];width=2.5rem;height=2.5rem;opacity=0;transition=.2s;fontSize=1.4rem;borderRadius=.5rem];click:[if():[():${id}-input.txt()]:[data().copyToClipBoard();#():${id}-input.focus()]];mininote.text='copied!'?parent().copyable`,
       }, {
         view: `View?style.height=100%;style.width=4rem;hover.style.backgroundColor=#eee;class=flexbox pointer relative?parent().password`,
         children: [{
-          view: `Icon?name=bi-eye-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem`,
-          __controls__: [{
-            event: "click?parent().prev().el().type=text;next().style().display=flex;style().display=none"
-          }]
+          view: `Icon?name=bi-eye-fill;class=absolute;style:[color=#888;fontSize=1.8rem;height=100%;width=4rem];[click?2ndParent().input().el().type=text;next().display();hide()]`,
         }, {
-          view: `Icon?name=bi-eye-slash-fill;style.color=#888;style.fontSize=1.8rem;class=absolute;style.height=100%;style.width=4rem;style.display=none`,
-          __controls__: [{
-            event: "click?parent().prev().el().type=password;prev().style().display=flex;style().display=none"
-          }]
+          view: `Icon?name=bi-eye-slash-fill;class=absolute;style:[color=#888;fontSize=1.8rem;height=100%;width=4rem;display=none];[click?2ndParent().input().el().type=password;prev().display();hide()]`
         }]
       }]
     }

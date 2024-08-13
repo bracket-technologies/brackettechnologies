@@ -1,47 +1,28 @@
 {
     "counter3": {
-        "code": "CRN"
-    },
-    "counter4": {
-        "code": "USR"
-    },
-    "counter5": {
-        "code": "1"
-    },
-    "counter6": {
         "code": "ACC"
     },
-    "counter7": {
-        "code": "TRN"
-    },
-    "counter8": {
-        "code": "119"
-    },
-    "counter9": {
-        "code": "2"
-    },
-    "counter10": {
-        "code": "53",
-        "type": "Cash"
-    },
-    "counter11": {
-        "code": "601"
-    },
-    "counter12": {
-        "code": "701"
-    },
-    "counter13": {
-        "code": "VCH"
-    },
-    "counter14": {
+    "counter4": {
         "code": "413",
         "type": "B2B Customer"
     },
-    "counter15": {
-        "code": "4011",
-        "type": "Airline Supplier"
+    "counter5": {
+        "code": "TRN"
     },
-    "counter16": {
-        "code": "INV"
+    "counter6": {
+        "code": "53",
+        "type": "Cash"
+    },
+    "counter7": {
+        "code": "67"
+    },
+    "counter8": {
+        "code": "77"
+    },
+    "counter9": {
+        "code": "VCH"
+    },
+    "counter10": {
+        "code": "1"
     }
 }

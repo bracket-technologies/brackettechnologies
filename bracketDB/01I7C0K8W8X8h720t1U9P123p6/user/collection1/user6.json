@@ -1,0 +1,31 @@
+{
+    "firstName": "batoul",
+    "lastName": "5alaf",
+    "birthDate": 1044748800000,
+    "nationality": "Lebanese",
+    "contactNumber": "70707070",
+    "email": "batoul@gmail.com",
+    "position": "User",
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "createdBy": "4nFZccstfAc5FKZhSxoQoFmo4e8JaBuQYnGP5qwRpwTEsOFXapL13mOhfgo0-1722500623524",
+    "id": "43A3x3efs54cmTgn5skmVwhulqP7cTRBIngI0yhiFLuMrVr9dfWifwuC9jkT-1722888638046",
+    "creationDate": 1722888638046,
+    "creationDay": 1722805200000,
+    "ref": "USR-00000001",
+    "__props__": {
+        "id": "H1P752q288p8i8M6o3A8r1r1Y0",
+        "doc": "user6",
+        "counter": 6,
+        "creationDate": 1722888638110,
+        "collection": "user",
+        "chunk": "chunk1",
+        "lastModified": 1722888638110,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 737
+    }
+}

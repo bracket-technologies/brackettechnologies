@@ -48,7 +48,7 @@
                                     ]
                                 },
                                 {
-                                    "view": "Icon?name=bi-three-dots-vertical;style:[transition=.2s;backgroundColor=inherit;display=none;color=#000;fontSize=1.9rem;position=absolute;right=0.1rem;height=2.5rem;width=2rem;borderRadius=.5rem];hover.style:[color=blue;backgroundColor=#fff];droplist:[items=:[icon='bi-input-cursor-text']:[icon='bi-trash'];item.style:[fontSize=2rem;height=4rem];placement=right;align=center];[click:droplist?collectionEditorHandler()]"
+                                    "view": "Icon?name=bi-three-dots-vertical;style:[transition=.2s;backgroundColor=inherit;display=none;color=#000;fontSize=1.9rem;position=absolute;right=0.1rem;height=2.5rem;width=2rem;borderRadius=.5rem];hover.style:[color=blue;backgroundColor=#fff];droplist:[items=:[icon='bi-input-cursor-text']:[icon='bi-globe-americas']:[icon='bi-trash'];item.style:[fontSize=2rem;height=4rem];placement=right;align=center];[click:droplist?collectionEditorHandler()]"
                                 }
                             ]
                         },
@@ -59,7 +59,7 @@
                                     "view": "[View]:[data=data:().editor.[parent().data()].keys().sort():[ascending];mount]?class=flex pointer align-center;style:[minHeight=3rem;width=100%;position=relative];loaded:[loadedHandler()];click:[displayOpenedDoc();openDoc()?clicked()!=lastChild()];mouseenter:[showOptionIcon()];mouseleave:[hideOptionIcon()]?data()||[!openDoc:();openCollection:()=parent().data()]",
                                     "children": [
                                         {
-                                            "view": "Icon?name=bi-file-earmark;style.fontSize=1.3rem;style.minWidth=2.25rem;click:[2ndNext().focus()]"
+                                            "view": "Icon?name=bi-file-earmark;style:[fontSize=1.3rem;minWidth=2.25rem];click:[2ndNext().focus()]"
                                         },
                                         {
                                             "view": "Text?class=dots;text=data();tooltip.text=data();style.fontSize=1.3rem"
@@ -86,7 +86,7 @@
         "creationDate": 1710330786484,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1722597039204,
+        "lastModified": 1723312425545,
         "dev": false,
         "actions": {
             "clickCreateNewDoc": "parent().next().display();1stSibling().style().rotate():90;if():[!duplicateDoc:()]:[openDoc:().del()];openCollection:()=data();parent().next().insert():[view=parent().next();viewPath=:children:0;preventDefault;index=0]:[_.view.():[2ndChild().style().display=none;3rdChild().():[style().display=flex;txt()='';focus()]];hideActionPopup()]",
@@ -140,13 +140,14 @@
                 "_": "removeCollection()?clicked().icon().txt()='bi-trash'?[setCollectionNameEditable()?clicked().icon().txt()='bi-input-cursor-text']",
                 "removeCollection": "loader.show;[eraseData():[publicID=project:().publicID;collection=data()]]():[collection=actions;doc=db]:[updateDatabase()]",
                 "editCollectionName": {
-                    "_": "e().preventDefault();().[editName()?data().type()=string;data()?createCollection()?txt()?note():[text='Enter a collection name!';type=danger]?!data()]",
-                    "editName": "loader.show;[saveData():[publicID=project:().publicID;collection=data();rename=txt()]]():[collection=actions;doc=db]:[loader.hide;data:().editor.[txt()]=data:().editor.[data()];data:().editor.[data()].del();data()=txt();3rdParent().refresh()]?txt();!data:().editor.[txt()]?handleCollectionNameNote()",
-                    "createCollection": "loader.show;[saveData():[publicID=project:().publicID;collection=txt()]]():[collection=actions;doc=db]:[loader.hide;data()=txt();collections:()+=txt();3rdParent().refresh()]"
+                    "_": "e().preventDefault();().[editName()?data().type()=text;data()?createCollection()?txt()?note():[text='Enter a collection name!';type=danger]?!data()]",
+                    "editName": "loader.show;[saveData():[publicID=project:().publicID;collection=data();rename=txt()]]():[collection=actions;doc=db]:[loader.hide;closeRelatedDocs();data:().editor.[txt()]=data:().editor.[data()];data:().editor.[data()].del();data()=txt();3rdParent().refresh()]?txt();!data:().editor.[txt()]?handleCollectionNameNote()",
+                    "createCollection": "loader.show;[saveData():[publicID=project:().publicID;collection=txt()]]():[collection=actions;doc=db]:[loader.hide;data()=txt();collections:()+=txt();nthParent():3.refresh()]",
+                    "closeRelatedDocs": "():dataViewerBar.children().find():[openCollection=data()].lastChild().click()"
                 },
                 "setCollectionNameEditable": "2ndSibling().():[editable();focus();style().cursor=text];2ndSibling().text=2ndSibling().txt()",
                 "handleCollectionNameNote": "note():[text=['Enter a collection name!'?!txt()?'Collection name already exists!'?data:().editor.[txt()]];type=danger]",
-                "updateDatabase": "data:().editor.[data()].del();collections:().pullItem():[data()];note():[text='Collection removed successfully!'];loader.hide;():collections.2ndChild().refresh()::[_.view.display()]"
+                "updateDatabase": "():dataViewerBar.children().filter():[openCollection=..data()].():[lastChild().click()];data:().editor.[data()].del();collections:().pullItem():[data()];note():[text='Collection removed successfully!'];loader.hide;():collections.2ndChild().refresh()::[_.view.display()]"
             },
             "toggleCollectionsFolder": {
                 "_": "[openFolder();lastChild().hide()?!next()||next().hidden()?closeFolder()]?clicked()!=lastChild()",
@@ -363,18 +364,7 @@
             },
             {
                 "path": [
-                    "collectionEditorHandler"
-                ]
-            },
-            {
-                "path": [
                     "importDoc"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0
                 ]
             },
             {
@@ -384,42 +374,12 @@
             },
             {
                 "path": [
-                    "displayOpenedDoc"
-                ]
-            },
-            {
-                "path": [
                     "openDoc"
                 ]
             },
             {
                 "path": [
-                    "createNewCollection"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "editDocName"
-                ]
-            },
-            {
-                "path": [
                     "openCollection"
-                ]
-            },
-            {
-                "path": [
-                    "createDoc"
                 ]
             },
             {
@@ -436,10 +396,53 @@
                     "children",
                     1
                 ]
+            },
+            {
+                "path": [
+                    "editDocName"
+                ]
+            },
+            {
+                "path": [
+                    "displayOpenedDoc"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createNewCollection"
+                ]
+            },
+            {
+                "path": [
+                    "createDoc"
+                ]
+            },
+            {
+                "path": [
+                    "collectionEditorHandler",
+                    "editCollectionName"
+                ]
+            },
+            {
+                "path": [
+                    "collectionEditorHandler"
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 16546
+        "size": 16810
     }
 }

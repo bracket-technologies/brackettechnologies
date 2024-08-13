@@ -2,7 +2,7 @@
     "view": "View:customSearchEngine?class=column;style:[position=relative];form=customManagerSearchEngine;initializeDoc()",
     "children": [
         {
-            "view": "View?class=flexbox;style:[height=if():[_.titleInput]:[fit-content]:[4rem];#marginTop=.2rem;justifyContent=space-between;backgroundColor=white;position=relative;zIndex=3];mouseenter:[next().style():[top=4rem]];mouseleave:[next().style():[top=2rem]]",
+            "view": "View?class=flexbox;style:[height=[fit-content?_.titleInput?4rem];justifyContent=space-between;backgroundColor=white;position=relative;zIndex=3];[menter?next().top()=4rem];[mleave?next().top()=2rem]",
             "children": [
                 {
                     "view": "View?class=flexbox;style:[height=100%;width=auto;backgroundColor=white;cursor=default]?_.title",
@@ -16,7 +16,7 @@
                     ]
                 },
                 {
-                    "view": "View?class=flexbox;style:[height=100%;width=auto;backgroundColor=white;cursor=default;gap=.4rem;padding=.4rem]?_.titleInput",
+                    "view": "View?class=flexbox;style:[height=100%;width=auto;backgroundColor=white;cursor=default;gap=.4rem;padding=.4rem]?_.titleInput;false",
                     "children": [
                         {
                             "view": "View?class=flex;style:[height=70%;width=.2rem;backgroundColor=#fb3b1e]"
@@ -62,7 +62,7 @@
             ]
         },
         {
-            "view": "View?class=flexbox;style:[width=7rem;height=2rem;backgroundColor=#fff;borderRight=.1rem solid #ddd;borderBottom=.1rem solid #ddd;borderLeft=.1rem solid #ddd;borderRadius=0 0 .4rem .4rem;position=absolute;right=53%;top=2rem;cursor=pointer;transition=top .2s;zIndex=2;if():[_.hideSearchEngine]:[display=none]];mouseenter:[style():[top=4rem]];mouseleave:[style():[top=2rem]];click:[hideAndShowBody()]",
+            "view": "View?class=flexbox;style:[width=7rem;height=2rem;backgroundColor=#fff;border=.1rem solid #ddd;borderTop=0;borderRadius=0 0 .4rem .4rem;position=absolute;right=53%;top=2rem;cursor=pointer;transition=top .2s;zIndex=2;[display=none?_.hideSearchEngine]];[menter?top()=4rem];[mleave?top()=2rem];[click?hideAndShowBody()]",
             "children": [
                 {
                     "view": "Icon?name=expand_more;google.symbol;style:[fontSize=2rem;color=#666;transition=.1s;transform=rotate(180deg)]"
@@ -109,38 +109,6 @@
                                                             "view": "customInput??if():[parent().display]:[true]:[false]"
                                                         }
                                                     ]
-                                                },
-                                                {
-                                                    "view": "View?class=flex column;style:[width=12%;gap=.5rem;paddingLeft=.6rem]?false",
-                                                    "children": [
-                                                        {
-                                                            "view": "View?class=flex;style:[alignItems=center;gap=.5rem]",
-                                                            "children": [
-                                                                {
-                                                                    "view": "Icon?name=stars;google.symbol;style:[fontSize=1.5rem;color=#666]"
-                                                                },
-                                                                {
-                                                                    "view": "Text?text=Class;style:[fontSize=1.2rem;color=#666]"
-                                                                }
-                                                            ]
-                                                        },
-                                                        {
-                                                            "view": "View?class=flex;style:[height=3rem;alignItems=center;gap=.5rem]",
-                                                            "children": [
-                                                                {
-                                                                    "view": "[View]:[data=range():4]?class=flexbox;style:[height=3rem;alignItems=center;cursor=pointer];click:[activeClassStars();form().starsRating=starsCount:()];loaded:[if():[form().starsRating]:[if():[i=[form().starsRating]-1]:[click()]]]",
-                                                                    "children": [
-                                                                        {
-                                                                            "view": "Icon?name=bi-star-fill;style:[fontSize=1.9rem;color=#aaa]"
-                                                                        }
-                                                                    ]
-                                                                },
-                                                                {
-                                                                    "view": "Icon?name=close;google.symbol;style:[fontSize=2rem;color=#aaa;paddingTop=3.5px;cursor=pointer];click:[deactivateClassStars()]"
-                                                                }
-                                                            ]
-                                                        }
-                                                    ]
                                                 }
                                             ]
                                         },
@@ -162,35 +130,6 @@
                     ]
                 }
             ]
-        },
-        {
-            "view": "View?class=flexbox;style:[width=7rem;if():[_.hideSearchEngine]:[display=none];height=2rem;backgroundColor=#fff;borderRight=.1rem solid #ddd;borderBottom=.1rem solid #ddd;borderLeft=.1rem solid #ddd;borderRadius=0 0 .4rem .4rem;position=absolute;right=50%;top=14.2rem;cursor=pointer;transition=top .2s];mouseenter:[style():[top=16.2rem]];mouseleave:[style():[top=14.2rem]];click:[hideAndShowSubBody()]?false",
-            "children": [
-                {
-                    "view": "Icon?name=expand_more;google.symbol;style:[fontSize=2rem;color=#666;transition=.1s;transform=rotate(180deg)]"
-                }
-            ]
-        },
-        {
-            "view": "View?class=flex;style:[width=100%;if():[_.hideSearchEngine]:[display=none];height=10rem;transition=.2s;backgroundColor=#f5f5f5;overflow=hidden];mouseenter:[prev().style():[top=16.2rem]];mouseleave:[prev().style():[top=14.2rem]]?false",
-            "children": [
-                {
-                    "view": "View?class=flex;style:[width=100%;padding=1rem .75rem 0 .75rem;gap=.5rem]",
-                    "children": [
-                        {
-                            "view": "[View]:[data=range():5]?class=flex column;style:[width=14%;gap=.5rem;overflow=hidden]",
-                            "children": [
-                                {
-                                    "view": "Text?text=hello;style:[fontSize=1.3rem;color=#666;cursor=default]"
-                                },
-                                {
-                                    "view": "Input?label=hello;path=_.path;if():[_.type!='date']:[clearable];input:[type=_.type];style:[width=100%;height=3rem;borderRadius=.4rem;backgroundColor=#fff;border=1px solid #ddd];entry:[if():[_.type='date']:[data()=txt().timestamp()]]"
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
         }
     ],
     "__props__": {
@@ -200,7 +139,7 @@
         "creationDate": 1711031365202,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1721818423035,
+        "lastModified": 1723413241248,
         "dev": false,
         "actions": {
             "clickUploadImg": "():uploadImageInput.click()",
@@ -257,13 +196,6 @@
         },
         "comments": [
             {
-                "note": "title",
-                "path": [
-                    "children",
-                    0
-                ]
-            },
-            {
                 "note": "arrow",
                 "path": [
                     "children",
@@ -285,31 +217,10 @@
                 ]
             },
             {
-                "note": "sub engine falsed",
-                "path": [
-                    "children",
-                    "4"
-                ]
-            },
-            {
-                "note": "subSearch engine",
-                "path": [
-                    "children",
-                    4
-                ]
-            },
-            {
-                "note": "main arrow",
+                "note": "expander/collapser",
                 "path": [
                     "children",
                     1
-                ]
-            },
-            {
-                "note": "sub arrow search",
-                "path": [
-                    "children",
-                    3
                 ]
             },
             {
@@ -348,7 +259,7 @@
                 ]
             },
             {
-                "note": "Title Icons on the side",
+                "note": "icons",
                 "path": [
                     "children",
                     0,
@@ -396,7 +307,7 @@
                 ]
             },
             {
-                "note": "search inputs",
+                "note": "inputs & btn",
                 "path": [
                     "children",
                     2,
@@ -410,6 +321,43 @@
                 "note": "in root",
                 "path": [
                     "#openCreateForm"
+                ]
+            },
+            {
+                "note": "header",
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "note": "search btn",
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "inputs",
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0
                 ]
             }
         ],
@@ -475,14 +423,6 @@
             {
                 "path": [
                     "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "children",
                     2,
                     "children",
                     2,
@@ -542,42 +482,19 @@
                     "#customSearch"
                 ]
             },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    3,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
             {},
             {
                 "path": [
                     "children",
-                    1,
-                    "children"
+                    0,
+                    "children",
+                    0
                 ]
             },
             {
                 "path": [
+                    "children",
+                    0,
                     "children",
                     1
                 ]
@@ -585,13 +502,9 @@
             {
                 "path": [
                     "children",
-                    2
-                ]
-            },
-            {
-                "path": [
+                    0,
                     "children",
-                    3
+                    2
                 ]
             },
             {
@@ -611,12 +524,66 @@
             {
                 "path": [
                     "children",
-                    4
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 16610
+        "size": 14458
     }
 }

@@ -576,7 +576,7 @@
     "managerName": "receivablesAndPayablesManager",
     "creationDate": 1709896784083,
     "ledgerAccountName": "Receivables and Payables",
-    "popupInfo": {
+    "form": {
         "docName": "receivablesAndPayablesInfo",
         "title": "Receivable and Payable Account Form"
     },
@@ -627,7 +627,7 @@
             },
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {

@@ -5,7 +5,6 @@
         "testTables",
         "stayDuration",
         "standards",
-        "sideBar",
         "roomPricing",
         "policyTypes",
         "mostPopularFacilities",
@@ -21,6 +20,6 @@
         "age-titleRelation"
     ],
     "chunk": "chunk1",
-    "docsLength": 19,
-    "size": 40875
+    "docsLength": 18,
+    "size": -2972
 }

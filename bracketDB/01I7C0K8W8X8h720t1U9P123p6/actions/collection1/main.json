@@ -1,0 +1,24 @@
+{
+    "__props__": {
+        "id": "e1P7J2T3A230e1r4c7q148F038",
+        "doc": "main",
+        "counter": 1,
+        "creationDate": 1723201471808,
+        "collection": "actions",
+        "chunk": "chunk1",
+        "lastModified": 1723206067133,
+        "dev": false,
+        "actions": {
+            "getSchema": {
+                "_": "start();search():[collection=schema;doc=_.schema]:[resHandler()]?_.schema?missingData()",
+                "resHandler": "[end():[schema=_.data]?stack().renderer?send():[schema=_.data]]?_.data?[end():[success=false;msg=Wrong schema!]?stack().renderer?send():[success=false;msg=Wrong schema!]]",
+                "missingData": "end():[success=false;msg=Missing data!]?stack().renderer?send():[success=false;msg=Missing data!]"
+            }
+        },
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": true,
+        "size": 661
+    }
+}

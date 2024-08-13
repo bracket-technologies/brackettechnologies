@@ -2,14 +2,14 @@
     "creationDate": 1712658264771,
     "collection": 1,
     "lastChunk": 1,
-    "docsLength": 7,
-    "counter": 582,
-    "reads": 23404,
-    "writes": 1717,
+    "docsLength": 6,
+    "counter": 581,
+    "reads": 23822,
+    "writes": 1738,
     "deletes": 0,
-    "size": 21365,
-    "payloadIn": 2462337,
-    "payloadOut": 33283335,
+    "size": 20743,
+    "payloadIn": 2490950,
+    "payloadOut": 33845169,
     "dirTree": [],
     "maxSize": 1000,
     "indexes": [
@@ -18,8 +18,8 @@
                 "id"
             ],
             "doc": "index1",
-            "lastRead": 1722598829788,
-            "expiryDate": 1725190829788
+            "lastRead": 1723450783771,
+            "expiryDate": 1726042783771
         },
         {
             "find": [
@@ -29,15 +29,6 @@
             "doc": "index2",
             "lastRead": 1722246657244,
             "expiryDate": 1724838657244
-        },
-        {
-            "find": [
-                "systemAccountBalances",
-                "creationDate"
-            ],
-            "doc": "index3",
-            "lastRead": 1720771235786,
-            "expiryDate": 1723363235786
         },
         {
             "find": [
@@ -62,8 +53,8 @@
                 "account"
             ],
             "doc": "index6",
-            "lastRead": 1722553293039,
-            "expiryDate": 1725145293039
+            "lastRead": 1723034835470,
+            "expiryDate": 1725626835470
         },
         {
             "find": [

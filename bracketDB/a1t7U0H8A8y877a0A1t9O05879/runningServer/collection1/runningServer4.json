@@ -1,0 +1,21 @@
+{
+    "port": 84,
+    "creationDate": 1723103296114,
+    "closes": [],
+    "__props__": {
+        "id": "k1b7R2X380p259x1j3Z1V4z704",
+        "doc": "runningServer4",
+        "counter": 4,
+        "creationDate": 1723029131474,
+        "collection": "runningServer",
+        "chunk": "chunk1",
+        "lastModified": 1723103296122,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 322
+    }
+}

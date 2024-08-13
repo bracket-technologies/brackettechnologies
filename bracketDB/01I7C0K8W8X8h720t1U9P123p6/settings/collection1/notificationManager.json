@@ -95,7 +95,7 @@
         "collection": "notification"
     },
     "id": "notificationManager",
-    "popupInfo": {
+    "form": {
         "docName": "notificationsInfo",
         "title": "Notifications Form"
     },
@@ -110,7 +110,7 @@
         "collapsed": [
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {

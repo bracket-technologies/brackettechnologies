@@ -2,7 +2,7 @@
     "view": "View:fileForm?class=flexbox;style:[position=fixed;top=0;left=0;right=0;bottom=0;zIndex=9999;pointerEvents=none;opacity=0;transition=.3s]",
     "children": [
         {
-            "view": "View?id=fileFormBackground;style:[height=100%;width=100%;backgroundColor=#00000030;padding=10rem];click:[parent().style():[pointerEvents=none;opacity=0]?clicked();!1stChild().contains():[clicked()];1stChild()!=clicked()]",
+            "view": "View?id=fileFormBackground;style:[height=100%;width=100%;backgroundColor=#00000030;padding=10rem];[click?parent().style():[pointerEvents=none;opacity=0]?clicked();!1stChild().contains():[clicked()]]",
             "children": [
                 {
                     "view": "View?class=flex column box-shadow-2;form=fileData;style:[gap=2rem;height=100%;width=100%;backgroundColor=#fff;borderRadius=.5rem;padding=2rem;position=relative;overflow=auto]",
@@ -105,7 +105,7 @@
         "creationDate": 1721988159209,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1722003423542,
+        "lastModified": 1723021302349,
         "dev": false,
         "actions": {
             "uploadFile": {
@@ -220,7 +220,7 @@
                     "children",
                     0,
                     "children",
-                    2
+                    1
                 ]
             },
             {
@@ -230,12 +230,12 @@
                     "children",
                     0,
                     "children",
-                    1
+                    2
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 5345
+        "size": 5322
     }
 }

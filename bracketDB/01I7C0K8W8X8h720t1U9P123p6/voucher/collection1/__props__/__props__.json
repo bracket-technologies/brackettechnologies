@@ -4,12 +4,12 @@
     "lastChunk": 1,
     "docsLength": 3,
     "counter": 3,
-    "reads": 3311,
-    "writes": 478,
+    "reads": 3365,
+    "writes": 488,
     "deletes": 0,
-    "size": 6994,
-    "payloadIn": 548673,
-    "payloadOut": 3603354,
+    "size": 5910,
+    "payloadIn": 561072,
+    "payloadOut": 3674108,
     "maxSize": 1000,
     "indexes": [
         {
@@ -17,8 +17,8 @@
                 "type"
             ],
             "doc": "index1",
-            "lastRead": 1722553058372,
-            "expiryDate": 1725145058372
+            "lastRead": 1723115340640,
+            "expiryDate": 1725707340640
         },
         {
             "find": [

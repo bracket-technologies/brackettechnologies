@@ -4,37 +4,37 @@
             "keyValue": [
                 {
                     "path": "branchInfo.name",
-                    "type": "string",
+                    "type": "text",
                     "required": "true",
                     "key": "name"
                 },
                 {
                     "path": "country",
-                    "type": "string",
+                    "type": "text",
                     "required": true,
                     "key": "country"
                 },
                 {
                     "path": "city",
-                    "type": "string",
+                    "type": "text",
                     "required": true,
                     "key": "city"
                 },
                 {
                     "path": "address",
-                    "type": "string",
+                    "type": "text",
                     "required": true,
                     "key": "address"
                 },
                 {
                     "path": "email",
-                    "type": "array",
+                    "type": "list",
                     "required": true,
                     "key": "email"
                 },
                 {
                     "path": "contactNumber",
-                    "type": "array",
+                    "type": "list",
                     "required": true,
                     "key": "contactNumber"
                 },
@@ -43,32 +43,32 @@
                     "input": [
                         {
                             "path": "title",
-                            "type": "string",
+                            "type": "text",
                             "key": "title"
                         },
                         {
                             "path": "gender",
-                            "type": "string",
+                            "type": "text",
                             "key": "gender"
                         },
                         {
                             "path": "position",
-                            "type": "string",
+                            "type": "text",
                             "key": "position"
                         },
                         {
                             "path": "name",
-                            "type": "string",
+                            "type": "text",
                             "key": "name"
                         },
                         {
                             "path": "email",
-                            "type": "string",
+                            "type": "text",
                             "key": "email"
                         },
                         {
                             "path": "contactNumber",
-                            "type": "string",
+                            "type": "text",
                             "key": "contactNumber"
                         }
                     ]
@@ -84,37 +84,37 @@
             "keyValue": [
                 {
                     "path": "name",
-                    "type": "string",
+                    "type": "text",
                     "required": "true",
                     "key": "name"
                 },
                 {
                     "path": "country",
-                    "type": "string",
+                    "type": "text",
                     "required": true,
                     "key": "country"
                 },
                 {
                     "path": "city",
-                    "type": "string",
+                    "type": "text",
                     "required": true,
                     "key": "city"
                 },
                 {
                     "path": "address",
-                    "type": "string",
+                    "type": "text",
                     "required": true,
                     "key": "address"
                 },
                 {
                     "path": "email",
-                    "type": "array",
+                    "type": "list",
                     "required": true,
                     "key": "email"
                 },
                 {
                     "path": "contactNumber",
-                    "type": "array",
+                    "type": "list",
                     "required": true,
                     "key": "contactNumber"
                 },
@@ -123,44 +123,44 @@
                     "input": [
                         {
                             "path": "title",
-                            "type": "string",
+                            "type": "text",
                             "key": "title"
                         },
                         {
                             "path": "gender",
-                            "type": "string",
+                            "type": "text",
                             "key": "gender"
                         },
                         {
                             "path": "position",
-                            "type": "string",
+                            "type": "text",
                             "key": "position"
                         },
                         {
                             "path": "name",
-                            "type": "string",
+                            "type": "text",
                             "key": "name"
                         },
                         {
                             "path": "email",
-                            "type": "string",
+                            "type": "text",
                             "key": "email"
                         },
                         {
                             "path": "contactNumber",
-                            "type": "string",
+                            "type": "text",
                             "key": "contactNumber"
                         }
                     ]
                 },
                 {
                     "path": "overview",
-                    "type": "string",
+                    "type": "text",
                     "key": "overview"
                 },
                 {
                     "path": "note",
-                    "type": "string",
+                    "type": "text",
                     "key": "note"
                 },
                 {

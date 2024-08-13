@@ -55,7 +55,7 @@
                                 "key": "ledgerAccount",
                                 "path": "openingBalanceAccount",
                                 "required": true,
-                                "type": "string"
+                                "type": "text"
                             },
                             {
                                 "path": "openingBalanceAccount",
@@ -73,7 +73,7 @@
                             },
                             {
                                 "path": "currency",
-                                "type": "string",
+                                "type": "text",
                                 "key": "currency",
                                 "required": "true"
                             },
@@ -108,7 +108,7 @@
                             },
                             {
                                 "path": "headAccount",
-                                "type": "string",
+                                "type": "text",
                                 "key": "headAccount"
                             }
                         ],
@@ -134,7 +134,7 @@
                             },
                             {
                                 "path": "credit-debit",
-                                "type": "string",
+                                "type": "text",
                                 "key": "credit-debit",
                                 "required": "true"
                             },
@@ -143,7 +143,7 @@
                                 "path": "currency",
                                 "required": true,
                                 "static ": "mainReceivedData:().currency",
-                                "type": "string",
+                                "type": "text",
                                 "#staticValue": "mainReceivedData:().currency"
                             },
                             {
@@ -220,11 +220,11 @@
                         "key": "generalLedger",
                         "path": "generalLedger",
                         "required": true,
-                        "type": "string"
+                        "type": "text"
                     },
                     {
                         "path": "credit-debit",
-                        "type": "string",
+                        "type": "text",
                         "key": "credit-debit",
                         "required": "true"
                     },
@@ -234,7 +234,7 @@
                     },
                     {
                         "path": "currency",
-                        "type": "string",
+                        "type": "text",
                         "key": "currency",
                         "required": "true"
                     },
@@ -269,7 +269,7 @@
                     },
                     {
                         "path": "headAccount",
-                        "type": "string",
+                        "type": "text",
                         "key": "headAccount"
                     }
                 ]

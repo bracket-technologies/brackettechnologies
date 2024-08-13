@@ -6,7 +6,7 @@
     "managerName": "equityAndLongTermDebtsManager",
     "creationDate": 1709373307562,
     "ledgerAccountName": "Equity & Long Term Debts",
-    "popupInfo": {
+    "form": {
         "docName": "capitalsInfo",
         "title": "Equity & Long Term Debts Account Form"
     },
@@ -18,10 +18,60 @@
         "creationDate": 1711031361065,
         "collection": "generalLedgerInfo",
         "chunk": "chunk1",
-        "lastModified": 1721823615868,
+        "lastModified": 1723451481468,
         "dev": false,
         "actions": {},
-        "comments": [],
+        "comments": [
+            {
+                "note": "general Ledger",
+                "path": [
+                    "searchEngineInputs",
+                    0
+                ]
+            },
+            {
+                "note": "ledger account",
+                "path": [
+                    "searchEngineInputs",
+                    1
+                ]
+            },
+            {
+                "note": "account#",
+                "path": [
+                    "searchEngineInputs",
+                    2
+                ]
+            },
+            {
+                "note": "currency",
+                "path": [
+                    "searchEngineInputs",
+                    3
+                ]
+            },
+            {
+                "note": "name",
+                "path": [
+                    "searchEngineInputs",
+                    4
+                ]
+            },
+            {
+                "note": "transaction from date",
+                "path": [
+                    "searchEngineInputs",
+                    5
+                ]
+            },
+            {
+                "note": "transaction to date",
+                "path": [
+                    "searchEngineInputs",
+                    6
+                ]
+            }
+        ],
         "collapsed": [
             {
                 "path": [
@@ -199,6 +249,65 @@
             },
             {
                 "path": [
+                    "table",
+                    "table",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "table"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    0,
+                    "allowedCode"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    0,
+                    "select"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    0,
+                    "unselect"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    1,
+                    "allowedCode"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    1,
+                    "select"
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    1
+                ]
+            },
+            {
+                "path": [
                     "searchEngineInputs",
                     2
                 ]
@@ -206,13 +315,13 @@
             {
                 "path": [
                     "searchEngineInputs",
-                    3
+                    4
                 ]
             },
             {
                 "path": [
                     "searchEngineInputs",
-                    4
+                    3
                 ]
             },
             {
@@ -229,78 +338,13 @@
             },
             {
                 "path": [
-                    "searchEngineInputs",
-                    0,
-                    "select"
-                ]
-            },
-            {
-                "path": [
-                    "searchEngineInputs",
-                    0,
-                    "unselect"
-                ]
-            },
-            {
-                "path": [
-                    "searchEngineInputs",
-                    1,
-                    "select"
-                ]
-            },
-            {
-                "path": [
-                    "searchEngineInputs",
-                    1,
-                    "unselect"
-                ]
-            },
-            {
-                "path": [
-                    "searchEngineInputs",
-                    0,
-                    "allowedCode"
-                ]
-            },
-            {
-                "path": [
-                    "searchEngineInputs",
-                    1,
-                    "allowedCode"
-                ]
-            },
-            {
-                "path": [
-                    "searchEngineInputs",
-                    1
-                ]
-            },
-            {
-                "path": [
                     "searchEngineInputs"
-                ]
-            },
-            {
-                "path": [
-                    "popupInfo"
-                ]
-            },
-            {
-                "path": [
-                    "table",
-                    "table",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "table"
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 5243
+        "size": 5598
     },
     "table": {
         "body": {
@@ -421,7 +465,7 @@
         },
         {
             "inputPath": "accountNumber",
-            "inputLabel": "Account Number",
+            "inputLabel": "Account#",
             "type": "number",
             "select": {
                 "itemsToUnselect": [

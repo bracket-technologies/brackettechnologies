@@ -1,0 +1,60 @@
+{
+    "permission": {
+        "notification": [
+            "Read",
+            "Receive"
+        ],
+        "service": [
+            "Read"
+        ],
+        "voucher": [
+            "Read",
+            "Print",
+            "Create"
+        ],
+        "sheet": [
+            "Read",
+            "Create",
+            "Import",
+            "Export"
+        ],
+        "invoice": [
+            "Read",
+            "Print",
+            "Create"
+        ],
+        "account": [
+            "Edit",
+            "Read",
+            "History",
+            "Create"
+        ],
+        "dashboard": [
+            "Read"
+        ],
+        "gallery": [
+            "Read",
+            "Edit"
+        ]
+    },
+    "user": "43A3x3efs54cmTgn5skmVwhulqP7cTRBIngI0yhiFLuMrVr9dfWifwuC9jkT-1722888638046",
+    "id": "2PwBXVNVL5wfhUls5w9Nj6wD9Aw6H6wsuWhYCQkuXktEkivVMP4VSEFFQ9od-1722888638107",
+    "creationDate": 1722888638107,
+    "creationDay": 1722805200000,
+    "__props__": {
+        "id": "e1F7m2s2P8P8a8G6X3p8f163P3",
+        "doc": "permission5",
+        "counter": 5,
+        "creationDate": 1722888638133,
+        "collection": "permission",
+        "chunk": "chunk1",
+        "lastModified": 1722888638133,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 764
+    }
+}

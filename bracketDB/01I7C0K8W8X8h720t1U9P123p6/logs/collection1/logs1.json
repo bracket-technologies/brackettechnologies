@@ -1,0 +1,52 @@
+{
+    "logs": [
+        "log():[_.subSidebar]",
+        [
+            {
+                "identifier": "generalLedger",
+                "viewName": "customManager",
+                "tooltip": "accounts",
+                "managerInfo": "generalLedgerInfo",
+                "text": "Accounts"
+            },
+            {
+                "identifier": "accountingJournal",
+                "viewName": "customManager",
+                "tooltip": "transactions",
+                "managerInfo": "accountingJournalInfo",
+                "text": "Transactions"
+            },
+            {
+                "identifier": "vouchers",
+                "viewName": "customManager",
+                "tooltip": "vouchers",
+                "managerInfo": "vouchersInfo",
+                "text": "Vouchers"
+            },
+            {
+                "identifier": "ticketInvoice",
+                "viewName": "customManager",
+                "hotCreate": true,
+                "tooltip": "invoices",
+                "managerInfo": "ticketInvoiceInfo",
+                "text": "Invoices"
+            }
+        ]
+    ],
+    "__props__": {
+        "id": "e1z7Z2D3a3H8M3u4v5L4k8W6c7",
+        "doc": "logs1",
+        "counter": 1,
+        "creationDate": 1723383454867,
+        "collection": "logs",
+        "chunk": "chunk1",
+        "lastModified": 1723383454867,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 834
+    }
+}

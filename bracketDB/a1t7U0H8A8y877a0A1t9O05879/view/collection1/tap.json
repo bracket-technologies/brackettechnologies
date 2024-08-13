@@ -7,11 +7,11 @@
         "creationDate": 1713000401899,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1721752238846,
+        "lastModified": 1723114604812,
         "dev": false,
         "actions": {
             "pngs": {
-                "_": ":[label=Modern, Simple, & Professional;png=modern()]:[label=Mobile Friendly;png=mobileFriendly()]:[label=Government Compatible;png=government()]:[label=Follow-up Automation;png=automation()]:[label=Batch Invoicing;png=batch()]:[label=Seamless Customization;png=customization()]",
+                "_": ":[label=Modern & Professional;png=modern()]:[label=Mobile Friendly;png=mobileFriendly()]:[label=Government Compatible;png=government()]:[label=Automated Follow-up;png=automation()]:[label=Batch Invoicing;png=batch()]:[label=Seamless Customization;png=customization()]",
                 "modern": "'https://firebasestorage.googleapis.com/v0/b/bracket-technologies.appspot.com/o/innovation_7261783.png?alt=media&token=90dcca52-4927-4974-8702-a8d62f63b4df'",
                 "mobileFriendly": "'https://firebasestorage.googleapis.com/v0/b/bracket-technologies.appspot.com/o/responsive-design.png?alt=media&token=e9e9cdbd-d274-4c62-80b0-b97d49835f16'",
                 "batch": "'https://firebasestorage.googleapis.com/v0/b/bracket-technologies.appspot.com/o/batch-picking.png?alt=media&token=e6222524-afd0-4c57-8e9a-be031b72f746'",
@@ -298,11 +298,6 @@
             },
             {
                 "path": [
-                    "pngs"
-                ]
-            },
-            {
-                "path": [
                     "children",
                     0
                 ]
@@ -340,7 +335,7 @@
         ],
         "arrange": [],
         "secured": false,
-        "size": 6812
+        "size": 6787
     },
     "children": [
         {

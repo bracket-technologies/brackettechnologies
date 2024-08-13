@@ -1,5 +1,5 @@
 {
-    "code": "53",
+    "code": "1",
     "length": 8,
     "counter": 0,
     "counterList": [
@@ -9,25 +9,24 @@
     "start": 0,
     "max": 99999999,
     "reset": "yearly",
-    "creationDate": 1722503680594,
-    "id": "DcwoJJjt6O3O7TtqhktceAvrOJnz27PRaXFJtrRKhZcNGOOm3RN3cIgYZBJk1722503680594",
-    "timestamp": 1722503680594,
-    "creationDay": 1722459600000,
-    "type": "Cash",
+    "creationDate": 1723403392298,
+    "id": "dmJHBAFS5ljZcZSg7oqh2Dw33mWkzHRUrVDE9juCUB6pY8gO10LocQWuajWk1723403392298",
+    "timestamp": 1723403392298,
+    "creationDay": 1723323600000,
     "__props__": {
-        "id": "u1y762h275w0Z3z658T0c5T9I5",
+        "id": "v1u7D2Q3t4H073p3A9m2O3x0g0",
         "doc": "counter10",
         "counter": 10,
-        "creationDate": 1722503680595,
+        "creationDate": 1723403392300,
         "collection": "counter",
         "chunk": "chunk1",
-        "lastModified": 1722503712965,
+        "lastModified": 1723403392358,
         "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 538
+        "size": 523
     }
 }

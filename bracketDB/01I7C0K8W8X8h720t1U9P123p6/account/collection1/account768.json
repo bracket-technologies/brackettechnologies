@@ -1,43 +1,48 @@
 {
-    "name": "Opening1",
+    "name": "Cash1",
     "isSubAccount": "No",
-    "generalLedger": "119",
+    "generalLedger": "53",
     "autoGenerateAccountNumber": "Yes",
     "currency": [
         "USD",
         "LBP"
     ],
-    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
-    "createdBy": "4nFZccstfAc5FKZhSxoQoFmo4e8JaBuQYnGP5qwRpwTEsOFXapL13mOhfgo0-1722500623524",
-    "startsWith": [
-        "1",
-        "11",
-        "119"
+    "type": "Cash",
+    "openingBalance": [
+        {
+            "openingBalance": "No"
+        }
     ],
-    "id": "38VhBjLBNWcg14fZOOEegKXuU3qJR24xIghnb51pyvBhkybi28yNuVca6ga3-1722502185946",
-    "creationDate": 1722502185947,
-    "creationDay": 1722459600000,
+    "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
+    "createdBy": "43A3x3efs54cmTgn5skmVwhulqP7cTRBIngI0yhiFLuMrVr9dfWifwuC9jkT-1722888638046",
+    "startsWith": [
+        "5",
+        "53"
+    ],
+    "id": "lBLJ2FwV36TE7GJSEhNsiMTbJTxcVMbi6X3AGi0JNRZKRgyl84xiISB5Qmtn-1723031379581",
+    "creationDate": 1723031379581,
+    "creationDay": 1722978000000,
     "ref": "ACC-00000002",
     "accountNumber": "1",
     "ledgerAccount": [
-        "119/1/0",
-        "119/1/2"
+        "53/1/0",
+        "53/1/1"
     ],
     "__props__": {
-        "id": "k1C7u2X2X5b062M1Z8i6U044D8",
+        "id": "Y1b71293I043j1c3x7Z9k6K7t0",
         "doc": "account768",
         "counter": 768,
-        "creationDate": 1722502186048,
+        "creationDate": 1723031379670,
         "collection": "account",
         "chunk": "chunk1",
-        "lastModified": 1722503713094,
+        "lastModified": 1723108755282,
         "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 882
+        "size": 927
     },
-    "lastBalance": "SRStWJfSYcidYxi3psvttNbvgI318FMjtTncuUOss0I2vSeJjgNlgvPLD5PJ-1722503712993"
+    "lastBalance": "XTUIoRWXKOKUFBUHVL4AoqBkrSLg1gAGd8XZJGAXKcTGHSck8ryVoMnhHfHk-1723034765846"
 }

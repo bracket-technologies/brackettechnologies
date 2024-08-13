@@ -201,7 +201,7 @@
     "managerName": "fixedAssetManager",
     "creationDate": 1709896590938,
     "ledgerAccountName": "Fixed Assets",
-    "popupInfo": {
+    "form": {
         "docName": "assetInfo",
         "title": "Fixed Asset Account Form"
     },
@@ -371,7 +371,7 @@
             },
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {

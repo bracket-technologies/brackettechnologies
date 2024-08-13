@@ -7,7 +7,7 @@
         "creationDate": 1715328138923,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1722502861206,
+        "lastModified": 1723453142680,
         "dev": false,
         "actions": {
             "setItemsList": {
@@ -17,7 +17,7 @@
                 "setLedgers": "governmentAccounts:()._():[_.inputCode=setDefaultleftZero():[text=_.number;digits=5]];setItemsList():[data=governmentAccounts:();code=number;inputCode=inputCode;name=name]",
                 "handleAllowedCodeCondition": {
                     "_": "if():[_.allowedCode.type()=map]:[setAllowedAndNotAllowedCode():[_.allowedCode]]:[specifyAppliedCondition()];if():[().allowedCode]:[filterByAllowedCode():[allowedCode=().allowedCode]]:[().allowedItemsList=().itemsList];if():[().notAllowedCode]:[pullNotAllowedCode()]",
-                    "filterByAllowedCode": "().allowedItemsList=:;().itemsList._():[__.allowedCode._():[if():[__.code.slice():0:[[_].toString().len()]=_.toString()]:[().allowedItemsList.push():[__]]]];",
+                    "filterByAllowedCode": "().allowedItemsList=:;().itemsList._():[__.allowedCode._():[if():[__.code.slice():0:[_.toString().len()]=_.toString()]:[().allowedItemsList.push():[__]]]]",
                     "pullNotAllowedCode": "().allowedItemsList._():[().notAllowedCode._():[if():[__.code.slice():0:[[_].toString().len()]=_.toString()]:[().allowedItemsList.find():[code=__.code]='']]];().allowedItemsList.filter()",
                     "specifyAppliedCondition": "_.allowedCode._():[().conditionApplied=customCondition():[data=form().clone();condition=_.condition];if():[().conditionApplied]:[setAllowedAndNotAllowedCode()]]",
                     "setAllowedAndNotAllowedCode": "if():[_.allowedCode]:[().allowedCode=_.allowedCode];if():[_.notAllowedCode]:[().notAllowedCode=_.notAllowedCode]"
@@ -32,7 +32,7 @@
                 "fillInputCodeInInput": "txt()=2ndParent().selectedItem.inputCode",
                 "setDroplistItems": "if():[().txt()]:[().items=filterDroplistItems():[searchByCode=true;text=_.code]]:[().items=2ndParent().allowedItemsList]",
                 "saveCodeInData": {
-                    "_": "log():['hereee1'];2ndParent().selectedItem=findCorrespondingItem():[code=txt()];if():[_.fillCodeName]:[saveCorrespondingCodeData()]:[saveIfNextInputValid()];if():[_.showBalance]:[showBalance()]",
+                    "_": "2ndParent().selectedItem=findCorrespondingItem():[code=txt()];if():[_.fillCodeName]:[saveCorrespondingCodeData()]:[saveIfNextInputValid()];if():[_.showBalance]:[showBalance()]",
                     "saveCorrespondingCodeData": "if():[2ndParent().selectedItem]:[data().[_.inputPath]=2ndParent().selectedItem.dataCode;parent().next().1stChild().txt()=2ndParent().selectedItem.name];#:[data().[_.inputPath].del();txt()='';parent().next().1stChild().txt()='']",
                     "saveIfNextInputValid": "if():[parent().next().1stChild().txt()]:[data().[_.inputPath]=2ndParent().selectedItem.dataCode+[_.separator]+parent().next().1stChild().txt()]:[data().[_.inputPath].del()]"
                 },
@@ -48,12 +48,12 @@
                 "findCorrespondingItem": "if():[[_.key()].in():[2ndParent().allowedItemsList.():[[_.key()]]]]:[return():[2ndParent().allowedItemsList.find():[.[_.key()]=_.[_.key()]]]]",
                 "replaceInputCodeByCode": "if():[txt()!='']:[txt()=2ndParent().selectedItem.code]",
                 "showBalance": "getAccountBalance():[ledger=data().[_.inputPath];identifier=3rdParent().next().id;currency=form().currency;exchangeRate=form().exchangeRates]",
-                "checkToCloseDroplist": "if():[!():customDroplist.contains():[clicked()]]:[():customDroplist.style():[opacity=0;height=0]]",
                 "checkIfTextInAllowedLedgers": {
                     "_": "if():[e().key=Backspace||e().keyCode=46]:[checkToDelete()].elif():[e().keyCode!=9]:[checkToDeleteEnteredChar()]",
                     "checkToDeleteEnteredChar": "2ndParent().allowedItemsList._():[if():[txt()+e().key=_.code.slice():[0]:[txt().len()+1]]:[().x=true]];if():[!().x]:[preventDefault()];().x.del()",
                     "checkToDelete": "if():[2ndParent().allowedCode]:[2ndParent().allowedCode._():[if():[txt().slice():[0]:[-1].startsWith():[_.toString()]]:[().x=true]]];if():[!().x]:[preventDefault()];().x.del()"
-                }
+                },
+                "#checkToCloseDroplist": "if():[!():customDroplist.contains():[clicked()]]:[():customDroplist.style():[opacity=0;height=0]]"
             },
             "filterDroplistItems": {
                 "_": "list=:;;if():[_.searchByCode]:[filterByCode()].elif():[_.searchByName]:[filterByName()];return():[.list]",
@@ -161,24 +161,6 @@
             },
             {
                 "path": [
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
                     "valueInputEventsHandler",
                     "filterEventsHandler"
                 ]
@@ -196,11 +178,6 @@
             },
             {
                 "path": [
-                    "openDroplist"
-                ]
-            },
-            {
-                "path": [
                     "codeInputEventsHandler",
                     "inputValueHandler"
                 ]
@@ -212,13 +189,19 @@
             },
             {
                 "path": [
-                    "setItemsList",
-                    "handleAllowedCodeCondition"
+                    "valueInputEventsHandler"
                 ]
             },
             {
                 "path": [
-                    "valueInputEventsHandler"
+                    "codeInputEventsHandler",
+                    "checkIfTextInAllowedLedgers"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0
                 ]
             },
             {
@@ -228,14 +211,25 @@
             },
             {
                 "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
                     "codeInputEventsHandler",
-                    "checkIfTextInAllowedLedgers"
+                    "saveCodeInData"
+                ]
+            },
+            {
+                "path": [
+                    "openDroplist"
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 14249
+        "size": 14142
     },
     "children": [
         {
@@ -245,7 +239,7 @@
             "view": "View?class=flex;style:[width=100%;gap=.2rem;zIndex=2]",
             "children": [
                 {
-                    "view": "View?class=flex;style:[inputStyle()];loaded:[setItemsList()];click:[log():['fffff']:[().allowedItemsList]]",
+                    "view": "View?class=flex;style:[inputStyle()];loaded:[setItemsList()]",
                     "children": [
                         {
                             "view": "View?class=flexbox;style:[width=5.6rem;height=100%;backgroundColor=#f3f3f3;position=relative]",

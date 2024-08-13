@@ -1,0 +1,25 @@
+{
+    "exchangeRate": 1,
+    "code": "dfd",
+    "createdCurrencyRate": 1,
+    "id": "xAyJJJdfcGkzhgApGVAQ5obwQZ4TSuD9WM2K6wImaF6cQN2hzbxHX0vyTjXV-1722889126875",
+    "creationDate": 1722889126875,
+    "creationDay": 1722805200000,
+    "currency": "pODsTg7K0NzG4frd6GXDgTylnGc1lLOROqLVAyKONWYirzghDtzsOjBZxtVB-1722889126830",
+    "__props__": {
+        "id": "n1G7H2q278s8D9E162b6a838F7",
+        "doc": "exchangeRate80",
+        "counter": 80,
+        "creationDate": 1722889126887,
+        "collection": "exchangeRate",
+        "chunk": "chunk1",
+        "lastModified": 1722889126887,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 552
+    }
+}

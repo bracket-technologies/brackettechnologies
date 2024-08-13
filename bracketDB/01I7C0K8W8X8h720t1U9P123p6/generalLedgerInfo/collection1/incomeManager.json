@@ -99,8 +99,8 @@
     "title": "Income Manager",
     "managerName": "incomeManager",
     "creationDate": 1709896626295,
-    "ledgerAccountName": "Incomes",
-    "popupInfo": {
+    "ledgerAccountName": "Income",
+    "form": {
         "docName": "incomeInfo",
         "title": "Income Account Form"
     },
@@ -112,14 +112,14 @@
         "creationDate": 1711031361076,
         "collection": "generalLedgerInfo",
         "chunk": "chunk1",
-        "lastModified": 1721818871080,
+        "lastModified": 1723451771659,
         "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {
@@ -200,11 +200,39 @@
                     1,
                     "allowedCode"
                 ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "searchEngineInputs"
+                ]
+            },
+            {
+                "path": [
+                    "table"
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 4842
+        "size": 4984
     },
     "table": {
         "body": {

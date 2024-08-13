@@ -1,7 +1,6 @@
 const http = require('node:http')
-const EasyTunnel = require("./functions/easy-tunnel")
-const { getData, start } = require("./functions/kernel")
-const { toArray } = require('./functions/toArray')
+// const EasyTunnel = require("./functions/easy-tunnel")
+const { getData, start, postData, database } = require("./functions/kernel")
 const router = require('./functions/router')
 const { generate } = require('./functions/generate')
 const networkInterfaces = require('os').networkInterfaces()
@@ -13,8 +12,8 @@ require('dotenv').config()
 var bracketDB = process.env.BRACKETDB
 
 // get private ip
-var ip = { private: (networkInterfaces.Ethernet || networkInterfaces["Wi-Fi 2"]).find(add => add.family === "IPv4").address }
-var serverID = generate({ unique: true })
+//var ip = { private: (networkInterfaces.Ethernet || networkInterfaces["Wi-Fi 2"]).find(add => add.family === "IPv4").address }
+var serverID = process.argv[3] || generate({ unique: true })
 
 // app
 const app = (req, res) => {
@@ -26,7 +25,7 @@ const app = (req, res) => {
     .on('data', chunk => req.body.push(chunk))
     .on('end', () => {
 
-      req.ip = ip
+      //req.ip = ip
       res.serverID = serverID
       req.body = JSON.parse(Buffer.concat(req.body).toString() || "{}")
       router({ req, res })
@@ -40,14 +39,17 @@ if (port) {
   const server = http.createServer(app)
 
   server.listen(port, [], () => {
+
     console.log(`Server Listening to Port ${port}`)
-    //new EasyTunnel(port, "brc" + host.subdomain).start()
+
+    // new EasyTunnel(port, "brc" + host.subdomain).start()
   })
-  server.on("error", (err) => {console.log("Error running server!", err);})
+
+  // server.on("error", (err) => {console.log("Error running server!", err);})
   
 } else {
 
   // get hosts
-  var {data: hosts} = getData({ search: { db: bracketDB, collection: "host", find: { port: { gte: 80 } } } })
-  Object.values(hosts).map(host => host.port.map(port => start(port)))
+  var {data: hosts} = database({ action: "search()", data: { db: bracketDB, collection: "host", find: { port: { gte: 80 } } } })
+  Object.values(hosts).map(host => host.port.map(port => start(port, serverID)))
 }

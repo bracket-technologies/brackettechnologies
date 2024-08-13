@@ -1,9 +1,5 @@
 {
     "docs": [
-        "account775",
-        "account774",
-        "account773",
-        "account772",
         "account771",
         "account770",
         "account769",
@@ -11,6 +7,6 @@
         "account767"
     ],
     "chunk": "chunk1",
-    "docsLength": 9,
-    "size": 11731
+    "docsLength": 5,
+    "size": 8002
 }

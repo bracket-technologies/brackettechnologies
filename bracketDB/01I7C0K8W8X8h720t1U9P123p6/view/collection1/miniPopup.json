@@ -44,7 +44,7 @@
             "closeMiniPopup": "():closeSubGeneralPopup.style():[visibility=hidden;opacity=0]",
             "saveSheetInfo": {
                 "checkSaveCondition": "if():[!currentSheetInfo:()]:[currentSheetInfo:().updateStatus='false'];checkSheet():[data=newDataInfo:();updateStatus=currentSheetInfo:().updateStatus;id=currentSheetInfo:().sheetId]:[if():[_.success]:[note():[text='Sheet created successfully']]:[note():[text=No result found;type=danger]]];deleteVariables()",
-                "fillDataInDataInfo": "i=0;range():[rowRange:()].():[if():[allDataInfo:().[().i]]:[newDataInfo:().sheetName.push():[allDataInfo:().[().i]];().i+=1]:[().i+=1]];fillSheetNameAndPermission()",
+                "fillDataInDataInfo": "i=0;range():[rowRange:()+1].():[if():[allDataInfo:().[().i]]:[newDataInfo:().sheetName.push():[allDataInfo:().[().i]];().i+=1]:[().i+=1]];fillSheetNameAndPermission()",
                 "deleteVariables": "newDataInfo:().del();newDataInfo:().del();allDataInfo:().del();updateStatus:().del();sheetName:().del();sheetId:().del();closeWindow()",
                 "fillSheetNameAndPermission": "newDataInfo:().rowCount=50;newDataInfo:().name=form().sheetName;newDataInfo:().permission=form().sheetType;newDataInfo:().active=true;checkSaveCondition()",
                 "[object Object]": "fillDataInDataInfo()",

@@ -46,7 +46,7 @@
         "creationDate": 1711031365218,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1722243123334,
+        "lastModified": 1723450711739,
         "dev": false,
         "actions": {
             "confirmDeleteImage": {
@@ -467,12 +467,6 @@
             },
             {
                 "path": [
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
                     "addFormSchema",
                     "pushAccountInDroplist"
                 ]
@@ -485,18 +479,24 @@
             {
                 "path": [
                     "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
                     2
                 ]
             },
             {
                 "path": [
                     "saveSheet"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1
                 ]
             }
         ],

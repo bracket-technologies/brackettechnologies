@@ -4,7 +4,7 @@
             "keyValue": [
                 {
                     "path": "users",
-                    "type": "array",
+                    "type": "list",
                     "key": "users",
                     "required": "true"
                 },
@@ -16,29 +16,29 @@
                 },
                 {
                     "path": "msg",
-                    "type": "string",
+                    "type": "text",
                     "key": "msg",
                     "required": "true"
                 },
                 {
                     "path": "overview",
-                    "type": "string",
+                    "type": "text",
                     "key": "overview"
                 },
                 {
                     "path": "note",
-                    "type": "string",
+                    "type": "text",
                     "key": "note"
                 },
                 {
                     "path": "branch",
-                    "type": "string",
+                    "type": "text",
                     "key": "branch",
                     "required": "true"
                 },
                 {
                     "path": "createdBy",
-                    "type": "string",
+                    "type": "text",
                     "key": "createdBy",
                     "required": "true"
                 }

@@ -1,53 +1,44 @@
 {
-    "name": "Table",
+    "name": "Financial Charges",
     "isSubAccount": "No",
-    "generalLedger": "2",
+    "generalLedger": "67",
     "autoGenerateAccountNumber": "Yes",
     "currency": [
-        "USD",
-        "LBP",
-        "XOF"
+        "USD"
     ],
-    "createDepreciationAccount": "No",
     "openingBalance": [
         {
-            "openingBalance": "Yes",
-            "currency": "USD",
-            "credit-debit": "Debit",
-            "amount": 1000,
-            "openingBalanceAccount": "119/1/0"
+            "openingBalance": "No"
         }
     ],
     "branch": "5nyQK1IEz87F9YeHrNBVqtOM9r8HFBu1dLNBXm1e9mvL4YgdweVh3ql6KPGE",
-    "createdBy": "4nFZccstfAc5FKZhSxoQoFmo4e8JaBuQYnGP5qwRpwTEsOFXapL13mOhfgo0-1722500623524",
+    "createdBy": "43A3x3efs54cmTgn5skmVwhulqP7cTRBIngI0yhiFLuMrVr9dfWifwuC9jkT-1722888638046",
     "startsWith": [
-        "2"
+        "6",
+        "67"
     ],
-    "id": "4MsQ7bNZZcPYgteLnmQJiTLeS0BPycktW8y9AV3pu1Kn2t4EAJIT7ncvATwi-1722503515085",
-    "creationDate": 1722503515085,
-    "creationDay": 1722459600000,
+    "id": "ivOOZPKjyhiYZEUNaRdLgX3yhJytI5Wnl9zuK6M2xfQGmNLVeQnEQ2edYqhA-1723031394342",
+    "creationDate": 1723031394342,
+    "creationDay": 1722978000000,
     "ref": "ACC-00000003",
     "accountNumber": "1",
     "ledgerAccount": [
-        "2/1/0",
-        "2/1/2",
-        "2/1/1"
+        "67/1/0"
     ],
     "__props__": {
-        "id": "i10742T2p5c0M3P5S1W5i2Z1k6",
+        "id": "D197X2e3m093W193y904W4z2q2",
         "doc": "account769",
         "counter": 769,
-        "creationDate": 1722503515216,
+        "creationDate": 1723031394422,
         "collection": "account",
         "chunk": "chunk1",
-        "lastModified": 1722503515330,
+        "lastModified": 1723031394422,
         "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 1041
-    },
-    "lastBalance": "z8V7otPE6NumrbhRFtvctqiAs5prFd5EbGXN8tQZxpVKeLrHRhIsE2M5WZ1t-1722503515192"
+        "size": 819
+    }
 }

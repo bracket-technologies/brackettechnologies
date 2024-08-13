@@ -149,7 +149,7 @@
                         "Yes",
                         "No"
                     ],
-                    "action": "[subscribeToTapHandler()]():[collection=schema;doc=addProjectForm]",
+                    "action": "[subscribeToTapHandler()]():[collection=formSchema;doc=addProjectForm]",
                     "inputType": "yesNo",
                     "required": true
                 }

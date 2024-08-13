@@ -4,13 +4,13 @@
             "keyValue": [
                 {
                     "path": "branch",
-                    "type": "string",
+                    "type": "text",
                     "key": "branch",
                     "required": "true"
                 },
                 {
                     "path": "notificationId",
-                    "type": "string",
+                    "type": "text",
                     "key": "notification",
                     "required": "true"
                 }

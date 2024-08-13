@@ -49,17 +49,17 @@
         "creationDate": 1711031365199,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1721902412678,
+        "lastModified": 1723022101617,
         "dev": false,
         "actions": {
             "handleRequiredLabel": {
                 "handleRequiredCondition": "if():[customCondition():[data=form();condition=_.required]]:[return():['#e54643']]:[return():['#555']]",
-                "_": "if():[!generalPopup:().read]:[if():[_.required.type()=array]:[return():[handleRequiredCondition()]]:[return():['#e54643']]]:[return():['#555']]"
+                "_": "if():[!generalPopup:().read]:[if():[_.required.type()=list]:[return():[handleRequiredCondition()]]:[return():['#e54643']]]:[return():['#555']]"
             },
             "handleIfListOfMap": "_.allowedLedgers._():[().isTrue=customCondition():[data=form().clone();condition=_.condition];if():[().isTrue]:[().allowedLedger=_.allowedLedgers]];().inputText=if():[().allowedLedger]:[_.inputLabel+' ('+().allowedLedger.join():['-']+')']:[_.inputLabel];().text=().inputText",
             "openexchangeRateView": {
                 "_": "setDocValues();setSubGeneralPopupParams();openSubGeneralPopup()",
-                "setSubGeneralPopupParams": "subGeneralPopup:()=[docValues=().docValues;borderRadius=0 0 .4rem .4rem;stopFormIds=true;title='Currency Rate';docName=settingsInfo:().exchangeRateInfo.popupInfo.docName;popupName=customForm;inputInfo=settingsInfo:().exchangeRateInfo.createFormInputs.clone();saveAction=settingsInfo:().exchangeRateInfo.saveAction;discardAction=settingsInfo:().exchangeRateInfo.discardAction]",
+                "setSubGeneralPopupParams": "subGeneralPopup:()=[docValues=().docValues;borderRadius=0 0 .4rem .4rem;stopFormIds=true;title='Currency Rate';docName=settingsInfo:().exchangeRateInfo.form.docName;popupName=customForm;inputInfo=settingsInfo:().exchangeRateInfo.createFormInputs.clone();saveAction=settingsInfo:().exchangeRateInfo.saveAction;discardAction=settingsInfo:().exchangeRateInfo.discardAction]",
                 "openSubGeneralPopup": "():subGeneralPopup.refresh()::[():subGeneralPopup.style():[visibility=visible;opacity=1];():subGeneralPopup.2ndChild().style():[transform=translateY(0)]]",
                 "setDocValues": "().docValues.exchangeRates=[generalPopup:().docName]:().exchangeRates.clone();().docValues.exchangeRates.pullIndex():0;"
             },
@@ -85,9 +85,9 @@
             },
             "handleHotCreatableEvents": {
                 "callOpenHotCreateFormForAccount": {
-                    "readFromAllowedLedgers": "().getterKeyValue=[path=path();getterKeyValue=_.getterKeyValue];().formManagerData=generalLedgerInfo:().values().find():[ledgerAccountCode.toString()=().codeTypes.0.toString().0];openCreateForm():[getterKeyValue=().getterKeyValue;title=().formManagerData.popupInfo.title;manager=().formManagerData;docName=().formManagerData.popupInfo.docName;docDefaultValues=[ledgerType=_.ledgerType;ledgerAccountName=().formManagerData.ledgerAccountName]]",
+                    "readFromAllowedLedgers": "().getterKeyValue=[path=path();getterKeyValue=_.getterKeyValue];().formManagerData=generalLedgerInfo:().values().find():[ledgerAccountCode.toString()=().codeTypes.0.toString().0];openCreateForm():[getterKeyValue=().getterKeyValue;title=().formManagerData.form.title;manager=().formManagerData;docName=().formManagerData.form.docName;docDefaultValues=[ledgerType=_.ledgerType;ledgerAccountName=().formManagerData.ledgerAccountName]]",
                     "_": "if():[().codeTypes.len()=1]:[readFromAllowedLedgers()]:[readFromDroplistText()]",
-                    "readFromDroplistText": "().manager=generalLedgerInfo:().values().find():[ledgerAccountName=().ledger];().getterKeyValue=[path=path();getterKeyValue=_.getterKeyValue];openCreateForm():[getterKeyValue=().getterKeyValue;title=().manager.popupInfo.title;docName=().manager.popupInfo.docName;manager=().manager;docDefaultValues=[ledgerAccountName=().manager.ledgerAccountName]]"
+                    "readFromDroplistText": "().manager=generalLedgerInfo:().values().find():[ledgerAccountName=().ledger];().getterKeyValue=[path=path();getterKeyValue=_.getterKeyValue];openCreateForm():[getterKeyValue=().getterKeyValue;title=().manager.form.title;docName=().manager.form.docName;manager=().manager;docDefaultValues=[ledgerAccountName=().manager.ledgerAccountName]]"
                 },
                 "_": "mouseenter:[style().color=#3290ff];mouseleave:[if():[_.required]:[style().color=#e54643]:[style().color=#555]];if():[_.collection='account']:[timer():[handleAccountTypeFromAllowedLedgers()]:0];droplist:[preventDefault=true];[click:droplist?().ledger=clicked().txt();callOpenHotCreateFormForAccount()];click:[if():[_.sheetName]:[openSheet()]:[if():[().isSpecificCode]:[callOpenHotCreateFormForAccount()]]]",
                 "openSheet": {
@@ -108,11 +108,13 @@
                 }
             },
             "inputLabelHandler": {
-                "_": "if():[_.allowedCode]:[if():[_.allowedCode.type()=array]:[handleAllowedCodeCondition()]:[().appliedCode=_.allowedCode;setAppliedCode()]]:[if():[_.question]:[text=_.inputLabel+'？']:[handleNormalLabel()]];if():[_.hotCreatable;!generalPopup:().read]:[().text='~'+txt()]",
-                "handleAllowedCodeCondition": "_.allowedCode._():[().cinditionApplied=customCondition():[data=form().clone();condition=_.condition];if():[().cinditionApplied]:[().appliedCode=_]];setAppliedCode()",
-                "handleNormalLabel": "if():[_.inputLabel.type()=array]:[handleLabelCondition()]:[text=_.inputLabel]",
+                "_": "if():[_.inputLabel.type()=list]:[handleInputLableCondition()].elif():[_.allowedCode]:[if():[_.allowedCode.type()=list]:[handleAllowedCodeCondition()]:[().appliedCode=_.allowedCode;setAppliedCode()]]:[if():[_.question]:[text=_.inputLabel+'？']:[handleNormalLabel()]];if():[_.hotCreatable;!generalPopup:().read;!().text.inc():'~']:[().text='~'+txt()]",
+                "handleAllowedCodeCondition": "_.allowedCode._():[().conditionApplied=customCondition():[data=form().clone();condition=_.condition];if():[().conditionApplied]:[().appliedCode=_]];setAppliedCode()",
+                "handleNormalLabel": "if():[_.inputLabel.type()=list]:[handleLabelCondition()]:[text=_.inputLabel]",
                 "handleLabelCondition": "_.inputLabel._():[if():[customCondition():[data=form().clone();condition=_.condition]]:[().text=_.inputLabel]]",
-                "setAppliedCode": "txt()=if():[().appliedCode]:[_.inputLabel+' ('+().appliedCode.allowedCode.list().join():['-']+')']:[_.inputLabel]"
+                "setAppliedCode": "txt()=if():[().appliedCode]:[_.inputLabel+' ('+().appliedCode.allowedCode.list().join():['-']+')']:[_.inputLabel]",
+                "handleInputLableCondition": "_.inputLabel._():[().lableCondition=customCondition():[data=form().clone();condition=_.condition];if():[().lableCondition]:[().appliedLabel=_.inputLabel]];setAppliedLabel()",
+                "setAppliedLabel": "inputLabelHandler():[[_].flat();inputLabel=().appliedLabel]"
             }
         },
         "comments": [
@@ -245,7 +247,19 @@
             },
             {
                 "path": [
-                    "inputLabelHandler"
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "handleHotCreatableEvents",
+                    "callOpenHotCreateFormForAccount"
+                ]
+            },
+            {
+                "path": [
+                    "handleHotCreatableEvents"
                 ]
             },
             {
@@ -256,19 +270,12 @@
             },
             {
                 "path": [
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "handleHotCreatableEvents",
-                    "callOpenHotCreateFormForAccount"
+                    "inputLabelHandler"
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 12968
+        "size": 13373
     }
 }

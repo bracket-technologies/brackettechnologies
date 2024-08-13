@@ -16,14 +16,5 @@
         "port": [
             83
         ]
-    },
-    "host6": {
-        "__props__.counter": 6
-    },
-    "host7": {
-        "__props__.counter": 7
-    },
-    "host8": {
-        "__props__.counter": 8
     }
 }

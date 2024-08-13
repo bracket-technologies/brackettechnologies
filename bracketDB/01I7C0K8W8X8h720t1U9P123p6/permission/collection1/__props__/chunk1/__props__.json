@@ -1,11 +1,12 @@
 {
     "docs": [
+        "permission5",
         "permission4",
         "permission3",
         "permission2",
         "permission1"
     ],
     "chunk": "chunk1",
-    "docsLength": 4,
-    "size": 3936
+    "docsLength": 5,
+    "size": 4700
 }

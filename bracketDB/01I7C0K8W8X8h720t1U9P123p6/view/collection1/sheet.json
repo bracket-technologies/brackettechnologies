@@ -33,7 +33,7 @@
                                                     "view": "View?class=flex;style:[width=max-content;gridTemplateColumns='repeat(15,auto)';grid-gap=2px;display=grid;height=max-content;min-height=2.88rem]",
                                                     "children": [
                                                         {
-                                                            "view": "[View]:[data=range():[bracketSheetTable:().sheetTable.sheetTable.headers.len()-1]]?style:[minHeight=2.88rem;if():[notFirstColumn()]:[width=columnWidth();minWidth=9rem;cursor=text]:[display=flex;justifyContent=center;resize=vertical;width=4rem];paddingTop=.3rem;backgroundColor=white;transition=.2s backgroundColor]",
+                                                            "view": "[View]:[data=range():[bracketSheetTable:().sheetTable.sheetTable.headers.len()]]?style:[minHeight=2.88rem;if():[notFirstColumn()]:[width=columnWidth();minWidth=9rem;cursor=text]:[display=flex;justifyContent=center;resize=vertical;width=4rem];paddingTop=.3rem;backgroundColor=white;transition=.2s backgroundColor]",
                                                             "children": [
                                                                 {
                                                                     "view": "Text?if():[notFirstColumn()]:[editable=true];text=if():[notFirstColumn()]:[[form().headers.[_-1].text]||'']:[_+1];style:[fontSize=1.4rem;textAlign=start];timer():[if():[notFirstColumn()]:[handleHeaderChange()]]:1000;blur:[handleHeaderChange()]"
@@ -48,13 +48,13 @@
                                             "view": "View:sheetRowsView?class=flex column;style:[gap=2px]",
                                             "children": [
                                                 {
-                                                    "view": "[View]:[data=range():[loopRange:()]]?class=flex;style:[width=100%]",
+                                                    "view": "[View]:[data=range():[loopRange:()+1]]?class=flex;style:[width=100%]",
                                                     "children": [
                                                         {
                                                             "view": "View?class=flex;style:[width=max-content;gridTemplateColumns='repeat(15,auto)';grid-gap=2px;display=grid;height=max-content;min-height=2.88rem];rowCounter:()+=1",
                                                             "children": [
                                                                 {
-                                                                    "view": "[View]:[data=range():[bracketSheetTable:().sheetTable.sheetTable.headers.len()-1]]?style:[minHeight=2.88rem;if():[notFirstColumn()]:[width=columnWidth();minWidth=9rem;cursor=text]:[display=flex;justifyContent=center;resize=vertical;width=4rem];paddingTop=.3rem;backgroundColor=white];click:[checkIfHeaderAvailable()]",
+                                                                    "view": "[View]:[data=range():[bracketSheetTable:().sheetTable.sheetTable.headers.len()]]?style:[minHeight=2.88rem;if():[notFirstColumn()]:[width=columnWidth();minWidth=9rem;cursor=text]:[display=flex;justifyContent=center;resize=vertical;width=4rem];paddingTop=.3rem;backgroundColor=white];click:[checkIfHeaderAvailable()]",
                                                                     "children": [
                                                                         {
                                                                             "view": "Text?().rowCounter=rowCounter:()-1;text=if():[notFirstColumn()]:[form().data.[().rowCounter].[form().headers.[_-1].key]||'']:[rowCounter:()+1];style:[fontSize=1.4rem;textAlign=start];keyup:[form().data.[().rowCounter].[form().headers.[_-1].key]=txt()]"

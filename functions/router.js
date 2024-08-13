@@ -18,7 +18,7 @@ const detector = new (require('node-device-detector'))({
 
 module.exports = ({ req, res }) => {
 
-  var path = decodeURI(req.url).split("/"), id = "view"
+  var path = decodeURI(req.url).split("/"), id = "server"
 
   // storage/resources
   if (path[1] === "storage") return getLocalFile({ req, res })
@@ -37,19 +37,19 @@ module.exports = ({ req, res }) => {
   var {stack, address} = openStack({ _window, id, event: req.method.toLowerCase(), server: global.manifest.server, action: global.manifest.action })
 
   // get view view
-  var { data } = database({ _window, req, res, stack, props: {}, action: "search()", preventDefault: true, data: { collection: "view", doc: "view" } })
+  var { data } = database({ _window, req, res, stack, props: {}, action: "search()", preventDefault: true, data: { collection: "view", doc: "server" } })
   
   // init view
-  var view = { ...data, __customView__: "view", __viewPath__: ["view"], __customViewPath__: ["view"] }
+  var view = { ...data, __customView__: "server", __viewPath__: ["server"], __customViewPath__: ["server"] }
 
   // lookup actions
-  view.__lookupActions__ = [...global.__lookupActions__, { doc: "view", collection: "view" }]
+  view.__lookupActions__ = [...global.__lookupActions__, { doc: "server", collection: "view" }]
 
   // log start render
-  logger({ _window, data: { key: "view", start: true } })
+  logger({ _window, data: { key: "server", start: true } })
 
   // address toView
-  var address = actions["addresser()"]({ _window, id, status: "Start", type: "function", function: "toView", stack, nextAddress: address, props: {}, __, data: { view }, logger: { key: "view", end: true } }).address
+  var address = actions["addresser()"]({ _window, id, status: "Start", type: "function", function: "toView", stack, nextAddress: address, props: {}, __, data: { view }, logger: { key: "server", end: true } }).address
 
   // render view
   actions["view()"]({ _window, req, res, stack, props: { rendering: true }, __, address, lookupActions: view.__lookupActions__, data: { view } })
@@ -103,8 +103,8 @@ const initializer = ({ id, req, res }) => {
   var lookupActions = props.lookupActions || []
   var path = props.path || decodeURI(req.url).split("/")
   var page = props.page || path[1] || "main"
-  var server = props.server || "render"
-  var action = req.body.action || "document"
+  var server = props.server || "renderer"
+  var action = req.body.action || "document()"
 
   // cookies
   parseCookies(req, host)

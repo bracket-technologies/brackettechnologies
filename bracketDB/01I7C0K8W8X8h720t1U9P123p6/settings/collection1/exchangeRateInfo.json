@@ -34,7 +34,7 @@
             },
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {
@@ -125,7 +125,7 @@
             "exchangeRates": "if():[createFormStack:().len()>0]:[return():[[generalPopup:().docName]:().exchangeRates.clone().pullIndex():0]]:[return():[__.docDefaultValues]]"
         }
     },
-    "popupInfo": {
+    "form": {
         "title": "Currency Rate",
         "docName": "exchangeRate"
     }

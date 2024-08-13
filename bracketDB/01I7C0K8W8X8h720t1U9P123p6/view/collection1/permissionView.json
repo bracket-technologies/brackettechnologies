@@ -77,7 +77,7 @@
                 "_": "if():[_='Select All']:[selectAllPermissions()]:[selectPermission()]"
             },
             "#openUserForm": {
-                "setGeneralPopup": "generalPopup:()=[title=currentOpenManager:().popupInfo.title;popupName=customForm;inputInfo=currentOpenManager:().createFormInputs;docName=currentOpenManager:().popupInfo.docName];if():[currentOpenManager:().permission]:[generalPopup:().permission=currentOpenManager:().permission;generalPopup:().defaultPermission=currentOpenManager:().defaultPermission];openPopup()",
+                "setGeneralPopup": "generalPopup:()=[title=currentOpenManager:().form.title;popupName=customForm;inputInfo=currentOpenManager:().createFormInputs;docName=currentOpenManager:().form.docName];if():[currentOpenManager:().permission]:[generalPopup:().permission=currentOpenManager:().permission;generalPopup:().defaultPermission=currentOpenManager:().defaultPermission];openPopup()",
                 "openPopup": "():generalPopup.refresh()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1]]",
                 "[object Object]": "loader.show;creat:().pullItem():[createFormStack:().at():[-1]];setGeneralPopup()",
                 "_": "loader.show;createFormStack:().pullItem():[createFormStack:().at():[-1]];setGeneralPopup()"

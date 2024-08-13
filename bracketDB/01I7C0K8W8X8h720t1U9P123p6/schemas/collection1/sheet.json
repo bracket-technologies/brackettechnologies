@@ -4,37 +4,37 @@
             "keyValue": [
                 {
                     "path": "name",
-                    "type": "string",
+                    "type": "text",
                     "key": "name",
                     "required": "true"
                 },
                 {
                     "path": "branch",
-                    "type": "string",
+                    "type": "text",
                     "key": "branch",
                     "required": "true"
                 },
                 {
                     "path": "headers",
-                    "type": "array",
+                    "type": "list",
                     "key": "headers",
                     "required": "true"
                 },
                 {
                     "path": "data",
-                    "type": "array",
+                    "type": "list",
                     "key": "data",
                     "required": "true"
                 },
                 {
                     "path": "type",
-                    "type": "string",
+                    "type": "text",
                     "key": "type",
                     "required": "true"
                 },
                 {
                     "path": "width",
-                    "type": "array",
+                    "type": "list",
                     "key": "width"
                 }
             ]

@@ -101,7 +101,7 @@
     "creationDate": 1709895267576,
     "ledgerAccountName": "Expenditure",
     "id": "expenditureManager",
-    "popupInfo": {
+    "form": {
         "docName": "expenditureInfo",
         "title": "Expenditure Account Form"
     },
@@ -202,7 +202,7 @@
             },
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {

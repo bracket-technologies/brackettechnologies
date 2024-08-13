@@ -41,7 +41,7 @@
                             },
                             {
                                 "path": "description",
-                                "type": "string",
+                                "type": "text",
                                 "key": "description"
                             },
                             {
@@ -134,7 +134,7 @@
                             },
                             {
                                 "path": "description",
-                                "type": "string",
+                                "type": "text",
                                 "key": "description"
                             },
                             {
@@ -235,7 +235,7 @@
                                 },
                                 {
                                     "path": "description",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "description"
                                 },
                                 {
@@ -328,7 +328,7 @@
                                 },
                                 {
                                     "path": "description",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "description"
                                 },
                                 {

@@ -7,7 +7,7 @@
     "creationDate": 1709218295305,
     "invoiceType": "Ticket Invoice",
     "id": "ticketInvoiceManager",
-    "popupInfo": {
+    "form": {
         "docName": "invoiceInfo",
         "title": "Invoice Form"
     },
@@ -2122,7 +2122,7 @@
             },
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {

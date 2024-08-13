@@ -2,12 +2,9 @@
     "docs": [
         "host1",
         "host2",
-        "host3",
-        "host6",
-        "host7",
-        "host8"
+        "host3"
     ],
     "indexes": [],
-    "docsLength": 6,
-    "size": -3021
+    "docsLength": 3,
+    "size": -409
 }

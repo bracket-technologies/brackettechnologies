@@ -2,10 +2,10 @@
     "view": "View:customDroplist?class=column;style:[position=fixed;backgroundColor=white;zIndex=100;opacity=0;borderRadius=.4rem;boxShadow='0px 0px 7px 4px rgba(0,0,0,0.1)';maxHeight=30rem;transition='height 0.2s ease 0s, opacity 0.4s ease 0s';left=-50vw];closeDroplist()",
     "children": [
         {
-            "view": "[View]:[data=droplistItems:()]?style:[maxHeight=if():[_.height]:[_.height]:[30rem];minWidth=10rem;width=if():[_.width]:[_.width]:[30rem];overflowY=auto;borderRadius=.4rem;overflowX=hidden];addOnScroll()?droplistItems:()",
+            "view": "View?data=droplistItems:();style:[maxHeight=if():[_.height]:[_.height]:[30rem];minWidth=10rem;width=if():[_.width]:[_.width]:[30rem];overflowY=auto;borderRadius=.4rem;overflowX=hidden];addOnScroll()?droplistItems:()",
             "children": [
                 {
-                    "view": "View?class=column ;style:[width=100%;#height=auto]",
+                    "view": "View?class=column ;style:[width=100%]",
                     "children": [
                         {
                             "view": "_.viewName?data=_.viewInfo?_.viewName"
@@ -31,9 +31,12 @@
     "__props__": {
         "id": "q1m7q1d1K0G3u1f3g675c1G995",
         "doc": "customDroplist",
+        "counter": 6,
         "creationDate": 1711031365195,
-        "active": true,
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "collection": "view",
+        "chunk": "chunk1",
+        "lastModified": 1723453523970,
+        "dev": false,
         "actions": {
             "closeDroplist": {
                 "closeDroplistOnMouseleave": "timer():[if():[!().mouseIn]:[().style():[opacity=0;height=0px]]]:600",
@@ -43,30 +46,12 @@
             "addOnScroll": "scroll:[if():[el().scrollHeight-[el().clientHeight+el().scrollTop]<100;dropListNumber:()<_.viewInfo.items.len()]:[():codeDroplist.insert():[():codeDroplist.children().[-1]]]]",
             "saveSelected": "if():[():[__.identifier].1stChild().type=Input]:[():[__.identifier].1stChild().txt()=_;if():[():[__.identifier].___.path]:[():[__.identifier].__.[():[__.identifier]._.inputPath]=_]:[():[__.identifier].form().[():[__.identifier]._.inputPath]=_]];if():[():[__.identifier]._.droplistClickAction]:[[():[__.identifier]._.droplistClickAction]()]"
         },
-        "collapsed": [
-            "_map:path:path()",
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "closeDroplist"
-                ]
-            }
-        ],
         "comments": [],
-        "dirPath": [],
-        "version": 0,
-        "counter": 6,
-        "secure": false,
-        "chunk": "chunk1",
-        "collection": "view"
+        "collapsed": [
+            "_map:path:path()"
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 2423
     }
 }

@@ -10,13 +10,13 @@
                 },
                 {
                     "path": "scheduleId",
-                    "type": "string",
+                    "type": "text",
                     "key": "id",
                     "required": "true"
                 },
                 {
                     "path": "users",
-                    "type": "array",
+                    "type": "list",
                     "key": "users",
                     "required": "true"
                 }

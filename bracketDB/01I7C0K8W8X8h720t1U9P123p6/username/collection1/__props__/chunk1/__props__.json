@@ -1,5 +1,6 @@
 {
     "docs": [
+        "username6",
         "username5",
         "username4",
         "username3",
@@ -7,6 +8,6 @@
         "username1"
     ],
     "chunk": "chunk1",
-    "docsLength": 5,
-    "size": 2322
+    "docsLength": 6,
+    "size": 2826
 }

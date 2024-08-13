@@ -1,5 +1,5 @@
 {
-    "view": "View:customInput?class=flex column;if():[_.inputValue]:[inputValueHandler()];click:[log():[path()]];if():[_.sheetName;_.items]:[_.items.del()];style:[width=100%;overflow=hidden;align-self=end;if():[generalPopup:().read]:[pointerEvents=none];if():[!_.editable;generalPopup:().edit]:[pointerEvents=none]];;loaded:[if():[generalPopup:().edit;_.editable]:[handleInitailValue()]];?!_.emptyInput",
+    "view": "View?class=flex column;if():[_.inputValue]:[inputValueHandler()];click:[log():[path()]];if():[_.sheetName;_.items]:[_.items.del()];style:[width=100%;overflow=hidden;align-self=end;if():[generalPopup:().read]:[pointerEvents=none];if():[!_.editable;generalPopup:().edit]:[pointerEvents=none]];;loaded:[if():[generalPopup:().edit;_.editable]:[handleInitailValue()]];?!_.emptyInput",
     "children": [
         {
             "view": "View?class=flex column?!_.searchable;!_.unitPath;!_.governmentCode;!_.govInput;!_.generalLedger;!_.priceInput;!_.unitValue;!_.codeInput;!_.switch",
@@ -62,9 +62,6 @@
             "view": "unitPathInput??_.unitPath||_.priceInput||_.unitValue"
         },
         {
-            "view": "ledgerCounterInput??_.generalLedger||_.govInput;false"
-        },
-        {
             "view": "switchInput??_.switch"
         }
     ],
@@ -75,7 +72,7 @@
         "creationDate": 1711031365199,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1722419390400,
+        "lastModified": 1723451912322,
         "dev": false,
         "actions": {
             "openPermissionPopup": {
@@ -142,7 +139,7 @@
             "droplistHandler": {
                 "getItemsFromData": "loader.show;getDataForDroplist():[collection=_.items.collection;fields=_.items.fields]:[loader.hide;if():[_.success]:[droplist.items=_.data.():[__.items.returnKey]]]",
                 "handleDroplistClickIfMap": "data()=_.items.find():[text=clicked().txt()].pathValue;#saveInDoc():[_.items.find():[text=clicked().txt()].pathValue];txt()=clicked().txt();[_.droplistClickAction]()",
-                "handeItemsCondition": "_.items._():[().isConditionTrue=true;_.condition._():[if():[!form().[_.conditionReference].in():[_.condition]]:[().isConditionTrue=false]];if():[().isConditionTrue]:[if():[_.items.type()=array]:[().droplist.items=_.items]:[getItemsFromData()]]]",
+                "handeItemsCondition": "_.items._():[().isConditionTrue=true;_.condition._():[if():[!form().[_.conditionReference].in():[_.condition]]:[().isConditionTrue=false]];if():[().isConditionTrue]:[if():[_.items.type()=list]:[().droplist.items=_.items]:[getItemsFromData()]]]",
                 "handleDroplistItems": "if():[_.items.collection]:[getItemsFromData()].elif():[_.items.0.text]:[droplist.items=_.items.():text].elif():[_.items.0.condition]:[handeItemsCondition()]:[().droplist.items=[_.items]()]",
                 "_": "handleDroplistItems();droplist:[filterable=_.filterable;searchable=_.searchable;preventDefault;style:[maxHeight=20rem]];if():[_.items.0.text]:[[click:droplist?handleDroplistClickIfMap()]]:[[click:droplist?handleDroplistClick()]]",
                 "handleDroplistClick": "data()=clicked().txt();txt()=clicked().txt();[_.droplistClickAction]()"
@@ -392,7 +389,7 @@
                 ]
             },
             {
-                "note": "input controle btns",
+                "note": "input control btns",
                 "path": [
                     "children",
                     0,
@@ -478,6 +475,27 @@
                 "note": "@@@@@@@@",
                 "path": [
                     "#customizableIn"
+                ]
+            },
+            {
+                "note": "code input",
+                "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "switch",
+                "path": [
+                    "children",
+                    4
+                ]
+            },
+            {
+                "note": "unitPath||priceInput||unitValue",
+                "path": [
+                    "children",
+                    3
                 ]
             }
         ],
@@ -575,31 +593,7 @@
             },
             {
                 "path": [
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    3
-                ]
-            },
-            {
-                "path": [
                     "#h"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    4
                 ]
             },
             {
@@ -679,10 +673,70 @@
                 "path": [
                     "droplistHandler"
                 ]
+            },
+            {
+                "path": [
+                    "children",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2
+                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 16640
+        "size": 16899
     }
 }

@@ -1,46 +1,11 @@
 {
-    "view": "View?id=login;class=flexbox;style:[minHeight=100vh;width=100%;backgroundColor=#f8f8f8];title=Login | Travel Accounting Platform;form=login;signupPageIndex:()=0;getLoginPage()",
+    "view": "View?id=login;class=flexbox;style:[minHeight=100vh;width=100%;backgroundColor=#f8f8f8];title='Login | Travel Accounting Platform';[getSchema():[schema=loginPage]:[data=_.schema]]():[collection=actions;doc=main]",
     "children": [
         {
-            "view": "View?class=flexbox column;style:[padding=if():[mobile()]:[0rem 3rem 0rem 3rem]:[5rem 3rem];backgroundColor=#fff;borderRadius=1rem;width=45rem;gap=3rem;if():[mobile()]:[height=100vh]]",
+            "view": "View?style:[[_.styles]()];[form=_.form?_.form]",
             "children": [
                 {
-                    "view": "View?class=flexbox column;style:[;if():[mobile()]:[height=30%]:[height=100%];gap=2rem;cursor=default]",
-                    "children": [
-                        {
-                            "view": "Image?style:[height=12rem;width=10rem];src='https://storage.googleapis.com/bracket-technologies.appspot.com/storage-tt/XPj7rpzqqcYaio0jdejE?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=BaeQg0yFhhoHkbcBMfX4tFfKR%2BaanI7YY6qCnRPW2oS6AqLvfeNl3OqfBQhKCk%2Fg2bn0x4OR%2FQKwYEI7SIFCqFG09WYwnp4v4EHwOsMKM7KB6ocxSEqIn3W0%2BAi6vqseocZky5Ms15WfSyc4GtD%2BrbsFZkEO%2F9zB9I80nwUSeVF1BcUp0juRGKdyge6B31t66J9iKiy2mCAnoXN4I61OVojFghacVVSq8bu1WVrggOjp1Z0H%2BifUxpCZ68rXI%2BcqsglgVT6RMqamDGa32XEKB9jOh3IN09XwwE8if5LBwlGEiocVvJ4tKGLWFfPQdhFk37fogg8GM9ivvjMSFPYGIg%3D%3D';"
-                        },
-                        {
-                            "view": "View?class=flexbox column;style:[gap=.5rem]",
-                            "children": [
-                                {
-                                    "view": "Text?text=Welcome To;style:[fontSize=1.5rem;fontWeight=900]"
-                                },
-                                {
-                                    "view": "Text?text=Travel Accounting Platform;style:[fontSize=2rem;fontWeight=900]"
-                                }
-                            ]
-                        }
-                    ]
-                },
-                {
-                    "view": "View?class=flex column;style:[gap=2rem;width=100%]",
-                    "children": [
-                        {
-                            "view": "[Input]:[data=loginInputsData()]?password=_.password;path=_.path;label.text=_.label;label=[text=_.label;style:[fontSize=1.5rem]];class=flex;style:[height=4rem;width=100%;border=1px solid #ddd;fontSize=1.5rem];keydown:[parent().next().click()?e().key=Enter]"
-                        }
-                    ]
-                },
-                {
-                    "view": "Text:loginBtn?class=flexbox;text=Login;style:[backgroundColor=configs().mainColor;fontSize=2rem;color=#fff;width=100%;if():[mobile()]:[height=5rem]:[height=4rem];borderRadius=.75rem;transition=.2s;cursor=pointer];hover.style:[backgroundColor=#de2307];click:[logintt()]"
-                },
-                {
-                    "view": "View?class=flex;style:[width=100%;gap=.5rem]",
-                    "children": [
-                        {
-                            "view": "[Text]:[data=forgetPassSignup()]?class=flexbox;text=_.text;style:[fontSize=1.2rem;if():[_.cursor]:[cursor=_.cursor];if():[_.marginLeft]:[marginLeft=_.marginLeft];if():[_.textDecoration]:[textDecoration=_.textDecoration];if():[_.color]:[color=_.color]];click:[if():[_.text='SignUp']:[signUp()]]"
-                        }
-                    ]
+                    "view": "[Section]:[data=_.sections]"
                 }
             ]
         }
@@ -52,25 +17,14 @@
         "creationDate": 1711031365208,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1722599191520,
+        "lastModified": 1723207410507,
         "dev": false,
         "actions": {
-            "configs": "publicData:().loginPage",
-            "getLoginPage": "search():[collection=publicCollection;doc=loginPage]:[publicData:().loginPage=_.data]",
-            "forgetPassSignup": ":[text=configs().forgetPassQuestText]:[text=configs().signupText;cursor=pointer;color=configs().mainColor;textDecoration=underline;click='signUp()']:[text=configs().forgetPasswordText;cursor=pointer;marginLeft=auto;textDecoration=underline;click='root():forgotpassword']",
-            "loginInputsData": ":[path=username;label=configs().usernamePlaceholder]:[path=password;label=configs().passwordPlaceholder;password=true]",
-            "logintt": {
-                "wrongUserNote": "note():[text='Wrong username or password!';type=danger]",
-                "emailAndPasswordExist": "login():[form()]:[if():[_.success]:[loader.show;getAllData()::[setCookie():[name=session;value=_.session];userData:()=_.data;root():portal;loader.hide]]:[loader.hide;wrongUserNote()]]",
-                "emailAndPasswordDoesNotExist": "note():[text=if():[!form().username]:[configs().noEmailAlert]:[configs().noPasswordAlert];danger]",
-                "_": "loader.show;if():[form().username;form().password]:[emailAndPasswordExist()]:[loader.hide;emailAndPasswordDoesNotExist()]"
-            },
-            "signUp": {
-                "setGeneralPopup": "setDataSource();generalPopup:()=[path=().manager.popupInfo.path;defaultPermission=().manager.defaultPermission;title=().manager.popupInfo.title;popupName=customForm;inputInfo=().manager.createFormInputs;docName=().manager.popupInfo.docName];openPopup()",
-                "openPopup": "():generalPopup.refresh()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1]]",
-                "getAgentInfo": "signupForm()::[if():[_.success]:[signInForm:()=_.data];setGeneralPopup()]",
-                "_": "loader.show;().DocsIds=:branchManager:userManager:currencyManager;if():[!signInForm:()]:[getAgentInfo()]:[setGeneralPopup()]",
-                "setDataSource": "().manager=signInForm:().find():[id=().DocsIds.[signupPageIndex:()]]"
+            "login": {
+                "_": "[login():[form()]:[successHandler()?_.success?wrongUser()]]():[doc=server]?form().username;form().password?missingData()",
+                "successHandler": "form().del();getAllData()::[setCookie():[name=session;value=_.session];userData:()=_.data;root():portal]",
+                "wrongUser": "note():[text='Wrong username or password!';type=danger]",
+                "missingData": "note():[text='Enter username or password!';type=danger]"
             }
         },
         "comments": [
@@ -86,85 +40,11 @@
                 "path": [
                     "checkSession"
                 ]
-            },
-            {
-                "note": "title",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "note": "loginBtn",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "note": "inputs",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "forgetPassSignup",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    3
-                ]
             }
         ],
-        "collapsed": [
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "signUp"
-                ]
-            }
-        ],
+        "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 4925
+        "size": 1068
     }
 }

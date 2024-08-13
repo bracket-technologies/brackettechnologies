@@ -1,0 +1,43 @@
+{
+    "firstTrigger": 1722931000813,
+    "serverTriggers": 184,
+    "date": 1722891600000,
+    "projectID": "11T7o2m2E875m0c9D709Q2s2i4",
+    "activityPerHour": [
+        {
+            "time": 1722927600000,
+            "firstTrigger": 1722931000813,
+            "serverTriggers": 67,
+            "lastTrigger": 1722931195086
+        },
+        {
+            "time": 1722931200000,
+            "firstTrigger": 1722931255290,
+            "serverTriggers": 113,
+            "lastTrigger": 1722933901503
+        },
+        {
+            "time": 1722934800000,
+            "firstTrigger": 1722935475705,
+            "serverTriggers": 4,
+            "lastTrigger": 1722936384131
+        }
+    ],
+    "lastTrigger": 1722936384131,
+    "__props__": {
+        "id": "t1b7U222E933J1k0I0O0R84177",
+        "doc": "projectActivity53",
+        "counter": 53,
+        "creationDate": 1722931000817,
+        "collection": "projectActivity",
+        "chunk": "chunk1",
+        "lastModified": 1722936384139,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 737
+    }
+}

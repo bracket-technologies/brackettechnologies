@@ -107,7 +107,7 @@
         ]
     },
     "id": "branchManager",
-    "popupInfo": {
+    "form": {
         "docName": "signUp",
         "title": "Branch Form",
         "path": "branchInfo"

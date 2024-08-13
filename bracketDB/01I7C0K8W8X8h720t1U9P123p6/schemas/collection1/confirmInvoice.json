@@ -20,7 +20,7 @@
                                     "key": "ledgerAccount",
                                     "path": "supplierAccount",
                                     "required": true,
-                                    "type": "string"
+                                    "type": "text"
                                 },
                                 {
                                     "path": "supplierAccount",
@@ -40,7 +40,7 @@
                                     "key": "currency",
                                     "path": "costCurrency",
                                     "required": true,
-                                    "type": "string"
+                                    "type": "text"
                                 },
                                 {
                                     "path": "costTotalPrice",
@@ -83,7 +83,7 @@
                                     "key": "currency",
                                     "path": "costCurrency",
                                     "required": true,
-                                    "type": "string"
+                                    "type": "text"
                                 },
                                 {
                                     "path": "supplierVAT",
@@ -148,7 +148,7 @@
                                     "key": "currency",
                                     "path": "costCurrency",
                                     "required": true,
-                                    "type": "string"
+                                    "type": "text"
                                 },
                                 {
                                     "path": "costSubTotal",
@@ -329,7 +329,7 @@
                                     "key": "currency",
                                     "path": "costCurrency",
                                     "required": true,
-                                    "type": "string"
+                                    "type": "text"
                                 },
                                 {
                                     "path": "customerVAT",
@@ -381,7 +381,7 @@
                             "key": "ledgerAccount",
                             "path": "customerAccount",
                             "required": true,
-                            "type": "string"
+                            "type": "text"
                         },
                         {
                             "path": "customerAccount",
@@ -436,7 +436,7 @@
                             "key": "ledgerAccount",
                             "path": "salesmanAccount",
                             "required": true,
-                            "type": "string"
+                            "type": "text"
                         },
                         {
                             "path": "salesmanAccount",

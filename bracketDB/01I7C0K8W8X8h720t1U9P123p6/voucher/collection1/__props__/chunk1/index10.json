@@ -4,8 +4,8 @@
         "status": "Confirmed"
     },
     "voucher2": {
-        "type": "Receipt Voucher",
-        "status": "Pending"
+        "type": "Journal Voucher",
+        "status": "Confirmed"
     },
     "voucher3": {
         "type": "Journal Voucher",

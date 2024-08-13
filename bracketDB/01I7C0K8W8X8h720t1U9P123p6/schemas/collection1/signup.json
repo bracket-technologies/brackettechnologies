@@ -353,37 +353,37 @@
                     "keyValue": [
                         {
                             "path": "name",
-                            "type": "string",
+                            "type": "text",
                             "required": "true",
                             "key": "name"
                         },
                         {
                             "path": "country",
-                            "type": "string",
+                            "type": "text",
                             "required": true,
                             "key": "country"
                         },
                         {
                             "path": "city",
-                            "type": "string",
+                            "type": "text",
                             "required": true,
                             "key": "city"
                         },
                         {
                             "path": "address",
-                            "type": "string",
+                            "type": "text",
                             "required": true,
                             "key": "address"
                         },
                         {
                             "path": "email",
-                            "type": "array",
+                            "type": "list",
                             "required": true,
                             "key": "email"
                         },
                         {
                             "path": "contactNumber",
-                            "type": "array",
+                            "type": "list",
                             "required": true,
                             "key": "contactNumber"
                         },
@@ -392,32 +392,32 @@
                             "input": [
                                 {
                                     "path": "title",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "title"
                                 },
                                 {
                                     "path": "gender",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "gender"
                                 },
                                 {
                                     "path": "position",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "position"
                                 },
                                 {
                                     "path": "name",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "name"
                                 },
                                 {
                                     "path": "email",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "email"
                                 },
                                 {
                                     "path": "contactNumber",
-                                    "type": "string",
+                                    "type": "text",
                                     "key": "contactNumber"
                                 }
                             ]
@@ -432,13 +432,13 @@
                     "keyValue": [
                         {
                             "path": "firstName",
-                            "type": "string",
+                            "type": "text",
                             "required": "true",
                             "key": "firstName"
                         },
                         {
                             "path": "lastName",
-                            "type": "string",
+                            "type": "text",
                             "required": "true",
                             "key": "lastName"
                         },
@@ -449,37 +449,37 @@
                         },
                         {
                             "path": "nationality",
-                            "type": "string",
+                            "type": "text",
                             "required": "true",
                             "key": "nationality"
                         },
                         {
                             "path": "contactNumber",
-                            "type": "string",
+                            "type": "text",
                             "required": "true",
                             "key": "contactNumber"
                         },
                         {
                             "path": "email",
-                            "type": "string",
+                            "type": "text",
                             "required": "true",
                             "key": "email"
                         },
                         {
                             "path": "country",
-                            "type": "string",
+                            "type": "text",
                             "key": "country"
                         },
                         {
                             "path": "city",
                             "#data:().collection.countries.countries.[form().country]": "#data:().collection.countries.countries.[form().country]",
                             "data:().collection.countries.countries.[form().country]": "data:().collection.countries.countries.[form().country]",
-                            "type": "string",
+                            "type": "text",
                             "key": "city"
                         },
                         {
                             "path": "address",
-                            "type": "string",
+                            "type": "text",
                             "key": "address"
                         }
                     ],
@@ -497,7 +497,7 @@
                     "keyValue": [
                         {
                             "path": "username",
-                            "type": "string",
+                            "type": "text",
                             "required": "true",
                             "key": "username"
                         }
@@ -526,7 +526,7 @@
                     "keyValue": [
                         {
                             "path": "password",
-                            "type": "string",
+                            "type": "text",
                             "required": "true",
                             "key": "password"
                         }
@@ -572,13 +572,13 @@
                     "keyValue": [
                         {
                             "path": "code",
-                            "type": "string",
+                            "type": "text",
                             "key": "code",
                             "required": true
                         },
                         {
                             "path": "country",
-                            "type": "string",
+                            "type": "text",
                             "key": "country",
                             "required": true
                         },
@@ -588,7 +588,7 @@
                         },
                         {
                             "path": "symbole",
-                            "type": "string",
+                            "type": "text",
                             "key": "symbole",
                             "required": true
                         },
@@ -599,7 +599,7 @@
                         },
                         {
                             "path": "name",
-                            "type": "string",
+                            "type": "text",
                             "key": "name",
                             "required": true
                         }
@@ -632,7 +632,7 @@
                         },
                         {
                             "path": "code",
-                            "type": "string",
+                            "type": "text",
                             "key": "code",
                             "required": true
                         }

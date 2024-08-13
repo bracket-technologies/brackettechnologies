@@ -1,0 +1,79 @@
+{
+    "firstTrigger": 1722841129306,
+    "serverTriggers": 362,
+    "date": 1722805200000,
+    "userID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "activityPerHour": [
+        {
+            "time": 1722837600000,
+            "firstTrigger": 1722841129306,
+            "serverTriggers": 13,
+            "lastTrigger": 1722841137771
+        },
+        {
+            "time": 1722841200000,
+            "firstTrigger": 1722842695071,
+            "serverTriggers": 26,
+            "lastTrigger": 1722843066865
+        },
+        {
+            "time": 1722844800000,
+            "firstTrigger": 1722846423554,
+            "serverTriggers": 9,
+            "lastTrigger": 1722847734659
+        },
+        {
+            "time": 1722848400000,
+            "firstTrigger": 1722849033453,
+            "serverTriggers": 194,
+            "lastTrigger": 1722851970105
+        },
+        {
+            "time": 1722852000000,
+            "firstTrigger": 1722852034840,
+            "serverTriggers": 43,
+            "lastTrigger": 1722853223306
+        },
+        {
+            "time": 1722855600000,
+            "firstTrigger": 1722856286244,
+            "serverTriggers": 20,
+            "lastTrigger": 1722858897675
+        },
+        {
+            "time": 1722859200000,
+            "firstTrigger": 1722860731810,
+            "serverTriggers": 3,
+            "lastTrigger": 1722860746146
+        },
+        {
+            "time": 1722862800000,
+            "firstTrigger": 1722865168333,
+            "serverTriggers": 31,
+            "lastTrigger": 1722866288077
+        },
+        {
+            "time": 1722866400000,
+            "firstTrigger": 1722866410948,
+            "serverTriggers": 23,
+            "lastTrigger": 1722867065308
+        }
+    ],
+    "lastTrigger": 1722867065308,
+    "__props__": {
+        "id": "Q1r782T2k8h4e1N1T239I3d1A0",
+        "doc": "userActivity43",
+        "counter": 43,
+        "creationDate": 1722841129310,
+        "collection": "userActivity",
+        "chunk": "chunk1",
+        "lastModified": 1722867065315,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1327
+    }
+}

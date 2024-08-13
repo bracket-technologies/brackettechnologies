@@ -1,5 +1,6 @@
 {
     "docs": [
+        "password6",
         "password5",
         "password4",
         "password3",
@@ -7,6 +8,6 @@
         "password1"
     ],
     "chunk": "chunk1",
-    "docsLength": 5,
-    "size": 2405
+    "docsLength": 6,
+    "size": 2910
 }

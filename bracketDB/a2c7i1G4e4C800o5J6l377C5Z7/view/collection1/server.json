@@ -1,0 +1,47 @@
+{
+    "view": "Action?id=server",
+    "__props__": {
+        "id": "v1A7Q1W4v4B8d408w4z8L8e1O7",
+        "doc": "server",
+        "counter": 2,
+        "creationDate": 1714484848817,
+        "active": true,
+        "actions": {
+            "getSideBarData": {
+                "_": "start();search():[collection=headCateg;doc=ggg]:[sendData()]",
+                "sendData": "end():[success=true;categories=_.data]?_.data?end():[success=false;msg='No collection found!'];"
+            },
+            "#getSchemaDatddda": "search():[collection=pageNav]:[send():[success=true;data=_.data.values()]]",
+            "getSchemaData": {
+                "_": "search():[collection=pageNav;doc=navbarselect]:[sendSchemaToOpen()]",
+                "sendSchemaToOpen": "send():[success=true;data=_.data]?_.data?send():[success=false;msg='No collection found!'];"
+            },
+            "schemaSection": {
+                "_": "search():[collection=;doc=clickedSchema:()]:[sendSchemaSection()]",
+                "sendSchemaSection": "send():[success=true;data=_.data]?_.data?send():[success=false;msg='No collection found!']"
+            },
+            "managersSearch": {
+                "_": "search():[collection=accountManagers]:[sendManagerList()]",
+                "sendManagerList": "send():[success=true;data=_.data;st=l;]?_.data?send():[success=false;msg='No collection found!'];"
+            }
+        },
+        "chunk": "chunk1",
+        "secured": true,
+        "collection": "view",
+        "createdByUserID": "M1X7V1X4O4A8Z076N0c2l5x2R1",
+        "comments": [
+            {
+                "note": "",
+                "path": [
+                    "schemaSection"
+                ]
+            }
+        ],
+        "collapsed": []
+    },
+    "children": [
+        {
+            "view": "Action?[manifest:().action]()"
+        }
+    ]
+}

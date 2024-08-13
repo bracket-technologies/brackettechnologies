@@ -4,7 +4,7 @@
             "keyValue": [
                 {
                     "path": "id",
-                    "type": "string",
+                    "type": "text",
                     "key": "id",
                     "required": true
                 },
@@ -48,13 +48,13 @@
             "keyValue": [
                 {
                     "path": "code",
-                    "type": "string",
+                    "type": "text",
                     "key": "code",
                     "required": true
                 },
                 {
                     "path": "country",
-                    "type": "string",
+                    "type": "text",
                     "key": "country",
                     "required": true
                 },
@@ -65,7 +65,7 @@
                 },
                 {
                     "path": "symbole",
-                    "type": "string",
+                    "type": "text",
                     "key": "symbole",
                     "required": true
                 },
@@ -76,7 +76,7 @@
                 },
                 {
                     "path": "name",
-                    "type": "string",
+                    "type": "text",
                     "key": "name",
                     "required": true
                 },

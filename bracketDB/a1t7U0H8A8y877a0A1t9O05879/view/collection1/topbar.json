@@ -7,7 +7,7 @@
         "creationDate": 1713779601978,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1722005741815,
+        "lastModified": 1723115992441,
         "dev": false,
         "actions": {
             "topbarBtns": ":[text=Features & Facilities;page=main;mount=[true?manifest:().path.1=tap?false]]:[text=Pricing;page=pricing]:[text=Online Training;page=training]:[text=Blog;page=blog]:[text=Contact Us;page=contactus]",
@@ -120,6 +120,23 @@
             },
             {
                 "path": [
+                    "accountDroplistHandlers"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
                     "children",
                     2,
                     "children",
@@ -131,22 +148,11 @@
                     "children",
                     2
                 ]
-            },
-            {
-                "path": [
-                    "accountDroplistHandlers"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1
-                ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 4340
+        "size": 4501
     },
     "children": [
         {
@@ -188,13 +194,13 @@
                     "view": "View?class=flexbox;style:[gap=3rem;marginRight=2rem]",
                     "children": [
                         {
-                            "view": "Icon?class=pointer;name=live_help;google.symbol;tooltip.text=help;style:[fontSize=2rem;width=2rem];[click?root():help]"
+                            "view": "Icon?class=pointer;name=live_help;google.symbol;tooltip.text=help;style:[fontSize=2rem;width=2rem];[click?#root():help;note():[text=Help is unavailable for now!;type=danger]]"
                         },
                         {
-                            "view": "Icon?class=pointer;name=monetization_on;google.symbol;tooltip.text=billing;style:[fontSize=2rem;width=2rem];[click?root():billing]?user:()"
+                            "view": "Icon?class=pointer;name=monetization_on;google.symbol;tooltip.text=billings & subscriptions;style:[fontSize=2rem;width=2rem];[click?root():billing]?user:()"
                         },
                         {
-                            "view": "Icon?class=pointer;name=manage_accounts;google.symbol;tooltip.text=profile;style:[fontSize=2.2rem;width=2rem];[click?root():profile]?user:()"
+                            "view": "Icon?class=pointer;name=manage_accounts;google.symbol;tooltip.text=profile;style:[fontSize=2.2rem;width=2rem];[click?#root():profile;note():[text=Edit profile is unavailable for now!;type=danger]]?user:()"
                         },
                         {
                             "view": "Icon?class=pointer;name=dashboard_customize;google.symbol;tooltip.text=projects;style:[fontSize=2rem;width=2rem];[click?root():projects]?user:()"

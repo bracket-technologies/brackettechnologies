@@ -1,0 +1,30 @@
+{
+    "publicID": "1rgwB078m8x8qhgrT5X949d858",
+    "projectID": "f1m7R0f878N8V7g0c1w8W9u1C6",
+    "projectDoc": "acc",
+    "subdomain": "acc",
+    "host": "acc.localhost",
+    "db": "01I7C0K8W8X8h720t1U9P123p6",
+    "devDB": "",
+    "dev": false,
+    "expiryDate": 1723194793066,
+    "encryptionKey": "0VC0B",
+    "userID": "",
+    "username": "",
+    "__props__": {
+        "id": "F1B7E2p3h10068J3S9W3U0a6W7",
+        "doc": "session183",
+        "counter": 183,
+        "creationDate": 1723108393067,
+        "collection": "session",
+        "chunk": "chunk1",
+        "lastModified": 1723108393067,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 538
+    }
+}

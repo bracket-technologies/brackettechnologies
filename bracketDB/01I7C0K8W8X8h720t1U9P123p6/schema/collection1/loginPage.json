@@ -1,0 +1,296 @@
+{
+    "__props__": {
+        "id": "O1N7H2R3D2U031u3v6p6K7W2v2",
+        "doc": "loginPage",
+        "counter": 1,
+        "creationDate": 1723201366722,
+        "collection": "schema",
+        "chunk": "chunk1",
+        "lastModified": 1723207226867,
+        "dev": false,
+        "actions": {},
+        "comments": [
+            {
+                "note": "footer",
+                "path": [
+                    "sections",
+                    4
+                ]
+            },
+            {
+                "note": "footer",
+                "path": [
+                    "sections",
+                    4
+                ]
+            },
+            {
+                "note": "header",
+                "path": [
+                    "sections",
+                    1
+                ]
+            },
+            {
+                "note": "logo",
+                "path": [
+                    "sections",
+                    0
+                ]
+            },
+            {
+                "note": "inputs",
+                "path": [
+                    "sections",
+                    2
+                ]
+            },
+            {
+                "note": "login",
+                "path": [
+                    "sections",
+                    3
+                ]
+            },
+            {
+                "note": "username",
+                "path": [
+                    "sections",
+                    2,
+                    "views",
+                    0
+                ]
+            },
+            {
+                "note": "password",
+                "path": [
+                    "sections",
+                    2,
+                    "views",
+                    1
+                ]
+            },
+            {
+                "note": "signup",
+                "path": [
+                    "sections",
+                    4,
+                    "views",
+                    1
+                ]
+            },
+            {
+                "note": "get your own",
+                "path": [
+                    "sections",
+                    4,
+                    "views",
+                    0
+                ]
+            },
+            {
+                "note": "forget password",
+                "path": [
+                    "sections",
+                    4,
+                    "views",
+                    2
+                ]
+            }
+        ],
+        "collapsed": [
+            {
+                "path": [
+                    "sections",
+                    2,
+                    "views",
+                    0,
+                    "label"
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    2,
+                    "views",
+                    1,
+                    "label"
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    4,
+                    "views",
+                    2,
+                    "container"
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    2,
+                    "views",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    2,
+                    "views",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    4,
+                    "views",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    4,
+                    "views",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    4,
+                    "views",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "sections",
+                    3
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 3156
+    },
+    "sections": [
+        {
+            "styles": "display=flex;justifyContent=center",
+            "views": [
+                {
+                    "type": "image",
+                    "src": "/storage/eU1YM75W2Nq1Xo8JS3a24tw3d48yg5Mw0GI4Ff7/files/bucket1/Bv1HS7lS2oO27w0Td0vn5C332K2F29321tf7uA2.png",
+                    "styles": "height=12rem;width=10rem;cursor=pointer",
+                    "actions": "[click?root():main]"
+                }
+            ]
+        },
+        {
+            "styles": "gap=.5rem;display=flex;flexDirection=column",
+            "views": [
+                {
+                    "text": "Welcome To",
+                    "styles": "fontSize=1.5rem",
+                    "type": "text"
+                },
+                {
+                    "text": "Travel Accounting Platform",
+                    "styles": "fontSize=2rem",
+                    "type": "text"
+                }
+            ]
+        },
+        {
+            "styles": "display=flex;flexDirection=column;gap=3rem",
+            "views": [
+                {
+                    "path": "username",
+                    "styles": "fontSize=1.4rem;height=4rem;width=100%",
+                    "type": "input",
+                    "label": {
+                        "text": "Username",
+                        "styles": "fontSize=1.4rem"
+                    },
+                    "actions": "[keydown?[login()?data()?note():[text=Enter username!;danger]]?e().key=Enter];[loaded?focus()]"
+                },
+                {
+                    "label": {
+                        "text": "Password",
+                        "styles": "fontSize=1.4rem"
+                    },
+                    "path": "password",
+                    "styles": "fontSize=1.4rem;height=4rem;width=100%",
+                    "inputType": "password",
+                    "type": "input",
+                    "actions": "[keydown?[login()?data()?note():[text=Enter password!;danger]]?e().key=Enter]"
+                }
+            ]
+        },
+        {
+            "views": [
+                {
+                    "text": "Login",
+                    "styles": "backgroundColor=#fb3b1e;color=#fff;fontSize=1.8rem;transition=.2s;borderRadius=.75rem;padding=1rem 0;cursor=pointer;textAlign=center;alignSelf=center",
+                    "hoverStyles": "backgroundColor=#de2307",
+                    "type": "text",
+                    "actions": "[click?login()]"
+                }
+            ]
+        },
+        {
+            "styles": "display=flex;gap=.5rem;width=100%",
+            "views": [
+                {
+                    "text": "Get your own accounting system!",
+                    "type": "text",
+                    "styles": "fontSize=1.2rem"
+                },
+                {
+                    "text": "Signup",
+                    "styles": "color=#fb3b1e;cursor=pointer;textDecoration=underline;fontSize=1.2rem",
+                    "type": "text",
+                    "actions": "[click?win().open():'http://192.168.0.100:81']"
+                },
+                {
+                    "text": "Forget password",
+                    "styles": "cursor=pointer;textDecoration=underline;fontSize=1.2rem",
+                    "type": "text",
+                    "container": {
+                        "styles": "marginLeft=auto"
+                    },
+                    "actions": "[click?root():forgetpassword]"
+                }
+            ]
+        }
+    ],
+    "styles": "display=flex;flexDirection=column;gap=3rem;padding=5rem 3rem;backgroundColor=#fff;borderRadius=1rem;width=50rem",
+    "form": "login"
+}

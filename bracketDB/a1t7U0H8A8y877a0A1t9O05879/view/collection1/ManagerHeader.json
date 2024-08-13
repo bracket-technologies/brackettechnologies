@@ -7,6 +7,8 @@
         "creationDate": 1714399367191,
         "collection": "view",
         "chunk": "chunk1",
+        "lastModified": 1723124053855,
+        "dev": false,
         "actions": {
             "openForm": "[openForm():[schema=_.form]]():[doc=form]?_.form"
         },
@@ -14,17 +16,17 @@
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 1001
+        "size": 1058
     },
     "children": [
         {
-            "view": "View?class=flexbox;style:[gap=1rem;marginRight=auto]",
+            "view": "View?class=flexbox;style:[gap=1rem;marginRight=auto;height=3.5rem]",
             "children": [
                 {
-                    "view": "View?style:[width=2px;height=3rem;backgroundColor=#f00]"
+                    "view": "View?style:[width=2px;height=2.5rem;backgroundColor=#f00]"
                 },
                 {
-                    "view": "Text?text=_.title;style:[fontSize=1.6rem]"
+                    "view": "Text?text=_.title;style:[fontSize=1.5rem]"
                 }
             ]
         },

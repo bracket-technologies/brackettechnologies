@@ -1,0 +1,31 @@
+{
+    "firstTrigger": 1723028744972,
+    "serverTriggers": 3,
+    "date": 1722978000000,
+    "userID": "k1n7X2n340N268u7B4Y466V660",
+    "activityPerHour": [
+        {
+            "time": 1723028400000,
+            "firstTrigger": 1723028744972,
+            "serverTriggers": 3,
+            "lastTrigger": 1723029098613
+        }
+    ],
+    "lastTrigger": 1723029098613,
+    "__props__": {
+        "id": "P1F752X3X052i8J7l4H4x997z7",
+        "doc": "userActivity54",
+        "counter": 54,
+        "creationDate": 1723028744977,
+        "collection": "userActivity",
+        "chunk": "chunk1",
+        "lastModified": 1723029098622,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 525
+    }
+}

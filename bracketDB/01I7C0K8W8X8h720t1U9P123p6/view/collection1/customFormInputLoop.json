@@ -262,7 +262,7 @@
             },
             "handlePageNumber": "parent().2ndChild().1stChild().txt()=2ndParent().1stChild().path().[-1]+1",
             "handleGrid": {
-                "_": "if():[__.grid.type()=array]:[handleGridCondition()]:[().grid=__.grid]",
+                "_": "if():[__.grid.type()=list]:[handleGridCondition()]:[().grid=__.grid]",
                 "handleGridCondition": "__.grid._():[().conditionApplied=customCondition():[condition=_.condition;data=form().clone();path=bookings;index=path().[-1]];if():[().conditionApplied=true]:[().grid=_.grid]]"
             },
             "saveInputIdInFormIds": "().sectionIndex=if():[___.path]:[___.index+'.'+path().[-1]]:[___.index];formIds:().find():[sectionCounter=().sectionIndex].inputs.replace():[index=parent().index()]:[index=parent().index();id=().id]",

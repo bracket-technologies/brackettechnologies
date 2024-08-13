@@ -1,7 +1,9 @@
 {
     "account767": {
         "startsWith": [
-            "1"
+            "4",
+            "41",
+            "413"
         ],
         "currency": [
             "USD",
@@ -10,9 +12,8 @@
     },
     "account768": {
         "startsWith": [
-            "1",
-            "11",
-            "119"
+            "5",
+            "53"
         ],
         "currency": [
             "USD",
@@ -21,70 +22,25 @@
     },
     "account769": {
         "startsWith": [
-            "2"
+            "6",
+            "67"
         ],
         "currency": [
-            "USD",
-            "LBP",
-            "XOF"
+            "USD"
         ]
     },
     "account770": {
         "startsWith": [
-            "5",
-            "53"
+            "7",
+            "77"
         ],
         "currency": [
-            "USD",
-            "XOF"
+            "USD"
         ]
     },
     "account771": {
         "startsWith": [
-            "6",
-            "60",
-            "601"
-        ],
-        "currency": [
-            "USD"
-        ]
-    },
-    "account772": {
-        "startsWith": [
-            "7",
-            "70",
-            "701"
-        ],
-        "currency": [
-            "USD"
-        ]
-    },
-    "account773": {
-        "startsWith": [
-            "4",
-            "41",
-            "413"
-        ],
-        "currency": [
-            "USD",
-            "XOF"
-        ]
-    },
-    "account774": {
-        "startsWith": [
             "1"
-        ],
-        "currency": [
-            "USD",
-            "XOF"
-        ]
-    },
-    "account775": {
-        "startsWith": [
-            "4",
-            "40",
-            "401",
-            "4011"
         ],
         "currency": [
             "USD"

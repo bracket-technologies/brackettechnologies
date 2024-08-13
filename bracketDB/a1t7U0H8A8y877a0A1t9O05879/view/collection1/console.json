@@ -137,13 +137,21 @@
                                             "view": "View?class=flexbox;style:[height=2.5rem;width=1px;backgroundColor=#ddd]"
                                         },
                                         {
-                                            "view": "View?class=flexbox pointer;style:[gap=1.2rem];droplist:[items=:Manage User:User Activity:Sign out;item.style:[fontSize=1.3rem;minHeight=3.5rem];preventDefault];[click:droplist?userDroplistHandler()]",
+                                            "view": "View?class=flexbox pointer;style:[gap=.5rem];droplist:[items=[:Manage User:User Activity:Sign out?user:().email=x?:Manage User:Sign out];item.style:[fontSize=1.3rem;minHeight=3.5rem];preventDefault];[click:droplist?userDroplistHandler()]",
                                             "children": [
                                                 {
-                                                    "view": "Icon?name=person;google.symbol.outlined;style:[fontSize=2.4rem;width=2.4rem]"
+                                                    "view": "Icon?name=person;google.symbol.outlined;style:[fontSize=2.4rem;width=2.5rem]"
                                                 },
                                                 {
                                                     "view": "Text?id=accountName;text=;style:[fontSize=1.4rem];loaded:[txt()=Hi +user:().firstName]"
+                                                },
+                                                {
+                                                    "view": "View?class=flexbox",
+                                                    "children": [
+                                                        {
+                                                            "view": "Icon?name=expand_more;google.symbol.outlined;style:[fontSize=2rem;width=2rem;paddingTop=.25rem]"
+                                                        }
+                                                    ]
                                                 }
                                             ]
                                         },
@@ -151,10 +159,10 @@
                                             "view": "View?class=flexbox;style:[height=2.5rem;width=1px;backgroundColor=#ddd]"
                                         },
                                         {
-                                            "view": "View?class=flex-box pointer;droplist:[items=projects:().():name;item.style:[fontSize=1.3rem;minHeight=3.5rem];preventDefault];[click:droplist?projectDroplistHandler()]",
+                                            "view": "View?class=flex-box pointer;style:[gap=.5rem];droplist:[items=projects:().():name;item.style:[fontSize=1.3rem;minHeight=3.5rem];preventDefault];[click:droplist?projectDroplistHandler()]",
                                             "children": [
                                                 {
-                                                    "view": "Text?id=projectName;text=project:().name;style:[fontSize=1.4rem;marginRight=.5rem]"
+                                                    "view": "Text?id=projectName;text=project:().name;style:[fontSize=1.4rem]"
                                                 },
                                                 {
                                                     "view": "View?class=flexbox",
@@ -196,7 +204,7 @@
                                     ]
                                 },
                                 {
-                                    "view": "View?class=flexbox pointer;tooltip.text=publish;hover.style.backgroundColor=#ddd;style:[width=4.5rem;height=100%;transition=.2s];click:[publish()]",
+                                    "view": "View?class=flexbox pointer;tooltip.text=publish;hover.style.backgroundColor=#ddd;style:[width=4.5rem;height=100%;transition=.2s];click:[publish()]?false",
                                     "children": [
                                         {
                                             "view": "Icon?name=public;google.symbol.outlined;style:[fontSize=2.4rem;width=2.4rem]"
@@ -385,7 +393,7 @@
         "creationDate": 1710330786487,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1722511436168,
+        "lastModified": 1722936374593,
         "dev": false,
         "actions": {
             "openActionPopup": "():actionPopup.style():[opacity=1;pointerEvents=auto;zIndex=10;transform='scale(1)']",
@@ -406,8 +414,8 @@
                 "updateCollection": "handler();():[parent().openCollection+'-list'].refresh()::[_.view.display();clickPrevTab();closeCollection()]"
             },
             "toggleActionEditor": "[():hide.click()?actionsFitted:()?():fit.click()]?e().ctrlKey;e().keyCode=192?actionsFitted:()=false?openCollection:()!=view;e().ctrlKey;e().keyCode=192",
-            "hasNestedArray": "if():_:[if():[_.values()._find():[if():[_.type()=array]:[_._find():[if():[_.type()=array]:true.elif():[_.type()=map]:[hasNestedArray():_]:false]].elif():[_.type()=map]:[hasNestedArray():_]:false]]:[note():[text=You cannot create nested arrays!;danger];true]:false]:false",
-            "getViewLength": "if():[_.data.type()=array]:[range():[_.data.len()-1]]:[_.data.keys()]._():[if():[_!='actions']:[if():[[form()._view_;_.type()!=number;_!=children]||!form()._view_]:[numbersColumn:().[2ndParent().id].push():[index=numbersColumn:().[2ndParent().id].len()+1;path=__.path.clone().push():[_]]];if():[__.data.[_].type()=array||__.data.[_].type()=map]:[getViewLength():[data=__.data.[_];path=__.path.clone().push():[_]]]]]",
+            "hasNestedArray": "if():_:[if():[_.values()._find():[if():[_.type()=list]:[_._find():[if():[_.type()=list]:true.elif():[_.type()=map]:[hasNestedArray():_]:false]].elif():[_.type()=map]:[hasNestedArray():_]:false]]:[note():[text=You cannot create nested arrays!;danger];true]:false]:false",
+            "getViewLength": "if():[_.data.type()=list]:[range():[_.data.len()]]:[_.data.keys()]._():[if():[_!='actions']:[if():[[form()._view_;_.type()!=number;_!=children]||!form()._view_]:[numbersColumn:().[2ndParent().id].push():[index=numbersColumn:().[2ndParent().id].len()+1;path=__.path.clone().push():[_]]];if():[__.data.[_].type()=list||__.data.[_].type()=map]:[getViewLength():[data=__.data.[_];path=__.path.clone().push():[_]]]]]",
             "changeActionsViewHeight": "diff=[e().screenY-().screenY]/10;if():[actionsHeight:()=7.5]:[actionsHeight:()=parent().el().offsetHeight/10];parent().style().height=[actionsHeight:()-().diff]+rem;():dataViewer.style().height='calc(100% - '+[actionsHeight:()-().diff]+'rem)'?mousedowned",
             "leaveNotificationIcon": "clearTimer():[trans-bell-1:()]:[trans-bell-2:()]:[trans-bell-3:()]:[trans-bell-4:()];style().transform=rotate(0)",
             "switchTab": {
@@ -441,12 +449,12 @@
             "renameDoc": "():[parent().caller].():[2ndPrev().style().display=none;prev().style().display=flex;prev().focus()];hideActionPopup()",
             "closeHotBtnsPopup": "style():[opacity=0;pointerEvents=none;transform=scale(0)]?!contains():[clicked()];caller!=clicked().id",
             "enterNotificationIcon": "style().transform='rotate(30deg)';trans-bell-1:()=timer():[style().transform=rotate(-30deg)]:200;trans-bell-2:()=timer():[style().transform=rotate(30deg)]:400;trans-bell-3:()=timer():[style().transform=rotate(-30deg)]:600;trans-bell-4:()=timer():[style().transform=rotate(0deg)]:800",
-            "hasEmptyField": "if():_:[if():[_.type()=map]:[if():[_.keys()._find():[_=''||!_]='']:[note():[text=You cannot leave an empty field!;danger];true].elif():[_.values()._find():[hasEmptyField():_]]:true:false].elif():[_.type()=array]:[_._find():[hasEmptyField():_]]:false]:false",
+            "hasEmptyField": "if():_:[if():[_.type()=map]:[if():[_.keys()._find():[_=''||!_]='']:[note():[text=You cannot leave an empty field!;danger];true].elif():[_.values()._find():[hasEmptyField():_]]:true:false].elif():[_.type()=list]:[_._find():[hasEmptyField():_]]:false]:false",
             "popupActions": {
                 "_": "if():[_.action=remove]:[removeDoc()].elif():[_.action=export]:[exportDoc()].elif():[_.action=duplicate]:[duplicateDoc()].elif():[_.action=]:[]"
             },
             "hotBtnsStyles": "style:[height=3rem;width=3.25rem;backgroundColor=#fff;transition=.2s]",
-            "releaseHorizontalSeperator": "mousedowned=false;document().style().cursor=default;parent().style().transition=.2s;class():dataViewer.filter():[!hidden()].():[style().overflowY=auto];actionsHeight:()-=().diff?mousedowned",
+            "releaseHorizontalSeperator": "mousedowned=false;doc().style().cursor=default;parent().style().transition=.2s;class():dataViewer.filter():[!hidden()].():[style().overflowY=auto];actionsHeight:()-=().diff?mousedowned",
             "__props__": {
                 "comments": []
             },
@@ -454,7 +462,7 @@
             "saveDocHandler": {
                 "_": "saveData()?():dataViewer.children().find():[style().display=flex]._():[openCollection:()=_.openCollection;openDoc:()=_.openDoc]",
                 "saveData": "[start();saveData():[publicID=project:().publicID;collection=openCollection:();doc=openDoc:();data=openData:()]:[end():[_]]]():[collection=actions;doc=db]:[note():[text=_.message;type=[danger?!_.success?success]];successHandler()]",
-                "successHandler": "():dataViewerBar.children().find():[openCollection=openCollection:();openDoc=openDoc:()].2ndChild().style().border=0;data:().editor.[openCollection:()].[openDoc:()]=openData:().clone()?_.success"
+                "successHandler": "class():[openDoc:()+openCollection:()+'publish'].0.display();():dataViewerBar.children().find():[openCollection=openCollection:();openDoc=openDoc:()].2ndChild().style().border=0;data:().editor.[openCollection:()].[openDoc:()]=openData:().clone()?_.success"
             },
             "ctrlSaveHandler": "[keydown:document?[e().preventDefault();():saveBtn.click()?e().ctrlKey;e().key=s];toggleActionEditor()]",
             "searchCollection": {
@@ -475,7 +483,7 @@
                 },
                 "closeSearchWindow": "():searchResults.style():[opacity=0;height=0]"
             },
-            "holdHorizontalSeparator": "mousedowned=true;document().style().cursor=ns-resize;parent().style().transition=null;screenY=e().screenY;class():dataViewer.filter():[!hidden()].():[style().overflowY=hidden]?contains():[clicked()]",
+            "holdHorizontalSeparator": "mousedowned=true;doc().style().cursor=ns-resize;parent().style().transition=null;screenY=e().screenY;class():dataViewer.filter():[!hidden()].():[style().overflowY=hidden]?contains():[clicked()]",
             "authProject": {
                 "_": "[getProject():[publicID=manifest:().path.2]:[projectHandler()?_.project?root():projects]]():[collection=actions;doc=main]?manifest:().path.2?root():projects",
                 "projectHandler": "project:()=_.project;_.project._():[projectSubdomain:()=_.subdomain;projectDB:()=_.db;username:()=_.username]"
@@ -1466,6 +1474,21 @@
                     "children",
                     5
                 ]
+            },
+            {
+                "note": "project activity",
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
             }
         ],
         "collapsed": [
@@ -1736,21 +1759,6 @@
             {
                 "path": [
                     "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    8,
-                    "children"
-                ]
-            },
-            {
-                "path": [
-                    "children",
                     2,
                     "children",
                     0,
@@ -1871,20 +1879,6 @@
                     "children",
                     1,
                     "children",
-                    0,
-                    "children",
-                    10
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
                     1
                 ]
             },
@@ -1924,18 +1918,6 @@
                     1,
                     "children",
                     3
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    6
                 ]
             },
             {
@@ -2006,24 +1988,7 @@
                     "authProject"
                 ]
             },
-            {
-                "path": [
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    4
-                ]
-            },
             {},
-            {
-                "path": [
-                    "closeTab"
-                ]
-            },
             {
                 "path": [
                     "searchCollection"
@@ -2116,24 +2081,7 @@
             {
                 "path": [
                     "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    5
-                ]
-            },
-            {
-                "path": [
-                    "children",
                     4
-                ]
-            },
-            {
-                "path": [
-                    "saveDocHandler"
                 ]
             },
             {
@@ -2175,20 +2123,6 @@
             {
                 "path": [
                     "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "children",
                     2
                 ]
             },
@@ -2209,12 +2143,91 @@
             {
                 "path": [
                     "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    10
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "closeTab"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "saveDocHandler"
+                ]
+            },
+            {
+                "path": [
+                    "userDroplistHandler"
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "children",
                     1
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 37296
+        "size": 37600
     }
 }

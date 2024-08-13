@@ -4,13 +4,13 @@
             "keyValue": [
                 {
                     "path": "userId",
-                    "type": "string",
+                    "type": "text",
                     "key": "user",
                     "required": "true"
                 },
                 {
                     "path": "username",
-                    "type": "string",
+                    "type": "text",
                     "required": "true",
                     "key": "username"
                 }
@@ -24,13 +24,13 @@
             "keyValue": [
                 {
                     "path": "userId",
-                    "type": "string",
+                    "type": "text",
                     "key": "user",
                     "required": "true"
                 },
                 {
                     "path": "username",
-                    "type": "string",
+                    "type": "text",
                     "required": "true",
                     "key": "username"
                 }

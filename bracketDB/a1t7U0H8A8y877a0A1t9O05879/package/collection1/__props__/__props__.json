@@ -5,26 +5,28 @@
     "lastChunk": 1,
     "docsLength": 5,
     "counter": 11,
-    "reads": 2338,
-    "writes": 105,
+    "reads": 3711,
+    "writes": 114,
     "deletes": 0,
     "size": 1580,
-    "payloadIn": 43125,
-    "payloadOut": 990448,
+    "payloadIn": 47340,
+    "payloadOut": 1578510,
     "indexes": [
         {
             "find": [
                 "__props__.id"
             ],
-            "doc": "index1"
+            "doc": "index1",
+            "lastRead": 1723114239386,
+            "expiryDate": 1725706239386
         },
         {
             "find": [
                 "pluginID"
             ],
             "doc": "index2",
-            "lastRead": 1722679127448,
-            "expiryDate": 1725271127448
+            "lastRead": 1723286830913,
+            "expiryDate": 1725878830913
         },
         {
             "find": [
@@ -32,9 +34,28 @@
                 "pluginID"
             ],
             "doc": "index3",
-            "lastRead": 1722614382125,
-            "expiryDate": 1725206382125
+            "lastRead": 1723290284268,
+            "expiryDate": 1725882284268
+        },
+        {
+            "find": [
+                "active",
+                "__props__.id",
+                "pluginID"
+            ],
+            "doc": "index4",
+            "lastRead": 1723114139928,
+            "expiryDate": 1725706139928
+        },
+        {
+            "find": [
+                "active",
+                "pluginID"
+            ],
+            "doc": "index5",
+            "lastRead": 1723117683085,
+            "expiryDate": 1725709683085
         }
     ],
-    "lastIndex": 3
+    "lastIndex": 5
 }

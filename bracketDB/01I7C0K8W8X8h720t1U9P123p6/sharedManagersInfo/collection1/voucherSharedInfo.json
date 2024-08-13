@@ -161,11 +161,7 @@
         }
     ],
     "createFormInputs": {
-        "manager": "if():[currentOpenManager:().type='Journal Voucher']:['journalVoucher'].elif():[currentOpenManager:().type='Receipt Voucher']:['receiptVoucher'].elif():[currentOpenManager:().type='Payment Voucher']:['paymentVoucher']",
-        "docDefaultValues": {
-            "type": "currentOpenManager:().type",
-            "exchangeRates": "userData:().currency._():[().currencies.push():[code=_.code;name=_.name;exchangeRate=_.exchangeRate;systemCurrencyRate=_.systemCurrencyRate;counter=_.counter;createdCurrencyRate=_.createdCurrencyRate]];return():[().currencies]"
-        },
+        "manager": "voucher",
         "subInput": [
             {
                 "input": [
@@ -196,7 +192,7 @@
                         "items": "userData:().currency.():code",
                         "droplistClickAction": "customUpdate():[:[section=1]:[section=2]]",
                         "required": "true",
-                        "customLabelBtn": [
+                        "#customLabelBtn": [
                             {
                                 "icon": "currency_exchange",
                                 "clickAction": "openexchangeRateView()",
@@ -211,92 +207,85 @@
                 "path": "from",
                 "input": [
                     {
-                        "inputPath": "receivablesAndPayablesLedgerAccount",
-                        "inputLabel": "Receivables and Payables Account",
-                        "codeInput": "true",
-                        "allowedCode": {
-                            "allowedCode": [
-                                "4"
-                            ],
-                            "notAllowedCode": [
-                                "442"
-                            ]
-                        },
-                        "fillCodeName": true,
-                        "getterKeyValue": {
-                            "receivablesAndPayablesAccount": "ledgerAccount.0"
-                        },
-                        "collection": "account",
-                        "droplistClickAction": "[saveAccountCurrency()]():[collection=sharedManagersInfo;doc=voucherSharedInfo]",
-                        "hotCreatable": true,
-                        "referenceCurrency": "form().currency",
-                        "required": true,
-                        "existingAccounts": true,
-                        "condition": [
-                            {
-                                "condition": [
-                                    "Receipt Voucher"
-                                ],
-                                "conditionReference": "type"
-                            }
-                        ],
-                        "showBalance": true,
-                        "changeAction": "customUpdate():[section='1.'+path().[-1].toString();input=4]"
-                    },
-                    {
-                        "inputPath": "financialLedgerAccount",
-                        "inputLabel": "Financial Account",
-                        "codeInput": "true",
-                        "allowedCode": {
-                            "allowedCode": [
-                                "5"
-                            ]
-                        },
-                        "fillCodeName": true,
-                        "getterKeyValue": {
-                            "financialAccount": "ledgerAccount.0"
-                        },
-                        "collection": "account",
-                        "droplistClickAction": "[saveAccountCurrency()]():[collection=sharedManagersInfo;doc=voucherSharedInfo]",
-                        "hotCreatable": true,
-                        "referenceCurrency": "form().currency",
-                        "required": true,
-                        "existingAccounts": true,
-                        "showBalance": true,
-                        "condition": [
-                            {
-                                "condition": [
-                                    "Payment Voucher"
-                                ],
-                                "conditionReference": "type"
-                            }
-                        ],
-                        "changeAction": "customUpdate():[section='1.'+path().[-1].toString();input=4]"
-                    },
-                    {
                         "inputPath": "fromAccount",
-                        "inputLabel": "From Account",
+                        "inputLabel": [
+                            {
+                                "inputLabel": "From Account",
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Journal Voucher"
+                                        ],
+                                        "conditionReference": "type"
+                                    }
+                                ]
+                            },
+                            {
+                                "inputLabel": "Financial Account",
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Payment Voucher"
+                                        ],
+                                        "conditionReference": "type"
+                                    }
+                                ]
+                            },
+                            {
+                                "inputLabel": "Receivables and Payables Account",
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Receipt Voucher"
+                                        ],
+                                        "conditionReference": "type"
+                                    }
+                                ]
+                            }
+                        ],
                         "codeInput": "true",
                         "fillCodeName": true,
                         "getterKeyValue": {
                             "fromAccount": "ledgerAccount.0"
                         },
                         "collection": "account",
-                        "condition": [
-                            {
-                                "condition": [
-                                    "Journal Voucher"
-                                ],
-                                "conditionReference": "type"
-                            }
-                        ],
                         "hotCreatable": true,
                         "referenceCurrency": "form().currency",
                         "required": true,
                         "existingAccounts": true,
                         "showBalance": true,
-                        "#droplistClickAction": "[saveAccountCurrency()]():[collection=sharedManagersInfo;doc=voucherSharedInfo]",
-                        "changeAction": "customUpdate():[section='1.'+path().[-1].toString();input=4]"
+                        "changeAction": "customUpdate():[section='1.'+path().[-1].toString();input=2]",
+                        "allowedCode": [
+                            {
+                                "allowedCode": [
+                                    "4"
+                                ],
+                                "notAllowedCode": [
+                                    "442"
+                                ],
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Receipt Voucher"
+                                        ],
+                                        "conditionReference": "type"
+                                    }
+                                ]
+                            },
+                            {
+                                "allowedCode": [
+                                    "5"
+                                ],
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Payment Voucher"
+                                        ],
+                                        "conditionReference": "type"
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     {
                         "inputPath": "description",
@@ -327,7 +316,7 @@
                             }
                         ],
                         "editable": true,
-                        "loadedAction": "if():[parent().data.invoicesInfo]:[style().pointerEvents=none]",
+                        "loadedAction": "[autoFillRemainingTotalIfPossible();]():[doc=voucherSharedInfo;collection=sharedManagersInfo];if():[parent().data.invoicesInfo]:[style().pointerEvents=none]",
                         "subItemsList": "().account=parent().data().fromAccount||parent().data().receivablesAndPayablesLedgerAccount||parent().data().financialLedgerAccount;().items=[allLedgersAccounts:().find():[ledgerAccount.inc():[().account]].currency]||[:form().currency];return():[().items]",
                         "unitPath": "currency",
                         "blurAction": "[calculateAmountInVoucherCurrency()]():[doc=voucherSharedInfo;collection=sharedManagersInfo]",
@@ -351,71 +340,7 @@
                 "path": "to",
                 "input": [
                     {
-                        "inputPath": "financialLedgerAccount",
-                        "inputLabel": "Financial Account",
-                        "codeInput": "true",
-                        "allowedCode": {
-                            "allowedCode": [
-                                "5"
-                            ]
-                        },
-                        "fillCodeName": true,
-                        "getterKeyValue": {
-                            "receivablesAndPayablesAccount": "ledgerAccount.0"
-                        },
-                        "collection": "account",
-                        "hotCreatable": true,
-                        "referenceCurrency": "form().currency",
-                        "required": true,
-                        "existingAccounts": true,
-                        "condition": [
-                            {
-                                "condition": [
-                                    "Receipt Voucher"
-                                ],
-                                "conditionReference": "type"
-                            }
-                        ],
-                        "showBalance": true,
-                        "changeAction": "customUpdate():[section='2.'+path().[-1].toString();input=4]",
-                        "#droplistClickAction": "[saveAccountCurrency()]():[collection=sharedManagersInfo;doc=voucherSharedInfo]"
-                    },
-                    {
-                        "inputPath": "receivablesAndPayablesLedgerAccount",
-                        "inputLabel": "Receivables and Payables Account",
-                        "codeInput": "true",
-                        "allowedCode": {
-                            "allowedCode": [
-                                "4"
-                            ],
-                            "notAllowedCode": [
-                                "442"
-                            ]
-                        },
-                        "fillCodeName": true,
-                        "getterKeyValue": {
-                            "receivablesAndPayablesAccount": "ledgerAccount.0"
-                        },
-                        "collection": "account",
-                        "hotCreatable": true,
-                        "referenceCurrency": "form().currency",
-                        "required": true,
-                        "existingAccounts": true,
-                        "condition": [
-                            {
-                                "condition": [
-                                    "Payment Voucher"
-                                ],
-                                "conditionReference": "type"
-                            }
-                        ],
-                        "showBalance": true,
-                        "changeAction": "customUpdate():[section='2.'+path().[-1].toString();input=4]",
-                        "#droplistClickAction": "[saveAccountCurrency()]():[collection=sharedManagersInfo;doc=voucherSharedInfo]"
-                    },
-                    {
                         "inputPath": "toAccount",
-                        "inputLabel": "To Account",
                         "codeInput": "true",
                         "fillCodeName": true,
                         "getterKeyValue": {
@@ -426,17 +351,74 @@
                         "referenceCurrency": "form().currency",
                         "required": true,
                         "existingAccounts": true,
-                        "condition": [
+                        "showBalance": true,
+                        "changeAction": "customUpdate():[section='2.'+path().[-1].toString();input=2]",
+                        "allowedCode": [
                             {
                                 "condition": [
-                                    "Journal Voucher"
+                                    {
+                                        "condition": [
+                                            "Receipt Voucher"
+                                        ],
+                                        "conditionReference": "type"
+                                    }
                                 ],
-                                "conditionReference": "type"
+                                "allowedCode": [
+                                    "5"
+                                ]
+                            },
+                            {
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Payment Voucher"
+                                        ],
+                                        "conditionReference": "type"
+                                    }
+                                ],
+                                "allowedCode": [
+                                    "4"
+                                ],
+                                "notAllowedCode": [
+                                    "442"
+                                ]
                             }
                         ],
-                        "showBalance": true,
-                        "#droplistClickAction": "[saveAccountCurrency()]():[collection=sharedManagersInfo;doc=voucherSharedInfo]",
-                        "changeAction": "customUpdate():[section='2.'+path().[-1].toString();input=4]"
+                        "inputLabel": [
+                            {
+                                "inputLabel": "To Account",
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Journal Voucher"
+                                        ],
+                                        "conditionReference": "type"
+                                    }
+                                ]
+                            },
+                            {
+                                "inputLabel": "Financial Account",
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Receipt Voucher"
+                                        ],
+                                        "conditionReference": "type"
+                                    }
+                                ]
+                            },
+                            {
+                                "inputLabel": "Receivables and Payables Account",
+                                "condition": [
+                                    {
+                                        "condition": [
+                                            "Payment Voucher"
+                                        ],
+                                        "conditionReference": "type"
+                                    }
+                                ]
+                            }
+                        ]
                     },
                     {
                         "inputPath": "description",
@@ -467,7 +449,7 @@
                             }
                         ],
                         "editable": true,
-                        "loadedAction": "if():[parent().data.invoicesInfo]:[style().pointerEvents=none]",
+                        "loadedAction": "[autoFillRemainingTotalIfPossible()]():[doc=voucherSharedInfo;collection=sharedManagersInfo];if():[parent().data.invoicesInfo]:[style().pointerEvents=none]",
                         "subItemsList": "().account=parent().data().financialLedgerAccount||parent().data().receivablesAndPayablesLedgerAccount||parent().data().toAccount;().items=[allLedgersAccounts:().find():[ledgerAccount.inc():[().account]].currency]||[:form().currency];return():[().items]",
                         "unitPath": "currency",
                         "blurAction": "[calculateAmountInVoucherCurrency()]():[doc=voucherSharedInfo;collection=sharedManagersInfo]",
@@ -512,7 +494,10 @@
                 "title": "Note & Terms"
             }
         ],
-        "collection": "voucher"
+        "collection": "voucher",
+        "docDefaultValues": {
+            "type": "currentOpenManager:().type"
+        }
     },
     "id": "voucherSharedInfo",
     "creationDate": 1709032039783,
@@ -523,14 +508,20 @@
         "creationDate": 1711031361968,
         "collection": "sharedManagersInfo",
         "chunk": "chunk1",
-        "lastModified": 1722428126286,
+        "lastModified": 1723025817486,
         "dev": false,
         "actions": {
             "__props__": {
                 "comments": []
             },
-            "saveAccountCurrency": "():[droplistItems:().identifier].data().accountCurrency=userData:().find():[counter=():[droplistItems:().identifier].data().[():[droplistItems:().identifier]._.inputPath].[-1]].code;():[droplistItems:().identifier].data().invoicesInfo.del();():[droplistItems:().identifier].data().amount.del();().x=;[customUpdate():[section=:1]]():[collection=view;doc=customFormSectionLoop]",
-            "calculateAmountInVoucherCurrency": "().exchangeRate=form().exchangeRates.find():[code=parent().data().currency].exchangeRate;parent().data().voucherCurrencyAmount=parent().data().amount/().exchangeRate"
+            "calculateAmountInVoucherCurrency": "if():[txt()!='']:[().exchangeRate=userData:().currency.find():[code=parent().data().currency].exchangeRate;parent().data().voucherCurrencyAmount=parent().data().amount/().exchangeRate]",
+            "autoFillRemainingTotalIfPossible": {
+                "_": "calculateTotalCredits();calculateTotalDebits();checkToAutoFillAmount();calculateAmountInVoucherCurrency()",
+                "calculateTotalCredits": "().totalCredits=0;form().from._():[().totalCredits+=_.amount/userData:().currency.find():[code=_.currency].exchangeRate]",
+                "calculateTotalDebits": "().totalDebits=0;form().to._():[().totalDebits+=_.amount/userData:().currency.find():[code=_.currency].exchangeRate]",
+                "checkToAutoFillAmount": "if():[().totalCredits;().totalDebits;!data()]:[().total=().totalDebits-().totalCredits;if():[path().inc():['to'];().total<0]:[data()=[-1]*().total.toFixed():[2].num()].elif():[path().inc():['from'];().total>0]:[data()=().total.toFixed():[2].num()]]"
+            },
+            "#saveAccountCurrency": "():[droplistItems:().identifier].data().accountCurrency=userData:().find():[counter=():[droplistItems:().identifier].data().[():[droplistItems:().identifier]._.inputPath].[-1]].code;():[droplistItems:().identifier].data().invoicesInfo.del();():[droplistItems:().identifier].data().amount.del();().x=;[customUpdate():[section=:1]]():[collection=view;doc=customFormSectionLoop]"
         },
         "comments": [
             {
@@ -572,7 +563,7 @@
                     "subInput",
                     1,
                     "input",
-                    4
+                    2
                 ]
             },
             {
@@ -582,7 +573,7 @@
                     "subInput",
                     1,
                     "input",
-                    3
+                    1
                 ]
             },
             {
@@ -592,26 +583,112 @@
                     "subInput",
                     1,
                     "input",
-                    2
+                    0
                 ]
             },
             {
-                "note": "financialLedgerAccount",
+                "note": "date",
                 "path": [
                     "createFormInputs",
                     "subInput",
-                    1,
+                    0,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "note": "status",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
                     "input",
                     1
                 ]
             },
             {
-                "note": "receivablesAndPayablesLedgerAccount",
+                "note": "currency",
                 "path": [
                     "createFormInputs",
                     "subInput",
-                    1,
+                    0,
                     "input",
+                    2
+                ]
+            },
+            {
+                "note": "description",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "note": "amount",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "note": "note",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    3,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "note": "terms",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    3,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "note": "to Account",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "inputLabel",
+                    -2
+                ]
+            },
+            {
+                "note": "Financial Account",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "inputLabel",
+                    -1
+                ]
+            },
+            {
+                "note": "Receivables and Payables Account",
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "inputLabel",
                     0
                 ]
             }
@@ -924,13 +1001,6 @@
                 "path": [
                     "createFormInputs",
                     "subInput",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
                     1,
                     "input",
                     3,
@@ -973,16 +1043,6 @@
                     "subInput",
                     1,
                     "input",
-                    0,
-                    "getterKeyValue"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    1,
-                    "input",
                     3,
                     "condition"
                 ]
@@ -1001,36 +1061,6 @@
                 "path": [
                     "createFormInputs",
                     "subInput",
-                    1,
-                    "input",
-                    1,
-                    "getterKeyValue"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    2,
-                    "input",
-                    0,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    2,
-                    "input",
-                    0,
-                    "getterKeyValue"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
                     2,
                     "input",
                     1,
@@ -1045,16 +1075,6 @@
                     "input",
                     2,
                     "getterKeyValue"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    2,
-                    "input",
-                    2,
-                    "condition"
                 ]
             },
             {
@@ -1198,36 +1218,6 @@
                 "path": [
                     "createFormInputs",
                     "subInput",
-                    1,
-                    "input",
-                    1,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    1,
-                    "input",
-                    0,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    2,
-                    "input",
-                    1,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
                     2,
                     "input",
                     4,
@@ -1260,45 +1250,12 @@
             },
             {
                 "path": [
-                    "table"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "input",
-                    1
-                ]
-            },
-            {
-                "path": [
                     "createFormInputs",
                     "subInput",
                     0,
                     "input",
                     2,
-                    "customLabelBtn"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0,
-                    "input",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    1,
-                    "input",
-                    2,
-                    "condition"
+                    "#customLabelBtn"
                 ]
             },
             {
@@ -1320,15 +1277,6 @@
                     "input",
                     4,
                     "customLabelBtn"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    2,
-                    "input",
-                    3
                 ]
             },
             {
@@ -1341,91 +1289,7 @@
             },
             {
                 "path": [
-                    "createFormInputs",
-                    "subInput",
-                    2,
-                    "input",
-                    0,
-                    "allowedCode"
-                ]
-            },
-            {
-                "path": [
                     "searchEngineInputs"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "docDefaultValues"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    2,
-                    "input",
-                    1,
-                    "allowedCode"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    1,
-                    "input",
-                    1,
-                    "allowedCode"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    1,
-                    "input",
-                    4,
-                    "customLabelBtn",
-                    0,
-                    "condition"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    1,
-                    "input",
-                    4,
-                    "customLabelBtn"
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    0
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    1,
-                    "input",
-                    3
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    1,
-                    "input",
-                    0,
-                    "allowedCode"
                 ]
             },
             {
@@ -1443,6 +1307,103 @@
                     "createFormInputs",
                     "subInput",
                     1,
+                    "input",
+                    4,
+                    "subItemsList"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "docDefaultValues"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    1,
+                    "items"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    0,
+                    "input",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    3,
+                    "input",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    3,
+                    "input",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "table"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    0,
+                    "allowedCode",
+                    0,
                     "condition"
                 ]
             },
@@ -1452,7 +1413,328 @@
                     "subInput",
                     1,
                     "input",
+                    0,
+                    "allowedCode",
+                    0,
+                    "allowedCode"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    0,
+                    "allowedCode",
+                    0,
+                    "notAllowedCode"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    0,
+                    "allowedCode",
+                    1,
+                    "condition",
+                    0,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    0,
+                    "allowedCode",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    0,
+                    "allowedCode",
+                    1,
+                    "allowedCode"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    0,
+                    "allowedCode",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    0,
+                    "allowedCode",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    0,
+                    "inputLabel",
+                    0,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    0,
+                    "allowedCode"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    0,
+                    "inputLabel",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    0,
+                    "inputLabel"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
                     2
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    2,
+                    "customLabelBtn",
+                    0,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1,
+                    "input",
+                    2,
+                    "customLabelBtn"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "inputLabel",
+                    0,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "inputLabel",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "inputLabel",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "inputLabel",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "inputLabel",
+                    2,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "inputLabel",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "inputLabel"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "allowedCode",
+                    0,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "allowedCode",
+                    0,
+                    "allowedCode"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "allowedCode",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "allowedCode",
+                    1,
+                    "condition"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "allowedCode",
+                    1,
+                    "notAllowedCode"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "allowedCode",
+                    1,
+                    "allowedCode"
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "allowedCode",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2,
+                    "input",
+                    0,
+                    "allowedCode"
                 ]
             },
             {
@@ -1470,26 +1752,16 @@
                     "subInput",
                     1,
                     "input",
-                    4,
-                    "subItemsList"
+                    1
                 ]
             },
             {
                 "path": [
                     "createFormInputs",
                     "subInput",
-                    2,
+                    1,
                     "input",
                     2
-                ]
-            },
-            {
-                "path": [
-                    "createFormInputs",
-                    "subInput",
-                    2,
-                    "input",
-                    1
                 ]
             },
             {
@@ -1503,26 +1775,41 @@
             },
             {
                 "path": [
-                    "createFormInputs",
-                    "subInput",
-                    1,
-                    "input",
-                    1
+                    "autoFillRemainingTotalIfPossible"
                 ]
             },
             {
                 "path": [
                     "createFormInputs",
                     "subInput",
-                    1,
-                    "input",
-                    4
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "createFormInputs",
+                    "subInput",
+                    1
                 ]
             }
         ],
         "arrange": [],
         "secured": false,
-        "size": 21145
+        "size": 21825
     },
     "table": {
         "body": {

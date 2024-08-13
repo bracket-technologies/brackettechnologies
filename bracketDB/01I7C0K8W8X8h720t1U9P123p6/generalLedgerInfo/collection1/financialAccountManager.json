@@ -287,7 +287,7 @@
     "managerName": "financialAccountManager",
     "creationDate": 1709111959896,
     "ledgerAccountName": "Financial Accounts",
-    "popupInfo": {
+    "form": {
         "docName": "financialInfo",
         "title": "Financial Account Form"
     },
@@ -329,7 +329,7 @@
             },
             {
                 "path": [
-                    "popupInfo"
+                    "form"
                 ]
             },
             {
