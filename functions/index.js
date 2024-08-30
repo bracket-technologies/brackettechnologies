@@ -15,6 +15,9 @@ views.document.__rendered__ = true
 // in some casese path changes when rendering
 history.replaceState(null, global.manifest.title, global.manifest.path.join("/"))
 
+// cookies
+if (global.manifest.cookies) setCookie({ cookies: global.manifest.cookies })
+
 // session
 setCookie({ name: "__session__", value: global.manifest.session })
 

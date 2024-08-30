@@ -5,7 +5,7 @@ const searchParams = ({ _window, lookupActions, stack, props, req, res, id, e, _
 
     var global = _window ? _window.global : window.global
 
-    if (string.charAt(0) === "@" && string.length === 6) string = global.__refs__[string].data
+    if (string.slice(0, 2) === "@$" && string.length === 7) string = global.__refs__[string].data
 
     string = decode({ _window, string })
     string = string.replaceAll("field:", "field=")
@@ -16,7 +16,7 @@ const searchParams = ({ _window, lookupActions, stack, props, req, res, id, e, _
     while (stringList[i]) {
 
         stringList[i] = actions["encode()"]({ _window, string: stringList[i] })
-        var code = stringList[i].slice(0, 6)
+        var code = stringList[i].slice(0, 7)
         global.__refs__[code].type = "text"
         i++
     }

@@ -1,0 +1,91 @@
+{
+    "firstTrigger": 1723970066853,
+    "serverTriggers": 336,
+    "date": 1723928400000,
+    "projectID": "a1u7e2r3W6n3M6s8A6U5e5c456",
+    "activityPerHour": [
+        {
+            "time": 1723968000000,
+            "firstTrigger": 1723970066853,
+            "serverTriggers": 1,
+            "lastTrigger": 1723970066853
+        },
+        {
+            "time": 1723975200000,
+            "firstTrigger": 1723976864306,
+            "serverTriggers": 14,
+            "lastTrigger": 1723977690804
+        },
+        {
+            "time": 1723978800000,
+            "firstTrigger": 1723978881602,
+            "serverTriggers": 25,
+            "lastTrigger": 1723979909121
+        },
+        {
+            "time": 1723982400000,
+            "firstTrigger": 1723983543848,
+            "serverTriggers": 15,
+            "lastTrigger": 1723985999178
+        },
+        {
+            "time": 1723986000000,
+            "firstTrigger": 1723986163805,
+            "serverTriggers": 30,
+            "lastTrigger": 1723989512108
+        },
+        {
+            "time": 1723989600000,
+            "firstTrigger": 1723989829195,
+            "serverTriggers": 5,
+            "lastTrigger": 1723992080218
+        },
+        {
+            "time": 1723993200000,
+            "firstTrigger": 1723995174250,
+            "serverTriggers": 20,
+            "lastTrigger": 1723996757129
+        },
+        {
+            "time": 1724000400000,
+            "firstTrigger": 1724002578628,
+            "serverTriggers": 27,
+            "lastTrigger": 1724003945902
+        },
+        {
+            "time": 1724004000000,
+            "firstTrigger": 1724004162605,
+            "serverTriggers": 25,
+            "lastTrigger": 1724007584561
+        },
+        {
+            "time": 1724007600000,
+            "firstTrigger": 1724007643306,
+            "serverTriggers": 123,
+            "lastTrigger": 1724011114240
+        },
+        {
+            "time": 1724011200000,
+            "firstTrigger": 1724011218871,
+            "serverTriggers": 51,
+            "lastTrigger": 1724014694823
+        }
+    ],
+    "lastTrigger": 1724014694823,
+    "__props__": {
+        "id": "A1C7q243u9s7s0t0e62698r693",
+        "doc": "projectActivity83",
+        "counter": 83,
+        "creationDate": 1723970066863,
+        "collection": "projectActivity",
+        "chunk": "chunk1",
+        "lastModified": 1724014694827,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1536
+    }
+}

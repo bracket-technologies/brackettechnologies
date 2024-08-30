@@ -1,6 +1,5 @@
 const { toApproval } = require("./kernel")
 const { toParam } = require("./kernel")
-const builtInViews = require("../views/views")
 
 module.exports = {
   builtInView: ({ _window, lookupActions, stack, props, id, __ }) => {

@@ -3,7 +3,6 @@
         "Table",
         "gallery",
         "actionlist",
-        "Authorize",
         "billing",
         "card",
         "CoinPackagesForm",
@@ -15,7 +14,6 @@
         "counter",
         "customInput",
         "database",
-        "document",
         "form",
         "fileForm",
         "help",
@@ -25,8 +23,6 @@
         "Map",
         "msg",
         "projects",
-        "root",
-        "server",
         "SearchEngine",
         "sidebar",
         "subscriptionForm",
@@ -36,5 +32,5 @@
     ],
     "indexes": [],
     "docsLength": 28,
-    "size": -12514
+    "size": -116
 }

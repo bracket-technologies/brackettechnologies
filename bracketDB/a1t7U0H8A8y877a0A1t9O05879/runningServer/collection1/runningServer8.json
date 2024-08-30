@@ -1,21 +1,22 @@
 {
-    "port": 85,
-    "creationDate": 1723102464047,
+    "port": 87,
+    "serverID": "o1G7S2x4T5E0z6T3K6569138N2",
+    "creationDate": 1724506366190,
     "closes": [],
     "__props__": {
-        "id": "P1A7L2L381K0g2D4b614o0b5u2",
+        "id": "T107P2r435U0t6w3N6q6D1n9G5",
         "doc": "runningServer8",
         "counter": 8,
-        "creationDate": 1723102464052,
+        "creationDate": 1724506366195,
         "collection": "runningServer",
         "chunk": "chunk1",
-        "lastModified": 1723102464052,
+        "lastModified": 1724506366195,
         "dev": false,
         "actions": {},
         "comments": [],
         "collapsed": [],
         "arrange": [],
         "secured": false,
-        "size": 322
+        "size": 362
     }
 }

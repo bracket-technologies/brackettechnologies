@@ -7,8 +7,6 @@
         "codeInput",
         "customGeneralTable",
         "checkboxes",
-        "root",
-        "server",
         "imageView",
         "main",
         "unitPathInput",
@@ -39,7 +37,6 @@
         "generalPopup",
         "GalleryManager",
         "filterDroplist",
-        "document",
         "dashbaord",
         "customTitle",
         "customSingleBarChart",
@@ -60,5 +57,5 @@
     ],
     "chunk": "chunk1",
     "docsLength": 56,
-    "size": -2018
+    "size": -1911
 }

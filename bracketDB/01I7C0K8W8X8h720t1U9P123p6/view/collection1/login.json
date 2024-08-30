@@ -17,34 +17,39 @@
         "creationDate": 1711031365208,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1723207410507,
+        "lastModified": 1723752359068,
         "dev": false,
         "actions": {
             "login": {
-                "_": "[login():[form()]:[successHandler()?_.success?wrongUser()]]():[doc=server]?form().username;form().password?missingData()",
+                "_": "[login():[form()]:[successHandler()?_.success?wrongUser()]]():[collection=view.application;doc=server]?form().username;form().password?missingData()",
                 "successHandler": "form().del();getAllData()::[setCookie():[name=session;value=_.session];userData:()=_.data;root():portal]",
                 "wrongUser": "note():[text='Wrong username or password!';type=danger]",
                 "missingData": "note():[text='Enter username or password!';type=danger]"
             }
         },
-        "comments": [
-            {
-                "note": "",
-                "path": [
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "",
-                "path": [
-                    "checkSession"
-                ]
-            }
-        ],
+        "comments": [],
         "collapsed": [],
-        "arrange": [],
+        "arrange": {
+            "": [
+                "view",
+                "children",
+                "login"
+            ],
+            "children.0": [
+                "view",
+                "children"
+            ],
+            "children.0.children.0": [
+                "view"
+            ],
+            "login": [
+                "_",
+                "missingData",
+                "successHandler",
+                "wrongUser"
+            ]
+        },
         "secured": false,
-        "size": 1068
+        "size": 1175
     }
 }

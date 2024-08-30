@@ -4,12 +4,12 @@
     "lastChunk": 1,
     "docsLength": 9,
     "counter": 771,
-    "reads": 120467,
+    "reads": 120568,
     "writes": 3327,
     "deletes": 0,
     "size": -3845,
     "payloadIn": 2902480,
-    "payloadOut": 99761043,
+    "payloadOut": 99853286,
     "dirTree": [],
     "maxSize": 1000,
     "indexes": [
@@ -18,8 +18,8 @@
                 "startsWith"
             ],
             "doc": "index1",
-            "lastRead": 1723450783765,
-            "expiryDate": 1726042783765
+            "lastRead": 1723567899528,
+            "expiryDate": 1726159899528
         },
         {
             "find": [
@@ -78,16 +78,8 @@
                 "headAccount"
             ],
             "doc": "index11",
-            "lastRead": 1723450783782,
-            "expiryDate": 1726042783782
-        },
-        {
-            "find": [
-                "accountNumber"
-            ],
-            "doc": "index12",
-            "lastRead": 1721379715887,
-            "expiryDate": 1723971715887
+            "lastRead": 1723567899549,
+            "expiryDate": 1726159899549
         },
         {
             "find": [

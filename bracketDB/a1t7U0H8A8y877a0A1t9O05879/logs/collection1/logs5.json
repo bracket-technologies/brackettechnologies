@@ -1,0 +1,27 @@
+{
+    "logs": [
+        "log():[.]",
+        {
+            "db": "VE1Jv7lE2cr3fY63w37E6KO8y66OX5Fd5Qi49r6",
+            "devDB": "qj1oS7AB2Wr3nC62a3Ap6uW8ba6Gl5065ch4WY6",
+            "publicID": "F113n7lK2Cd3tB6Cu3L76gq8xH6lS5825xK4Mx2",
+            "unsecure": true
+        }
+    ],
+    "__props__": {
+        "id": "21J7S2A4z64009B0W1L413Q6X6",
+        "doc": "logs5",
+        "counter": 5,
+        "creationDate": 1724609014366,
+        "collection": "logs",
+        "chunk": "chunk1",
+        "lastModified": 1724609014366,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 442
+    }
+}

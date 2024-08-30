@@ -5,12 +5,12 @@
     "lastChunk": 1,
     "docsLength": 1,
     "counter": 6,
-    "reads": 13039,
+    "reads": 13068,
     "writes": 69,
     "deletes": 0,
     "size": 260,
     "payloadIn": 42848,
-    "payloadOut": 6849992,
+    "payloadOut": 6861912,
     "dirTree": [],
     "indexes": [
         {
@@ -18,8 +18,8 @@
                 "__props__.id"
             ],
             "doc": "index1",
-            "lastRead": 1723290284259,
-            "expiryDate": 1725882284259
+            "lastRead": 1723896330239,
+            "expiryDate": 1726488330239
         }
     ],
     "lastIndex": 1

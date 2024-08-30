@@ -16,6 +16,7 @@
         "size": 392
     },
     "port": [
+        80,
         81
     ],
     "subdomain": "brackettechnologies",

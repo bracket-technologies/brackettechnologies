@@ -1,0 +1,42 @@
+{
+    "creationDate": 1724613847225,
+    "collection": 1,
+    "maxSize": 1000,
+    "lastChunk": 1,
+    "docsLength": 1,
+    "counter": 1,
+    "reads": 78,
+    "writes": 28,
+    "deletes": 0,
+    "size": 434,
+    "payloadIn": 11718,
+    "payloadOut": 22628,
+    "indexes": [
+        {
+            "find": [
+                "session",
+                "userID"
+            ],
+            "doc": "index1",
+            "lastRead": 1724613849694,
+            "expiryDate": 1727205849694
+        },
+        {
+            "find": [
+                "userID"
+            ],
+            "doc": "index2",
+            "lastRead": 1724613849699,
+            "expiryDate": 1727205849699
+        },
+        {
+            "find": [
+                "session"
+            ],
+            "doc": "index3",
+            "lastRead": 1724621447267,
+            "expiryDate": 1727213447267
+        }
+    ],
+    "lastIndex": 3
+}

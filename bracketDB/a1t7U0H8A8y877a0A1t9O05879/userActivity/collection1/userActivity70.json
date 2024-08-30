@@ -1,0 +1,73 @@
+{
+    "firstTrigger": 1723583011707,
+    "serverTriggers": 142,
+    "date": 1723582800000,
+    "userID": "41V7H078W8I8I780z1m9Y2E4Y2",
+    "activityPerHour": [
+        {
+            "time": 1723582800000,
+            "firstTrigger": 1723583011707,
+            "serverTriggers": 51,
+            "lastTrigger": 1723583108274
+        },
+        {
+            "time": 1723629600000,
+            "firstTrigger": 1723631442015,
+            "serverTriggers": 3,
+            "lastTrigger": 1723631442123
+        },
+        {
+            "time": 1723633200000,
+            "firstTrigger": 1723636675714,
+            "serverTriggers": 24,
+            "lastTrigger": 1723636684190
+        },
+        {
+            "time": 1723636800000,
+            "firstTrigger": 1723637136696,
+            "serverTriggers": 32,
+            "lastTrigger": 1723638241975
+        },
+        {
+            "time": 1723640400000,
+            "firstTrigger": 1723640633465,
+            "serverTriggers": 9,
+            "lastTrigger": 1723643771910
+        },
+        {
+            "time": 1723644000000,
+            "firstTrigger": 1723644428535,
+            "serverTriggers": 13,
+            "lastTrigger": 1723647534654
+        },
+        {
+            "time": 1723647600000,
+            "firstTrigger": 1723647911225,
+            "serverTriggers": 2,
+            "lastTrigger": 1723649531715
+        },
+        {
+            "time": 1723651200000,
+            "firstTrigger": 1723653232017,
+            "serverTriggers": 8,
+            "lastTrigger": 1723653257940
+        }
+    ],
+    "lastTrigger": 1723653257940,
+    "__props__": {
+        "id": "j1W7N273k5F8y3w0V1n177r1M0",
+        "doc": "userActivity70",
+        "counter": 70,
+        "creationDate": 1723583011710,
+        "collection": "userActivity",
+        "chunk": "chunk1",
+        "lastModified": 1723653257945,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1224
+    }
+}

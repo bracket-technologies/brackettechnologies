@@ -27,7 +27,7 @@
         "dev": false,
         "actions": {
             "searchEngineParams": {
-                "_": "searchEngineDefaultInputs();managerTitle();filterSearchEngineInputs();navbar();searchEngineInputs();searchAction();addAction()",
+                "_": "data=[searchEngineDefaultInputs();managerTitle();filterSearchEngineInputs();navbar();searchEngineInputs();searchAction();addAction()]",
                 "searchEngineDefaultInputs": "searchEngineDefaultInputs=publicData:().searchEngineDefaultValues.searchEngineInputs.find():[manager=currentOpenManager:().managerName]",
                 "managerTitle": "title=currentOpenManager:().title",
                 "filterSearchEngineInputs": "filterSearchEngineInputs=currentOpenManager:().filterSearchEngineInputs",
@@ -37,7 +37,7 @@
                 "addAction": "addAction=currentOpenManager:().addAction"
             },
             "tableParams": {
-                "_": "itemsList();setManagerTable()",
+                "_": "data=[itemsList();setManagerTable()]",
                 "setManagerTable": "tableHeaderAndBody=sharedManagersInfo:().[currentOpenManager:().table].table?currentOpenManager:().table.type()=text?tableHeaderAndBody=currentOpenManager:().table",
                 "itemsList": "itemsList=managersSearchResult:().[currentOpenManager:().managerName]"
             }

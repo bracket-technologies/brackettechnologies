@@ -4,12 +4,12 @@
     "lastChunk": 1,
     "docsLength": 3,
     "counter": 3,
-    "reads": 3365,
+    "reads": 3371,
     "writes": 488,
     "deletes": 0,
     "size": 5910,
     "payloadIn": 561072,
-    "payloadOut": 3674108,
+    "payloadOut": 3680196,
     "maxSize": 1000,
     "indexes": [
         {
@@ -32,24 +32,6 @@
         {
             "find": [
                 "type",
-                "financialLedgerAccounts"
-            ],
-            "doc": "index3",
-            "lastRead": 1720786591298,
-            "expiryDate": 1723378591298
-        },
-        {
-            "find": [
-                "type",
-                "creationDay"
-            ],
-            "doc": "index4",
-            "lastRead": 1720787313576,
-            "expiryDate": 1723379313576
-        },
-        {
-            "find": [
-                "type",
                 "creationDate"
             ],
             "doc": "index5",
@@ -65,17 +47,6 @@
             "doc": "index6",
             "lastRead": 1721727189629,
             "expiryDate": 1724319189629
-        },
-        {
-            "find": [
-                "type",
-                "status",
-                "creationDate",
-                "creationDay"
-            ],
-            "doc": "index7",
-            "lastRead": 1720787326989,
-            "expiryDate": 1723379326989
         },
         {
             "find": [

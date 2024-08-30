@@ -9,7 +9,7 @@
     "deletes": 0,
     "size": 20743,
     "payloadIn": 2490950,
-    "payloadOut": 33845169,
+    "payloadOut": 33845171,
     "dirTree": [],
     "maxSize": 1000,
     "indexes": [
@@ -18,8 +18,8 @@
                 "id"
             ],
             "doc": "index1",
-            "lastRead": 1723450783771,
-            "expiryDate": 1726042783771
+            "lastRead": 1723567899538,
+            "expiryDate": 1726159899538
         },
         {
             "find": [

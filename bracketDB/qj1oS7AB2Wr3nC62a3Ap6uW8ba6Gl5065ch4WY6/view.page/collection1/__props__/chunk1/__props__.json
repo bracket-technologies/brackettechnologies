@@ -1,0 +1,10 @@
+{
+    "docs": [
+        "portal",
+        "main",
+        "login"
+    ],
+    "chunk": "chunk1",
+    "docsLength": 3,
+    "size": 2553
+}

@@ -1,17 +1,20 @@
 {
     "host1": {
-        "port": [
-            81
-        ]
+        "localhost": "localhost"
     },
     "host2": {
-        "port": [
-            82
-        ]
+        "localhost": "acc.localhost"
     },
-    "host3": {
-        "port": [
-            83
-        ]
+    "host77": {
+        "localhost": "dev.acc.localhost"
+    },
+    "host78": {
+        "localhost": "flightbookingplatform.localhost"
+    },
+    "host79": {
+        "localhost": "dev.flightbookingplatform.localhost"
+    },
+    "host80": {
+        "localhost": "dev.brackettechnologies.localhost"
     }
 }

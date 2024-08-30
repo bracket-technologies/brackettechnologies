@@ -1,0 +1,24 @@
+{
+    "logs": [
+        "log():[_.clone()]:[data()]:[_.clone()]",
+        null,
+        null,
+        null
+    ],
+    "__props__": {
+        "id": "G127n2n4D6g1K2C3U6g763F2k9",
+        "doc": "logs33",
+        "counter": 33,
+        "creationDate": 1724612367329,
+        "collection": "logs",
+        "chunk": "chunk1",
+        "lastModified": 1724612367329,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 320
+    }
+}

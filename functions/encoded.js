@@ -1,6 +1,6 @@
 const encoded = (string) => {
     if (typeof string !== "string") return false
-    return (string.charAt(0) === "@" && string.length === 6)
+    return (string.slice(0, 2) === "@$" && string.length === 7)
 }
 
 module.exports = { encoded }

@@ -4,7 +4,7 @@ module.exports = {
         if (typeof string !== "string") return false
 
         var global = _window ? _window.global : window.global
-        if (string.charAt(0) === "@" && string.length === 6) string = global.__refs__[string].data
+        if (string.slice(0, 2) === "@$" && string.length === 7) string = global.__refs__[string].data
 
         // recheck after decoding
         if (typeof string !== "string") return false

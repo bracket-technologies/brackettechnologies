@@ -6,7 +6,7 @@
         "creationDate": 1714592888052,
         "collection": "actions",
         "chunk": "chunk1",
-        "lastModified": 1723125299799,
+        "lastModified": 1723734606020,
         "dev": false,
         "actions": {
             "getUserAccount": {
@@ -171,7 +171,7 @@
                 "createSubscription": {
                     "_": "[createSubscription()]():[path=:]:[subscribeToConsole()]",
                     "subscribeToConsole": {
-                        "_": "[getSubscription():[[_].flat();end=true]]()::[createHost()?_.pluginID=Q1p78107R4j1n2Z9a2E1K1r912;!subscription:()]",
+                        "_": "[getSubscription():[[_].flat();end=true]]()::[createHost()?_.pluginID=Q1p78107R4j1n2Z9a2E1K1r912;subscription:().free]",
                         "createHost": "[createHost():[[_].flat();dev=true]]():[path=:]"
                     }
                 },
@@ -346,27 +346,15 @@
         },
         "comments": [
             {
-                "note": "create invoices & blocks",
-                "path": [
-                    "charge"
-                ]
-            },
-            {
                 "note": "add new project + tap subscription",
                 "path": [
                     "addProject"
                 ]
             },
             {
-                "note": "signup to bracket platform",
+                "note": "create invoices & blocks",
                 "path": [
-                    "getPlugin"
-                ]
-            },
-            {
-                "note": "subscribe to plugin",
-                "path": [
-                    "createSubscription"
+                    "charge"
                 ]
             },
             {
@@ -376,32 +364,28 @@
                 ]
             },
             {
+                "note": "subscribe to plugin",
+                "path": [
+                    "createSubscription"
+                ]
+            },
+            {
                 "note": "used in console preview btn",
                 "path": [
                     "getHost"
+                ]
+            },
+            {
+                "note": "signup to bracket platform",
+                "path": [
+                    "getPlugin"
                 ]
             }
         ],
         "collapsed": [
             {
                 "path": [
-                    "getPlugisn"
-                ]
-            },
-            {
-                "path": [
-                    "getPlugisn"
-                ]
-            },
-            {
-                "path": [
-                    "createProject",
-                    "modifySubdomain"
-                ]
-            },
-            {
-                "path": [
-                    "getPlugisn"
+                    "addProject"
                 ]
             },
             {
@@ -418,39 +402,117 @@
             },
             {
                 "path": [
-                    "getPlugisn",
+                    "charge"
+                ]
+            },
+            {
+                "path": [
+                    "chargeAccount"
+                ]
+            },
+            {
+                "path": [
+                    "chargeAccount",
+                    "checkData"
+                ]
+            },
+            {
+                "path": [
+                    "chargeAccount",
+                    "getPackage"
+                ]
+            },
+            {
+                "path": [
                     "createAccount"
                 ]
             },
             {
                 "path": [
-                    "getPlugisn"
-                ]
-            },
-            {
-                "path": [
-                    "getPlugisn"
-                ]
-            },
-            {
-                "path": [
-                    "getPaymentMethods"
-                ]
-            },
-            {
-                "path": [
-                    "addProject"
-                ]
-            },
-            {
-                "path": [
-                    "getPlugisn",
                     "createBillingAccount"
                 ]
             },
             {
                 "path": [
-                    "getPlugisn"
+                    "createBlocks"
+                ]
+            },
+            {
+                "path": [
+                    "createBlocks",
+                    "getPrevBlocks"
+                ]
+            },
+            {
+                "path": [
+                    "createHost"
+                ]
+            },
+            {
+                "path": [
+                    "createInvoice"
+                ]
+            },
+            {
+                "path": [
+                    "createProject"
+                ]
+            },
+            {
+                "path": [
+                    "createProject",
+                    "initProjectData"
+                ]
+            },
+            {
+                "path": [
+                    "createProject",
+                    "modifySubdomain"
+                ]
+            },
+            {
+                "path": [
+                    "createSubscription"
+                ]
+            },
+            {
+                "path": [
+                    "deleteProject"
+                ]
+            },
+            {
+                "path": [
+                    "docCounter"
+                ]
+            },
+            {
+                "path": [
+                    "genCoins"
+                ]
+            },
+            {
+                "path": [
+                    "getAllInvoices"
+                ]
+            },
+            {
+                "path": [
+                    "getAllSubscriptions"
+                ]
+            },
+            {
+                "path": [
+                    "getAllVouchers"
+                ]
+            },
+            {
+                "path": [
+                    "getBillingAccount"
+                ]
+            },
+            {
+                "path": [
+                    "getBillingAccountBySession"
                 ]
             },
             {
@@ -460,7 +522,37 @@
             },
             {
                 "path": [
-                    "getPlugisn"
+                    "getHost"
+                ]
+            },
+            {
+                "path": [
+                    "getOnlyPlugins"
+                ]
+            },
+            {
+                "path": [
+                    "getOnlyProjects"
+                ]
+            },
+            {
+                "path": [
+                    "getPackage"
+                ]
+            },
+            {
+                "path": [
+                    "getPackages"
+                ]
+            },
+            {
+                "path": [
+                    "getPaymentMethods"
+                ]
+            },
+            {
+                "path": [
+                    "getPlugin"
                 ]
             },
             {
@@ -478,34 +570,13 @@
             {
                 "path": [
                     "getPlugin",
-                    "getSubscriptions"
-                ]
-            },
-            {
-                "path": [
-                    "getBillingAccountBySession"
-                ]
-            },
-            {
-                "path": [
-                    "getProjects"
-                ]
-            },
-            {
-                "path": [
-                    "createProject",
-                    "initProjectData"
-                ]
-            },
-            {
-                "path": [
-                    "createHost"
+                    "getPlugin"
                 ]
             },
             {
                 "path": [
                     "getPlugin",
-                    "getPlugin"
+                    "getSubscriptions"
                 ]
             },
             {
@@ -515,50 +586,42 @@
             },
             {
                 "path": [
+                    "getProject"
+                ]
+            },
+            {
+                "path": [
+                    "getProjects"
+                ]
+            },
+            {
+                "path": [
+                    "getSubscription"
+                ]
+            },
+            {
+                "path": [
+                    "getSubscriptions"
+                ]
+            },
+            {
+                "path": [
+                    "getUser"
+                ]
+            },
+            {
+                "path": [
+                    "getUserAccount"
+                ]
+            },
+            {
+                "path": [
                     "searchBySchema"
                 ]
             },
             {
                 "path": [
-                    "deleteProject"
-                ]
-            },
-            {
-                "path": [
-                    "getPlugin"
-                ]
-            },
-            {
-                "path": [
-                    "chargeAccount",
-                    "getPackage"
-                ]
-            },
-            {
-                "path": [
-                    "chargeAccount",
-                    "checkData"
-                ]
-            },
-            {
-                "path": [
-                    "docCounter"
-                ]
-            },
-            {
-                "path": [
-                    "createBlocks",
-                    "getPrevBlocks"
-                ]
-            },
-            {
-                "path": [
-                    "subscribe"
-                ]
-            },
-            {
-                "path": [
-                    "createBlocks"
+                    "signup"
                 ]
             },
             {
@@ -569,122 +632,12 @@
             },
             {
                 "path": [
-                    "createProject"
-                ]
-            },
-            {
-                "path": [
-                    "createAccount"
-                ]
-            },
-            {
-                "path": [
-                    "getProject"
-                ]
-            },
-            {
-                "path": [
-                    "createBillingAccount"
-                ]
-            },
-            {
-                "path": [
-                    "getBillingAccount"
-                ]
-            },
-            {
-                "path": [
-                    "getAllVouchers"
-                ]
-            },
-            {
-                "path": [
-                    "getPackage"
-                ]
-            },
-            {
-                "path": [
-                    "getUser"
-                ]
-            },
-            {
-                "path": [
-                    "signup"
-                ]
-            },
-            {
-                "path": [
-                    "getUserAccount"
-                ]
-            },
-            {
-                "path": [
-                    "getAllSubscriptions"
-                ]
-            },
-            {
-                "path": [
-                    "charge"
-                ]
-            },
-            {
-                "path": [
-                    "createInvoice"
-                ]
-            },
-            {
-                "path": [
-                    "chargeAccount"
-                ]
-            },
-            {
-                "path": [
-                    "genCoins"
-                ]
-            },
-            {
-                "path": [
-                    "getAllInvoices"
-                ]
-            },
-            {
-                "path": [
-                    "getOnlyProjects"
-                ]
-            },
-            {
-                "path": [
-                    "getHost"
-                ]
-            },
-            {
-                "path": [
-                    "getOnlyPlugins"
-                ]
-            },
-            {
-                "path": [
-                    "getPackages"
-                ]
-            },
-            {
-                "path": [
-                    "getSubscriptions"
-                ]
-            },
-            {
-                "path": [
-                    "getSubscription"
-                ]
-            },
-            {
-                "path": [
-                    "createSubscription"
+                    "subscribe"
                 ]
             }
         ],
         "arrange": [],
         "secured": true,
-        "size": 34041
+        "size": 33790
     }
 }

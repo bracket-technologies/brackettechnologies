@@ -3,14 +3,14 @@
     "collection": "project",
     "chunkMaxSizeMB": 20,
     "lastChunk": 1,
-    "docsLength": 1,
-    "counter": 183,
-    "reads": 423147,
-    "writes": 327,
+    "docsLength": 2,
+    "counter": 184,
+    "reads": 430205,
+    "writes": 329,
     "deletes": 5,
-    "size": 3331,
-    "payloadIn": 163699,
-    "payloadOut": 73988939,
+    "size": 4133,
+    "payloadIn": 164959,
+    "payloadOut": 78197944,
     "dirTree": [],
     "indexes": [
         {
@@ -18,24 +18,24 @@
                 "__props__.id"
             ],
             "doc": "index1",
-            "lastRead": 1723493262338,
-            "expiryDate": 1726085262338
+            "lastRead": 1724834576255,
+            "expiryDate": 1727426576255
         },
         {
             "find": [
                 "publicID"
             ],
             "doc": "index2",
-            "lastRead": 1723493270792,
-            "expiryDate": 1726085270792
+            "lastRead": 1724834804746,
+            "expiryDate": 1727426804746
         },
         {
             "find": [
                 "subdomain"
             ],
             "doc": "index3",
-            "lastRead": 1723103296042,
-            "expiryDate": 1725695296042
+            "lastRead": 1723636865544,
+            "expiryDate": 1726228865544
         },
         {
             "find": [

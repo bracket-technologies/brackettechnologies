@@ -7,7 +7,7 @@ const isEqual = function (value, other) {
   if (typeof value === "string") return value.replace(/\s+/g, ",") === other.replace(/\s+/g, ",");
 
   // boolean || number
-  if (typeof value !== "object") return value === other
+  if (typeof value !== "object" || value === null) return value === other
 
   var type = Object.prototype.toString.call(value)
   // If the two objects are not the same type, return false

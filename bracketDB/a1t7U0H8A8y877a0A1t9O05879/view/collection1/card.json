@@ -7,7 +7,7 @@
         "creationDate": 1716560749247,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1723125642125,
+        "lastModified": 1723896324516,
         "dev": false,
         "actions": {
             "defaultSelectedPackage": "form().qty=1;[[setChosenPackage()]():[path=[chooseCoinPackage?__.coinPackage?chooseSubscriptionPackage?__.subscriptionPackage]]?_.selected]",
@@ -37,20 +37,6 @@
                 ]
             },
             {
-                "note": "coin totals",
-                "path": [
-                    "children",
-                    3
-                ]
-            },
-            {
-                "note": "coin totals",
-                "path": [
-                    "children",
-                    3
-                ]
-            },
-            {
                 "note": "package",
                 "path": [
                     "children",
@@ -65,23 +51,17 @@
                 ]
             },
             {
+                "note": "coin totals",
+                "path": [
+                    "children",
+                    3
+                ]
+            },
+            {
                 "note": "subscription details",
                 "path": [
                     "children",
                     4
-                ]
-            },
-            {
-                "note": "name",
-                "path": [
-                    "children",
-                    4,
-                    "children",
-                    0,
-                    "children",
-                    0,
-                    "children",
-                    1
                 ]
             },
             {
@@ -98,7 +78,7 @@
                 ]
             },
             {
-                "note": "qty",
+                "note": "name",
                 "path": [
                     "children",
                     4,
@@ -107,7 +87,7 @@
                     "children",
                     0,
                     "children",
-                    3
+                    1
                 ]
             },
             {
@@ -121,6 +101,19 @@
                     0,
                     "children",
                     2
+                ]
+            },
+            {
+                "note": "qty",
+                "path": [
+                    "children",
+                    4,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    3
                 ]
             },
             {
@@ -141,12 +134,7 @@
             {
                 "path": [
                     "children",
-                    2
-                ]
-            },
-            {
-                "path": [
-                    "chooseCoinPackage"
+                    0
                 ]
             },
             {
@@ -158,7 +146,7 @@
             {
                 "path": [
                     "children",
-                    0
+                    2
                 ]
             },
             {
@@ -169,17 +157,142 @@
             },
             {
                 "path": [
+                    "children",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "chooseCoinPackage"
+                ]
+            },
+            {
+                "path": [
                     "chooseSubscriptionPackage"
                 ]
             }
         ],
-        "arrange": [],
+        "arrange": {
+            "": [
+                "view",
+                "children",
+                "chooseCoinPackage",
+                "chooseSubscriptionPackage",
+                "coinTotals",
+                "defaultSelectedPackage",
+                "subscriptionDetails",
+                "timeUnit"
+            ],
+            "children.0": [
+                "view",
+                "children"
+            ],
+            "children.0.children.0": [
+                "view"
+            ],
+            "children.0.children.1": [
+                "view"
+            ],
+            "children.0.children.2": [
+                "view"
+            ],
+            "children.0.children.3": [
+                "view",
+                "children"
+            ],
+            "children.0.children.3.children.0": [
+                "view"
+            ],
+            "children.0.children.3.children.1": [
+                "view"
+            ],
+            "children.1": [
+                "view",
+                "children"
+            ],
+            "children.1.children.0": [
+                "view"
+            ],
+            "children.1.children.1": [
+                "view"
+            ],
+            "children.1.children.2": [
+                "view"
+            ],
+            "children.2": [
+                "view"
+            ],
+            "children.3": [
+                "view",
+                "children"
+            ],
+            "children.3.children.0": [
+                "view",
+                "children"
+            ],
+            "children.3.children.0.children.0": [
+                "view",
+                "children"
+            ],
+            "children.3.children.0.children.0.children.0": [
+                "view"
+            ],
+            "children.3.children.0.children.0.children.1": [
+                "view"
+            ],
+            "children.3.children.0.children.0.children.2": [
+                "view"
+            ],
+            "children.3.children.0.children.0.children.3": [
+                "view"
+            ],
+            "children.4": [
+                "view",
+                "children"
+            ],
+            "children.4.children.0": [
+                "view",
+                "children"
+            ],
+            "children.4.children.0.children.0": [
+                "view",
+                "children"
+            ],
+            "children.4.children.0.children.0.children.0": [
+                "view"
+            ],
+            "children.4.children.0.children.0.children.1": [
+                "view"
+            ],
+            "children.4.children.0.children.0.children.2": [
+                "view"
+            ],
+            "children.4.children.0.children.0.children.3": [
+                "view"
+            ],
+            "children.4.children.0.children.0.children.4": [
+                "view"
+            ],
+            "chooseCoinPackage": [
+                "_",
+                "addQty",
+                "beat",
+                "setChosenPackage",
+                "setSelected",
+                "updatePackages"
+            ],
+            "chooseSubscriptionPackage": [
+                "_",
+                "addQty",
+                "setChosenPackage"
+            ]
+        },
         "secured": false,
-        "size": 9231
+        "size": 10669
     },
     "children": [
         {
-            "view": "View?class=flex column pointer;style:[alignItems=center;borderRadius=1rem;border=1px solid #ddd;gap=2rem;transition=.2s;overflow=hidden;width=100%;[transform=scale(1.04)?_.selected]];defaultSelectedPackage();[click?chooseCoinPackage();log():[form()]]?__.coinPackage",
+            "view": "View?class=flex column pointer;style:[alignItems=center;borderRadius=1rem;border=1px solid #ddd;gap=2rem;transition=.2s;overflow=hidden;width=100%;[transform=scale(1.04)?_.selected]];defaultSelectedPackage();[click?chooseCoinPackage()]?__.coinPackage",
             "__props__": {
                 "id": "M1L791R6B5E507i5w9R8s9f0p2",
                 "doc": "packageCard",
@@ -266,7 +379,7 @@
             ]
         },
         {
-            "view": "Text?text=[Selected!?_.selected?];style:[fontSize=1.6rem;width=100%;textAlign=center]?__.selected"
+            "view": "Text?text=['Selected!'?_.selected?];style:[fontSize=1.6rem;width=100%;textAlign=center]?__.selected"
         },
         {
             "view": "View?class=flex subscription-details;style:[justifyContent=flex-end;width=100%]?__.coinTotals",

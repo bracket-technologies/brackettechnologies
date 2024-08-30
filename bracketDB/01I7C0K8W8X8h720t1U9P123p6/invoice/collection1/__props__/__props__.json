@@ -9,7 +9,7 @@
     "deletes": 0,
     "size": -6774,
     "payloadIn": 379676,
-    "payloadOut": 2496782,
+    "payloadOut": 2496784,
     "dirTree": [],
     "maxSize": 1000,
     "indexes": [
@@ -33,29 +33,11 @@
         },
         {
             "find": [
-                "type"
-            ],
-            "doc": "index3",
-            "lastRead": 1721638653028,
-            "expiryDate": 1724230653028
-        },
-        {
-            "find": [
                 "id"
             ],
             "doc": "index4",
             "lastRead": 1722554011275,
             "expiryDate": 1725146011275
-        },
-        {
-            "find": [
-                "type",
-                "status",
-                "passengerName"
-            ],
-            "doc": "index5",
-            "lastRead": 1721733090806,
-            "expiryDate": 1724325090806
         },
         {
             "find": [

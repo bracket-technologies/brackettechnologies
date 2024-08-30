@@ -11,13 +11,13 @@
                             "view": "[View]:[data=_.items]?class=column;style:[width=100%]",
                             "children": [
                                 {
-                                    "view": "sidebarItem@component"
+                                    "view": "@component.sidebarItem"
                                 },
                                 {
                                     "view": "View?class=column;style:[width=100%;overflow=hidden;height=0;transition=.2s;gap=.05rem;padding=0 .2rem 0 .8rem;justifyContent=space-around]?_.subSidebar",
                                     "children": [
                                         {
-                                            "view": "[sidebarSubItem@component]:[data=_.subSidebar]"
+                                            "view": "[@component.sidebarSubItem]:[data=_.subSidebar]"
                                         }
                                     ]
                                 }

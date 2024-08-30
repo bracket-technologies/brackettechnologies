@@ -7,14 +7,42 @@
         "creationDate": 1715088937526,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1722005136472,
+        "lastModified": 1724592803899,
         "dev": false,
-        "actions": {},
+        "actions": {
+            "111": ""
+        },
         "comments": [],
         "collapsed": [],
-        "arrange": [],
+        "arrange": {
+            "": [
+                "view",
+                "children",
+                111
+            ],
+            "children.0": [
+                "view",
+                "children"
+            ],
+            "children.0.children.0": [
+                "view",
+                "children"
+            ],
+            "children.0.children.0.children.0": [
+                "view"
+            ],
+            "children.0.children.0.children.1": [
+                "view"
+            ],
+            "children.0.children.0.children.2": [
+                "view"
+            ],
+            "children.0.children.0.children.3": [
+                "view"
+            ]
+        },
         "secured": false,
-        "size": 1577
+        "size": 1864
     },
     "children": [
         {

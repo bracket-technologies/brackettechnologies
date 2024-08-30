@@ -7,7 +7,7 @@
         "creationDate": 1716557780043,
         "collection": "view",
         "chunk": "chunk1",
-        "lastModified": 1723121026418,
+        "lastModified": 1723896321531,
         "dev": false,
         "actions": {
             "closeForm": "prev().transform()='translateY(-100%)';timer():[():form.hide()]:500",
@@ -25,48 +25,103 @@
         },
         "comments": [
             {
-                "note": "btns: close, confirm",
+                "note": "coin package",
                 "path": [
-                    "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "note": "body",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    2
-                ]
-            },
-            {
-                "note": "title",
-                "path": [
-                    "children",
-                    0,
                     "children",
                     0
                 ]
             },
             {
-                "note": "close icon",
+                "note": "package",
                 "path": [
                     "children",
                     1
                 ]
             },
             {
-                "note": "close",
+                "note": "selected",
                 "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "coin totals",
+                "path": [
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "subscription details",
+                "path": [
+                    "children",
+                    4
+                ]
+            },
+            {
+                "note": "label",
+                "path": [
+                    "children",
+                    4,
                     "children",
                     0,
                     "children",
-                    3,
+                    0,
                     "children",
                     0
+                ]
+            },
+            {
+                "note": "name",
+                "path": [
+                    "children",
+                    4,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "unit",
+                "path": [
+                    "children",
+                    4,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "qty",
+                "path": [
+                    "children",
+                    4,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    3
+                ]
+            },
+            {
+                "note": "date",
+                "path": [
+                    "children",
+                    4,
+                    "children",
+                    0,
+                    "children",
+                    0,
+                    "children",
+                    4
                 ]
             },
             {
@@ -77,14 +132,12 @@
                 ]
             },
             {
-                "note": "inputs",
+                "note": "title",
                 "path": [
                     "children",
                     0,
                     "children",
-                    3,
-                    "children",
-                    -1
+                    0
                 ]
             },
             {
@@ -107,32 +160,6 @@
                     0,
                     "children",
                     0
-                ]
-            },
-            {
-                "note": "divider",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    1
-                ]
-            },
-            {
-                "note": "table",
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
-                    2
                 ]
             },
             {
@@ -164,30 +191,59 @@
                     "children",
                     1
                 ]
+            },
+            {
+                "note": "divider",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "note": "table",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "btns: close, confirm",
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    2
+                ]
+            },
+            {
+                "note": "close icon",
+                "path": [
+                    "children",
+                    1
+                ]
             }
         ],
         "collapsed": [
             {
                 "path": [
                     "children",
-                    0,
-                    "children",
-                    3,
-                    "children",
                     0
                 ]
             },
             {
                 "path": [
-                    "confirmHandler"
-                ]
-            },
-            {
-                "path": [
-                    "children",
-                    0,
-                    "children",
-                    3,
                     "children",
                     1
                 ]
@@ -195,15 +251,11 @@
             {
                 "path": [
                     "children",
-                    0,
-                    "children",
-                    0
+                    2
                 ]
             },
             {
                 "path": [
-                    "children",
-                    0,
                     "children",
                     3
                 ]
@@ -211,6 +263,46 @@
             {
                 "path": [
                     "children",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    0,
+                    "children",
+                    1,
+                    "children",
+                    0,
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
                     0,
                     "children",
                     1,
@@ -231,27 +323,200 @@
             {
                 "path": [
                     "children",
-                    0,
-                    "children",
-                    1,
-                    "children",
-                    0,
-                    "children",
                     1
                 ]
             },
             {
                 "path": [
-                    "children",
-                    0,
-                    "children",
-                    1
+                    "chooseCoinPackage"
+                ]
+            },
+            {
+                "path": [
+                    "chooseSubscriptionPackage"
+                ]
+            },
+            {
+                "path": [
+                    "confirmHandler"
                 ]
             }
         ],
-        "arrange": [],
+        "arrange": {
+            "": [
+                "view",
+                "children",
+                "view",
+                "children",
+                "chooseCoinPackage",
+                "chooseSubscriptionPackage",
+                "coinTotals",
+                "defaultSelectedPackage",
+                "subscriptionDetails",
+                "timeUnit",
+                "closeForm",
+                "confirmHandler",
+                "getSchema",
+                "openForm"
+            ],
+            "children.0": [
+                "view",
+                "children",
+                "view",
+                "children"
+            ],
+            "children.0.children.0": [
+                "view",
+                "view"
+            ],
+            "children.0.children.1": [
+                "view",
+                "view",
+                "children"
+            ],
+            "children.0.children.2": [
+                "view",
+                "view",
+                "children"
+            ],
+            "children.0.children.3": [
+                "view",
+                "children"
+            ],
+            "children.0.children.3.children.0": [
+                "view"
+            ],
+            "children.0.children.3.children.1": [
+                "view"
+            ],
+            "children.1": [
+                "view",
+                "children",
+                "view"
+            ],
+            "children.1.children.0": [
+                "view"
+            ],
+            "children.1.children.1": [
+                "view"
+            ],
+            "children.1.children.2": [
+                "view"
+            ],
+            "children.2": [
+                "view"
+            ],
+            "children.3": [
+                "view",
+                "children"
+            ],
+            "children.3.children.0": [
+                "view",
+                "children"
+            ],
+            "children.3.children.0.children.0": [
+                "view",
+                "children"
+            ],
+            "children.3.children.0.children.0.children.0": [
+                "view"
+            ],
+            "children.3.children.0.children.0.children.1": [
+                "view"
+            ],
+            "children.3.children.0.children.0.children.2": [
+                "view"
+            ],
+            "children.3.children.0.children.0.children.3": [
+                "view"
+            ],
+            "children.4": [
+                "view",
+                "children"
+            ],
+            "children.4.children.0": [
+                "view",
+                "children"
+            ],
+            "children.4.children.0.children.0": [
+                "view",
+                "children"
+            ],
+            "children.4.children.0.children.0.children.0": [
+                "view"
+            ],
+            "children.4.children.0.children.0.children.1": [
+                "view"
+            ],
+            "children.4.children.0.children.0.children.2": [
+                "view"
+            ],
+            "children.4.children.0.children.0.children.3": [
+                "view"
+            ],
+            "children.4.children.0.children.0.children.4": [
+                "view"
+            ],
+            "children.0.children.1.children.0": [
+                "view",
+                "children"
+            ],
+            "children.0.children.1.children.0.children.0": [
+                "view",
+                "children"
+            ],
+            "children.0.children.1.children.0.children.0.children.0": [
+                "view"
+            ],
+            "children.0.children.1.children.0.children.0.children.1": [
+                "view"
+            ],
+            "children.0.children.1.children.0.children.1": [
+                "view"
+            ],
+            "children.0.children.1.children.0.children.2": [
+                "view"
+            ],
+            "children.0.children.2.children.0": [
+                "view",
+                "children"
+            ],
+            "children.0.children.2.children.0.children.0": [
+                "view"
+            ],
+            "children.0.children.2.children.1": [
+                "view",
+                "children"
+            ],
+            "children.0.children.2.children.1.children.0": [
+                "view"
+            ],
+            "chooseCoinPackage": [
+                "_",
+                "addQty",
+                "beat",
+                "setChosenPackage",
+                "setSelected",
+                "updatePackages"
+            ],
+            "chooseSubscriptionPackage": [
+                "_",
+                "addQty",
+                "setChosenPackage"
+            ],
+            "confirmHandler": [
+                "_",
+                "conditionsNotApplied",
+                "confirmed",
+                "getStarted"
+            ],
+            "getSchema": [
+                "_",
+                "beforeLoadingActions"
+            ]
+        },
         "secured": false,
-        "size": 4552
+        "size": 7388
     },
     "children": [
         {

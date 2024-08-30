@@ -1,0 +1,79 @@
+{
+    "firstTrigger": 1723582917846,
+    "serverTriggers": 532,
+    "date": 1723582800000,
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "activityPerHour": [
+        {
+            "time": 1723582800000,
+            "firstTrigger": 1723582917846,
+            "serverTriggers": 64,
+            "lastTrigger": 1723583108274
+        },
+        {
+            "time": 1723629600000,
+            "firstTrigger": 1723631430898,
+            "serverTriggers": 9,
+            "lastTrigger": 1723631442123
+        },
+        {
+            "time": 1723633200000,
+            "firstTrigger": 1723636675714,
+            "serverTriggers": 33,
+            "lastTrigger": 1723636792105
+        },
+        {
+            "time": 1723636800000,
+            "firstTrigger": 1723636865447,
+            "serverTriggers": 139,
+            "lastTrigger": 1723638317777
+        },
+        {
+            "time": 1723640400000,
+            "firstTrigger": 1723640422306,
+            "serverTriggers": 106,
+            "lastTrigger": 1723643779219
+        },
+        {
+            "time": 1723644000000,
+            "firstTrigger": 1723644403663,
+            "serverTriggers": 85,
+            "lastTrigger": 1723647586500
+        },
+        {
+            "time": 1723647600000,
+            "firstTrigger": 1723647911225,
+            "serverTriggers": 66,
+            "lastTrigger": 1723649531715
+        },
+        {
+            "time": 1723651200000,
+            "firstTrigger": 1723653130786,
+            "serverTriggers": 29,
+            "lastTrigger": 1723654786689
+        },
+        {
+            "time": 1723654800000,
+            "firstTrigger": 1723654815449,
+            "serverTriggers": 1,
+            "lastTrigger": 1723654815449
+        }
+    ],
+    "lastTrigger": 1723654815449,
+    "__props__": {
+        "id": "11r732R3c5m872y9A1M7G8w6v3",
+        "doc": "projectActivity73",
+        "counter": 73,
+        "creationDate": 1723582917863,
+        "collection": "projectActivity",
+        "chunk": "chunk1",
+        "lastModified": 1723654815458,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1337
+    }
+}

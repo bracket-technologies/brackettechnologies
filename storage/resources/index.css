@@ -331,6 +331,11 @@ i {
   font-family: "Lexend Deca", sans-serif;
 }
 
+input {
+  border: 0;
+  background-color: #00000000;
+}
+
 .dots, .textoverflow {
   display: inline-block;
   text-overflow: ellipsis;

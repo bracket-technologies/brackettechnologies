@@ -1,0 +1,30 @@
+{
+    "view": "View?id=root",
+    "children": [
+        {
+            "view": "droplist"
+        },
+        {
+            "view": "note"
+        },
+        {
+            "view": "@view.page.[manifest:().page]"
+        }
+    ],
+    "__props__": {
+        "id": "W1T7e243k6c3D6s8A9l9c2B3X1",
+        "doc": "root",
+        "counter": 3,
+        "creationDate": 1723636899231,
+        "collection": "view.application",
+        "chunk": "chunk1",
+        "lastModified": 1723637005194,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 351
+    }
+}

@@ -1,0 +1,37 @@
+{
+    "view": "View?id=document;headers();getViews()",
+    "children": [
+        {
+            "view": "View:body?style:[width=100%]",
+            "children": [
+                {
+                    "view": "@view.application.root"
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "O117Y1D190L3b1s3b6R5n2I0Z4",
+        "doc": "document",
+        "creationDate": 1711031365204,
+        "active": true,
+        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "actions": {
+            "faviconURL": "'https://storage.googleapis.com/bracket-technologies.appspot.com/storage-tt/XPj7rpzqqcYaio0jdejE?GoogleAccessId=firebase-adminsdk-kcrle%40bracket-technologies.iam.gserviceaccount.com&Expires=32509468800&Signature=BaeQg0yFhhoHkbcBMfX4tFfKR%2BaanI7YY6qCnRPW2oS6AqLvfeNl3OqfBQhKCk%2Fg2bn0x4OR%2FQKwYEI7SIFCqFG09WYwnp4v4EHwOsMKM7KB6ocxSEqIn3W0%2BAi6vqseocZky5Ms15WfSyc4GtD%2BrbsFZkEO%2F9zB9I80nwUSeVF1BcUp0juRGKdyge6B31t66J9iKiy2mCAnoXN4I61OVojFghacVVSq8bu1WVrggOjp1Z0H%2BifUxpCZ68rXI%2BcqsglgVT6RMqamDGa32XEKB9jOh3IN09XwwE8if5LBwlGEiocVvJ4tKGLWFfPQdhFk37fogg8GM9ivvjMSFPYGIg%3D%3D'",
+            "getViews": {
+                "_": "search():[collection=view;docs=data:().views]:[if():[_.data.value()]:[_.data.keys()._():[data:().view.[_]=__.data.[_]]]]"
+            },
+            "headers": "favicon=[url=faviconURL();type=png];links=:[html2pdfLink()]:[fontLink()];stylesheet=['*'=[fontFamily='Noto Sans, sans-serif';fontWeight=600]]",
+            "html2pdfLink": "[href='https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js']",
+            "fontLink": "[href='https://fonts.googleapis.com/css2?family=Noto+Sans:wght@100&family=Noto+Sans:wght@400&family=Noto+Sans:wght@600&family=Noto+Sans:wght@500&display=swap';rel=stylesheet]"
+        },
+        "collapsed": [],
+        "comments": [],
+        "dirPath": [],
+        "version": 0,
+        "counter": 23,
+        "secure": false,
+        "chunk": "chunk1",
+        "collection": "view.application"
+    }
+}

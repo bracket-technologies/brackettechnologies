@@ -1,0 +1,31 @@
+{
+    "firstTrigger": 1724757497825,
+    "serverTriggers": 13,
+    "date": 1724706000000,
+    "projectID": "a1u7e2r3W6n3M6s8A6U5e5c456",
+    "activityPerHour": [
+        {
+            "time": 1724756400000,
+            "firstTrigger": 1724757497825,
+            "serverTriggers": 13,
+            "lastTrigger": 1724757590845
+        }
+    ],
+    "lastTrigger": 1724757590845,
+    "__props__": {
+        "id": "O1l7b2L42725t7i4n9R7P8z3g2",
+        "doc": "projectActivity102",
+        "counter": 102,
+        "creationDate": 1724757497832,
+        "collection": "projectActivity",
+        "chunk": "chunk1",
+        "lastModified": 1724757590854,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 538
+    }
+}

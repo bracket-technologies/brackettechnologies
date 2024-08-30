@@ -1,0 +1,103 @@
+{
+    "firstTrigger": 1723928402557,
+    "serverTriggers": 1153,
+    "date": 1723928400000,
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "activityPerHour": [
+        {
+            "time": 1723928400000,
+            "firstTrigger": 1723928402557,
+            "serverTriggers": 27,
+            "lastTrigger": 1723929149882
+        },
+        {
+            "time": 1723968000000,
+            "firstTrigger": 1723969911872,
+            "serverTriggers": 31,
+            "lastTrigger": 1723970222467
+        },
+        {
+            "time": 1723975200000,
+            "firstTrigger": 1723976198994,
+            "serverTriggers": 18,
+            "lastTrigger": 1723977668697
+        },
+        {
+            "time": 1723978800000,
+            "firstTrigger": 1723979518199,
+            "serverTriggers": 73,
+            "lastTrigger": 1723979919667
+        },
+        {
+            "time": 1723982400000,
+            "firstTrigger": 1723983474218,
+            "serverTriggers": 18,
+            "lastTrigger": 1723983539760
+        },
+        {
+            "time": 1723986000000,
+            "firstTrigger": 1723986992432,
+            "serverTriggers": 150,
+            "lastTrigger": 1723989510508
+        },
+        {
+            "time": 1723989600000,
+            "firstTrigger": 1723989698875,
+            "serverTriggers": 130,
+            "lastTrigger": 1723992078084
+        },
+        {
+            "time": 1723993200000,
+            "firstTrigger": 1723994910780,
+            "serverTriggers": 105,
+            "lastTrigger": 1723996798950
+        },
+        {
+            "time": 1723996800000,
+            "firstTrigger": 1723996800864,
+            "serverTriggers": 175,
+            "lastTrigger": 1723998884379
+        },
+        {
+            "time": 1724000400000,
+            "firstTrigger": 1724001681673,
+            "serverTriggers": 87,
+            "lastTrigger": 1724003998670
+        },
+        {
+            "time": 1724004000000,
+            "firstTrigger": 1724004089485,
+            "serverTriggers": 195,
+            "lastTrigger": 1724007577433
+        },
+        {
+            "time": 1724007600000,
+            "firstTrigger": 1724007618496,
+            "serverTriggers": 68,
+            "lastTrigger": 1724011179563
+        },
+        {
+            "time": 1724011200000,
+            "firstTrigger": 1724011216828,
+            "serverTriggers": 76,
+            "lastTrigger": 1724014716592
+        }
+    ],
+    "lastTrigger": 1724014716592,
+    "__props__": {
+        "id": "r18722B3r9q248t4v082z5e7g2",
+        "doc": "projectActivity82",
+        "counter": 82,
+        "creationDate": 1723928402572,
+        "collection": "projectActivity",
+        "chunk": "chunk1",
+        "lastModified": 1724014716601,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1743
+    }
+}

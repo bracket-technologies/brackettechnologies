@@ -1,6 +1,11 @@
-const setCookie = ({ name = "", value, expiry = 360 }) => {
+const setCookie = ({ _window, name = "", value, expiry = 360, cookies }) => {
+
+  if (_window) return _window.global.manifest.cookies[name] = value 
 
   var cookie = document.cookie || "", host = window.global.manifest.host
+  
+  if (cookies) return document.cookie = `${host}=${JSON.stringify(cookies)};path=/`
+  
   var decodedCookie = decodeURIComponent(cookie)
   var hostSession = JSON.parse((decodedCookie.split('; ').find(cookie => cookie.split("=")[0] === host) || "").split("=").slice(1).join("=") || "{}")
 
@@ -8,11 +13,11 @@ const setCookie = ({ name = "", value, expiry = 360 }) => {
   document.cookie = `${host}=${JSON.stringify(hostSession)};path=/`
 }
 
-const getCookie = ({ name, req } = {}) => {
+const getCookie = ({ name, req, _window } = {}) => {
   
-  if (req) {
-    if (!name) return req.cookies
-    return req.cookies[name]
+  if (_window) {
+    if (!name) return _window.global.manifest.cookies
+    return _window.global.manifest.cookies[name]
   }
 
   var host = window.global.manifest.host
@@ -24,8 +29,9 @@ const getCookie = ({ name, req } = {}) => {
   return hostSession[name]
 }
 
-const eraseCookie = ({ name }) => {
+const eraseCookie = ({ _window, name }) => {
 
+  if (_window) return delete _window.global.manifest.cookies[name]
   var host = window.global.manifest.host
   var cookie = document.cookie || ""
   var decodedCookie = decodeURIComponent(cookie)

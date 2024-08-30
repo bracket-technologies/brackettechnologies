@@ -1,0 +1,97 @@
+{
+    "firstTrigger": 1724401208083,
+    "serverTriggers": 933,
+    "date": 1724360400000,
+    "projectID": "K1x7d0l898q817C0w1W9c2j4d6",
+    "activityPerHour": [
+        {
+            "time": 1724400000000,
+            "firstTrigger": 1724401208083,
+            "serverTriggers": 56,
+            "lastTrigger": 1724402840163
+        },
+        {
+            "time": 1724403600000,
+            "firstTrigger": 1724404688036,
+            "serverTriggers": 75,
+            "lastTrigger": 1724406445123
+        },
+        {
+            "time": 1724407200000,
+            "firstTrigger": 1724407460367,
+            "serverTriggers": 107,
+            "lastTrigger": 1724410656780
+        },
+        {
+            "time": 1724410800000,
+            "firstTrigger": 1724410837199,
+            "serverTriggers": 67,
+            "lastTrigger": 1724414199351
+        },
+        {
+            "time": 1724414400000,
+            "firstTrigger": 1724415783285,
+            "serverTriggers": 82,
+            "lastTrigger": 1724417956547
+        },
+        {
+            "time": 1724418000000,
+            "firstTrigger": 1724418000465,
+            "serverTriggers": 155,
+            "lastTrigger": 1724421536270
+        },
+        {
+            "time": 1724421600000,
+            "firstTrigger": 1724422086337,
+            "serverTriggers": 14,
+            "lastTrigger": 1724422368994
+        },
+        {
+            "time": 1724428800000,
+            "firstTrigger": 1724432233289,
+            "serverTriggers": 5,
+            "lastTrigger": 1724432371442
+        },
+        {
+            "time": 1724432400000,
+            "firstTrigger": 1724432400002,
+            "serverTriggers": 115,
+            "lastTrigger": 1724435576617
+        },
+        {
+            "time": 1724436000000,
+            "firstTrigger": 1724436233946,
+            "serverTriggers": 137,
+            "lastTrigger": 1724439370708
+        },
+        {
+            "time": 1724439600000,
+            "firstTrigger": 1724439683677,
+            "serverTriggers": 81,
+            "lastTrigger": 1724443120971
+        },
+        {
+            "time": 1724443200000,
+            "firstTrigger": 1724443217035,
+            "serverTriggers": 39,
+            "lastTrigger": 1724443727383
+        }
+    ],
+    "lastTrigger": 1724443727383,
+    "__props__": {
+        "id": "v1V7u26434C0K1x2e0G8B0x897",
+        "doc": "projectActivity94",
+        "counter": 94,
+        "creationDate": 1724401208087,
+        "collection": "projectActivity",
+        "chunk": "chunk1",
+        "lastModified": 1724443727396,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 1640
+    }
+}

@@ -4,14 +4,16 @@
         "doc": "account3",
         "counter": 3,
         "creationDate": 1714480563757,
-        "active": true,
-        "actions": {},
-        "chunk": "chunk1",
-        "secured": false,
         "collection": "account",
-        "createdByUserID": "41V7H078W8I8I780z1m9Y2E4Y2",
+        "chunk": "chunk1",
+        "lastModified": 1723733505972,
+        "dev": false,
+        "actions": {},
         "comments": [],
-        "collapsed": []
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 333
     },
     "email": "training@brackettechnologies.com",
     "availableCreateNewProjects": 0

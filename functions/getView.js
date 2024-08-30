@@ -7,10 +7,11 @@ const nthParent = ({ _window, nth, o }) => {
   
   while (n < nth) {
     if (views[parent]) parent = views[parent].__parent__
+    else parent = undefined
     n++
   }
   
-  return views[parent]
+  return parent ? views[parent] : parent
 }
 
 const nthNext = ({ _window, nth, o }) => {
@@ -20,7 +21,7 @@ const nthNext = ({ _window, nth, o }) => {
 
   var n = 0, next = o.id
   while (n < nth) {
-    if (views[next]) next = (views[views[next].__parent__].__childrenRef__[views[next].__index__ + 1] || {}).id
+    if (views[next]) next = (views[views[next].__parent__].__childrenRef__[(views[next].__index__ === undefined ? views[next].__initialIndex__ : views[next].__index__) + 1] || {}).id
     n++
   }
 
@@ -33,8 +34,10 @@ const nthPrev = ({ _window, nth, o }) => {
   var views = _window ? _window.views : window.views
 
   var n = 0, prev = o.id
+  
   while (n < nth) {
-    if (views[prev]) prev = (views[views[prev].__parent__].__childrenRef__[views[prev].__index__ - 1] || {}).id
+  
+    if (views[prev]) prev = (views[views[prev].__parent__].__childrenRef__[(views[prev].__index__ === undefined ? views[prev].__initialIndex__ : views[prev].__index__) - 1] || {}).id
     n++
   }
 

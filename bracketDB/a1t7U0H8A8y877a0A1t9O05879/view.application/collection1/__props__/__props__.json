@@ -1,0 +1,16 @@
+{
+    "creationDate": 1723738565542,
+    "collection": "view.application",
+    "maxSize": 1000,
+    "lastChunk": 1,
+    "docsLength": 4,
+    "counter": 4,
+    "reads": 14622,
+    "writes": 15,
+    "deletes": 0,
+    "size": 31,
+    "payloadIn": 17942,
+    "payloadOut": 18834569,
+    "indexes": [],
+    "lastIndex": 0
+}

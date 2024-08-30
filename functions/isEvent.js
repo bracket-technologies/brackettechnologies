@@ -8,10 +8,10 @@ const isEvent = ({ _window, string }) => {
 
         string = string.split("?")[0]
         // ex: [[click??conditions]?params]
-        if (string.charAt(0) === "@" && string.length == 6) string = global.__refs__[string].data
+        if (string.slice(0, 2) === "@$" && string.length == 7) string = global.__refs__[string].data
         string = string.split(";")[0]
         // ex: [[click??conditions];[keyup??conditions]?params]
-        if (string.charAt(0) === "@" && string.length == 6) string = global.__refs__[string].data
+        if (string.slice(0, 2) === "@$" && string.length == 7) string = global.__refs__[string].data
         // ex: click:id
         string = string.split(":")[0]
         if (events.includes(string)) return true

@@ -1,0 +1,22 @@
+{
+    "port": 81,
+    "serverID": "W1s7v294b6f1v32285k0r8w584",
+    "creationDate": 1724613250869,
+    "closes": [],
+    "__props__": {
+        "id": "S127e2e4k6G1V3E2r5y0W8h8t0",
+        "doc": "runningServer619",
+        "counter": 619,
+        "creationDate": 1724613250880,
+        "collection": "runningServer",
+        "chunk": "chunk1",
+        "lastModified": 1724613250880,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 366
+    }
+}

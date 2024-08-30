@@ -1,16 +1,16 @@
 {
-    "creationDate": 1723029092075,
+    "creationDate": 1724488930888,
     "collection": 1,
     "maxSize": 1000,
     "lastChunk": 1,
-    "docsLength": 383,
-    "counter": 383,
-    "reads": 318,
-    "writes": 504,
+    "docsLength": 816,
+    "counter": 816,
+    "reads": 112,
+    "writes": 873,
     "deletes": 0,
-    "size": 151950,
-    "payloadIn": 200181,
-    "payloadOut": 127586,
+    "size": 324470,
+    "payloadIn": 347112,
+    "payloadOut": 46914,
     "indexes": [
         {
             "find": [
@@ -18,8 +18,8 @@
                 "serverID"
             ],
             "doc": "index1",
-            "lastRead": 1723493233406,
-            "expiryDate": 1726085233406
+            "lastRead": 1724834429598,
+            "expiryDate": 1727426429598
         }
     ],
     "lastIndex": 1

@@ -1,8 +1,8 @@
 {
     "id": "61ikDY7kcI4Hp931nw0Y1721653290470",
-    "session": "ehCvR4UjpORbanH18jrd1723494664820",
+    "session": "cbGWtffRYlIMKWAYjwiu1723994897363",
     "user": "rxupQDGxU1ZL8BHeMAZlUwTgvimRQDWMfiOKH95Q29MKtGqyUD0UEBPDgcdP-1721653282039",
-    "expiryDate": 1723581064819,
+    "expiryDate": 1724081297360,
     "__props__": {
         "id": "H117g251l6O5L3O2m9H0x4o7B1",
         "doc": "session2",
@@ -10,7 +10,7 @@
         "creationDate": 1721653290471,
         "collection": "session",
         "chunk": "chunk1",
-        "lastModified": 1723494664830,
+        "lastModified": 1723994897372,
         "dev": false,
         "actions": {},
         "comments": [],

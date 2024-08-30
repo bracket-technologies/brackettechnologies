@@ -22,7 +22,7 @@ const droplist = ({ id, e, __, stack, props, lookupActions, address, object }) =
   var form = view.droplist.form || view.form
 
   // init droplist
-  var droplistView = { ...global.__queries__.view.droplist, children: [], __dataPath__, form, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["server", "document", "root", "droplist"], __lookupActions__: [...view.__lookupActions__] }
+  var droplistView = { ...global.__queries__["view.application"].droplist, children: [], __dataPath__, form, __parent__: "root", __, __childIndex__: views.droplist.__childIndex__, __viewPath__: ["droplist"], __customViewPath__: ["server", "document", "root", "droplist"], __lookupActions__: [...view.__lookupActions__] }
 
   // input id
   var inputID = toValue({ id, data: "input().id||().id", object })
@@ -30,7 +30,7 @@ const droplist = ({ id, e, __, stack, props, lookupActions, address, object }) =
 
   // items
   if (typeof items === "string") items = toValue({ id, data: items, lookupActions, __: view.__, props, stack, object })
-    
+  
   // filterable
   if (view.droplist.filterable && text) {
       

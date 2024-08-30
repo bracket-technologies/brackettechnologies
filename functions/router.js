@@ -37,13 +37,13 @@ module.exports = ({ req, res }) => {
   var {stack, address} = openStack({ _window, id, event: req.method.toLowerCase(), server: global.manifest.server, action: global.manifest.action })
 
   // get view view
-  var { data } = database({ _window, req, res, stack, props: {}, action: "search()", preventDefault: true, data: { collection: "view", doc: "server" } })
+  var { data } = database({ _window, req, res, stack, props: {}, action: "search()", preventDefault: true, data: { collection: "view.application", doc: "server" } })
   
   // init view
-  var view = { ...data, __customView__: "server", __viewPath__: ["server"], __customViewPath__: ["server"] }
+  var view = { ...data, __customView__: "server", __viewPath__: ["server"], __customViewPath__: ["server"], __viewCollection__: "view.application", __prevViewCollection__: "view.application" }
 
   // lookup actions
-  view.__lookupActions__ = [...global.__lookupActions__, { doc: "server", collection: "view" }]
+  view.__lookupActions__ = [...global.__lookupActions__, { doc: "server", collection: "view.application" }]
 
   // log start render
   logger({ _window, data: { key: "server", start: true } })
@@ -104,7 +104,7 @@ const initializer = ({ id, req, res }) => {
   var path = props.path || decodeURI(req.url).split("/")
   var page = props.page || path[1] || "main"
   var server = props.server || "renderer"
-  var action = req.body.action || "document()"
+  var action = req.body.action || "createWebApp()"
 
   // cookies
   parseCookies(req, host)
@@ -145,7 +145,7 @@ const initializer = ({ id, req, res }) => {
   }
 
   var views = { [id]: { id } }
-  var _window = { views, global }
+  var _window = { views, global, req, res }
 
   // check host
   var { success, message } = checkHost({ host, _window, global })

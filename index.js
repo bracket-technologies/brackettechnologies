@@ -4,6 +4,7 @@ const { getData, start, postData, database } = require("./functions/kernel")
 const router = require('./functions/router')
 const { generate } = require('./functions/generate')
 const networkInterfaces = require('os').networkInterfaces()
+const { connectToWebSocket, createWebSocket } = require('./functions/websocket')
 
 // config
 require('dotenv').config()
@@ -12,10 +13,26 @@ require('dotenv').config()
 var bracketDB = process.env.BRACKETDB
 
 // get private ip
-//var ip = { private: (networkInterfaces.Ethernet || networkInterfaces["Wi-Fi 2"]).find(add => add.family === "IPv4").address }
-var serverID = process.argv[3] || generate({ unique: true })
+// var ip = { private: (networkInterfaces.Ethernet || networkInterfaces["Wi-Fi 2"]).find(add => add.family === "IPv4").address }
+var serverID = global.serverID = process.argv[3]
 
-// app
+// port
+var port = parseInt(process.argv[2])
+
+// get hosts => run applications
+if (!port) {
+
+  createWebSocket()
+
+  // get hosts
+  var { data: hosts } = database({ action: "search()", data: { db: bracketDB, collection: "host", find: { port: { gte: 80 } } } })
+  return Object.values(hosts).map(host => host.port.map(port => start(port, generate({ unique: true }))))
+}
+
+// Connect to the WebSocket server
+const ws = connectToWebSocket({ serverID, port })
+
+// create app
 const app = (req, res) => {
 
   // parse body
@@ -27,29 +44,16 @@ const app = (req, res) => {
 
       //req.ip = ip
       res.serverID = serverID
+      req.ws = ws
       req.body = JSON.parse(Buffer.concat(req.body).toString() || "{}")
       router({ req, res })
     })
 }
 
-// port
-var port = parseInt(process.argv[2])
-if (port) {
-  
-  const server = http.createServer(app)
+const server = http.createServer(app)
 
-  server.listen(port, [], () => {
+server.listen(port, [], () => {
 
-    console.log(`Server Listening to Port ${port}`)
-
-    // new EasyTunnel(port, "brc" + host.subdomain).start()
-  })
-
-  // server.on("error", (err) => {console.log("Error running server!", err);})
-  
-} else {
-
-  // get hosts
-  var {data: hosts} = database({ action: "search()", data: { db: bracketDB, collection: "host", find: { port: { gte: 80 } } } })
-  Object.values(hosts).map(host => host.port.map(port => start(port, serverID)))
-}
+  console.log(`Server Listening to Port ${port}`)
+  // new EasyTunnel(port, "brc" + host.subdomain).start()
+})

@@ -1,0 +1,22 @@
+{
+    "logs": [
+        "log():data()",
+        null
+    ],
+    "__props__": {
+        "id": "k1t702v4W6K0w9d4a0w2t3I9c1",
+        "doc": "logs16",
+        "counter": 16,
+        "creationDate": 1724609402391,
+        "collection": "logs",
+        "chunk": "chunk1",
+        "lastModified": 1724609402391,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 284
+    }
+}

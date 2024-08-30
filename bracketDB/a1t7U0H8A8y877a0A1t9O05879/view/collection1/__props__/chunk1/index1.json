@@ -2,9 +2,6 @@
     "actionlist": {
         "__props__.id": "71f7V1c0V3A330O7B8a6d466V9"
     },
-    "Authorize": {
-        "__props__.id": "H1r7g1U419d4b2x4U7S6W1s212"
-    },
     "billing": {
         "__props__.id": "H1E7J184b3n8n5j8Z3M5G6b1R1"
     },
@@ -38,9 +35,6 @@
     "database": {
         "__props__.id": "s1C7X1K4b9k2R1g7y1Q851P6q2"
     },
-    "document": {
-        "__props__.id": "a1E7W1a0f3O3m0l7M8e6Y4M9T5"
-    },
     "form": {
         "__props__.id": "U1u7M156k53537o7b8O030M4o3"
     },
@@ -64,9 +58,6 @@
     },
     "projects": {
         "__props__.id": "u1Q7w1R3k6w1e4T291C9R6B1Q7"
-    },
-    "root": {
-        "__props__.id": "i1I7F1L0f3a3U0G798f6s5k4B3"
     },
     "view": {
         "__props__.id": "J1o7L1N0c3I390e7d8n6R5N4e5"

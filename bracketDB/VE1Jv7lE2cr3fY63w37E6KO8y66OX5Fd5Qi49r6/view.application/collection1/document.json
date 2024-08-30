@@ -1,0 +1,32 @@
+{
+    "view": "View?id=document",
+    "children": [
+        {
+            "view": "View?id=head"
+        },
+        {
+            "view": "View?id=body",
+            "children": [
+                {
+                    "view": "@view.application.root"
+                }
+            ]
+        }
+    ],
+    "__props__": {
+        "id": "41Y7V2z3h6g3X6T889j9p2y2U0",
+        "doc": "document",
+        "counter": 2,
+        "creationDate": 1723636899220,
+        "collection": "view.application",
+        "chunk": "chunk1",
+        "lastModified": 1723636999141,
+        "dev": false,
+        "actions": {},
+        "comments": [],
+        "collapsed": [],
+        "arrange": [],
+        "secured": false,
+        "size": 372
+    }
+}

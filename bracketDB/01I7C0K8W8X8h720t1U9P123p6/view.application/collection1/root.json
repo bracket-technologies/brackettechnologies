@@ -1,0 +1,287 @@
+{
+    "view": "View?id=root;class=column;style:[minHeight=100vh];loaded:[checkSession()];setPublicSettings()",
+    "__props__": {
+        "id": "C1a7G1x1M0Y391U3T6h5s2F1Q3",
+        "doc": "root",
+        "counter": 43,
+        "creationDate": 1711031365213,
+        "collection": "view.application",
+        "chunk": "chunk1",
+        "lastModified": 1723217514043,
+        "dev": false,
+        "actions": {
+            "callOpenCreateForm": "if():[createFormStack:().len()>0]:[openCreateForm():[manager=getManagerFromCollection(l):[collection=_.collection];read=_.read]]:[openCreateForm():[manager=currentOpenManager:()]]",
+            "setDefaultleftZero": "while():[[_.digits]-[_.text.toString().len()]>0]:[_.text=_.text*10];return():[_.text]",
+            "openCreateForm": {
+                "openFirstTime": "():generalPopup.refresh()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1]]",
+                "openPopup": "if():[createFormStack:().len()=1;!_.back]:[openFirstTime()]:[openStackForms()]",
+                "openStackForms": "():generalPopup.2ndChild().style():[transform=if():[!_.back]:[translateX(-100vw)]:[translateX(100vw)]];timer():[():generalPopup.2ndChild().style():[transition=none;transform=if():[!_.back]:[translateX(100vw)]:[translateX(-100vw)]]]:200;timer():[():generalPopup.2ndChild().refresh()::[loader.hide;():generalPopup.2ndChild().style():[transition=.2s;transform=translateX(0)]]]:300;#timer():[():generalPopup.2ndChild().style():[transition=.2s;transform=translateX(0)]]:300",
+                "setInputInfo": "if():[_.inputInfo]:[().inputInfo=_.inputInfo.clone()]:[if():[_.manager.createFormInputs.type()=map]:[().inputInfo=_.manager.createFormInputs.clone()]:[().inputInfo=sharedManagersInfo:().[_.manager.createFormInputs].createFormInputs.clone()]];if():[_.docDefaultValues]:[().inputInfo.docDefaultValues+=_.docDefaultValues];createFormStack:().[-1].docDefaultValues=[().inputInfo.docDefaultValues]()",
+                "_": "if():[createFormStack:().len()=0]:[selectedPath:()=[]];if():[!_.back]:[createFormStack:().[-1].():[selectedSection=selectedSection:();selectedPath=selectedPath:()];createFormStack:().push():[collection=_.manager.identifier;id=_.manager.id]]:[selectedPath:()=createFormStack:().[-1].selectedPath];#loader.show;setGeneralPopup()",
+                "setGeneralPopup": "setInputInfo();generalPopup:()=[read=_.read;back=_.back;getterKeyValue=_.getterKeyValue;title=_.title||_.manager.form.title.clone();popupName=[_.manager.form.view||customForm];inputInfo=().inputInfo;docName=_.docName||_.manager.form.docName;saveAction=_.manager.saveAction];if():[_.manager.permission]:[generalPopup:().permission=_.manager.permission;generalPopup:().defaultPermission=_.manager.defaultPermission];if():[_.docValues]:[generalPopup:().():[read=_.read;edit=_.edit;createable=_.createable;docValues=_.docValues]];openPopup()"
+            },
+            "toCamelCase": "().sectionId=[_].replaceAll():['_']:[' '].replaceAll():['-']:[' '];().camelCase=().sectionId.charAt():[0].toLowerCase();().key=().sectionId.toLowerCase().capitalize().replaceAll():' ':''.replaceItem():[().camelCase.capitalize()]:[().camelCase];return():[().key]",
+            "getAllData": {
+                "arrangeLedgerAccounts": "().ledgerAccounts=_.data.allLedgersAccounts.values();().ledgerAccounts._():[_.helper=setDefaultleftZero():[text=_.generalLedger;digits=5]];().ledgerAccounts.sort():[path=helper;ascending];return():[().ledgerAccounts]",
+                "_": "getDataOnLoad()::[vouchersInfo:()=_.data.vouchersInfo;allLedgersAccounts:()=arrangeLedgerAccounts();creditNoteInfo:()=_.data.creditNoteInfo;debitNoteInfo:()=_.data.debitNoteInfo;publicData:()=_.data.publicData;setDueNotifications():[_.notification];sharedManagersInfo:()=_.data.sharedManagersInfo;charterInvoiceInfo:()=_.data.charterInvoiceInfo;tourInvoiceInfo:()=_.data.tourInvoiceInfo;ticketInvoiceInfo:()=_.data.ticketInvoiceInfo;journalsInfo:()=_.data.journalsInfo;paymentVoucherInfo:()=_.data.paymentVoucherInfo;expensesInfo:()=_.data.expensesInfo;receiptVoucherInfo:()=_.data.receiptVoucherInfo;accountingJournalInfo:()=_.data.transaction;generalLedgerInfo:()=_.data.generalLedgerInfo;accountingInfo:()=_.data.accountingInfo;accountingServiceInfo:()=_.data.accountingServiceInfo;bracketSheetTable:()=_.data.bracketSheetTable;collectionsInfo:()=_.data.collectionsInfo.globalPathes.managers;financeManagerInfo:()=_.data.financeManagerInfo;galleryManagerInfo:()=_.data.galleryManagerInfo;governmentAccounts:()=_.data.governmentAccounts.value().data;groupManagerInfo:()=_.data.groupManagerInfo;hotelBookingInfo:()=_.data.hotelBookingInfo;inventoryManagerInfo:()=_.data.inventoryManagerInfo;offerManagerInfo:()=_.data.offerManagerInfo;referenceManagerInfo:()=_.data.referenceManagerInfo;settingsInfo:()=_.data.settingsInfo;tableInfo:()=_.data.tableInfo;printView:()=_.data.printView]"
+            },
+            "customCondition": {
+                "handelIfConditionReferenceExistForOrCondition": "if():[_.conditionReferenceInPath]:[if():[__.data.[__.path].[__.index].[_.conditionReferenceInPath]]:[().isConditionTrue=true]].elif():[_.conditionReferenceInDoc]:[if():[__.data.[_.conditionReferenceInDoc]]:[().isConditionTrue=true]].elif():[conditionReference]:[if():[__.data.[__.path].[__.index].[_.conditionReference]||__.data.[_.conditionReference]]:[().isConditionTrue=true]]",
+                "checkConditionInData": "if():[_.condition]:[loopOverCondition()].elif():[_.orCondition]:[loopOverOrCondition()]",
+                "handleNotConditionInPath": "if():[_.notCondition.inc():[__.data.[__.path].[__.index].[_.conditionReference]()]]:[().isConditionTrue=false]",
+                "checkConditionReferenceTypeInPath": "if():[_.conditionReferenceInPath]:[checkAndConditionOperatorsInPath()].elif():[_.conditionReferenceInDoc]:[checkAndConditionOperatorsInData()].elif():[_.conditionReference]:[if():[__.data.[__.path].[__.index].[_.conditionReference]]:[checkAndConditionOperatorsInPath()]:[checkAndConditionOperatorsInData()]]",
+                "handleOrNotConditionInData": "if():[!_.notCondition.inc():[__.data.[_.conditionReference]()]]:[().isConditionTrue=true]",
+                "loopOverCondition": "().isConditionTrue=true;_.condition._():[if():[_.condition]:[checkAndConditionOperatorsInData()].elif():[_.notCondition]:[handleNotConditionInData()].elif():[_.conditionReference]:[if():[!__.data.[_.conditionReference]]:[().isConditionTrue=false]].elif():[_.notConditionReference]:[if():[__.data.[_.notConditionReference]]:[().isConditionTrue=false]]]",
+                "checkOrConditionReferenceTypeInPath": "if():[_.conditionReferenceInPath]:[checkOrConditionOperatorsInPath()].elif():[_.conditionReferenceInDoc]:[checkOrConditionOperatorsInData()].elif():[_.conditionReference]:[if():[__.data.[__.path].[__.index].[_.conditionReference]]:[checkOrConditionOperatorsInPath()]:[checkOrConditionOperatorsInData()]]",
+                "handleNotConditionInData": "if():[_.notCondition.inc():[__.data.[_.conditionReference]]]:[().isConditionTrue=false]",
+                "handelIfConditionReferenceExist": "if():[_.conditionReferenceInPath]:[if():[!__.data.[__.path].[__.index].[_.conditionReferenceInPath]]:[().isConditionTrue=false]].elif():[_.conditionReferenceInDoc]:[if():[!__.data.[_.conditionReferenceInDoc]]:[().isConditionTrue=false]].elif():[conditionReference]:[if():[!__.data.[__.path].[__.index].[_.conditionReference];!__.data.[_.conditionReference]]:[().isConditionTrue=false]]",
+                "checkOrConditionOperatorsInPath": "if():[_.operator]:[if():[[_.condition+_.operator+__.data.[__.path].[__.index].[_.conditionReference]]()]:[().isConditionTrue=true]]:[if():[_.condition.inc():[__.data.[__.path].[__.index].[_.conditionReference]]]:[().isConditionTrue=true]]",
+                "handleOrNotConditionInPath": "if():[_.notCondition.inc():[__.data.[__.path].[__.index].[_.conditionReference]()]]:[().isConditionTrue=true]",
+                "checkConditionInPath": "if():[_.condition]:[loopOverConditionInPath()].elif():[_.orCondition]:[loopOverOrConditionInPath()]",
+                "loopOverConditionInPath": "().isConditionTrue=true;_.condition._():[if():[_.condition]:[checkConditionReferenceTypeInPath()].elif():[_.notCondition]:[handleNotConditionInPath()]:[handelIfConditionReferenceExist()]]",
+                "checkConditionType": "if():[_.path;[_.index||_.index=0]]:[checkConditionInPath()]:[checkConditionInData()]",
+                "checkAndConditionOperatorsInData": "if():[_.operator='!=']:[if():[[_.condition]=[__.data.[_.conditionReference]]]:[().isConditionTrue=false]].elif():[_.operator]:[if():[![_.condition+_.operator+__.data.[_.conditionReference]]()]:[().isConditionTrue=false]]:[if():[!_.condition.inc():[__.data.[_.conditionReference]]]:[().isConditionTrue=false]]",
+                "loopOverOrCondition": "().isConditionTrue=false;_.orCondition._():[if():[_.condition]:[checkOrConditionOperatorsInData()].elif():[_.notCondition]:[handleOrNotConditionInData].elif():[_.conditionReference]:[if():[__.data.[_.conditionReference]]:[().isConditionTrue=true]]]",
+                "loopOverOrConditionInPath": "().isConditionTrue=false;_.orCondition._():[if():[_.condition]:[checkOrConditionReferenceTypeInPath()].elif():[_.notCondition]:[handleOrNotConditionInPath()]:[handelIfConditionReferenceExistForOrCondition()]]",
+                "checkOrConditionOperatorsInData": "if():[_.operator]:[if():[[_.condition+_.operator+_.conditionReference]()]:[().isConditionTrue=true]]:[if():[_.condition.inc():[__.data.[_.conditionReference]]]:[().isConditionTrue=true]]",
+                "checkAndConditionOperatorsInPath": "if():[_.operator]:[if():[![_.condition+_.operator+__.data.[__.path].[__.index].[_.conditionReference]]()]:[().isConditionTrue=false]]:[if():[!_.condition.inc():[__.data.[__.path].[__.index].[_.conditionReference]]]:[().isConditionTrue=false]]",
+                "_": "checkConditionType();return():[().isConditionTrue];"
+            },
+            "openSearchBox": {
+                "fillSearchEngineInputs": "().group=collectionsInfo:().find():[managers.():collection.inc():[_.collection]];().manager=[().group.groupName]:().[().group.managers.find():[_.collection].manager];setSearchBoxCustomInputs()",
+                "pushPathData": "generalPopup:().():[path=_.path;index=_.index]",
+                "pushListNameData": "generalPopup:().():[listName=_.listName;maxSelected=_.maxSelected]",
+                "setSearchBoxCustomInputs": "if():[().manager.searchEngineInputs.type()=list]:[searchBoxCustomInputs:()=().manager.searchEngineInputs.clone()]:[searchBoxCustomInputs:()=sharedManagersInfo:().[().manager.searchEngineInputs].searchEngineInputs.clone()];if():[_.allowedLedgers]:[searchBoxCustomInputs:().0.allowedLedgers=_.allowedLedgers]:[searchBoxCustomInputs:().0.allowedLedgers.del()]",
+                "fillGeneralPopupCommonParams": "generalPopup:().():[title='Search Box';popupName=searchBoxPage;[_].flat()]",
+                "pushVarNameData": "generalPopup:().():[varName=[_.varName]();maxSelected=1]",
+                "_": "if():[!_.back]:[createFormStack:().push():[searchbox=true;[_].flat()]];generalPopup:()=[];if():[_.path]:[pushPathData()];if():[_.varName]:[pushVarNameData()]:[pushListNameData()];fillGeneralPopupCommonParams();if():[_.searchEngineInputs]:[searchBoxCustomInputs:()=_.searchEngineInputs]:[fillSearchEngineInputs()];():generalPopup.refresh()::[():generalPopup.style():[visibility=visible;opacity=1]]"
+            },
+            "setDueNotifications": "dueNotifications:()=_;():notificationIcon.refresh();",
+            "getManagerFromCollection": "().group=collectionsInfo:().find():[managers.():collection.inc():[_.collection]];().manager=[().group.groupName]:().[().group.managers.find():[collection=_.collection].manager];return():[().manager]",
+            "setPublicSettings": "publicSettings:()=[inputStyle=[fontSize=1.3rem];inputContainerStyle=[];inputLableStyle=[];btnsStyle;sectionTitleStyle=[fontSize=1.4rem];formTitleStyle=[fontSize=1.5rem];sideBarItemsStyle=[];]",
+            "getManagerFromManager": "().group=collectionsInfo:().find():[managers.():manager.inc():[_.id]];().manager=[().group.groupName]:().[().group.managers.find():[manager=_.id].manager];return():[().manager]",
+            "getAccountBalance": {
+                "_": "searchAccount():[data=[ledgerAccount=_.ledger]]:[if():[_.success]:[setBalance();().account=[creditDebit=if():[().amount>=0]:['Debit']:['Credit'];balance=().balance;ledger=__.ledger];cleanSelectedAccountsBalance();selectedAccountsBalance:().push():[().account];():[__.identifier].refresh()]]",
+                "setBalance": "().amount=_.data.value().balance||0;().balance=toPriceFormat():[data=().amount*[__.exchangeRate.find():[code=__.currency].exchangeRate]]+' '+__.currency",
+                "cleanSelectedAccountsBalance": "if():[selectedAccountsBalance:().find():[ledger=().account.ledger]]:[selectedAccountsBalance:().pull():[ledger=().account.ledger]]"
+            },
+            "checkIfOpenPrevForm": {
+                "callOpenCreateForm": "openCreateForm():[back=true;manager=getManagerFromManager():[id=createFormStack:().at():[-1].id]]",
+                "callSearchBox": "openSearchBox():[back=true;[createFormStack:().[-1]].flat()]",
+                "[object Object]": "if():[:().le(1:[c:().pullItem():[createFormStack:().at():[-1]];().group=collectionsInfo:().find():[managers.():collection.inc():[createFormStack:().at():[-1]]];manager=[().group.groupName]:().[().group.managers.find():[collection=createFormStack:().at():[-1]].manager];#if():[_.data]:[addResponseInDoc()];updatePopup()]:[closeGeneralPopup()]",
+                "_": "if():[_.redeclareSearchEngineDoc]:[customManagerSearchEngine:()=_.redeclareSearchEngineDoc];if():[createFormStack:().len()>1]:[createFormStack:().pullIndex():[-1];if():[createFormStack:().at():[-1].searchbox]:[callSearchBox()]:[[_.docName]:()='';callOpenCreateForm()];if():[__.getterKeyValue||true]:[saveResponseInDoc()]]:[createFormStack:()=:;closeGeneralPopup()]",
+                "saveResponseInDoc": "__.getterKeyValue.getterKeyValue.keys()._():[().x=___.getterKeyValue.path.clone();().x.push():[_];().dataPath=[[___.getterKeyValue.getterKeyValue].[_]]().split():'.';[____.docName]:().reduce():[path=().x;data=__.data.data.reduce():[path=().dataPath]];log():[form=[____.docName]:().clone();data=__.data.data.reduce():[path=().dataPath];path=().x]:['qqqqq0000']]"
+            },
+            "checkSession": {
+                "checkSessionExist": "login():[session=getCookie():session]:[if():[_.success]:[loader.show;getAllData()::[setCookie():[name=session;value=_.session];userData:()=_.data;[root():portal?manifest:().page!=portal]()::[updateProfileName();():sidebar.refresh()::[loader.hide]]]]:[root():login?manifest:().page!=login?loader.hide;eraseCookie():session;note():[text=_.message;danger]]]",
+                "updateProfileName": "if():[!mobile()]:[():profileName.txt()=userData:().firstName.capitalize()+' '+userData:().lastName.capitalize();():branchDroplist.txt()=userData:().branch.find():[headQuarter].name]:[():mobileProfileName.txt()=userData:().firstName.0.capitalize()+userData:().lastName.0.capitalize()]",
+                "_": "if():[getCookie():session]:[loader.show;checkSessionExist()]:[root():login?manifest:().page!=login]?!userData:();manifest:().page!=main"
+            },
+            "numberToEnglishWords": {
+                "_": "declareHelperLists();if():[[_].toString()='0']:[return():['Zero']]:[return():[convertToWord():[_]]]",
+                "convertToWord": {
+                    "_": "().word='';if():[[_]<10]:[().word=().singleDigit.[_]+' '].elif():[[_]<20]:[().word=().doubleDigit.[[_]-10]+' '].elif():[[_]<100]:[handleTenthes()].elif():[[_]<1000]:[handleHundreds()]:[handleLargeNumbers()];return():[().word]",
+                    "handleTenthes": "().rem=convertToWord():[[[_]%10]];().word=[().belowHundred.[[[[_]-[_]%10]/10]-2]]+' '+().rem",
+                    "handleLargeNumbers": "setLength();().word=convertToWord():[math().floor():[[_]/().digits]]+().text+' '+convertToWord():[[[_].toString().slice():[[_].toString().len()-().digits.toString().len()+1]:[]].num()];",
+                    "setLength": "().isFound=false;().largNumbers._():[if():[[__]/[math().pow():[10]:[_.digits]]<=1000;!().isFound]:[().isFound=true;().text=_.text;().digits=math().pow():[10]:[_.digits]]]",
+                    "handleHundreds": "().rem=convertToWord():[[[_]%100]];().word=[().singleDigit.[[[_]-[_]%100]/100]]+' Hundred '+().rem"
+                },
+                "declareHelperLists": {
+                    "_": "().singleDigit=singleDigitList();().doubleDigit=doubleDigitList();().belowHundred=belowHundredList();().largNumbers=largNumbers()",
+                    "singleDigitList": ":'':'One':'Two':'Three':'Four':'Five':'Six':'Seven':'Eight':'Nine'",
+                    "doubleDigitList": ":'Ten':'Eleven':'Twelve':'Thirteen':'Fourteen':'Fifteen':'Sixteen':'Seventeen':'Eighteen':'Nineteen'",
+                    "belowHundredList": ":'Twenty':'Thirty':'Forty':'Fifty':'Sixty':'Seventy':'Eighty':'Ninety'",
+                    "largNumbers": ":[text='thousand';digits=3]:[text='million';digits=6]:[text='billion';digits=9]:[text='trillion';digits=12]:[text='quadrillion';digits=15]:[text='quintillion';digits=18]:[text='sextillion';digits=21]:[text='septillion';digits=24]:[text='octillion';digits=27]:[text='nonillion';digits=30]:[text='decillion';digits=33]"
+                }
+            },
+            "openexchangeRateView": {
+                "_": "setDocValues();setSubGeneralPopupParams();openSubGeneralPopup()",
+                "setSubGeneralPopupParams": "setDocDefaultValues();subGeneralPopup:()=[docValues=().docValues;borderRadius=0 0 .4rem .4rem;stopFormIds=true;title='Currency Rate';docName=settingsInfo:().exchangeRateInfo.form.docName;popupName=customForm;inputInfo=settingsInfo:().exchangeRateInfo.createFormInputs.clone();saveAction=settingsInfo:().exchangeRateInfo.saveAction;discardAction=settingsInfo:().exchangeRateInfo.discardAction]",
+                "openSubGeneralPopup": "():subGeneralPopup.refresh()::[():subGeneralPopup.style():[visibility=visible;opacity=1];():subGeneralPopup.2ndChild().style():[transform=translateY(0)]]",
+                "setDocDefaultValues": "exchangeRate:()=[exchangeRates=:[___]]",
+                "setDocValues": "___._():[().docValues.exchangeRates=:[id=_.id;systemCurrencyRate=_.systemCurrencyRate;name=_.name;counter=_.counter;code=_.code;createdCurrencyRate=_.createdCurrencyRate;exchangeRate=_.exchangeRate]]"
+            },
+            "printAction": {
+                "_": "[setPrintViewData()]()::[callPrintView()]",
+                "setPrintViewData": {
+                    "_": "setBranch();if():[_.inputInfo.collection='voucher']:[setVoucherInfo()].elif():[_.inputInfo.collection='invoice']:[setInvoiceInfo()].elif():[currentOpenManager:().managerName=transactionManager;managersSearchResult:().transactionManager]:[setStatmentOfAccountInfo()]",
+                    "setBranch": "().printViewData.data.branch=userData:().branch.find():[id=userData:().currentBranch];",
+                    "setVoucherInfo": "().printViewData.schema=printView:().voucherTemplate.mainInfo;().printViewData.data.voucherInfo=[_.docName]:()",
+                    "setInvoiceInfo": "().printViewData.schema=printView:().invoiceTemplate.mainInfo;().printViewData.data.invoiceInfo=[_.docName]:()",
+                    "setStatmentOfAccountInfo": {
+                        "_": "getAccountInfo();setFromToDate();setFooterList();setData()",
+                        "setData": "().printViewData.schema=printView:().statementOfAccountTemplate.mainInfo;().printViewData.data.transactionData=managersSearchResult:().transactionManager",
+                        "getAccountInfo": "searchAccount():[data=[ledgerAccount=customManagerSearchEngine:().ledgerAccount]]:[if():[_.success]:[().printViewData.data.accountInfo=_.data.value()]]",
+                        "setFromToDate": "if():[customManagerSearchEngine:().fromDate]:[().printViewData.data.fromDate=customManagerSearchEngine:().fromDate]:[getFirstDateFromData()];if():[customManagerSearchEngine:().toDate]:[().printViewData.data.toDate=customManagerSearchEngine:().toDate]:[getLastDateFromData()]",
+                        "getFirstDateFromData": "().printViewData.data.fromDate=managersSearchResult:().transactionManager.clone().sort():[path=creationDate;ascending].0.creationDate",
+                        "getLastDateFromData": "().printViewData.data.toDate=managersSearchResult:().transactionManager.clone().sort():[path=creationDate;descending].0.creationDate",
+                        "#setFooterList": "().printViewData.data.footerList=:;().credit=managersSearchResult:().transactionManager.():credit.sum();().debit=managersSearchResult:().transactionManager.():debit.sum();().balance=().debit-().credit;if():[().balance<0]:[().balance='('+().balance+')'];().printViewData.data.footerList.push():[balance=().balance;debit=().debit;credit=().credit;description='*REQUESTED PERIOD TOTALS*']",
+                        "setFooterList": "().credit=managersSearchResult:().transactionManager.():credit.sum();().debit=managersSearchResult:().transactionManager.():debit.sum();().balance=().debit-().credit;if():[().balance<0]:[().balance='('+().balance+')'];().printViewData.data.footerList.push():[balance=().balance;debit=().debit;credit=().credit;description='*REQUESTED PERIOD TOTALS*']"
+                    }
+                },
+                "callPrintView": "generalPopup:()=[title=Print;popupName=customPrintView2;data=().printViewData];():generalPopup.refresh()::[loader.hide;():generalPopup.style():[visibility=visible;opacity=1];#():customPrintView2.html2pdf():[name='Voucher']]"
+            },
+            "toPriceFormat": {
+                "_": "splitTextByDot();handleDecimalPart();splitNumberBeforeDot();addCommas();combineDecimalPart();().num=().num.replaceAll():['t']:[''];return():[().num]",
+                "addCommas": "().i=[[().splitedCharList.len()]-1];().j=3;().num='t';while():[().i>=0]:[().num=[().splitedCharList.[().i]]+().num;().i-=1;if():[[[().splitedCharList.len()-().i]-1]%3=0;[().splitedCharList.len()>().j]]:[().num=','+[().num];().j+=3]]",
+                "combineDecimalPart": "if():[().splitedDotList.len()>1]:[().num=().num+'.'+().decimalPart]",
+                "splitNumberBeforeDot": "().splitedCharList=[().splitedDotList.0.num()+0].toString().split():;if():[().splitedCharList.0='-']:[().negative=true;().splitedCharList.pullItem():['-']]:[().negative=false];",
+                "splitTextByDot": "().splitedDotList=[_.data].toString().replaceAll():',':[''].split():'.'",
+                "handleDecimalPart": "if():[().splitedDotList.len()>1]:[().decimalPart=().splitedDotList.1;if():[_.round]:[roundDecimalPart()]]",
+                "roundDecimalPart": "if():[().splitedDotList.1%10>=5;().splitedDotList.1>100]:[if():[().splitedDotList.1.toString().slice():0:2.num()<99]:[().decimalPart=().decimalPart.toString().slice():0:2+1]:[().decimalPart='00';().splitedDotList.0+=1]]:[().decimalPart=().decimalPart.toString().slice():0:2]"
+            },
+            "customUpdate": {
+                "_": "if():[_.type()=list]:[handleListUpdates()].elif():[_.section;_.input]:[updateInputInSpecificSection()].elif():[_.section||_.section=0]:[updateSpecificSection()].elif():[_.input]:[updateInputInSameSection()]:[updateForm()]",
+                "handleListUpdates": "_._():[customUpdate():[_]]",
+                "updateInputInSpecificSection": "getSectionByIndex():[_.section]._():[__.input._():[():[__.inputs.[_].id].refresh()]]",
+                "getSectionByIndex": "return():[formIds:().find():[sectionCounter=_.toString()]]",
+                "updateSpecificSection": "_.section._():[():[getSectionByIndex():[_].id].refresh()]",
+                "updateInputInSameSection": "getSectionByIndex():[____.index]._():[__.input._():[():[__.inputs.[_].id].refresh()]]"
+            }
+        },
+        "comments": [],
+        "collapsed": [
+            {
+                "path": [
+                    "children",
+                    0
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    1
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    2
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    3
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    4
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    5
+                ]
+            },
+            {
+                "path": [
+                    "children",
+                    6
+                ]
+            },
+            {
+                "path": [
+                    "printAction",
+                    "setPrintViewData",
+                    "setStatmentOfAccountInfo"
+                ]
+            },
+            {
+                "path": [
+                    "printAction",
+                    "setPrintViewData"
+                ]
+            },
+            {
+                "path": [
+                    "printAction"
+                ]
+            },
+            {
+                "path": [
+                    "toPriceFormat"
+                ]
+            },
+            {
+                "path": [
+                    "numberToEnglishWords"
+                ]
+            },
+            {
+                "path": [
+                    "customCondition"
+                ]
+            },
+            {
+                "path": [
+                    "getAccountBalance"
+                ]
+            },
+            {
+                "path": [
+                    "openSearchBox"
+                ]
+            },
+            {
+                "path": [
+                    "openCreateForm"
+                ]
+            },
+            {
+                "path": [
+                    "checkIfOpenPrevForm"
+                ]
+            },
+            {
+                "path": [
+                    "checkSession"
+                ]
+            },
+            {
+                "path": [
+                    "getAllData"
+                ]
+            },
+            {
+                "path": [
+                    "openexchangeRateView"
+                ]
+            },
+            {
+                "path": [
+                    "customUpdate"
+                ]
+            }
+        ],
+        "arrange": [],
+        "secured": false,
+        "size": 22512
+    },
+    "children": [
+        {
+            "view": "droplist"
+        },
+        {
+            "view": "note"
+        },
+        {
+            "view": "tooltip"
+        },
+        {
+            "view": "mininote"
+        },
+        {
+            "view": "loader"
+        },
+        {
+            "view": "generalPopup"
+        },
+        {
+            "view": "@view.[manifest:().page]"
+        }
+    ]
+}

@@ -1,8 +1,10 @@
 {
     "docs": [
+        "subscription3",
+        "subscription2",
         "subscription1"
     ],
     "chunk": "chunk1",
-    "docsLength": 1,
-    "size": 591
+    "docsLength": 3,
+    "size": 1786
 }
